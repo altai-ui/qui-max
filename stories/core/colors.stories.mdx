@@ -1,0 +1,30 @@
+import { Meta, ColorPalette, ColorItem } from '@storybook/addon-docs/blocks';
+
+import '../../src/vars.scss';
+import {
+  primaryColors,
+  secondaryColors,
+  tertiaryColors,
+  gradients
+} from './colors';
+
+<Meta title="Core/Colors" />
+
+<ColorPalette>
+  <ColorItem
+    title="--color-primary"
+    subtitle="primary colors"
+    colors={primaryColors}
+  />
+  <ColorItem
+    title="--color-secondary"
+    subtitle="secondary colors"
+    colors={secondaryColors}
+  />
+  <ColorItem
+    title="--color-tertiary"
+    subtitle="tertiary colors"
+    colors={tertiaryColors}
+  />
+  <ColorItem title="gradient" colors={gradients} />
+</ColorPalette>

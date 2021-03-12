@@ -1,0 +1,114 @@
+.fade-in-linear-enter-active,
+.fade-in-linear-leave-active {
+  transition: opacity 200ms linear;
+}
+
+.fade-in-linear-enter,
+.fade-in-linear-leave,
+.fade-in-linear-leave-active {
+  opacity: 0;
+}
+
+.q-fade-in-linear-enter-active,
+.q-fade-in-linear-leave-active {
+  transition: opacity 200ms linear;
+}
+
+.q-fade-in-linear-enter,
+.q-fade-in-linear-leave,
+.q-fade-in-linear-leave-active {
+  opacity: 0;
+}
+
+.q-fade-in-enter-active,
+.q-fade-in-leave-active {
+  transition: all 0.3s cubic-bezier(0.55, 0, 0.1, 1);
+}
+
+.q-fade-in-enter,
+.q-fade-in-leave-active {
+  opacity: 0;
+}
+
+.q-zoom-in-center-enter-active,
+.q-zoom-in-center-leave-active {
+  transition: all 0.3s cubic-bezier(0.55, 0, 0.1, 1);
+}
+
+.q-zoom-in-center-enter,
+.q-zoom-in-center-leave-active {
+  transform: scaleX(0);
+  opacity: 0;
+}
+
+.q-zoom-in-top-enter-active,
+.q-zoom-in-top-leave-active,
+.q-zoom-in-bottom-enter-active,
+.q-zoom-in-bottom-leave-active,
+.q-zoom-in-left-enter-active,
+.q-zoom-in-left-leave-active {
+  opacity: 1;
+  transition: transform 300ms cubic-bezier(0.23, 1, 0.32, 1),
+    opacity 300ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.q-zoom-in-top-enter-active,
+.q-zoom-in-top-leave-active {
+  transform: scaleY(1);
+  transform-origin: center top;
+}
+
+.q-zoom-in-top-enter,
+.q-zoom-in-top-leave-active {
+  transform: scaleY(0);
+  opacity: 0;
+}
+
+.q-zoom-in-bottom-enter-active,
+.q-zoom-in-bottom-leave-active {
+  transform: scaleY(1);
+  transform-origin: center bottom;
+}
+
+.q-zoom-in-bottom-enter,
+.q-zoom-in-bottom-leave-active {
+  transform: scaleY(0);
+  opacity: 0;
+}
+
+.q-zoom-in-left-enter-active,
+.q-zoom-in-left-leave-active {
+  transform: scale(1, 1);
+  transform-origin: top left;
+}
+
+.q-zoom-in-left-enter,
+.q-zoom-in-left-leave-active {
+  transform: scale(0.45, 0.45);
+  opacity: 0;
+}
+
+.collapse-transition {
+  transition: 0.3s height ease-in-out, 0.3s padding-top ease-in-out,
+    0.3s padding-bottom ease-in-out;
+}
+
+.horizontal-collapse-transition {
+  transition: 0.3s width ease-in-out, 0.3s padding-left ease-in-out,
+    0.3s padding-right ease-in-out;
+}
+
+.q-list-enter-active,
+.q-list-leave-active {
+  transition: all 1s;
+}
+
+.q-list-enter,
+.q-list-leave-active {
+  transform: translateY(-30px);
+  opacity: 0;
+}
+
+.q-opacity-transition {
+  transition: opacity 0.3s cubic-bezier(0.55, 0, 0.1, 1);
+}

@@ -1,0 +1,131 @@
+<template>
+  <button
+    class="q-button"
+    :disabled="disabled || loading"
+    :autofocus="autofocus"
+    :type="nativeType"
+    :class="classes"
+    @click="handleClick"
+  >
+    <span
+      v-if="loading"
+      class="q-icon-reverse"
+    />
+    <span
+      v-if="icon && !loading"
+      :class="icon"
+    />
+    <span
+      v-if="$slots.default"
+      class="q-button__inner"
+    >
+      <slot />
+    </span>
+  </button>
+</template>
+
+<script lang="ts">
+import { defineComponent, reactive, computed, inject } from 'vue';
+
+export default defineComponent({
+  name: 'QButton',
+  componentName: 'QButton',
+
+  props: {
+    type: {
+      type: String,
+      default: 'default',
+      validator: (value: string) => ['default', 'icon'].includes(value)
+    },
+    theme: {
+      type: String,
+      default: 'primary',
+      validator: (value: string) => ['primary', 'secondary', 'link'].includes(value)
+    },
+    size: {
+      type: String,
+      default: 'medium',
+      validator: (value: string) => ['small', 'medium'].includes(value)
+    },
+    /**
+     * any q-icon
+     */
+    icon: {
+      type: String,
+      default: ''
+    },
+    /**
+     * as native button type
+     */
+    nativeType: {
+      type: String,
+      default: 'button'
+    },
+    /**
+     * whether to show loader inside button
+     */
+    loading: {
+      type: Boolean,
+      default: false
+    },
+    /**
+     * whether the button is disabled
+     */
+    disabled: {
+      type: Boolean,
+      default: false
+    },
+    /**
+     * as native button autofocus
+     */
+    autofocus: {
+      type: Boolean,
+      default: false
+    },
+    /**
+     * change button's shape to circle (use with type icon)
+     */
+    circle: {
+      type: Boolean,
+      default: false
+    },
+    /**
+     * sets button width to 100%
+     */
+    fullWidth: {
+      type: Boolean,
+      default: false
+    }
+  },
+
+  setup(props) {
+    props = reactive(props);
+    const qForm: any = inject('qForm');
+    return {
+      classes: computed(() => {
+        const classes: Array<string | object> = Object.entries({
+          theme: props.theme,
+          type: props.type,
+          size: props.size
+        })
+          .filter(([, value]) => Boolean(value))
+          .map(([key, value]) => `q-button_${key}_${value}`);
+
+        classes.push({
+          'q-button_disabled': props.disabled || (qForm?.disabled ?? false),
+          'q-button_loading': props.loading,
+          'q-button_circle': props.circle,
+          'q-button_full-width': props.fullWidth
+        });
+        return classes;
+      }),
+    }
+  },
+
+  methods: {
+    handleClick(evt: object) {
+      this.$emit('click', evt);
+    }
+  }
+});
+</script>

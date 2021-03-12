@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`QButton should match snapshot 1`] = `
+<button
+  class="q-button q-button_theme_primary q-button_type_default q-button_size_medium"
+  type="button"
+>
+  <!---->
+   
+  <!---->
+   
+  <!---->
+</button>
+`;

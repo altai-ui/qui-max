@@ -1,0 +1,75 @@
+:root {
+  --color-primary: #de4b7a;
+  --color-primary-purple: #d048b4;
+  --color-primary-blue: #4162f0;
+  --color-primary-blue-light: #74aff8;
+  --color-primary-blue-aqua: #5ecae7;
+  --color-primary-darker: #b83e65;
+  --color-primary-black: #1d1c1a;
+
+  --color-secondary-orange: #f95e2d;
+  --color-secondary-green: #40ba3e;
+  --color-secondary-yellow: #f2d22b;
+
+  --color-tertiary-white: #fff;
+  --color-tertiary-gray-ultra-light: #fafafa;
+  --color-tertiary-gray-lighter: #f4f4f6;
+  --color-tertiary-gray-light: #f0f0f3;
+  --color-tertiary-gray: #eaeaea;
+  --color-tertiary-gray-dark: #e2e2e2;
+  --color-tertiary-gray-darker: #dadada;
+  --color-tertiary-gray-ultra-dark: #c4c4c4;
+  --color-tertiary-gray-ultra-darker: #adacae;
+
+  --color-rgb-white: 255, 255, 255;
+  --color-rgb-blue: 174, 174, 192;
+  --color-rgb-gray: 29, 28, 26;
+
+  --gradient-primary: linear-gradient(
+    101.12deg,
+    var(--color-primary) 0.76%,
+    var(--color-primary-purple) 100%
+  );
+
+  --gradient-secondary: linear-gradient(
+    180deg,
+    var(--color-primary) -27.44%,
+    var(--color-primary-blue) 100.54%
+  );
+
+  --box-shadow-primary: -1px -1px 3px rgba(var(--color-rgb-white), 0.25),
+    1px 1px 3px rgba(var(--color-rgb-blue), 0.4),
+    4px 4px 8px rgba(var(--color-rgb-blue), 0.4),
+    -4px -4px 12px var(--color-tertiary-white);
+  --box-shadow-secondary: -4px -4px 12px #fff,
+    4px 4px 8px rgba(var(--color-rgb-blue), 0.4),
+    1px 1px 3px rgba(var(--color-rgb-blue), 0.4),
+    -1px -1px 3px rgba(var(--color-rgb-white), 0.25);
+  --box-shadow-hover: -1px -1px 4px rgba(var(--color-rgb-white), 0.25),
+    1px 1px 4px rgba(var(--color-rgb-blue), 0.4),
+    4px 4px 8px rgba(var(--color-rgb-blue), 0.4),
+    -4px -4px 8px rgba(var(--color-rgb-white), 0.8);
+  --box-shadow-pressed: -1px -1px 3px rgba(var(--color-rgb-white), 0.25),
+    1px 1px 3px rgba(var(--color-rgb-blue), 0.4);
+  --box-shadow-focus: inset 2px 2px 3px rgba(var(--color-rgb-blue), 0.2),
+    inset -2px -2px 3px rgba(var(--color-rgb-white), 0.7);
+
+  --border-error: 1px solid var(--color-secondary-orange);
+
+  --border-radius-base: 4px;
+
+  //font
+  --line-height-base: 22px;
+  --font-size-base: 14px;
+  --font-weight-base: 500;
+  --font-weight-bold: 600;
+  --letter-spacing-base: 0.03em;
+
+  // layout
+  --layout-gutter: 32px;
+
+  //button
+  --line-height-button: 16px;
+
+  --all-transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+}

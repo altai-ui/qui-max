@@ -1,0 +1,37 @@
+$--base-path: '..' !default;
+
+@font-face {
+  font-display: swap;
+  font-style: normal;
+  font-weight: 800;
+  font-family: 'Gilroy';
+  src: local('Gilroy ExtraBold'), local('Gilroy-ExtraBold'),
+    url('#{$--base-path}/fonts/Gilroy-ExtraBold.woff?29042020') format('woff');
+}
+
+@font-face {
+  font-display: swap;
+  font-style: normal;
+  font-weight: 600;
+  font-family: 'Gilroy';
+  src: local('Gilroy Bold'), local('Gilroy-Bold'),
+    url('#{$--base-path}/fonts/Gilroy-Bold.woff?29042020') format('woff');
+}
+
+@font-face {
+  font-display: swap;
+  font-style: normal;
+  font-weight: 500;
+  font-family: 'Gilroy';
+  src: local('Gilroy Medium'), local('Gilroy-Medium'),
+    url('#{$--base-path}/fonts/Gilroy-Medium.woff?29042020') format('woff');
+}
+
+@font-face {
+  font-display: swap;
+  font-style: normal;
+  font-weight: 400;
+  font-family: 'Gilroy';
+  src: local('Gilroy Regular'), local('Gilroy-Regular'),
+    url('#{$--base-path}/fonts/Gilroy-Regular.woff?29042020') format('woff');
+}

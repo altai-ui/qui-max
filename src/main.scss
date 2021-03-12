@@ -1,0 +1,57 @@
+@import './normalize.scss';
+@import './vars.scss';
+@import './transition.scss';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-weight: var(--font-weight-base);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+  font-family: 'Gilroy', sans-serif;
+  color: rgba(var(--color-rgb-gray), 0.64);
+  letter-spacing: var(--letter-spacing-base);
+  background-color: var(--color-tertiary-gray-lighter);
+}
+
+svg {
+  vertical-align: middle;
+}
+
+button {
+  cursor: pointer;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+a {
+  color: var(--color-primary-blue);
+  text-decoration: none;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+/*
+  :focus-visible polyfill.
+  This will hide the focus indicator if the element receives focus via the mouse,
+  but it will still show up on keyboard focus.
+*/
+
+.js-focus-visible :focus:not(.focus-visible) {
+  outline: none;
+}

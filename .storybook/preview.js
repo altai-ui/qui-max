@@ -1,5 +1,5 @@
 import Qui from '../src/qComponents';
-import { app } from "@storybook/vue3";
+import { app } from '@storybook/vue3';
 app.use(Qui);
 
 export const parameters = {
@@ -8,5 +8,5 @@ export const parameters = {
   docs: {
     inlineStories: true
   },
-  actions: { argTypesRegex: "^on[A-Z].*" },
+  actions: { argTypesRegex: '^on[A-Z].*' }
 };

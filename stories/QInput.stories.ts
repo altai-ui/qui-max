@@ -51,7 +51,7 @@ export default {
 const Template = (args: object) => ({
   setup() {
     console.log(args);
-    
+
     return { args };
   },
   template: '<q-input v-bind="args" v-model="args.value" />'
@@ -60,5 +60,5 @@ const Template = (args: object) => ({
 export const Default = Template.bind({});
 Default.args = {
   value: '123',
-  type: 'text',
+  type: 'text'
 };

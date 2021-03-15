@@ -104,7 +104,7 @@ export default {
   setup() {
     provide('qFormItem', {
       validateField: this.validateField
-    })
+    });
   },
 
   data() {

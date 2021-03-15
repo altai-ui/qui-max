@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle */
-import { app } from "@storybook/vue3";
-import { createI18n } from 'vue-i18n'
+import { app } from '@storybook/vue3';
+import { createI18n } from 'vue-i18n';
 import { merge } from 'lodash-es';
 
 import ru from './ru';

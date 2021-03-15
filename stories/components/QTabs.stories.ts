@@ -7,7 +7,6 @@ export default {
   title: 'Components/QTabs/QTabs',
   component: QTabs,
   subcomponents: { QTabPane },
-  sd: QTabs,
   argTypes: {
     modelValue: { control: { type: 'none' } },
     tabWidth: { control: { type: 'number' } }

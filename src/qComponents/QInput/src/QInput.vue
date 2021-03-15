@@ -153,7 +153,7 @@ export default {
     }
   },
 
-  emits: ['blur', 'focus', 'input', 'change', 'click'],
+  emits: ['blur', 'focus', 'input', 'change', 'click', 'clear'],
 
   setup(props, ctx) {
     const input: object = ref(null);
@@ -224,37 +224,34 @@ export default {
     const upperLimit = computed(() => {
       return ctx.attrs.maxlength ?? props.counterLimit;
     })
-    const textLength = computed(() => {      
+    const textLength = computed(() => {    
       return props.value?.length ?? 0
     })
 
-    function setNativeInputValue() {
-      // console.log(input.value.value);
-      
-      
-      // if (!input.value || input.value.value === nativeInputValue.value) return;
-      // input.value.value = nativeInputValue.value;
-      // console.log(nativeInputValue.value);
-      
+    const setNativeInputValue = () => {
+      console.log(input.value.value);
+      if (!input.value || input.value.value === nativeInputValue.value) return;
+      input.value.value = nativeInputValue.value;
+      console.log(nativeInputValue.value);
     }
 
-    function handleBlur(event: FocusEvent) {
+    const handleBlur = (event: FocusEvent) => {
       state.focused = false;
       ctx.emit('blur', event);
      if (props.validateEvent) qFormItem?.validateField('blur');
     }
 
-    function handleFocus(event: FocusEvent) {
+    const handleFocus = (event: FocusEvent) => {
       state.focused = true;
       ctx.emit('focus', event);
     }
 
-    function handlePasswordVisible(): void {
+    const handlePasswordVisible = (): void =>  {
       state.passwordVisible = !state.passwordVisible;
       // this.focus();
     }
 
-    function handleInput(event: InputEvent) {
+    const handleInput = (event: InputEvent) =>  {
       // should not emit input during composition
       if (state.isComposing) return;
       ctx.emit('input', event.target?.value, event);
@@ -263,16 +260,36 @@ export default {
     }
 
 
-    function handleChange(event: Event) {
+    const handleChange = (event: Event) =>  {
       ctx.emit('change', event?.target?.value);
     }
+
+    const handleClearClick = (event: Event) =>  {
+      console.log('handleClearClick');
+      
+      ctx.emit('change', '');
+      ctx.emit('clear', event);
+    }
+
+    const handleCompositionEnd = (event: InputEvent) =>  {
+      if (state.isComposing) {
+        state.isComposing = false;
+        handleInput(event);
+      }
+    }
+
+    const handleCompositionStart = () =>  {
+      state.isComposing = true;
+    }
+
+    const select = () => input.select()
 
     onMounted(setNativeInputValue)
 
     const { value, type } = toRefs(props); 
 
     watch(value, () => {
-      if (props.validateEvent && qFormItem) qFormItem.validateField('change');
+      if (props.validateEvent) qFormItem?.validateField('change');
     })
 
     watch(type, () => {
@@ -281,19 +298,23 @@ export default {
 
     watch(nativeInputValue, setNativeInputValue)
 
+    watch(isClearButtonShown, () => {
+      console.log(isClearButtonShown);
+    })
+
     return {
       // computed
       state,
       classes,
       inputDisabled: props.disabled,
-      nativeInputValue: nativeInputValue.value,
-      isPasswordShown: isPasswordShown.value,
-      nativeInputType: nativeInputType.value,
-      isSuffixVisible: isSuffixVisible.value,
-      isClearButtonShown: isClearButtonShown.value,
-      isSymbolLimitShown: isSymbolLimitShown.value,
-      upperLimit: upperLimit.value,
-      textLength: textLength.value,
+      nativeInputValue: nativeInputValue,
+      isPasswordShown: isPasswordShown,
+      nativeInputType: nativeInputType,
+      isSuffixVisible: isSuffixVisible,
+      isClearButtonShown: isClearButtonShown,
+      isSymbolLimitShown: isSymbolLimitShown,
+      upperLimit: upperLimit,
+      textLength: textLength,
       // refs
       input,
       // methods
@@ -302,41 +323,27 @@ export default {
       handleFocus,
       handlePasswordVisible,
       handleInput,
-      handleChange
+      handleChange,
+      handleClearClick,
+      handleCompositionStart,
+      handleCompositionEnd,
+      select
     }
   },
 
   ////
   methods: {
-    handlePasswordVisible() {
-      this.passwordVisible = !this.passwordVisible;
-      this.focus();
-    },
-
-    handleClearClick(event) {
-      this.$emit('input', '');
-      this.$emit('change', '');
-      this.$emit('clear', event);
-    },
     /////
-    focus() {
-      this.componentRef.focus();
-    },
+    // focus() {
+    //   this.componentRef.focus();
+    // },
 
-    select() {
-      this.componentRef.select();
-    },
-
-    handleCompositionStart() {
-      this.isComposing = true;
-    },
-
-    handleCompositionEnd(event) {
-      if (this.isComposing) {
-        this.isComposing = false;
-        this.handleInput(event);
-      }
-    },
-  }
+    // select() {
+    //   this.componentRef.select();
+    // },
+  },
+  created() {
+    this.$eventHub.on('inputSelect', this.select);
+  },
 };
 </script>

@@ -2,17 +2,19 @@
 import kebabCase from 'lodash-es/kebabCase';
 import vClickOutside from 'v-click-outside';
 import { installI18n } from './constants/locales';
+import mitt from 'mitt';
+import { App } from 'vue'
 
-import QButton from './QButton';
 import QForm from './QForm';
 import QFormItem from './QFormItem';
+import QButton from './QButton';
 import QInput from './QInput';
 
 
 const Components = {
-  QButton,
   QForm,
   QFormItem,
+  QButton,
   QInput
 };
 
@@ -36,14 +38,25 @@ allComponents.forEach(component => {
   }
 });
 
+interface localization {
+  locale?: string,
+  customI18nMessages?: any
+}
+
+interface ConfigOptions {
+  localization?: localization,
+  zIndexCounter?: number
+  prefix?: string
+}
+
 // install
 const install = (
-  app,
+  app: App,
   {
     localization: { locale = 'ru', customI18nMessages = {} } = {},
     zIndexCounter = 2000,
     prefix = ''
-  } = {}
+  }: ConfigOptions = {}
 ) => {
   app.config.globalProperties.$Q = {};
   // define plugins
@@ -88,6 +101,8 @@ const install = (
   //   console.warn(`$dialog hasn't been registered, it has existed before`);
   // }
 
+  // setup emitter
+  app.config.globalProperties.$eventHub = mitt();
   allComponentsExceptModals.forEach(name => {
     const newName =
       prefix && isString(prefix) ? name.replace(/^Q/, prefix) : name;
@@ -101,8 +116,8 @@ const Qui = {
 
 export default Qui;
 export {
-  QButton,
   QForm,
   QFormItem,
+  QButton,
   QInput
 };

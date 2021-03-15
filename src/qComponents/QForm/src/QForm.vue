@@ -6,6 +6,7 @@
 
 <script>
 import { concat } from 'lodash-es';
+import { provide } from 'vue'
 
 /**
  * Form consists of `input`, `radio`, `select`, `checkbox` and so on.
@@ -14,12 +15,6 @@ import { concat } from 'lodash-es';
 export default {
   name: 'QForm',
   componentName: 'QForm',
-
-  provide() {
-    return {
-      qForm: this
-    };
-  },
 
   props: {
     /**
@@ -66,6 +61,10 @@ export default {
       type: Boolean,
       default: true
     }
+  },
+
+  setup(props) {
+    provide('QForm', { disabled: props.disabled })
   },
 
   data() {

@@ -98,34 +98,35 @@ export default defineComponent({
     }
   },
 
-  setup(props) {
+  setup(props, ctx) {
     props = reactive(props);
-    const qForm: any = inject('qForm');
-    return {
-      classes: computed(() => {
-        const classes: Array<string | object> = Object.entries({
-          theme: props.theme,
-          type: props.type,
-          size: props.size
-        })
-          .filter(([, value]) => Boolean(value))
-          .map(([key, value]) => `q-button_${key}_${value}`);
+    const qForm: object | null = inject('QForm', null);
 
-        classes.push({
-          'q-button_disabled': props.disabled || (qForm?.disabled ?? false),
-          'q-button_loading': props.loading,
-          'q-button_circle': props.circle,
-          'q-button_full-width': props.fullWidth
-        });
-        return classes;
-      }),
+    const classes = computed(() => {
+      const classes: Array<string | object> = Object.entries({
+        theme: props.theme,
+        type: props.type,
+        size: props.size
+      })
+        .filter(([, value]) => Boolean(value))
+        .map(([key, value]) => `q-button_${key}_${value}`);
+
+      classes.push({
+        'q-button_disabled': props.disabled || (qForm?.disabled ?? false),
+        'q-button_loading': props.loading,
+        'q-button_circle': props.circle,
+        'q-button_full-width': props.fullWidth
+      });
+      return classes;
+    });
+
+    function handleClick(event: Event) {
+      ctx.emit('click', event);
+    }
+    return {
+      classes,
+      handleClick
     }
   },
-
-  methods: {
-    handleClick(evt: object) {
-      this.$emit('click', evt);
-    }
-  }
 });
 </script>

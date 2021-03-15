@@ -7,12 +7,16 @@ import QButton from './QButton';
 import QForm from './QForm';
 import QFormItem from './QFormItem';
 import QInput from './QInput';
+import QTabPane from './QTabPane';
+import QTabs from './QTabs';
 
 const Components = {
   QButton,
   QForm,
   QFormItem,
-  QInput
+  QInput,
+  QTabPane,
+  QTabs
 };
 
 const allComponents = Object.keys(Components);
@@ -28,7 +32,6 @@ require('../main.scss');
 allComponents.forEach(component => {
   const kebabCaseComponent = kebabCase(component);
   try {
-    // eslint-disable-next-line import/no-dynamic-require
     require(`../qComponents/${component}/src/${kebabCaseComponent}.scss`);
   } catch (err) {
     console.warn(err);
@@ -99,4 +102,4 @@ const Qui = {
 };
 
 export default Qui;
-export { QButton, QForm, QFormItem, QInput };
+export { QButton, QForm, QFormItem, QInput, QTabPane, QTabs };

@@ -7,9 +7,18 @@
     :class="classes"
     @click="handleClick"
   >
-    <span v-if="loading" class="q-icon-reverse" />
-    <span v-if="icon && !loading" :class="icon" />
-    <span v-if="$slots.default" class="q-button__inner">
+    <span
+      v-if="loading"
+      class="q-icon-reverse"
+    />
+    <span
+      v-if="icon && !loading"
+      :class="icon"
+    />
+    <span
+      v-if="$slots.default"
+      class="q-button__inner"
+    >
       <slot />
     </span>
   </button>

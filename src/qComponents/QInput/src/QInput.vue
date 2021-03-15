@@ -5,7 +5,10 @@
     @mouseleave="hovering = false"
     @click="$emit('click')"
   >
-    <div v-if="isSymbolLimitShown" class="q-input__count">
+    <div
+      v-if="isSymbolLimitShown"
+      class="q-input__count"
+    >
       <span class="q-input__count-inner">
         {{ $t('QInput.charNumber') }}: {{ textLength }}/{{ upperLimit }}
       </span>
@@ -27,11 +30,21 @@
       @blur="handleBlur"
       @change="handleChange"
     />
-    <span v-if="isSuffixVisible" class="q-input__suffix">
+    <span
+      v-if="isSuffixVisible"
+      class="q-input__suffix"
+    >
       <span class="q-input__suffix-inner">
         <template v-if="!isClearButtonShown || !isPasswordShown">
-          <span v-if="suffixIcon" class="q-input__icon" :class="suffixIcon" />
-          <slot v-else name="suffix" />
+          <span
+            v-if="suffixIcon"
+            class="q-input__icon"
+            :class="suffixIcon"
+          />
+          <slot
+            v-else
+            name="suffix"
+          />
         </template>
         <span
           v-if="isClearButtonShown"

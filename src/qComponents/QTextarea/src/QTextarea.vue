@@ -4,7 +4,10 @@
     @mouseenter="hovering = true"
     @mouseleave="hovering = false"
   >
-    <div v-if="isSymbolLimitShown" class="q-textarea__count">
+    <div
+      v-if="isSymbolLimitShown"
+      class="q-textarea__count"
+    >
       {{ $t('QTextarea.charNumber') }}: {{ textLength }}/{{ upperLimit }}
     </div>
     <textarea

@@ -1,0 +1,27 @@
+.q-col {
+  position: relative;
+  flex: 1 0 0;
+  width: 100%;
+  max-width: 100%;
+  padding-right: calc(var(--layout-gutter) / 2);
+  padding-left: calc(var(--layout-gutter) / 2);
+
+  &_size_auto {
+    flex: 0 0 auto;
+    width: auto;
+    max-width: 100%;
+  }
+
+  @for $i from 1 through 12 {
+    &_size_#{$i} {
+      flex: 0 0 percentage($i / 12);
+      max-width: percentage($i / 12);
+    }
+  }
+
+  @for $i from 0 through 11 {
+    &_offset_#{$i} {
+      margin-left: percentage($i / 12);
+    }
+  }
+}

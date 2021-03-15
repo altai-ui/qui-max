@@ -4,6 +4,8 @@ import vClickOutside from 'v-click-outside';
 import { installI18n } from './constants/locales';
 
 import QButton from './QButton';
+import QCollapse from './QCollapse';
+import QCollapseItem from './QCollapseItem';
 import QForm from './QForm';
 import QFormItem from './QFormItem';
 import QInput from './QInput';
@@ -12,6 +14,8 @@ import QTabs from './QTabs';
 
 const Components = {
   QButton,
+  QCollapse,
+  QCollapseItem,
   QForm,
   QFormItem,
   QInput,
@@ -102,4 +106,13 @@ const Qui = {
 };
 
 export default Qui;
-export { QButton, QForm, QFormItem, QInput, QTabPane, QTabs };
+export {
+  QButton,
+  QCollapse,
+  QCollapseItem,
+  QForm,
+  QFormItem,
+  QInput,
+  QTabPane,
+  QTabs
+};

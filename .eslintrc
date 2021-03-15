@@ -1,0 +1,19 @@
+{
+  "root": false,
+
+  "env": {
+    "browser": true
+  },
+
+  "extends": [
+    "plugin:vue/vue3-recommended",
+    "@vue/typescript/recommended",
+    "prettier",
+    "prettier/prettier"
+  ],
+
+  "rules": {
+    "no-console": 1,
+    "no-debugger": 1
+  }
+}

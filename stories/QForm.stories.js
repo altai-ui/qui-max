@@ -61,7 +61,7 @@ export const QFormStory = (_, { argTypes }) => ({
         <q-textarea
           v-model="formModel.intro"
         />
-      </q-form-item> 
+      </q-form-item>
 
       <q-button @click="handleSubmitClick">Create</q-button>
       <q-button @click="handleResetClick">Reset</q-button>
@@ -89,6 +89,6 @@ QFormStory.args = {
       required: true,
       message: 'Please input introtext',
       trigger: 'change'
-    },
+    }
   }
 };

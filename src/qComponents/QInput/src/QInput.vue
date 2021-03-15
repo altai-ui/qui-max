@@ -5,10 +5,7 @@
     @mouseleave="hovering = false"
     @click="$emit('click')"
   >
-    <div
-      v-if="isSymbolLimitShown"
-      class="q-input__count"
-    >
+    <div v-if="isSymbolLimitShown" class="q-input__count">
       <span class="q-input__count-inner">
         {{ $t('QInput.charNumber') }}: {{ textLength }}/{{ upperLimit }}
       </span>
@@ -30,21 +27,11 @@
       @blur="handleBlur"
       @change="handleChange"
     />
-    <span
-      v-if="isSuffixVisible"
-      class="q-input__suffix"
-    >
+    <span v-if="isSuffixVisible" class="q-input__suffix">
       <span class="q-input__suffix-inner">
         <template v-if="!isClearButtonShown || !isPasswordShown">
-          <span
-            v-if="suffixIcon"
-            class="q-input__icon"
-            :class="suffixIcon"
-          />
-          <slot
-            v-else
-            name="suffix"
-          />
+          <span v-if="suffixIcon" class="q-input__icon" :class="suffixIcon" />
+          <slot v-else name="suffix" />
         </template>
         <span
           v-if="isClearButtonShown"
@@ -63,7 +50,16 @@
 </template>
 
 <script lang="ts">
-import { inject, computed, ref, toRefs, reactive, onMounted, nextTick, watch } from 'vue';
+import {
+  inject,
+  computed,
+  ref,
+  toRefs,
+  reactive,
+  onMounted,
+  nextTick,
+  watch
+} from 'vue';
 import { isDisabled } from '../../composables/inputDisabled';
 import emitter from '../../mixins/emitter';
 
@@ -158,22 +154,22 @@ export default {
   setup(props, ctx) {
     const input: object = ref(null);
     const qFormItem: object | null = inject('qFormItem', null);
-    
+
     const state = reactive({
       hovering: false,
       focused: false,
       isComposing: false,
       passwordVisible: false
-    })
+    });
 
-    const nativeInputValue = computed(() => String(props.value ?? ''))
+    const nativeInputValue = computed(() => String(props.value ?? ''));
     const nativeInputType = computed(() => {
       let type = props.type;
       if (props.showPassword) {
         type = state.passwordVisible ? 'text' : 'password';
       }
       return type;
-    })
+    });
     const isPasswordShown = computed(() => {
       return (
         props.showPassword &&
@@ -181,7 +177,7 @@ export default {
         !props.readonly &&
         (Boolean(nativeInputValue) || state.focused || state.hovering)
       );
-    })
+    });
     const isClearButtonShown = computed(() => {
       return Boolean(
         props.clearable &&
@@ -190,17 +186,17 @@ export default {
           nativeInputValue &&
           (state.focused || state.hovering)
       );
-    })
+    });
     const isSuffixVisible = computed(() => {
       console.log(isClearButtonShown.value);
-      
+
       return Boolean(
         ctx.slots.suffix ||
           props.suffixIcon ||
           isClearButtonShown.value ||
           props.showPassword
       );
-    })
+    });
     const isSymbolLimitShown = computed(() => {
       return (
         props.showSymbolLimit &&
@@ -209,7 +205,7 @@ export default {
         !props.readonly &&
         !props.showPassword
       );
-    })
+    });
     const classes = computed(() => {
       const mainClass = 'q-input';
 
@@ -223,25 +219,22 @@ export default {
     });
     const upperLimit = computed(() => {
       return ctx.attrs.maxlength ?? props.counterLimit;
-    })
-    const textLength = computed(() => {      
-      return props.value?.length ?? 0
-    })
+    });
+    const textLength = computed(() => {
+      return props.value?.length ?? 0;
+    });
 
     function setNativeInputValue() {
       // console.log(input.value.value);
-      
-      
       // if (!input.value || input.value.value === nativeInputValue.value) return;
       // input.value.value = nativeInputValue.value;
       // console.log(nativeInputValue.value);
-      
     }
 
     function handleBlur(event: FocusEvent) {
       state.focused = false;
       ctx.emit('blur', event);
-     if (props.validateEvent) qFormItem?.validateField('blur');
+      if (props.validateEvent) qFormItem?.validateField('blur');
     }
 
     function handleFocus(event: FocusEvent) {
@@ -262,24 +255,23 @@ export default {
       nextTick(setNativeInputValue);
     }
 
-
     function handleChange(event: Event) {
       ctx.emit('change', event?.target?.value);
     }
 
-    onMounted(setNativeInputValue)
+    onMounted(setNativeInputValue);
 
-    const { value, type } = toRefs(props); 
+    const { value, type } = toRefs(props);
 
     watch(value, () => {
       if (props.validateEvent && qFormItem) qFormItem.validateField('change');
-    })
+    });
 
     watch(type, () => {
-      nextTick(setNativeInputValue)
-    })
+      nextTick(setNativeInputValue);
+    });
 
-    watch(nativeInputValue, setNativeInputValue)
+    watch(nativeInputValue, setNativeInputValue);
 
     return {
       // computed
@@ -303,7 +295,7 @@ export default {
       handlePasswordVisible,
       handleInput,
       handleChange
-    }
+    };
   },
 
   ////
@@ -336,7 +328,7 @@ export default {
         this.isComposing = false;
         this.handleInput(event);
       }
-    },
+    }
   }
 };
 </script>

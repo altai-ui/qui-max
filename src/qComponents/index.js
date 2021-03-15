@@ -8,7 +8,6 @@ import QForm from './QForm';
 import QFormItem from './QFormItem';
 import QInput from './QInput';
 
-
 const Components = {
   QButton,
   QForm,
@@ -100,9 +99,4 @@ const Qui = {
 };
 
 export default Qui;
-export {
-  QButton,
-  QForm,
-  QFormItem,
-  QInput
-};
+export { QButton, QForm, QFormItem, QInput };

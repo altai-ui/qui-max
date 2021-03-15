@@ -7,18 +7,9 @@
     :class="classes"
     @click="handleClick"
   >
-    <span
-      v-if="loading"
-      class="q-icon-reverse"
-    />
-    <span
-      v-if="icon && !loading"
-      :class="icon"
-    />
-    <span
-      v-if="$slots.default"
-      class="q-button__inner"
-    >
+    <span v-if="loading" class="q-icon-reverse" />
+    <span v-if="icon && !loading" :class="icon" />
+    <span v-if="$slots.default" class="q-button__inner">
       <slot />
     </span>
   </button>
@@ -40,7 +31,8 @@ export default defineComponent({
     theme: {
       type: String,
       default: 'primary',
-      validator: (value: string) => ['primary', 'secondary', 'link'].includes(value)
+      validator: (value: string) =>
+        ['primary', 'secondary', 'link'].includes(value)
     },
     size: {
       type: String,
@@ -100,10 +92,10 @@ export default defineComponent({
 
   setup(props) {
     props = reactive(props);
-    const qForm: any = inject('qForm');
+    const qForm = inject<any>('qForm');
     return {
       classes: computed(() => {
-        const classes: Array<string | object> = Object.entries({
+        const classes: Array<string | any> = Object.entries({
           theme: props.theme,
           type: props.type,
           size: props.size
@@ -118,12 +110,12 @@ export default defineComponent({
           'q-button_full-width': props.fullWidth
         });
         return classes;
-      }),
-    }
+      })
+    };
   },
 
   methods: {
-    handleClick(evt: object) {
+    handleClick(evt: any) {
       this.$emit('click', evt);
     }
   }

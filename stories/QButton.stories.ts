@@ -4,21 +4,21 @@ export default {
   title: 'Components/Button',
   component: QButton,
   argTypes: {
-  type: {
-    control: { type: 'select', options: ['default', 'icon'] }
-  },
-  theme: {
-    control: { type: 'select', options: ['primary', 'secondary', 'link'] }
-  },
-  size: {
-    control: { type: 'select', options: ['small', 'medium'] }
+    type: {
+      control: { type: 'select', options: ['default', 'icon'] }
+    },
+    theme: {
+      control: { type: 'select', options: ['primary', 'secondary', 'link'] }
+    },
+    size: {
+      control: { type: 'select', options: ['small', 'medium'] }
+    }
   }
-}
 };
 
 const Template = (args: object) => ({
   components: { QButton },
-  setup() {    
+  setup() {
     return { args };
   },
   template: `<q-button v-bind="args">{{args.label}}</q-button>`

@@ -1,0 +1,52 @@
+.q-tag {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  box-sizing: border-box;
+  max-width: 100%;
+  margin-top: 2px;
+  margin-right: 4px;
+  margin-bottom: 2px;
+  padding-right: 8px;
+  padding-left: 8px;
+  line-height: 20px;
+  color: rgba(var(--color-rgb-gray), 0.64);
+  background-color: var(--color-tertiary-gray-darker);
+  border-radius: 2px;
+
+  &_closable {
+    padding-right: 2px;
+  }
+
+  .q-cascader &:first-child {
+    max-width: 65%;
+  }
+
+  &__text {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    word-break: break-all;
+  }
+
+  &__close {
+    width: 16px;
+    height: 16px;
+    margin-left: 4px;
+    padding: 0;
+    font-size: 16px;
+    line-height: 1;
+    text-align: center;
+    color: rgba(var(--color-rgb-gray), 0.64);
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    pointer-events: auto;
+
+    &:focus,
+    &:hover {
+      color: var(--color-primary-black);
+    }
+  }
+}

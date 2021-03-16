@@ -3,8 +3,8 @@ import kebabCase from 'lodash-es/kebabCase';
 import vClickOutside from 'v-click-outside';
 import { installI18n } from './constants/locales';
 
-import QCol from './QCol';
 import QButton from './QButton';
+import QCol from './QCol';
 import QCollapse from './QCollapse';
 import QCollapseItem from './QCollapseItem';
 import QForm from './QForm';
@@ -13,6 +13,7 @@ import QInput from './QInput';
 import QRow from './QRow';
 import QTabPane from './QTabPane';
 import QTabs from './QTabs';
+import QTag from './QTag';
 
 const Components = {
   QButton,
@@ -24,7 +25,8 @@ const Components = {
   QInput,
   QRow,
   QTabPane,
-  QTabs
+  QTabs,
+  QTag
 };
 
 const allComponents = Object.keys(Components);
@@ -120,5 +122,6 @@ export {
   QInput,
   QRow,
   QTabPane,
-  QTabs
+  QTabs,
+  QTag
 };

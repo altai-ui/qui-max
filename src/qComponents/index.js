@@ -11,6 +11,7 @@ import QInput from './QInput';
 import QRow from './QRow';
 import QTabPane from './QTabPane';
 import QTabs from './QTabs';
+import QTag from './QTag';
 
 const Components = {
   QButton,
@@ -20,7 +21,8 @@ const Components = {
   QInput,
   QRow,
   QTabPane,
-  QTabs
+  QTabs,
+  QTag
 };
 
 const allComponents = Object.keys(Components);
@@ -106,4 +108,4 @@ const Qui = {
 };
 
 export default Qui;
-export { QCol, QButton, QForm, QFormItem, QInput, QRow, QTabPane, QTabs };
+export { QCol, QButton, QForm, QFormItem, QInput, QRow, QTabPane, QTabs, QTag };

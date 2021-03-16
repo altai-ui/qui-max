@@ -1,6 +1,6 @@
 import { ref } from 'vue';
 
-import QTag from '../../src/qComponents/QTag';
+import QTag from '@/qComponents/QTag';
 
 export default {
   title: 'Components/QTag',

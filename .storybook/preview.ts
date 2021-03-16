@@ -1,5 +1,6 @@
 import Qui from '../src/qComponents';
 import { app } from '@storybook/vue3';
+
 app.use(Qui);
 
 export const parameters = {

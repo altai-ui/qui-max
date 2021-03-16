@@ -28,7 +28,7 @@
 <script lang="ts">
 import { defineComponent, inject, computed } from 'vue';
 
-import { QTabsProvider } from '../../QTabs';
+import { QTabsProvider } from '@/qComponents/QTabs';
 
 export default defineComponent({
   name: 'QTabPane',

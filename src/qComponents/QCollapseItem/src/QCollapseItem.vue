@@ -6,6 +6,7 @@
     }"
   >
     <button
+      type="button"
       class="q-collapse-item__header"
       @click="handleTabClick"
     >

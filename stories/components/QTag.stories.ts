@@ -20,16 +20,14 @@ const Template = (args: any) => ({
     return { args, tags, handleCloseClick };
   },
   template: `
-    <div>
-      <q-tag
-        v-for="tag in tags"
-        :key="tag"
-        :closable="args.closable"
-        @close="handleCloseClick(tag)"
-      >
-        {{ tag }}
-      </q-tag>
-    </div>
+    <q-tag
+      v-for="tag in tags"
+      :key="tag"
+      :closable="args.closable"
+      @close="handleCloseClick(tag)"
+    >
+      {{ tag }}
+    </q-tag>
   `
 });
 

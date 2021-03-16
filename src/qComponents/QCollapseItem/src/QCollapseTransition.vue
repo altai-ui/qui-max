@@ -7,6 +7,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 
+/* eslint-disable no-param-reassign */
 const on = {
   beforeEnter(el: HTMLElement) {
     el.classList.add('collapse-transition');
@@ -20,7 +21,7 @@ const on = {
   enter(el: HTMLElement) {
     el.dataset.oldOverflow = el.style.overflow;
     if (el.scrollHeight !== 0) {
-      el.style.height = el.scrollHeight + 'px';
+      el.style.height = `${el.scrollHeight}px`;
       el.style.paddingTop = el.dataset.oldPaddingTop ?? '';
       el.style.paddingBottom = el.dataset.oldPaddingBottom ?? '';
     } else {
@@ -41,7 +42,7 @@ const on = {
     el.dataset.oldPaddingTop = el.style.paddingTop;
     el.dataset.oldPaddingBottom = el.style.paddingBottom;
     el.dataset.oldOverflow = el.style.overflow;
-    el.style.height = el.scrollHeight + 'px';
+    el.style.height = `${el.scrollHeight}px`;
     el.style.overflow = 'hidden';
   },
   leave(el: HTMLElement) {
@@ -62,6 +63,7 @@ const on = {
     el.style.paddingBottom = el.dataset.oldPaddingBottom ?? '';
   }
 };
+/* eslint-enable no-param-reassign */
 
 export default defineComponent({
   name: 'QCollapseTransition',

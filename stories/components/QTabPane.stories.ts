@@ -1,7 +1,7 @@
 import { ref } from 'vue';
 
-import QTabPane from '../../src/qComponents/QTabPane';
-import QTabs from '../../src/qComponents/QTabs';
+import QTabPane from '@/qComponents/QTabPane';
+import QTabs from '@/qComponents/QTabs';
 
 export default {
   title: 'Components/QTabs/QTabPane',
@@ -10,7 +10,7 @@ export default {
   argTypes: { width: { control: { type: 'number' } } }
 };
 
-const Template = args => ({
+const Template = (args: any) => ({
   components: { QTabs, QTabPane },
   setup() {
     const activeTab = ref('first_tab');
@@ -32,7 +32,7 @@ const Template = args => ({
   `
 });
 
-export const QTabPaneStory = Template.bind({});
+export const QTabPaneStory: any = Template.bind({});
 QTabPaneStory.storyName = 'Default';
 QTabPaneStory.args = {
   name: 'first_tab',

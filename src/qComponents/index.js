@@ -8,6 +8,7 @@ import QButton from './QButton';
 import QForm from './QForm';
 import QFormItem from './QFormItem';
 import QInput from './QInput';
+import QMessageBox from './QMessageBox';
 import QRow from './QRow';
 import QTabPane from './QTabPane';
 import QTabs from './QTabs';
@@ -18,6 +19,7 @@ const Components = {
   QForm,
   QFormItem,
   QInput,
+  QMessageBox,
   QRow,
   QTabPane,
   QTabs
@@ -82,11 +84,11 @@ const install = (
     console.warn(`$notify hasn't been registered, it has existed before`);
   }
 
-  // if (!app.config.globalProperties.$message) {
-  //   app.config.globalProperties.$message = QMessageBox;
-  // } else if (process.env.NODE_ENV !== 'production') {
-  //   console.warn(`$message hasn't been registered, it has existed before`);
-  // }
+  if (!app.config.globalProperties.$message) {
+    app.config.globalProperties.$message = QMessageBox;
+  } else if (process.env.NODE_ENV !== 'production') {
+    console.warn(`$message hasn't been registered, it has existed before`);
+  }
 
   // if (!app.config.globalProperties.$dialog) {
   //   app.config.globalProperties.$dialog = QDialog;
@@ -106,4 +108,14 @@ const Qui = {
 };
 
 export default Qui;
-export { QCol, QButton, QForm, QFormItem, QInput, QRow, QTabPane, QTabs };
+export {
+  QCol,
+  QButton,
+  QForm,
+  QFormItem,
+  QInput,
+  QMessageBox,
+  QRow,
+  QTabPane,
+  QTabs
+};

@@ -3,22 +3,26 @@ import kebabCase from 'lodash-es/kebabCase';
 import vClickOutside from 'v-click-outside';
 import { installI18n } from './constants/locales';
 
+import QCol from './QCol';
 import QButton from './QButton';
 import QCollapse from './QCollapse';
 import QCollapseItem from './QCollapseItem';
 import QForm from './QForm';
 import QFormItem from './QFormItem';
 import QInput from './QInput';
+import QRow from './QRow';
 import QTabPane from './QTabPane';
 import QTabs from './QTabs';
 
 const Components = {
   QButton,
+  QCol,
   QCollapse,
   QCollapseItem,
   QForm,
   QFormItem,
   QInput,
+  QRow,
   QTabPane,
   QTabs
 };
@@ -108,11 +112,13 @@ const Qui = {
 export default Qui;
 export {
   QButton,
+  QCol,
   QCollapse,
   QCollapseItem,
   QForm,
   QFormItem,
   QInput,
+  QRow,
   QTabPane,
   QTabs
 };

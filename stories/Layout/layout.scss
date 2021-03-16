@@ -1,0 +1,28 @@
+.demo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 1000px;
+  max-width: 100%;
+
+  &__row {
+    width: 100%;
+
+    &:nth-child(odd) {
+      .demo__content {
+        background-color: var(--color-primary-blue-light);
+      }
+    }
+  }
+
+  &__content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 50px;
+    margin-bottom: var(--layout-gutter);
+    background-color: var(--color-primary-blue-aqua);
+    border-radius: var(--border-radius-base);
+  }
+}

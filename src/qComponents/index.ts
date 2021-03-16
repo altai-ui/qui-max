@@ -5,6 +5,8 @@ import { installI18n } from './constants/locales';
 
 import QCol from './QCol';
 import QButton from './QButton';
+import QCollapse from './QCollapse';
+import QCollapseItem from './QCollapseItem';
 import QForm from './QForm';
 import QFormItem from './QFormItem';
 import QInput from './QInput';
@@ -15,6 +17,8 @@ import QTabs from './QTabs';
 const Components = {
   QButton,
   QCol,
+  QCollapse,
+  QCollapseItem,
   QForm,
   QFormItem,
   QInput,
@@ -106,4 +110,15 @@ const Qui = {
 };
 
 export default Qui;
-export { QCol, QButton, QForm, QFormItem, QInput, QRow, QTabPane, QTabs };
+export {
+  QButton,
+  QCol,
+  QCollapse,
+  QCollapseItem,
+  QForm,
+  QFormItem,
+  QInput,
+  QRow,
+  QTabPane,
+  QTabs
+};

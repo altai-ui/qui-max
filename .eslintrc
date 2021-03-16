@@ -5,7 +5,12 @@
     "browser": true
   },
 
+  "parserOptions": {
+    "project": ["./tsconfig.json"]
+  },
+
   "extends": [
+    "airbnb-typescript/base",
     "plugin:vue/vue3-recommended",
     "@vue/typescript/recommended",
     "prettier",

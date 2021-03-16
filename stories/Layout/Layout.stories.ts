@@ -1,7 +1,7 @@
 import { computed } from 'vue';
 
-import QCol from '../../src/qComponents/QCol';
-import QRow from '../../src/qComponents/QRow';
+import QCol from '@/qComponents/QCol';
+import QRow from '@/qComponents/QRow';
 import './layout.scss';
 
 export default {
@@ -22,7 +22,7 @@ export default {
   }
 };
 
-const Template = args => ({
+const Template = (args: any) => ({
   components: { QRow, QCol },
   setup() {
     const demoStyles = computed(() => ({
@@ -114,5 +114,5 @@ const Template = args => ({
   `
 });
 
-export const LayoutStory = Template.bind({});
+export const LayoutStory: any = Template.bind({});
 LayoutStory.storyName = 'Default';

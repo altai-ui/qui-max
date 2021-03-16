@@ -42,14 +42,16 @@ Use a class to apply an icon to an element
 
 ## Playground
 
-export const Template = (args, { argTypes }) => ({
-  props: Object.keys(argTypes),
+export const Template = args => ({
+  setup() {
+    return { args };
+  },
   template: `
     <span
-      :class="icon"
+      :class="args.icon"
       :style="{
-        fontSize: size + 'px',
-        color: color,
+        fontSize: args.size + 'px',
+        color: args.color,
       }"
     />
   `

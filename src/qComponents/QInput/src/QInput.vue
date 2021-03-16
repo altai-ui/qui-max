@@ -1,8 +1,8 @@
 <template>
   <div
     :class="classes"
-    @mouseenter="hovering = true"
-    @mouseleave="hovering = false"
+    @mouseenter="state.hovering = true"
+    @mouseleave="state.hovering = false"
     @click="$emit('click')"
   >
     <div
@@ -164,7 +164,7 @@ export default {
 
   setup(props, ctx) {
     const input: any = ref(null);
-    const qFormItem: any = inject('qFormItem', null);
+    const qFormItem: any = inject('qFormItem', null);   
 
     const state = reactive({
       hovering: false,
@@ -172,8 +172,6 @@ export default {
       isComposing: false,
       passwordVisible: false
     });
-
-    const nativeInputValue = computed(() => String(props.value ?? ''));
     
     const nativeInputType = computed(() => {
       let type = props.type;
@@ -182,24 +180,30 @@ export default {
       }
       return type;
     });
+    
     const isPasswordShown = computed(() => {
       return (
         props.showPassword &&
         !props.disabled &&
         !props.readonly &&
-        (Boolean(nativeInputValue.value) || state.focused || state.hovering)
+        (Boolean(props.value) || state.focused || state.hovering)
       );
     });
     const isClearButtonShown = computed(() => {
+      console.log(props.value);
+      
       return Boolean(
         props.clearable &&
           !props.disabled &&
           !props.readonly &&
-          nativeInputValue.value &&
+          props.value &&
           (state.focused || state.hovering)
       );
     });
-    const isSuffixVisible = computed(() => {
+    
+    const isSuffixVisible = computed(() => {      
+      console.log('isSuffixVisible');
+      
       return Boolean(
         ctx.slots.suffix ||
           props.suffixIcon ||
@@ -235,13 +239,6 @@ export default {
       return props.value?.length ?? 0
     })
 
-    const setNativeInputValue = () => {
-      console.log('setNativeInputValue', input.value);
-      if (!input.value || input.value === nativeInputValue.value) return;
-      input.value = nativeInputValue.value;
-    };
-
-
     const handleBlur = (event: FocusEvent) => {
       state.focused = false;
       ctx.emit('blur', event);
@@ -260,8 +257,6 @@ export default {
 
     const handleInput = (event: InputEvent) =>  {
       ctx.emit('input', event.target?.value, event);
-      // ensure native input value is controlled
-      nextTick(setNativeInputValue);
     }
 
 
@@ -278,24 +273,18 @@ export default {
 
     const select = () => input.select()
 
-    onMounted(setNativeInputValue)
-
     const { value, type } = toRefs(props);
 
-    console.log(props.value, value);
-    
     watch(value, () => {
       if (props.validateEvent) qFormItem?.validateField('change');
     })
 
-    watch(type, () => {
-      nextTick(setNativeInputValue);
-    });
-
-    watch(nativeInputValue, setNativeInputValue);
-
     watch(isClearButtonShown, () => {
       console.log(isClearButtonShown);
+    })
+
+    watch(state, () => {
+      console.log(state.hovering);
     })
 
     return {
@@ -303,7 +292,6 @@ export default {
       state,
       classes,
       inputDisabled: props.disabled,
-      nativeInputValue: nativeInputValue,
       isPasswordShown: isPasswordShown,
       nativeInputType: nativeInputType,
       isSuffixVisible: isSuffixVisible,
@@ -314,7 +302,6 @@ export default {
       // refs
       input,
       // methods
-      setNativeInputValue,
       handleBlur,
       handleFocus,
       handlePasswordVisible,
@@ -324,7 +311,6 @@ export default {
       select
     }
   },
-
   ////
   methods: {
     ///

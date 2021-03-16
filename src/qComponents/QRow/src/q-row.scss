@@ -1,0 +1,34 @@
+$align-h: (
+  start: flex-start,
+  end: flex-end,
+  center: center,
+  between: space-between,
+  around: space-around
+);
+
+$align-v: (
+  start: flex-start,
+  end: flex-end,
+  center: center,
+  baseline: baseline,
+  stretch: stretch
+);
+
+.q-row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: calc(var(--layout-gutter) / -2);
+  margin-left: calc(var(--layout-gutter) / -2);
+
+  @each $key, $value in $align-h {
+    &_align-h_#{$key} {
+      justify-content: $value;
+    }
+  }
+
+  @each $key, $value in $align-v {
+    &_align-v_#{$key} {
+      align-items: $value;
+    }
+  }
+}

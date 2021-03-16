@@ -55,7 +55,8 @@ const Template = (args: any, argTypes) => ({
   },
   methods: {
     handleInput(value) {
-      console.log('handleInput', value);
+      console.log(this.value, value);
+      this.value = value
     }
   },
   template: '<q-input v-bind="args" v-model="value" @input="handleInput" />'

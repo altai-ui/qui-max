@@ -41,12 +41,12 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import AsyncValidator from 'async-validator';
 import { get, set } from 'lodash-es';
-import { provide } from '@vue/runtime-core';
+import { provide, defineComponent } from 'vue';
 
-export default {
+export default defineComponent({
   name: 'QFormItem',
   componentName: 'QFormItem',
 
@@ -104,7 +104,7 @@ export default {
   setup() {
     provide('qFormItem', {
       validateField: this.validateField
-    })
+    });
   },
 
   data() {
@@ -242,5 +242,5 @@ export default {
       });
     }
   }
-};
+});
 </script>

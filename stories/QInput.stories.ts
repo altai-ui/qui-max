@@ -1,3 +1,4 @@
+import { ref } from 'vue';
 import QInput from '../src/qComponents/QInput';
 import iconsList from './core/iconsList';
 
@@ -20,9 +21,7 @@ export default {
     },
 
     value: {
-      control: {
-        type: 'text'
-      }
+      control: { type: 'none' }
     },
 
     type: {
@@ -48,17 +47,18 @@ export default {
   }
 };
 
-const Template = (args: object) => ({
+const Template = (args: any, argTypes) => ({
   setup() {
-    console.log(args);
-    
-    return { args };
+    const value = ref('');
+    delete args.value;
+    return { args, value };
   },
-  template: '<q-input v-bind="args" v-model="args.value" />'
+  methods: {
+    handleInput(value) {
+      console.log('handleInput', value);
+    }
+  },
+  template: '<q-input v-bind="args" v-model="value" @input="handleInput" />'
 });
 
 export const Default = Template.bind({});
-Default.args = {
-  value: '123',
-  type: 'text',
-};

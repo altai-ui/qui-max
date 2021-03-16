@@ -26,6 +26,7 @@
 
 <script lang="ts">
 import { defineComponent, reactive, computed, inject } from 'vue';
+import QFormProvider from '../../QForm';
 
 export default defineComponent({
   name: 'QButton',
@@ -40,7 +41,8 @@ export default defineComponent({
     theme: {
       type: String,
       default: 'primary',
-      validator: (value: string) => ['primary', 'secondary', 'link'].includes(value)
+      validator: (value: string) =>
+        ['primary', 'secondary', 'link'].includes(value)
     },
     size: {
       type: String,
@@ -98,34 +100,33 @@ export default defineComponent({
     }
   },
 
-  setup(props, ctx) {
+  setup(props) {
     props = reactive(props);
-    const qForm: object | null = inject('QForm', null);
-
-    const classes = computed(() => {
-      const classes: Array<string | object> = Object.entries({
-        theme: props.theme,
-        type: props.type,
-        size: props.size
-      })
-        .filter(([, value]) => Boolean(value))
-        .map(([key, value]) => `q-button_${key}_${value}`);
-
-      classes.push({
-        'q-button_disabled': props.disabled || (qForm?.disabled ?? false),
-        'q-button_loading': props.loading,
-        'q-button_circle': props.circle,
-        'q-button_full-width': props.fullWidth
-      });
-      return classes;
-    });
-
-    function handleClick(event: Event) {
-      ctx.emit('click', event);
-    }
+    const qForm = inject<typeof QFormProvider>('qForm');
     return {
-      classes,
-      handleClick
+      classes: computed(() => {
+        const classes: Array<string | any> = Object.entries({
+          theme: props.theme,
+          type: props.type,
+          size: props.size
+        })
+          .filter(([, value]) => Boolean(value))
+          .map(([key, value]) => `q-button_${key}_${value}`);
+
+        classes.push({
+          'q-button_disabled': props.disabled || (qForm?.disabled ?? false),
+          'q-button_loading': props.loading,
+          'q-button_circle': props.circle,
+          'q-button_full-width': props.fullWidth
+        });
+        return classes;
+      })
+    };
+  },
+
+  methods: {
+    handleClick(evt: any) {
+      this.$emit('click', evt);
     }
   },
 });

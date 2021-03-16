@@ -1,0 +1,44 @@
+{
+  "root": false,
+
+  "env": {
+    "browser": true
+  },
+
+  "extends": [
+    "plugin:vue/vue3-recommended",
+    "@vue/typescript/recommended",
+    "prettier",
+    "prettier/prettier"
+  ],
+
+  "rules": {
+    "func-names": 0,
+    "no-unused-expressions": [
+      "error",
+      {
+        "allowShortCircuit": true,
+        "allowTernary": false,
+        "allowTaggedTemplates": false
+      }
+    ],
+    "prefer-destructuring": [
+      "error",
+      {
+        "array": false
+      }
+    ],
+
+    "import/extensions": "off",
+    "import/no-unresolved": "off",
+
+    "vue/component-name-in-template-casing": ["error", "kebab-case"],
+    "vue/max-attributes-per-line": "warn",
+    "vue/no-v-html": 0,
+    "vue/html-closing-bracket-newline": "warn",
+    "vue/html-indent": "warn",
+
+    "no-console": 0,
+    "no-debugger": 0
+  }
+}

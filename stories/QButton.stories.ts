@@ -18,7 +18,7 @@ export default {
 
 const Template = (args: object) => ({
   components: { QButton },
-  setup() {    
+  setup() {
     return { args };
   },
   template: `<q-button v-bind="args">{{args.label}}</q-button>`

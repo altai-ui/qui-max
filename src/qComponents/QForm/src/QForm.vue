@@ -4,15 +4,15 @@
   </form>
 </template>
 
-<script>
+<script lang="ts">
 import { concat } from 'lodash-es';
-import { provide } from 'vue'
+import { defineComponent, provide } from 'vue'
 
 /**
  * Form consists of `input`, `radio`, `select`, `checkbox` and so on.
  * With form, you can collect, verify and submit data. You must use QFormItem inside QForm
  */
-export default {
+export default defineComponent({
   name: 'QForm',
   componentName: 'QForm',
 
@@ -158,5 +158,5 @@ export default {
       };
     }
   }
-};
+});
 </script>

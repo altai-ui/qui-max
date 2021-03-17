@@ -20,16 +20,18 @@
       </component>
     </div>
     <q-bar
-      v-show="sizeWidth !== ''"
+      v-show="isXBarShown"
       ref="xbar"
       type="horizontal"
+      :theme="theme"
       :move="moveX"
       :size="sizeWidth"
     />
     <q-bar
-      v-show="sizeHeight !== ''"
+      v-show="isYBarShown"
       ref="ybar"
       type="vertical"
+      :theme="theme"
       :move="moveY"
       :size="sizeHeight"
     />
@@ -44,11 +46,14 @@ import {
   watch,
   ref,
   computed,
-  nextTick
+  nextTick,
+  provide
 } from 'vue';
 
 import { addResizeListener, removeResizeListener } from '../../helpers';
+
 import QBar from './QBar.vue';
+import { QScrollbarProvider } from './types';
 
 const OFFSET = -10;
 
@@ -113,12 +118,15 @@ export default defineComponent({
     const moveX = ref(0);
     const moveY = ref(0);
 
+    const isXBarShown = computed(() => sizeWidth.value !== '');
+    const isYBarShown = computed(() => sizeHeight.value !== '');
+
     const classes = computed(() => {
       return [
         'q-scrollbar',
         props.visible && 'q-scrollbar_visible',
-        sizeWidth.value !== '' && 'q-scrollbar_has-horizontal-bar',
-        sizeHeight.value !== '' && 'q-scrollbar_has-vertical-bar'
+        isXBarShown.value && 'q-scrollbar_has-horizontal-bar',
+        isYBarShown.value && 'q-scrollbar_has-vertical-bar'
       ];
     });
 
@@ -188,9 +196,14 @@ export default defineComponent({
       }
     );
 
+    provide<QScrollbarProvider>('qScrollbar', { wrap });
+
     return {
+      wrap,
       sizeWidth,
       sizeHeight,
+      isXBarShown,
+      isYBarShown,
       moveX,
       moveY,
       classes,

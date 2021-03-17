@@ -35,5 +35,8 @@ export const QScrollbarStory = (args: any) => ({
 
 QScrollbarStory.storyName = 'Default';
 QScrollbarStory.args = {
-  wrapClass: 'scrollbar__wrap'
+  theme: 'primary',
+  viewTag: 'div',
+  wrapClass: 'scrollbar__wrap',
+  viewClass: ''
 };

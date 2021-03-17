@@ -20,8 +20,10 @@ export default {
       }
     },
 
-    value: {
-      control: { type: 'none' }
+    modelValue: {
+      control: {
+        type: 'none'
+      }
     },
 
     type: {
@@ -43,23 +45,43 @@ export default {
         type: 'select',
         options: ['on', 'off']
       }
+    },
+    readonly: {
+      control: {
+        type: 'boolean',
+      }
     }
   }
 };
 
-const Template = (args: any, argTypes) => ({
+const Template = (args: any) => ({
   setup() {
-    const value = ref('');
-    delete args.value;
-    return { args, value };
+    const data = ref('');
+    return { args, data };
   },
-  methods: {
-    handleInput(value) {
-      console.log(this.value, value);
-      this.value = value
-    }
-  },
-  template: '<q-input v-bind="args" v-model="value" @input="handleInput" />'
+
+  template: `
+    <q-input 
+      v-model="data"
+      :suffix-icon="args.suffixIcon"
+      :show-symbol-limit="args.showSymbolLimit"
+      :password-switch="args.passwordSwitch"
+      :disabled="args.disabled"
+      :counter-limit="args.counterLimit"
+      :clearable="args.clearable"
+      :validate-event="args.validateEvent"
+      
+      :autocomplete="args.autocomplete"
+      :placeholder="args.placeholder"
+      :maxlength="args.maxlength"
+      :type="args.type"
+      :readonly="args.readonly"
+    />`
 });
 
 export const Default = Template.bind({});
+Default.args = {
+  placeholder: 'Input text',
+  maxlength: 25,
+  type: 'text'
+}

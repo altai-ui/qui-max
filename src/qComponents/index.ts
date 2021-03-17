@@ -3,10 +3,12 @@ import kebabCase from 'lodash-es/kebabCase';
 import vClickOutside from 'v-click-outside';
 import { installI18n } from './constants/locales';
 import mitt from 'mitt';
-import { App } from 'vue'
+import { App, provide } from 'vue'
 
 import QCol from './QCol';
 import QButton from './QButton';
+import QCollapse from './QCollapse';
+import QCollapseItem from './QCollapseItem';
 import QForm from './QForm';
 import QFormItem from './QFormItem';
 import QInput from './QInput';
@@ -17,6 +19,8 @@ import QTabs from './QTabs';
 const Components = {
   QButton,
   QCol,
+  QCollapse,
+  QCollapseItem,
   QForm,
   QFormItem,
   QInput,
@@ -82,7 +86,7 @@ const install = (
   });
 
   app.use(vClickOutside);
-  installI18n({ locale, customI18nMessages });
+  installI18n({ app, locale, customI18nMessages });
 
   // setup modals
   if (!app.config.globalProperties.$notify) {
@@ -121,5 +125,15 @@ const Qui = {
 };
 
 export default Qui;
-
-export { QCol, QButton, QForm, QFormItem, QInput, QRow, QTabPane, QTabs };
+export {
+  QButton,
+  QCol,
+  QCollapse,
+  QCollapseItem,
+  QForm,
+  QFormItem,
+  QInput,
+  QRow,
+  QTabPane,
+  QTabs
+};

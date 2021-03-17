@@ -50,7 +50,11 @@ import {
   provide
 } from 'vue';
 
-import { addResizeListener, removeResizeListener } from '../../helpers';
+import {
+  ResizableElement,
+  addResizeListener,
+  removeResizeListener
+} from '@/qComponents/helpers/resizeEvent';
 
 import QBar from './QBar.vue';
 import { QScrollbarProvider } from './types';
@@ -164,16 +168,16 @@ export default defineComponent({
     onMounted(() => {
       nextTick().then(update);
 
-      if (!props.noresize && root.value) {
-        addResizeListener(resize.value, update);
-        addResizeListener(root.value.parentNode, update);
+      if (!props.noresize && resize.value && root.value) {
+        addResizeListener(resize.value as ResizableElement, update);
+        addResizeListener(root.value.parentNode as ResizableElement, update);
       }
     });
 
     onBeforeUnmount(() => {
-      if (!props.noresize && root.value) {
-        removeResizeListener(resize.value, update);
-        removeResizeListener(root.value.parentNode, update);
+      if (!props.noresize && resize.value && root.value) {
+        removeResizeListener(resize.value as ResizableElement, update);
+        removeResizeListener(root.value.parentNode as ResizableElement, update);
       }
     });
 

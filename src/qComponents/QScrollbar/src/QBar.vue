@@ -26,7 +26,6 @@ import {
 
 import { QScrollbarProvider } from './types';
 import { renderThumbStyle, BAR_MAP } from './util';
-import { on, off } from '../../helpers';
 
 export default defineComponent({
   name: 'QBar',
@@ -114,7 +113,12 @@ export default defineComponent({
     const mouseUpDocumentHandler = () => {
       cursorDown.value = false;
       axis = 0;
-      off(document, 'mousemove', mouseMoveDocumentHandler);
+
+      document.removeEventListener(
+        'mousemove',
+        mouseMoveDocumentHandler,
+        false
+      );
       document.onselectstart = null;
     };
 
@@ -122,8 +126,8 @@ export default defineComponent({
       e.stopImmediatePropagation();
       cursorDown.value = true;
 
-      on(document, 'mousemove', mouseMoveDocumentHandler);
-      on(document, 'mouseup', mouseUpDocumentHandler);
+      document.addEventListener('mousemove', mouseMoveDocumentHandler, false);
+      document.addEventListener('mouseup', mouseMoveDocumentHandler, false);
       document.onselectstart = () => false;
     };
 
@@ -141,7 +145,7 @@ export default defineComponent({
     };
 
     onUnmounted(() => {
-      off(document, 'mouseup', mouseUpDocumentHandler);
+      document.removeEventListener('mouseup', mouseUpDocumentHandler, false);
     });
 
     return {

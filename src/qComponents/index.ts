@@ -12,6 +12,7 @@ import QFormItem from './QFormItem';
 import QInput from './QInput';
 import QMessageBox from './QMessageBox';
 import QRow from './QRow';
+import QScrollbar from './QScrollbar';
 import QTabPane from './QTabPane';
 import QTabs from './QTabs';
 import QTag from './QTag';
@@ -26,6 +27,7 @@ const Components = {
   QInput,
   QMessageBox,
   QRow,
+  QScrollbar,
   QTabPane,
   QTabs,
   QTag
@@ -124,6 +126,7 @@ export {
   QInput,
   QMessageBox,
   QRow,
+  QScrollbar,
   QTabPane,
   QTabs,
   QTag

@@ -3,7 +3,7 @@ import kebabCase from 'lodash-es/kebabCase';
 import vClickOutside from 'v-click-outside';
 import { installI18n } from './constants/locales';
 import mitt from 'mitt';
-import { App, provide } from 'vue'
+import { App } from 'vue'
 
 import QCol from './QCol';
 import QButton from './QButton';

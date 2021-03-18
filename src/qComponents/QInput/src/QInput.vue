@@ -68,6 +68,7 @@ import {
 } from 'vue';
 import { useI18n } from 'vue-i18n';
 import emitter from '../../mixins/emitter';
+import { QFormItemProvider } from '../../QFormItem/src/types'
 
 export default {
   name: 'QInput',
@@ -130,8 +131,8 @@ export default {
   emits: ['blur', 'focus', 'input', 'change', 'click', 'clear', 'update:modelValue'],
 
   setup(props, ctx) {    
-    const input: any = ref(null);
-    const qFormItem: any = inject('qFormItem', null);
+    const input = ref<HTMLElement | null>(null);
+    const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
     const qForm: any = inject('qForm', null);
 
     const state = reactive({
@@ -188,7 +189,7 @@ export default {
     });
 
     const classes = computed(() => {
-      const mainClass = 'q-input';
+      const mainClass: string = 'q-input';
 
       return [
         mainClass,
@@ -220,7 +221,7 @@ export default {
 
     const handlePasswordVisible = (): void => {
       state.isPasswordVisible = !state.isPasswordVisible;      
-      input.value.focus();
+      input?.value?.focus();
     }
 
     const handleClearClick = (event: Event) =>  {

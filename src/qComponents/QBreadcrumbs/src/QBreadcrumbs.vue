@@ -4,14 +4,15 @@
       v-for="crumb in breadcrumbs"
       :key="crumb.name || crumb.path"
     >
-      <router-link
+      <component
+        :is="linkComponent"
         :to="pushTo(crumb)"
         active-class="q-breadcrumbs__crumb_active"
         exact-active-class="q-breadcrumbs__crumb_exact-active"
         class="q-breadcrumbs__crumb"
       >
         {{ crumb.meta.breadcrumb }}
-      </router-link>
+      </component>
 
       <span class="q-breadcrumbs__divider q-icon-arrow-right" />
     </template>
@@ -38,6 +39,13 @@ export default defineComponent({
   componentName: 'QBreadcrumbs',
 
   props: {
+    /**
+     * component name for link
+     */
+    linkComponent: {
+      type: String,
+      default: 'RouterLink'
+    },
     /**
      * custom last crumb
      */

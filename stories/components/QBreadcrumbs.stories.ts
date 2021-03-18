@@ -1,3 +1,6 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { app } from '@storybook/vue3';
+
 import QBreadcrumbs from '@/qComponents/QBreadcrumbs';
 
 export default {
@@ -5,19 +8,18 @@ export default {
   component: QBreadcrumbs
 };
 
-export const QBreadcrumbsStory = (args: any) => ({
-  components: {
-    QBreadcrumbs,
-    RouterLink: {
-      props: {
-        to: {
-          type: [String, Object],
-          default: null
-        }
-      },
-      template: '<a href="#" @click.prevent.stop><slot/></a>'
+app.component('RouterLink', {
+  props: {
+    to: {
+      type: [String, Object],
+      default: null
     }
   },
+  template: '<a href="#" @click.prevent.stop><slot/></a>'
+});
+
+export const QBreadcrumbsStory = (args: any) => ({
+  components: { QBreadcrumbs },
   setup() {
     return { args };
   },

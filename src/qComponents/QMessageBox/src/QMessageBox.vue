@@ -1,14 +1,11 @@
 <template>
-  <transition
-    name="q-msgbox-fade"
-    f@after-leave="handleHookAfterLeave"
-  >
+  <transition name="q-msgbox-fade">
     <div
-      v-if="isShown"
+      v-show="isShown"
       ref="messageBox"
       class="q-message-box"
       :class="wrapClass"
-      :style="[wrapStyle, { zIndex }]"
+      :style="[wrapStyle, { zIndex: wrapZIndex }]"
       tabindex="-1"
       @keyup.esc="closeBox"
     >
@@ -34,7 +31,6 @@
             class="q-message-box__close q-icon-close"
             @click="emitCloseEvent"
           />
-
           <message-box-content
             v-if="isComponentUsed"
             v-bind="componentProps"
@@ -42,21 +38,19 @@
           />
           <template v-else>
             <div class="q-message-box__content">
-              <slot>
-                <template v-if="message">
-                  <div
-                    v-if="!dangerouslyUseHTMLString"
-                    class="q-message-box__message"
-                  >
-                    {{ message }}
-                  </div>
-                  <div
-                    v-else
-                    class="q-message-box__message"
-                    v-html="message"
-                  />
-                </template>
-              </slot>
+              <template v-if="message">
+                <div
+                  v-if="!dangerouslyUseHTMLString"
+                  class="q-message-box__message"
+                >
+                  {{ message }}
+                </div>
+                <div
+                  v-else
+                  class="q-message-box__message"
+                  v-html="message"
+                />
+              </template>
 
               <div
                 v-if="submessage"
@@ -94,13 +88,13 @@
       </q-scrollbar>
     </div>
   </transition>
+
 </template>
 
 <script lang="ts">
 import {
   defineComponent,
   ref,
-  Ref,
   computed,
   watch,
   nextTick,
@@ -108,16 +102,22 @@ import {
   onBeforeUnmount
 } from 'vue';
 
+import QButton from '@/qComponents/QButton';
+import QScrollbar from '@/qComponents/QScrollbar';
+import { getConfig } from '@/qComponents/config';
+
 type QMessageBoxAction = 'confirm' | 'cancel' | 'close';
 
-interface QMessageBoxResult {
-  action: QMessageBoxAction;
-  payload?: any;
-}
+type Callback = (arg0: { action: QMessageBoxAction; payload?: any }) => void;
 
 export default defineComponent({
   name: 'QMessageBox',
   componentName: 'QMessageBox',
+
+  components: {
+    QButton,
+    QScrollbar
+  },
 
   props: {
     /**
@@ -218,10 +218,10 @@ export default defineComponent({
     const isComponentUsed = ref(false);
     const isConfirmBtnLoading = ref(false);
     const isCancelBtnLoading = ref(false);
-    const messageBox = ref(null);
-    const callback = ref(null);
+    const messageBox = ref<HTMLElement | null>(null);
+    const callback = ref<Callback | null>(null);
 
-    let elementToFocusAfterClosing: Element | null = null;
+    let elementToFocusAfterClosing: HTMLElement | null = null;
 
     const isActionsSectionShown = computed(
       () => Boolean(props.confirmButtonText) || Boolean(props.cancelButtonText)
@@ -229,45 +229,53 @@ export default defineComponent({
 
     watch(
       () => isShown,
-      async (isShown: Ref<boolean>) => {
-        if (!isShown.value) return;
+      current => {
+        if (!current.value) return;
 
-        elementToFocusAfterClosing = document.activeElement;
-        await nextTick();
-        console.log(messageBox);
-        // messageBox.value.focus();
+        console.log(document.activeElement);
+        elementToFocusAfterClosing = document.activeElement as HTMLElement;
+
+        nextTick().then(() => {
+          messageBox.value?.focus();
+        });
       },
       { immediate: true }
     );
 
     const handleDocumentFocus = (event: FocusEvent) => {
-      if (!messageBox?.contains(event.target)) {
-        messageBox?.focus();
+      const messageBoxValue = messageBox.value;
+      if (
+        messageBoxValue &&
+        !messageBoxValue.contains(event.target as HTMLElement)
+      ) {
+        messageBoxValue.focus();
       }
     };
 
-    // const handleHookAfterLeave = () => {
-    //   this.$destroy();
-    // };
-
-    const closeBox = async ({ action, payload = null }: QMessageBoxResult) => {
+    const closeBox = async ({ action, payload = null }: any) => {
+      console.log('closeBox', 'action', action);
       let isReadyToClose = true;
 
       if (typeof props.beforeClose === 'function') {
         isReadyToClose = await props.beforeClose({
           action,
           payload,
-          ctx: this
+          ctx: {
+            isConfirmBtnLoading,
+            isCancelBtnLoading
+          }
         });
       }
 
       if (isReadyToClose) {
-        if (callback) callback({ action, payload });
+        if (callback.value) callback.value({ action, payload });
+        document.removeEventListener('focus', handleDocumentFocus, true);
+
         isShown.value = false;
 
-        document.removeEventListener('focus', handleDocumentFocus, true);
-        await nextTick();
-        elementToFocusAfterClosing?.focus();
+        nextTick().then(() => {
+          elementToFocusAfterClosing?.focus();
+        });
       }
     };
 
@@ -292,17 +300,19 @@ export default defineComponent({
 
     onBeforeUnmount(() => {
       document.documentElement.style.overflow = '';
-      // const el = this.$el;
-      // if (el?.parentNode === document.body) {
-      //   document.body.removeChild(el);
-      // }
     });
 
+    const wrapZIndex = props.zIndex ?? getConfig('nextZIndex') ?? 2000;
+
     return {
+      wrapZIndex,
+      messageBox,
+      isShown,
       isComponentUsed,
       isConfirmBtnLoading,
       isCancelBtnLoading,
       isActionsSectionShown,
+      closeBox,
       handleConfirmBtnClick,
       handleCancelBtnClick,
       emitCloseEvent

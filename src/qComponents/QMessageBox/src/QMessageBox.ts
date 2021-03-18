@@ -1,17 +1,24 @@
-import { h, render } from 'vue';
+import { h, render, nextTick, defineComponent } from 'vue';
+import type { ComponentPublicInstance } from 'vue';
 
 import QMessageBox from './QMessageBox.vue';
 
 type QMessageBoxAction = 'confirm' | 'cancel' | 'close';
 
-interface QMessageBoxResult {
+// interface QMessageBoxResult {
+//   action: QMessageBoxAction;
+//   payload?: any;
+// }
+
+let currentPromise: any;
+
+const defaultCallback = ({
+  action,
+  payload
+}: {
   action: QMessageBoxAction;
   payload?: any;
-}
-
-let currentPromise: PromiseConstructor<QMessageBoxResult>;
-
-const defaultCallback = ({ action, payload }: QMessageBoxResult) => {
+}) => {
   if (action === 'confirm') {
     currentPromise.resolve({ action, payload });
   } else if (action === 'cancel' || action === 'close') {
@@ -19,10 +26,25 @@ const defaultCallback = ({ action, payload }: QMessageBoxResult) => {
   }
 };
 
-const initInstance = (props: any, container: HTMLElement) => {
-  const vnode = h(QMessageBox, props);
+const initInstance = (config: any) => {
+  const container = document.createElement('div');
 
+  const props = {
+    ...config,
+    'on-after-leave': () => {
+      render(null, container);
+    }
+  };
+
+  if (props.component && QMessageBox.components) {
+    QMessageBox.components.MessageBoxContent = props.component;
+  }
+
+  delete props.component;
+
+  const vnode = h(QMessageBox, props);
   render(vnode, container);
+
   if (container.firstElementChild) {
     document.body.appendChild(container.firstElementChild);
   }
@@ -31,43 +53,19 @@ const initInstance = (props: any, container: HTMLElement) => {
 };
 
 const Message = (config = {}) => {
-  const MessageBox = Vue.extend({
-    components: {
-      MessageBoxContent: config.component
-    },
-    ...QMessageBox
-  });
+  const instance = initInstance(config);
+  if (instance) {
+    const vm = instance.proxy as ComponentPublicInstance<{
+      isComponentUsed: boolean;
+      isShown: boolean;
+      message: string | null;
+      callback: typeof defaultCallback;
+    }>;
 
-  const instance = new MessageBox();
-
-  Object.entries(config).forEach(([key, value]) => {
-    instance[key] = value;
-  });
-
-  if (!instance.zIndex) {
-    instance.zIndex = Vue.prototype.$Q?.zIndex ?? 2000;
+    vm.isComponentUsed = Boolean(config.component);
+    vm.isShown = true;
+    vm.callback = defaultCallback;
   }
-
-  instance.callback = defaultCallback;
-
-  instance.isComponentUsed = Boolean(config.component);
-
-  if (
-    config.message &&
-    !instance.isComponentUsed &&
-    Object.prototype.hasOwnProperty.call(config.message, 'componentOptions')
-  ) {
-    instance.$slots.default = [config.message];
-    instance.message = null;
-  } else {
-    delete instance.$slots.default;
-  }
-
-  document.body.appendChild(instance.$mount().$el);
-
-  Vue.nextTick(() => {
-    instance.isShown = true;
-  });
 
   return new Promise((resolve, reject) => {
     currentPromise = {

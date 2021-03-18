@@ -9,7 +9,7 @@
     "declaration": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
-    "lib": ["ESNext", "DOM"],
+    "lib": ["ESNext", "DOM", "ES2020", "ES2019"],
     "types": ["vite/client"],
     "baseUrl": "./",
     "paths": {

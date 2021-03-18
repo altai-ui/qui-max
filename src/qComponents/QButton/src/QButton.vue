@@ -5,7 +5,6 @@
     :autofocus="autofocus"
     :type="nativeType"
     :class="classes"
-    @click="handleClick"
   >
     <span
       v-if="loading"
@@ -25,7 +24,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, computed, inject } from 'vue';
+import { defineComponent, computed, inject } from 'vue';
 
 export default defineComponent({
   name: 'QButton',
@@ -100,33 +99,29 @@ export default defineComponent({
   },
 
   setup(props) {
-    props = reactive(props);
     const qForm = inject<any>('qForm');
-    return {
-      classes: computed(() => {
-        const classes: Array<string | any> = Object.entries({
+
+    const classes = computed(() => {
+      const classList: (string | { [key: string]: boolean })[] = Object.entries(
+        {
           theme: props.theme,
           type: props.type,
           size: props.size
-        })
-          .filter(([, value]) => Boolean(value))
-          .map(([key, value]) => `q-button_${key}_${value}`);
+        }
+      )
+        .filter(([, value]) => Boolean(value))
+        .map(([key, value]) => `q-button_${key}_${value}`);
 
-        classes.push({
-          'q-button_disabled': props.disabled || (qForm?.disabled ?? false),
-          'q-button_loading': props.loading,
-          'q-button_circle': props.circle,
-          'q-button_full-width': props.fullWidth
-        });
-        return classes;
-      })
-    };
-  },
+      classList.push({
+        'q-button_disabled': props.disabled || (qForm?.disabled ?? false),
+        'q-button_loading': props.loading,
+        'q-button_circle': props.circle,
+        'q-button_full-width': props.fullWidth
+      });
+      return classList;
+    });
 
-  methods: {
-    handleClick(evt: any) {
-      this.$emit('click', evt);
-    }
+    return { classes };
   }
 });
 </script>

@@ -1,7 +1,12 @@
+import { App, ref, Ref } from 'vue';
+
 /* eslint-disable no-underscore-dangle, global-require, no-param-reassign */
 import kebabCase from 'lodash-es/kebabCase';
 import vClickOutside from 'v-click-outside';
+
 import { installI18n } from './constants/locales';
+
+import { setConfig } from './config';
 
 import QButton from './QButton';
 import QCol from './QCol';
@@ -52,30 +57,24 @@ allComponents.forEach(component => {
   }
 });
 
+export interface $Q {
+  // locale: Ref<'ru' | 'en'>;
+  locale: Ref<string>;
+  zIndex: number;
+}
+
 // install
 const install = (
-  app,
+  app: App,
   {
-    localization: { locale = 'ru', customI18nMessages = {} } = {},
-    zIndexCounter = 2000,
+    localization: { locale, customI18nMessages = {} } = {},
+    zIndexCounter,
     prefix = ''
   } = {}
 ) => {
-  app.config.globalProperties.$Q = {};
-  // define plugins
-  Object.defineProperties(app.config.globalProperties.$Q, {
-    zIndex: {
-      get() {
-        zIndexCounter += 1;
-        return zIndexCounter;
-      }
-    },
-    locale: {
-      get: () => locale,
-      set(newLocale) {
-        locale = newLocale;
-      }
-    }
+  setConfig({
+    locale,
+    zIndex: zIndexCounter
   });
 
   app.use(vClickOutside);
@@ -94,6 +93,7 @@ const install = (
 
   if (!app.config.globalProperties.$message) {
     app.config.globalProperties.$message = QMessageBox;
+    app.provide('$message', QMessageBox);
   } else if (process.env.NODE_ENV !== 'production') {
     console.warn(`$message hasn't been registered, it has existed before`);
   }
@@ -111,11 +111,7 @@ const install = (
   });
 };
 
-const Qui = {
-  install
-};
-
-export default Qui;
+export default { install };
 export {
   QButton,
   QCol,

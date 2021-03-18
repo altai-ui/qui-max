@@ -13,6 +13,7 @@
         <q-input v-model="formModel.name" />
       </q-form-item>
     </div>
+    {{ zIndex }}
     <div class="q-message-box__actions">
       <q-button
         :loading="isSending"
@@ -34,9 +35,24 @@
 <script lang="ts">
 import { defineComponent, ref, reactive } from 'vue';
 
-const CLOSE_EVENT = 'change';
+import { QForm, QFormItem, QButton } from '@/qComponents';
+
+const CLOSE_EVENT = 'close';
 
 export default defineComponent({
+  components: {
+    // QForm,
+    // QFormItem,
+    QButton
+  },
+
+  props: {
+    zIndex: {
+      type: Number,
+      default: 4
+    }
+  },
+
   emits: [CLOSE_EVENT],
 
   setup(_, { emit }) {

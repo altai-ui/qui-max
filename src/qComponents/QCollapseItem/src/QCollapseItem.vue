@@ -44,12 +44,6 @@ export default defineComponent({
 
   components: { QCollapseTransition },
 
-  inject: {
-    qCollapse: {
-      default: null
-    }
-  },
-
   props: {
     title: {
       type: String,
@@ -78,11 +72,7 @@ export default defineComponent({
       qCollapse?.updateValue(preparedName.value);
     };
 
-    return {
-      isActive,
-      icon,
-      handleTabClick
-    };
+    return { isActive, icon, handleTabClick };
   }
 });
 </script>

@@ -1,7 +1,7 @@
 import { ref } from 'vue';
 
-import QCollapse from '../../src/qComponents/QCollapse';
-import QCollapseItem from '../../src/qComponents/QCollapseItem';
+import QCollapse from '@/qComponents/QCollapse';
+import QCollapseItem from '@/qComponents/QCollapseItem';
 
 export default {
   title: 'Components/QCollapse',
@@ -12,12 +12,12 @@ export default {
   }
 };
 
-const Template = args => ({
+const Template = (args: any) => ({
   components: { QCollapse, QCollapseItem },
   setup() {
     const activeNames = ref(['1']);
 
-    const handleChange = value => {
+    const handleChange = (value: (string | number)[]) => {
       console.log('handleChange', value);
     };
 
@@ -85,5 +85,5 @@ const Template = args => ({
   `
 });
 
-export const QCollapseStory = Template.bind({});
+export const QCollapseStory: any = Template.bind({});
 QCollapseStory.storyName = 'Default';

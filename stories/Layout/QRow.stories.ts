@@ -1,5 +1,5 @@
-import QRow from '../../src/qComponents/QRow';
-import QCol from '../../src/qComponents/QCol';
+import QRow from '@/qComponents/QRow';
+import QCol from '@/qComponents/QCol';
 import './layout.scss';
 
 export default {
@@ -22,7 +22,7 @@ export default {
   }
 };
 
-const Template = args => ({
+const Template = (args: any) => ({
   components: { QRow, QCol },
   setup() {
     return { args };
@@ -46,7 +46,7 @@ const Template = args => ({
   `
 });
 
-export const QRowStory = Template.bind({});
+export const QRowStory: any = Template.bind({});
 QRowStory.storyName = 'Default';
 QRowStory.args = {
   tag: 'div'

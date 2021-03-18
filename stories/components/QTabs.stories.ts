@@ -1,7 +1,7 @@
 import { ref } from 'vue';
 
-import QTabs from '../../src/qComponents/QTabs';
-import QTabPane from '../../src/qComponents/QTabPane';
+import QTabs from '@/qComponents/QTabs';
+import QTabPane from '@/qComponents/QTabPane';
 
 export default {
   title: 'Components/QTabs/QTabs',
@@ -13,7 +13,7 @@ export default {
   }
 };
 
-const Template = args => ({
+const Template = (args: any) => ({
   components: { QTabs, QTabPane },
   setup() {
     const activeTab = ref('first_tab');
@@ -41,5 +41,5 @@ const Template = args => ({
   `
 });
 
-export const QTabsStory = Template.bind({});
+export const QTabsStory: any = Template.bind({});
 QTabsStory.storyName = 'Default';

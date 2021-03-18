@@ -1,0 +1,22 @@
+.q-picker-dropdown {
+  padding: 16px;
+  background-color: var(--color-tertiary-gray-ultra-light);
+  border-radius: var(--border-radius-base);
+  outline: none;
+  box-shadow: -1px -1px 3px rgba(var(--color-rgb-white), 0.25),
+    1px 1px 3px rgba(var(--color-rgb-blue), 0.4);
+
+  &__base {
+    display: flex;
+  }
+
+  &__footer {
+    display: flex;
+    margin-top: 16px;
+  }
+
+  &__input {
+    width: 223px;
+    margin-right: auto;
+  }
+}

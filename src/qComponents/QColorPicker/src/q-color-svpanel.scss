@@ -1,0 +1,43 @@
+.q-color-svpanel {
+  position: relative;
+  width: 464px;
+  height: 208px;
+  cursor: pointer;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  &::before {
+    background-image: linear-gradient(
+      90deg,
+      var(--color-tertiary-white),
+      transparent
+    );
+  }
+
+  &::after {
+    background-image: linear-gradient(0, #000, transparent);
+  }
+
+  &__cursor {
+    position: absolute;
+    z-index: 1;
+    width: 8px;
+    height: 8px;
+    background-color: var(--color-tertiary-gray-lighter);
+    border-radius: 50%;
+    box-shadow: -1px -1px 3px rgba(var(--color-rgb-white), 0.25),
+      1px 1px 3px rgba(var(--color-rgb-blue), 0.4),
+      4px 4px 8px rgba(var(--color-rgb-blue), 0.4),
+      -4px -4px 12px var(--color-tertiary-white);
+    transform: translate(-4px, -4px);
+    cursor: grab;
+  }
+}

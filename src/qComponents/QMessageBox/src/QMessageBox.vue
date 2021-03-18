@@ -99,16 +99,15 @@ import {
   watch,
   nextTick,
   onMounted,
-  onBeforeUnmount
+  onBeforeUnmount,
+  PropType
 } from 'vue';
 
 import QButton from '@/qComponents/QButton';
 import QScrollbar from '@/qComponents/QScrollbar';
 import { getConfig } from '@/qComponents/config';
 
-type QMessageBoxAction = 'confirm' | 'cancel' | 'close';
-
-type Callback = (arg0: { action: QMessageBoxAction; payload?: any }) => void;
+import type { QMessageBoxEvent, QMessageBoxBeforeClose } from './types';
 
 export default defineComponent({
   name: 'QMessageBox',
@@ -187,7 +186,9 @@ export default defineComponent({
      * callback before QMessageBox closes, and it will prevent QMessageBox from closing
      */
     beforeClose: {
-      type: Function,
+      type: Function as PropType<
+        (arg0: QMessageBoxBeforeClose) => Promise<boolean>
+      >,
       default: null
     },
     /**
@@ -219,7 +220,7 @@ export default defineComponent({
     const isConfirmBtnLoading = ref(false);
     const isCancelBtnLoading = ref(false);
     const messageBox = ref<HTMLElement | null>(null);
-    const callback = ref<Callback | null>(null);
+    const callback = ref<((arg0: QMessageBoxEvent) => void) | null>(null);
 
     let elementToFocusAfterClosing: HTMLElement | null = null;
 
@@ -252,8 +253,7 @@ export default defineComponent({
       }
     };
 
-    const closeBox = async ({ action, payload = null }: any) => {
-      console.log('closeBox', 'action', action);
+    const closeBox = async ({ action, payload = null }: QMessageBoxEvent) => {
       let isReadyToClose = true;
 
       if (typeof props.beforeClose === 'function') {

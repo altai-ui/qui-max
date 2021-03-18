@@ -1,4 +1,4 @@
-import QMessageBox from '@/qComponents/QMessageBox';
+import QMessageBox, { QMessageBoxBeforeClose } from '@/qComponents/QMessageBox';
 import QMessageBoxComponent from '@/qComponents/QMessageBox/src/QMessageBox.vue';
 import MessageBoxFormTest from './MessageBoxFormTest.vue';
 
@@ -9,7 +9,7 @@ export default {
 
 export const QMessageBoxStory = (args: any) => ({
   setup() {
-    const beforeClose = async ({ action, ctx }: any) => {
+    const beforeClose = async ({ action, ctx }: QMessageBoxBeforeClose) => {
       if (action !== 'confirm') return true;
 
       ctx.isConfirmBtnLoading.value = true;

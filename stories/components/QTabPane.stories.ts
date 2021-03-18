@@ -10,7 +10,7 @@ export default {
   argTypes: { width: { control: { type: 'number' } } }
 };
 
-const Template = (args: any) => ({
+export const QTabPaneStory = (args: any) => ({
   components: { QTabs, QTabPane },
   setup() {
     const activeTab = ref('first_tab');
@@ -32,7 +32,6 @@ const Template = (args: any) => ({
   `
 });
 
-export const QTabPaneStory: any = Template.bind({});
 QTabPaneStory.storyName = 'Default';
 QTabPaneStory.args = {
   name: 'first_tab',

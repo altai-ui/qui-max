@@ -1,24 +1,15 @@
-import { h, render, nextTick, defineComponent } from 'vue';
+import { h, render } from 'vue';
 import type { ComponentPublicInstance } from 'vue';
 
 import QMessageBox from './QMessageBox.vue';
+import type { QMessageBoxEvent } from './types';
 
-type QMessageBoxAction = 'confirm' | 'cancel' | 'close';
+let currentPromise: {
+  resolve: (event: QMessageBoxEvent) => void;
+  reject: (event: QMessageBoxEvent) => void;
+};
 
-// interface QMessageBoxResult {
-//   action: QMessageBoxAction;
-//   payload?: any;
-// }
-
-let currentPromise: any;
-
-const defaultCallback = ({
-  action,
-  payload
-}: {
-  action: QMessageBoxAction;
-  payload?: any;
-}) => {
+const defaultCallback = ({ action, payload }: QMessageBoxEvent) => {
   if (action === 'confirm') {
     currentPromise.resolve({ action, payload });
   } else if (action === 'cancel' || action === 'close') {
@@ -26,7 +17,7 @@ const defaultCallback = ({
   }
 };
 
-const initInstance = (config: any) => {
+const Message = (config: any = {}) => {
   const container = document.createElement('div');
 
   const props = {
@@ -49,11 +40,7 @@ const initInstance = (config: any) => {
     document.body.appendChild(container.firstElementChild);
   }
 
-  return vnode.component;
-};
-
-const Message = (config = {}) => {
-  const instance = initInstance(config);
+  const instance = vnode.component;
   if (instance) {
     const vm = instance.proxy as ComponentPublicInstance<{
       isComponentUsed: boolean;

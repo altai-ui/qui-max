@@ -13,7 +13,6 @@
         <q-input v-model="formModel.name" />
       </q-form-item>
     </div>
-    {{ zIndex }}
     <div class="q-message-box__actions">
       <q-button
         :loading="isSending"
@@ -44,13 +43,6 @@ export default defineComponent({
     // QForm,
     // QFormItem,
     QButton
-  },
-
-  props: {
-    zIndex: {
-      type: Number,
-      default: 4
-    }
   },
 
   emits: [CLOSE_EVENT],

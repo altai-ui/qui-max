@@ -1,6 +1,6 @@
+import { defineAsyncComponent } from 'vue';
 import QMessageBox, { QMessageBoxBeforeClose } from '@/qComponents/QMessageBox';
 import QMessageBoxComponent from '@/qComponents/QMessageBox/src/QMessageBox.vue';
-import MessageBoxFormTest from './MessageBoxFormTest.vue';
 
 export default {
   title: 'Components/QMessageBox',
@@ -65,8 +65,9 @@ export const QMessageBoxComponentStory = (args: any) => ({
       try {
         const response = await QMessageBox({
           ...args,
-          // component: () => import('./MessageBoxFormTest.vue')
-          component: MessageBoxFormTest
+          component: defineAsyncComponent(() =>
+            import('./MessageBoxFormTest.vue')
+          )
         });
         console.log(response);
       } catch (error) {

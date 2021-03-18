@@ -31,6 +31,7 @@ QBreadcrumbsStory.args = {
       path: 'path-a',
       name: 'ROUTE_A',
       meta: {
+        // TODO: i18n
         breadcrumb: "this.$t('qBreadcrumbsStories.routeA')"
       }
     },
@@ -38,6 +39,7 @@ QBreadcrumbsStory.args = {
       path: 'path-b',
       name: 'ROUTE_b',
       meta: {
+        // TODO: i18n
         breadcrumb: "this.$t('qBreadcrumbsStories.routeB')"
       }
     }

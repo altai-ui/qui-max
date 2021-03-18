@@ -37,9 +37,6 @@ export default defineComponent({
   name: 'QBreadcrumbs',
   componentName: 'QBreadcrumbs',
 
-  /**
-   * if you have vue router, QBreadcrumbs will get crumbs from this.$route.matched
-   */
   props: {
     /**
      * custom last crumb
@@ -52,7 +49,7 @@ export default defineComponent({
      * Array of Objects, object must contain required fields: `path` - uses as route path, `name` - route name, `meta` - must contain `breadcrumb` - visible title
      */
     route: {
-      type: Array as PropType<RouteItem[]>,
+      type: Array as PropType<RouteItem[] | null>,
       default: null
     }
   },

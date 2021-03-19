@@ -10,12 +10,7 @@ export const QPaginationStory = (args: any) => ({
   setup() {
     return { args };
   },
-  template: `
-    <q-pagination
-      v-bind="args"
-      @current-change="handleCurrentChange"
-    />
-  `
+  template: '<q-pagination v-bind="args" />'
 });
 
 QPaginationStory.storyName = 'Default';

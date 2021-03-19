@@ -22,7 +22,7 @@
         <div
           class="q-color-picker-trigger__color"
           :style="{
-            backgroundColor: value
+            backgroundColor: modelValue
           }"
         />
         <span :class="iconClasses" />
@@ -33,7 +33,7 @@
         ref="dropdown"
         :is-shown="isPickerShown"
         :is-clear-btn-shown="clearable"
-        :color="value"
+        :color="modelValue"
         :color-format="colorFormat"
         :alpha-shown="alphaShown"
         :style="{ zIndex }"
@@ -46,15 +46,20 @@
   </div>
 </template>
 
-<script>
-import { createPopper } from '@popperjs/core';
+<script lang="ts">
+import { defineComponent, PropType, inject, ref, computed, watch } from 'vue';
+
+import { createPopper, Instance, Placement, Options } from '@popperjs/core';
 import Color from 'color';
 
-import Emitter from '../../mixins/emitter';
 import PLACEMENTS from '../../constants/popperPlacements';
-import QPickerDropdown from './QPickerDropdown';
+import QPickerDropdown from './QPickerDropdown.vue';
 
-export default {
+const DEFAULT_Z_INDEX = 2000;
+const CHANGE_EVENT = 'change';
+const UPDATE_MODEL_EVENT = 'update:modelValue';
+
+export default defineComponent({
   name: 'QColorPicker',
   componentName: 'QColorPicker',
 
@@ -62,27 +67,11 @@ export default {
     QPickerDropdown
   },
 
-  mixins: [Emitter],
-
-  model: {
-    prop: 'value',
-    event: 'change'
-  },
-
-  inject: {
-    qForm: {
-      default: null
-    },
-    qFormItem: {
-      default: null
-    }
-  },
-
   props: {
     /**
      * binding value
      */
-    value: {
+    modelValue: {
       type: String,
       default: null
     },
@@ -113,12 +102,12 @@ export default {
     colorFormat: {
       type: String,
       default: 'hex',
-      validator: value => ['hex', 'rgb'].includes(value)
+      validator: (value: string) => ['hex', 'rgb'].includes(value)
     },
     placement: {
-      type: String,
+      type: String as PropType<Placement>,
       default: 'right-start',
-      validator: value => PLACEMENTS.includes(value)
+      validator: (value: string) => PLACEMENTS.includes(value)
     },
     /**
      * whether to append the popper menu to body. If the positioning of the popper is wrong, you can try to set this prop to false
@@ -128,125 +117,132 @@ export default {
       default: true
     },
     popperOptions: {
-      type: Object,
+      type: Object as PropType<Partial<Options>>,
       default: () => ({})
     }
   },
 
-  data() {
-    return {
-      zIndex: null,
-      isClickIgnored: false,
-      isPickerShown: false,
-      popperJS: null
-    };
-  },
+  emits: [UPDATE_MODEL_EVENT, CHANGE_EVENT, 'click'],
 
-  computed: {
-    isDisabled() {
-      return this.disabled || (this.qForm?.disabled ?? false);
-    },
+  setup(props, { emit }) {
+    const qForm = inject<any>('qForm');
+    const qFormItem = inject<any>('qFormItem');
 
-    isColorDark() {
-      if (!this.value) return false;
+    const zIndex = ref(DEFAULT_Z_INDEX);
+    const isClickIgnored = ref(false);
+    const isPickerShown = ref(false);
+    const popperJS = ref<Instance | null>(null);
 
-      return Color(this.value).isDark();
-    },
+    const isDisabled = computed(
+      () => props.disabled || (qForm?.disabled ?? false)
+    );
 
-    iconClasses() {
-      return {
-        'q-color-picker-trigger__icon': true,
-        'q-color-picker-trigger__icon_light': this.isColorDark,
-        'q-icon-triangle-down': !this.isDisabled,
-        'q-icon-lock': this.isDisabled
-      };
-    },
+    const isColorDark = computed(() =>
+      props.modelValue ? Color(props.modelValue).isDark() : false
+    );
 
-    options() {
-      return {
-        placement: this.placement,
-        computeStyle: {
-          boundariesElement: 'body',
-          gpuAcceleration: false
-        },
-        modifiers: [
-          {
-            name: 'offset',
-            options: {
-              offset: [0, 16]
-            }
+    const iconClasses = computed(() => ({
+      'q-color-picker-trigger__icon': true,
+      'q-color-picker-trigger__icon_light': isColorDark.value,
+      'q-icon-triangle-down': !isDisabled.value,
+      'q-icon-lock': isDisabled.value
+    }));
+
+    const options = computed<Partial<Options>>(() => ({
+      placement: props.placement,
+      computeStyle: {
+        boundariesElement: 'body',
+        gpuAcceleration: false
+      },
+      modifiers: [
+        {
+          name: 'offset',
+          options: {
+            offset: [0, 16]
           }
-        ],
-        ...this.popperOptions
-      };
-    }
-  },
+        }
+      ],
+      ...props.popperOptions
+    }));
 
-  watch: {
-    isPickerShown(value) {
-      if (this.isDisabled || !value) return;
-
-      this.zIndex = this.$Q?.zIndex ?? 2000;
-      this.createPopper();
-    }
-  },
-
-  beforeDestroy() {
-    const dropdown = this.$refs?.dropdown?.$el;
-    if (dropdown?.parentNode === document.body) {
-      document.body.removeChild(dropdown);
-    }
-  },
-
-  methods: {
-    handleClose() {
-      if (this.isClickIgnored) {
-        this.isClickIgnored = false;
+    const handleClose = () => {
+      if (isClickIgnored.value) {
+        isClickIgnored.value = false;
         return;
       }
 
-      this.isPickerShown = false;
-    },
+      isPickerShown.value = false;
+    };
 
-    handleTriggerClick() {
-      if (this.isDisabled) return;
+    const handleTriggerClick = () => {
+      if (isDisabled.value) return;
 
-      this.isClickIgnored = true;
-      this.isPickerShown = !this.isPickerShown;
-    },
+      isClickIgnored.value = true;
+      isPickerShown.value = !isPickerShown.value;
+    };
 
-    handleClear() {
-      this.$emit('change', null);
+    const handleClear = () => {
+      emit(CHANGE_EVENT, null);
+      emit(UPDATE_MODEL_EVENT, null);
 
-      if (this.value !== null) {
-        this.qFormItem?.validateField('change');
+      if (props.modelValue !== null) {
+        qFormItem?.validateField('change');
       }
 
-      this.isPickerShown = false;
-    },
+      isPickerShown.value = false;
+    };
 
-    handlePick(value) {
-      this.$emit('change', value);
+    const handlePick = (value: string) => {
+      emit(CHANGE_EVENT, value);
+      emit(UPDATE_MODEL_EVENT, value);
 
-      if (this.value !== value) {
-        this.qFormItem?.validateField('change');
+      if (props.modelValue !== value) {
+        qFormItem?.validateField('change');
       }
 
-      this.isPickerShown = false;
-    },
+      isPickerShown.value = false;
+    };
 
-    createPopper() {
-      if (this.popperJS?.destroy) {
-        this.popperJS.destroy();
-        this.popperJS = null;
+    const trigger = ref<HTMLElement | null>(null);
+    const dropdown = ref<typeof QPickerDropdown | null>(null);
+
+    const createPopperJs = () => {
+      if (popperJS.value?.destroy) {
+        popperJS.value.destroy();
+        popperJS.value = null;
       }
 
-      this.popperJS = createPopper(
-        this.$refs.trigger,
-        this.$refs.dropdown.$el,
-        this.options
+      if (!trigger.value || !dropdown.value) return;
+      popperJS.value = createPopper(
+        trigger.value,
+        dropdown.value.$el,
+        options.value
       );
-    }
+    };
+
+    watch(
+      () => isPickerShown.value,
+      value => {
+        if (isDisabled.value || !value) return;
+
+        // TODO get zindex
+        zIndex.value = DEFAULT_Z_INDEX;
+        createPopperJs();
+      }
+    );
+
+    return {
+      trigger,
+      dropdown,
+      zIndex,
+      iconClasses,
+      isDisabled,
+      isPickerShown,
+      handleClose,
+      handleTriggerClick,
+      handlePick,
+      handleClear
+    };
   }
-};
+});
 </script>

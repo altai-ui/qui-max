@@ -44,11 +44,11 @@
           theme="link"
           @click="handleClearBtnClick"
         >
-          {{ $t('QColorPicker.clear') }}
+          {{ "$t('QColorPicker.clear')" }}
         </q-button>
 
         <q-button @click="handleConfirmBtnClick">
-          {{ $t('QColorPicker.confirm') }}
+          {{ "$t('QColorPicker.confirm')" }}
         </q-button>
       </div>
     </div>
@@ -146,12 +146,12 @@ export default defineComponent({
 
     const updateHSVA = (newValue: string) => {
       try {
-        const { valpha, color } = Color(newValue).hsv();
+        const color = Color(newValue);
 
-        hue.value = color[0];
-        saturation.value = color[1];
-        value.value = color[2];
-        alpha.value = valpha * 100;
+        hue.value = color.hue();
+        saturation.value = color.saturationv();
+        value.value = color.value();
+        alpha.value = color.alpha() * 100;
       } catch {
         // do nothing
       }
@@ -207,15 +207,21 @@ export default defineComponent({
     );
 
     watch(
-      () => colorString,
-      (newValue: string) => {
+      () => colorString.value,
+      newValue => {
         tempColor.value = newValue;
       },
       { immediate: true }
     );
 
     return {
+      saturation,
+      value,
+      hue,
+      alpha,
+      tempColor,
       rgbString,
+      updateHSVA,
       closeDropdown,
       handleClearBtnClick,
       handleConfirmBtnClick

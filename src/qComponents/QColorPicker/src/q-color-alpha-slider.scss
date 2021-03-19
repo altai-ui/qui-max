@@ -1,6 +1,7 @@
 .q-color-alpha-slider {
   position: relative;
-  width: 464px;
+  width: calc(100% - 32px);
+  min-width: 464px;
   height: 16px;
   margin-top: 8px;
   overflow: hidden;

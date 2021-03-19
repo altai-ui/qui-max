@@ -115,9 +115,12 @@ export default defineComponent({
     });
 
     return {
+      root,
+      thumb,
+      bar,
       barStyles,
-      handleBarClick,
-      thumbStyles
+      thumbStyles,
+      handleBarClick
     };
   }
 });

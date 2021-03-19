@@ -7,7 +7,7 @@ export default {
   title: 'Components/QColorPicker',
   component: QColorPicker,
   argTypes: {
-    'v-model': { control: { type: 'none' } },
+    modelValue: { control: { type: 'none' } },
     placement: {
       control: { type: 'select', options: PLACEMENTS }
     },
@@ -26,8 +26,8 @@ export const QColorPickerStory = (args: any) => ({
   },
   template: `
     <q-color-picker
-      v-model="color"
       v-bind="args"
+      v-model="color"
     />
   `
 });

@@ -46,7 +46,7 @@ export default defineComponent({
     const thumb = ref<HTMLElement | null>(null);
     const bar = ref<HTMLElement | null>(null);
 
-    const handleDrag = event => {
+    const handleDrag = (event: MouseEvent) => {
       const refThumb = thumb.value;
       if (!root.value || !refThumb) return;
 
@@ -64,7 +64,7 @@ export default defineComponent({
       emit(UPDATE_HUE_EVENT, hue);
     };
 
-    const handleBarClick = event => {
+    const handleBarClick = (event: MouseEvent) => {
       if (event.target !== thumb.value) {
         handleDrag(event);
       }
@@ -105,6 +105,9 @@ export default defineComponent({
     });
 
     return {
+      root,
+      thumb,
+      bar,
       thumbStyles,
       handleBarClick
     };

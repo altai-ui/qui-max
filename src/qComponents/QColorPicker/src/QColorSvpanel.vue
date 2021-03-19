@@ -56,13 +56,17 @@ export default defineComponent({
     const root = ref<HTMLElement | null>(null);
 
     const update = () => {
-      const { clientWidth: width, clientHeight: height } = root.value ?? {};
+      if (!root.value) return;
+
+      const { clientWidth: width, clientHeight: height } = root.value;
       cursorLeft.value = (props.saturation * width) / 100;
       cursorTop.value = ((100 - props.value) * height) / 100;
     };
 
-    const handleDrag = event => {
-      const rect = root.value?.getBoundingClientRect();
+    const handleDrag = (event: MouseEvent) => {
+      if (!root.value) return;
+
+      const rect = root.value.getBoundingClientRect();
 
       let left = event.clientX - rect.left;
       let top = event.clientY - rect.top;
@@ -84,15 +88,17 @@ export default defineComponent({
     );
 
     onMounted(() => {
-      draggable(root.value, {
-        drag: handleDrag,
-        end: handleDrag
-      });
+      if (root.value) {
+        draggable(root.value, {
+          drag: handleDrag,
+          end: handleDrag
+        });
 
-      update();
+        update();
+      }
     });
 
-    return { rootStyles, cursorStyles };
+    return { root, rootStyles, cursorStyles };
   }
 });
 </script>

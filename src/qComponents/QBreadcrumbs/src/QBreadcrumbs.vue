@@ -73,7 +73,7 @@ export default defineComponent({
       return newBreadcrumbs;
     });
 
-    const lastCrumb = computed<string>(() => {
+    const lastCrumb = computed(() => {
       if (props.last) return props.last;
 
       return crumbs.value[crumbs.value.length - 1]?.meta.breadcrumb ?? '';

@@ -13,6 +13,7 @@ import QForm from './QForm';
 import QFormItem from './QFormItem';
 import QInput from './QInput';
 import QRow from './QRow';
+import QScrollbar from './QScrollbar';
 import QTabPane from './QTabPane';
 import QTabs from './QTabs';
 import QTag from './QTag';
@@ -26,6 +27,7 @@ const Components = {
   QFormItem,
   QInput,
   QRow,
+  QScrollbar,
   QTabPane,
   QTabs,
   QTag
@@ -136,6 +138,7 @@ export {
   QFormItem,
   QInput,
   QRow,
+  QScrollbar,
   QTabPane,
   QTabs,
   QTag

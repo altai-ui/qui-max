@@ -68,7 +68,7 @@ import {
 } from 'vue';
 import { useI18n } from 'vue-i18n';
 import emitter from '../../mixins/emitter';
-import { QFormItemProvider } from '../../QFormItem/src/types'
+import { QFormItemProvider } from '../../QFormItem'
 
 export default {
   name: 'QInput',
@@ -83,7 +83,7 @@ export default {
      * default to v-model
      */
     modelValue: {
-      type: [String, Number],
+      type: String,
       default: ''
     },
     /**
@@ -149,7 +149,7 @@ export default {
     const isPasswordSwitchShown = computed(() => {
       return (
         props.passwordSwitch &&
-        !props.disabled &&
+        !inputDisabled.value &&
         !ctx.attrs.readonly &&
         (Boolean(props.modelValue) || state.focused || state.hovering)
       );
@@ -158,7 +158,7 @@ export default {
     const isClearButtonShown = computed(() => {
       return Boolean(
         props.clearable &&
-          !props.disabled &&
+          !inputDisabled.value &&
           !ctx.attrs.readonly &&
           props.modelValue &&
           (state.focused || state.hovering)
@@ -182,7 +182,7 @@ export default {
       return (
         props.showSymbolLimit &&
         ctx.attrs.maxlength &&
-        !props.disabled &&
+        !inputDisabled.value &&
         !ctx.attrs.readonly &&
         !props.passwordSwitch
       );
@@ -190,12 +190,12 @@ export default {
 
     const classes = computed(() => {
       const mainClass: string = 'q-input';
-
+      
       return [
         mainClass,
         {
-          [`${mainClass}_disabled`]: props.disabled,
-          [`${mainClass}_suffix`]: isSuffixVisible
+          [`${mainClass}_disabled`]: inputDisabled.value,
+          [`${mainClass}_suffix`]: isSuffixVisible.value
         }
       ];
     });
@@ -204,7 +204,7 @@ export default {
       return ctx.attrs.maxlength
     })
 
-    const textLength = computed(() => {    
+    const textLength = computed(() => {  
       return props.modelValue?.length ?? 0
     })
 

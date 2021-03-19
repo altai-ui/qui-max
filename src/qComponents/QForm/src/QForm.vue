@@ -6,8 +6,8 @@
 
 <script lang="ts">
 import { concat } from 'lodash-es';
-import { defineComponent, provide } from 'vue'
-
+import { defineComponent, provide, ref, toRefs, watch, Ref } from 'vue'
+import { QFormProvider, ValidateFnResult } from './types';
 /**
  * Form consists of `input`, `radio`, `select`, `checkbox` and so on.
  * With form, you can collect, verify and submit data. You must use QFormItem inside QForm
@@ -64,39 +64,26 @@ export default defineComponent({
   },
 
   setup(props) {
-    provide('QForm', { disabled: props.disabled })
-  },
+    const fields = ref([]);
 
-  data() {
-    return {
-      fields: []
-    };
-  },
+    function clearValidate(passedProps?: string[]|string) {
+      const filteredFields = filterFields(passedProps);
 
-  watch: {
-    rules() {
-      if (this.validateOnRuleChange) this.validate();
+      filteredFields.forEach(field => {
+        field.clearValidate();
+      });
     }
-  },
 
-  methods: {
-    /**
-     * @param {?string[]|string} props List of fields props.
-     */
-    filterFields(props) {
-      const preparedProps = concat(props || []);
-
+    function filterFields(passedProps?: string[] | string): any[] {
+      const preparedProps = concat(passedProps || []);
+    
       return preparedProps.length
-        ? this.fields.filter(({ prop }) => preparedProps.includes(prop))
-        : this.fields;
-    },
+        ? fields.value.filter(({ prop }) => preparedProps.includes(prop))
+        : fields.value;
+    }
 
-    /**
-     * @public
-     * @param {?string[]|string} props List of fields props.
-     */
-    resetFields(props) {
-      if (!this.model) {
+    function resetFields(passedProps?: string[] | string): void {
+      if (!props.model) {
         if (process.env.NODE_ENV !== 'production') {
           console.warn(
             '[Warn][QForm] model is required for resetFields to work.'
@@ -104,46 +91,28 @@ export default defineComponent({
         }
         return;
       }
-      const filteredFields = this.filterFields(props);
+      const filteredFields = filterFields(passedProps);
 
       filteredFields.forEach(field => {
         field.resetField();
       });
-    },
+    }
 
-    /**
-     * @public
-     * @param {?string[]|string} props List of fields props.
-     */
-    clearValidate(props) {
-      const filteredFields = this.filterFields(props);
-
-      filteredFields.forEach(field => {
-        field.clearValidate();
-      });
-    },
-
-    /**
-     * @public
-     * @async
-     * @param {?string[]|string} props List of fields props.
-     * @return {Promise<?object>}
-     */
-    async validate(props) {
-      if (!this.model) {
+    async function validate(passedProps?: string[] | string): Promise<null | ValidateFnResult> {
+      if (!props?.model) {
         if (process.env.NODE_ENV !== 'production') {
           console.warn('[Warn][QForm] model is required for validate to work!');
         }
         return null;
       }
 
-      const filteredFields = this.filterFields(props);
+      const filteredFields = filterFields(passedProps);
 
       let isValid = true;
       let invalidFields = {};
-
+      
       await Promise.all(
-        filteredFields.map(async field => {
+        filteredFields.map(async field => {          
           const { errors, fields } = (await field.validateField()) ?? {};
           if (!errors) return;
 
@@ -157,6 +126,26 @@ export default defineComponent({
         invalidFields
       };
     }
-  }
+
+    const { validateOnRuleChange } = toRefs(props);
+    watch(validateOnRuleChange, () => validate)
+
+    provide<QFormProvider>('qForm', {
+      ...props,
+      validate,
+      resetFields,
+      clearValidate,
+      fields,
+      showErrorMessage: props.showErrorMessage,
+      hideRequiredAsterisk: props.hideRequiredAsterisk,
+    })
+
+    // public
+    return {
+      validate,
+      resetFields,
+      clearValidate,
+    }
+  },
 });
 </script>

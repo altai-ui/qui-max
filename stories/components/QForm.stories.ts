@@ -1,5 +1,7 @@
-import QForm from '../src/qComponents/QForm';
-import QFormItem from '../src/qComponents/QFormItem';
+import { onMounted, reactive, Ref, ref } from 'vue';
+
+import QForm from '@/qComponents/QForm';
+import QFormItem from '@/qComponents/QFormItem';
 
 export default {
   title: 'Components/QForm',
@@ -11,39 +13,47 @@ export default {
   }
 };
 
-export const QFormStory = (_, { argTypes }) => ({
-  props: Object.keys(argTypes).filter(arg => arg !== 'model'),
-  data() {
-    return {
-      formModel: {
-        name: '',
-        intro: ''
-      }
-    };
-  },
-  methods: {
-    async handleSubmitClick() {
-      const { isValid, invalidFields } = await this.$refs.form.validate();
+const Template = (args: any) => ({
+  components: { QForm, QFormItem },
+  setup() {
+    const form = ref(null);
+
+    const formModel = reactive({
+      name: '',
+      intro: ''
+    })
+
+    const handleSubmitClick = async() => {
+      const { isValid, invalidFields } = await form.value.validate();
       console.log('QForm | validate', isValid, invalidFields);
       if (isValid) {
         // eslint-disable-next-line no-alert
         alert('Success');
       }
-    },
+    }
 
-    handleResetClick() {
-      this.$refs.form.resetFields();
+    const handleResetClick = () => {
+      form.value.resetFields();
+    }
+
+    return {
+      form,
+      args,
+      formModel,
+      handleSubmitClick,
+      handleResetClick
     }
   },
+
   template: `
     <q-form
       ref="form"
       :model="formModel"
-      :rules="rules"
-      :disabled="disabled"
-      :hideRequiredAsterisk="hideRequiredAsterisk"
-      :showErrorMessage="showErrorMessage"
-      :validateOnRuleChange="validateOnRuleChange"
+      :rules="args.rules"
+      :disabled="args.disabled"
+      :hideRequiredAsterisk="args.hideRequiredAsterisk"
+      :showErrorMessage="args.showErrorMessage"
+      :validateOnRuleChange="args.validateOnRuleChange"
     >
       <q-form-item
         label="Name"
@@ -54,12 +64,14 @@ export const QFormStory = (_, { argTypes }) => ({
           type="text"
         />
       </q-form-item>
+
       <q-form-item
-        label="Introtext"
+        label="Intro"
         prop="intro"
       >
-        <q-textarea
+        <q-input
           v-model="formModel.intro"
+          type="text"
         />
       </q-form-item>
 
@@ -69,8 +81,8 @@ export const QFormStory = (_, { argTypes }) => ({
   `
 });
 
-QFormStory.storyName = 'Default';
-QFormStory.args = {
+export const Default: any = Template.bind({});
+Default.args = {
   rules: {
     name: [
       {
@@ -80,7 +92,7 @@ QFormStory.args = {
       },
       {
         min: 3,
-        max: 5,
+        max: 10,
         message: 'Length should be 3 to 10',
         trigger: 'blur'
       }

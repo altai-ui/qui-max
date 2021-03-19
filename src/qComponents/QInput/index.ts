@@ -1,5 +1,5 @@
 import { App } from 'vue';
-import QInput from './src/QInput.vue';
+import QInput from './src/QInput';
 
 /* istanbul ignore next */
 QInput.install = (app: App): void => {

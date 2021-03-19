@@ -1,6 +1,6 @@
 import { ref } from 'vue';
-import QInput from '../src/qComponents/QInput';
-import iconsList from './core/iconsList';
+import QInput from '../../src/qComponents/QInput';
+import iconsList from '../core/iconsList';
 
 export default {
   title: 'Components/QInput',
@@ -79,7 +79,7 @@ const Template = (args: any) => ({
     />`
 });
 
-export const Default = Template.bind({});
+export const Default: any = Template.bind({});
 Default.args = {
   placeholder: 'Input text',
   maxlength: 25,

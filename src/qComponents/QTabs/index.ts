@@ -1,5 +1,5 @@
 import { App } from 'vue';
-import QTabs from './src/QTabs.vue';
+import QTabs from './src/QTabs';
 import type { QTabsProvider } from './src/types';
 
 /* istanbul ignore next */

@@ -1,7 +1,7 @@
 <template>
   <button
     class="q-button"
-    :disabled="disabled || loading"
+    :disabled="isButtonDisabled || loading"
     :autofocus="autofocus"
     :type="nativeType"
     :class="classes"
@@ -100,9 +100,18 @@ export default defineComponent({
     }
   },
 
-  setup(props) {
+  setup(props, { emit }) {
     props = reactive(props);
-    const qForm = inject<typeof QFormProvider>('qForm');
+    const qForm = inject<typeof QFormProvider>('qForm', null);
+    
+    const isButtonDisabled = computed(() => {
+      return props.disabled || (qForm?.disabled ?? false)
+    })
+
+    function handleClick(event: MouseEvent): void {
+      emit('click', event);      
+    }
+
     return {
       classes: computed(() => {
         const classes: Array<string | any> = Object.entries({
@@ -114,20 +123,17 @@ export default defineComponent({
           .map(([key, value]) => `q-button_${key}_${value}`);
 
         classes.push({
-          'q-button_disabled': props.disabled || (qForm?.disabled ?? false),
+          'q-button_disabled': isButtonDisabled.value,
           'q-button_loading': props.loading,
           'q-button_circle': props.circle,
           'q-button_full-width': props.fullWidth
         });
         return classes;
-      })
+      }),
+      isButtonDisabled,
+      handleClick
     };
   },
 
-  methods: {
-    handleClick(evt: any) {
-      this.$emit('click', evt);
-    }
-  },
 });
 </script>

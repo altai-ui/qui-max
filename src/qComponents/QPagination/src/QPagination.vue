@@ -12,7 +12,7 @@
         'q-pagination__btn_disabled': isPrevBtnDisabled
       }"
       :disabled="isPrevBtnDisabled"
-      @click.prevent="handlePrevBtnClick"
+      @click="handlePrevBtnClick"
     />
 
     <button
@@ -22,7 +22,7 @@
         'q-pagination__btn_active': currentPage === 1
       }"
       :disabled="disabled"
-      @click.prevent="handlePageBtnClick(1)"
+      @click="handlePageBtnClick(1)"
     >
       1
     </button>
@@ -32,7 +32,7 @@
       type="button"
       class="q-pagination__btn q-pagination__btn_quick q-icon-triangle-left"
       :disabled="disabled"
-      @click.prevent="handlePrevQuickBtnClick"
+      @click="handlePrevQuickBtnClick"
     />
 
     <button
@@ -44,7 +44,7 @@
         'q-pagination__btn_active': page === currentPage
       }"
       :disabled="disabled"
-      @click.prevent="handlePageBtnClick(page)"
+      @click="handlePageBtnClick(page)"
     >
       {{ page }}
     </button>
@@ -54,7 +54,7 @@
       type="button"
       class="q-pagination__btn q-pagination__btn_quick q-icon-triangle-right"
       :disabled="disabled"
-      @click.prevent="handleNextQuickBtnClick"
+      @click="handleNextQuickBtnClick"
     />
 
     <button
@@ -65,7 +65,7 @@
         'q-pagination__btn_active': preparedPageCount === currentPage
       }"
       :disabled="disabled"
-      @click.prevent="handlePageBtnClick(preparedPageCount)"
+      @click="handlePageBtnClick(preparedPageCount)"
     >
       {{ preparedPageCount }}
     </button>
@@ -77,7 +77,7 @@
         'q-pagination__btn_disabled': isNextBtnDisabled
       }"
       :disabled="isNextBtnDisabled"
-      @click.prevent="handleNextBtnClick"
+      @click="handleNextBtnClick"
     />
   </div>
 </template>

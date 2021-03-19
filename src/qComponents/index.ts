@@ -11,6 +11,7 @@ import QCollapseItem from './QCollapseItem';
 import QForm from './QForm';
 import QFormItem from './QFormItem';
 import QInput from './QInput';
+import QPagination from './QPagination';
 import QRow from './QRow';
 import QScrollbar from './QScrollbar';
 import QTabPane from './QTabPane';
@@ -26,6 +27,7 @@ const Components = {
   QForm,
   QFormItem,
   QInput,
+  QPagination,
   QRow,
   QScrollbar,
   QTabPane,
@@ -125,6 +127,7 @@ export {
   QForm,
   QFormItem,
   QInput,
+  QPagination,
   QRow,
   QScrollbar,
   QTabPane,

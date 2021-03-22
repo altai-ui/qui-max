@@ -140,13 +140,6 @@ export default defineComponent({
       showErrorMessage: props.showErrorMessage,
       hideRequiredAsterisk: props.hideRequiredAsterisk,
     })
-
-    // public
-    return {
-      validate,
-      resetFields,
-      clearValidate,
-    }
   },
 });
 </script>

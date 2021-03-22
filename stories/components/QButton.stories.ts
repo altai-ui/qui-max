@@ -16,12 +16,31 @@ export default {
   }
 };
 
-const Template = (args: object) => ({
+const Template = (args: any) => ({
   components: { QButton },
   setup() {
-    return { args };
+    const handleClick = (event: MouseEvent): void => {
+      console.log('click', event)
+    }
+
+    return { args, handleClick };
   },
-  template: `<q-button v-bind="args">{{args.label}}</q-button>`
+  template: `
+    <q-button
+      :type="args.type"
+      :theme="args.theme"
+      :size="args.size"
+      :icon="args.icon"
+      :nativeType="args.nativeType"
+      :loading="args.loading"
+      :disabled="args.disabled"
+      :autofocus="args.autofocus"
+      :circle="args.circle"
+      :fullWidth="args.fullWidth"
+      @click="handleClick"
+    >
+      {{args.label}}
+    </q-button>`
 });
 
 export const ThemePrimary = Template.bind({});

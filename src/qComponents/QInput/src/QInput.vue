@@ -68,7 +68,8 @@ import {
 } from 'vue';
 import { useI18n } from 'vue-i18n';
 import emitter from '../../mixins/emitter';
-import { QFormItemProvider } from '../../QFormItem'
+import { QFormItemProvider } from '@/qComponents/QFormItem';
+import { QFormProvider } from '@/qComponents/QForm/src/types';
 
 export default {
   name: 'QInput',
@@ -133,7 +134,7 @@ export default {
   setup(props, ctx) {    
     const input = ref<HTMLElement | null>(null);
     const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
-    const qForm: any = inject('qForm', null);
+    const qForm = inject<QFormProvider | null>('qForm', null);
 
     const state = reactive({
       hovering: false,

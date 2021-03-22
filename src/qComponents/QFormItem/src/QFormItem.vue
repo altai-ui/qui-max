@@ -42,13 +42,13 @@
 </template>
 
 <script lang="ts">
+import { QFormProvider } from '@/qComponents/QForm/src/types';
 import AsyncValidator from 'async-validator';
 import { get, set } from 'lodash-es';
 import {
   provide,
   ref,
   defineComponent,
-  reactive,
   computed,
   onMounted,
   onBeforeUnmount,
@@ -56,7 +56,7 @@ import {
   toRefs,
   watch
 } from 'vue';
-import { QFormItemProvider } from './types';
+import { QFormItemProvider, FilteredRuleItem } from './types';
 
 export default defineComponent({
   name: 'QFormItem',
@@ -117,13 +117,13 @@ export default defineComponent({
 
     const { error } = toRefs(props);
 
-    const qForm: any = inject('qForm', null);  
+    const qForm = inject<QFormProvider | null>('qForm', null);  
 
     const isErrorSlotShown = computed(() => {
       return (
-        (errorMessage.value || Boolean(ctx.slots.error)) &&
+        (Boolean(errorMessage.value) || Boolean(ctx.slots.error)) &&
         props.showErrorMessage &&
-        qForm.showErrorMessage
+        qForm?.showErrorMessage
       );
     })
 
@@ -132,7 +132,7 @@ export default defineComponent({
     })
 
     const isRequired = computed(() => {
-      const propRules = props.rules || get(qForm.rules, props.prop);
+      const propRules = props.rules || get(qForm?.rules, props.prop);
       
       if (!propRules) return false;
 
@@ -156,8 +156,9 @@ export default defineComponent({
       };
     })
 
-    const getFilteredRules = (trigger: string | null) => {
-      const formRules = qForm.rules?.[props.prop] ?? [];
+    const getFilteredRules = (trigger: string | null): FilteredRuleItem[] | null => {
+      const formRules = qForm?.rules?.[props.prop] ?? [];
+      
       const propRules = props.rules || formRules;
       if (!propRules) return null;
 
@@ -172,8 +173,8 @@ export default defineComponent({
       return preparedPropRules
         .filter(rule => {
           if (!rule?.trigger) return true;
-
-          return [].concat(rule.trigger).includes(trigger);
+          const result: string[] = []
+          return result.concat(rule.trigger).includes(trigger);
         })
         .map(({ trigger: _, ...rule }) => rule);
     }
@@ -190,7 +191,7 @@ export default defineComponent({
       return new Promise(resolve => {
         validator.validate(
           {
-            [props.prop]: get(qForm.model, props.prop)
+            [props.prop]: get(qForm?.model, props.prop)
           },
           { firstFields: true },
           (errors, fields) => {
@@ -203,23 +204,17 @@ export default defineComponent({
       });
     }
 
-    const resetField = () => {
-      set(qForm.model, props.prop, initialValue.value);
+    const resetField = (): void => {
+      set(qForm?.model, props.prop, initialValue.value);
       errorMessage.value = null;
     }
 
-    const clearValidate = () => {
+    const clearValidate = (): void => {
       errorMessage.value = null;
     }
-
-    provide('QFormItem', {
-      validateField,
-      resetField,
-      clearValidate,
-    });
 
     const qFormItem = <QFormItemProvider>{
-      ...toRefs(props),
+      ...props,
       errorMessage,
       initialValue,
       error,
@@ -234,21 +229,22 @@ export default defineComponent({
       clearValidate
     }
 
+    provide<QFormItemProvider>('QFormItem', qFormItem);
+
     onMounted(() => {
       if (!props.prop) return;
-      initialValue.value = get(qForm.model, props.prop, null);
-      
-      qForm.fields.value.push(qFormItem);
+      initialValue.value = get(qForm?.model, props.prop, null);
+
+      qForm?.fields.value.push(qFormItem);
     })
 
     onBeforeUnmount(() => {
-      const qFormFields = qForm.fields;
-      qFormFields.value.splice(qFormFields.value.indexOf(qFormItem), 1);
+      const qFormFields = qForm?.fields;
+      qFormFields?.value.splice(qFormFields.value.indexOf(qFormItem), 1);
     })
 
     watch(error, (newValue) => {
       errorMessage.value = newValue
-      // immediate ?
     })
 
     return {

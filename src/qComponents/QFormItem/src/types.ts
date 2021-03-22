@@ -1,26 +1,29 @@
 import { ComputedRef, Ref } from "@vue/reactivity";
+import { Rules, RuleItem } from 'async-validator'
+
+export interface FilteredRuleItem extends RuleItem {
+  trigger?: string | null
+}
 
 export interface QFormItemProvider {
-  validateField: (trigger: string | null) => void
+  validateField: (trigger?: string | null) => Promise<any> | null
   clearValidate: () => void
   error: Ref<string | null>
   errorMessage: Ref<string | null>
-  for: Ref<string | null>
-  getFilteredRules: (trigger: string | null) => void
+  getFilteredRules: (trigger: string | null) => FilteredRuleItem[] | null
   initialValue: Ref<string | null>
   isErrorSlotShown: ComputedRef<boolean>
   isHeaderShown: ComputedRef<boolean>
   isRequired: ComputedRef<boolean>
-  label: Ref<string>
   labelFor: ComputedRef<string>
-  prop: Ref<string>
   resetField: () => void
   rootClasses: ComputedRef<{
     [key: string]: boolean
   }>
-  rules: {
-    [key: string]: {} | []
-  }
-  showErrorMessage: Ref<boolean>
-  sublabel: Ref<null>
+  rules: Rules | null,
+  showErrorMessage: boolean
+  for: string | null
+  prop: string | null
+  label: string | null
+  sublabel: string | null
 }

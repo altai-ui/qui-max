@@ -100,9 +100,11 @@ export default defineComponent({
     }
   },
 
+  emits: ['click'],
+
   setup(props, { emit }) {
     props = reactive(props);
-    const qForm = inject<typeof QFormProvider>('qForm', null);
+    const qForm = inject<typeof QFormProvider | null>('qForm', null);
     
     const isButtonDisabled = computed(() => {
       return props.disabled || (qForm?.disabled ?? false)

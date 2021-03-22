@@ -5,6 +5,7 @@
 </template>
 
 <script lang="ts">
+import { QFormItemProvider } from '@/qComponents/QFormItem/src/types';
 import { concat } from 'lodash-es';
 import { defineComponent, provide, ref, toRefs, watch, Ref } from 'vue'
 import { QFormProvider, ValidateFnResult } from './types';
@@ -66,7 +67,7 @@ export default defineComponent({
   setup(props) {
     const fields = ref([]);
 
-    function clearValidate(passedProps?: string[]|string) {
+    const clearValidate = (passedProps?: string[]|string): void => {
       const filteredFields = filterFields(passedProps);
 
       filteredFields.forEach(field => {
@@ -74,15 +75,15 @@ export default defineComponent({
       });
     }
 
-    function filterFields(passedProps?: string[] | string): any[] {
-      const preparedProps = concat(passedProps || []);
+    const filterFields = (passedProps?: string[] | string): QFormItemProvider[] => {
+      const preparedProps = concat(passedProps || []);      
     
       return preparedProps.length
         ? fields.value.filter(({ prop }) => preparedProps.includes(prop))
         : fields.value;
     }
 
-    function resetFields(passedProps?: string[] | string): void {
+    const resetFields = (passedProps?: string[] | string): void  => {
       if (!props.model) {
         if (process.env.NODE_ENV !== 'production') {
           console.warn(
@@ -98,7 +99,7 @@ export default defineComponent({
       });
     }
 
-    async function validate(passedProps?: string[] | string): Promise<null | ValidateFnResult> {
+    const validate = async (passedProps?: string[] | string): Promise<null | ValidateFnResult> => {
       if (!props?.model) {
         if (process.env.NODE_ENV !== 'production') {
           console.warn('[Warn][QForm] model is required for validate to work!');

@@ -5,6 +5,7 @@ import { installI18n } from './constants/locales';
 import mitt from 'mitt';
 import { App } from 'vue'
 
+import QBreadcrumbs from './QBreadcrumbs';
 import QButton from './QButton';
 import QCol from './QCol';
 import QCollapse from './QCollapse';
@@ -12,6 +13,7 @@ import QCollapseItem from './QCollapseItem';
 import QForm from './QForm';
 import QFormItem from './QFormItem';
 import QInput from './QInput';
+import QPagination from './QPagination';
 import QRow from './QRow';
 import QScrollbar from './QScrollbar';
 import QTabPane from './QTabPane';
@@ -19,6 +21,7 @@ import QTabs from './QTabs';
 import QTag from './QTag';
 
 const Components = {
+  QBreadcrumbs,
   QButton,
   QCol,
   QCollapse,
@@ -26,6 +29,7 @@ const Components = {
   QForm,
   QFormItem,
   QInput,
+  QPagination,
   QRow,
   QScrollbar,
   QTabPane,
@@ -132,6 +136,7 @@ const Qui = {
 
 export default Qui;
 export {
+  QBreadcrumbs,
   QButton,
   QCol,
   QCollapse,
@@ -139,6 +144,7 @@ export {
   QForm,
   QFormItem,
   QInput,
+  QPagination,
   QRow,
   QScrollbar,
   QTabPane,

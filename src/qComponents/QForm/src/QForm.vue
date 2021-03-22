@@ -67,7 +67,7 @@ export default defineComponent({
   setup(props) {
     const fields = ref([]);
 
-    const clearValidate = (passedProps?: string[]|string): void => {
+    const clearValidate = (passedProps?: string[] | string): void => {
       const filteredFields = filterFields(passedProps);
 
       filteredFields.forEach(field => {

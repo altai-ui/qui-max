@@ -26,7 +26,7 @@
 
 <script lang="ts">
 import { defineComponent, reactive, computed, inject } from 'vue';
-import QFormProvider from '../../QForm';
+import QFormProvider from '@/qComponents/QForm'
 
 export default defineComponent({
   name: 'QButton',
@@ -104,13 +104,13 @@ export default defineComponent({
 
   setup(props, { emit }) {
     props = reactive(props);
-    const qForm = inject<typeof QFormProvider | null>('qForm', null);
+    const qForm = inject<QFormProvider | null>('qForm', null);
     
     const isButtonDisabled = computed(() => {
       return props.disabled || (qForm?.disabled ?? false)
     })
 
-    function handleClick(event: MouseEvent): void {
+    const handleClick = (event: MouseEvent): void => {
       emit('click', event);      
     }
 

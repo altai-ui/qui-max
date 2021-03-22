@@ -1,5 +1,6 @@
 import QButton from '../../src/qComponents/QButton';
 
+
 export default {
   title: 'Components/Button',
   component: QButton,
@@ -43,7 +44,7 @@ const Template = (args: any) => ({
     </q-button>`
 });
 
-export const ThemePrimary = Template.bind({});
+export const ThemePrimary: any = Template.bind({});
 ThemePrimary.args = {
   theme: 'primary',
   type: 'default',
@@ -51,7 +52,7 @@ ThemePrimary.args = {
   size: 'medium'
 };
 
-export const ThemeSecondary = Template.bind({});
+export const ThemeSecondary: any = Template.bind({});
 ThemeSecondary.args = {
   theme: 'secondary',
   type: 'default',
@@ -59,7 +60,7 @@ ThemeSecondary.args = {
   size: 'medium'
 };
 
-export const ThemeLink = Template.bind({});
+export const ThemeLink: any = Template.bind({});
 ThemeLink.args = {
   theme: 'link',
   type: 'default',
@@ -67,7 +68,7 @@ ThemeLink.args = {
   size: 'medium'
 };
 
-export const IconPrimary = Template.bind({});
+export const IconPrimary: any = Template.bind({});
 IconPrimary.args = {
   theme: 'primary',
   type: 'icon',
@@ -75,7 +76,7 @@ IconPrimary.args = {
   size: 'medium'
 };
 
-export const IconSecondary = Template.bind({});
+export const IconSecondary: any = Template.bind({});
 IconSecondary.args = {
   theme: 'secondary',
   type: 'icon',
@@ -83,7 +84,7 @@ IconSecondary.args = {
   size: 'medium'
 };
 
-export const IconLink = Template.bind({});
+export const IconLink: any = Template.bind({});
 IconLink.args = {
   theme: 'link',
   type: 'icon',

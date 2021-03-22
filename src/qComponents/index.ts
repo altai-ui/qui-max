@@ -54,7 +54,9 @@ allComponents.forEach(component => {
 
 interface localization {
   locale?: string,
-  customI18nMessages?: any
+  customI18nMessages?: {
+    [key: string]: string
+  }
 }
 
 interface ConfigOptions {

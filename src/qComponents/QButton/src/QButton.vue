@@ -5,7 +5,6 @@
     :autofocus="autofocus"
     :type="nativeType"
     :class="classes"
-    @click="handleClick"
   >
     <span
       v-if="loading"
@@ -25,8 +24,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, computed, inject } from 'vue';
-import QFormProvider from '@/qComponents/QForm'
+import { defineComponent, computed, inject } from 'vue';
+import QFormProvider from '@/qComponents/QForm';
 
 export default defineComponent({
   name: 'QButton',
@@ -100,42 +99,34 @@ export default defineComponent({
     }
   },
 
-  emits: ['click'],
-
-  setup(props, { emit }) {
-    props = reactive(props);
+  setup(props) {
     const qForm = inject<QFormProvider | null>('qForm', null);
-    
-    const isButtonDisabled = computed(() => {
-      return props.disabled || (qForm?.disabled ?? false)
-    })
 
-    const handleClick = (event: MouseEvent): void => {
-      emit('click', event);      
-    }
+    const isButtonDisabled = computed(
+      () => props.disabled || (qForm?.disabled ?? false)
+    );
+    const classes = computed(() => {
+      const classes: Array<string | any> = Object.entries({
+        theme: props.theme,
+        type: props.type,
+        size: props.size
+      })
+        .filter(([, value]) => Boolean(value))
+        .map(([key, value]) => `q-button_${key}_${value}`);
+
+      classes.push({
+        'q-button_disabled': isButtonDisabled.value,
+        'q-button_loading': props.loading,
+        'q-button_circle': props.circle,
+        'q-button_full-width': props.fullWidth
+      });
+      return classes;
+    });
 
     return {
-      classes: computed(() => {
-        const classes: Array<string | any> = Object.entries({
-          theme: props.theme,
-          type: props.type,
-          size: props.size
-        })
-          .filter(([, value]) => Boolean(value))
-          .map(([key, value]) => `q-button_${key}_${value}`);
-
-        classes.push({
-          'q-button_disabled': isButtonDisabled.value,
-          'q-button_loading': props.loading,
-          'q-button_circle': props.circle,
-          'q-button_full-width': props.fullWidth
-        });
-        return classes;
-      }),
-      isButtonDisabled,
-      handleClick
+      classes,
+      isButtonDisabled
     };
-  },
-
+  }
 });
 </script>

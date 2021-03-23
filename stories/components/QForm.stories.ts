@@ -1,7 +1,8 @@
-import { onMounted, reactive, Ref, ref } from 'vue';
+import { reactive, ref } from 'vue';
 
 import QForm from '@/qComponents/QForm';
 import QFormItem from '@/qComponents/QFormItem';
+import { QFormProvider } from '@/qComponents/QForm/src/types';
 
 export default {
   title: 'Components/QForm',
@@ -16,25 +17,28 @@ export default {
 const Template = (args: any) => ({
   components: { QForm, QFormItem },
   setup() {
-    const form = ref(null);
+    const form = ref<QFormProvider | null>(null);
 
     const formModel = reactive({
       name: '',
       intro: ''
-    })
+    });
 
-    const handleSubmitClick = async() => {
-      const { isValid, invalidFields } = await form.value.validate();
-      console.log('QForm | validate', isValid, invalidFields);
-      if (isValid) {
-        // eslint-disable-next-line no-alert
-        alert('Success');
+    const handleSubmitClick = async () => {
+      const valid = await form?.value?.validate();
+      if (valid) {
+        const { isValid, invalidFields } = valid;
+        console.log('QForm | validate', isValid, invalidFields);
+        if (isValid) {
+          // eslint-disable-next-line no-alert
+          alert('Success');
+        }
       }
-    }
+    };
 
     const handleResetClick = () => {
-      form.value.resetFields();
-    }
+      form?.value?.resetFields();
+    };
 
     return {
       form,
@@ -42,7 +46,7 @@ const Template = (args: any) => ({
       formModel,
       handleSubmitClick,
       handleResetClick
-    }
+    };
   },
 
   template: `

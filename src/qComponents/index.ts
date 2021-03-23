@@ -1,9 +1,9 @@
 /* eslint-disable no-underscore-dangle, global-require, no-param-reassign */
 import kebabCase from 'lodash-es/kebabCase';
 import vClickOutside from 'v-click-outside';
-import { installI18n } from './constants/locales';
 import mitt from 'mitt';
-import { App } from 'vue'
+import { App } from 'vue';
+import { installI18n } from './constants/locales';
 
 import QBreadcrumbs from './QBreadcrumbs';
 import QButton from './QButton';
@@ -57,16 +57,16 @@ allComponents.forEach(component => {
 });
 
 interface localization {
-  locale?: string,
+  locale?: string;
   customI18nMessages?: {
-    [key: string]: string
-  }
+    [key: string]: string;
+  };
 }
 
 interface ConfigOptions {
-  localization?: localization,
-  zIndexCounter?: number
-  prefix?: string
+  localization?: localization;
+  zIndexCounter?: number;
+  prefix?: string;
 }
 
 // install

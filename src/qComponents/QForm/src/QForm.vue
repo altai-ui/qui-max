@@ -5,9 +5,9 @@
 </template>
 
 <script lang="ts">
-import { QFormItemProvider } from '@/qComponents/QFormItem/src/types';
 import { concat } from 'lodash-es';
-import { defineComponent, provide, ref, toRefs, watch, Ref } from 'vue'
+import { defineComponent, provide, ref, toRefs, watch, Ref } from 'vue';
+import { QFormItemProvider } from '@/qComponents/QFormItem/src/types';
 import { QFormProvider, ValidateFnResult } from './types';
 /**
  * Form consists of `input`, `radio`, `select`, `checkbox` and so on.
@@ -73,17 +73,19 @@ export default defineComponent({
       filteredFields.forEach(field => {
         field.clearValidate();
       });
-    }
+    };
 
-    const filterFields = (passedProps?: string[] | string): QFormItemProvider[] => {
-      const preparedProps = concat(passedProps || []);      
-    
+    const filterFields = (
+      passedProps?: string[] | string
+    ): QFormItemProvider[] => {
+      const preparedProps = concat(passedProps || []);
+
       return preparedProps.length
         ? fields.value.filter(({ prop }) => preparedProps.includes(prop))
         : fields.value;
-    }
+    };
 
-    const resetFields = (passedProps?: string[] | string): void  => {
+    const resetFields = (passedProps?: string[] | string): void => {
       if (!props.model) {
         if (process.env.NODE_ENV !== 'production') {
           console.warn(
@@ -97,9 +99,11 @@ export default defineComponent({
       filteredFields.forEach(field => {
         field.resetField();
       });
-    }
+    };
 
-    const validate = async (passedProps?: string[] | string): Promise<null | ValidateFnResult> => {
+    const validate = async (
+      passedProps?: string[] | string
+    ): Promise<ValidateFnResult | null> => {
       if (!props?.model) {
         if (process.env.NODE_ENV !== 'production') {
           console.warn('[Warn][QForm] model is required for validate to work!');
@@ -111,9 +115,9 @@ export default defineComponent({
 
       let isValid = true;
       let invalidFields = {};
-      
+
       await Promise.all(
-        filteredFields.map(async field => {          
+        filteredFields.map(async field => {
           const { errors, fields } = (await field.validateField()) ?? {};
           if (!errors) return;
 
@@ -126,20 +130,25 @@ export default defineComponent({
         isValid,
         invalidFields
       };
-    }
+    };
 
     const { validateOnRuleChange } = toRefs(props);
-    watch(validateOnRuleChange, () => validate)
+    watch(validateOnRuleChange, () => validate);
 
     provide<QFormProvider>('qForm', {
       ...props,
       validate,
       resetFields,
       clearValidate,
-      fields,
-      showErrorMessage: props.showErrorMessage,
-      hideRequiredAsterisk: props.hideRequiredAsterisk,
-    })
-  },
+      fields
+    });
+
+    // for refs
+    return {
+      validate,
+      resetFields,
+      clearValidate
+    };
+  }
 });
 </script>

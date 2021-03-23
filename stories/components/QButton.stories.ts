@@ -1,6 +1,5 @@
 import QButton from '../../src/qComponents/QButton';
 
-
 export default {
   title: 'Components/Button',
   component: QButton,
@@ -21,8 +20,8 @@ const Template = (args: any) => ({
   components: { QButton },
   setup() {
     const handleClick = (event: MouseEvent): void => {
-      console.log('click', event)
-    }
+      console.log('click', event);
+    };
 
     return { args, handleClick };
   },
@@ -40,7 +39,7 @@ const Template = (args: any) => ({
       :fullWidth="args.fullWidth"
       @click="handleClick"
     >
-      {{args.label}}
+      {{ args.label }}
     </q-button>`
 });
 

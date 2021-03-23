@@ -43,7 +43,7 @@
 
 <script lang="ts">
 import { QFormProvider } from '@/qComponents/QForm/src/types';
-import AsyncValidator from 'async-validator';
+import AsyncValidator, { ErrorList, FieldErrorList } from 'async-validator';
 import { get, set } from 'lodash-es';
 import {
   provide,
@@ -112,12 +112,10 @@ export default defineComponent({
   },
 
   setup(props, ctx) {
-    const initialValue = ref<string | null>(null);
+    let initialValue = <unknown>null;
     const errorMessage = ref<string | null>(null);
 
-    const { error } = toRefs(props);
-
-    const qForm = inject<QFormProvider | null>('qForm', null);  
+    const qForm = inject<QFormProvider | null>('qForm', null);
 
     const isErrorSlotShown = computed(() => {
       return (
@@ -125,28 +123,28 @@ export default defineComponent({
         props.showErrorMessage &&
         qForm?.showErrorMessage
       );
-    })
+    });
 
     const labelFor = computed(() => {
       return props.for ?? props.prop;
-    })
+    });
 
     const isRequired = computed(() => {
       const propRules = props.rules || get(qForm?.rules, props.prop);
-      
+
       if (!propRules) return false;
 
       const preparedPropRules = Array.isArray(propRules)
         ? propRules
         : [propRules];
       return preparedPropRules.some(({ required }) => required);
-    })
+    });
 
     const isHeaderShown = computed(() => {
       return Boolean(
         props.label || ctx.slots.label || props.sublabel || ctx.slots.sublabel
       );
-    })
+    });
 
     const rootClasses = computed(() => {
       return {
@@ -154,11 +152,13 @@ export default defineComponent({
         'q-form-item_is-error': Boolean(errorMessage.value),
         'q-form-item_is-no-asterisk': qForm?.hideRequiredAsterisk
       };
-    })
+    });
 
-    const getFilteredRules = (trigger: string | null): FilteredRuleItem[] | null => {
+    const getFilteredRules = (
+      trigger: string | null
+    ): FilteredRuleItem[] | null => {
       const formRules = qForm?.rules?.[props.prop] ?? [];
-      
+
       const propRules = props.rules || formRules;
       if (!propRules) return null;
 
@@ -173,13 +173,15 @@ export default defineComponent({
       return preparedPropRules
         .filter(rule => {
           if (!rule?.trigger) return true;
-          const result: string[] = []
+          const result: string[] = [];
           return result.concat(rule.trigger).includes(trigger);
         })
         .map(({ trigger: _, ...rule }) => rule);
-    }
+    };
 
-    const validateField = (trigger: string | null = null): Promise<any> | null => {
+    const validateField = (
+      trigger: string | null = null
+    ): Promise<{} | { errors: ErrorList; fields: FieldErrorList }> | null => {
       const triggeredRules = getFilteredRules(trigger);
 
       if (!triggeredRules?.length) return null;
@@ -202,22 +204,24 @@ export default defineComponent({
           }
         );
       });
-    }
+    };
 
     const resetField = (): void => {
-      set(qForm?.model, props.prop, initialValue.value);
+      if (qForm) {
+        set(qForm.model, props.prop, initialValue);
+      }
+
       errorMessage.value = null;
-    }
+    };
 
     const clearValidate = (): void => {
       errorMessage.value = null;
-    }
+    };
 
     const qFormItem = <QFormItemProvider>{
       ...props,
       errorMessage,
       initialValue,
-      error,
       isErrorSlotShown,
       labelFor,
       isRequired,
@@ -227,37 +231,41 @@ export default defineComponent({
       validateField,
       resetField,
       clearValidate
-    }
+    };
 
-    provide<QFormItemProvider>('QFormItem', qFormItem);
+    provide('qFormItem', {
+      validateField,
+      resetField
+    });
 
     onMounted(() => {
       if (!props.prop) return;
-      initialValue.value = get(qForm?.model, props.prop, null);
+      initialValue = get(qForm?.model, props.prop, null);
 
       qForm?.fields.value.push(qFormItem);
-    })
+    });
 
     onBeforeUnmount(() => {
       const qFormFields = qForm?.fields;
       qFormFields?.value.splice(qFormFields.value.indexOf(qFormItem), 1);
-    })
+    });
 
-    watch(error, (newValue) => {
-      errorMessage.value = newValue
-    })
+    watch(
+      () => props.error,
+      newValue => {
+        errorMessage.value = newValue;
+      }
+    );
 
     return {
       errorMessage,
-      initialValue,
-      error,
       isErrorSlotShown,
       labelFor,
       isRequired,
       isHeaderShown,
       rootClasses,
-      getFilteredRules,
-    }
-  },
+      getFilteredRules
+    };
+  }
 });
 </script>

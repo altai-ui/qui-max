@@ -18,7 +18,7 @@ const installI18n = ({ app, locale, customI18nMessages }) => {
     locale,
     messages: merge({ en, ru }, customI18nMessages)
   });
-  app.use(i18n)
+  app.use(i18n);
 };
 
 export default {

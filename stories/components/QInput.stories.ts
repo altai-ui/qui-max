@@ -1,5 +1,5 @@
 import { ref } from 'vue';
-import QInput from '../../src/qComponents/QInput';
+import QInput from '@/qComponents/QInput';
 import iconsList from '../core/iconsList';
 
 export default {
@@ -48,7 +48,7 @@ export default {
     },
     readonly: {
       control: {
-        type: 'boolean',
+        type: 'boolean'
       }
     }
   }
@@ -84,4 +84,4 @@ Default.args = {
   placeholder: 'Input text',
   maxlength: 25,
   type: 'text'
-}
+};

@@ -14,6 +14,25 @@ export default {
   }
 };
 
+const INITIAL_RULES = {
+  name: [
+    {
+      required: false
+    },
+    {
+      min: 3,
+      max: 10,
+      message: 'Length should be 3 to 10',
+      trigger: 'blur'
+    }
+  ],
+  intro: {
+    required: true,
+    message: 'Please input introtext',
+    trigger: 'change'
+  }
+};
+
 const Template = (args: any) => ({
   components: { QForm, QFormItem },
   setup() {
@@ -23,6 +42,8 @@ const Template = (args: any) => ({
       name: '',
       intro: ''
     });
+
+    const rules = reactive(INITIAL_RULES);
 
     const handleSubmitClick = async () => {
       const valid = await form?.value?.validate();
@@ -40,12 +61,22 @@ const Template = (args: any) => ({
       form?.value?.resetFields();
     };
 
+    const handleRule = () => {
+      rules.name = {
+        required: true,
+        message: 'Please input name',
+        trigger: 'blur'
+      };
+    };
+
     return {
       form,
       args,
       formModel,
+      rules,
       handleSubmitClick,
-      handleResetClick
+      handleResetClick,
+      handleRule
     };
   },
 
@@ -53,7 +84,7 @@ const Template = (args: any) => ({
     <q-form
       ref="form"
       :model="formModel"
-      :rules="args.rules"
+      :rules="rules"
       :disabled="args.disabled"
       :hideRequiredAsterisk="args.hideRequiredAsterisk"
       :showErrorMessage="args.showErrorMessage"
@@ -79,32 +110,12 @@ const Template = (args: any) => ({
         />
       </q-form-item>
 
+      
       <q-button @click="handleSubmitClick">Create</q-button>
-      <q-button @click="handleResetClick">Reset</q-button>
+      <q-button @click="handleResetClick" theme="secondary">Reset</q-button>
+      <q-button @click="handleRule" theme="secondary">Make Name required</q-button>
     </q-form>
   `
 });
 
 export const Default: any = Template.bind({});
-Default.args = {
-  rules: {
-    name: [
-      {
-        required: true,
-        message: 'Please input name',
-        trigger: 'blur'
-      },
-      {
-        min: 3,
-        max: 10,
-        message: 'Length should be 3 to 10',
-        trigger: 'blur'
-      }
-    ],
-    intro: {
-      required: true,
-      message: 'Please input introtext',
-      trigger: 'change'
-    }
-  }
-};

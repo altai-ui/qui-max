@@ -247,6 +247,7 @@ export default defineComponent({
 
     onBeforeUnmount(() => {
       const qFormFields = qForm?.fields;
+
       qFormFields?.value.splice(qFormFields.value.indexOf(qFormItem), 1);
     });
 

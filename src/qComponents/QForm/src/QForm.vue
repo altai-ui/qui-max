@@ -6,7 +6,15 @@
 
 <script lang="ts">
 import { concat } from 'lodash-es';
-import { defineComponent, provide, ref, toRefs, watch, Ref } from 'vue';
+import {
+  defineComponent,
+  provide,
+  ref,
+  toRefs,
+  watch,
+  Ref,
+  reactive
+} from 'vue';
 import { QFormItemProvider } from '@/qComponents/QFormItem/src/types';
 import { QFormProvider, ValidateFnResult } from './types';
 /**
@@ -132,8 +140,15 @@ export default defineComponent({
       };
     };
 
-    const { validateOnRuleChange } = toRefs(props);
-    watch(validateOnRuleChange, () => validate);
+    watch(
+      () => props.rules,
+      () => {
+        if (props.validateOnRuleChange) {
+          validate();
+        }
+      },
+      { deep: true }
+    );
 
     provide<QFormProvider>('qForm', {
       ...props,

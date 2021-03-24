@@ -1,5 +1,5 @@
 import { App } from 'vue';
-import QFormItem from './src/QFormItem';
+import QFormItem from './src/QFormItem.vue';
 import type { QFormItemContext, QFormItemProvider } from './src/types';
 
 QFormItem.install = (app: App): void => {

@@ -1,4 +1,4 @@
-import { Ref } from '@vue/reactivity';
+import { Ref } from 'vue';
 
 interface state {
   hovering: Ref<boolean>;

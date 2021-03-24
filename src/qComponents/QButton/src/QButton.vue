@@ -4,7 +4,7 @@
     :disabled="isButtonDisabled || loading"
     :autofocus="autofocus"
     :type="nativeType"
-    :class="classes"
+    :class="classList"
   >
     <span
       v-if="loading"
@@ -100,13 +100,13 @@ export default defineComponent({
   },
 
   setup(props) {
-    const qForm = inject<QFormProvider | null>('qForm', null);
+    const qForm = inject<typeof QFormProvider | null>('qForm', null);
 
     const isButtonDisabled = computed(
       () => props.disabled || (qForm?.disabled ?? false)
     );
-    const classes = computed(() => {
-      const classes: Array<string | any> = Object.entries({
+    const classList = computed(() => {
+      const classes: (string | { [key: string]: boolean })[] = Object.entries({
         theme: props.theme,
         type: props.type,
         size: props.size
@@ -120,11 +120,12 @@ export default defineComponent({
         'q-button_circle': props.circle,
         'q-button_full-width': props.fullWidth
       });
+
       return classes;
     });
 
     return {
-      classes,
+      classList,
       isButtonDisabled
     };
   }

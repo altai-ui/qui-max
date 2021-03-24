@@ -70,15 +70,7 @@ export default defineComponent({
   },
 
   setup(props) {
-    const fields = ref([]);
-
-    const clearValidate = (passedProps?: string[] | string): void => {
-      const filteredFields = filterFields(passedProps);
-
-      filteredFields.forEach(field => {
-        field.clearValidate();
-      });
-    };
+    const fieldsList = ref([]);
 
     const filterFields = (
       passedProps?: string[] | string
@@ -86,8 +78,16 @@ export default defineComponent({
       const preparedProps = concat(passedProps || []);
 
       return preparedProps.length
-        ? fields.value.filter(({ prop }) => preparedProps.includes(prop))
-        : fields.value;
+        ? fieldsList.value.filter(({ prop }) => preparedProps.includes(prop))
+        : fieldsList.value;
+    };
+
+    const clearValidate = (passedProps?: string[] | string): void => {
+      const filteredFields = filterFields(passedProps);
+
+      filteredFields.forEach(field => {
+        field.clearValidate();
+      });
     };
 
     const resetFields = (passedProps?: string[] | string): void => {
@@ -156,7 +156,7 @@ export default defineComponent({
       validate,
       resetFields,
       clearValidate,
-      fields
+      fields: fieldsList
     });
 
     // for refs

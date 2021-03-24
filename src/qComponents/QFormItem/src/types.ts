@@ -1,4 +1,4 @@
-import { ComputedRef, Ref } from '@vue/reactivity';
+import { ComputedRef, Ref } from 'vue';
 import { Rules, RuleItem, ErrorList, FieldErrorList } from 'async-validator';
 
 export interface FilteredRuleItem extends RuleItem {

@@ -1,11 +1,11 @@
-import { Ref } from '@vue/reactivity';
+import { Ref } from 'vue';
 import {
   QFormItemContext,
   FilteredRuleItem
 } from '@/qComponents/QFormItem/src/types';
 
 type RulesOptions = {
-  [key: string]: FilteredRuleItem;
+  [key: string]: FilteredRuleItem | FilteredRuleItem[];
 };
 
 export interface ValidateFnResult {

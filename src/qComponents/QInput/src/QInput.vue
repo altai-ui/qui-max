@@ -58,13 +58,13 @@
 </template>
 
 <script lang="ts">
-import { inject, computed, ref, reactive, watch } from 'vue';
+import { inject, computed, ref, reactive, watch, defineComponent } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { QFormProvider } from '@/qComponents/QForm';
 import { QFormItemProvider } from '@/qComponents/QFormItem';
 import emitter from '../../mixins/emitter';
 
-export default {
+export default defineComponent({
   name: 'QInput',
   componentName: 'QInput',
 
@@ -149,6 +149,8 @@ export default {
       return ctx.attrs.type;
     });
 
+    const isDisabled = computed(() => props.disabled || (qForm?.disabled ?? false));
+
     const isPasswordSwitchShown = computed(() => (
       props.passwordSwitch &&
       !isDisabled.value &&
@@ -170,8 +172,6 @@ export default {
         isClearButtonShown.value ||
         props.passwordSwitch
     ));
-
-    const isDisabled = computed(() => props.disabled || (qForm?.disabled ?? false));
 
     const isSymbolLimitShown = computed(() => (
       props.showSymbolLimit &&
@@ -252,5 +252,5 @@ export default {
       t
     };
   }
-};
+});
 </script>

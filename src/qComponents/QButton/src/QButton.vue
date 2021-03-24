@@ -25,7 +25,7 @@
 
 <script lang="ts">
 import { defineComponent, computed, inject } from 'vue';
-import QFormProvider from '@/qComponents/QForm';
+import { QFormProvider } from '@/qComponents/QForm';
 
 export default defineComponent({
   name: 'QButton',
@@ -100,7 +100,7 @@ export default defineComponent({
   },
 
   setup(props) {
-    const qForm = inject<typeof QFormProvider | null>('qForm', null);
+    const qForm = inject<QFormProvider | null>('qForm', null);
 
     const isButtonDisabled = computed(
       () => props.disabled || (qForm?.disabled ?? false)

@@ -9,6 +9,7 @@ import { concat } from 'lodash-es';
 import {
   defineComponent,
   provide,
+  Ref,
   ref,
   watch,
 } from 'vue';
@@ -70,7 +71,7 @@ export default defineComponent({
   },
 
   setup(props) {
-    const fieldsList = ref([]);
+    const fieldsList: Ref<QFormItemContext[]> = ref([]);
 
     const filterFields = (
       passedProps?: string[] | string
@@ -78,7 +79,7 @@ export default defineComponent({
       const preparedProps = concat(passedProps || []);
 
       return preparedProps.length
-        ? fieldsList.value.filter(({ prop }) => preparedProps.includes(prop))
+        ? fieldsList.value.filter(({ prop }) => prop ? preparedProps.includes(prop) : false)
         : fieldsList.value;
     };
 
@@ -109,7 +110,7 @@ export default defineComponent({
     const validate = async (
       passedProps?: string[] | string
     ): Promise<ValidateFnResult | null> => {
-      if (!props?.model) {
+      if (!props.model) {
         if (process.env.NODE_ENV !== 'production') {
           console.warn('[Warn][QForm] model is required for validate to work!');
         }

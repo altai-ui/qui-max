@@ -1,6 +1,8 @@
 /* eslint-disable no-underscore-dangle, global-require, no-param-reassign */
 import kebabCase from 'lodash-es/kebabCase';
 import vClickOutside from 'v-click-outside';
+import mitt from 'mitt';
+import { App } from 'vue';
 import { installI18n } from './constants/locales';
 
 import QBreadcrumbs from './QBreadcrumbs';
@@ -54,14 +56,27 @@ allComponents.forEach(component => {
   }
 });
 
+interface localization {
+  locale?: string;
+  customI18nMessages?: {
+    [key: string]: string;
+  };
+}
+
+interface ConfigOptions {
+  localization?: localization;
+  zIndexCounter?: number;
+  prefix?: string;
+}
+
 // install
 const install = (
-  app,
+  app: App,
   {
     localization: { locale = 'ru', customI18nMessages = {} } = {},
     zIndexCounter = 2000,
     prefix = ''
-  } = {}
+  }: ConfigOptions = {}
 ) => {
   app.config.globalProperties.$Q = {};
   // define plugins
@@ -81,7 +96,7 @@ const install = (
   });
 
   app.use(vClickOutside);
-  installI18n({ locale, customI18nMessages });
+  installI18n({ app, locale, customI18nMessages });
 
   // setup modals
   if (!app.config.globalProperties.$notify) {
@@ -106,6 +121,8 @@ const install = (
   //   console.warn(`$dialog hasn't been registered, it has existed before`);
   // }
 
+  // setup emitter
+  app.config.globalProperties.$eventHub = mitt();
   allComponentsExceptModals.forEach(name => {
     const newName =
       prefix && isString(prefix) ? name.replace(/^Q/, prefix) : name;

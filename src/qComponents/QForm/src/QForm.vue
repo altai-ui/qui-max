@@ -4,22 +4,24 @@
   </form>
 </template>
 
-<script>
+<script lang="ts">
 import { concat } from 'lodash-es';
-
+import {
+  defineComponent,
+  provide,
+  Ref,
+  ref,
+  watch,
+} from 'vue';
+import { QFormItemContext } from '@/qComponents/QFormItem/src/types';
+import { QFormProvider, ValidateFnResult } from './types';
 /**
  * Form consists of `input`, `radio`, `select`, `checkbox` and so on.
  * With form, you can collect, verify and submit data. You must use QFormItem inside QForm
  */
-export default {
+export default defineComponent({
   name: 'QForm',
   componentName: 'QForm',
-
-  provide() {
-    return {
-      qForm: this
-    };
-  },
 
   props: {
     /**
@@ -68,36 +70,29 @@ export default {
     }
   },
 
-  data() {
-    return {
-      fields: []
-    };
-  },
+  setup(props) {
+    const fieldsList: Ref<QFormItemContext[]> = ref([]);
 
-  watch: {
-    rules() {
-      if (this.validateOnRuleChange) this.validate();
-    }
-  },
-
-  methods: {
-    /**
-     * @param {?string[]|string} props List of fields props.
-     */
-    filterFields(props) {
-      const preparedProps = concat(props || []);
+    const filterFields = (
+      passedProps?: string[] | string
+    ): QFormItemContext[] => {
+      const preparedProps = concat(passedProps || []);
 
       return preparedProps.length
-        ? this.fields.filter(({ prop }) => preparedProps.includes(prop))
-        : this.fields;
-    },
+        ? fieldsList.value.filter(({ prop }) => prop ? preparedProps.includes(prop) : false)
+        : fieldsList.value;
+    };
 
-    /**
-     * @public
-     * @param {?string[]|string} props List of fields props.
-     */
-    resetFields(props) {
-      if (!this.model) {
+    const clearValidate = (passedProps?: string[] | string): void => {
+      const filteredFields = filterFields(passedProps);
+
+      filteredFields.forEach(field => {
+        field.clearValidate();
+      });
+    };
+
+    const resetFields = (passedProps?: string[] | string): void => {
+      if (!props.model) {
         if (process.env.NODE_ENV !== 'production') {
           console.warn(
             '[Warn][QForm] model is required for resetFields to work.'
@@ -105,40 +100,24 @@ export default {
         }
         return;
       }
-      const filteredFields = this.filterFields(props);
+      const filteredFields = filterFields(passedProps);
 
       filteredFields.forEach(field => {
         field.resetField();
       });
-    },
+    };
 
-    /**
-     * @public
-     * @param {?string[]|string} props List of fields props.
-     */
-    clearValidate(props) {
-      const filteredFields = this.filterFields(props);
-
-      filteredFields.forEach(field => {
-        field.clearValidate();
-      });
-    },
-
-    /**
-     * @public
-     * @async
-     * @param {?string[]|string} props List of fields props.
-     * @return {Promise<?object>}
-     */
-    async validate(props) {
-      if (!this.model) {
+    const validate = async (
+      passedProps?: string[] | string
+    ): Promise<ValidateFnResult | null> => {
+      if (!props.model) {
         if (process.env.NODE_ENV !== 'production') {
           console.warn('[Warn][QForm] model is required for validate to work!');
         }
         return null;
       }
 
-      const filteredFields = this.filterFields(props);
+      const filteredFields = filterFields(passedProps);
 
       let isValid = true;
       let invalidFields = {};
@@ -157,7 +136,36 @@ export default {
         isValid,
         invalidFields
       };
-    }
+    };
+
+    watch(
+      () => props.rules,
+      () => {
+        if (props.validateOnRuleChange) {
+          validate();
+        }
+      },
+      { deep: true }
+    );
+
+    provide<QFormProvider>('qForm', {
+      disabled: props.disabled,
+      model: props.model,
+      rules: props.rules,
+      hideRequiredAsterisk: props.hideRequiredAsterisk,
+      showErrorMessage: props.showErrorMessage,
+      validate,
+      resetFields,
+      clearValidate,
+      fields: fieldsList
+    });
+
+    // for refs
+    return {
+      validate,
+      resetFields,
+      clearValidate
+    };
   }
-};
+});
 </script>

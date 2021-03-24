@@ -53,10 +53,9 @@ import {
   onMounted,
   onBeforeUnmount,
   inject,
-  toRefs,
   watch
 } from 'vue';
-import { QFormItemProvider, FilteredRuleItem } from './types';
+import { QFormItemContext, QFormItemProvider, FilteredRuleItem } from './types';
 
 export default defineComponent({
   name: 'QFormItem',
@@ -112,22 +111,18 @@ export default defineComponent({
   },
 
   setup(props, ctx) {
-    let initialValue = <unknown>null;
+    let initialValue: unknown = null;
     const errorMessage = ref<string | null>(null);
 
     const qForm = inject<QFormProvider | null>('qForm', null);
 
-    const isErrorSlotShown = computed(() => {
-      return (
-        (Boolean(errorMessage.value) || Boolean(ctx.slots.error)) &&
-        props.showErrorMessage &&
-        qForm?.showErrorMessage
-      );
-    });
+    const isErrorSlotShown = computed(() => (
+      (Boolean(errorMessage.value) || Boolean(ctx.slots.error)) &&
+      props.showErrorMessage &&
+      qForm?.showErrorMessage
+    ));
 
-    const labelFor = computed(() => {
-      return props.for ?? props.prop;
-    });
+    const labelFor = computed(() => props.for ?? props.prop);
 
     const isRequired = computed(() => {
       const propRules = props.rules || get(qForm?.rules, props.prop);
@@ -140,19 +135,15 @@ export default defineComponent({
       return preparedPropRules.some(({ required }) => required);
     });
 
-    const isHeaderShown = computed(() => {
-      return Boolean(
-        props.label || ctx.slots.label || props.sublabel || ctx.slots.sublabel
-      );
-    });
+    const isHeaderShown = computed(() => Boolean(
+      props.label || ctx.slots.label || props.sublabel || ctx.slots.sublabel
+    ));
 
-    const rootClasses = computed(() => {
-      return {
-        'q-form-item_is-required': isRequired.value,
-        'q-form-item_is-error': Boolean(errorMessage.value),
-        'q-form-item_is-no-asterisk': qForm?.hideRequiredAsterisk
-      };
-    });
+    const rootClasses = computed(() => ({
+      'q-form-item_is-required': isRequired.value,
+      'q-form-item_is-error': Boolean(errorMessage.value),
+      'q-form-item_is-no-asterisk': qForm?.hideRequiredAsterisk
+    }))
 
     const getFilteredRules = (
       trigger: string | null
@@ -218,7 +209,7 @@ export default defineComponent({
       errorMessage.value = null;
     };
 
-    const qFormItem = <QFormItemProvider>{
+    const qFormItem = <QFormItemContext>{
       ...props,
       errorMessage,
       initialValue,
@@ -233,7 +224,7 @@ export default defineComponent({
       clearValidate
     };
 
-    provide('qFormItem', {
+    provide<QFormItemProvider>('qFormItem', {
       validateField,
       resetField
     });

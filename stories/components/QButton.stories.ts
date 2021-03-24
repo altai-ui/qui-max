@@ -1,4 +1,4 @@
-import QButton from '../../src/qComponents/QButton';
+import QButton from '@/qComponents/QButton';
 
 export default {
   title: 'Components/Button',

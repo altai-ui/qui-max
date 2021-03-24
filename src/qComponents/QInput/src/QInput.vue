@@ -19,7 +19,7 @@
       :value="modelValue"
       class="q-input__inner"
       :type="inputType"
-      :disabled="inputDisabled"
+      :disabled="isDisabled"
       @input="updateModel"
       @change="updateModel"
       @focus="handleFocus"
@@ -58,10 +58,10 @@
 </template>
 
 <script lang="ts">
-import { inject, computed, ref, toRefs, reactive, watch } from 'vue';
+import { inject, computed, ref, reactive, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { QFormProvider } from '@/qComponents/QForm';
 import { QFormItemProvider } from '@/qComponents/QFormItem';
-import { QFormProvider } from '@/qComponents/QForm/src/types';
 import emitter from '../../mixins/emitter';
 
 export default {
@@ -149,47 +149,37 @@ export default {
       return ctx.attrs.type;
     });
 
-    const isPasswordSwitchShown = computed(() => {
-      return (
-        props.passwordSwitch &&
-        !inputDisabled.value &&
+    const isPasswordSwitchShown = computed(() => (
+      props.passwordSwitch &&
+      !isDisabled.value &&
+      !ctx.attrs.readonly &&
+      (Boolean(props.modelValue) || state.focused || state.hovering)
+    ));
+
+    const isClearButtonShown = computed(() => Boolean(
+      props.clearable &&
+        !isDisabled.value &&
         !ctx.attrs.readonly &&
-        (Boolean(props.modelValue) || state.focused || state.hovering)
-      );
-    });
+        props.modelValue &&
+        (state.focused || state.hovering)
+    ));
 
-    const isClearButtonShown = computed(() => {
-      return Boolean(
-        props.clearable &&
-          !inputDisabled.value &&
-          !ctx.attrs.readonly &&
-          props.modelValue &&
-          (state.focused || state.hovering)
-      );
-    });
+    const isSuffixVisible = computed(() => Boolean(
+      ctx.slots.suffix ||
+        props.suffixIcon ||
+        isClearButtonShown.value ||
+        props.passwordSwitch
+    ));
 
-    const isSuffixVisible = computed(() => {
-      return Boolean(
-        ctx.slots.suffix ||
-          props.suffixIcon ||
-          isClearButtonShown.value ||
-          props.passwordSwitch
-      );
-    });
+    const isDisabled = computed(() => props.disabled || (qForm?.disabled ?? false));
 
-    const inputDisabled = computed(() => {
-      return props.disabled || (qForm?.disabled ?? false);
-    });
-
-    const isSymbolLimitShown = computed(() => {
-      return (
-        props.showSymbolLimit &&
-        ctx.attrs.maxlength &&
-        !inputDisabled.value &&
-        !ctx.attrs.readonly &&
-        !props.passwordSwitch
-      );
-    });
+    const isSymbolLimitShown = computed(() => (
+      props.showSymbolLimit &&
+      ctx.attrs.maxlength &&
+      !isDisabled.value &&
+      !ctx.attrs.readonly &&
+      !props.passwordSwitch
+    ));
 
     const classes = computed(() => {
       const mainClass = 'q-input';
@@ -197,7 +187,7 @@ export default {
       return [
         mainClass,
         {
-          [`${mainClass}_disabled`]: inputDisabled.value,
+          [`${mainClass}_disabled`]: isDisabled.value,
           [`${mainClass}_suffix`]: isSuffixVisible.value
         }
       ];
@@ -209,7 +199,7 @@ export default {
 
     const updateModel = (event: Event) => {
       const target = event.target as HTMLInputElement;
-      ctx.emit('update:modelValue', target.value ?? null);
+      ctx.emit('update:modelValue', target.value ?? '');
     };
 
     const handleBlur = (event: FocusEvent) => {
@@ -245,7 +235,7 @@ export default {
     return {
       state,
       classes,
-      inputDisabled,
+      isDisabled,
       isPasswordSwitchShown,
       isSuffixVisible,
       isClearButtonShown,

@@ -5,7 +5,7 @@ export interface FilteredRuleItem extends RuleItem {
   trigger?: string | null;
 }
 
-export interface QFormItemProvider {
+export interface QFormItemContext {
   validateField: (
     trigger?: string | null
   ) => Promise<{ errors?: ErrorList; fields?: FieldErrorList }> | null;
@@ -27,4 +27,11 @@ export interface QFormItemProvider {
   prop: string | null;
   label: string | null;
   sublabel: string | null;
+}
+
+export interface QFormItemProvider {
+  validateField: (
+    trigger?: string | null
+  ) => Promise<{ errors?: ErrorList; fields?: FieldErrorList }> | null;
+  resetField: () => void;
 }

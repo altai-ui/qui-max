@@ -1,6 +1,6 @@
 import { Ref } from '@vue/reactivity';
 import {
-  QFormItemProvider,
+  QFormItemContext,
   FilteredRuleItem
 } from '@/qComponents/QFormItem/src/types';
 
@@ -23,9 +23,9 @@ export interface QFormProvider {
   resetFields: (passedProps?: string[] | string) => void;
   clearValidate: (passedProps?: string[] | string) => void;
   model: {
-    [key: string]: string | null;
+    [key: string]: unknown;
   };
-  fields: Ref<QFormItemProvider[]>;
+  fields: Ref<QFormItemContext[]>;
   rules: RulesOptions;
   showErrorMessage: boolean;
   hideRequiredAsterisk: boolean;

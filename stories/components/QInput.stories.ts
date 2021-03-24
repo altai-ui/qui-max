@@ -70,7 +70,6 @@ const Template = (args: any) => ({
       :counter-limit="args.counterLimit"
       :clearable="args.clearable"
       :validate-event="args.validateEvent"
-      
       :autocomplete="args.autocomplete"
       :placeholder="args.placeholder"
       :maxlength="args.maxlength"

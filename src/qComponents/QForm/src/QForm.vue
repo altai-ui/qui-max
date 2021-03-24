@@ -10,12 +10,9 @@ import {
   defineComponent,
   provide,
   ref,
-  toRefs,
   watch,
-  Ref,
-  reactive
 } from 'vue';
-import { QFormItemProvider } from '@/qComponents/QFormItem/src/types';
+import { QFormItemContext } from '@/qComponents/QFormItem/src/types';
 import { QFormProvider, ValidateFnResult } from './types';
 /**
  * Form consists of `input`, `radio`, `select`, `checkbox` and so on.
@@ -85,7 +82,7 @@ export default defineComponent({
 
     const filterFields = (
       passedProps?: string[] | string
-    ): QFormItemProvider[] => {
+    ): QFormItemContext[] => {
       const preparedProps = concat(passedProps || []);
 
       return preparedProps.length
@@ -151,7 +148,11 @@ export default defineComponent({
     );
 
     provide<QFormProvider>('qForm', {
-      ...props,
+      disabled: props.disabled,
+      model: props.model,
+      rules: props.rules,
+      hideRequiredAsterisk: props.hideRequiredAsterisk,
+      showErrorMessage: props.showErrorMessage,
       validate,
       resetFields,
       clearValidate,

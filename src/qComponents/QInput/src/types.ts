@@ -22,7 +22,7 @@ export interface QInput {
   // methods
   handleBlur: (event: FocusEvent) => void;
   handleFocus: (event: FocusEvent) => void;
-  handlePasswordVisible: Function;
+  handlePasswordVisible: () => void;
   handleClearClick: (event: MouseEvent) => void;
-  t: Function;
+  t: (key: string) => string;
 }

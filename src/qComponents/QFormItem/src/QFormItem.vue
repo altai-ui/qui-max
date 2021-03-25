@@ -42,7 +42,7 @@
 </template>
 
 <script lang="ts">
-import { QFormProvider } from '@/qComponents/QForm/src/types';
+import { QFormProvider } from '@/qComponents/QForm';
 import AsyncValidator, { ErrorList, FieldErrorList } from 'async-validator';
 import { get, set } from 'lodash-es';
 import {
@@ -175,7 +175,7 @@ export default defineComponent({
 
     const validateField = (
       trigger: string | null = null
-    ): Promise<{} | { errors: ErrorList; fields: FieldErrorList }> | null => {
+    ): Promise<{ errors?: ErrorList; fields?: FieldErrorList }> | null => {
       const triggeredRules = getFilteredRules(trigger);
 
       if (!triggeredRules?.length) return null;

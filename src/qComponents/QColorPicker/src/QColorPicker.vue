@@ -48,9 +48,11 @@
 
 <script lang="ts">
 import { defineComponent, PropType, inject, ref, computed, watch } from 'vue';
-
 import { createPopper, Instance, Placement, Options } from '@popperjs/core';
 import Color from 'color';
+
+import { QFormProvider } from '@/qComponents/QForm';
+import { QFormItemProvider } from '@/qComponents/QFormItem';
 
 import PLACEMENTS from '../../constants/popperPlacements';
 import QPickerDropdown from './QPickerDropdown.vue';
@@ -125,8 +127,8 @@ export default defineComponent({
   emits: [UPDATE_MODEL_EVENT, CHANGE_EVENT, 'click'],
 
   setup(props, { emit }) {
-    const qForm = inject<any>('qForm');
-    const qFormItem = inject<any>('qFormItem');
+    const qForm = inject<QFormProvider | null>('qForm', null);
+    const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
 
     const zIndex = ref(DEFAULT_Z_INDEX);
     const isClickIgnored = ref(false);

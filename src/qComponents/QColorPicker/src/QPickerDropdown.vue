@@ -44,11 +44,11 @@
           theme="link"
           @click="handleClearBtnClick"
         >
-          {{ "$t('QColorPicker.clear')" }}
+          {{ t('QColorPicker.clear') }}
         </q-button>
 
         <q-button @click="handleConfirmBtnClick">
-          {{ "$t('QColorPicker.confirm')" }}
+          {{ t('QColorPicker.confirm') }}
         </q-button>
       </div>
     </div>
@@ -57,7 +57,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType, ref, computed, watch, nextTick } from 'vue';
-
+import { useI18n } from 'vue-i18n';
 import Color from 'color';
 
 import QButton from '@/qComponents/QButton';
@@ -214,7 +214,10 @@ export default defineComponent({
       { immediate: true }
     );
 
+    const { t } = useI18n();
+
     return {
+      t,
       saturation,
       value,
       hue,

@@ -17,7 +17,7 @@ export default {
   }
 };
 
-export const QColorPickerStory = (args: any) => ({
+export const QColorPickerStory = (args: unknown): unknown => ({
   components: { QColorPicker },
   setup() {
     const color = ref('#f25');

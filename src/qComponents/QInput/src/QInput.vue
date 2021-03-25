@@ -1,8 +1,8 @@
 <template>
   <div
     :class="classes"
-    @mouseenter="hovering = true"
-    @mouseleave="hovering = false"
+    @mouseenter="state.hovering = true"
+    @mouseleave="state.hovering = false"
     @click="$emit('click')"
   >
     <div
@@ -10,32 +10,27 @@
       class="q-input__count"
     >
       <span class="q-input__count-inner">
-        {{ $t('QInput.charNumber') }}: {{ textLength }}/{{ upperLimit }}
+        {{ t('QInput.charNumber') }}: {{ textLength }}/{{ upperLimit }}
       </span>
     </div>
     <input
-      ref="input"
-      :tabindex="tabindex"
-      class="q-input__inner"
       v-bind="$attrs"
-      :type="nativeInputType"
-      :disabled="inputDisabled"
-      :readonly="readonly"
-      :autocomplete="autocomplete"
-      :aria-label="label"
-      @compositionstart="handleCompositionStart"
-      @compositionend="handleCompositionEnd"
-      @input="handleInput"
+      ref="input"
+      :value="modelValue"
+      class="q-input__inner"
+      :type="inputType"
+      :disabled="isDisabled"
+      @input="updateModel"
+      @change="updateModel"
       @focus="handleFocus"
       @blur="handleBlur"
-      @change="handleChange"
     />
     <span
       v-if="isSuffixVisible"
       class="q-input__suffix"
     >
       <span class="q-input__suffix-inner">
-        <template v-if="!isClearButtonShown || !isPasswordShown">
+        <template v-if="!isClearButtonShown || !isPasswordSwitchShown">
           <span
             v-if="suffixIcon"
             class="q-input__icon"
@@ -52,9 +47,9 @@
           @click="handleClearClick"
         />
         <span
-          v-if="isPasswordShown"
+          v-if="isPasswordSwitchShown"
           class="q-input__icon"
-          :class="passwordVisible ? 'q-icon-eye' : 'q-icon-eye-close'"
+          :class="state.isPasswordVisible ? 'q-icon-eye' : 'q-icon-eye-close'"
           @click="handlePasswordVisible"
         />
       </span>
@@ -63,20 +58,13 @@
 </template>
 
 <script lang="ts">
-import {
-  inject,
-  computed,
-  ref,
-  toRefs,
-  reactive,
-  onMounted,
-  nextTick,
-  watch
-} from 'vue';
-import { isDisabled } from '../../composables/inputDisabled';
+import { inject, computed, ref, reactive, watch, defineComponent } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { QFormProvider } from '@/qComponents/QForm';
+import { QFormItemProvider } from '@/qComponents/QFormItem';
 import emitter from '../../mixins/emitter';
 
-export default {
+export default defineComponent({
   name: 'QInput',
   componentName: 'QInput',
 
@@ -85,58 +73,32 @@ export default {
   inheritAttrs: false,
 
   props: {
-    value: {
-      type: [String, Number],
+    /**
+     * default to v-model
+     */
+    modelValue: {
+      type: String,
       default: ''
     },
+    /**
+     * whether input is disabled
+     */
     disabled: {
       type: Boolean,
       default: false
     },
-    readonly: {
-      type: Boolean,
-      default: false
-    },
+    /**
+     * shows the counter
+     */
     showSymbolLimit: {
       type: Boolean,
       default: false
     },
-    counterLimit: {
-      type: Number,
-      default: null
-    },
+    /** validate parent form if present */
     validateEvent: {
       type: Boolean,
       default: true
     },
-    label: { type: String, default: '' },
-    tabindex: { type: String, default: '' },
-    /**
-     * as native input type
-     */
-    type: {
-      type: String,
-      default: 'text',
-      validator: (value: string) =>
-        [
-          'text',
-          'password',
-          'number',
-          'email',
-          'hidden',
-          'tel',
-          'url'
-        ].includes(value)
-    },
-
-    /**
-     * as native input autocomplete
-     */
-    autocomplete: {
-      type: String,
-      default: 'off'
-    },
-
     /**
      * suffix icon class
      */
@@ -144,7 +106,6 @@ export default {
       type: String,
       default: ''
     },
-
     /**
      * whether to show clear button
      */
@@ -152,196 +113,152 @@ export default {
       type: Boolean,
       default: false
     },
-
     /**
      * whether to show password
      */
-    showPassword: {
+    passwordSwitch: {
       type: Boolean,
       default: false
     }
   },
 
-  emits: ['blur', 'focus', 'input', 'change', 'click'],
+  emits: [
+    'blur',
+    'focus',
+    'input',
+    'change',
+    'click',
+    'clear',
+    'update:modelValue'
+  ],
 
   setup(props, ctx) {
-    const input: object = ref(null);
-    const qFormItem: object | null = inject('qFormItem', null);
+    const input = ref<HTMLElement | null>(null);
+    const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
+    const qForm = inject<QFormProvider | null>('qForm', null);
 
     const state = reactive({
       hovering: false,
       focused: false,
-      isComposing: false,
-      passwordVisible: false
+      isPasswordVisible: false // state of passwordSwitch
     });
 
-    const nativeInputValue = computed(() => String(props.value ?? ''));
-    const nativeInputType = computed(() => {
-      let type = props.type;
-      if (props.showPassword) {
-        type = state.passwordVisible ? 'text' : 'password';
-      }
-      return type;
+    const inputType = computed(() => {
+      if (props.passwordSwitch)
+        return state.isPasswordVisible ? 'password' : 'text';
+      return ctx.attrs.type;
     });
-    const isPasswordShown = computed(() => {
-      return (
-        props.showPassword &&
-        !props.disabled &&
-        !props.readonly &&
-        (Boolean(nativeInputValue) || state.focused || state.hovering)
-      );
-    });
-    const isClearButtonShown = computed(() => {
-      return Boolean(
+
+    const isDisabled = computed(
+      () => props.disabled || (qForm?.disabled ?? false)
+    );
+
+    const isPasswordSwitchShown = computed(
+      () =>
+        props.passwordSwitch &&
+        !isDisabled.value &&
+        !ctx.attrs.readonly &&
+        (Boolean(props.modelValue) || state.focused || state.hovering)
+    );
+
+    const isClearButtonShown = computed(() =>
+      Boolean(
         props.clearable &&
-          !props.disabled &&
-          !props.readonly &&
-          nativeInputValue &&
+          !isDisabled.value &&
+          !ctx.attrs.readonly &&
+          props.modelValue &&
           (state.focused || state.hovering)
-      );
-    });
-    const isSuffixVisible = computed(() => {
-      console.log(isClearButtonShown.value);
+      )
+    );
 
-      return Boolean(
+    const isSuffixVisible = computed(() =>
+      Boolean(
         ctx.slots.suffix ||
           props.suffixIcon ||
           isClearButtonShown.value ||
-          props.showPassword
-      );
-    });
-    const isSymbolLimitShown = computed(() => {
-      return (
+          props.passwordSwitch
+      )
+    );
+
+    const isSymbolLimitShown = computed(
+      () =>
         props.showSymbolLimit &&
-        (ctx.attrs.maxlength || props.counterLimit) &&
-        !props.disabled &&
-        !props.readonly &&
-        !props.showPassword
-      );
-    });
+        ctx.attrs.maxlength &&
+        !isDisabled.value &&
+        !ctx.attrs.readonly &&
+        !props.passwordSwitch
+    );
+
     const classes = computed(() => {
       const mainClass = 'q-input';
 
       return [
         mainClass,
         {
-          [`${mainClass}_disabled`]: props.disabled,
-          [`${mainClass}_suffix`]: isSuffixVisible
+          [`${mainClass}_disabled`]: isDisabled.value,
+          [`${mainClass}_suffix`]: isSuffixVisible.value
         }
       ];
     });
-    const upperLimit = computed(() => {
-      return ctx.attrs.maxlength ?? props.counterLimit;
-    });
-    const textLength = computed(() => {
-      return props.value?.length ?? 0;
-    });
 
-    function setNativeInputValue() {
-      // console.log(input.value.value);
-      // if (!input.value || input.value.value === nativeInputValue.value) return;
-      // input.value.value = nativeInputValue.value;
-      // console.log(nativeInputValue.value);
-    }
+    const upperLimit = computed(() => ctx.attrs.maxlength);
 
-    function handleBlur(event: FocusEvent) {
+    const textLength = computed(() => props.modelValue?.length ?? 0);
+
+    const updateModel = (event: Event) => {
+      const target = event.target as HTMLInputElement;
+      ctx.emit('update:modelValue', target.value ?? '');
+    };
+
+    const handleBlur = (event: FocusEvent) => {
       state.focused = false;
       ctx.emit('blur', event);
       if (props.validateEvent) qFormItem?.validateField('blur');
-    }
+    };
 
-    function handleFocus(event: FocusEvent) {
+    const handleFocus = (event: FocusEvent) => {
       state.focused = true;
       ctx.emit('focus', event);
-    }
+    };
 
-    function handlePasswordVisible(): void {
-      state.passwordVisible = !state.passwordVisible;
-      // this.focus();
-    }
+    const handlePasswordVisible = (): void => {
+      state.isPasswordVisible = !state.isPasswordVisible;
+      input?.value?.focus();
+    };
 
-    function handleInput(event: InputEvent) {
-      // should not emit input during composition
-      if (state.isComposing) return;
-      ctx.emit('input', event.target?.value, event);
-      // ensure native input value is controlled
-      nextTick(setNativeInputValue);
-    }
+    const handleClearClick = (event: MouseEvent) => {
+      ctx.emit('update:modelValue', '');
+      ctx.emit('clear', event);
+    };
 
-    function handleChange(event: Event) {
-      ctx.emit('change', event?.target?.value);
-    }
+    watch(
+      () => props.modelValue,
+      () => {
+        if (props.validateEvent) qFormItem?.validateField('change');
+      }
+    );
 
-    onMounted(setNativeInputValue);
-
-    const { value, type } = toRefs(props);
-
-    watch(value, () => {
-      if (props.validateEvent && qFormItem) qFormItem.validateField('change');
-    });
-
-    watch(type, () => {
-      nextTick(setNativeInputValue);
-    });
-
-    watch(nativeInputValue, setNativeInputValue);
+    const { t } = useI18n();
 
     return {
-      // computed
       state,
       classes,
-      inputDisabled: props.disabled,
-      nativeInputValue: nativeInputValue.value,
-      isPasswordShown: isPasswordShown.value,
-      nativeInputType: nativeInputType.value,
-      isSuffixVisible: isSuffixVisible.value,
-      isClearButtonShown: isClearButtonShown.value,
-      isSymbolLimitShown: isSymbolLimitShown.value,
-      upperLimit: upperLimit.value,
-      textLength: textLength.value,
-      // refs
+      isDisabled,
+      isPasswordSwitchShown,
+      isSuffixVisible,
+      isClearButtonShown,
+      isSymbolLimitShown,
+      upperLimit,
+      textLength,
+      inputType,
       input,
-      // methods
-      setNativeInputValue,
       handleBlur,
       handleFocus,
       handlePasswordVisible,
-      handleInput,
-      handleChange
+      handleClearClick,
+      updateModel,
+      t
     };
-  },
-
-  ////
-  methods: {
-    handlePasswordVisible() {
-      this.passwordVisible = !this.passwordVisible;
-      this.focus();
-    },
-
-    handleClearClick(event) {
-      this.$emit('input', '');
-      this.$emit('change', '');
-      this.$emit('clear', event);
-    },
-    /////
-    focus() {
-      this.componentRef.focus();
-    },
-
-    select() {
-      this.componentRef.select();
-    },
-
-    handleCompositionStart() {
-      this.isComposing = true;
-    },
-
-    handleCompositionEnd(event) {
-      if (this.isComposing) {
-        this.isComposing = false;
-        this.handleInput(event);
-      }
-    }
   }
-};
+});
 </script>

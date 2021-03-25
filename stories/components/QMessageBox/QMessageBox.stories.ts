@@ -65,8 +65,8 @@ export const QMessageBoxComponentStory = (args: any) => ({
       try {
         const response = await QMessageBox({
           ...args,
-          component: defineAsyncComponent(() =>
-            import('./MessageBoxFormTest.vue')
+          component: defineAsyncComponent(
+            () => import('./MessageBoxFormTest.vue')
           )
         });
         console.log(response);

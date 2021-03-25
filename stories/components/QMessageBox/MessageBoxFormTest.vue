@@ -34,17 +34,9 @@
 <script lang="ts">
 import { defineComponent, ref, reactive } from 'vue';
 
-import { QForm, QFormItem, QButton } from '@/qComponents';
-
 const CLOSE_EVENT = 'close';
 
 export default defineComponent({
-  components: {
-    // QForm,
-    // QFormItem,
-    QButton
-  },
-
   emits: [CLOSE_EVENT],
 
   setup(_, { emit }) {

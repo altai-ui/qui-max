@@ -26,13 +26,7 @@
 <script lang="ts">
 import { defineComponent, computed, PropType } from 'vue';
 
-interface RouteItem {
-  name: string;
-  path: string;
-  meta: {
-    breadcrumb: string;
-  };
-}
+import type { RouteItem } from './types';
 
 export default defineComponent({
   name: 'QBreadcrumbs',

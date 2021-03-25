@@ -1,13 +1,11 @@
-import { App, ref, Ref } from 'vue';
+import { App } from 'vue';
 
 /* eslint-disable no-underscore-dangle, global-require, no-param-reassign */
-import kebabCase from 'lodash-es/kebabCase';
+import { kebabCase, isString } from 'lodash-es';
 import vClickOutside from 'v-click-outside';
 import mitt from 'mitt';
-import { App } from 'vue';
+
 import { installI18n } from './constants/locales';
-
-
 import { setConfig } from './config';
 
 import QBreadcrumbs from './QBreadcrumbs';
@@ -84,7 +82,7 @@ const install = (
     zIndexCounter,
     prefix = ''
   }: ConfigOptions = {}
-):void => {
+): void => {
   setConfig({
     locale,
     zIndex: zIndexCounter
@@ -94,15 +92,15 @@ const install = (
   installI18n({ app, locale, customI18nMessages });
 
   // setup modals
-  if (!app.config.globalProperties.$notify) {
-    app.config.globalProperties.$notify = options =>
-      QNotification({
-        duration: 3000, // - ms
-        ...options
-      });
-  } else if (process.env.NODE_ENV !== 'production') {
-    console.warn(`$notify hasn't been registered, it has existed before`);
-  }
+  // if (!app.config.globalProperties.$notify) {
+  //   app.config.globalProperties.$notify = options =>
+  //     QNotification({
+  //       duration: 3000, // - ms
+  //       ...options
+  //     });
+  // } else if (process.env.NODE_ENV !== 'production') {
+  //   console.warn(`$notify hasn't been registered, it has existed before`);
+  // }
 
   if (!app.config.globalProperties.$message) {
     app.config.globalProperties.$message = QMessageBox;

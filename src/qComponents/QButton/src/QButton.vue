@@ -1,10 +1,10 @@
 <template>
   <button
     class="q-button"
-    :disabled="disabled || loading"
+    :disabled="isButtonDisabled || loading"
     :autofocus="autofocus"
     :type="nativeType"
-    :class="classes"
+    :class="classList"
   >
     <span
       v-if="loading"
@@ -25,6 +25,7 @@
 
 <script lang="ts">
 import { defineComponent, computed, inject } from 'vue';
+import { QFormProvider } from '@/qComponents/QForm';
 
 export default defineComponent({
   name: 'QButton',
@@ -99,29 +100,34 @@ export default defineComponent({
   },
 
   setup(props) {
-    const qForm = inject<any>('qForm');
+    const qForm = inject<QFormProvider | null>('qForm', null);
 
-    const classes = computed(() => {
-      const classList: (string | { [key: string]: boolean })[] = Object.entries(
-        {
-          theme: props.theme,
-          type: props.type,
-          size: props.size
-        }
-      )
+    const isButtonDisabled = computed(
+      () => props.disabled || (qForm?.disabled ?? false)
+    );
+    const classList = computed(() => {
+      const classes: (string | { [key: string]: boolean })[] = Object.entries({
+        theme: props.theme,
+        type: props.type,
+        size: props.size
+      })
         .filter(([, value]) => Boolean(value))
         .map(([key, value]) => `q-button_${key}_${value}`);
 
-      classList.push({
-        'q-button_disabled': props.disabled || (qForm?.disabled ?? false),
+      classes.push({
+        'q-button_disabled': isButtonDisabled.value,
         'q-button_loading': props.loading,
         'q-button_circle': props.circle,
         'q-button_full-width': props.fullWidth
       });
-      return classList;
+
+      return classes;
     });
 
-    return { classes };
+    return {
+      classList,
+      isButtonDisabled
+    };
   }
 });
 </script>

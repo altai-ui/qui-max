@@ -1,0 +1,42 @@
+.q-breadcrumbs {
+  display: inline-grid;
+  grid-auto-flow: column;
+  align-items: baseline;
+  max-width: 100%;
+
+  &__divider {
+    position: relative;
+    top: 5px;
+    margin-right: 8px;
+    margin-left: 8px;
+    font-size: 24px;
+    color: rgba(var(--color-rgb-gray), 0.32);
+  }
+
+  &__crumb {
+    overflow: hidden;
+    font-weight: 800;
+    font-size: 24px;
+    line-height: 31px;
+    color: var(--color-primary-blue);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+
+    &:focus {
+      text-decoration: underline;
+    }
+
+    &_last:first-child {
+      color: var(--color-primary-black);
+    }
+
+    &_exact-active:not(:first-child),
+    &_last:not(:first-child) {
+      font-weight: var(--font-weight-bold);
+      font-size: 16px;
+      line-height: var(--line-height-base);
+      color: var(--color-primary-black);
+      cursor: default;
+    }
+  }
+}

@@ -2,7 +2,7 @@ import { merge } from 'lodash-es';
 
 export interface InstallOptions {
   zIndex: number;
-  locale: 'ru' | 'en';
+  locale: string;
 }
 
 let $Q: InstallOptions = {

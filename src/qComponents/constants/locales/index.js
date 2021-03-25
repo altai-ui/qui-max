@@ -1,12 +1,11 @@
 /* eslint-disable no-underscore-dangle */
-import { app } from '@storybook/vue3';
 import { createI18n } from 'vue-i18n';
 import { merge } from 'lodash-es';
 
 import ru from './ru';
 import en from './en';
 
-const installI18n = ({ locale, customI18nMessages }) => {
+const installI18n = ({ app, locale, customI18nMessages }) => {
   const isI18nExist = Boolean(app.config.globalProperties._i18n);
   if (isI18nExist) {
     console.warn(
@@ -15,10 +14,11 @@ const installI18n = ({ locale, customI18nMessages }) => {
     return;
   }
   const i18n = createI18n({
+    legacy: false,
     locale,
     messages: merge({ en, ru }, customI18nMessages)
   });
-  app.config.globalProperties._i18n = i18n;
+  app.use(i18n);
 };
 
 export default {

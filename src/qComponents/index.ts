@@ -3,11 +3,14 @@ import { App, ref, Ref } from 'vue';
 /* eslint-disable no-underscore-dangle, global-require, no-param-reassign */
 import kebabCase from 'lodash-es/kebabCase';
 import vClickOutside from 'v-click-outside';
-
+import mitt from 'mitt';
+import { App } from 'vue';
 import { installI18n } from './constants/locales';
+
 
 import { setConfig } from './config';
 
+import QBreadcrumbs from './QBreadcrumbs';
 import QButton from './QButton';
 import QCol from './QCol';
 import QCollapse from './QCollapse';
@@ -16,6 +19,7 @@ import QForm from './QForm';
 import QFormItem from './QFormItem';
 import QInput from './QInput';
 import QMessageBox from './QMessageBox';
+import QPagination from './QPagination';
 import QRow from './QRow';
 import QScrollbar from './QScrollbar';
 import QTabPane from './QTabPane';
@@ -23,6 +27,7 @@ import QTabs from './QTabs';
 import QTag from './QTag';
 
 const Components = {
+  QBreadcrumbs,
   QButton,
   QCol,
   QCollapse,
@@ -31,6 +36,7 @@ const Components = {
   QFormItem,
   QInput,
   QMessageBox,
+  QPagination,
   QRow,
   QScrollbar,
   QTabPane,
@@ -57,10 +63,17 @@ allComponents.forEach(component => {
   }
 });
 
-export interface $Q {
-  // locale: Ref<'ru' | 'en'>;
-  locale: Ref<string>;
-  zIndex: number;
+interface Localization {
+  locale?: string;
+  customI18nMessages?: {
+    [key: string]: string;
+  };
+}
+
+interface ConfigOptions {
+  localization?: Localization;
+  zIndexCounter?: number;
+  prefix?: string;
 }
 
 // install
@@ -70,15 +83,15 @@ const install = (
     localization: { locale, customI18nMessages = {} } = {},
     zIndexCounter,
     prefix = ''
-  } = {}
-) => {
+  }: ConfigOptions = {}
+):void => {
   setConfig({
     locale,
     zIndex: zIndexCounter
   });
 
   app.use(vClickOutside);
-  installI18n({ locale, customI18nMessages });
+  installI18n({ app, locale, customI18nMessages });
 
   // setup modals
   if (!app.config.globalProperties.$notify) {
@@ -104,6 +117,8 @@ const install = (
   //   console.warn(`$dialog hasn't been registered, it has existed before`);
   // }
 
+  // setup emitter
+  app.config.globalProperties.$eventHub = mitt();
   allComponentsExceptModals.forEach(name => {
     const newName =
       prefix && isString(prefix) ? name.replace(/^Q/, prefix) : name;
@@ -113,6 +128,7 @@ const install = (
 
 export default { install };
 export {
+  QBreadcrumbs,
   QButton,
   QCol,
   QCollapse,
@@ -121,6 +137,7 @@ export {
   QFormItem,
   QInput,
   QMessageBox,
+  QPagination,
   QRow,
   QScrollbar,
   QTabPane,

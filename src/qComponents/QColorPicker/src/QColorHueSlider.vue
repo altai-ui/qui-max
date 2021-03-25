@@ -47,17 +47,17 @@ export default defineComponent({
     const bar = ref<HTMLElement | null>(null);
 
     const handleDrag = (event: MouseEvent) => {
-      const refThumb = thumb.value;
-      if (!root.value || !refThumb) return;
+      const thumbElement = thumb.value;
+      if (!root.value || !thumbElement) return;
 
       const rect = root.value.getBoundingClientRect();
 
       let top = event.clientY - rect.top;
-      top = Math.min(top, rect.height - refThumb.offsetHeight / 2);
-      top = Math.max(refThumb.offsetHeight / 2, top);
+      top = Math.min(top, rect.height - thumbElement.offsetHeight / 2);
+      top = Math.max(thumbElement.offsetHeight / 2, top);
       const hue = Math.round(
-        ((top - refThumb.offsetHeight / 2) /
-          (rect.height - refThumb.offsetHeight)) *
+        ((top - thumbElement.offsetHeight / 2) /
+          (rect.height - thumbElement.offsetHeight)) *
           360
       );
 
@@ -71,12 +71,14 @@ export default defineComponent({
     };
 
     const getThumbTop = () => {
-      const refRoot = root.value;
-      const refThumb = thumb.value;
-      if (!refRoot || !refThumb) return 0;
+      const rootElement = root.value;
+      const thumbElement = thumb.value;
+      if (!rootElement || !thumbElement) return 0;
 
       return Math.round(
-        (props.hue * (refRoot.offsetHeight - refThumb.offsetHeight * 1.5)) / 360
+        (props.hue *
+          (rootElement.offsetHeight - thumbElement.offsetHeight * 1.5)) /
+          360
       );
     };
 
@@ -88,7 +90,8 @@ export default defineComponent({
       () => props.hue,
       () => {
         update();
-      }
+      },
+      { immediate: true }
     );
 
     onMounted(() => {
@@ -100,8 +103,6 @@ export default defineComponent({
       };
       draggable(bar.value, dragConfig);
       draggable(thumb.value, dragConfig);
-
-      update();
     });
 
     return {

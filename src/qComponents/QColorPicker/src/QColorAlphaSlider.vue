@@ -57,17 +57,17 @@ export default defineComponent({
     const bar = ref<HTMLElement | null>(null);
 
     const handleDrag = (event: MouseEvent) => {
-      const refThumb = thumb.value;
-      if (!root.value || !refThumb) return;
+      const thumbElement = thumb.value;
+      if (!root.value || !thumbElement) return;
 
       const rect = root.value.getBoundingClientRect();
 
       let left = event.clientX - rect.left;
-      left = Math.max(refThumb.offsetWidth / 2, left);
-      left = Math.min(left, rect.width - refThumb.offsetWidth / 2);
+      left = Math.max(thumbElement.offsetWidth / 2, left);
+      left = Math.min(left, rect.width - thumbElement.offsetWidth / 2);
       const alpha = Math.round(
-        ((left - refThumb.offsetWidth / 2) /
-          (rect.width - refThumb.offsetWidth)) *
+        ((left - thumbElement.offsetWidth / 2) /
+          (rect.width - thumbElement.offsetWidth)) *
           100
       );
 
@@ -81,12 +81,14 @@ export default defineComponent({
     };
 
     const getThumbLeft = () => {
-      const refRoot = root.value;
-      const refThumb = thumb.value;
-      if (!refRoot || !refThumb) return 0;
+      const rootElement = root.value;
+      const thumbElement = thumb.value;
+      if (!rootElement || !thumbElement) return 0;
 
       return Math.round(
-        (props.alpha * (refRoot.offsetWidth - refThumb.offsetWidth * 1.5)) / 100
+        (props.alpha *
+          (rootElement.offsetWidth - thumbElement.offsetWidth * 1.5)) /
+          100
       );
     };
 

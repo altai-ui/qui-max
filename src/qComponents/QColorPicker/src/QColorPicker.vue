@@ -102,7 +102,7 @@ export default defineComponent({
      * output color format
      */
     colorFormat: {
-      type: String,
+      type: String as PropType<'hex' | 'rgb'>,
       default: 'hex',
       validator: (value: string) => ['hex', 'rgb'].includes(value)
     },
@@ -110,13 +110,6 @@ export default defineComponent({
       type: String as PropType<Placement>,
       default: 'right-start',
       validator: (value: string) => PLACEMENTS.includes(value)
-    },
-    /**
-     * whether to append the popper menu to body. If the positioning of the popper is wrong, you can try to set this prop to false
-     */
-    appendToBody: {
-      type: Boolean,
-      default: true
     },
     popperOptions: {
       type: Object as PropType<Partial<Options>>,

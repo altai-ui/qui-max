@@ -62,13 +62,10 @@ import { inject, computed, ref, reactive, watch, defineComponent } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { QFormProvider } from '@/qComponents/QForm';
 import { QFormItemProvider } from '@/qComponents/QFormItem';
-import emitter from '../../mixins/emitter';
 
 export default defineComponent({
   name: 'QInput',
   componentName: 'QInput',
-
-  mixins: [emitter],
 
   inheritAttrs: false,
 
@@ -149,37 +146,45 @@ export default defineComponent({
       return ctx.attrs.type;
     });
 
-    const isDisabled = computed(() => props.disabled || (qForm?.disabled ?? false));
+    const isDisabled = computed(
+      () => props.disabled || (qForm?.disabled ?? false)
+    );
 
-    const isPasswordSwitchShown = computed(() => (
-      props.passwordSwitch &&
-      !isDisabled.value &&
-      !ctx.attrs.readonly &&
-      (Boolean(props.modelValue) || state.focused || state.hovering)
-    ));
-
-    const isClearButtonShown = computed(() => Boolean(
-      props.clearable &&
+    const isPasswordSwitchShown = computed(
+      () =>
+        props.passwordSwitch &&
         !isDisabled.value &&
         !ctx.attrs.readonly &&
-        props.modelValue &&
-        (state.focused || state.hovering)
-    ));
+        (Boolean(props.modelValue) || state.focused || state.hovering)
+    );
 
-    const isSuffixVisible = computed(() => Boolean(
-      ctx.slots.suffix ||
-        props.suffixIcon ||
-        isClearButtonShown.value ||
-        props.passwordSwitch
-    ));
+    const isClearButtonShown = computed(() =>
+      Boolean(
+        props.clearable &&
+          !isDisabled.value &&
+          !ctx.attrs.readonly &&
+          props.modelValue &&
+          (state.focused || state.hovering)
+      )
+    );
 
-    const isSymbolLimitShown = computed(() => (
-      props.showSymbolLimit &&
-      ctx.attrs.maxlength &&
-      !isDisabled.value &&
-      !ctx.attrs.readonly &&
-      !props.passwordSwitch
-    ));
+    const isSuffixVisible = computed(() =>
+      Boolean(
+        ctx.slots.suffix ||
+          props.suffixIcon ||
+          isClearButtonShown.value ||
+          props.passwordSwitch
+      )
+    );
+
+    const isSymbolLimitShown = computed(
+      () =>
+        props.showSymbolLimit &&
+        ctx.attrs.maxlength &&
+        !isDisabled.value &&
+        !ctx.attrs.readonly &&
+        !props.passwordSwitch
+    );
 
     const classes = computed(() => {
       const mainClass = 'q-input';

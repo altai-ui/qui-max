@@ -1,0 +1,65 @@
+.q-input-number {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  line-height: 40px;
+
+  &_with-controls {
+    width: 160px;
+
+    & .q-input__inner {
+      box-sizing: border-box;
+      padding: 0 34px;
+      text-align: center;
+    }
+  }
+
+  &__button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 1;
+    width: 32px;
+    height: 40px;
+    font-size: 16px;
+    color: rgba(var(--color-rgb-gray), 0.64);
+    background-color: transparent;
+    border: none;
+    border-radius: var(--border-radius-base);
+    outline: none;
+    cursor: pointer;
+
+    &_decrease {
+      right: auto;
+      left: 0;
+    }
+
+    &:enabled:not(.q-input-number__button_is-disabled) {
+      &:hover::before,
+      &:focus::before {
+        background-color: rgba(var(--color-rgb-gray), 0.16);
+        border-radius: 16px;
+        outline: none;
+      }
+
+      &:focus::before {
+        color: var(--color-primary-black);
+      }
+    }
+
+    &[disabled]:hover {
+      cursor: not-allowed;
+    }
+
+    &_is-disabled {
+      color: rgba(var(--color-rgb-gray), 0.16);
+      cursor: not-allowed;
+    }
+  }
+
+  &__input {
+    &.q-input_disabled::after {
+      display: none;
+    }
+  }
+}

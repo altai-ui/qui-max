@@ -23,7 +23,7 @@ export const QMessageBoxStory = (args: any) => ({
         ctx.isConfirmBtnLoading.value = false;
 
         return true;
-      } catch (error) {
+      } catch {
         ctx.isConfirmBtnLoading.value = false;
 
         return false;
@@ -32,7 +32,7 @@ export const QMessageBoxStory = (args: any) => ({
 
     const isShown = ref(false);
 
-    const handleClick = async () => {
+    const handleClick = () => {
       isShown.value = true;
     };
 

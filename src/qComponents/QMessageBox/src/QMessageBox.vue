@@ -34,6 +34,7 @@
             </div>
 
             <button
+              type="button"
               class="q-message-box__close q-icon-close"
               @click="emitCloseEvent"
             />

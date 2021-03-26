@@ -1,0 +1,79 @@
+<template>
+  <q-message-box
+    distinguish-cancel-and-close
+    @close="handleCancelClick"
+  >
+    <template #title>Morbi massa libero, vehicula nec consequat sed, porta a sem.</template>
+
+    <template #content>
+      <q-form :model="formModel">
+        <q-form-item
+          prop="name"
+          label="Name"
+          required
+        >
+          <q-input v-model="formModel.name" />
+        </q-form-item>
+      </q-form>
+    </template>
+
+    <template #actions>
+      <q-button
+        :loading="isSending"
+        @click="handleSendClick"
+      >
+        Send
+      </q-button>
+
+      <q-button
+        theme="secondary"
+        @click="handleCancelClick"
+      >
+        Cancel
+      </q-button>
+    </template>
+  </q-message-box>
+</template>
+
+<script lang="ts">
+import { defineComponent, ref, reactive } from 'vue';
+
+const UPDATE_MODEL_EVENT = 'update:modelValue';
+
+export default defineComponent({
+  name: 'MessageBoxFormTest',
+
+  emits: [UPDATE_MODEL_EVENT],
+
+  setup(_, { emit }) {
+    const isSending = ref(false);
+    const formModel = reactive({ name: 'Testname' });
+
+    const handleCancelClick = () => {
+      emit(UPDATE_MODEL_EVENT, false);
+    };
+
+    const handleSendClick = async () => {
+      isSending.value = true;
+
+      const promise = () =>
+        new Promise(resolve => {
+          setTimeout(() => resolve('done'), 1000);
+        });
+
+      await promise();
+
+      emit(UPDATE_MODEL_EVENT, false);
+
+      isSending.value = false;
+    };
+
+    return {
+      formModel,
+      isSending,
+      handleSendClick,
+      handleCancelClick
+    };
+  }
+});
+</script>

@@ -103,7 +103,7 @@ export default defineComponent({
      */
     modelValue: {
       type: [String, Number] as PropType<
-        null | string | number | (string | number)
+        null | string | number
       >,
       default: '',
       validator: (value: string | number): boolean => {

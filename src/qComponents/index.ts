@@ -19,6 +19,7 @@ import QScrollbar from './QScrollbar';
 import QTabPane from './QTabPane';
 import QTabs from './QTabs';
 import QTag from './QTag';
+import QTextarea from './QTextarea';
 
 const Components = {
   QBreadcrumbs,
@@ -34,7 +35,8 @@ const Components = {
   QScrollbar,
   QTabPane,
   QTabs,
-  QTag
+  QTag,
+  QTextarea
 };
 
 const allComponents = Object.keys(Components);
@@ -56,7 +58,7 @@ allComponents.forEach(component => {
   }
 });
 
-interface localization {
+interface Localization {
   locale?: string;
   customI18nMessages?: {
     [key: string]: string;
@@ -64,7 +66,7 @@ interface localization {
 }
 
 interface ConfigOptions {
-  localization?: localization;
+  localization?: Localization;
   zIndexCounter?: number;
   prefix?: string;
 }
@@ -149,5 +151,6 @@ export {
   QScrollbar,
   QTabPane,
   QTabs,
-  QTag
+  QTag,
+  QTextarea
 };

@@ -1,46 +1,52 @@
 <template>
   <div
     :class="classes"
-    @mouseenter="hovering = true"
-    @mouseleave="hovering = false"
+    @mouseenter="state.hovering = true"
+    @mouseleave="state.hovering = false"
   >
     <div
       v-if="isSymbolLimitShown"
       class="q-textarea__count"
     >
-      {{ $t('QTextarea.charNumber') }}: {{ textLength }}/{{ upperLimit }}
+      {{ t('QTextarea.charNumber') }}: {{ textLength }}/{{ upperLimit }}
     </div>
     <textarea
-      ref="textarea"
-      :tabindex="tabindex"
-      class="q-textarea__inner"
       v-bind="$attrs"
-      :disabled="inputDisabled"
-      :readonly="readonly"
-      :autocomplete="autocomplete"
+      ref="textarea"
+      class="q-textarea__inner"
+      :disabled="isDisabled"
       :style="textareaStyle"
-      :aria-label="label"
-      @compositionstart="handleCompositionStart"
-      @compositionend="handleCompositionEnd"
-      @input="handleInput"
+      @input="updateModel"
+      @change="updateModel"
       @focus="handleFocus"
       @blur="handleBlur"
-      @change="handleChange"
     />
   </div>
 </template>
 <script>
+import { computed, defineComponent, inject, nextTick, onMounted, ref, watch, reactive } from 'vue';
+import { computeDisabled, computeSymbolLimitVisibility } from '@/qComponents/composables/inputs';
+import { QFormProvider } from '@/qComponents/QForm';
+import { QFormItemProvider } from '@/qComponents/QFormItem';
+import { useI18n } from 'vue-i18n';
 import emitter from '../../mixins/emitter';
 import inputs from '../../mixins/inputs';
 import calcTextareaHeight from './calcTextareaHeight';
 
-export default {
+export default defineComponent({
   name: 'QTextarea',
   componentName: 'QTextarea',
 
   mixins: [emitter, inputs],
 
   props: {
+    /**
+     * default to v-model
+     */
+    modelValue: {
+      type: String,
+      default: ''
+    },
     /**
      * control the resizability
      */
@@ -53,73 +59,148 @@ export default {
     /**
      * whether textarea has an adaptive height. Can accept an object, e.g. { minRows: 2, maxRows: 6 }
      */
+    disabled: {
+      type: Boolean,
+      default: false
+    },
+
+    /**
+     * shows the counter
+     */
+    showSymbolLimit: {
+      type: Boolean,
+      default: false
+    },
+
     autosize: {
       type: [Boolean, Object],
       default: false
     },
+
     autocomplete: {
       type: String,
       default: 'off'
-    }
+    },
+
+    /** validate parent form if present */
+    validateEvent: {
+      type: Boolean,
+      default: true
+    },
   },
 
-  data() {
-    return {
-      textareaCalcStyle: {}
-    };
-  },
+  emits: [
+    'blur',
+    'focus',
+    'input',
+    'change',
+    'click',
+    'clear',
+    'compositionstart',
+    'compositionend',
+    'update:modelValue'
+  ],
 
-  computed: {
-    classes() {
+  setup(props, ctx) {
+    const textareaCalcStyle = ref({});
+    const qForm = inject<QFormProvider | null>('qForm', null);
+    const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
+    const textarea = ref(null);
+    const state = reactive({
+      hovering: false,
+      focused: false,
+      isPasswordVisible: false // state of passwordSwitch
+    });
+
+    const isDisabled = computeDisabled({ componentDisabled: props.disabled, formDisabled: qForm?.disabled ?? false });
+
+    const isSymbolLimitShown = computeSymbolLimitVisibility(
+      {
+        showSymbolLimit: props.showSymbolLimit,
+        passwordSwitch: props.passwordSwitch
+      }, {
+        maxlength: ctx.attrs.maxlength,
+        readonly: ctx.attrs.readonly
+      },
+      isDisabled
+    );
+
+    const classes = computed(() => {
       const mainClass = 'q-textarea';
 
       return [
         mainClass,
         {
-          [`${mainClass}_disabled`]: this.inputDisabled
+          [`${mainClass}_disabled`]: computeDisabled({ componentDisabled: props.disabled, formDisabled: qForm?.disabled ?? false }).value
         }
-      ];
-    },
-    textareaStyle() {
-      return { ...this.textareaCalcStyle, resize: this.resize };
-    },
+      ]
+    })
 
-    componentRef() {
-      return this.$refs.textarea;
-    }
-  },
+    const textareaStyle = computed(() => ({ ...textareaCalcStyle, ...props.resize }));
 
-  watch: {
-    value() {
-      this.$nextTick(this.resizeTextarea);
+    const updateModel = (event: Event) => {
+      const target = event.target as HTMLInputElement;
+      ctx.emit('update:modelValue', target.value ?? '');
+    };
 
-      if (this.validateEvent) this.qFormItem?.validateField('change');
-    }
-  },
+    const handleBlur = (event: FocusEvent) => {
+      state.focused = false;
+      ctx.emit('blur', event);
+      if (props.validateEvent) qFormItem?.validateField('blur');
+    };
 
-  mounted() {
-    this.setNativeInputValue();
-    this.resizeTextarea();
-  },
+    const handleFocus = (event: FocusEvent) => {
+      state.focused = true;
+      ctx.emit('focus', event);
+    };
 
-  methods: {
-    resizeTextarea() {
-      const { autosize } = this;
+    const handleClearClick = (event: MouseEvent) => {
+      ctx.emit('update:modelValue', '');
+      ctx.emit('clear', event);
+    };
+
+    const resizeTextarea = () => {
+      const { autosize } = props;
       if (!autosize) {
-        this.textareaCalcStyle = {
-          minHeight: calcTextareaHeight(this.$refs.textarea).minHeight
+        textareaCalcStyle.value = {
+          minHeight: calcTextareaHeight(textarea.value).minHeight
         };
         return;
       }
+
       const minRows = autosize.minRows;
       const maxRows = autosize.maxRows;
 
-      this.textareaCalcStyle = calcTextareaHeight(
-        this.$refs.textarea,
+      textareaCalcStyle.value = calcTextareaHeight(
+        textarea.value,
         minRows,
         maxRows
       );
     }
-  }
-};
+
+    watch(() => props.modelValue, () => {
+      nextTick(() => resizeTextarea())
+      if (props.validateEvent) qFormItem?.validateField('change');
+    })
+
+    onMounted(() => {
+      resizeTextarea();
+    })
+
+    const { t } = useI18n();
+
+    return {
+      t,
+      state,
+      textareaCalcStyle,
+      classes,
+      textareaStyle,
+      isDisabled,
+      isSymbolLimitShown,
+      updateModel,
+      handleBlur,
+      handleFocus
+    };
+  },
+});
 </script>

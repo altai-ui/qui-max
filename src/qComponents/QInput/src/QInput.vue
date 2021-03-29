@@ -62,6 +62,7 @@ import { inject, computed, ref, reactive, watch, defineComponent } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { QFormProvider } from '@/qComponents/QForm';
 import { QFormItemProvider } from '@/qComponents/QFormItem';
+import { computeDisabled, computeSymbolLimitVisibility } from '@/qComponents/composables/inputs';
 import emitter from '../../mixins/emitter';
 
 export default defineComponent({
@@ -149,7 +150,18 @@ export default defineComponent({
       return ctx.attrs.type;
     });
 
-    const isDisabled = computed(() => props.disabled || (qForm?.disabled ?? false));
+    const isDisabled = computeDisabled({ componentDisabled: props.disabled, formDisabled: qForm?.disabled ?? false });
+    
+    const isSymbolLimitShown = computeSymbolLimitVisibility(
+      {
+        showSymbolLimit: props.showSymbolLimit,
+        passwordSwitch: props.passwordSwitch
+      }, {
+        maxlength: ctx.attrs.maxlength,
+        readonly: ctx.attrs.readonly
+      },
+      isDisabled
+    );
 
     const isPasswordSwitchShown = computed(() => (
       props.passwordSwitch &&
@@ -171,14 +183,6 @@ export default defineComponent({
         props.suffixIcon ||
         isClearButtonShown.value ||
         props.passwordSwitch
-    ));
-
-    const isSymbolLimitShown = computed(() => (
-      props.showSymbolLimit &&
-      ctx.attrs.maxlength &&
-      !isDisabled.value &&
-      !ctx.attrs.readonly &&
-      !props.passwordSwitch
     ));
 
     const classes = computed(() => {

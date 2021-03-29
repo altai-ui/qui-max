@@ -11,7 +11,7 @@
         :class="wrapClass"
         :style="[wrapStyle, { zIndex: wrapZIndex }]"
         tabindex="-1"
-        @keyup.esc="closeBox"
+        @keyup.esc="emitCloseEvent"
       >
         <div class="q-message-box__shadow" />
 
@@ -107,6 +107,7 @@ import { getConfig } from '@/qComponents/config';
 
 import type { QMessageBoxEvent, QMessageBoxBeforeClose } from './types';
 
+const DEFAULT_Z_INDEX = 2000;
 const UPDATE_MODEL_EVENT = 'update:modelValue';
 const CONFIRM_EVENT = 'confirm';
 const CLOSE_EVENT = 'close';
@@ -206,7 +207,7 @@ export default defineComponent({
 
   setup(props, { emit }) {
     const isRendered = ref(false);
-    const wrapZIndex = ref(props.zIndex);
+    const wrapZIndex = ref(DEFAULT_Z_INDEX);
 
     const isConfirmBtnLoading = ref(false);
     const isCancelBtnLoading = ref(false);
@@ -224,7 +225,8 @@ export default defineComponent({
         if (!newValue) return;
 
         isRendered.value = true;
-        if (!props.zIndex) wrapZIndex.value = getConfig('nextZIndex') ?? 2000;
+        wrapZIndex.value =
+          props.zIndex ?? getConfig('nextZIndex') ?? DEFAULT_Z_INDEX;
 
         elementToFocusAfterClosing = document.activeElement as HTMLElement;
 

@@ -3,7 +3,10 @@ import QMessageBox, { QMessageBoxBeforeClose } from '@/qComponents/QMessageBox';
 
 export default {
   title: 'Components/QMessageBox',
-  component: QMessageBox
+  component: QMessageBox,
+  argTypes: {
+    modelValue: { control: { type: 'none' } }
+  }
 };
 
 export const QMessageBoxStory = (args: any) => ({
@@ -62,11 +65,17 @@ export const QMessageBoxStory = (args: any) => ({
 
     <q-message-box
       v-model="isShown"
+      :z-index="args.zIndex"
       :title="args.title"
       :message="args.message"
       :submessage="args.submessage"
       :confirm-button-text="args.confirmButtonText"
       :cancel-button-text="args.cancelButtonText"
+      :close-on-click-shadow="args.closeOnClickShadow"
+      :distinguish-cancel-and-close="args.distinguishCancelAndClose"
+      :before-close="args.beforeClose"
+      :wrap-class="args.wrapClass"
+      :wrap-style="args.wrapStyle"
       @confirm="handleConfirm"
       @close="handleClose"
       @cancel="handleCancel"

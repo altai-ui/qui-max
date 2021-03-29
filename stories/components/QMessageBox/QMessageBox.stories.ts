@@ -5,7 +5,7 @@ export default {
   title: 'Components/QMessageBox',
   component: QMessageBox,
   argTypes: {
-    modelValue: { control: { type: 'none' } }
+    isVisible: { control: { type: 'none' } }
   }
 };
 

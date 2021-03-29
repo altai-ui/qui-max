@@ -1,8 +1,10 @@
 /* eslint-disable no-underscore-dangle, global-require, no-param-reassign */
-import kebabCase from 'lodash-es/kebabCase';
+import { isString, kebabCase } from 'lodash-es';
 import vClickOutside from 'v-click-outside';
 import mitt from 'mitt';
 import { App } from 'vue';
+
+import { setConfig } from './config';
 import { installI18n } from './constants/locales';
 
 import QBreadcrumbs from './QBreadcrumbs';
@@ -14,6 +16,7 @@ import QColorPicker from './QColorPicker';
 import QForm from './QForm';
 import QFormItem from './QFormItem';
 import QInput from './QInput';
+import QMessageBox from './QMessageBox';
 import QPagination from './QPagination';
 import QRow from './QRow';
 import QScrollbar from './QScrollbar';
@@ -31,6 +34,7 @@ const Components = {
   QForm,
   QFormItem,
   QInput,
+  QMessageBox,
   QPagination,
   QRow,
   QScrollbar,
@@ -41,7 +45,7 @@ const Components = {
 
 const allComponents = Object.keys(Components);
 const allComponentsExceptModals = allComponents.filter(
-  name => !['QNotification', 'QMessageBox', 'QDialog'].includes(name)
+  name => !['QNotification', 'QDialog'].includes(name)
 );
 
 // import styles
@@ -58,7 +62,7 @@ allComponents.forEach(component => {
   }
 });
 
-interface localization {
+interface Localization {
   locale?: string;
   customI18nMessages?: {
     [key: string]: string;
@@ -66,7 +70,7 @@ interface localization {
 }
 
 interface ConfigOptions {
-  localization?: localization;
+  localization?: Localization;
   zIndexCounter?: number;
   prefix?: string;
 }
@@ -75,41 +79,29 @@ interface ConfigOptions {
 const install = (
   app: App,
   {
-    localization: { locale = 'ru', customI18nMessages = {} } = {},
-    zIndexCounter = 2000,
+    localization: { locale, customI18nMessages = {} } = {},
+    zIndexCounter,
     prefix = ''
   }: ConfigOptions = {}
-) => {
-  app.config.globalProperties.$Q = {};
-  // define plugins
-  Object.defineProperties(app.config.globalProperties.$Q, {
-    zIndex: {
-      get() {
-        zIndexCounter += 1;
-        return zIndexCounter;
-      }
-    },
-    locale: {
-      get: () => locale,
-      set(newLocale) {
-        locale = newLocale;
-      }
-    }
+): void => {
+  setConfig({
+    locale,
+    zIndex: zIndexCounter
   });
 
   app.use(vClickOutside);
   installI18n({ app, locale, customI18nMessages });
 
   // setup modals
-  if (!app.config.globalProperties.$notify) {
-    app.config.globalProperties.$notify = options =>
-      QNotification({
-        duration: 3000, // - ms
-        ...options
-      });
-  } else if (process.env.NODE_ENV !== 'production') {
-    console.warn(`$notify hasn't been registered, it has existed before`);
-  }
+  // if (!app.config.globalProperties.$notify) {
+  //   app.config.globalProperties.$notify = options =>
+  //     QNotification({
+  //       duration: 3000, // - ms
+  //       ...options
+  //     });
+  // } else if (process.env.NODE_ENV !== 'production') {
+  //   console.warn(`$notify hasn't been registered, it has existed before`);
+  // }
 
   // if (!app.config.globalProperties.$message) {
   //   app.config.globalProperties.$message = QMessageBox;
@@ -132,11 +124,7 @@ const install = (
   });
 };
 
-const Qui = {
-  install
-};
-
-export default Qui;
+export default { install };
 export {
   QBreadcrumbs,
   QButton,
@@ -147,6 +135,7 @@ export {
   QForm,
   QFormItem,
   QInput,
+  QMessageBox,
   QPagination,
   QRow,
   QScrollbar,

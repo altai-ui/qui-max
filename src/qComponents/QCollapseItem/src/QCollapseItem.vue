@@ -44,12 +44,6 @@ export default defineComponent({
 
   components: { QCollapseTransition },
 
-  inject: {
-    qCollapse: {
-      default: null
-    }
-  },
-
   props: {
     title: {
       type: String,

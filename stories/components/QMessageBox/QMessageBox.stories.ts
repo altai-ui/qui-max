@@ -101,18 +101,18 @@ export const QMessageBoxComponentStory = (args: any) => ({
     )
   },
   setup() {
-    const isShown = ref(false);
+    const isVisible = ref(false);
 
     const handleClick = async () => {
-      isShown.value = true;
+      isVisible.value = true;
     };
 
-    return { isShown, handleClick };
+    return { isVisible, handleClick };
   },
   template: `
     <q-button @click="handleClick">Click to open</q-button>
 
-    <message-box-form-test v-model="isShown" />
+    <message-box-form-test v-model:isVisible="isVisible"/>
   `
 });
 

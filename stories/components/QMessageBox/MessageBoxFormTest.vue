@@ -38,19 +38,19 @@
 <script lang="ts">
 import { defineComponent, ref, reactive } from 'vue';
 
-const UPDATE_MODEL_EVENT = 'update:modelValue';
+const UPDATE_IS_VISIBLE_EVENT = 'update:isVisible';
 
 export default defineComponent({
   name: 'MessageBoxFormTest',
 
-  emits: [UPDATE_MODEL_EVENT],
+  emits: [UPDATE_IS_VISIBLE_EVENT],
 
   setup(_, { emit }) {
     const isSending = ref(false);
     const formModel = reactive({ name: 'Testname' });
 
     const handleCancelClick = () => {
-      emit(UPDATE_MODEL_EVENT, false);
+      emit(UPDATE_IS_VISIBLE_EVENT, false);
     };
 
     const handleSendClick = async () => {
@@ -63,7 +63,7 @@ export default defineComponent({
 
       await promise();
 
-      emit(UPDATE_MODEL_EVENT, false);
+      emit(UPDATE_IS_VISIBLE_EVENT, false);
 
       isSending.value = false;
     };

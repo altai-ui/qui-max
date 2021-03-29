@@ -5,36 +5,38 @@
   >
     <button
       v-if="controls"
-      class="q-input-number__button_decrease q-input-number__button q-icon-minus"
+      class="q-input-number__button q-input-number__button_decrease q-icon-minus"
+      type="button"
       :disabled="isDisabled"
       :class="decreaseClass"
-      @click.prevent="handleDecreaseClick"
+      @click="handleDecreaseClick"
     />
 
     <q-input
+      v-bind="$attrs"
       :model-value="currentValue"
       class="q-input-number__input"
       :disabled="isDisabled"
-      :placeholder="placeholder"
       :validate-event="false"
       type="number"
       @blur="handleBlur"
       @focus="handleFocus"
-      @update:model-value="(value, type) => handleChangeInput(value, type)"
+      @update:model-value="handleChangeInput"
     />
 
     <button
       v-if="controls"
-      class="q-input-number__button_increase q-input-number__button q-icon-plus"
+      class="q-input-number__button q-input-number__button_increase q-icon-plus"
+      type="button"
       :disabled="isDisabled"
       :class="increaseClass"
-      @click.prevent="handleIncreaseClick"
+      @click="handleIncreaseClick"
     />
   </div>
 </template>
 
 <script lang="ts">
-import { inject, computed, reactive, watch, defineComponent } from 'vue';
+import { inject, computed, reactive, watch, defineComponent, PropType } from 'vue';
 
 import { QFormProvider } from '@/qComponents/QForm';
 import { QFormItemProvider } from '@/qComponents/QFormItem';
@@ -52,63 +54,65 @@ export default defineComponent({
 
   props: {
     /**
-     * the minimum allowed value
-     */
+      * the minimum allowed value
+      */
     min: {
       type: Number,
       default: Number.MIN_SAFE_INTEGER
     },
 
     /**
-     * the maximum allowed value
-     */
+      * the maximum allowed value
+      */
     max: {
       type: Number,
       default: Number.MAX_SAFE_INTEGER
     },
 
     /**
-     * incremental step
-     */
+      * incremental step
+      */
     step: {
       type: Number,
       default: 1
     },
 
     /**
-     * precision of input value
-     */
+      * precision of input value
+      */
     precision: {
       type: Number,
       default: 0
     },
     /**
-     * whether the component is disabled
-     */
+      * whether the component is disabled
+      */
     disabled: {
       type: Boolean,
       default: false
     },
     /**
-     * whether to enable the control buttons
-     */
+      * whether to enable the control buttons
+      */
     controls: {
       type: Boolean,
       default: true
     },
-    placeholder: {
-      type: String,
-      default: null
-    },
+    /**
+     * default to v-model
+     */
     modelValue: {
-      type: [Number, String],
-      default: null,
+      type: [String, Number] as PropType<
+        null | string | number | (string | number)
+      >,
+      default: '',
       validator: (value: string | number): boolean => {
         if (!Number.isNaN(Number(value)) || value === null) return true;
 
         return false;
       }
     },
+    /** validate parent form if present */
     validateEvent: {
       type: Boolean,
       default: true
@@ -131,13 +135,9 @@ export default defineComponent({
       userNumber: null
     });
 
-    const isDisabled = computed(() => {
-      return props.disabled || (qForm?.disabled ?? false);
-    });
+    const isDisabled = computed(() => props.disabled || (qForm?.disabled ?? false));
 
-    const withControlsClass = computed(() => {
-      return { 'q-input-number_with-controls': props.controls };
-    });
+    const withControlsClass = computed(() => ({ 'q-input-number_with-controls': props.controls }));
 
     const increaseClass = computed(() => {
       if (state.number && state.number >= props.max) {
@@ -155,18 +155,13 @@ export default defineComponent({
       return '';
     });
 
-    const currentValue = computed(() => {
-      return (state.userNumber ?? state.number ?? '').toString();
-    });
+    const currentValue = computed(() => (state.userNumber ?? state.number ?? '').toString());
 
 
     watch(
       () => props.modelValue,
-      () => {
-        state.number = null;
-
-        if (props.modelValue !== null)
-          state.number = Number(props.modelValue);
+      (value) => {
+        state.number = value !== null ? Number(value) : null;
       },
       { immediate:true }
     );
@@ -180,7 +175,7 @@ export default defineComponent({
       ctx.emit('focus', event);
     };
 
-    const changesEmmiter = (value: any, type: string) => {
+    const changesEmmiter = (value: number | null, type: string) => {
       let passedData = null;
 
       if (value || value === 0) {
@@ -200,34 +195,33 @@ export default defineComponent({
     }
 
     const processUserValue = (value: number, type: string) => {
-      const userValue = Number(value);
       state.userNumber = null;
 
-      if (Number.isNaN(userValue) || value > props.max || value < props.min) {
+      if (value > props.max || value < props.min) {
         return;
       }
 
       if (type === 'change') {
-        changesEmmiter(userValue, type);
+        changesEmmiter(value, type);
         return;
       }
 
-      ctx.emit('input', Number(userValue.toFixed(props.precision)));
+      ctx.emit('input', Number(value.toFixed(props.precision)));
       if (props.validateEvent) qFormItem?.validateField('input');
     };
 
-    const handleChangeInput = (value: number, type: string) => {
-      if (!value) {
+    const handleChangeInput = (value: number | null, type: string) => {
+      if (!value && value !== 0) {
         state.userNumber = value;
         changesEmmiter(null, type);
         return;
       }
 
-      processUserValue(value, type);
+      processUserValue(Number(value), type);
     };
 
     const handleIncreaseClick = () => {
-      const number = state.number || 0;
+      const number = state.number ?? 0;
       const updatedNumber = Math.round((number + props.step) * 100) / 100;
 
       if (updatedNumber > props.max) return;
@@ -237,7 +231,7 @@ export default defineComponent({
     };
 
     const handleDecreaseClick = () => {
-      const number = state.number || 0;
+      const number = state.number ?? 0;
       const updatedNumber = Math.round((number - props.step) * 100) / 100;
 
       if (updatedNumber < props.min) return;

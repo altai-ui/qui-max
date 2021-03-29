@@ -5,7 +5,7 @@ export default {
   title: 'Components/QInputNumber',
   component: QInputNumber,
   argTypes: {
-    value: {
+    modelValue: {
       control: {
         type: 'none'
       }

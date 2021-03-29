@@ -65,6 +65,7 @@ export const QMessageBoxStory = (args: any) => ({
     <q-message-box
       v-model:isVisible="isVisible"
       :z-index="args.zIndex"
+      :teleport-to="args.teleportTo"
       :title="args.title"
       :message="args.message"
       :submessage="args.submessage"

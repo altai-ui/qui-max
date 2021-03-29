@@ -1,6 +1,6 @@
 <template>
   <teleport
-    :to="teleportTo"
+    :to="teleportTo || 'body'"
     :disabled="!teleportTo"
   >
     <transition

@@ -13,11 +13,6 @@ export default {
         type: 'number'
       }
     },
-    value: {
-      control: {
-        type: 'none'
-      }
-    },
     resize: {
       control: {
         type: 'select',
@@ -45,5 +40,4 @@ const Template = (args: any) => ({
   `
 });
 
-export const QTextareaStory: any = Template.bind({})
-QTextareaStory.storyName = 'Default';
+export const Default: any = Template.bind({})

@@ -23,21 +23,22 @@
     />
   </div>
 </template>
-<script>
+<script lang="ts">
 import { computed, defineComponent, inject, nextTick, onMounted, ref, watch, reactive } from 'vue';
 import { computeDisabled, computeSymbolLimitVisibility } from '@/qComponents/composables/inputs';
 import { QFormProvider } from '@/qComponents/QForm';
 import { QFormItemProvider } from '@/qComponents/QFormItem';
 import { useI18n } from 'vue-i18n';
 import emitter from '../../mixins/emitter';
-import inputs from '../../mixins/inputs';
 import calcTextareaHeight from './calcTextareaHeight';
 
 export default defineComponent({
   name: 'QTextarea',
   componentName: 'QTextarea',
 
-  mixins: [emitter, inputs],
+  mixins: [emitter],
+
+  inheritAttrs: false,
 
   props: {
     /**
@@ -70,6 +71,11 @@ export default defineComponent({
     showSymbolLimit: {
       type: Boolean,
       default: false
+    },
+
+    counterLimit: {
+      type: Number,
+      default: null
     },
 
     autosize: {
@@ -105,7 +111,7 @@ export default defineComponent({
     const textareaCalcStyle = ref({});
     const qForm = inject<QFormProvider | null>('qForm', null);
     const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
-    const textarea = ref(null);
+    const textarea = ref<HTMLElement | null>(null);
     const state = reactive({
       hovering: false,
       focused: false,
@@ -113,6 +119,9 @@ export default defineComponent({
     });
 
     const isDisabled = computeDisabled({ componentDisabled: props.disabled, formDisabled: qForm?.disabled ?? false });
+
+    const upperLimit = computed(() => ctx.attrs.maxlength);
+    const textLength = computed(() => props.modelValue?.length ?? 0);
 
     const isSymbolLimitShown = computeSymbolLimitVisibility(
       {
@@ -131,12 +140,12 @@ export default defineComponent({
       return [
         mainClass,
         {
-          [`${mainClass}_disabled`]: computeDisabled({ componentDisabled: props.disabled, formDisabled: qForm?.disabled ?? false }).value
+          [`${mainClass}_disabled`]: isDisabled.value
         }
       ]
     })
 
-    const textareaStyle = computed(() => ({ ...textareaCalcStyle, ...props.resize }));
+    const textareaStyle = computed(() => ({ ...textareaCalcStyle.value, resize: props.resize }));
 
     const updateModel = (event: Event) => {
       const target = event.target as HTMLInputElement;
@@ -154,13 +163,9 @@ export default defineComponent({
       ctx.emit('focus', event);
     };
 
-    const handleClearClick = (event: MouseEvent) => {
-      ctx.emit('update:modelValue', '');
-      ctx.emit('clear', event);
-    };
-
     const resizeTextarea = () => {
       const { autosize } = props;
+      
       if (!autosize) {
         textareaCalcStyle.value = {
           minHeight: calcTextareaHeight(textarea.value).minHeight
@@ -184,6 +189,8 @@ export default defineComponent({
     })
 
     onMounted(() => {
+      console.log(textarea);
+      
       resizeTextarea();
     })
 
@@ -194,12 +201,15 @@ export default defineComponent({
       state,
       textareaCalcStyle,
       classes,
+      textarea,
       textareaStyle,
       isDisabled,
       isSymbolLimitShown,
       updateModel,
       handleBlur,
-      handleFocus
+      handleFocus,
+      upperLimit,
+      textLength
     };
   },
 });

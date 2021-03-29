@@ -38,8 +38,6 @@
 <script lang="ts">
 import { inject, computed, reactive, watch, defineComponent, PropType } from 'vue';
 
-import { isNil } from 'lodash-es';
-
 import { QFormProvider } from '@/qComponents/QForm';
 import { QFormItemProvider } from '@/qComponents/QFormItem';
 
@@ -180,7 +178,7 @@ export default defineComponent({
     const changesEmmiter = (value: number | null, type: string) => {
       let passedData = null;
 
-      if (!isNil(value)) {
+      if (value !== null) {
         state.number = Number(value.toFixed(props.precision));
         passedData = state.number;
       }

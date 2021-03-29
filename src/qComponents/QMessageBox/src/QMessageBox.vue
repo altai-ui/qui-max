@@ -1,11 +1,14 @@
 <template>
-  <teleport to="body">
+  <teleport
+    :to="teleportTo"
+    :disabled="!teleportTo"
+  >
     <transition
       name="q-msgbox-fade"
       @after-leave="handleAfterLeave"
     >
       <div
-        v-show="modelValue"
+        v-show="isVisible"
         ref="messageBox"
         class="q-message-box"
         :class="wrapClass"
@@ -108,7 +111,7 @@ import { getConfig } from '@/qComponents/config';
 import type { QMessageBoxEvent, QMessageBoxBeforeClose } from './types';
 
 const DEFAULT_Z_INDEX = 2000;
-const UPDATE_MODEL_EVENT = 'update:modelValue';
+const UPDATE_IS_VISIBLE_EVENT = 'update:isVisible';
 const CONFIRM_EVENT = 'confirm';
 const CLOSE_EVENT = 'close';
 const CANCEL_EVENT = 'cancel';
@@ -118,7 +121,7 @@ export default defineComponent({
   componentName: 'QMessageBox',
 
   props: {
-    modelValue: {
+    isVisible: {
       type: Boolean,
       default: false
     },
@@ -128,6 +131,13 @@ export default defineComponent({
     zIndex: {
       type: Number,
       default: null
+    },
+    /**
+     * Specifies a target element where QMessageBox will be moved.
+     */
+    teleportTo: {
+      type: String,
+      default: 'body'
     },
     /**
      * title of the QMessageBox
@@ -203,7 +213,7 @@ export default defineComponent({
     }
   },
 
-  emits: [UPDATE_MODEL_EVENT, CONFIRM_EVENT, CLOSE_EVENT, CANCEL_EVENT],
+  emits: [UPDATE_IS_VISIBLE_EVENT, CONFIRM_EVENT, CLOSE_EVENT, CANCEL_EVENT],
 
   setup(props, { emit }) {
     const isRendered = ref(false);
@@ -220,7 +230,7 @@ export default defineComponent({
     );
 
     watch(
-      () => props.modelValue,
+      () => props.isVisible,
       newValue => {
         if (!newValue) return;
 
@@ -269,7 +279,7 @@ export default defineComponent({
         emit(action, payload);
         document.removeEventListener('focus', handleDocumentFocus, true);
 
-        emit(UPDATE_MODEL_EVENT, false);
+        emit(UPDATE_IS_VISIBLE_EVENT, false);
 
         nextTick().then(() => {
           elementToFocusAfterClosing?.focus();

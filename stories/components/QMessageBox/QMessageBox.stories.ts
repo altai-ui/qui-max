@@ -33,10 +33,10 @@ export const QMessageBoxStory = (args: any) => ({
       }
     };
 
-    const isShown = ref(false);
+    const isVisible = ref(false);
 
     const handleClick = () => {
-      isShown.value = true;
+      isVisible.value = true;
     };
 
     const handleConfirm = () => {
@@ -50,11 +50,10 @@ export const QMessageBoxStory = (args: any) => ({
     };
 
     return {
-      isShown,
+      isVisible,
       args,
       beforeClose,
       handleClick,
-
       handleConfirm,
       handleClose,
       handleCancel
@@ -64,7 +63,7 @@ export const QMessageBoxStory = (args: any) => ({
     <q-button @click="handleClick">Click to open</q-button>
 
     <q-message-box
-      v-model="isShown"
+      v-model:isVisible="isVisible"
       :z-index="args.zIndex"
       :title="args.title"
       :message="args.message"

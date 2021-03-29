@@ -211,7 +211,7 @@ export default defineComponent({
     };
 
     const handleChangeInput = (value: number | null, type: string) => {
-      if (!value && value !== 0) {
+      if (value === null) {
         state.userNumber = value;
         changesEmmiter(null, type);
         return;

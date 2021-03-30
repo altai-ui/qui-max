@@ -56,7 +56,21 @@ export default {
 const Template = (args: any) => ({
   setup() {
     const model = ref('');
-    return { model, args };
+    
+    const handleFocus = (event: Event) => {
+      console.log('handleFocus', event);
+    }
+    const handleBlur = (event: Event) => {
+      console.log('handleBlur', event);
+    }
+    const handleInput = (event: Event) => {
+      console.log('handleInput', event);
+    }
+    const handleChange = (event: Event) => {
+      console.log('handleChange', event);
+    }
+
+    return { model, args, handleFocus, handleBlur, handleInput, handleChange };
   },
 
   template: `
@@ -69,6 +83,10 @@ const Template = (args: any) => ({
       :maxlength="args.maxlength"
       :autocomplete="args.autocomplete"
       :show-symbol-limit="args.showSymbolLimit"
+      @blur="handleBlur"
+      @focus="handleFocus"
+      @input="handleInput"
+      @change="handleChange"
     />
   `
 });

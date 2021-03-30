@@ -16,8 +16,8 @@
       class="q-textarea__inner"
       :disabled="isDisabled"
       :style="textareaStyle"
-      @input="updateModel"
-      @change="updateModel"
+      @input="handleInput"
+      @change="handleChange"
       @focus="handleFocus"
       @blur="handleBlur"
     />
@@ -103,8 +103,6 @@ export default defineComponent({
     'focus',
     'input',
     'change',
-    'click',
-    'clear',
     'update:modelValue'
   ],
 
@@ -151,6 +149,16 @@ export default defineComponent({
       const target = event.target as HTMLInputElement;
       ctx.emit('update:modelValue', target.value ?? '');
     };
+
+    const handleInput = (event: Event) => {
+      ctx.emit('input', event);
+      updateModel(event);
+    }
+
+    const handleChange = (event: Event) => {
+      ctx.emit('change', event);
+      updateModel(event)
+    }
 
     const handleBlur = (event: FocusEvent) => {
       state.focused = false;
@@ -206,6 +214,8 @@ export default defineComponent({
       updateModel,
       handleBlur,
       handleFocus,
+      handleInput,
+      handleChange,
       upperLimit,
       textLength
     };

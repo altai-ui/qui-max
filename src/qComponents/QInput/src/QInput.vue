@@ -3,7 +3,6 @@
     :class="classes"
     @mouseenter="state.hovering = true"
     @mouseleave="state.hovering = false"
-    @click="$emit('click')"
   >
     <div
       v-if="isSymbolLimitShown"
@@ -20,8 +19,8 @@
       class="q-input__inner"
       :type="inputType"
       :disabled="isDisabled"
-      @input="updateModel"
-      @change="updateModel"
+      @input="handleInput"
+      @change="handleChange"
       @focus="handleFocus"
       @blur="handleBlur"
     />
@@ -63,13 +62,10 @@ import { useI18n } from 'vue-i18n';
 import { QFormProvider } from '@/qComponents/QForm';
 import { QFormItemProvider } from '@/qComponents/QFormItem';
 import { computeDisabled, computeSymbolLimitVisibility } from '@/qComponents/composables/inputs';
-import emitter from '../../mixins/emitter';
 
 export default defineComponent({
   name: 'QInput',
   componentName: 'QInput',
-
-  mixins: [emitter],
 
   inheritAttrs: false,
 
@@ -128,7 +124,6 @@ export default defineComponent({
     'focus',
     'input',
     'change',
-    'click',
     'clear',
     'update:modelValue'
   ],
@@ -163,27 +158,32 @@ export default defineComponent({
       isDisabled
     );
 
-    const isPasswordSwitchShown = computed(() => (
-      props.passwordSwitch &&
-      !isDisabled.value &&
-      !ctx.attrs.readonly &&
-      (Boolean(props.modelValue) || state.focused || state.hovering)
-    ));
-
-    const isClearButtonShown = computed(() => Boolean(
-      props.clearable &&
+    const isPasswordSwitchShown = computed(
+      () =>
+        props.passwordSwitch &&
         !isDisabled.value &&
         !ctx.attrs.readonly &&
-        props.modelValue &&
-        (state.focused || state.hovering)
-    ));
+        (Boolean(props.modelValue) || state.focused || state.hovering)
+    );
 
-    const isSuffixVisible = computed(() => Boolean(
-      ctx.slots.suffix ||
-        props.suffixIcon ||
-        isClearButtonShown.value ||
-        props.passwordSwitch
-    ));
+    const isClearButtonShown = computed(() =>
+      Boolean(
+        props.clearable &&
+          !isDisabled.value &&
+          !ctx.attrs.readonly &&
+          props.modelValue &&
+          (state.focused || state.hovering)
+      )
+    );
+
+    const isSuffixVisible = computed(() =>
+      Boolean(
+        ctx.slots.suffix ||
+          props.suffixIcon ||
+          isClearButtonShown.value ||
+          props.passwordSwitch
+      )
+    );
 
     const classes = computed(() => {
       const mainClass = 'q-input';
@@ -205,6 +205,16 @@ export default defineComponent({
       const target = event.target as HTMLInputElement;
       ctx.emit('update:modelValue', target.value ?? '');
     };
+
+    const handleInput = (event: Event) => {
+      ctx.emit('input', event);
+      updateModel(event);
+    }
+
+    const handleChange = (event: Event) => {
+      ctx.emit('change', event);
+      updateModel(event)
+    }
 
     const handleBlur = (event: FocusEvent) => {
       state.focused = false;
@@ -234,11 +244,6 @@ export default defineComponent({
       }
     );
 
-    onMounted(() => {
-      console.log(input);
-      
-    })
-
     const { t } = useI18n();
 
     return {
@@ -258,6 +263,8 @@ export default defineComponent({
       handlePasswordVisible,
       handleClearClick,
       updateModel,
+      handleInput,
+      handleChange,
       t
     };
   }

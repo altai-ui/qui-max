@@ -1,4 +1,4 @@
-let hiddenTextarea: HTMLTextAreaElement;
+let hiddenTextarea: HTMLTextAreaElement | null;
 
 const HIDDEN_STYLE = `
   height:0 !important;
@@ -61,7 +61,7 @@ interface TextareaHeight {
 export default function calcTextareaHeight(
   targetElement: HTMLTextAreaElement | null,
   minRows = 1,
-  maxRows = null
+  maxRows: null | number = null
 ): TextareaHeight {
 
   const result: TextareaHeight = {
@@ -105,8 +105,7 @@ export default function calcTextareaHeight(
     height = Math.max(minHeight, height);
     result.minHeight = `${minHeight}px`;
   }
-  console.log(maxRows);
-  
+
   if (maxRows !== null) {
     let maxHeight = singleRowHeight * maxRows;
     if (boxSizing === 'border-box') {
@@ -116,8 +115,7 @@ export default function calcTextareaHeight(
   }
 
   result.height = `${height}px`;
-  hiddenTextarea.parentNode &&
-    hiddenTextarea.parentNode.removeChild(hiddenTextarea);
+  hiddenTextarea.parentNode?.removeChild(hiddenTextarea);
   hiddenTextarea = null;
   
   return result;

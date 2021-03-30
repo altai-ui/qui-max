@@ -67,7 +67,6 @@ const Template = (args: any) => ({
       :show-symbol-limit="args.showSymbolLimit"
       :password-switch="args.passwordSwitch"
       :disabled="args.disabled"
-      :counter-limit="args.counterLimit"
       :clearable="args.clearable"
       :validate-event="args.validateEvent"
       :autocomplete="args.autocomplete"

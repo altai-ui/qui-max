@@ -7,8 +7,8 @@ interface ComputeDisabled {
 
 const computeDisabled = ({ componentDisabled, formDisabled }: ComputeDisabled): ComputedRef => computed(() => componentDisabled || (formDisabled ?? false));
 const computeSymbolLimitVisibility = (
-  { showSymbolLimit, passwordSwitch }: { showSymbolLimit: boolean, passwordSwitch: boolean },
-  { maxlength, readonly }: { maxlength: unknown, readonly: unknown }, isDisabled: Ref): ComputedRef =>
+  { showSymbolLimit, passwordSwitch = false }: { showSymbolLimit: boolean, passwordSwitch?: boolean },
+  { maxlength, readonly = false }: { maxlength: unknown, readonly: unknown }, isDisabled: Ref): ComputedRef =>
     computed(() => (
       showSymbolLimit &&
       maxlength &&

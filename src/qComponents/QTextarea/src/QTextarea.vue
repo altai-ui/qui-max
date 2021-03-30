@@ -24,7 +24,17 @@
   </div>
 </template>
 <script lang="ts">
-import { computed, defineComponent, inject, nextTick, onMounted, ref, watch, reactive } from 'vue';
+import {
+  computed,
+  defineComponent,
+  inject,
+  nextTick,
+  onMounted,
+  ref,
+  watch,
+  reactive,
+  PropType
+} from 'vue';
 import { computeDisabled, computeSymbolLimitVisibility } from '@/qComponents/composables/inputs';
 import { QFormProvider } from '@/qComponents/QForm';
 import { QFormItemProvider } from '@/qComponents/QFormItem';
@@ -54,11 +64,11 @@ export default defineComponent({
     resize: {
       type: String,
       default: 'vertical',
-      validator: value =>
+      validator: (value: string) =>
         ['vertical', 'horizontal', 'both', 'none'].includes(value)
     },
     /**
-     * whether textarea has an adaptive height. Can accept an object, e.g. { minRows: 2, maxRows: 6 }
+     * whether textarea is disabled
      */
     disabled: {
       type: Boolean,
@@ -73,19 +83,12 @@ export default defineComponent({
       default: false
     },
 
-    counterLimit: {
-      type: Number,
-      default: null
-    },
-
+    /**
+     * whether textarea has an adaptive height. Can accept an object, e.g. { minRows: 2, maxRows: 6 }
+     */
     autosize: {
-      type: [Boolean, Object],
-      default: false
-    },
-
-    autocomplete: {
-      type: String,
-      default: 'off'
+      type: [Boolean, Object] as PropType<boolean | { minRows: number, maxRows: number }>,
+      default: true
     },
 
     /** validate parent form if present */
@@ -102,8 +105,6 @@ export default defineComponent({
     'change',
     'click',
     'clear',
-    'compositionstart',
-    'compositionend',
     'update:modelValue'
   ],
 
@@ -111,7 +112,7 @@ export default defineComponent({
     const textareaCalcStyle = ref({});
     const qForm = inject<QFormProvider | null>('qForm', null);
     const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
-    const textarea = ref<HTMLElement | null>(null);
+    const textarea = ref<HTMLTextAreaElement | null>(null);
     const state = reactive({
       hovering: false,
       focused: false,
@@ -126,7 +127,6 @@ export default defineComponent({
     const isSymbolLimitShown = computeSymbolLimitVisibility(
       {
         showSymbolLimit: props.showSymbolLimit,
-        passwordSwitch: props.passwordSwitch
       }, {
         maxlength: ctx.attrs.maxlength,
         readonly: ctx.attrs.readonly
@@ -173,14 +173,14 @@ export default defineComponent({
         return;
       }
 
-      const minRows = autosize.minRows;
-      const maxRows = autosize.maxRows;
+      const minRows = autosize === true ? 1: autosize.minRows;
+      const maxRows = autosize === true ? null :autosize.maxRows;
 
       textareaCalcStyle.value = calcTextareaHeight(
         textarea.value,
         minRows,
-        maxRows
-      );
+        maxRows,
+      );      
     }
 
     watch(() => props.modelValue, () => {
@@ -189,8 +189,6 @@ export default defineComponent({
     })
 
     onMounted(() => {
-      console.log(textarea);
-      
       resizeTextarea();
     })
 

@@ -1,5 +1,8 @@
 <template>
-  <div class="q-tab-pane" :style="tabWidthStyle">
+  <div
+    class="q-tab-pane"
+    :style="tabWidthStyle"
+  >
     <div class="q-tab-pane__inner">
       <button
         type="button"
@@ -13,7 +16,10 @@
 
       <slot name="content" />
     </div>
-    <div v-if="description" class="q-tab-pane__description">
+    <div
+      v-if="description"
+      class="q-tab-pane__description"
+    >
       {{ description }}
     </div>
   </div>

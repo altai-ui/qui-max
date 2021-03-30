@@ -16,7 +16,10 @@
           :hue="hue"
         />
 
-        <q-color-hue-slider ref="refHue" v-model:hue="hue" />
+        <q-color-hue-slider
+          ref="refHue"
+          v-model:hue="hue"
+        />
       </div>
 
       <q-color-alpha-slider

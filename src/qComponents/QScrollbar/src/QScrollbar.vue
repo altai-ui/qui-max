@@ -1,5 +1,8 @@
 <template>
-  <div ref="root" :class="classes">
+  <div
+    ref="root"
+    :class="classes"
+  >
     <div
       ref="wrap"
       class="q-scrollbar__wrap"

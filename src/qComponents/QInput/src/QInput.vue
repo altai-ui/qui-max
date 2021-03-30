@@ -4,10 +4,7 @@
     @mouseenter="state.hovering = true"
     @mouseleave="state.hovering = false"
   >
-    <div
-      v-if="isSymbolLimitShown"
-      class="q-input__count"
-    >
+    <div v-if="isSymbolLimitShown" class="q-input__count">
       <span class="q-input__count-inner">
         {{ t('QInput.charNumber') }}: {{ textLength }}/{{ upperLimit }}
       </span>
@@ -24,21 +21,11 @@
       @focus="handleFocus"
       @blur="handleBlur"
     />
-    <span
-      v-if="isSuffixVisible"
-      class="q-input__suffix"
-    >
+    <span v-if="isSuffixVisible" class="q-input__suffix">
       <span class="q-input__suffix-inner">
         <template v-if="!isClearButtonShown || !isPasswordSwitchShown">
-          <span
-            v-if="suffixIcon"
-            class="q-input__icon"
-            :class="suffixIcon"
-          />
-          <slot
-            v-else
-            name="suffix"
-          />
+          <span v-if="suffixIcon" class="q-input__icon" :class="suffixIcon" />
+          <slot v-else name="suffix" />
         </template>
         <span
           v-if="isClearButtonShown"
@@ -57,11 +44,22 @@
 </template>
 
 <script lang="ts">
-import { inject, computed, ref, reactive, watch, defineComponent, onMounted } from 'vue';
+import {
+  inject,
+  computed,
+  ref,
+  reactive,
+  watch,
+  defineComponent,
+  onMounted
+} from 'vue';
 import { useI18n } from 'vue-i18n';
 import { QFormProvider } from '@/qComponents/QForm';
 import { QFormItemProvider } from '@/qComponents/QFormItem';
-import { computeDisabled, computeSymbolLimitVisibility } from '@/qComponents/composables/inputs';
+import {
+  computeDisabled,
+  computeSymbolLimitVisibility
+} from '@/qComponents/composables/inputs';
 
 export default defineComponent({
   name: 'QInput',
@@ -119,14 +117,7 @@ export default defineComponent({
     }
   },
 
-  emits: [
-    'blur',
-    'focus',
-    'input',
-    'change',
-    'clear',
-    'update:modelValue'
-  ],
+  emits: ['blur', 'focus', 'input', 'change', 'clear', 'update:modelValue'],
 
   setup(props, ctx) {
     const input = ref<HTMLElement | null>(null);
@@ -145,13 +136,17 @@ export default defineComponent({
       return ctx.attrs.type;
     });
 
-    const isDisabled = computeDisabled({ componentDisabled: props.disabled, formDisabled: qForm?.disabled ?? false });
-    
+    const isDisabled = computeDisabled({
+      componentDisabled: props.disabled,
+      formDisabled: qForm?.disabled ?? false
+    });
+
     const isSymbolLimitShown = computeSymbolLimitVisibility(
       {
         showSymbolLimit: props.showSymbolLimit,
         passwordSwitch: props.passwordSwitch
-      }, {
+      },
+      {
         maxlength: ctx.attrs.maxlength,
         readonly: ctx.attrs.readonly
       },
@@ -209,12 +204,12 @@ export default defineComponent({
     const handleInput = (event: Event) => {
       ctx.emit('input', event);
       updateModel(event);
-    }
+    };
 
     const handleChange = (event: Event) => {
       ctx.emit('change', event);
-      updateModel(event)
-    }
+      updateModel(event);
+    };
 
     const handleBlur = (event: FocusEvent) => {
       state.focused = false;

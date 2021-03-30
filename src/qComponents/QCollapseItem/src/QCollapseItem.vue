@@ -13,17 +13,11 @@
       <slot name="title">
         <div class="q-collapse-item__title">{{ title }}</div>
       </slot>
-      <div
-        class="q-collapse-item__icon"
-        :class="icon"
-      />
+      <div class="q-collapse-item__icon" :class="icon" />
     </button>
 
     <q-collapse-transition>
-      <div
-        v-show="isActive"
-        class="q-collapse-item__body"
-      >
+      <div v-show="isActive" class="q-collapse-item__body">
         <div class="q-collapse-item__content">
           <slot />
         </div>

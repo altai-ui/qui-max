@@ -1,18 +1,7 @@
 <template>
-  <div
-    ref="root"
-    class="q-color-hue-slider"
-  >
-    <div
-      ref="bar"
-      class="q-color-hue-slider__bar"
-      @click="handleBarClick"
-    />
-    <div
-      ref="thumb"
-      class="q-color-hue-slider__thumb"
-      :style="thumbStyles"
-    />
+  <div ref="root" class="q-color-hue-slider">
+    <div ref="bar" class="q-color-hue-slider__bar" @click="handleBarClick" />
+    <div ref="thumb" class="q-color-hue-slider__thumb" :style="thumbStyles" />
   </div>
 </template>
 

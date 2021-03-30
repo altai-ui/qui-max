@@ -4,10 +4,7 @@
     @mouseenter="state.hovering = true"
     @mouseleave="state.hovering = false"
   >
-    <div
-      v-if="isSymbolLimitShown"
-      class="q-textarea__count"
-    >
+    <div v-if="isSymbolLimitShown" class="q-textarea__count">
       {{ t('QTextarea.charNumber') }}: {{ textLength }}/{{ upperLimit }}
     </div>
     <textarea
@@ -35,7 +32,10 @@ import {
   reactive,
   PropType
 } from 'vue';
-import { computeDisabled, computeSymbolLimitVisibility } from '@/qComponents/composables/inputs';
+import {
+  computeDisabled,
+  computeSymbolLimitVisibility
+} from '@/qComponents/composables/inputs';
 import { QFormProvider } from '@/qComponents/QForm';
 import { QFormItemProvider } from '@/qComponents/QFormItem';
 import { useI18n } from 'vue-i18n';
@@ -87,7 +87,9 @@ export default defineComponent({
      * whether textarea has an adaptive height. Can accept an object, e.g. { minRows: 2, maxRows: 6 }
      */
     autosize: {
-      type: [Boolean, Object] as PropType<boolean | { minRows: number, maxRows: number }>,
+      type: [Boolean, Object] as PropType<
+        boolean | { minRows: number; maxRows: number }
+      >,
       default: true
     },
 
@@ -95,16 +97,10 @@ export default defineComponent({
     validateEvent: {
       type: Boolean,
       default: true
-    },
+    }
   },
 
-  emits: [
-    'blur',
-    'focus',
-    'input',
-    'change',
-    'update:modelValue'
-  ],
+  emits: ['blur', 'focus', 'input', 'change', 'update:modelValue'],
 
   setup(props, ctx) {
     const textareaCalcStyle = ref({});
@@ -117,15 +113,19 @@ export default defineComponent({
       isPasswordVisible: false // state of passwordSwitch
     });
 
-    const isDisabled = computeDisabled({ componentDisabled: props.disabled, formDisabled: qForm?.disabled ?? false });
+    const isDisabled = computeDisabled({
+      componentDisabled: props.disabled,
+      formDisabled: qForm?.disabled ?? false
+    });
 
     const upperLimit = computed(() => ctx.attrs.maxlength);
     const textLength = computed(() => props.modelValue?.length ?? 0);
 
     const isSymbolLimitShown = computeSymbolLimitVisibility(
       {
-        showSymbolLimit: props.showSymbolLimit,
-      }, {
+        showSymbolLimit: props.showSymbolLimit
+      },
+      {
         maxlength: ctx.attrs.maxlength,
         readonly: ctx.attrs.readonly
       },
@@ -140,10 +140,13 @@ export default defineComponent({
         {
           [`${mainClass}_disabled`]: isDisabled.value
         }
-      ]
-    })
+      ];
+    });
 
-    const textareaStyle = computed(() => ({ ...textareaCalcStyle.value, resize: props.resize }));
+    const textareaStyle = computed(() => ({
+      ...textareaCalcStyle.value,
+      resize: props.resize
+    }));
 
     const updateModel = (event: Event) => {
       const target = event.target as HTMLInputElement;
@@ -153,12 +156,12 @@ export default defineComponent({
     const handleInput = (event: Event) => {
       ctx.emit('input', event);
       updateModel(event);
-    }
+    };
 
     const handleChange = (event: Event) => {
       ctx.emit('change', event);
-      updateModel(event)
-    }
+      updateModel(event);
+    };
 
     const handleBlur = (event: FocusEvent) => {
       state.focused = false;
@@ -173,7 +176,7 @@ export default defineComponent({
 
     const resizeTextarea = () => {
       const { autosize } = props;
-      
+
       if (!autosize) {
         textareaCalcStyle.value = {
           minHeight: calcTextareaHeight(textarea.value).minHeight
@@ -181,24 +184,27 @@ export default defineComponent({
         return;
       }
 
-      const minRows = autosize === true ? 1: autosize.minRows;
-      const maxRows = autosize === true ? null :autosize.maxRows;
+      const minRows = autosize === true ? 1 : autosize.minRows;
+      const maxRows = autosize === true ? null : autosize.maxRows;
 
       textareaCalcStyle.value = calcTextareaHeight(
         textarea.value,
         minRows,
-        maxRows,
-      );      
-    }
+        maxRows
+      );
+    };
 
-    watch(() => props.modelValue, () => {
-      nextTick(() => resizeTextarea())
-      if (props.validateEvent) qFormItem?.validateField('change');
-    })
+    watch(
+      () => props.modelValue,
+      () => {
+        nextTick(() => resizeTextarea());
+        if (props.validateEvent) qFormItem?.validateField('change');
+      }
+    );
 
     onMounted(() => {
       resizeTextarea();
-    })
+    });
 
     const { t } = useI18n();
 
@@ -219,6 +225,6 @@ export default defineComponent({
       upperLimit,
       textLength
     };
-  },
+  }
 });
 </script>

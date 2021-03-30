@@ -10,10 +10,7 @@
       @click.prevent="handleTriggerClick"
     >
       <!-- @slot _Optional_. HTML element that triggers dropdown -->
-      <slot
-        v-if="$slots.trigger"
-        name="trigger"
-      />
+      <slot v-if="$slots.trigger" name="trigger" />
       <button
         v-else
         :disabled="isDisabled"

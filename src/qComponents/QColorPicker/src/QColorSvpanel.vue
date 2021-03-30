@@ -1,13 +1,6 @@
 <template>
-  <div
-    ref="root"
-    class="q-color-svpanel"
-    :style="rootStyles"
-  >
-    <div
-      class="q-color-svpanel__cursor"
-      :style="cursorStyles"
-    />
+  <div ref="root" class="q-color-svpanel" :style="rootStyles">
+    <div class="q-color-svpanel__cursor" :style="cursorStyles" />
   </div>
 </template>
 

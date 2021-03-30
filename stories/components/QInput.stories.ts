@@ -60,21 +60,29 @@ const Template = (args: any) => ({
 
     const handleFocus = (event: Event) => {
       console.log('handleFocus', event);
-    }
+    };
     const handleBlur = (event: Event) => {
       console.log('handleBlur', event);
-    }
+    };
     const handleInput = (event: Event) => {
       console.log('handleInput', event);
-    }
+    };
     const handleChange = (event: Event) => {
       console.log('handleChange', event);
-    }
+    };
     const handleClear = (event: Event) => {
       console.log('handleClear', event);
-    }
+    };
 
-    return { data, args, handleFocus, handleBlur, handleInput, handleChange, handleClear };
+    return {
+      data,
+      args,
+      handleFocus,
+      handleBlur,
+      handleInput,
+      handleChange,
+      handleClear
+    };
   },
 
   template: `

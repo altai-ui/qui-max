@@ -120,9 +120,8 @@ const install = (
   // setup emitter
   app.config.globalProperties.$eventHub = mitt();
   allComponentsExceptModals.forEach(name => {
-    
     const newName =
-    prefix && isString(prefix) ? name.replace(/^Q/, prefix) : name;
+      prefix && isString(prefix) ? name.replace(/^Q/, prefix) : name;
     app.component(newName, Components[name]);
   });
 };

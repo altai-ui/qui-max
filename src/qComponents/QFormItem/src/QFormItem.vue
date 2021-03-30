@@ -1,12 +1,6 @@
 <template>
-  <div
-    class="q-form-item"
-    :class="rootClasses"
-  >
-    <div
-      v-if="isHeaderShown"
-      class="q-form-item__header"
-    >
+  <div class="q-form-item" :class="rootClasses">
+    <div v-if="isHeaderShown" class="q-form-item__header">
       <label
         v-if="label || $slots.label"
         :for="labelFor"
@@ -15,10 +9,7 @@
         <slot name="label">{{ label }}</slot>
       </label>
 
-      <div
-        v-if="sublabel || $slots.sublabel"
-        class="q-form-item__sublabel"
-      >
+      <div v-if="sublabel || $slots.sublabel" class="q-form-item__sublabel">
         <slot name="sublabel">{{ sublabel }}</slot>
       </div>
     </div>
@@ -27,11 +18,7 @@
       <slot />
 
       <transition name="q-fade-in">
-        <slot
-          v-if="isErrorSlotShown"
-          name="error"
-          :error="errorMessage"
-        >
+        <slot v-if="isErrorSlotShown" name="error" :error="errorMessage">
           <div class="q-form-item__error">
             {{ errorMessage }}
           </div>

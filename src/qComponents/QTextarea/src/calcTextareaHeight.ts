@@ -28,11 +28,13 @@ const CONTEXT_STYLE: string[] = [
   'box-sizing'
 ];
 
-function calculateNodeStyling(targetElement: HTMLTextAreaElement): {
-  contextStyle: string,
-  paddingSize: number,
-  borderSize: number,
-  boxSizing: string
+function calculateNodeStyling(
+  targetElement: HTMLTextAreaElement
+): {
+  contextStyle: string;
+  paddingSize: number;
+  borderSize: number;
+  boxSizing: string;
 } {
   const style = window.getComputedStyle(targetElement);
 
@@ -54,8 +56,8 @@ function calculateNodeStyling(targetElement: HTMLTextAreaElement): {
 }
 
 interface TextareaHeight {
-  height: string
-  minHeight: string
+  height: string;
+  minHeight: string;
 }
 
 export default function calcTextareaHeight(
@@ -63,13 +65,12 @@ export default function calcTextareaHeight(
   minRows = 1,
   maxRows: null | number = null
 ): TextareaHeight {
-
   const result: TextareaHeight = {
     height: '',
     minHeight: ''
   };
 
-  if (!targetElement) return result
+  if (!targetElement) return result;
 
   if (!hiddenTextarea) {
     hiddenTextarea = document.createElement('textarea');
@@ -117,6 +118,6 @@ export default function calcTextareaHeight(
   result.height = `${height}px`;
   hiddenTextarea.parentNode?.removeChild(hiddenTextarea);
   hiddenTextarea = null;
-  
+
   return result;
 }

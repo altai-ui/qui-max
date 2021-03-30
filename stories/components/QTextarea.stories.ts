@@ -24,7 +24,7 @@ export default {
     autocomplete: {
       options: ['on', 'off'],
       control: {
-        type: 'radio',
+        type: 'radio'
       },
       defaultValue: 'on'
     },
@@ -47,7 +47,7 @@ export default {
           true: 'true',
           false: 'false',
           Edges: '{ minRows: 2, maxRows: 4 }'
-        },
+        }
       }
     }
   }
@@ -56,19 +56,19 @@ export default {
 const Template = (args: any) => ({
   setup() {
     const model = ref('');
-    
+
     const handleFocus = (event: Event) => {
       console.log('handleFocus', event);
-    }
+    };
     const handleBlur = (event: Event) => {
       console.log('handleBlur', event);
-    }
+    };
     const handleInput = (event: Event) => {
       console.log('handleInput', event);
-    }
+    };
     const handleChange = (event: Event) => {
       console.log('handleChange', event);
-    }
+    };
 
     return { model, args, handleFocus, handleBlur, handleInput, handleChange };
   },
@@ -91,9 +91,9 @@ const Template = (args: any) => ({
   `
 });
 
-export const Default: any = Template.bind({})
+export const Default: any = Template.bind({});
 Default.args = {
   placeholder: 'Input text',
   maxlength: 100,
   autosize: true
-}
+};

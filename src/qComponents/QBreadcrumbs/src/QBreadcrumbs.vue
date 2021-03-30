@@ -1,9 +1,6 @@
 <template>
   <div class="q-breadcrumbs">
-    <template
-      v-for="crumb in breadcrumbs"
-      :key="crumb.name || crumb.path"
-    >
+    <template v-for="crumb in breadcrumbs" :key="crumb.name || crumb.path">
       <component
         :is="linkComponent"
         :to="pushTo(crumb)"

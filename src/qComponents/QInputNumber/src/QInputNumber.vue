@@ -164,7 +164,6 @@ export default defineComponent({
       }
 
       if (type === 'change') {
-        ctx.emit('input', passedData);
         ctx.emit('change', passedData);
         if (props.validateEvent) qFormItem?.validateField('change');
         return;

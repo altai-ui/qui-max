@@ -1,14 +1,10 @@
 <template>
-  <div
-    :class="classes"
-    @mouseenter="state.hovering = true"
-    @mouseleave="state.hovering = false"
-  >
+  <div :class="classes">
     <div
       v-if="isSymbolLimitShown"
       class="q-textarea__count"
     >
-      {{ t('QTextarea.charNumber') }}: {{ textLength }}/{{ upperLimit }}
+      {{ t('QTextarea.charNumber') }}: {{ textLength }}/{{ maxlength }}
     </div>
     <textarea
       v-bind="$attrs"
@@ -32,7 +28,6 @@ import {
   onMounted,
   ref,
   watch,
-  reactive,
   PropType
 } from 'vue';
 import {
@@ -110,18 +105,13 @@ export default defineComponent({
     const qForm = inject<QFormProvider | null>('qForm', null);
     const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
     const textarea = ref<HTMLTextAreaElement | null>(null);
-    const state = reactive({
-      hovering: false,
-      focused: false,
-      isPasswordVisible: false // state of passwordSwitch
-    });
 
     const isDisabled = computeDisabled({
       componentDisabled: props.disabled,
       formDisabled: qForm?.disabled ?? false
     });
 
-    const upperLimit = computed(() => ctx.attrs.maxlength);
+    const maxlength = computed(() => ctx.attrs.maxlength);
     const textLength = computed(() => props.modelValue?.length ?? 0);
 
     const isSymbolLimitShown = computeSymbolLimitVisibility(
@@ -167,13 +157,11 @@ export default defineComponent({
     };
 
     const handleBlur = (event: FocusEvent) => {
-      state.focused = false;
       ctx.emit('blur', event);
       if (props.validateEvent) qFormItem?.validateField('blur');
     };
 
     const handleFocus = (event: FocusEvent) => {
-      state.focused = true;
       ctx.emit('focus', event);
     };
 
@@ -213,7 +201,6 @@ export default defineComponent({
 
     return {
       t,
-      state,
       textareaCalcStyle,
       classes,
       textarea,
@@ -225,7 +212,7 @@ export default defineComponent({
       handleFocus,
       handleInput,
       handleChange,
-      upperLimit,
+      maxlength,
       textLength
     };
   }

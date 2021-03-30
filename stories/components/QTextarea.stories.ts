@@ -35,18 +35,18 @@ export default {
     },
     autosize: {
       defaultValue: true,
-      options: [true, false, 'Edges'],
+      options: [true, false, 'restrictions'],
       mapping: {
         true: true,
         false: false,
-        Edges: { minRows: 2, maxRows: 4 }
+        restrictions: { minRows: 2, maxRows: 4 }
       },
       control: {
         type: 'select',
         labels: {
           true: 'true',
           false: 'false',
-          Edges: '{ minRows: 2, maxRows: 4 }'
+          restrictions: '{ minRows: 2, maxRows: 4 }'
         }
       }
     }

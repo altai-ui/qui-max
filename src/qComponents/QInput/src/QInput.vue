@@ -9,7 +9,7 @@
       class="q-input__count"
     >
       <span class="q-input__count-inner">
-        {{ t('QInput.charNumber') }}: {{ textLength }}/{{ upperLimit }}
+        {{ t('QInput.charNumber') }}: {{ textLength }}/{{ maxlength }}
       </span>
     </div>
     <input
@@ -205,7 +205,7 @@ export default defineComponent({
       ];
     });
 
-    const upperLimit = computed(() => ctx.attrs.maxlength);
+    const maxlength = computed(() => ctx.attrs.maxlength);
 
     const textLength = computed(() => props.modelValue?.length ?? 0);
 
@@ -262,7 +262,7 @@ export default defineComponent({
       isSuffixVisible,
       isClearButtonShown,
       isSymbolLimitShown,
-      upperLimit,
+      maxlength,
       textLength,
       inputType,
       input,

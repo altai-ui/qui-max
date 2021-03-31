@@ -8,7 +8,7 @@
       class="q-input-number__button q-input-number__button_decrease q-icon-minus"
       type="button"
       :disabled="isDisabled || isDecreaseDisabled"
-      :class="isDecreaseDisabled && `q-input-number__button_is-disabled`"
+      :class="isDecreaseDisabled && 'q-input-number__button_is-disabled'"
       @click="handleDecreaseClick"
     />
 
@@ -28,7 +28,7 @@
       class="q-input-number__button q-input-number__button_increase q-icon-plus"
       type="button"
       :disabled="isDisabled || isIncreaseDisabled"
-      :class="isIncreaseDisabled && `q-input-number__button_is-disabled`"
+      :class="isIncreaseDisabled && 'q-input-number__button_is-disabled'"
       @click="handleIncreaseClick"
     />
   </div>
@@ -73,9 +73,9 @@ export default defineComponent({
     /**
       * whether to enable the control buttons
       */
-    controls: {
+    noControls: {
       type: Boolean,
-      default: true
+      default: false
     },
     /**
      * default to v-model
@@ -109,8 +109,6 @@ export default defineComponent({
     const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
     const qForm = inject<QFormProvider | null>('qForm', null);
 
-    console.log(ctx.attrs.step)
-
     const state = reactive<State>({
       number: null,
       userNumber: null,
@@ -120,25 +118,29 @@ export default defineComponent({
       step: ctx.attrs.step ? Number(ctx.attrs.step) : 1
     });
 
+    const increaseWithStep = (number: number, step: number) => Math.round((number + step) * 100) / 100;
+
+    const decreaseWithStep = (number: number, step: number) => Math.round((number - step) * 100) / 100;
+
     const isDisabled = computed(() => props.disabled || (qForm?.disabled ?? false));
 
-    const withControlsClass = computed(() => ({ 'q-input-number_with-controls': props.controls }));
+    const withControlsClass = computed(() => ({ 'q-input-number_with-controls': !props.noControls }));
 
     const isIncreaseDisabled = computed(() => {
       const number = state.number ?? 0;
 
-      return number >= state.maxValue || number + state.step > state.maxValue;
+      return number >= state.maxValue || increaseWithStep(number, state.step) > state.maxValue;
     });
 
     const isDecreaseDisabled = computed(() => {
       const number = state.number ?? 0;
 
-      return number <= state.minValue || number - state.step < state.minValue;
+      return number <= state.minValue || decreaseWithStep(number, state.step) < state.minValue;
     });
 
     const currentValue = computed(() => (state.userNumber ?? state.number ?? '').toString());
 
-    const areControlsEnabled = computed(() => props.controls && !isDisabled.value);
+    const areControlsEnabled = computed(() => !props.noControls && !isDisabled.value);
 
     watch(
       () => props.modelValue,
@@ -213,7 +215,7 @@ export default defineComponent({
 
     const handleIncreaseClick = () => {
       const number = state.number ?? 0;
-      const updatedNumber = Math.round((number + state.step) * 100) / 100;
+      const updatedNumber = increaseWithStep(number, state.step);
 
       state.userNumber = updatedNumber;
       changesEmmiter(updatedNumber, 'change');
@@ -221,7 +223,7 @@ export default defineComponent({
 
     const handleDecreaseClick = () => {
       const number = state.number ?? 0;
-      const updatedNumber = Math.round((number - state.step) * 100) / 100;
+      const updatedNumber = decreaseWithStep(number, state.step);
 
       state.userNumber = updatedNumber;
       changesEmmiter(updatedNumber, 'change');

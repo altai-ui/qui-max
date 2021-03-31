@@ -198,7 +198,7 @@ export default defineComponent({
 
     const updateModel = (event: Event) => {
       const target = event.target as HTMLInputElement;
-      ctx.emit('update:modelValue', target.value ?? '', event.type);
+      ctx.emit('update:modelValue', target.value);
     };
 
     const handleInput = (event: Event) => {

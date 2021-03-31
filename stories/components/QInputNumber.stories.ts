@@ -1,5 +1,5 @@
 import { ref } from 'vue';
-import QInputNumber from '../../src/qComponents/QInputNumber';
+import QInputNumber from '@/qComponents/QInputNumber';
 
 export default {
   title: 'Components/QInputNumber',

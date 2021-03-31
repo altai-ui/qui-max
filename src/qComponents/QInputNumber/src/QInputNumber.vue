@@ -19,7 +19,8 @@
       :validate-event="false"
       @blur="handleBlur"
       @focus="handleFocus"
-      @update:model-value="handleChangeInput"
+      @input="handleChangeInput($event, 'input')"
+      @change="handleChangeInput($event, 'change')"
     />
 
     <button
@@ -108,13 +109,15 @@ export default defineComponent({
     const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
     const qForm = inject<QFormProvider | null>('qForm', null);
 
+    console.log(ctx.attrs.step)
+
     const state = reactive<State>({
       number: null,
       userNumber: null,
       prevValue: null,
-      minValue: Number(ctx.attrs.min) ?? Number.MIN_SAFE_INTEGER,
-      maxValue: Number(ctx.attrs.max) ?? Number.MAX_SAFE_INTEGER,
-      step: Number(ctx.attrs.step) ?? 1
+      minValue: ctx.attrs.min ? Number(ctx.attrs.min) : Number.MIN_SAFE_INTEGER,
+      maxValue: ctx.attrs.max ? Number(ctx.attrs.max) : Number.MAX_SAFE_INTEGER,
+      step: ctx.attrs.step ? Number(ctx.attrs.step) : 1
     });
 
     const isDisabled = computed(() => props.disabled || (qForm?.disabled ?? false));
@@ -139,9 +142,7 @@ export default defineComponent({
       return state.minValue === 0 || 0 - state.step < state.minValue;
     });
 
-    const currentValue = computed(() => {
-      return (state.userNumber ?? state.number ?? '').toString()
-    });
+    const currentValue = computed(() => (state.userNumber ?? state.number ?? '').toString());
 
     const areControlsEnabled = computed(() => props.controls && !isDisabled.value);
 
@@ -163,7 +164,7 @@ export default defineComponent({
     };
 
     const changesEmmiter = (value: number | null, type: string) => {
-      let passedData = null;
+      let passedData: number | null = null;
 
       if (value !== null) {
         state.number = Number(value.toFixed(props.precision));

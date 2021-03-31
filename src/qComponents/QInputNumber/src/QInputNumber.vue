@@ -119,9 +119,9 @@ export default defineComponent({
       step: ctx.attrs.step ? Number(ctx.attrs.step) : 1
     });
 
-    const increaseWithStep = (number: number, step: number) => Math.round((number + step) * 100) / 100;
+    const getIncreasedValue = (number: number, step: number) => Math.round((number + step) * 100) / 100;
 
-    const decreaseWithStep = (number: number, step: number) => Math.round((number - step) * 100) / 100;
+    const getDecreasedValue = (number: number, step: number) => Math.round((number - step) * 100) / 100;
 
     const isDisabled = computed(() => props.disabled || (qForm?.disabled ?? false));
 
@@ -130,13 +130,13 @@ export default defineComponent({
     const isIncreaseDisabled = computed(() => {
       const number = state.number ?? 0;
 
-      return number >= state.maxValue || increaseWithStep(number, state.step) > state.maxValue;
+      return number >= state.maxValue || getIncreasedValue(number, state.step) > state.maxValue;
     });
 
     const isDecreaseDisabled = computed(() => {
       const number = state.number ?? 0;
 
-      return number <= state.minValue || decreaseWithStep(number, state.step) < state.minValue;
+      return number <= state.minValue || getDecreasedValue(number, state.step) < state.minValue;
     });
 
     const currentValue = computed(() => (state.userNumber ?? state.number ?? '').toString());
@@ -216,7 +216,7 @@ export default defineComponent({
 
     const handleIncreaseClick = () => {
       const number = state.number ?? 0;
-      const updatedNumber = increaseWithStep(number, state.step);
+      const updatedNumber = getIncreasedValue(number, state.step);
 
       state.userNumber = updatedNumber;
       changesEmmiter(updatedNumber, 'change');
@@ -224,7 +224,7 @@ export default defineComponent({
 
     const handleDecreaseClick = () => {
       const number = state.number ?? 0;
-      const updatedNumber = decreaseWithStep(number, state.step);
+      const updatedNumber = getDecreasedValue(number, state.step);
 
       state.userNumber = updatedNumber;
       changesEmmiter(updatedNumber, 'change');

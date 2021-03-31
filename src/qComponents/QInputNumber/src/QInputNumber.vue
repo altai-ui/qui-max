@@ -13,12 +13,10 @@
     />
 
     <q-input
-      v-bind="$attrs"
       :model-value="currentValue"
       class="q-input-number__input"
       :disabled="isDisabled"
       :validate-event="false"
-      type="number"
       @blur="handleBlur"
       @focus="handleFocus"
       @update:model-value="handleChangeInput"
@@ -36,14 +34,18 @@
 </template>
 
 <script lang="ts">
-import { inject, computed, reactive, watch, defineComponent, PropType } from 'vue';
+import { inject, computed, reactive, watch, defineComponent, PropType, nextTick } from 'vue';
 
 import { QFormProvider } from '@/qComponents/QForm';
 import { QFormItemProvider } from '@/qComponents/QFormItem';
 
 interface State {
   number: number | null;
-  userNumber: number | null;
+  userNumber: number | string | null;
+  prevValue: number | null;
+  minValue: number;
+  maxValue: number;
+  step: number;
 };
 
 export default defineComponent({
@@ -105,13 +107,14 @@ export default defineComponent({
   setup(props, ctx) {
     const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
     const qForm = inject<QFormProvider | null>('qForm', null);
-    const minValue: number = ctx.attrs.min as number ?? Number.MIN_SAFE_INTEGER;
-    const maxValue: number = ctx.attrs.max as number ?? Number.MAX_SAFE_INTEGER;
-    const step: number = ctx.attrs.step as number ?? 1;
 
     const state = reactive<State>({
       number: null,
-      userNumber: null
+      userNumber: null,
+      prevValue: null,
+      minValue: ctx.attrs.min as number ?? Number.MIN_SAFE_INTEGER,
+      maxValue: ctx.attrs.max as number ?? Number.MAX_SAFE_INTEGER,
+      step: ctx.attrs.step as number ?? 1
     });
 
     const isDisabled = computed(() => props.disabled || (qForm?.disabled ?? false));
@@ -119,7 +122,10 @@ export default defineComponent({
     const withControlsClass = computed(() => ({ 'q-input-number_with-controls': props.controls }));
 
     const increaseClass = computed(() => {
-      if (state.number && state.number >= maxValue) {
+      if (
+        (state.number && state.number >= state.maxValue)
+        || (state.number === null && state.maxValue === 0)
+      ) {
         return 'q-input-number__button_is-disabled';
       }
 
@@ -127,14 +133,19 @@ export default defineComponent({
     });
 
     const decreaseClass = computed(() => {
-      if (state.number && state.number <= minValue) {
+      if (
+        (state.number && state.number <= state.minValue)
+        || (state.number === null && state.minValue === 0)
+      ) {
         return 'q-input-number__button_is-disabled';
       }
 
       return '';
     });
 
-    const currentValue = computed(() => (state.userNumber ?? state.number ?? '').toString());
+    const currentValue = computed(() => {
+      return (state.userNumber ?? state.number ?? '').toString()
+    });
 
     const areControlsEnabled = computed(() => props.controls && !isDisabled.value);
 
@@ -173,10 +184,16 @@ export default defineComponent({
       if (props.validateEvent) qFormItem?.validateField('input');
     }
 
-    const processUserValue = (value: number, type: string) => {
+    const processUserValue = async (value: number, type: string) => {
       state.userNumber = null;
+      
+      if (value > state.maxValue || value < state.minValue) {
+        state.number = null;
 
-      if (value > maxValue || value < minValue) {
+        await nextTick();
+        
+        state.userNumber = value > state.maxValue ? state.maxValue : state.minValue;
+        state.number = state.userNumber;
         return;
       }
 
@@ -189,9 +206,10 @@ export default defineComponent({
       if (props.validateEvent) qFormItem?.validateField('input');
     };
 
-    const handleChangeInput = (value: number | null, type: string) => {
-      if (value === null) {
+    const handleChangeInput = (value: number | string | null, type: string) => {
+      if (value === null || value === '') {
         state.userNumber = value;
+        state.number = null;
         changesEmmiter(null, type);
         return;
       }
@@ -201,9 +219,9 @@ export default defineComponent({
 
     const handleIncreaseClick = () => {
       const number = state.number ?? 0;
-      const updatedNumber = Math.round((number + step) * 100) / 100;
+      const updatedNumber = Math.round((number + state.step) * 100) / 100;
 
-      if (updatedNumber > maxValue) return;
+      if (updatedNumber > state.maxValue) return;
 
       state.userNumber = updatedNumber;
       changesEmmiter(updatedNumber, 'change');
@@ -211,9 +229,9 @@ export default defineComponent({
 
     const handleDecreaseClick = () => {
       const number = state.number ?? 0;
-      const updatedNumber = Math.round((number - step) * 100) / 100;
+      const updatedNumber = Math.round((number - state.step) * 100) / 100;
 
-      if (updatedNumber < minValue) return;
+      if (updatedNumber < state.minValue) return;
 
       state.userNumber = updatedNumber;
       changesEmmiter(updatedNumber, 'change');

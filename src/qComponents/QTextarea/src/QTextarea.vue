@@ -4,7 +4,7 @@
       v-if="isSymbolLimitShown"
       class="q-textarea__count"
     >
-      {{ t('QTextarea.charNumber') }}: {{ textLength }}/{{ maxlength }}
+      {{ t('QTextarea.charNumber') }}: {{ textLength }}/{{ $attrs.maxlength }}
     </div>
     <textarea
       v-bind="$attrs"
@@ -19,6 +19,7 @@
     />
   </div>
 </template>
+
 <script lang="ts">
 import {
   computed,
@@ -30,21 +31,14 @@ import {
   watch,
   PropType
 } from 'vue';
-import {
-  computeDisabled,
-  computeSymbolLimitVisibility
-} from '@/qComponents/composables/inputs';
 import { QFormProvider } from '@/qComponents/QForm';
 import { QFormItemProvider } from '@/qComponents/QFormItem';
 import { useI18n } from 'vue-i18n';
-import emitter from '../../mixins/emitter';
 import calcTextareaHeight from './calcTextareaHeight';
 
 export default defineComponent({
   name: 'QTextarea',
   componentName: 'QTextarea',
-
-  mixins: [emitter],
 
   inheritAttrs: false,
 
@@ -60,7 +54,7 @@ export default defineComponent({
      * control the resizability
      */
     resize: {
-      type: String,
+      type: String as PropType<'vertical' | 'horizontal' | 'both' | 'none'>,
       default: 'vertical',
       validator: (value: string) =>
         ['vertical', 'horizontal', 'both', 'none'].includes(value)
@@ -101,29 +95,22 @@ export default defineComponent({
   emits: ['blur', 'focus', 'input', 'change', 'update:modelValue'],
 
   setup(props, ctx) {
-    const textareaCalcStyle = ref({});
+    const textareaCalcStyle = ref<{ minHeight?: string, height?: string, resize?: string}>({});
     const qForm = inject<QFormProvider | null>('qForm', null);
     const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
     const textarea = ref<HTMLTextAreaElement | null>(null);
 
-    const isDisabled = computeDisabled({
-      componentDisabled: props.disabled,
-      formDisabled: qForm?.disabled ?? false
-    });
+    const isDisabled = computed(() => props.disabled || (qForm?.disabled ?? false)) 
 
-    const maxlength = computed(() => ctx.attrs.maxlength);
-    const textLength = computed(() => props.modelValue?.length ?? 0);
-
-    const isSymbolLimitShown = computeSymbolLimitVisibility(
-      {
-        showSymbolLimit: props.showSymbolLimit
-      },
-      {
-        maxlength: ctx.attrs.maxlength,
-        readonly: ctx.attrs.readonly
-      },
-      isDisabled
+    const isSymbolLimitShown = computed(
+      () =>
+        props.showSymbolLimit &&
+        ctx.attrs.maxlength &&
+        !isDisabled.value &&
+        !ctx.attrs.readonly
     );
+
+    const textLength = computed(() => props.modelValue?.length ?? 0);
 
     const classes = computed(() => {
       const mainClass = 'q-textarea';
@@ -212,7 +199,6 @@ export default defineComponent({
       handleFocus,
       handleInput,
       handleChange,
-      maxlength,
       textLength
     };
   }

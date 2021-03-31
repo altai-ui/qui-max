@@ -28,14 +28,16 @@ const CONTEXT_STYLE: string[] = [
   'box-sizing'
 ];
 
-function calculateNodeStyling(
-  targetElement: HTMLTextAreaElement
-): {
+interface NodeStyling {
   contextStyle: string;
   paddingSize: number;
   borderSize: number;
   boxSizing: string;
-} {
+}
+
+function calculateNodeStyling(
+  targetElement: HTMLTextAreaElement
+): NodeStyling {
   const style = window.getComputedStyle(targetElement);
 
   const boxSizing = style.getPropertyValue('box-sizing');

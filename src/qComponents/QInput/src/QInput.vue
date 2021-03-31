@@ -9,7 +9,7 @@
       class="q-input__count"
     >
       <span class="q-input__count-inner">
-        {{ t('QInput.charNumber') }}: {{ textLength }}/{{ maxlength }}
+        {{ t('QInput.charNumber') }}: {{ textLength }}/{{ $attrs.maxlength }}
       </span>
     </div>
     <input
@@ -64,15 +64,10 @@ import {
   reactive,
   watch,
   defineComponent,
-  onMounted
 } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { QFormProvider } from '@/qComponents/QForm';
 import { QFormItemProvider } from '@/qComponents/QFormItem';
-import {
-  computeDisabled,
-  computeSymbolLimitVisibility
-} from '@/qComponents/composables/inputs';
 
 export default defineComponent({
   name: 'QInput',
@@ -149,21 +144,15 @@ export default defineComponent({
       return ctx.attrs.type;
     });
 
-    const isDisabled = computeDisabled({
-      componentDisabled: props.disabled,
-      formDisabled: qForm?.disabled ?? false
-    });
+    const isDisabled = computed(() => props.disabled || (qForm?.disabled ?? false)) 
 
-    const isSymbolLimitShown = computeSymbolLimitVisibility(
-      {
-        showSymbolLimit: props.showSymbolLimit,
-        passwordSwitch: props.passwordSwitch
-      },
-      {
-        maxlength: ctx.attrs.maxlength,
-        readonly: ctx.attrs.readonly
-      },
-      isDisabled
+    const isSymbolLimitShown = computed(
+      () =>
+        props.showSymbolLimit &&
+        ctx.attrs.maxlength &&
+        !isDisabled.value &&
+        !ctx.attrs.readonly &&
+        !props.passwordSwitch
     );
 
     const isPasswordSwitchShown = computed(
@@ -204,8 +193,6 @@ export default defineComponent({
         }
       ];
     });
-
-    const maxlength = computed(() => ctx.attrs.maxlength);
 
     const textLength = computed(() => props.modelValue?.length ?? 0);
 
@@ -262,7 +249,6 @@ export default defineComponent({
       isSuffixVisible,
       isClearButtonShown,
       isSymbolLimitShown,
-      maxlength,
       textLength,
       inputType,
       input,

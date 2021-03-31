@@ -13,6 +13,7 @@
     />
 
     <q-input
+      v-bind="$attrs"
       :model-value="currentValue"
       class="q-input-number__input"
       :disabled="isDisabled"

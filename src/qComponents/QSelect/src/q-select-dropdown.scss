@@ -1,0 +1,28 @@
+.q-select-dropdown {
+  --dropdown-max-height: 204px;
+  --dropdown-box-shadow-base: var(--box-shadow-primary);
+  --dropdown-background-color-base: var(--color-tertiary-gray-light);
+
+  position: absolute;
+  z-index: 1001;
+  display: none;
+  width: 100%;
+  overflow: hidden;
+  background-color: var(--dropdown-background-color-base);
+  border-radius: var(--border-radius-base);
+  box-shadow: var(--dropdown-box-shadow-base);
+
+  &_shown {
+    display: block;
+  }
+
+  &__empty {
+    margin: 0;
+    padding: 10px 16px 8px;
+    color: rgba(var(--color-rgb-gray), 0.64);
+  }
+
+  &__wrap {
+    max-height: var(--dropdown-max-height);
+  }
+}

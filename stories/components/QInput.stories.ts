@@ -57,7 +57,32 @@ export default {
 const Template = (args: any) => ({
   setup() {
     const data = ref('');
-    return { args, data };
+
+    const handleFocus = (event: Event) => {
+      console.log('handleFocus', event);
+    };
+    const handleBlur = (event: Event) => {
+      console.log('handleBlur', event);
+    };
+    const handleInput = (event: Event) => {
+      console.log('handleInput', event);
+    };
+    const handleChange = (event: Event) => {
+      console.log('handleChange', event);
+    };
+    const handleClear = (event: Event) => {
+      console.log('handleClear', event);
+    };
+
+    return {
+      data,
+      args,
+      handleFocus,
+      handleBlur,
+      handleInput,
+      handleChange,
+      handleClear
+    };
   },
 
   template: `
@@ -67,7 +92,6 @@ const Template = (args: any) => ({
       :show-symbol-limit="args.showSymbolLimit"
       :password-switch="args.passwordSwitch"
       :disabled="args.disabled"
-      :counter-limit="args.counterLimit"
       :clearable="args.clearable"
       :validate-event="args.validateEvent"
       :autocomplete="args.autocomplete"
@@ -75,6 +99,11 @@ const Template = (args: any) => ({
       :maxlength="args.maxlength"
       :type="args.type"
       :readonly="args.readonly"
+      @blur="handleBlur"
+      @focus="handleFocus"
+      @input="handleInput"
+      @change="handleChange"
+      @clear="handleClear"
     />`
 });
 

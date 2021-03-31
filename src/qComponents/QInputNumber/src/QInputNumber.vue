@@ -125,21 +125,15 @@ export default defineComponent({
     const withControlsClass = computed(() => ({ 'q-input-number_with-controls': props.controls }));
 
     const isIncreaseDisabled = computed(() => {
-      if (state.number !== null) {
-        return state.number >= state.maxValue 
-          || state.number + state.step > state.maxValue; 
-      }
+      const number = state.number ?? 0;
 
-      return state.maxValue === 0 || 0 + state.step > state.maxValue;
+      return number >= state.maxValue || number + state.step > state.maxValue;
     });
 
     const isDecreaseDisabled = computed(() => {
-      if (state.number !== null) {
-        return state.number <= state.minValue 
-          || state.number - state.step < state.minValue; 
-      }
+      const number = state.number ?? 0;
 
-      return state.minValue === 0 || 0 - state.step < state.minValue;
+      return number <= state.minValue || number - state.step < state.minValue;
     });
 
     const currentValue = computed(() => (state.userNumber ?? state.number ?? '').toString());
@@ -204,6 +198,8 @@ export default defineComponent({
 
     const handleChangeInput = (event: Event, type: string) => {
       const value = (event.target as HTMLInputElement)?.value ?? null;
+
+      if (value === '-') return;
 
       if (value === null || value === '') {
         state.userNumber = value;

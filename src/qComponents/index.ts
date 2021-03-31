@@ -23,6 +23,7 @@ import QScrollbar from './QScrollbar';
 import QTabPane from './QTabPane';
 import QTabs from './QTabs';
 import QTag from './QTag';
+import QTextarea from './QTextarea';
 
 const Components = {
   QBreadcrumbs,
@@ -40,7 +41,8 @@ const Components = {
   QScrollbar,
   QTabPane,
   QTabs,
-  QTag
+  QTag,
+  QTextarea
 };
 
 const allComponents = Object.keys(Components);
@@ -141,5 +143,6 @@ export {
   QScrollbar,
   QTabPane,
   QTabs,
-  QTag
+  QTag,
+  QTextarea
 };

@@ -3,14 +3,13 @@
     :class="classes"
     @mouseenter="state.hovering = true"
     @mouseleave="state.hovering = false"
-    @click="$emit('click')"
   >
     <div
       v-if="isSymbolLimitShown"
       class="q-input__count"
     >
       <span class="q-input__count-inner">
-        {{ t('QInput.charNumber') }}: {{ textLength }}/{{ upperLimit }}
+        {{ t('QInput.charNumber') }}: {{ textLength }}/{{ $attrs.maxlength }}
       </span>
     </div>
     <input
@@ -20,8 +19,8 @@
       class="q-input__inner"
       :type="inputType"
       :disabled="isDisabled"
-      @input="updateModel"
-      @change="updateModel"
+      @input="handleInput"
+      @change="handleChange"
       @focus="handleFocus"
       @blur="handleBlur"
     />
@@ -58,7 +57,14 @@
 </template>
 
 <script lang="ts">
-import { inject, computed, ref, reactive, watch, defineComponent } from 'vue';
+import {
+  inject,
+  computed,
+  ref,
+  reactive,
+  watch,
+  defineComponent,
+} from 'vue';
 import { useI18n } from 'vue-i18n';
 import { QFormProvider } from '@/qComponents/QForm';
 import { QFormItemProvider } from '@/qComponents/QFormItem';
@@ -119,15 +125,7 @@ export default defineComponent({
     }
   },
 
-  emits: [
-    'blur',
-    'focus',
-    'input',
-    'change',
-    'click',
-    'clear',
-    'update:modelValue'
-  ],
+  emits: ['blur', 'focus', 'input', 'change', 'clear', 'update:modelValue'],
 
   setup(props, ctx) {
     const input = ref<HTMLElement | null>(null);
@@ -146,8 +144,15 @@ export default defineComponent({
       return ctx.attrs.type;
     });
 
-    const isDisabled = computed(
-      () => props.disabled || (qForm?.disabled ?? false)
+    const isDisabled = computed(() => props.disabled || (qForm?.disabled ?? false)) 
+
+    const isSymbolLimitShown = computed(
+      () =>
+        props.showSymbolLimit &&
+        ctx.attrs.maxlength &&
+        !isDisabled.value &&
+        !ctx.attrs.readonly &&
+        !props.passwordSwitch
     );
 
     const isPasswordSwitchShown = computed(
@@ -177,15 +182,6 @@ export default defineComponent({
       )
     );
 
-    const isSymbolLimitShown = computed(
-      () =>
-        props.showSymbolLimit &&
-        ctx.attrs.maxlength &&
-        !isDisabled.value &&
-        !ctx.attrs.readonly &&
-        !props.passwordSwitch
-    );
-
     const classes = computed(() => {
       const mainClass = 'q-input';
 
@@ -198,13 +194,21 @@ export default defineComponent({
       ];
     });
 
-    const upperLimit = computed(() => ctx.attrs.maxlength);
-
     const textLength = computed(() => props.modelValue?.length ?? 0);
 
     const updateModel = (event: Event) => {
       const target = event.target as HTMLInputElement;
       ctx.emit('update:modelValue', target.value ?? '');
+    };
+
+    const handleInput = (event: Event) => {
+      ctx.emit('input', event);
+      updateModel(event);
+    };
+
+    const handleChange = (event: Event) => {
+      ctx.emit('change', event);
+      updateModel(event);
     };
 
     const handleBlur = (event: FocusEvent) => {
@@ -245,7 +249,6 @@ export default defineComponent({
       isSuffixVisible,
       isClearButtonShown,
       isSymbolLimitShown,
-      upperLimit,
       textLength,
       inputType,
       input,
@@ -254,6 +257,8 @@ export default defineComponent({
       handlePasswordVisible,
       handleClearClick,
       updateModel,
+      handleInput,
+      handleChange,
       t
     };
   }

@@ -1,4 +1,4 @@
-let hiddenTextarea;
+let hiddenTextarea: HTMLTextAreaElement | null;
 
 const HIDDEN_STYLE = `
   height:0 !important;
@@ -10,7 +10,7 @@ const HIDDEN_STYLE = `
   right:0 !important
 `;
 
-const CONTEXT_STYLE = [
+const CONTEXT_STYLE: string[] = [
   'letter-spacing',
   'line-height',
   'padding-top',
@@ -28,7 +28,16 @@ const CONTEXT_STYLE = [
   'box-sizing'
 ];
 
-function calculateNodeStyling(targetElement) {
+interface NodeStyling {
+  contextStyle: string;
+  paddingSize: number;
+  borderSize: number;
+  boxSizing: string;
+}
+
+function calculateNodeStyling(
+  targetElement: HTMLTextAreaElement
+): NodeStyling {
   const style = window.getComputedStyle(targetElement);
 
   const boxSizing = style.getPropertyValue('box-sizing');
@@ -48,11 +57,23 @@ function calculateNodeStyling(targetElement) {
   return { contextStyle, paddingSize, borderSize, boxSizing };
 }
 
+interface TextareaHeight {
+  height: string;
+  minHeight: string;
+}
+
 export default function calcTextareaHeight(
-  targetElement,
+  targetElement: HTMLTextAreaElement | null,
   minRows = 1,
-  maxRows = null
-) {
+  maxRows: null | number = null
+): TextareaHeight {
+  const result: TextareaHeight = {
+    height: '',
+    minHeight: ''
+  };
+
+  if (!targetElement) return result;
+
   if (!hiddenTextarea) {
     hiddenTextarea = document.createElement('textarea');
     document.body.appendChild(hiddenTextarea);
@@ -69,7 +90,6 @@ export default function calcTextareaHeight(
   hiddenTextarea.value = targetElement.value || targetElement.placeholder || '';
 
   let height = hiddenTextarea.scrollHeight;
-  const result = {};
 
   if (boxSizing === 'border-box') {
     height += borderSize;
@@ -88,6 +108,7 @@ export default function calcTextareaHeight(
     height = Math.max(minHeight, height);
     result.minHeight = `${minHeight}px`;
   }
+
   if (maxRows !== null) {
     let maxHeight = singleRowHeight * maxRows;
     if (boxSizing === 'border-box') {
@@ -95,9 +116,10 @@ export default function calcTextareaHeight(
     }
     height = Math.min(maxHeight, height);
   }
+
   result.height = `${height}px`;
-  hiddenTextarea.parentNode &&
-    hiddenTextarea.parentNode.removeChild(hiddenTextarea);
+  hiddenTextarea.parentNode?.removeChild(hiddenTextarea);
   hiddenTextarea = null;
+
   return result;
 }

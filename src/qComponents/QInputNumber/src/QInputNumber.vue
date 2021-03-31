@@ -202,7 +202,9 @@ export default defineComponent({
       if (props.validateEvent) qFormItem?.validateField('input');
     };
 
-    const handleChangeInput = (value: number | string | null, type: string) => {
+    const handleChangeInput = (event: Event, type: string) => {
+      const value = (event.target as HTMLInputElement)?.value ?? null;
+
       if (value === null || value === '') {
         state.userNumber = value;
         state.number = null;

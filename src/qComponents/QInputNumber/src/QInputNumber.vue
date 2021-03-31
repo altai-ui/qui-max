@@ -7,8 +7,8 @@
       v-if="areControlsEnabled"
       class="q-input-number__button q-input-number__button_decrease q-icon-minus"
       type="button"
-      :disabled="isDisabled"
-      :class="decreaseClass"
+      :disabled="isDisabled || isDecreaseDisabled"
+      :class="isDecreaseDisabled && `q-input-number__button_is-disabled`"
       @click="handleDecreaseClick"
     />
 
@@ -26,8 +26,8 @@
       v-if="areControlsEnabled"
       class="q-input-number__button q-input-number__button_increase q-icon-plus"
       type="button"
-      :disabled="isDisabled"
-      :class="increaseClass"
+      :disabled="isDisabled || isIncreaseDisabled"
+      :class="isIncreaseDisabled && `q-input-number__button_is-disabled`"
       @click="handleIncreaseClick"
     />
   </div>
@@ -112,35 +112,31 @@ export default defineComponent({
       number: null,
       userNumber: null,
       prevValue: null,
-      minValue: ctx.attrs.min as number ?? Number.MIN_SAFE_INTEGER,
-      maxValue: ctx.attrs.max as number ?? Number.MAX_SAFE_INTEGER,
-      step: ctx.attrs.step as number ?? 1
+      minValue: Number(ctx.attrs.min) ?? Number.MIN_SAFE_INTEGER,
+      maxValue: Number(ctx.attrs.max) ?? Number.MAX_SAFE_INTEGER,
+      step: Number(ctx.attrs.step) ?? 1
     });
 
     const isDisabled = computed(() => props.disabled || (qForm?.disabled ?? false));
 
     const withControlsClass = computed(() => ({ 'q-input-number_with-controls': props.controls }));
 
-    const increaseClass = computed(() => {
-      if (
-        (state.number && state.number >= state.maxValue)
-        || (state.number === null && state.maxValue === 0)
-      ) {
-        return 'q-input-number__button_is-disabled';
+    const isIncreaseDisabled = computed(() => {
+      if (state.number !== null) {
+        return state.number >= state.maxValue 
+          || state.number + state.step > state.maxValue; 
       }
 
-      return '';
+      return state.maxValue === 0 || 0 + state.step > state.maxValue;
     });
 
-    const decreaseClass = computed(() => {
-      if (
-        (state.number && state.number <= state.minValue)
-        || (state.number === null && state.minValue === 0)
-      ) {
-        return 'q-input-number__button_is-disabled';
+    const isDecreaseDisabled = computed(() => {
+      if (state.number !== null) {
+        return state.number <= state.minValue 
+          || state.number - state.step < state.minValue; 
       }
 
-      return '';
+      return state.minValue === 0 || 0 - state.step < state.minValue;
     });
 
     const currentValue = computed(() => {
@@ -189,9 +185,8 @@ export default defineComponent({
       
       if (value > state.maxValue || value < state.minValue) {
         state.number = null;
-
-        await nextTick();
         
+        await nextTick();
         state.userNumber = value > state.maxValue ? state.maxValue : state.minValue;
         state.number = state.userNumber;
         return;
@@ -221,8 +216,6 @@ export default defineComponent({
       const number = state.number ?? 0;
       const updatedNumber = Math.round((number + state.step) * 100) / 100;
 
-      if (updatedNumber > state.maxValue) return;
-
       state.userNumber = updatedNumber;
       changesEmmiter(updatedNumber, 'change');
     };
@@ -230,8 +223,6 @@ export default defineComponent({
     const handleDecreaseClick = () => {
       const number = state.number ?? 0;
       const updatedNumber = Math.round((number - state.step) * 100) / 100;
-
-      if (updatedNumber < state.minValue) return;
 
       state.userNumber = updatedNumber;
       changesEmmiter(updatedNumber, 'change');
@@ -241,8 +232,8 @@ export default defineComponent({
       state,
       isDisabled,
       withControlsClass,
-      increaseClass,
-      decreaseClass,
+      isIncreaseDisabled,
+      isDecreaseDisabled,
       currentValue,
       areControlsEnabled,
       handleIncreaseClick,

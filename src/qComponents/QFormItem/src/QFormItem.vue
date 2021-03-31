@@ -42,7 +42,7 @@
 </template>
 
 <script lang="ts">
-import { QFormProvider } from '@/qComponents/QForm/src/types';
+import { QFormProvider } from '@/qComponents/QForm';
 import AsyncValidator, { ErrorList, FieldErrorList } from 'async-validator';
 import { get, set } from 'lodash-es';
 import {
@@ -116,11 +116,12 @@ export default defineComponent({
 
     const qForm = inject<QFormProvider | null>('qForm', null);
 
-    const isErrorSlotShown = computed(() => (
-      (Boolean(errorMessage.value) || Boolean(ctx.slots.error)) &&
-      props.showErrorMessage &&
-      qForm?.showErrorMessage
-    ));
+    const isErrorSlotShown = computed(
+      () =>
+        (Boolean(errorMessage.value) || Boolean(ctx.slots.error)) &&
+        props.showErrorMessage &&
+        qForm?.showErrorMessage
+    );
 
     const labelFor = computed(() => props.for ?? props.prop);
 
@@ -135,15 +136,17 @@ export default defineComponent({
       return preparedPropRules.some(({ required }) => required);
     });
 
-    const isHeaderShown = computed(() => Boolean(
-      props.label || ctx.slots.label || props.sublabel || ctx.slots.sublabel
-    ));
+    const isHeaderShown = computed(() =>
+      Boolean(
+        props.label || ctx.slots.label || props.sublabel || ctx.slots.sublabel
+      )
+    );
 
     const rootClasses = computed(() => ({
       'q-form-item_is-required': isRequired.value,
       'q-form-item_is-error': Boolean(errorMessage.value),
       'q-form-item_is-no-asterisk': qForm?.hideRequiredAsterisk
-    }))
+    }));
 
     const getFilteredRules = (
       trigger: string | null
@@ -172,7 +175,7 @@ export default defineComponent({
 
     const validateField = (
       trigger: string | null = null
-    ): Promise<{} | { errors: ErrorList; fields: FieldErrorList }> | null => {
+    ): Promise<{ errors?: ErrorList; fields?: FieldErrorList }> | null => {
       const triggeredRules = getFilteredRules(trigger);
 
       if (!triggeredRules?.length) return null;

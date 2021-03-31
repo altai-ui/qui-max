@@ -6,13 +6,7 @@
 
 <script lang="ts">
 import { concat } from 'lodash-es';
-import {
-  defineComponent,
-  provide,
-  Ref,
-  ref,
-  watch,
-} from 'vue';
+import { defineComponent, provide, Ref, ref, watch } from 'vue';
 import { QFormItemContext } from '@/qComponents/QFormItem/src/types';
 import { QFormProvider, ValidateFnResult } from './types';
 /**
@@ -79,7 +73,9 @@ export default defineComponent({
       const preparedProps = concat(passedProps || []);
 
       return preparedProps.length
-        ? fieldsList.value.filter(({ prop }) => prop ? preparedProps.includes(prop) : false)
+        ? fieldsList.value.filter(({ prop }) =>
+            prop ? preparedProps.includes(prop) : false
+          )
         : fieldsList.value;
     };
 

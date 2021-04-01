@@ -19,14 +19,14 @@
       :tabindex="multiple && filterable ? '-1' : null"
       @focus="handleFocus"
       @blur="handleBlur"
-      @keyup.native="onInputChange"
-      @keyup.native.enter.prevent="handleEnterKeyUp"
-      @keyup.native.esc.stop.prevent="visible = false"
-      @keyup.native.tab="visible = false"
-      @keyup.native.backspace="clearSelected"
-      @paste.native="onInputChange"
-      @mouseenter.native="inputHovering = true"
-      @mouseleave.native="inputHovering = false"
+      @keyup="onInputChange"
+      @keyup.enter.prevent="handleEnterKeyUp"
+      @keyup.esc.stop.prevent="visible = false"
+      @keyup.tab="visible = false"
+      @keyup.backspace="clearSelected"
+      @paste="onInputChange"
+      @mouseenter="inputHovering = true"
+      @mouseleave="inputHovering = false"
     >
       <template #suffix>
         <span
@@ -45,12 +45,12 @@
     <q-select-tags
       v-if="multiple && selected"
       ref="tags"
+      v-model:query="query"
       :collapse-tags="collapseTags"
       :autocomplete="autocomplete"
       :selected="selected"
       :filterable="filterable"
       :is-disabled="isDisabled"
-      :query.sync="query"
       @keyup-enter="handleEnterKeyUp"
       @focus="handleFocus"
       @remove-tag="deleteTag"
@@ -88,32 +88,23 @@
 </template>
 
 <script>
+import { defineComponent, ref, inject, reactive, computed, watch } from 'vue';
 import { isObject, isPlainObject, isNil, isEqual, get } from 'lodash-es';
 import { createPopper } from '@popperjs/core';
-
+import { useI18n } from 'vue-i18n';
+import { addResizeListener, removeResizeListener } from '@/qComponents/helpers/resizeEvent';
+import { QFormProvider } from '@/qComponents/QForm';
+import { QFormItemProvider } from '@/qComponents/QFormItem';
 import QSelectDropdown from './QSelectDropdown';
 import QSelectTags from './QSelectTags';
-import { addResizeListener, removeResizeListener } from '../../helpers';
-import Emitter from '../../mixins/emitter';
 
-export default {
+export default defineComponent({
   name: 'QSelect',
   componentName: 'QSelect',
 
   components: {
     QSelectTags,
     QSelectDropdown
-  },
-
-  mixins: [Emitter],
-
-  inject: {
-    qForm: {
-      default: null
-    },
-    qFormItem: {
-      default: null
-    }
   },
 
   provide() {
@@ -126,7 +117,7 @@ export default {
     /**
      * binding value
      */
-    value: {
+    modelValue: {
       type: [String, Number, Object, Array],
       default: null
     },
@@ -239,10 +230,20 @@ export default {
     appendToBody: { type: Boolean, default: true }
   },
 
-  data() {
-    return {
+  emits: ['search'],
+
+  setup(props, ctx) {
+    const input = ref<HTMLElement | null>(null);
+    const reference = ref<HTMLElement | null>(null);
+    const tags = ref<HTMLElement | null>(null);
+    const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
+    const qForm = inject<QFormProvider | null>('qForm', null);
+
+    const { t } = useI18n();
+
+    const state = reactive({
       options: [],
-      selected: this.multiple ? [] : null,
+      selected: props.multiple ? [] : null,
       inputWidth: 0,
       visible: false,
       selectedLabel: '',
@@ -252,141 +253,178 @@ export default {
       menuVisibleOnFocus: false,
       popper: null,
       isDropdownShown: false
-    };
-  },
+    })
 
-  computed: {
-    preparedPlaceholder() {
-      if (this.query || (this.multiple && this.value?.length)) {
+    const preparedPlaceholder = computed(() => {
+      if (state.query || (props.multiple && props.modelValue?.length)) {
         return '';
       }
 
-      if (this.visible && !this.multiple && this.selected) {
-        return this.selected.preparedLabel;
+      if (props.visible && !props.multiple && state.selected) {
+        return state.selected.preparedLabel;
       }
 
-      return this.placeholder;
-    },
+      return props.placeholder
+    })
 
-    visibleOptionsCount() {
-      return this.options.filter(({ isVisible }) => isVisible).length;
-    },
+    const isDisabled = computed(
+      () => props.disabled || (qForm?.disabled ?? false)
+    );
 
-    isCanLoadMoreShown() {
-      return this.canLoadMore && !this.loading && this.visibleOptionsCount > 0;
-    },
+    const visibleOptionsCount = computed(
+      () => state.options.filter(({ isVisible }) => isVisible).length
+    );
 
-    showEmptyContent() {
-      return Boolean(
-        this.emptyText &&
-          (!this.allowCreate ||
-            this.loading ||
-            (this.allowCreate && this.options.length === 0))
-      );
-    },
+    const isCanLoadMoreShown = computed(
+      () => props.canLoadMore && !props.loading && props.visibleOptionsCount > 0
+    );
 
-    readonly() {
-      return !this.filterable || this.multiple;
-    },
+    const showEmptyContent = computed(
+      () => Boolean(
+        props.emptyText &&
+        (!props.allowCreate || props.loading || (props.allowCreate && state.options.length === 0))
+      )
+    );
 
-    isClearBtnShown() {
-      const hasValue = this.multiple
-        ? Array.isArray(this.value) && this.value.length > 0
-        : ![undefined, null, ''].includes(this.value);
+    const readonly = computed(() => !props.filterable || props.multiple);
+
+    const isClearBtnShown = computed(() => {
+      const hasValue = props.multiple
+        ? Array.isArray(props.value) && props.value.length > 0
+        : ![undefined, null, ''].includes(props.value);
 
       return (
-        this.clearable && !this.isDisabled && this.inputHovering && hasValue
-      );
-    },
+        props.clearable && !isDisabled.value && state.inputHovering && hasValue
+      )
+    });
 
-    iconClass() {
-      if (this.remote && this.filterable) return 'q-icon-search';
+    const iconClass = computed(() => {
+      if (props.remote && props.filterable) return 'q-icon-search';
+      return state.visible ? 'q-icon-triangle-up q-input__icon_reverse' : 'q-icon-triangle-down';
+    });
 
-      return this.visible
-        ? 'q-icon-triangle-up q-input__icon_reverse'
-        : 'q-icon-triangle-down';
-    },
-
-    emptyText() {
-      const loadingText = this.loadingText ?? this.$t('QSelect.loading');
-      if (this.loading) return loadingText;
+    const emptyText = computed(() => {
+      const loadingText = props.loadingText ?? t('QSelect.loading');
+      if (props.loading) return loadingText;
 
       if (
-        this.filterable &&
-        this.query &&
-        this.options.length > 0 &&
-        this.visibleOptionsCount === 0
+        props.filterable &&
+        state.query &&
+        state.options.length > 0 &&
+        props.visibleOptionsCount === 0
       ) {
-        return this.noMatchText ?? this.$t('QSelect.noMatch');
+        return props.noMatchText ?? t('QSelect.noMatch');
       }
 
-      if (this.options.length === 0)
-        return this.noDataText ?? this.$t('QSelect.noData');
+      if (state.options.length === 0)
+        return props.noDataText ?? t('QSelect.noData');
 
       return '';
-    },
+    });
 
-    isNewOptionShown() {
-      const hasExistingOption = this.options
+    const isNewOptionShown = computed(() => {
+      const hasExistingOption = state.options
         .filter(({ created }) => !created)
-        .some(({ preparedLabel }) => preparedLabel === this.query);
-
+        .some(({ preparedLabel }) => preparedLabel === state.query);
+      
       return (
-        this.filterable &&
-        this.allowCreate &&
-        this.query !== '' &&
+        props.filterable &&
+        props.allowCreate &&
+        state.query !== '' &&
         !hasExistingOption
-      );
+      )
+    })
+
+    const getKey = (value) => {
+      return isPlainObject(value) ? get(value, props.valueKey) : value;
     },
 
-    isDisabled() {
-      return this.disabled || (this.qForm?.disabled ?? false);
+    const getOption = (value) => {
+      if (isNil(value)) return null;
+
+      const keyByValueKey = getKey(value);
+      const option = state.options.find(({ key }) => key === keyByValueKey);
+
+      if (option) return option;
+      if (!props.allowCreate) return null;
+
+      const newOption = {
+        value,
+        preparedLabel: isObject(value) ? '' : value ?? ''
+      };
+
+      return newOption;
+    },
+
+    /**
+     * @public
+     */
+    const setSelected = () => {
+      if (props.multiple) {
+        const result = [];
+        if (Array.isArray(props.modelValue)) {
+          props.modelValue.forEach(value => {
+            const option = getOption(value);
+
+            if (option) {
+              result.push(option);
+              return;
+            }
+
+            const keyByValueKey = getKey(value);
+            const cachedOption = state.selected.find(
+              ({ key }) => key === keyByValueKey
+            );
+            if (cachedOption) result.push(cachedOption);
+          });
+        }
+
+        state.selected = result;
+        return;
+      }
+
+      const option = getOption(props.modelValue);
+      if (option) {
+        if (!state.isDropdownShown) state.selectedLabel = option.preparedLabel;
+        state.selected = option;
+        return;
+      }
+
+      const keyByValueKey = getKey(props.modelValue);
+      if (state.selected?.key === keyByValueKey) return;
+      if (!state.isDropdownShown) state.selectedLabel = '';
+      state.selected = null;
     }
-  },
 
-  watch: {
-    options() {
-      this.setSelected();
-    },
+    watch(state.options, setSelected)
 
-    value(val, oldVal) {
-      this.setSelected();
+    watch(() => props.modelValue, (val, oldVal) => {
+      setSelected();
 
       if (!isEqual(val, oldVal)) {
-        this.qFormItem?.validateField('change');
+        qFormItem?.validateField('change');
       }
-    },
+    });
 
-    multiple(value) {
-      if (value) this.selectedLabel = '';
-    },
+    watch(() => props.multiple, (value) => {
+      if (value) state.selectedLabel = '';
+    });
 
-    query(value) {
-      this.hoverIndex = 0;
-
-      /**
-       * use `search` event instead
-       * @deprecated Use `search` event instead.
-       */
-      this.$emit('remote-method', value);
-      /**
-       * use `search` event instead
-       * @deprecated Use `search` event instead.
-       */
-      this.$emit('filter-method', value);
+    watch(() => state.query, (value) => {
+      state.hoverIndex = 0;
       /**
        * triggers when the query changes
        */
-      this.$emit('search', value);
-    },
+      ctx.emit('search', value);
+    });
 
-    visible(val) {
+    watch(() => state.visible, (val) => {
       if (!val) {
-        this.$refs.tags?.$refs.input?.blur();
-        this.menuVisibleOnFocus = false;
-        this.hoverIndex = 0;
+        tags?.value.$refs.input?.blur();
+        state.menuVisibleOnFocus = false;
+        state.hoverIndex = 0;
 
-        if (!this.multiple && this.selected) {
+        if (!props.multiple && state.selected) {
           this.selectedLabel = this.selected.preparedLabel;
         } else {
           this.selectedLabel = '';
@@ -408,7 +446,25 @@ export default {
       }
 
       this.$emit('visible-change', val);
+    })
+
+    return {
+      state,
+      preparedPlaceholder,
+      visibleOptionsCount,
+      isCanLoadMoreShown,
+      showEmptyContent,
+      readonly,
+      isDisabled,
+      isClearBtnShown,
+      iconClass,
+      emptyText,
+      isNewOptionShown
     }
+  },
+
+  watch: {
+
   },
 
   created() {
@@ -517,67 +573,6 @@ export default {
       this.popper.destroy();
       this.popper = null;
       document.removeEventListener('keyup', this.handleKeyUp, true);
-    },
-
-    getKey(value) {
-      return isPlainObject(value) ? get(value, this.valueKey) : value;
-    },
-
-    getOption(value) {
-      if (isNil(value)) return null;
-
-      const keyByValueKey = this.getKey(value);
-      const option = this.options.find(({ key }) => key === keyByValueKey);
-
-      if (option) return option;
-      if (!this.allowCreate) return null;
-
-      const newOption = {
-        value,
-        preparedLabel: isObject(value) ? '' : value ?? ''
-      };
-
-      return newOption;
-    },
-
-    /**
-     * @public
-     */
-    setSelected() {
-      if (this.multiple) {
-        const result = [];
-        if (Array.isArray(this.value)) {
-          this.value.forEach(value => {
-            const option = this.getOption(value);
-
-            if (option) {
-              result.push(option);
-              return;
-            }
-
-            const keyByValueKey = this.getKey(value);
-            const cachedOption = this.selected.find(
-              ({ key }) => key === keyByValueKey
-            );
-            if (cachedOption) result.push(cachedOption);
-          });
-        }
-
-        this.selected = result;
-        return;
-      }
-
-      const option = this.getOption(this.value);
-      if (option) {
-        if (!this.isDropdownShown) this.selectedLabel = option.preparedLabel;
-        this.selected = option;
-        return;
-      }
-
-      const keyByValueKey = this.getKey(this.value);
-      if (this.selected?.key === keyByValueKey) return;
-      if (!this.isDropdownShown) this.selectedLabel = '';
-      this.selected = null;
     },
 
     handleFocus(event) {
@@ -703,5 +698,5 @@ export default {
       if (!isEqual(this.value, value)) this.$emit('change', value);
     }
   }
-};
+});
 </script>

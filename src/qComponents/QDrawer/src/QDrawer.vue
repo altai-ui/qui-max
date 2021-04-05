@@ -187,9 +187,7 @@ export default defineComponent({
     };
 
     const handleWrapperClick = () => {
-      if (!props.wrapperClosable) return;
-
-      closeDrawer();
+      if (props.wrapperClosable) closeDrawer();
     };
 
     watch(

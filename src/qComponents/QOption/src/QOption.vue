@@ -11,13 +11,13 @@
     @mouseenter="handleMouseEnter"
     @click.stop="handleOptionClick"
   >
-    <q-checkbox
+    <!-- <q-checkbox
       v-if="qSelect.multiple"
       root-tag="div"
       input-tab-index="-1"
       :value="isSelected"
       :disabled="isDisabled"
-    />
+    /> -->
 
     <slot>
       <div class="q-option__label">{{ preparedLabel }}</div>
@@ -30,17 +30,16 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { isObject, isEqual, get } from 'lodash-es';
+import { computed, defineComponent, inject, onBeforeUnmount, watch } from 'vue';
 
-export default {
+export default defineComponent({
   name: 'QOption',
   componentName: 'QOption',
 
-  inject: ['qSelect'],
-
   props: {
-    value: {
+    modelValue: {
       type: [Object, String, Number],
       required: true
     },
@@ -58,71 +57,70 @@ export default {
     }
   },
 
-  computed: {
-    key() {
-      return isObject(this.value)
-        ? get(this.value, this.qSelect.valueKey)
-        : this.value;
-    },
+  setup(props) {
+    const qSelect = inject('qSelect');
+    const key = computed(
+      () => isObject(props.modelValue)
+        ? get(props.modelValue, qSelect.valueKey)
+        : props.modelValue
+    )
 
-    preparedLabel() {
-      return String(this.label ?? this.key);
-    },
+    const preparedLabel = computed(() => {
+      return String(props.label ?? key.value);
+    })
 
-    isVisible() {
-      const { remote, query } = this.qSelect;
+    const isVisible = computed(() => {
+      const { remote, query } = qSelect;
       if (remote || !query) return true;
 
       return (
-        this.preparedLabel.toLowerCase().includes(query.toLowerCase()) ||
-        this.created
-      );
-    },
+        preparedLabel.value.toLowerCase().includes(query.toLowerCase()) ||
+        props.created
+      )
+    })
 
-    isSelected() {
-      const { value, multiple, valueKey } = this.qSelect;
-      if (!value) return false;
+    const isSelected = computed(() => {
+      const { modelValue, multiple, valueKey } = qSelect;
+      if (!modelValue) return false;
 
       const { key } = this;
 
       if (!multiple) {
-        if (!isObject(this.value)) return value === key;
+        if (!isObject(props.modelValue)) return modelValue === key;
 
-        return isEqual(get(value, valueKey), key);
+        return isEqual(get(modelValue, valueKey), key);
       }
 
       const prepareValue = val => (isObject(val) ? get(val, valueKey) : val);
-      return value.some(val => prepareValue(val) === key);
-    },
+      return modelValue.some(val => prepareValue(val) === key);
+    })
 
-    isLimitReached() {
-      if (!this.qSelect.multiple) return false;
+    const isLimitReached = computed(() => {
+      if (!qSelect.multiple) return false;
 
-      const { multipleLimit, value } = this.qSelect;
+      const { multipleLimit, modelValue } = qSelect;
 
       return (
-        !this.isSelected &&
-        Array.isArray(value) &&
+        !isSelected.value &&
+        Array.isArray(modelValue) &&
         multipleLimit > 0 &&
-        value.length >= multipleLimit
+        modelValue.length >= multipleLimit
       );
-    },
+    })
 
-    isDisabled() {
-      return this.disabled || this.isLimitReached;
-    }
-  },
+    const isDisabled = computed(() => {
+      return props.disabled || isLimitReached.value;
+    })
 
-  watch: {
-    preparedLabel() {
-      if (!this.created && !this.qSelect.remote) this.qSelect.setSelected();
-    },
+    watch(preparedLabel, () => {
+      if (!props.created && !qSelect.remote) qSelect.setSelected();
+    })
 
-    value(val, oldVal) {
-      const { remote } = this.qSelect;
+    watch(() => props.modelValue, (val, oldVal) => {
+      const { remote } = qSelect;
 
-      if (!this.created && !remote) {
-        const { valueKey } = this.qSelect;
+      if (!props.created && !remote) {
+        const { valueKey } = qSelect;
 
         if (
           valueKey &&
@@ -132,34 +130,50 @@ export default {
         )
           return;
 
-        this.qSelect.setSelected();
+        qSelect.setSelected();
       }
+    })
+
+    const handleMouseEnter = () => {
+      if (props.disabled) return;
+
+      qSelect.hoverIndex = qSelect.options.indexOf(this);
     }
-  },
 
-  created() {
-    this.qSelect.options.push(this);
-  },
+    const handleOptionClick = () => {
+      if (props.disabled) return;
 
-  beforeDestroy() {
-    const currentOptionIndex = this.qSelect.options.indexOf(this);
-    if (currentOptionIndex > -1) {
-      this.qSelect.options.splice(currentOptionIndex, 1);
+      qSelect.toggleOptionSelection(self);
     }
-  },
 
-  methods: {
-    handleMouseEnter() {
-      if (this.disabled) return;
+    const self = {
+      ...props,
+      preparedLabel,
+      isVisible,
+      isSelected,
+      isLimitReached,
+      isDisabled
+    }
 
-      this.qSelect.hoverIndex = this.qSelect.options.indexOf(this);
-    },
+    onBeforeUnmount(() => {
+      const currentOptionIndex = qSelect.options.indexOf(self);
+      if (currentOptionIndex > -1) {
+        qSelect.options.splice(currentOptionIndex, 1);
+      }
+    });
 
-    handleOptionClick() {
-      if (this.disabled) return;
+    qSelect.options.push(self);
 
-      this.qSelect.toggleOptionSelection(this);
+    return {
+      preparedLabel,
+      isVisible,
+      isSelected,
+      isLimitReached,
+      isDisabled,
+      handleMouseEnter,
+      handleOptionClick,
+      qSelect
     }
   }
-};
+})
 </script>

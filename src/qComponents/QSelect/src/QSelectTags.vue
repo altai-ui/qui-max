@@ -48,12 +48,12 @@
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent, ref } from 'vue';
+
+export default defineComponent({
   name: 'QSelectTags',
   componentName: 'QSelectTags',
-
-  inject: ['qSelect'],
 
   props: {
     collapseTags: { type: Boolean, required: true },
@@ -64,24 +64,35 @@ export default {
     selected: { type: [Array, Object], required: true }
   },
 
-  methods: {
-    handleBackspaceKeyDown() {
-      if (!this.query) {
-        this.$emit('remove-tag', this.selected[this.selected.length - 1]);
+  emits: ['remove-tag', 'exit', 'update:query', 'focus', 'keyup-enter'],
+
+  setup(props, ctx) {
+    const input = ref<HTMLInputElement | null>(null)
+    const handleBackspaceKeyDown = () => {
+      if (!props.query) {
+        ctx.emit('remove-tag', props.selected[props.selected.length - 1]);
       }
-    },
+    };
 
-    handleTagClose(option) {
-      this.$emit('remove-tag', option);
-    },
+    const handleTagClose = option => {
+      ctx.emit('remove-tag', option);
+    };
 
-    emitExit() {
-      this.$emit('exit');
-    },
+    const emitExit = () => {
+      ctx.emit('exit');
+    };
 
-    handleInput({ target }) {
-      this.$emit('update:query', target.value);
-    }
+    const handleInput = ({ target }) => {
+      ctx.emit('update:query', target.value);
+    };
+
+    return {
+      handleBackspaceKeyDown,
+      handleTagClose,
+      handleInput,
+      emitExit,
+      input
+    };
   }
-};
+});
 </script>

@@ -35,9 +35,7 @@ interface NodeStyling {
   boxSizing: string;
 }
 
-function calculateNodeStyling(
-  targetElement: HTMLTextAreaElement
-): NodeStyling {
+function calculateNodeStyling(targetElement: HTMLTextAreaElement): NodeStyling {
   const style = window.getComputedStyle(targetElement);
 
   const boxSizing = style.getPropertyValue('box-sizing');

@@ -1,5 +1,6 @@
-import QSelect from '@/qComponents/QSelect'
+import QSelect from '@/qComponents/QSelect';
 import QOption from '@/qComponents/QOption';
+import { watch, reactive } from 'vue';
 
 export default {
   title: 'Components/QSelect',
@@ -41,63 +42,65 @@ const options = [
 ];
 
 const Template = (args: any) => ({
-  data() {
-    return {
+  setup() {
+    const state = reactive({
       remoteLoading: false,
       value: null,
       options
-    };
-  },
+    })
 
-  watch: {
-    multiple() {
-      this.value = null;
-    },
+    watch(() => args.multiple, () => {
+      state.value = null;
+    })
 
-    remote(value) {
-      if (!value) this.options = options;
-    }
-  },
+    watch(() => args.remote, (value) => {
+      if(!value) state.options = options;
+    })
 
-  methods: {
-    handleSearch(query) {
-      if (!this.remote) return;
+    const handleSearch = (query: string) => {
+      if (!args.remote) return;
 
-      this.remoteLoading = true;
+      state.remoteLoading = true;
 
       setTimeout(() => {
-        this.remoteLoading = false;
+        state.remoteLoading = false;
 
         if (query !== '') {
-          this.options = options.filter(item => {
+          state.options = options.filter(item => {
             return item.label.toLowerCase().includes(query.toLowerCase());
           });
         } else {
-          this.options = options;
+          state.options = options;
         }
       }, 2000);
+    }
+
+    return {
+      handleSearch,
+      args,
+      state
     }
   },
 
   template: `
-      <div style="width: 304px;">
-        <q-select
-          v-model="value"
-          v-bind="$props"
-          :loading="loading || remoteLoading"
-          @search="handleSearch"
-          placeholder="Pick an option"
-        >
-          <q-option
-            v-for="item in options"
-            :key="item.value.id"
-            :label="item.label"
-            :value="item.value"
-            :disabled="item.disabled"
-          />
-        </q-select>
-      </div>
-    `
+    <div style="width: 304px;">
+      <q-select
+        v-bind="args"
+        v-model="state.value"
+        :loading="state.remoteLoading"
+        @search="handleSearch"
+        placeholder="Pick an option"
+      >
+        <q-option
+          v-for="item in state.options"
+          :key="item.value.id"
+          :label="item.label"
+          :model-value="item.value"
+          :disabled="item.disabled"
+        />
+      </q-select>
+    </div>
+  `
 });
 
 export const Default = Template.bind({});

@@ -24,6 +24,8 @@ import QTabPane from './QTabPane';
 import QTabs from './QTabs';
 import QTag from './QTag';
 import QTextarea from './QTextarea';
+import QSelect from './QSelect';
+import QOption from './QOption';
 
 const Components = {
   QBreadcrumbs,
@@ -42,7 +44,9 @@ const Components = {
   QTabPane,
   QTabs,
   QTag,
-  QTextarea
+  QTextarea,
+  QSelect,
+  QOption
 };
 
 const allComponents = Object.keys(Components);
@@ -144,5 +148,7 @@ export {
   QTabPane,
   QTabs,
   QTag,
-  QTextarea
+  QTextarea,
+  QSelect,
+  QOption
 };

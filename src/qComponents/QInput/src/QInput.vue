@@ -1,5 +1,6 @@
 <template>
   <div
+    ref="root"
     :class="classes"
     @mouseenter="state.hovering = true"
     @mouseleave="state.hovering = false"
@@ -57,14 +58,7 @@
 </template>
 
 <script lang="ts">
-import {
-  inject,
-  computed,
-  ref,
-  reactive,
-  watch,
-  defineComponent,
-} from 'vue';
+import { inject, computed, ref, reactive, watch, defineComponent } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { QFormProvider } from '@/qComponents/QForm';
 import { QFormItemProvider } from '@/qComponents/QFormItem';
@@ -128,6 +122,7 @@ export default defineComponent({
   emits: ['blur', 'focus', 'input', 'change', 'clear', 'update:modelValue'],
 
   setup(props, ctx) {
+    const root = ref<HTMLElement | null>(null);
     const input = ref<HTMLElement | null>(null);
     const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
     const qForm = inject<QFormProvider | null>('qForm', null);
@@ -144,7 +139,9 @@ export default defineComponent({
       return ctx.attrs.type;
     });
 
-    const isDisabled = computed(() => props.disabled || (qForm?.disabled ?? false)) 
+    const isDisabled = computed(
+      () => props.disabled || (qForm?.disabled ?? false)
+    );
 
     const isSymbolLimitShown = computed(
       () =>
@@ -242,6 +239,7 @@ export default defineComponent({
     const { t } = useI18n();
 
     return {
+      root,
       state,
       classes,
       isDisabled,

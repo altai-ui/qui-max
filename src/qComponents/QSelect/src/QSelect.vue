@@ -1,13 +1,13 @@
 <template>
   <div
-    ref="reference"
+    ref="root"
     v-click-outside="handleOutsideClick"
     class="q-select"
     @click="toggleMenu"
   >
     <q-input
       ref="input"
-      v-model="selectedLabel"
+      v-model="state.selectedLabel"
       type="text"
       class="q-select__input"
       :placeholder="preparedPlaceholder"
@@ -15,18 +15,18 @@
       :disabled="isDisabled"
       :readonly="readonly"
       :validate-event="false"
-      :class="{ 'q-input_focus': visible }"
+      :class="{ 'q-input_focus': state.visible }"
       :tabindex="multiple && filterable ? '-1' : null"
       @focus="handleFocus"
       @blur="handleBlur"
       @keyup="onInputChange"
       @keyup.enter.prevent="handleEnterKeyUp"
-      @keyup.esc.stop.prevent="visible = false"
-      @keyup.tab="visible = false"
+      @keyup.esc.stop.prevent="state.visible = false"
+      @keyup.tab="state.visible = false"
       @keyup.backspace="clearSelected"
       @paste="onInputChange"
-      @mouseenter="inputHovering = true"
-      @mouseleave="inputHovering = false"
+      @mouseenter="state.inputHovering = true"
+      @mouseleave="state.inputHovering = false"
     >
       <template #suffix>
         <span
@@ -43,56 +43,76 @@
     </q-input>
 
     <q-select-tags
-      v-if="multiple && selected"
+      v-if="multiple && state.selected"
       ref="tags"
-      v-model:query="query"
+      v-model:query="state.query"
       :collapse-tags="collapseTags"
       :autocomplete="autocomplete"
-      :selected="selected"
-      :filterable="filterable"
+      :selected="state.selected"
+      :filterable="props.filterable"
       :is-disabled="isDisabled"
       @keyup-enter="handleEnterKeyUp"
       @focus="handleFocus"
       @remove-tag="deleteTag"
-      @exit="visible = false"
+      @exit="state.visible = false"
     />
 
-    <q-select-dropdown
-      ref="dropdown"
-      :multiple="multiple"
-      :shown="isDropdownShown"
-      :width="inputWidth"
-      :options="options"
-      :value="value"
-      :value-key="valueKey"
-      :select-all-shown="selectAllShown"
-      :select-all-text="selectAllText || $t('QSelect.selectAll')"
-      :show-empty-content="showEmptyContent"
-      :empty-text="emptyText"
-      :is-can-load-more-shown="isCanLoadMoreShown"
-      :load-more-text="loadMoreText || $t('QSelect.more')"
-      :query="query"
-      :is-new-option-shown="isNewOptionShown"
-      @select-all="emitValueUpdate"
+    <teleport
+      :to="teleportTo"
+      :disabled="!teleportTo"
     >
-      <slot v-if="!loading" />
-
-      <template
-        v-if="$slots.empty"
-        #empty
+      <q-select-dropdown
+        ref="dropdown"
+        :multiple="multiple"
+        :shown="state.isDropdownShown"
+        :width="state.inputWidth"
+        :options="state.options"
+        :model-value="modelValue"
+        :value-key="valueKey"
+        :select-all-shown="selectAllShown"
+        :select-all-text="selectAllText || t('QSelect.selectAll')"
+        :show-empty-content="showEmptyContent"
+        :empty-text="emptyText"
+        :is-can-load-more-shown="isCanLoadMoreShown"
+        :load-more-text="loadMoreText || t('QSelect.more')"
+        :query="state.query"
+        :is-new-option-shown="isNewOptionShown"
+        @select-all="emitValueUpdate"
       >
-        <slot name="empty" />
-      </template>
-    </q-select-dropdown>
+        <slot v-if="!state.loading" />
+
+        <template
+          v-if="$slots.empty"
+          #empty
+        >
+          <slot name="empty" />
+        </template>
+      </q-select-dropdown>
+    </teleport>
   </div>
 </template>
 
-<script>
-import { defineComponent, ref, inject, reactive, computed, watch } from 'vue';
+<script lang="ts">
+import {
+  defineComponent,
+  ref,
+  inject,
+  reactive,
+  computed,
+  watch,
+  onMounted,
+  onBeforeUnmount,
+  nextTick,
+  provide,
+  PropType
+} from 'vue';
 import { isObject, isPlainObject, isNil, isEqual, get } from 'lodash-es';
 import { createPopper } from '@popperjs/core';
 import { useI18n } from 'vue-i18n';
-import { addResizeListener, removeResizeListener } from '@/qComponents/helpers/resizeEvent';
+import {
+  addResizeListener,
+  removeResizeListener
+} from '@/qComponents/helpers/resizeEvent';
 import { QFormProvider } from '@/qComponents/QForm';
 import { QFormItemProvider } from '@/qComponents/QFormItem';
 import QSelectDropdown from './QSelectDropdown';
@@ -107,18 +127,25 @@ export default defineComponent({
     QSelectDropdown
   },
 
-  provide() {
-    return {
-      qSelect: this
-    };
-  },
-
   props: {
     /**
      * binding value
      */
     modelValue: {
-      type: [String, Number, Object, Array],
+      type: [
+        String,
+        Number,
+        Object,
+        Array
+      ] as PropType<
+        string |
+        number |
+        {
+          value: string |
+          { value: unknown, label: string, disabled: boolean
+        }[] |
+        []
+      }>,
       default: null
     },
     /**
@@ -225,17 +252,31 @@ export default defineComponent({
      */
     collapseTags: { type: Boolean, default: false },
     /**
-     * whether to append the popper menu to body. If the positioning of the popper is wrong, you can try to set this prop to false
+     * Specifies a target element where QMessageBox will be moved.
+     * (has to be a valid query selector, or an HTMLElement)
      */
-    appendToBody: { type: Boolean, default: true }
+    teleportTo: {
+      type: [String, HTMLElement],
+      default: null
+    },
   },
 
-  emits: ['search'],
+  emits: [
+    'input',
+    'focus',
+    'blur',
+    'clear',
+    'change',
+    'remove-tag',
+    'search',
+    'visible-change'
+  ],
 
   setup(props, ctx) {
     const input = ref<HTMLElement | null>(null);
-    const reference = ref<HTMLElement | null>(null);
+    const root = ref<HTMLElement | null>(null);
     const tags = ref<HTMLElement | null>(null);
+    const dropdown = ref<HTMLElement | null>(null);
     const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
     const qForm = inject<QFormProvider | null>('qForm', null);
 
@@ -253,19 +294,23 @@ export default defineComponent({
       menuVisibleOnFocus: false,
       popper: null,
       isDropdownShown: false
-    })
+    });
+
+    if (props.multiple) {
+      if (!Array.isArray(props.modelValue)) ctx.emit('input', []);
+    } else if (Array.isArray(props.modelValue)) ctx.emit('input', '');
 
     const preparedPlaceholder = computed(() => {
       if (state.query || (props.multiple && props.modelValue?.length)) {
         return '';
       }
 
-      if (props.visible && !props.multiple && state.selected) {
+      if (state.visible && !props.multiple && state.selected) {
         return state.selected.preparedLabel;
       }
 
-      return props.placeholder
-    })
+      return props.placeholder;
+    });
 
     const isDisabled = computed(
       () => props.disabled || (qForm?.disabled ?? false)
@@ -279,10 +324,12 @@ export default defineComponent({
       () => props.canLoadMore && !props.loading && props.visibleOptionsCount > 0
     );
 
-    const showEmptyContent = computed(
-      () => Boolean(
+    const showEmptyContent = computed(() =>
+      Boolean(
         props.emptyText &&
-        (!props.allowCreate || props.loading || (props.allowCreate && state.options.length === 0))
+          (!props.allowCreate ||
+            props.loading ||
+            (props.allowCreate && state.options.length === 0))
       )
     );
 
@@ -295,12 +342,14 @@ export default defineComponent({
 
       return (
         props.clearable && !isDisabled.value && state.inputHovering && hasValue
-      )
+      );
     });
 
     const iconClass = computed(() => {
       if (props.remote && props.filterable) return 'q-icon-search';
-      return state.visible ? 'q-icon-triangle-up q-input__icon_reverse' : 'q-icon-triangle-down';
+      return state.visible
+        ? 'q-icon-triangle-up q-input__icon_reverse'
+        : 'q-icon-triangle-down';
     });
 
     const emptyText = computed(() => {
@@ -326,20 +375,20 @@ export default defineComponent({
       const hasExistingOption = state.options
         .filter(({ created }) => !created)
         .some(({ preparedLabel }) => preparedLabel === state.query);
-      
+
       return (
         props.filterable &&
         props.allowCreate &&
         state.query !== '' &&
         !hasExistingOption
-      )
-    })
+      );
+    });
 
-    const getKey = (value) => {
+    const getKey = (value: string) => {
       return isPlainObject(value) ? get(value, props.valueKey) : value;
-    },
+    };
 
-    const getOption = (value) => {
+    const getOption = (value: string) => {
       if (isNil(value)) return null;
 
       const keyByValueKey = getKey(value);
@@ -354,7 +403,7 @@ export default defineComponent({
       };
 
       return newOption;
-    },
+    };
 
     /**
      * @public
@@ -394,61 +443,318 @@ export default defineComponent({
       if (state.selected?.key === keyByValueKey) return;
       if (!state.isDropdownShown) state.selectedLabel = '';
       state.selected = null;
-    }
+    };
 
-    watch(state.options, setSelected)
+    const toggleMenu = () => {
+      if (isDisabled.value) return;
 
-    watch(() => props.modelValue, (val, oldVal) => {
-      setSelected();
-
-      if (!isEqual(val, oldVal)) {
-        qFormItem?.validateField('change');
-      }
-    });
-
-    watch(() => props.multiple, (value) => {
-      if (value) state.selectedLabel = '';
-    });
-
-    watch(() => state.query, (value) => {
-      state.hoverIndex = 0;
-      /**
-       * triggers when the query changes
-       */
-      ctx.emit('search', value);
-    });
-
-    watch(() => state.visible, (val) => {
-      if (!val) {
-        tags?.value.$refs.input?.blur();
+      if (state.menuVisibleOnFocus) {
         state.menuVisibleOnFocus = false;
-        state.hoverIndex = 0;
-
-        if (!props.multiple && state.selected) {
-          this.selectedLabel = this.selected.preparedLabel;
-        } else {
-          this.selectedLabel = '';
-        }
-
-        this.hidePopper();
       } else {
-        this.query = '';
-        this.showPopper();
-        if (this.filterable) {
-          if (this.multiple) {
-            this.$refs.tags.$refs.input.focus();
-          } else if (this.selectedLabel) {
-            this.selectedLabel = '';
-          }
-        }
-
-        this.$nextTick(this.$refs.dropdown?.$refs.scrollbar?.update);
+        state.visible = !state.visible;
       }
 
-      this.$emit('visible-change', val);
-    })
+      if (state.visible) {
+        console.log(tags);
+        
+        // (tags?.value?.$refs.input ?? input.value).focus();
+      }
+    };
+
+    const handleKeyUp = e => {
+      if (
+        input.value.querySelector('input') === e.target &&
+        e.key === 'Enter'
+      ) {
+        toggleMenu();
+      }
+
+      switch (e.key) {
+        case 'Escape': {
+          state.visible = false;
+          break;
+        }
+        case 'Tab': {
+          if (!root.value.contains(document.activeElement)) {
+            state.visible = false;
+          }
+          break;
+        }
+        case 'ArrowRight':
+        case 'ArrowUp':
+        case 'ArrowLeft':
+        case 'ArrowDown':
+        case 'Enter': {
+          dropdown.value.navigateDropdown(e);
+          break;
+        }
+        default:
+          break;
+      }
+    };
+
+    const popperInit = () => {
+      console.log(dropdown);
+      
+      state.popper = createPopper(input.value?.root, dropdown.value?.root, {
+        modifiers: [
+          {
+            name: 'offset',
+            options: {
+              offset: [0, 8]
+            }
+          }
+        ]
+      });
+    };
+
+    const showPopper = () => {
+      state.isDropdownShown = true;
+      popperInit();
+      document.addEventListener('keyup', handleKeyUp, true);
+    };
+
+    const hidePopper = () => {
+      state.isDropdownShown = false;
+      state.query = '';
+
+      if (!state.popper) return;
+
+      state.popper.destroy();
+      state.popper = null;
+      document.removeEventListener('keyup', handleKeyUp, true);
+    };
+
+    watch(state.options, setSelected);
+
+    watch(
+      () => props.modelValue,
+      (val, oldVal) => {
+        setSelected();
+
+        if (!isEqual(val, oldVal)) {
+          qFormItem?.validateField('change');
+        }
+      }
+    );
+
+    watch(
+      () => props.multiple,
+      value => {
+        if (value) state.selectedLabel = '';
+      }
+    );
+
+    watch(
+      () => state.query,
+      value => {
+        state.hoverIndex = 0;
+        /**
+         * triggers when the query changes
+         */
+        ctx.emit('search', value);
+      }
+    );
+
+    watch(
+      () => state.visible,
+      val => {
+        console.log('state.visible', val);
+        if (!val) {
+          console.log(tags.value);
+          
+          tags?.value?.input.blur();
+          state.menuVisibleOnFocus = false;
+          state.hoverIndex = 0;
+
+          if (!props.multiple && state.selected) {
+            state.selectedLabel = state.selected.preparedLabel;
+          } else {
+            state.selectedLabel = '';
+          }
+
+          hidePopper();
+        } else {
+          state.query = '';
+          showPopper();
+          if (props.filterable) {
+            if (props.multiple) {
+              tags?.value.$refs.input.focus();
+            } else if (state.selectedLabel) {
+              state.selectedLabel = '';
+            }
+          }
+
+          nextTick(dropdown.value?.$refs.scrollbar?.update);
+        }
+
+        ctx.emit('visible-change', val);
+      }
+    );
+
+    const handleResize = async () => {
+      state.inputWidth = root.value.getBoundingClientRect().width;
+
+      if (!props.multiple || (props.collapseTags && !props.filterable)) return;
+      await nextTick();
+      state.popper?.update();
+    };
+
+    onMounted(() => {
+      addResizeListener(root.value, handleResize);
+
+      console.log(root, input)
+
+      nextTick(() => {
+        state.inputWidth = root.value.getBoundingClientRect().width;
+      });
+
+      setSelected();
+    });
+
+    onBeforeUnmount(() => {
+      if (root.value) removeResizeListener(root.value, handleResize);
+
+      const dropdownEL = dropdown.value;
+      if (dropdownEL?.parentNode === document.body) {
+        document.body.removeChild(dropdownEL);
+      }
+
+      document.removeEventListener('keyup', handleKeyUp, true);
+    });
+
+    const handleOutsideClick = () => {
+      console.log('handleOutsideClick');
+      
+      state.visible = false;
+    };
+
+    const handleFocus = event => {
+      if (props.filterable) {
+        state.visible = true;
+
+        if (props.filterable) {
+          state.menuVisibleOnFocus = true;
+        }
+      }
+
+      ctx.emit('focus', event);
+    };
+
+    const blur = () => {
+      state.visible = false;
+      input.value.blur();
+    };
+
+    const handleBlur = event => {
+      setTimeout(() => {
+        ctx.emit('blur', event);
+      }, 50);
+    };
+
+    const emitValueUpdate = value => {
+      ctx.emit('input', value);
+      if (!isEqual(props.modelValue, value)) ctx.emit('change', value);
+    };
+
+    const clearSelected = () => {
+      const value = props.multiple ? [] : null;
+      emitValueUpdate(value);
+
+      state.visible = false;
+      ctx.emit('clear');
+    };
+
+    const getValueIndex = (arr = [], value) => {
+      const isValueObject = isObject(value);
+      if (!isValueObject) return arr.indexOf(value);
+
+      const valueKey = props.valueKey;
+      const valueByValuekey = get(value, valueKey);
+      return arr.findIndex(item => get(item, valueKey) === valueByValuekey);
+    };
+
+    /**
+     * @public
+     */
+    const toggleOptionSelection = option => {
+      if (props.multiple) {
+        const value = [...(props.valueModel ?? [])];
+        const optionIndex = getValueIndex(value, option.value);
+        if (optionIndex > -1) {
+          value.splice(optionIndex, 1);
+        } else if (
+          props.multipleLimit <= 0 ||
+          value.length < props.multipleLimit
+        ) {
+          value.push(option.value);
+        }
+
+        emitValueUpdate(value);
+        if (option.created) {
+          state.query = '';
+        }
+        if (props.filterable) tags.value.$refs.input.focus();
+      } else {
+        emitValueUpdate(option.value);
+        state.visible = false;
+      }
+    };
+
+    const handleEnterKeyUp = () => {
+      if (!state.visible) {
+        toggleMenu();
+        return;
+      }
+
+      let option = null;
+      if (isNewOptionShown.value) {
+        option = state.options.find(({ created }) => created);
+      } else {
+        option = state.options[state.hoverIndex];
+      }
+
+      if (option?.isVisible) {
+        toggleOptionSelection(option);
+      }
+    };
+
+    const deleteTag = tag => {
+      if (isDisabled.value) return;
+
+      const index = state.selected.findIndex(({ key }) => key === tag.key);
+      if (index === -1) return;
+
+      const value = [...props.modelValue];
+      value.splice(index, 1);
+
+      emitValueUpdate(value);
+      ctx.emit('remove-tag', tag.value);
+    };
+
+    const onInputChange = () => {
+      if (props.filterable && state.query !== state.selectedLabel) {
+        state.query = state.selectedLabel;
+      }
+    };
+
+    provide('qSelect', {
+      toggleMenu,
+      toggleOptionSelection,
+      multipleLimit: props.multipleLimit,
+      valueKey: props.valueKey,
+      remote: props.remote,
+      query: state.query,
+      multiple: props.multiple,
+      modelValue: props.modelValue,
+      options: state.options
+    });
 
     return {
+      input,
+      root,
+      tags,
+      dropdown,
       state,
       preparedPlaceholder,
       visibleOptionsCount,
@@ -459,244 +765,24 @@ export default defineComponent({
       isClearBtnShown,
       iconClass,
       emptyText,
-      isNewOptionShown
-    }
-  },
-
-  watch: {
-
-  },
-
-  created() {
-    if (this.multiple) {
-      if (!Array.isArray(this.value)) this.$emit('input', []);
-    } else if (Array.isArray(this.value)) this.$emit('input', '');
-  },
-
-  mounted() {
-    addResizeListener(this.$el, this.handleResize);
-
-    this.$nextTick(() => {
-      this.inputWidth = this.$el.getBoundingClientRect().width;
-    });
-
-    this.setSelected();
-  },
-
-  beforeDestroy() {
-    if (this.$el) removeResizeListener(this.$el, this.handleResize);
-
-    const dropdown = this.$refs.dropdown?.$el;
-    if (dropdown?.parentNode === document.body) {
-      document.body.removeChild(dropdown);
-    }
-
-    document.removeEventListener('keyup', this.handleKeyUp, true);
-  },
-
-  methods: {
-    handleKeyUp(e) {
-      if (
-        this.$refs.input.$el.querySelector('input') === e.target &&
-        e.key === 'Enter'
-      ) {
-        this.toggleMenu();
-      }
-
-      switch (e.key) {
-        case 'Escape': {
-          this.visible = false;
-          break;
-        }
-        case 'Tab': {
-          if (!this.$refs.reference.contains(document.activeElement)) {
-            this.visible = false;
-          }
-          break;
-        }
-        case 'ArrowRight':
-        case 'ArrowUp':
-        case 'ArrowLeft':
-        case 'ArrowDown':
-        case 'Enter': {
-          this.$refs.dropdown.navigateDropdown(e);
-          break;
-        }
-        default:
-          break;
-      }
-    },
-
-    handleOutsideClick() {
-      this.visible = false;
-    },
-
-    async handleResize() {
-      this.inputWidth = this.$el.getBoundingClientRect().width;
-
-      if (!this.multiple || (this.collapseTags && !this.filterable)) return;
-      await this.$nextTick();
-      this.popper && this.popper.update();
-    },
-
-    createPopper() {
-      const { input, dropdown } = this.$refs;
-
-      if (this.appendToBody) {
-        document.body.appendChild(dropdown.$el);
-      }
-
-      this.popper = createPopper(input.$el, dropdown.$el, {
-        modifiers: [
-          {
-            name: 'offset',
-            options: {
-              offset: [0, 8]
-            }
-          }
-        ]
-      });
-    },
-
-    showPopper() {
-      this.isDropdownShown = true;
-      this.createPopper();
-      document.addEventListener('keyup', this.handleKeyUp, true);
-    },
-
-    hidePopper() {
-      this.isDropdownShown = false;
-      this.query = '';
-
-      if (!this.popper) return;
-
-      this.popper.destroy();
-      this.popper = null;
-      document.removeEventListener('keyup', this.handleKeyUp, true);
-    },
-
-    handleFocus(event) {
-      if (this.filterable) {
-        this.visible = true;
-
-        if (this.filterable) {
-          this.menuVisibleOnFocus = true;
-        }
-      }
-
-      this.$emit('focus', event);
-    },
-
-    blur() {
-      this.visible = false;
-      this.$refs.input.blur();
-    },
-
-    handleBlur(event) {
-      setTimeout(() => {
-        this.$emit('blur', event);
-      }, 50);
-    },
-
-    clearSelected() {
-      const value = this.multiple ? [] : null;
-      this.emitValueUpdate(value);
-
-      this.visible = false;
-      this.$emit('clear');
-    },
-
-    getValueIndex(arr = [], value) {
-      const isValueObject = isObject(value);
-      if (!isValueObject) return arr.indexOf(value);
-
-      const valueKey = this.valueKey;
-      const valueByValuekey = get(value, valueKey);
-      return arr.findIndex(item => get(item, valueKey) === valueByValuekey);
-    },
-
-    /**
-     * @public
-     */
-    toggleOptionSelection(option) {
-      if (this.multiple) {
-        const value = [...(this.value ?? [])];
-        const optionIndex = this.getValueIndex(value, option.value);
-        if (optionIndex > -1) {
-          value.splice(optionIndex, 1);
-        } else if (
-          this.multipleLimit <= 0 ||
-          value.length < this.multipleLimit
-        ) {
-          value.push(option.value);
-        }
-
-        this.emitValueUpdate(value);
-        if (option.created) {
-          this.query = '';
-        }
-        if (this.filterable) this.$refs.tags.$refs.input.focus();
-      } else {
-        this.emitValueUpdate(option.value);
-        this.visible = false;
-      }
-    },
-
-    toggleMenu() {
-      if (this.isDisabled) return;
-
-      if (this.menuVisibleOnFocus) {
-        this.menuVisibleOnFocus = false;
-      } else {
-        this.visible = !this.visible;
-      }
-
-      if (this.visible) {
-        (this.$refs.tags?.$refs.input ?? this.$refs.input).focus();
-      }
-    },
-
-    handleEnterKeyUp() {
-      if (!this.visible) {
-        this.toggleMenu();
-        return;
-      }
-
-      let option = null;
-      if (this.isNewOptionShown) {
-        option = this.options.find(({ created }) => created);
-      } else {
-        option = this.options[this.hoverIndex];
-      }
-
-      if (option?.isVisible) {
-        this.toggleOptionSelection(option);
-      }
-    },
-
-    deleteTag(tag) {
-      if (this.isDisabled) return;
-
-      const index = this.selected.findIndex(({ key }) => key === tag.key);
-      if (index === -1) return;
-
-      const value = [...this.value];
-      value.splice(index, 1);
-
-      this.emitValueUpdate(value);
-      this.$emit('remove-tag', tag.value);
-    },
-
-    onInputChange() {
-      if (this.filterable && this.query !== this.selectedLabel) {
-        this.query = this.selectedLabel;
-      }
-    },
-
-    emitValueUpdate(value) {
-      this.$emit('input', value);
-      if (!isEqual(this.value, value)) this.$emit('change', value);
-    }
+      isNewOptionShown,
+      handleOutsideClick,
+      popperInit,
+      showPopper,
+      hidePopper,
+      handleFocus,
+      handleBlur,
+      clearSelected,
+      getValueIndex,
+      toggleOptionSelection,
+      emitValueUpdate,
+      blur,
+      toggleMenu,
+      handleEnterKeyUp,
+      onInputChange,
+      deleteTag,
+      t
+    };
   }
 });
 </script>

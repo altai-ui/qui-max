@@ -36,7 +36,15 @@
 </template>
 
 <script lang="ts">
-import { inject, computed, reactive, watch, defineComponent, PropType, nextTick } from 'vue';
+import {
+  inject,
+  computed,
+  reactive,
+  watch,
+  defineComponent,
+  PropType,
+  nextTick
+} from 'vue';
 
 import { QFormProvider } from '@/qComponents/QForm';
 import { QFormItemProvider } from '@/qComponents/QFormItem';
@@ -48,7 +56,7 @@ interface State {
   minValue: number;
   maxValue: number;
   step: number;
-};
+}
 
 export default defineComponent({
   name: 'QInputNumber',
@@ -58,22 +66,22 @@ export default defineComponent({
 
   props: {
     /**
-      * precision of input value
-      */
+     * precision of input value
+     */
     precision: {
       type: Number,
       default: 0
     },
     /**
-      * whether the component is disabled
-      */
+     * whether the component is disabled
+     */
     disabled: {
       type: Boolean,
       default: false
     },
     /**
-      * whether to enable the control buttons
-      */
+     * whether to enable the control buttons
+     */
     noControls: {
       type: Boolean,
       default: false
@@ -82,9 +90,7 @@ export default defineComponent({
      * default to v-model
      */
     modelValue: {
-      type: [String, Number] as PropType<
-        null | string | number
-      >,
+      type: [String, Number] as PropType<null | string | number>,
       default: '',
       validator: (value: string | number): boolean => {
         if (!Number.isNaN(Number(value)) || value === null) return true;
@@ -99,12 +105,7 @@ export default defineComponent({
     }
   },
 
-  emits: [
-    'blur',
-    'focus',
-    'input',
-    'change'
-  ],
+  emits: ['blur', 'focus', 'input', 'change'],
 
   setup(props, ctx) {
     const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
@@ -119,36 +120,52 @@ export default defineComponent({
       step: ctx.attrs.step ? Number(ctx.attrs.step) : 1
     });
 
-    const getIncreasedValue = (number: number, step: number) => Math.round((number + step) * 100) / 100;
+    const getIncreasedValue = (number: number, step: number) =>
+      Math.round((number + step) * 100) / 100;
 
-    const getDecreasedValue = (number: number, step: number) => Math.round((number - step) * 100) / 100;
+    const getDecreasedValue = (number: number, step: number) =>
+      Math.round((number - step) * 100) / 100;
 
-    const isDisabled = computed(() => props.disabled || (qForm?.disabled ?? false));
+    const isDisabled = computed(
+      () => props.disabled || (qForm?.disabled ?? false)
+    );
 
-    const withControlsClass = computed(() => ({ 'q-input-number_with-controls': !props.noControls }));
+    const withControlsClass = computed(() => ({
+      'q-input-number_with-controls': !props.noControls
+    }));
 
     const isIncreaseDisabled = computed(() => {
       const number = state.number ?? 0;
 
-      return number >= state.maxValue || getIncreasedValue(number, state.step) > state.maxValue;
+      return (
+        number >= state.maxValue ||
+        getIncreasedValue(number, state.step) > state.maxValue
+      );
     });
 
     const isDecreaseDisabled = computed(() => {
       const number = state.number ?? 0;
 
-      return number <= state.minValue || getDecreasedValue(number, state.step) < state.minValue;
+      return (
+        number <= state.minValue ||
+        getDecreasedValue(number, state.step) < state.minValue
+      );
     });
 
-    const currentValue = computed(() => (state.userNumber ?? state.number ?? '').toString());
+    const currentValue = computed(() =>
+      (state.userNumber ?? state.number ?? '').toString()
+    );
 
-    const areControlsEnabled = computed(() => !props.noControls && !isDisabled.value);
+    const areControlsEnabled = computed(
+      () => !props.noControls && !isDisabled.value
+    );
 
     watch(
       () => props.modelValue,
-      (value) => {
+      value => {
         state.number = value !== null ? Number(value) : null;
       },
-      { immediate:true }
+      { immediate: true }
     );
 
     const handleBlur = (event: FocusEvent) => {
@@ -176,16 +193,17 @@ export default defineComponent({
 
       ctx.emit('input', passedData);
       if (props.validateEvent) qFormItem?.validateField('input');
-    }
+    };
 
     const processUserValue = async (value: number, type: string) => {
       state.userNumber = null;
-      
+
       if (value > state.maxValue || value < state.minValue) {
         state.number = null;
-        
+
         await nextTick();
-        state.userNumber = value > state.maxValue ? state.maxValue : state.minValue;
+        state.userNumber =
+          value > state.maxValue ? state.maxValue : state.minValue;
         state.number = state.userNumber;
         return;
       }
@@ -245,7 +263,7 @@ export default defineComponent({
       handleChangeInput,
       processUserValue,
       changesEmmiter
-    }
+    };
   }
 });
 </script>

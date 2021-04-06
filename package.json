@@ -8,7 +8,6 @@
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "eslint": "eslint --fix --no-ignore '**/*.{vue,ts}'",
-    "stylelint": "stylelint --fix '**/*.{scss,vue}'",
     "prettier": "prettier --check --ignore-unknown '**/*'",
     "prettier:fix": "prettier --write --ignore-unknown '**/*'",
     "lint:style": "stylelint '**/*.{css,scss,vue}'",

@@ -59,7 +59,7 @@ import QPickerDropdown from './QPickerDropdown.vue';
 
 const DEFAULT_Z_INDEX = 2000;
 const CHANGE_EVENT = 'change';
-const UPDATE_MODEL_EVENT = 'update:modelValue';
+const UPDATE_MODEL_VALUE_EVENT = 'update:modelValue';
 
 export default defineComponent({
   name: 'QColorPicker',
@@ -117,7 +117,7 @@ export default defineComponent({
     }
   },
 
-  emits: [UPDATE_MODEL_EVENT, CHANGE_EVENT, 'click'],
+  emits: [UPDATE_MODEL_VALUE_EVENT, CHANGE_EVENT, 'click'],
 
   setup(props, { emit }) {
     const qForm = inject<QFormProvider | null>('qForm', null);
@@ -178,7 +178,7 @@ export default defineComponent({
 
     const handleClear = () => {
       emit(CHANGE_EVENT, null);
-      emit(UPDATE_MODEL_EVENT, null);
+      emit(UPDATE_MODEL_VALUE_EVENT, null);
 
       if (props.modelValue !== null) {
         qFormItem?.validateField('change');
@@ -189,7 +189,7 @@ export default defineComponent({
 
     const handlePick = (value: string) => {
       emit(CHANGE_EVENT, value);
-      emit(UPDATE_MODEL_EVENT, value);
+      emit(UPDATE_MODEL_VALUE_EVENT, value);
 
       if (props.modelValue !== value) {
         qFormItem?.validateField('change');

@@ -9,23 +9,16 @@
   </component>
 </template>
 
-<script>
-import Emitter from '../../mixins/emitter';
+<script lang="ts">
+import { defineComponent, inject, PropType, watch } from "vue";
+import { QFormItemProvider } from '@/qComponents/QFormItem';
 
-export default {
+export default defineComponent({
   name: 'QCheckboxGroup',
   componentName: 'QCheckboxGroup',
 
-  mixins: [Emitter],
-
-  inject: {
-    qFormItem: {
-      default: null
-    }
-  },
-
   props: {
-    value: {
+    modelValue: {
       type: Array,
       default: () => []
     },
@@ -49,16 +42,18 @@ export default {
      * vertical renders to column, horizontal to row
      */
     direction: {
-      type: String,
+      type: String as PropType<'vertical' | 'horizontal'>,
       default: 'vertical',
       validator: value => ['vertical', 'horizontal'].includes(value)
     }
   },
 
-  watch: {
-    value() {
-      this.qFormItem?.validateField('change');
-    }
-  }
-};
+  setup(props) {
+    const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
+
+    watch(() => props.modelValue, () => {
+      qFormItem?.validateField('change');
+    })
+  },
+});
 </script>

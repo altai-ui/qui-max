@@ -103,26 +103,6 @@ export default defineComponent({
     const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
     const qForm = inject<QFormProvider | null>('qForm', null);
 
-    const store = computed(() => {
-      return state.checkboxGroup ? state.checkboxGroup.value : props.modelValue;
-    });
-
-    const model = computed({
-      get: () => {
-        const result = props.modelValue !== undefined ? props.modelValue : state.selfModel;
-        return state.isGroup ? this.store : result;
-      },
-      set: val => {
-        count.value = val - 1
-      }
-    });
-
-    const isChecked = computed(() => {
-      if (isBoolean(this.model)) return this.model;
-      if (Array.isArray(this.model)) return this.model.includes(this.label);
-      return false;
-    },
-
     const state = reactive({
       selfModel: false,
       focus: false,
@@ -130,6 +110,39 @@ export default defineComponent({
       isGroup: false,
       checkboxGroup: null
     });
+
+    const store = computed(() => {
+      return state.checkboxGroup ? state.checkboxGroup.value : props.modelValue;
+    });
+
+    const model = computed({
+      get: () => {
+        const result = props.modelValue !== undefined ? props.modelValue : state.selfModel;
+        return state.isGroup ? store.value : result;
+      },
+      set(val) {
+        if (state.isGroup) {
+          state.isLimitExceeded = false;
+          if (
+            val.length < state.checkboxGroup.min ||
+            val.length > state.checkboxGroup.max
+          ) {
+            state.isLimitExceeded = true;
+          }
+          if (!state.isLimitExceeded)
+            this.dispatch('QCheckboxGroup', 'input', [val]);
+        } else {
+          ctx.emit('input', val);
+          state.selfModel = val;
+        }
+      }
+    });
+
+    const isChecked = computed(() => {
+      if (isBoolean(this.model)) return this.model;
+      if (Array.isArray(this.model)) return this.model.includes(this.label);
+      return false;
+    })
 
     return {
       state,
@@ -145,14 +158,14 @@ export default defineComponent({
       },
       set(val) {
         if (this.isGroup) {
-          this.isLimitExceeded = false;
+          state.isLimitExceeded = false;
           if (
             val.length < this.checkboxGroup.min ||
             val.length > this.checkboxGroup.max
           ) {
-            this.isLimitExceeded = true;
+            state.isLimitExceeded = true;
           }
-          if (!this.isLimitExceeded)
+          if (!state.isLimitExceeded)
             this.dispatch('QCheckboxGroup', 'input', [val]);
         } else {
           this.$emit('input', val);
@@ -222,7 +235,7 @@ export default defineComponent({
     },
 
     handleChange(event) {
-      if (this.isLimitExceeded) return;
+      if (state.isLimitExceeded) return;
       const value = event.target.checked;
       this.$emit('change', value, event);
 

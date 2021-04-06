@@ -1,0 +1,158 @@
+@keyframes left-drawer-in {
+  0% {
+    transform: translate(-100%, 0);
+  }
+
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+@keyframes left-drawer-out {
+  0% {
+    transform: translate(0, 0);
+  }
+
+  100% {
+    transform: translate(-100%, 0);
+  }
+}
+
+@keyframes right-drawer-in {
+  0% {
+    transform: translate(100%, 0);
+  }
+
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+@keyframes right-drawer-out {
+  0% {
+    transform: translate(0, 0);
+  }
+
+  100% {
+    transform: translate(100%, 0);
+  }
+}
+
+@mixin animation-in($position) {
+  .q-drawer-wrapper_#{$position} {
+    animation: #{$position}-drawer-in 0.3s 1ms;
+  }
+}
+
+@mixin animation-out($position) {
+  .q-drawer-wrapper_#{$position} {
+    animation: #{$position}-drawer-out 0.3s;
+  }
+}
+
+$positions: right, left;
+
+@keyframes q-drawer-fade-in {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes q-drawer-slide-in {
+  0% {
+    transform: translate(-100%, 0);
+  }
+
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+.q-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(var(--color-rgb-white), 0.72);
+
+  &-fade-enter-active {
+    animation: q-drawer-fade-in 0.3s;
+  }
+
+  &-fade-leave-active {
+    animation: q-drawer-fade-in 0.3s reverse;
+  }
+
+  @each $position in $positions {
+    @include animation-out($position);
+    @include animation-in($position);
+  }
+
+  &-wrapper {
+    position: absolute;
+    top: 0;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 100px;
+    height: 100%;
+    padding: 24px;
+    padding-right: 0;
+    text-align: left;
+    background-color: var(--color-tertiary-gray-ultra-light);
+    outline: none;
+    box-shadow: -1px -1px 3px rgba(var(--color-rgb-blue), 0.4),
+      1px 1px 3px rgba(var(--color-rgb-white), 0.25);
+
+    &_left {
+      left: 0;
+      box-shadow: 1px 1px 3px rgba(var(--color-rgb-blue), 0.4),
+        -1px -1px 3px rgba(var(--color-rgb-white), 0.25);
+    }
+
+    &_right {
+      right: 0;
+    }
+  }
+
+  &__header {
+    padding-right: 56px;
+    padding-bottom: 32px;
+  }
+
+  &__close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    padding: 0;
+    font-size: 32px;
+    color: var(--color-primary-blue);
+    background-color: transparent;
+    border: none;
+
+    &:hover,
+    &:focus {
+      color: var(--color-primary-black);
+      outline: none;
+    }
+  }
+
+  &__title {
+    font-weight: 800;
+    font-size: 20px;
+    line-height: 25px;
+    color: var(--color-primary-black);
+  }
+
+  &__content {
+    padding-right: 24px;
+  }
+}

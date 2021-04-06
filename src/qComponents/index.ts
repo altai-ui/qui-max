@@ -17,6 +17,7 @@ import QDrawer from './QDrawer';
 import QForm from './QForm';
 import QFormItem from './QFormItem';
 import QInput from './QInput';
+import QInputNumber from './QInputNumber';
 import QMessageBox from './QMessageBox';
 import QPagination from './QPagination';
 import QRow from './QRow';
@@ -37,6 +38,7 @@ const Components = {
   QForm,
   QFormItem,
   QInput,
+  QInputNumber,
   QMessageBox,
   QPagination,
   QRow,
@@ -140,6 +142,7 @@ export {
   QForm,
   QFormItem,
   QInput,
+  QInputNumber,
   QMessageBox,
   QPagination,
   QRow,

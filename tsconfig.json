@@ -9,6 +9,7 @@
     "declaration": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
+    "strictNullChecks": true,
     "lib": ["ESNext", "DOM"],
     "types": ["vite/client"],
     "baseUrl": "./",

@@ -95,12 +95,18 @@ export default defineComponent({
   emits: ['blur', 'focus', 'input', 'change', 'update:modelValue'],
 
   setup(props, ctx) {
-    const textareaCalcStyle = ref<{ minHeight?: string, height?: string, resize?: string}>({});
+    const textareaCalcStyle = ref<{
+      minHeight?: string;
+      height?: string;
+      resize?: string;
+    }>({});
     const qForm = inject<QFormProvider | null>('qForm', null);
     const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
     const textarea = ref<HTMLTextAreaElement | null>(null);
 
-    const isDisabled = computed(() => props.disabled || (qForm?.disabled ?? false)) 
+    const isDisabled = computed(
+      () => props.disabled || (qForm?.disabled ?? false)
+    );
 
     const isSymbolLimitShown = computed(
       () =>

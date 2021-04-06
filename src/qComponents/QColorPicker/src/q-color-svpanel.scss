@@ -7,12 +7,12 @@
 
   &::before,
   &::after {
-    content: '';
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
+    content: '';
   }
 
   &::before {
@@ -24,7 +24,7 @@
   }
 
   &::after {
-    background-image: linear-gradient(0, #000, transparent);
+    background-image: linear-gradient(0deg, #000, transparent);
   }
 
   &__cursor {
@@ -32,6 +32,7 @@
     z-index: 1;
     width: 8px;
     height: 8px;
+    cursor: grab;
     background-color: var(--color-tertiary-gray-lighter);
     border-radius: 50%;
     box-shadow: -1px -1px 3px rgba(var(--color-rgb-white), 0.25),
@@ -39,6 +40,5 @@
       4px 4px 8px rgba(var(--color-rgb-blue), 0.4),
       -4px -4px 12px var(--color-tertiary-white);
     transform: translate(-4px, -4px);
-    cursor: grab;
   }
 }

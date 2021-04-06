@@ -15,12 +15,12 @@
 
   &__crumb {
     overflow: hidden;
-    font-weight: 800;
     font-size: 24px;
+    font-weight: 800;
     line-height: 31px;
     color: var(--color-primary-blue);
-    white-space: nowrap;
     text-overflow: ellipsis;
+    white-space: nowrap;
 
     &:focus {
       text-decoration: underline;
@@ -32,8 +32,8 @@
 
     &_exact-active:not(:first-child),
     &_last:not(:first-child) {
-      font-weight: var(--font-weight-bold);
       font-size: 16px;
+      font-weight: var(--font-weight-bold);
       line-height: var(--line-height-base);
       color: var(--color-primary-black);
       cursor: default;

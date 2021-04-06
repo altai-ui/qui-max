@@ -1,9 +1,9 @@
 $--base-path: '..' !default;
 
 @font-face {
+  font-family: 'qicon';
   font-style: normal;
   font-weight: 400;
-  font-family: 'qicon';
   src: url('#{$--base-path}/icons/qicon.woff?02022021') format('woff');
   font-display: block;
 }
@@ -11,23 +11,20 @@ $--base-path: '..' !default;
 [class^='q-icon-'],
 [class*=' q-icon-'] {
   display: inline-block;
+  // use !important to prevent issues with browser extensions that change fonts
+  // stylelint-disable-next-line font-family-no-missing-generic-family-keyword
+  font-family: 'qicon' !important;
   font-style: normal;
-  font-variant: normal;
   font-weight: 400;
+  font-variant: normal;
   line-height: 1;
-  vertical-align: baseline;
   text-transform: none;
+  vertical-align: baseline;
   speak: none;
 
   /* Better Font Rendering =========== */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-[class^='q-icon-'],
-[class*=' q-icon-'] {
-  /* use !important to prevent issues with browser extensions that change fonts */
-  font-family: 'qicon' !important;
 }
 
 .q-icon-bell::before {

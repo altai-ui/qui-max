@@ -37,8 +37,8 @@
 
 .q-zoom-in-center-enter,
 .q-zoom-in-center-leave-active {
-  transform: scaleX(0);
   opacity: 0;
+  transform: scaleX(0);
 }
 
 .q-zoom-in-top-enter-active,
@@ -60,8 +60,8 @@
 
 .q-zoom-in-top-enter,
 .q-zoom-in-top-leave-active {
-  transform: scaleY(0);
   opacity: 0;
+  transform: scaleY(0);
 }
 
 .q-zoom-in-bottom-enter-active,
@@ -72,8 +72,8 @@
 
 .q-zoom-in-bottom-enter,
 .q-zoom-in-bottom-leave-active {
-  transform: scaleY(0);
   opacity: 0;
+  transform: scaleY(0);
 }
 
 .q-zoom-in-left-enter-active,
@@ -84,8 +84,8 @@
 
 .q-zoom-in-left-enter,
 .q-zoom-in-left-leave-active {
-  transform: scale(0.45, 0.45);
   opacity: 0;
+  transform: scale(0.45, 0.45);
 }
 
 .collapse-transition {
@@ -105,8 +105,8 @@
 
 .q-list-enter,
 .q-list-leave-active {
-  transform: translateY(-30px);
   opacity: 0;
+  transform: translateY(-30px);
 }
 
 .q-opacity-transition {

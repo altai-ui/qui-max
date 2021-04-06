@@ -1,17 +1,18 @@
 .q-button {
-  display: inline-block;
   box-sizing: border-box;
+  display: inline-block;
   max-height: 40px;
   padding: 12px 40px;
-  font-weight: var(--font-weight-bold);
   font-size: 12px;
+  font-weight: var(--font-weight-bold);
   line-height: var(--line-height-button);
-  vertical-align: middle;
-  text-align: center;
   color: var(--color-tertiary-white);
+  text-align: center;
   text-transform: uppercase;
   letter-spacing: var(--letter-spacing-base);
   white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
   background-color: var(--color-primary);
   background-image: var(--gradient-primary);
   border: none;
@@ -21,9 +22,12 @@
     1px 1px 3px rgba(var(--color-rgb-blue), 0.4),
     4px 4px 8px rgba(var(--color-rgb-blue), 0.4),
     -4px -4px 12px var(--color-tertiary-white);
-  cursor: pointer;
   transition: background-color 0.1s;
   appearance: none;
+
+  &::-moz-focus-inner {
+    border: 0;
+  }
 
   & + & {
     margin-left: 16px;
@@ -52,15 +56,11 @@
     box-shadow: var(--box-shadow-primary);
   }
 
-  &::-moz-focus-inner {
-    border: 0;
-  }
-
   &_type {
     &_icon {
       display: inline-flex;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
       width: 40px;
       height: 40px;
       padding: 0;
@@ -101,8 +101,8 @@
 
     &_link {
       padding: 0;
-      font-weight: var(--font-weight-base);
       font-size: var(--font-size-base);
+      font-weight: var(--font-weight-base);
       color: var(--color-primary-blue);
       text-transform: initial;
       background-color: transparent;
@@ -158,10 +158,10 @@
       -1px -1px 3px rgba(var(--color-rgb-white), 0.25);
 
     color: var(--color);
+    cursor: not-allowed;
     background-color: var(--background-color);
     background-image: none;
     box-shadow: var(--box-shadow);
-    cursor: not-allowed;
 
     &:hover,
     &:active {
@@ -203,14 +203,14 @@
     }
 
     &::before {
-      content: '';
       position: absolute;
       top: 0;
       right: 0;
       bottom: 0;
       left: 0;
-      border-radius: inherit;
       pointer-events: none;
+      content: '';
+      border-radius: inherit;
     }
   }
 

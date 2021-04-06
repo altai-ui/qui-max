@@ -8,8 +8,9 @@
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "eslint": "eslint --fix --no-ignore '**/*.{vue,ts}'",
-    "prettier": "prettier --write '**/*.{js,ts,vue,scss,json,yml}'",
-    "stylelint": "stylelint --fix '**/*.{scss,vue}'"
+    "stylelint": "stylelint --fix '**/*.{scss,vue}'",
+    "prettier": "prettier --check --ignore-unknown '**/*'",
+    "prettier:fix": "prettier --write --ignore-unknown '**/*'"
   },
   "dependencies": {
     "@popperjs/core": "^2.4.4",
@@ -26,6 +27,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.13.8",
+    "@qvant/prettier-config": "^0.0.1",
     "@storybook/addon-actions": "^6.2.0-rc.0",
     "@storybook/addon-essentials": "^6.2.0-rc.0",
     "@storybook/addon-links": "^6.2.0-rc.0",
@@ -52,6 +54,7 @@
     "eslint-plugin-vue": "^7.7.0",
     "jest-transform-stub": "^2.0.0",
     "node-sass": "^4.13.0",
+    "prettier": "^2.2.1",
     "sass-loader": "^10.0.2",
     "style-loader": "^1.2.1",
     "stylelint": "^13.12.0",

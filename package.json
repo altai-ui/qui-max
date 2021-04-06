@@ -12,7 +12,8 @@
     "prettier": "prettier --check --ignore-unknown '**/*'",
     "prettier:fix": "prettier --write --ignore-unknown '**/*'",
     "lint:style": "stylelint '**/*.{css,scss,vue}'",
-    "lint:style:fix": "stylelint --fix '**/*.{css,scss,vue}'"
+    "lint:style:fix": "stylelint --fix '**/*.{css,scss,vue}'",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@popperjs/core": "^2.4.4",
@@ -55,7 +56,9 @@
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-prettier": "^3.3.1",
     "eslint-plugin-vue": "^7.7.0",
+    "husky": "^6.0.0",
     "jest-transform-stub": "^2.0.0",
+    "lint-staged": "^10.5.4",
     "node-sass": "^4.13.0",
     "prettier": "^2.2.1",
     "sass-loader": "^10.0.2",

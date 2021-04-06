@@ -13,9 +13,11 @@ import QCol from './QCol';
 import QCollapse from './QCollapse';
 import QCollapseItem from './QCollapseItem';
 import QColorPicker from './QColorPicker';
+import QDrawer from './QDrawer';
 import QForm from './QForm';
 import QFormItem from './QFormItem';
 import QInput from './QInput';
+import QInputNumber from './QInputNumber';
 import QMessageBox from './QMessageBox';
 import QPagination from './QPagination';
 import QRow from './QRow';
@@ -32,9 +34,11 @@ const Components = {
   QCollapse,
   QCollapseItem,
   QColorPicker,
+  QDrawer,
   QForm,
   QFormItem,
   QInput,
+  QInputNumber,
   QMessageBox,
   QPagination,
   QRow,
@@ -134,9 +138,11 @@ export {
   QCollapse,
   QCollapseItem,
   QColorPicker,
+  QDrawer,
   QForm,
   QFormItem,
   QInput,
+  QInputNumber,
   QMessageBox,
   QPagination,
   QRow,

@@ -29,6 +29,7 @@
               class="q-drawer__title"
             >{{ title }}</div>
             <button
+              type="button"
               class="q-drawer__close q-icon-close"
               @click="closeDrawer"
             />

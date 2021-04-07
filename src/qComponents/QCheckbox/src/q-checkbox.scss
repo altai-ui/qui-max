@@ -92,15 +92,6 @@
       box-shadow: var(--checkbox-box-shadow-focus);
     }
 
-    &,
-    .q-checkbox__input_focus &,
-    .q-checkbox_checked &,
-    .q-checkbox__input_indeterminate & {
-      &:hover {
-        background-color: var(--checkbox-background-color-hover);
-      }
-    }
-
     .q-checkbox_disabled & {
       cursor: not-allowed;
       background-color: var(--checkbox-background-color-disabled);
@@ -108,6 +99,14 @@
       &-icon {
         color: var(--checkbox-mark-color-disabled);
         cursor: not-allowed;
+      }
+    }
+
+    .q-checkbox__input_focus &,
+    .q-checkbox_checked &,
+    .q-checkbox__input_indeterminate & {
+      &:hover {
+        background-color: var(--checkbox-background-color-hover);
       }
     }
   }

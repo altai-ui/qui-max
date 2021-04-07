@@ -20,6 +20,7 @@ import QInput from './QInput';
 import QInputNumber from './QInputNumber';
 import QMessageBox from './QMessageBox';
 import QPagination from './QPagination';
+import QPopover from './QPopover';
 import QRow from './QRow';
 import QScrollbar from './QScrollbar';
 import QTabPane from './QTabPane';
@@ -41,6 +42,7 @@ const Components = {
   QInputNumber,
   QMessageBox,
   QPagination,
+  QPopover,
   QRow,
   QScrollbar,
   QTabPane,
@@ -145,6 +147,7 @@ export {
   QInputNumber,
   QMessageBox,
   QPagination,
+  QPopover,
   QRow,
   QScrollbar,
   QTabPane,

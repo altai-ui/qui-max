@@ -16,10 +16,10 @@ body,
 
 body {
   margin: 0;
-  font-weight: var(--font-weight-base);
-  font-size: var(--font-size-base);
-  line-height: var(--line-height-base);
   font-family: 'Gilroy', sans-serif;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-base);
+  line-height: var(--line-height-base);
   color: rgba(var(--color-rgb-gray), 0.64);
   letter-spacing: var(--letter-spacing-base);
   background-color: var(--color-tertiary-gray-lighter);

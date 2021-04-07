@@ -5,6 +5,7 @@
   height: 16px;
   margin-top: 8px;
   overflow: hidden;
+  cursor: pointer;
   background-image: linear-gradient(
       45deg,
       var(--color-tertiary-gray-ultra-dark) 25%,
@@ -29,7 +30,6 @@
   background-size: 16px 16px;
   border-radius: var(--border-radius-base);
   box-shadow: inset 2px 2px 4px rgba(var(--color-rgb-gray), 0.32);
-  cursor: pointer;
 
   &__bar {
     width: 100%;

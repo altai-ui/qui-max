@@ -3,14 +3,12 @@
   --pagination-color-hover: var(--color-primary-black);
   --pagination-color-selected: var(--color-primary-black);
   --pagination-color-disabled: rgba(var(--color-rgb-gray), 0.64);
-
   --pagination-background-color-base: var(--color-tertiary-gray-light);
   --pagination-background-color-hover: var(--color-tertiary-gray);
   --pagination-background-color-selected: var(
     --color-tertiary-gray-ultra-light
   );
   --pagination-background-color-disabled: var(--color-tertiary-gray);
-
   --pagination-box-shadow-primary: -1px -1px 4px var(--color-tertiary-white),
     1px 1px 4px rgba(var(--color-rgb-blue), 0.4),
     4px 4px 8px rgba(var(--color-rgb-blue), 0.4),
@@ -27,19 +25,19 @@
     box-sizing: border-box;
     min-width: 40px;
     height: 40px;
-    margin: 0;
     padding: 0;
-    font-weight: var(--font-weight-base);
+    margin: 0;
     font-size: var(--font-size-base);
+    font-weight: var(--font-weight-base);
     line-height: 40px;
-    vertical-align: top;
-    text-align: center;
     color: var(--pagination-color-base);
+    text-align: center;
+    vertical-align: top;
+    cursor: pointer;
     background-color: var(--pagination-background-color-base);
     border: none;
     border-radius: var(--border-radius-base);
     box-shadow: var(--pagination-box-shadow-primary);
-    cursor: pointer;
     grid-row: 1;
 
     &:hover,
@@ -59,8 +57,8 @@
       .q-pagination_disabled &,
       &:not(:focus):not(:hover) {
         &::before {
-          content: '...';
           font-size: var(--font-size-base);
+          content: '...';
         }
       }
     }
@@ -72,17 +70,17 @@
     &_active:not(:hover),
     &_active:not(:focus) {
       color: var(--pagination-color-selected);
+      cursor: default;
       background-color: var(--pagination-background-color-selected);
       box-shadow: var(--pagination-box-shadow-secondary);
-      cursor: default;
     }
 
     &.q-pagination__btn_disabled,
     .q-pagination_disabled & {
       color: var(--pagination-color-disabled);
+      cursor: not-allowed;
       background-color: var(--pagination-background-color-disabled);
       box-shadow: var(--pagination-box-shadow-secondary);
-      cursor: not-allowed;
     }
   }
 }

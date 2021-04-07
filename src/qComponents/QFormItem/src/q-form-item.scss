@@ -10,15 +10,15 @@
   }
 
   &__label {
-    font-weight: var(--font-weight-base);
     font-size: var(--font-size-base);
+    font-weight: var(--font-weight-base);
     line-height: 18px;
     color: var(--color-primary-black);
 
     .q-form-item_is-required:not(.q-form-item_is-no-asterisk) &::after {
-      content: '*';
       margin-left: 4px;
       color: var(--color-secondary-orange);
+      content: '*';
     }
   }
 

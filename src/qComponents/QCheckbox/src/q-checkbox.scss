@@ -1,16 +1,13 @@
 .q-checkbox {
   --checkbox-color-base: var(--color-primary-black);
   --checkbox-color-disabled: rgba(var(--color-rgb-gray), 0.64);
-
   --checkbox-background-color-base: var(--color-tertiary-gray-ultra-light);
   --checkbox-background-color-hover: var(--color-tertiary-gray);
   --checkbox-background-color-focus: var(--color-tertiary-gray-ultra-light);
   --checkbox-background-color-checked: var(--color-tertiary-gray-ultra-light);
   --checkbox-background-color-disabled: var(--color-tertiary-gray);
-
   --checkbox-mark-color-base: var(--color-primary-blue);
   --checkbox-mark-color-disabled: rgba(var(--color-rgb-gray), 0.64);
-
   --checkbox-box-shadow-base: -1px -1px 3px rgba(var(--color-rgb-white), 0.25),
     1px 1px 3px rgba(var(--color-rgb-blue), 0.4),
     inset -1px -1px 1px rgba(var(--color-rgb-white), 0.7),
@@ -24,23 +21,23 @@
 
   position: relative;
   display: inline-flex;
-  font-weight: var(--font-weight-base);
   font-size: var(--font-size-base);
+  font-weight: var(--font-weight-base);
   line-height: 1;
-  vertical-align: middle;
   color: var(--checkbox-color-base);
   white-space: nowrap;
-  outline: none;
+  vertical-align: middle;
   cursor: pointer;
   user-select: none;
+  outline: none;
 
   &__label {
-    margin-top: 3px;
     padding-left: 16px;
+    margin-top: 3px;
     font-size: var(--font-size-base);
     line-height: 18px;
-    white-space: normal;
     word-break: break-word;
+    white-space: normal;
 
     .q-checkbox_disabled & {
       color: var(--checkbox-color-disabled);
@@ -52,16 +49,16 @@
     position: relative;
     line-height: 0;
     white-space: nowrap;
+    cursor: pointer;
     border: none;
     outline: none;
-    cursor: pointer;
   }
 
   &__inner {
     position: relative;
     z-index: 1;
-    display: inline-block;
     box-sizing: border-box;
+    display: inline-block;
     width: 24px;
     height: 24px;
     overflow: hidden;
@@ -77,8 +74,8 @@
       box-sizing: content-box;
       width: 16px;
       font-size: 16px;
-      text-align: center;
       color: var(--checkbox-mark-color-base);
+      text-align: center;
     }
 
     .q-checkbox_checked &,
@@ -105,8 +102,8 @@
     }
 
     .q-checkbox_disabled & {
-      background-color: var(--checkbox-background-color-disabled);
       cursor: not-allowed;
+      background-color: var(--checkbox-background-color-disabled);
 
       &-icon {
         color: var(--checkbox-mark-color-disabled);

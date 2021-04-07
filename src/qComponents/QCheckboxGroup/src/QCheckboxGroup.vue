@@ -64,12 +64,10 @@ export default defineComponent({
   setup(props, ctx) {
     const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
 
-    const isLimitExceeded = computed(() => {
-      return (
+    const isLimitExceeded = computed(() => (
         props.modelValue.length < props.min ||
         props.modelValue.length > props.max
-      );
-    });
+      ))
 
     const update = (value: string[]) => {
       ctx.emit(UPDATE_MODEL_VALUE_EVENT, value);

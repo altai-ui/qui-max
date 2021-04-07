@@ -12,7 +12,7 @@
       :class="{
         'q-checkbox__input_disabled': isDisabled,
         'q-checkbox__input_checked': isChecked,
-        'q-checkbox__input_focus': state.focus
+        'q-checkbox__input_focus': focus
       }"
       :tabindex="indeterminate ? 0 : false"
       :role="indeterminate ? 'checkbox' : false"
@@ -35,8 +35,8 @@
         type="checkbox"
         :aria-hidden="indeterminate ? 'true' : 'false'"
         :disabled="isDisabled"
-        @focus="state.focus = true"
-        @blur="state.focus = false"
+        @focus="focus = true"
+        @blur="focus = false"
       />
     </span>
     <span
@@ -49,10 +49,10 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, inject, reactive, watch, ref } from 'vue';
+import { computed, defineComponent, inject, watch, ref } from 'vue';
 import { QFormProvider } from '@/qComponents/QForm';
 import { QFormItemProvider } from '@/qComponents/QFormItem';
-import { QCheckboxGroupProvider } from '@/qComponents/QCheckboxGroup/src/types';
+import { QCheckboxGroupProvider } from '@/qComponents/QCheckboxGroup';
 
 export default defineComponent({
   name: 'QCheckbox',
@@ -79,7 +79,11 @@ export default defineComponent({
      * wheteher Checkbox is disabled
      */
     disabled: { type: Boolean, default: false },
-    rootTag: { type: String, default: 'label' }
+    rootTag: { type: String, default: 'label' },
+    /**
+     * wheteher is validate parent q-form if present
+     */
+    validateEvent: { type: Boolean, default: false }
   },
 
   emits: ['input', 'update:modelValue', 'change'],
@@ -91,11 +95,9 @@ export default defineComponent({
       'qCheckboxGroup',
       null
     );
-    const checkboxInput = ref(null);
+    const checkboxInput = ref<HTMLInputElement | null>(null);
 
-    const state = reactive({
-      focus: false
-    });
+    const focus = ref(false);
 
     const isChecked = computed(() => {
       if (qCheckboxGroup) {
@@ -108,22 +110,24 @@ export default defineComponent({
     const isLimitDisabled = computed(() => {
       if (qCheckboxGroup === null) return false;
       const { max, min } = qCheckboxGroup;
+      const groupLength = qCheckboxGroup.modelValue.value.length;
       return (
         (Boolean(max.value || min.value) &&
-          qCheckboxGroup.modelValue.value.length >= max.value &&
+          groupLength >= max.value &&
           !isChecked.value) ||
-        (qCheckboxGroup.modelValue.value.length <= min.value && isChecked.value)
+        (groupLength <= min.value && isChecked.value)
       );
     });
 
-    const isDisabled = computed(() => {
-      return qCheckboxGroup
+    const isDisabled = computed(() => (
+      qCheckboxGroup
         ? qCheckboxGroup?.disabled.value ||
             props.disabled ||
             (qForm?.disabled ?? false) ||
             isLimitDisabled.value
-        : props.disabled || (qForm?.disabled ?? false);
-    });
+        : props.disabled || (qForm?.disabled ?? false)
+        )
+      );
 
     const model = computed({
       get: () => isChecked.value,
@@ -147,7 +151,7 @@ export default defineComponent({
     watch(
       () => props.modelValue,
       () => {
-        qFormItem?.validateField('change');
+        if (props.validateEvent) qFormItem?.validateField('change');
       }
     );
 
@@ -160,7 +164,7 @@ export default defineComponent({
     };
 
     return {
-      state,
+      focus,
       model,
       isChecked,
       isLimitDisabled,

@@ -12,17 +12,17 @@ export default {
 const Template = (args: any) => ({
   components: { QCheckbox },
   setup() {
-    const checked1 = ref(true);
+    const isChecked = ref(true);
 
     return {
-      checked1,
+      isChecked,
       args
     };
   },
 
   template: `
     <q-checkbox
-      v-model="checked1"
+      v-model="isChecked"
       :label="args.label"
       :indeterminate="args.indeterminate"
       :disabled="args.disabled"
@@ -34,4 +34,16 @@ const Template = (args: any) => ({
 export const Default: any = Template.bind({});
 Default.args = {
   label: 'Option A'
+};
+
+export const Disabled: any = Template.bind({});
+Disabled.args = {
+  label: 'Option A',
+  disabled: true
+};
+
+export const Indeterminate: any = Template.bind({});
+Indeterminate.args = {
+  label: 'Option A',
+  indeterminate: true
 };

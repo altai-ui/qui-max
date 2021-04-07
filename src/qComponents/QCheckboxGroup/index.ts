@@ -1,5 +1,6 @@
 import { App } from 'vue';
 import QCheckboxGroup from './src/QCheckboxGroup.vue';
+import { QCheckboxGroupProvider } from './src/types';
 
 /* istanbul ignore next */
 QCheckboxGroup.install = (app: App) => {
@@ -7,3 +8,4 @@ QCheckboxGroup.install = (app: App) => {
 };
 
 export default QCheckboxGroup;
+export { QCheckboxGroupProvider };

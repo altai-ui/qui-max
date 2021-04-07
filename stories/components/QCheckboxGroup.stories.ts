@@ -56,7 +56,7 @@ Default.args = argsValues;
 const IndeterminateTemplate = (args: any) => ({
   components: { QCheckboxGroup, QCheckbox },
   setup() {
-    const checkAll = ref(false);
+    const areAllChecked = ref(false);
     const checkedCities = ref(['Option A', 'Option C']);
     const cities = ref(['Option A', 'Option B', 'Option C', 'Option D']);
     const isIndeterminate = ref(true);
@@ -68,14 +68,14 @@ const IndeterminateTemplate = (args: any) => ({
 
     watch(checkedCities, value => {
       const checkedCount = value.length;
-      checkAll.value = checkedCount === cities.value.length;
+      areAllChecked.value = checkedCount === cities.value.length;
       isIndeterminate.value =
         checkedCount > 0 && checkedCount < cities.value.length;
     });
 
     return {
       args,
-      checkAll,
+      areAllChecked,
       checkedCities,
       cities,
       isIndeterminate,
@@ -85,16 +85,19 @@ const IndeterminateTemplate = (args: any) => ({
   template: `
     <div>
       <q-checkbox
-        v-model="checkAll"
-        @change="handleChange"
+        v-model="areAllChecked"
         :indeterminate="isIndeterminate"
+        @change="handleChange"
       >
         Check all
       </q-checkbox>
       <br/><br/>
       <q-checkbox-group
-        v-bind="args"
         v-model="checkedCities"
+        :direction="args.direction"
+        :min="args.min"
+        :max="args.max"
+        :disabled="args.disabled"
       >
         <q-checkbox
           v-for="city in cities"

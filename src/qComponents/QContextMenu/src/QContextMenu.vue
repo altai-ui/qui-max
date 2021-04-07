@@ -8,6 +8,7 @@
       <slot v-if="$slots.default" />
       <button
         v-else
+        type="button"
         class="q-context-trigger__button q-icon-dots-3-horizontal"
       />
     </div>
@@ -26,10 +27,11 @@
           v-for="(item, index) in menuItems"
           :key="index"
           :ref="setItemRef"
+          type="button"
           tabindex="-1"
           class="q-context-menu__item"
           :class="{ 'q-context-menu__item_with-icon': item.icon }"
-          @click.prevent="handleItemClick(item.action)"
+          @click="handleItemClick(item.action)"
         >
           <span
             v-if="item.icon"

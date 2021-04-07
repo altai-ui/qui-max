@@ -5,7 +5,7 @@ export default {
   title: 'Components/QCheckbox/QCheckbox',
   component: QCheckbox,
   argTypes: {
-    modelValue: { control: { type: 'none' } },
+    modelValue: { control: { type: 'none' } }
   }
 };
 
@@ -17,9 +17,9 @@ const Template = (args: any) => ({
     return {
       checked1,
       args
-    }
+    };
   },
-  
+
   template: `
     <q-checkbox
       v-model="checked1"

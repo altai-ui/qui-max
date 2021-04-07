@@ -79,7 +79,7 @@ export default defineComponent({
      * wheteher Checkbox is disabled
      */
     disabled: { type: Boolean, default: false },
-    rootTag: { type: String, default: 'label' },
+    rootTag: { type: String, default: 'label' }
   },
 
   emits: ['input', 'update:modelValue', 'change'],
@@ -87,11 +87,14 @@ export default defineComponent({
   setup(props, ctx) {
     const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
     const qForm = inject<QFormProvider | null>('qForm', null);
-    const qCheckboxGroup = inject<QCheckboxGroupProvider | null>('qCheckboxGroup', null);
+    const qCheckboxGroup = inject<QCheckboxGroupProvider | null>(
+      'qCheckboxGroup',
+      null
+    );
     const checkboxInput = ref(null);
 
     const state = reactive({
-      focus: false,
+      focus: false
     });
 
     const isChecked = computed(() => {
@@ -99,14 +102,16 @@ export default defineComponent({
         return qCheckboxGroup.modelValue.value.includes(props.label);
       }
 
-      return props.modelValue
-    })
+      return props.modelValue;
+    });
 
     const isLimitDisabled = computed(() => {
       if (qCheckboxGroup === null) return false;
       const { max, min } = qCheckboxGroup;
       return (
-        (Boolean(max.value || min.value) && qCheckboxGroup.modelValue.value.length >= max.value && !isChecked.value) ||
+        (Boolean(max.value || min.value) &&
+          qCheckboxGroup.modelValue.value.length >= max.value &&
+          !isChecked.value) ||
         (qCheckboxGroup.modelValue.value.length <= min.value && isChecked.value)
       );
     });
@@ -118,30 +123,33 @@ export default defineComponent({
             (qForm?.disabled ?? false) ||
             isLimitDisabled.value
         : props.disabled || (qForm?.disabled ?? false);
-    })
+    });
 
     const model = computed({
       get: () => isChecked.value,
-      set: (value) => {
+      set: value => {
         if (!qCheckboxGroup) {
           ctx.emit('update:modelValue', value);
-          ctx.emit('change', value)
+          ctx.emit('change', value);
         } else {
-          const set = new Set(qCheckboxGroup.modelValue.value)
+          const set = new Set(qCheckboxGroup.modelValue.value);
           if (value) {
-            set.add(props.label)
+            set.add(props.label);
           } else {
-            set.delete(props.label)
+            set.delete(props.label);
           }
 
           qCheckboxGroup.update(Array.from(set));
         }
       }
-    })
+    });
 
-    watch(() => props.modelValue, () => {
-      qFormItem?.validateField('change');
-    })
+    watch(
+      () => props.modelValue,
+      () => {
+        qFormItem?.validateField('change');
+      }
+    );
 
     /**
      * @public
@@ -159,7 +167,7 @@ export default defineComponent({
       isDisabled,
       nativeClick,
       checkboxInput
-    }
-  },
+    };
+  }
 });
 </script>

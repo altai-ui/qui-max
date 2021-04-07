@@ -28,7 +28,7 @@ const Template = (args: any) => ({
       checkedCities,
       cities,
       args
-    }
+    };
   },
 
   template: `
@@ -64,14 +64,14 @@ const IndeterminateTemplate = (args: any) => ({
     const handleChange = (value: boolean) => {
       checkedCities.value = value ? cities.value : [];
       isIndeterminate.value = false;
-    }
+    };
 
-    watch(checkedCities, (value) => {    
+    watch(checkedCities, value => {
       const checkedCount = value.length;
       checkAll.value = checkedCount === cities.value.length;
       isIndeterminate.value =
         checkedCount > 0 && checkedCount < cities.value.length;
-    })
+    });
 
     return {
       args,
@@ -80,7 +80,7 @@ const IndeterminateTemplate = (args: any) => ({
       cities,
       isIndeterminate,
       handleChange
-    }
+    };
   },
   template: `
     <div>

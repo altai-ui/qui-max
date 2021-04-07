@@ -10,7 +10,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, PropType, provide, watch, computed, toRefs } from "vue";
+import {
+  defineComponent,
+  inject,
+  PropType,
+  provide,
+  watch,
+  computed,
+  toRefs
+} from 'vue';
 import { QFormItemProvider } from '@/qComponents/QFormItem';
 import { QCheckboxGroupProvider } from './types';
 
@@ -19,7 +27,7 @@ const UPDATE_MODEL_VALUE_EVENT = 'update:modelValue';
 export default defineComponent({
   name: 'QCheckboxGroup',
   componentName: 'QCheckboxGroup',
-  
+
   props: {
     modelValue: {
       type: Array as PropType<string[]>,
@@ -57,13 +65,15 @@ export default defineComponent({
     const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
 
     const isLimitExceeded = computed(() => {
-      return (props.modelValue.length < props.min ||
-            props.modelValue.length > props.max)
-    })
+      return (
+        props.modelValue.length < props.min ||
+        props.modelValue.length > props.max
+      );
+    });
 
     const update = (value: string[]) => {
-      ctx.emit(UPDATE_MODEL_VALUE_EVENT, value)
-    }
+      ctx.emit(UPDATE_MODEL_VALUE_EVENT, value);
+    };
 
     const { modelValue, min, max, disabled } = toRefs(props);
 
@@ -76,9 +86,12 @@ export default defineComponent({
       update
     });
 
-    watch(() => props.modelValue, () => {
-      qFormItem?.validateField('change');
-    });
-  },
+    watch(
+      () => props.modelValue,
+      () => {
+        qFormItem?.validateField('change');
+      }
+    );
+  }
 });
 </script>

@@ -21,7 +21,9 @@ export const QContextMenuStory = (args: unknown): unknown => ({
   },
   template: `
     <q-context-menu
-      v-bind="args"
+      :menu-items="args.menuItems"
+      :position="args.position"
+      :teleport-to="args.teleportTo"
       @action="handleAction"
     />
   `

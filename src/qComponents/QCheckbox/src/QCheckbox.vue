@@ -12,7 +12,7 @@
       :class="{
         'q-checkbox__input_disabled': isDisabled,
         'q-checkbox__input_checked': isChecked,
-        'q-checkbox__input_focus': focus
+        'q-checkbox__input_focus': state.focus
       }"
       :tabindex="indeterminate ? 0 : false"
       :role="indeterminate ? 'checkbox' : false"
@@ -28,18 +28,15 @@
         />
       </span>
       <input
+        v-bind="$attrs"
         ref="checkboxInput"
         v-model="model"
         class="q-checkbox__original"
         type="checkbox"
         :aria-hidden="indeterminate ? 'true' : 'false'"
         :disabled="isDisabled"
-        :value="label"
-        :name="name"
-        :tabindex="inputTabIndex"
-        @change="handleChange"
-        @focus="focus = true"
-        @blur="focus = false"
+        @focus="state.focus = true"
+        @blur="state.focus = false"
       />
     </span>
     <span
@@ -51,22 +48,23 @@
   </component>
 </template>
 
-<script>
-import { computed, defineComponent, inject, reactive } from 'vue';
-import { isBoolean } from 'lodash-es';
+<script lang="ts">
+import { computed, defineComponent, inject, reactive, watch, ref } from 'vue';
 import { QFormProvider } from '@/qComponents/QForm';
 import { QFormItemProvider } from '@/qComponents/QFormItem';
+import { QCheckboxGroupProvider } from '@/qComponents/QCheckboxGroup/src/types';
 
 export default defineComponent({
   name: 'QCheckbox',
   componentName: 'QCheckbox',
+  inheritAttrs: false,
 
   props: {
     /**
      * Array for group, Boolean for single
      */
     modelValue: {
-      type: [Array, Boolean],
+      type: Boolean,
       default: null
     },
     /**
@@ -81,170 +79,87 @@ export default defineComponent({
      * wheteher Checkbox is disabled
      */
     disabled: { type: Boolean, default: false },
-    /**
-     * wheteher Checkbox is checked
-     */
-    checked: { type: Boolean, default: false },
-    /**
-     * as native name
-     */
-    name: { type: String, default: '' },
     rootTag: { type: String, default: 'label' },
-    /**
-     * as native tabIndex
-     */
-    inputTabIndex: {
-      type: [Number, String],
-      default: null
-    }
   },
+
+  emits: ['input', 'update:modelValue', 'change'],
 
   setup(props, ctx) {
     const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
     const qForm = inject<QFormProvider | null>('qForm', null);
+    const qCheckboxGroup = inject<QCheckboxGroupProvider | null>('qCheckboxGroup', null);
+    const checkboxInput = ref(null);
 
     const state = reactive({
-      selfModel: false,
       focus: false,
-      isLimitExceeded: false,
-      isGroup: false,
-      checkboxGroup: null
-    });
-
-    const store = computed(() => {
-      return state.checkboxGroup ? state.checkboxGroup.value : props.modelValue;
-    });
-
-    const model = computed({
-      get: () => {
-        const result = props.modelValue !== undefined ? props.modelValue : state.selfModel;
-        return state.isGroup ? store.value : result;
-      },
-      set(val) {
-        if (state.isGroup) {
-          state.isLimitExceeded = false;
-          if (
-            val.length < state.checkboxGroup.min ||
-            val.length > state.checkboxGroup.max
-          ) {
-            state.isLimitExceeded = true;
-          }
-          if (!state.isLimitExceeded)
-            this.dispatch('QCheckboxGroup', 'input', [val]);
-        } else {
-          ctx.emit('input', val);
-          state.selfModel = val;
-        }
-      }
     });
 
     const isChecked = computed(() => {
-      if (isBoolean(this.model)) return this.model;
-      if (Array.isArray(this.model)) return this.model.includes(this.label);
-      return false;
+      if (qCheckboxGroup) {
+        return qCheckboxGroup.modelValue.value.includes(props.label);
+      }
+
+      return props.modelValue
     })
 
-    return {
-      state,
-      model
-    }
-  },
+    const isLimitDisabled = computed(() => {
+      if (qCheckboxGroup === null) return false;
+      const { max, min } = qCheckboxGroup;
+      return (
+        (Boolean(max.value || min.value) && qCheckboxGroup.modelValue.value.length >= max.value && !isChecked.value) ||
+        (qCheckboxGroup.modelValue.value.length <= min.value && isChecked.value)
+      );
+    });
 
-  computed: {
-    model: {
-      get() {
-        const result = this.value !== undefined ? this.value : this.selfModel;
-        return this.isGroup ? this.store : result;
-      },
-      set(val) {
-        if (this.isGroup) {
-          state.isLimitExceeded = false;
-          if (
-            val.length < this.checkboxGroup.min ||
-            val.length > this.checkboxGroup.max
-          ) {
-            state.isLimitExceeded = true;
-          }
-          if (!state.isLimitExceeded)
-            this.dispatch('QCheckboxGroup', 'input', [val]);
+    const isDisabled = computed(() => {
+      return qCheckboxGroup
+        ? qCheckboxGroup?.disabled.value ||
+            props.disabled ||
+            (qForm?.disabled ?? false) ||
+            isLimitDisabled.value
+        : props.disabled || (qForm?.disabled ?? false);
+    })
+
+    const model = computed({
+      get: () => isChecked.value,
+      set: (value) => {
+        if (!qCheckboxGroup) {
+          ctx.emit('update:modelValue', value);
+          ctx.emit('change', value)
         } else {
-          this.$emit('input', val);
-          this.selfModel = val;
+          const set = new Set(qCheckboxGroup.modelValue.value)
+          if (value) {
+            set.add(props.label)
+          } else {
+            set.delete(props.label)
+          }
+
+          qCheckboxGroup.update(Array.from(set));
         }
       }
-    },
+    })
 
-    /* used to make the isDisabled judgment under max/min props */
-    isLimitDisabled() {
-      const { max, min } = this.checkboxGroup;
-      return (
-        (Boolean(max || min) && this.model.length >= max && !this.isChecked) ||
-        (this.model.length <= min && this.isChecked)
-      );
-    },
+    watch(() => props.modelValue, () => {
+      qFormItem?.validateField('change');
+    })
 
-    isDisabled() {
-      return this.isGroup
-        ? this.checkboxGroup.disabled ||
-            this.disabled ||
-            (this.qForm?.disabled ?? false) ||
-            this.isLimitDisabled
-        : this.disabled || (this.qForm?.disabled ?? false);
-    }
-  },
-
-  watch: {
-    value() {
-      this.qFormItem?.validateField('change');
-    }
-  },
-
-  created() {
-    if (this.checked) this.addToStore();
-  },
-
-  mounted() {
-    let parent = this.$parent;
-    while (parent) {
-      if (parent.$options.componentName !== 'QCheckboxGroup') {
-        parent = parent.$parent;
-        this.isGroup = false;
-      } else {
-        this.checkboxGroup = parent;
-        this.isGroup = true;
-        break;
-      }
-    }
-  },
-
-  methods: {
     /**
      * @public
      */
-    nativeClick() {
-      this.$refs.checkboxInput.click();
-    },
+    const nativeClick = (): void => {
+      const checkboxEl: HTMLInputElement | null = checkboxInput.value;
+      checkboxEl?.click();
+    };
 
-    addToStore() {
-      if (Array.isArray(this.model) && this.model.includes(this.label)) {
-        this.model.push(this.label);
-        return;
-      }
-
-      this.model = false;
-    },
-
-    handleChange(event) {
-      if (state.isLimitExceeded) return;
-      const value = event.target.checked;
-      this.$emit('change', value, event);
-
-      if (this.isGroup) {
-        this.$nextTick(() => {
-          this.dispatch('QCheckboxGroup', 'change', [this.checkboxGroup.value]);
-        });
-      }
+    return {
+      state,
+      model,
+      isChecked,
+      isLimitDisabled,
+      isDisabled,
+      nativeClick,
+      checkboxInput
     }
-  }
+  },
 });
 </script>

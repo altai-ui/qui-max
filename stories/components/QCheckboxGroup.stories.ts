@@ -1,27 +1,25 @@
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import QCheckboxGroup from '@/qComponents/QCheckboxGroup';
 import QCheckbox from '@/qComponents/QCheckbox';
 
 const argsValues = {
-  min: 0,
+  min: 1,
   max: 3
 };
 
 export default {
   title: 'Components/QCheckbox/QCheckboxGroup',
   component: QCheckboxGroup,
-  subcomponents: { QCheckbox },
+
   argTypes: {
-    value: { control: { type: 'none' } },
-    min: { control: { type: 'none' } },
-    max: { control: { type: 'none' } },
     direction: {
       control: { type: 'inline-radio', options: ['vertical', 'horizontal'] }
     }
   }
 };
 
-export const Template = (args: any) => ({
+const Template = (args: any) => ({
+  components: { QCheckboxGroup, QCheckbox },
   setup() {
     const checkedCities = ref(['Shanghai', 'Beijing']);
     const cities = ref(['Shanghai', 'Beijing', 'Guangzhou', 'Shenzhen']);
@@ -32,10 +30,14 @@ export const Template = (args: any) => ({
       args
     }
   },
+
   template: `
     <q-checkbox-group
       v-model="checkedCities"
-      v-bind="args"
+      :direction="args.direction"
+      :min="args.min"
+      :max="args.max"
+      :disabled="args.disabled"
     >
       <q-checkbox
         v-for="city in cities"
@@ -48,27 +50,28 @@ export const Template = (args: any) => ({
   `
 });
 
-Template.args = argsValues;
+export const Default: any = Template.bind({});
+Default.args = argsValues;
 
-export const Indeterminate = (args: any) => ({
-  components: { QCheckbox, QCheckboxGroup },
+const IndeterminateTemplate = (args: any) => ({
+  components: { QCheckboxGroup, QCheckbox },
   setup() {
     const checkAll = ref(false);
     const checkedCities = ref(['Option A', 'Option C']);
     const cities = ref(['Option A', 'Option B', 'Option C', 'Option D']);
     const isIndeterminate = ref(true);
 
-    const handleCheckAllChange = (val) => {
-      checkedCities.value = val ? cities.value : [];
+    const handleChange = (value: boolean) => {
+      checkedCities.value = value ? cities.value : [];
       isIndeterminate.value = false;
     }
 
-    const handleCheckedCitiesChange = (value) => {
+    watch(checkedCities, (value) => {    
       const checkedCount = value.length;
       checkAll.value = checkedCount === cities.value.length;
       isIndeterminate.value =
         checkedCount > 0 && checkedCount < cities.value.length;
-    }
+    })
 
     return {
       args,
@@ -76,26 +79,22 @@ export const Indeterminate = (args: any) => ({
       checkedCities,
       cities,
       isIndeterminate,
-      handleCheckAllChange,
-      handleCheckedCitiesChange
+      handleChange
     }
   },
   template: `
     <div>
       <q-checkbox
         v-model="checkAll"
+        @change="handleChange"
         :indeterminate="isIndeterminate"
-        style="margin-bottom: 16px"
-        @change="handleCheckAllChange"
-        :disabled="disabled"
       >
         Check all
       </q-checkbox>
-
+      <br/><br/>
       <q-checkbox-group
-        v-model="checkedCities"
-        @change="handleCheckedCitiesChange"
         v-bind="args"
+        v-model="checkedCities"
       >
         <q-checkbox
           v-for="city in cities"
@@ -109,4 +108,4 @@ export const Indeterminate = (args: any) => ({
   `
 });
 
-Indeterminate.args = argsValues;
+export const Indeterminate: any = IndeterminateTemplate.bind({});

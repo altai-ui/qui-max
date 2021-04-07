@@ -26,6 +26,8 @@ import QTabPane from './QTabPane';
 import QTabs from './QTabs';
 import QTag from './QTag';
 import QTextarea from './QTextarea';
+import QCheckboxGroup from './QCheckboxGroup';
+import QCheckbox from './QCheckbox';
 
 const Components = {
   QBreadcrumbs,
@@ -46,7 +48,9 @@ const Components = {
   QTabPane,
   QTabs,
   QTag,
-  QTextarea
+  QTextarea,
+  QCheckbox,
+  QCheckboxGroup
 };
 
 const allComponents = Object.keys(Components);
@@ -150,5 +154,7 @@ export {
   QTabPane,
   QTabs,
   QTag,
-  QTextarea
+  QTextarea,
+  QCheckbox,
+  QCheckboxGroup
 };

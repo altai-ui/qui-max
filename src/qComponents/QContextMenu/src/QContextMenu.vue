@@ -202,21 +202,22 @@ export default defineComponent({
     };
 
     watch(
-      () => isContextMenuShown,
+      () => isContextMenuShown.value,
       value => {
         if (value) {
-          document.addEventListener('click', handleDocumentClick);
-          document.addEventListener('keyup', handleKeyUp);
+          document.addEventListener('click', handleDocumentClick, true);
+          document.addEventListener('keyup', handleKeyUp, true);
+
           return;
         }
 
-        document.removeEventListener('click', handleDocumentClick);
-        document.removeEventListener('keyup', handleKeyUp);
+        document.removeEventListener('click', handleDocumentClick, true);
+        document.removeEventListener('keyup', handleKeyUp, true);
       }
     );
 
     onUnmounted(() => {
-      document.removeEventListener('click', handleDocumentClick);
+      document.removeEventListener('click', handleDocumentClick, true);
     });
 
     onBeforeUpdate(() => {

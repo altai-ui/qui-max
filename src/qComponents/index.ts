@@ -9,6 +9,8 @@ import { installI18n } from './constants/locales';
 
 import QBreadcrumbs from './QBreadcrumbs';
 import QButton from './QButton';
+import QCheckbox from './QCheckbox';
+import QCheckboxGroup from './QCheckboxGroup';
 import QCol from './QCol';
 import QCollapse from './QCollapse';
 import QCollapseItem from './QCollapseItem';
@@ -46,7 +48,9 @@ const Components = {
   QTabPane,
   QTabs,
   QTag,
-  QTextarea
+  QTextarea,
+  QCheckbox,
+  QCheckboxGroup
 };
 
 const allComponents = Object.keys(Components);
@@ -150,5 +154,7 @@ export {
   QTabPane,
   QTabs,
   QTag,
-  QTextarea
+  QTextarea,
+  QCheckbox,
+  QCheckboxGroup
 };

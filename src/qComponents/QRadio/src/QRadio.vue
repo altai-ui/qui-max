@@ -11,11 +11,11 @@
     <span class="q-radio__input">
       <span class="q-radio__inner" />
       <input
+        v-bind="$attrs"
         class="q-radio__original"
         type="radio"
         aria-hidden="true"
         tabindex="-1"
-        :name="name"
         :value="value"
         :checked="isChecked"
         :disabled="isDisabled"
@@ -37,12 +37,13 @@ import { defineComponent, inject, computed } from 'vue';
 import { QFormProvider } from '@/qComponents/QForm';
 import { QRadioGroupProvider } from '@/qComponents/QRadioGroup';
 
-const UPDATE_MODEL_VALUE_EVENT = 'update:modelValue';
 const CHANGE_EVENT = 'change';
 
 export default defineComponent({
   name: 'QRadio',
   componentName: 'QRadio',
+
+  inheritAttrs: false,
 
   props: {
     /**
@@ -53,18 +54,14 @@ export default defineComponent({
      * binding value
      */
     value: { type: [String, Number, Boolean], default: '' },
-    modelValue: { type: [String, Number, Boolean], default: false },
+    checked: { type: Boolean, default: false },
     /**
      * whether Radio is disabled
      */
-    disabled: { type: Boolean, default: false },
-    /**
-     * as native name
-     */
-    name: { type: String, default: null }
+    disabled: { type: Boolean, default: false }
   },
 
-  emits: [UPDATE_MODEL_VALUE_EVENT, CHANGE_EVENT],
+  emits: [CHANGE_EVENT],
 
   setup(props, ctx) {
     const qForm = inject<QFormProvider | null>('qForm', null);
@@ -72,15 +69,11 @@ export default defineComponent({
 
     const isGroup = computed(() => Boolean(qRadioGroup));
 
-    const isChecked = computed(() => {
-      if (isGroup.value) return qRadioGroup?.modelValue.value === props.value;
-
-      if (typeof props.modelValue === typeof props.value) {
-        return props.modelValue === props.value;
-      }
-
-      return Boolean(props.modelValue);
-    });
+    const isChecked = computed(() =>
+      isGroup.value
+        ? qRadioGroup?.modelValue.value === props.value
+        : props.checked
+    );
 
     const isDisabled = computed(
       () =>
@@ -102,7 +95,6 @@ export default defineComponent({
       if (isGroup.value) return;
 
       ctx.emit(CHANGE_EVENT, props.value);
-      ctx.emit(UPDATE_MODEL_VALUE_EVENT, props.value);
     };
 
     const handleChange = () => {
@@ -110,7 +102,6 @@ export default defineComponent({
        * triggers when the value changes
        */
       ctx.emit(CHANGE_EVENT, props.value);
-      ctx.emit(UPDATE_MODEL_VALUE_EVENT, props.value);
 
       if (isGroup.value) {
         qRadioGroup?.changeValue(props.value);

@@ -15,45 +15,50 @@ export default {
 export const QRadioStory = (args: unknown): unknown => ({
   components: { QRadio },
   setup() {
-    const radio1 = ref('1');
-    const radio2 = ref('1');
+    const radio1 = ref(1);
+    const radio2 = ref(1);
 
     return { radio1, radio2, args };
   },
   template: `
     <div>
       <q-radio
-        v-model="radio1"
-        value="1"
+        :checked="radio1 === 1"
+        :value="1"
         :label="args.label"
         :disabled="args.disabled"
         :name="args.name"
+        @change="radio1 = $event"
       />
       <br /><br />
       <q-radio
-        v-model="radio1"
-        value="2"
+        :checked="radio1 === 2"
+        :value="2"
         label="Option B"
+        @change="radio1 = $event"
       />
       <br /><br />
       <q-radio
-        v-model="radio1"
-        value="3"
+        :checked="radio1 === 3"
+        :value="3"
         label="Option C"
+        @change="radio1 = $event"
       />
       <br /><br />
       <q-radio
-        v-model="radio1"
+        :checked="radio1 === 4"
+        :value="4"
         disabled
-        value="4"
         label="Disabled"
+        @change="radio1 = $event"
       />
       <br /><br />
       <q-radio
-        v-model="radio2"
+        :checked="radio2 === 1"
+        :value="1"
         disabled
-        value="1"
         label="Checked & disabled"
+        @change="radio2 = $event"
       />
     </div>
   `

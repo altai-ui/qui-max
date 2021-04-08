@@ -145,10 +145,6 @@ export default defineComponent({
 
     const options = computed<Partial<Options>>(() => ({
       placement: props.placement,
-      computeStyle: {
-        boundariesElement: 'body',
-        gpuAcceleration: false
-      },
       modifiers: [
         {
           name: 'offset',

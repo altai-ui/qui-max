@@ -9,7 +9,7 @@ import { defineComponent, ref, provide, watch } from 'vue';
 
 import { QTabsProvider } from './types';
 
-const UPDATE_MODEL_EVENT = 'update:modelValue';
+const UPDATE_MODEL_VALUE_EVENT = 'update:modelValue';
 const CHANGE_EVENT = 'change';
 
 export default defineComponent({
@@ -37,13 +37,13 @@ export default defineComponent({
     }
   },
 
-  emits: [UPDATE_MODEL_EVENT, CHANGE_EVENT],
+  emits: [UPDATE_MODEL_VALUE_EVENT, CHANGE_EVENT],
 
   setup(props, { emit }) {
     const currentName = ref(props.modelValue);
 
     const updateValue = (name: string) => {
-      emit(UPDATE_MODEL_EVENT, name);
+      emit(UPDATE_MODEL_VALUE_EVENT, name);
       /**
        * triggers when the tab changes
        */

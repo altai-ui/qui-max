@@ -9,10 +9,13 @@ import { installI18n } from './constants/locales';
 
 import QBreadcrumbs from './QBreadcrumbs';
 import QButton from './QButton';
+import QCheckbox from './QCheckbox';
+import QCheckboxGroup from './QCheckboxGroup';
 import QCol from './QCol';
 import QCollapse from './QCollapse';
 import QCollapseItem from './QCollapseItem';
 import QColorPicker from './QColorPicker';
+import QContextMenu from './QContextMenu';
 import QDrawer from './QDrawer';
 import QForm from './QForm';
 import QFormItem from './QFormItem';
@@ -21,6 +24,8 @@ import QInputNumber from './QInputNumber';
 import QMessageBox from './QMessageBox';
 import QPagination from './QPagination';
 import QPopover from './QPopover';
+import QRadio from './QRadio';
+import QRadioGroup from './QRadioGroup';
 import QRow from './QRow';
 import QScrollbar from './QScrollbar';
 import QTabPane from './QTabPane';
@@ -35,6 +40,7 @@ const Components = {
   QCollapse,
   QCollapseItem,
   QColorPicker,
+  QContextMenu,
   QDrawer,
   QForm,
   QFormItem,
@@ -43,12 +49,16 @@ const Components = {
   QMessageBox,
   QPagination,
   QPopover,
+  QRadio,
+  QRadioGroup,
   QRow,
   QScrollbar,
   QTabPane,
   QTabs,
   QTag,
-  QTextarea
+  QTextarea,
+  QCheckbox,
+  QCheckboxGroup
 };
 
 const allComponents = Object.keys(Components);
@@ -140,6 +150,7 @@ export {
   QCollapse,
   QCollapseItem,
   QColorPicker,
+  QContextMenu,
   QDrawer,
   QForm,
   QFormItem,
@@ -148,10 +159,14 @@ export {
   QMessageBox,
   QPagination,
   QPopover,
+  QRadio,
+  QRadioGroup,
   QRow,
   QScrollbar,
   QTabPane,
   QTabs,
   QTag,
-  QTextarea
+  QTextarea,
+  QCheckbox,
+  QCheckboxGroup
 };

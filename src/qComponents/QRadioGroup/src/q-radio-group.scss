@@ -1,0 +1,20 @@
+.q-radio-group {
+  display: flex;
+  align-items: flex-start;
+  font-size: 0;
+  line-height: 1;
+
+  &_vertical {
+    flex-direction: column;
+
+    .q-radio:not(:last-child) {
+      margin-bottom: 16px;
+    }
+  }
+
+  &_horizontal {
+    .q-radio:not(:last-child) {
+      margin-right: 32px;
+    }
+  }
+}

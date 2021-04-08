@@ -6,6 +6,7 @@ export default {
   title: 'Components/QRadio/QRadio',
   component: QRadio,
   argTypes: {
+    checked: { control: { type: 'none' } },
     value: { control: { type: 'none' } },
     label: { control: 'text' }
   }

@@ -201,20 +201,17 @@ export default defineComponent({
       closePopper();
     };
 
-    watch(
-      () => isContextMenuShown.value,
-      value => {
-        if (value) {
-          document.addEventListener('click', handleDocumentClick, true);
-          document.addEventListener('keyup', handleKeyUp, true);
+    watch(isContextMenuShown, value => {
+      if (value) {
+        document.addEventListener('click', handleDocumentClick, true);
+        document.addEventListener('keyup', handleKeyUp, true);
 
-          return;
-        }
-
-        document.removeEventListener('click', handleDocumentClick, true);
-        document.removeEventListener('keyup', handleKeyUp, true);
+        return;
       }
-    );
+
+      document.removeEventListener('click', handleDocumentClick, true);
+      document.removeEventListener('keyup', handleKeyUp, true);
+    });
 
     onUnmounted(() => {
       document.removeEventListener('click', handleDocumentClick, true);

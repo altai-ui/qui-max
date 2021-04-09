@@ -18,12 +18,12 @@
         class="q-option q-option_with-checkbox q-option_all"
         @click.stop="handleSelectAllClick"
       >
-        <!-- <q-checkbox
+        <q-checkbox
           root-tag="div"
           input-tab-index="-1"
           :value="areAllSelected"
           :indeterminate="isIndeterminate"
-        /> -->
+        />
 
         <div class="q-option__label">{{ selectAllText }}</div>
       </div>
@@ -62,6 +62,7 @@
 import { get, isPlainObject } from 'lodash-es';
 import { getConfig } from '@/qComponents/config';
 import { computed, defineComponent, inject, ref, watch } from 'vue';
+import { QSelectProvider } from '@/qComponents/QSelect';
 
 const DEFAULT_Z_INDEX = 2000;
 
@@ -69,22 +70,15 @@ export default defineComponent({
   name: 'QSelectDropdown',
   componentName: 'QSelectDropdown',
 
-  inject: ['qSelect'],
-
   props: {
     shown: { type: Boolean, required: true },
-    multiple: { type: Boolean, required: true },
     selectAllShown: { type: Boolean, required: true },
     selectAllText: { type: String, required: true },
     showEmptyContent: { type: Boolean, required: true },
     emptyText: { type: String, required: true },
     isCanLoadMoreShown: { type: Boolean, required: true },
     loadMoreText: { type: String, required: true },
-    query: { type: String, required: true },
     isNewOptionShown: { type: Boolean, required: true },
-    options: { type: Array, required: true },
-    modelValue: { type: [String, Number, Object, Array], default: null },
-    valueKey: { type: String, required: true },
     width: {
       type: Number,
       default: null
@@ -94,26 +88,30 @@ export default defineComponent({
   emits: ['select-all'],
 
   setup(props, ctx) {
-    const root = ref(null);
-    const qSelect = inject('qSelect');
-    const zIndex = getConfig('nextZIndex') ?? DEFAULT_Z_INDEX;
+    const root = ref<HTMLDivElement | null>(null);
+    const scrollbar = ref<HTMLDivElement | null>(null);
+    const qSelect = inject<QSelectProvider | null>('qSelect', null);
+    const multiple = qSelect?.multiple ?? false; 
+    const options = qSelect?.options ?? [];
+    const modelValue = qSelect?.modelValue;
+    const zIndex = ref(getConfig('nextZIndex') ?? DEFAULT_Z_INDEX);
 
     const styles = computed(() => {
       return {
-        zIndex,
+        zIndex: zIndex.value,
         width: props.width ? `${props.width}px` : null
       };
     });
 
     const isVisibleOptionExist = computed(() => {
-      return props.options.some(({ isVisible }) => isVisible);
+      return options.some(({ isVisible }) => isVisible);
     });
 
     const areAllSelected = computed(() => {
       return (
-        props.multiple &&
+        multiple &&
         isVisibleOptionExist.value &&
-        props.options
+        options
           .filter(({ isDisabled, isVisible }) => !isDisabled && isVisible)
           .every(({ isSelected }) => isSelected)
       );
@@ -121,10 +119,10 @@ export default defineComponent({
 
     const isIndeterminate = computed(() => {
       return (
-        props.multiple &&
+        multiple &&
         isVisibleOptionExist.value &&
         !areAllSelected.value &&
-        props.options.some(
+        options.some(
           ({ isVisible, isSelected }) => isVisible && isSelected
         )
       );
@@ -133,24 +131,26 @@ export default defineComponent({
     watch(
       () => props.shown,
       () => {
-        if (!props.modelValue) return;
+        if (!modelValue) return;
 
         const newZIndex = getConfig('nextZIndex');
         if (newZIndex) zIndex.value = newZIndex;
       }
     );
 
-    const navigateDropdown = e => {
+    const navigateDropdown = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement;
+      if (!root.value || !target) return;
       if (
         ['ArrowDown', 'ArrowUp'].includes(e.key) &&
-        e.target instanceof HTMLInputElement
+        target instanceof HTMLInputElement
       ) {
-        const firstNode = root.value.querySelector(`.q-option`);
+        const firstNode = root.value.querySelector(`.q-option`) as HTMLElement;
         firstNode?.focus();
       }
 
-      if (!e.target.classList.contains('q-option')) return;
-      const availableOptions = props.options.filter(
+      if (!target.classList.contains('q-option')) return;
+      const availableOptions = options.filter(
         ({ isDisabled, isVisible }) => !isDisabled && isVisible
       );
       const availableElements = availableOptions.map(option => option.$el); //
@@ -192,7 +192,7 @@ export default defineComponent({
 
     const handleSelectAllClick = () => {
       if (areAllSelected.value) {
-        const keysToRemove = props.options
+        const keysToRemove = options
           .filter(({ isVisible, disabled }) => !disabled && isVisible)
           .map(({ key }) => key);
 
@@ -200,31 +200,30 @@ export default defineComponent({
           return isPlainObject(value) ? get(value, props.valueKey) : value;
         };
 
-        ctx.$emit(
+        ctx.emit(
           'select-all',
-          props.modelValue.filter(
+          modelValue.filter(
             value => !keysToRemove.includes(getKey(value))
           )
         );
         return;
       }
 
-      let newValue = props.options
+      let newValue = options
         .filter(({ isSelected, disabled }) => !disabled && !isSelected)
         .map(({ value }) => value);
 
-      const currentFieldValue = props.modelValue;
-      const { multipleLimit } = qSelect;
+      const multipleLimit = qSelect?.multipleLimit ?? null;
 
-      if (multipleLimit) {
-        const availableQuantity = multipleLimit - currentFieldValue.length;
+      if (multipleLimit?.value) {
+        const availableQuantity = multipleLimit.value - modelValue?.length;
 
         if (availableQuantity < newValue.length) {
           newValue = newValue.splice(0, availableQuantity);
         }
       }
 
-      ctx.emit('select-all', [...currentFieldValue, ...newValue]);
+      ctx.emit('select-all', [...modelValue, ...newValue]);
     };
 
     return {
@@ -235,7 +234,9 @@ export default defineComponent({
       isIndeterminate,
       navigateDropdown,
       handleSelectAllClick,
-      root
+      root,
+      multiple,
+      scrollbar
     };
   }
 });

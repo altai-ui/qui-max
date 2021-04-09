@@ -15,8 +15,8 @@
   &__view {
     position: relative;
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
 
     .q-message-box__scrollbar:not(.q-scrollbar_has-vertical-bar) & {
       align-items: center;
@@ -78,8 +78,8 @@
   &__title {
     margin: var(--message-box-indent) calc(var(--message-box-indent) * 2)
       calc(var(--message-box-indent) / 2) var(--message-box-indent);
-    font-weight: var(--font-weight-bold);
     font-size: 16px;
+    font-weight: var(--font-weight-bold);
     line-height: var(--line-height-base);
     color: var(--color-primary-black);
     word-break: break-word;
@@ -96,8 +96,8 @@
 
   &__message,
   &__submessage {
-    font-weight: var(--font-weight-base);
     font-size: var(--font-size-base);
+    font-weight: var(--font-weight-base);
     line-height: var(--line-height-base);
     word-break: break-word;
   }
@@ -113,9 +113,9 @@
 
   &__actions {
     display: flex;
+    padding-left: var(--message-box-indent);
     margin-top: 32px;
     margin-bottom: 24px;
-    padding-left: var(--message-box-indent);
   }
 }
 
@@ -129,24 +129,24 @@
 
 @keyframes q-msgbox-fade-in {
   0% {
-    transform: translate3d(0, -20px, 0);
     opacity: 0;
+    transform: translate3d(0, -20px, 0);
   }
 
   100% {
-    transform: translate3d(0, 0, 0);
     opacity: 1;
+    transform: translate3d(0, 0, 0);
   }
 }
 
 @keyframes q-msgbox-fade-out {
   0% {
-    transform: translate3d(0, 0, 0);
     opacity: 1;
+    transform: translate3d(0, 0, 0);
   }
 
   100% {
-    transform: translate3d(0, -20px, 0);
     opacity: 0;
+    transform: translate3d(0, -20px, 0);
   }
 }

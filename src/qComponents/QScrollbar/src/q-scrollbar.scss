@@ -3,16 +3,6 @@
   height: 100%;
   overflow: hidden;
 
-  &_visible,
-  &:hover,
-  &:active,
-  &:focus {
-    > .q-scrollbar__bar {
-      opacity: 1;
-      transition: opacity 340ms ease-out;
-    }
-  }
-
   &__wrap {
     height: 100%;
     overflow: scroll;
@@ -36,9 +26,9 @@
     display: block;
     width: 0;
     height: 0;
+    cursor: pointer;
     background-color: var(--color-primary-blue);
     border-radius: var(--border-radius-base);
-    cursor: pointer;
     transition: 0.3s background-color;
 
     &:hover {
@@ -90,6 +80,16 @@
     &_secondary.q-scrollbar__bar_horizontal {
       height: 8px;
       background-color: var(--color-tertiary-gray);
+    }
+  }
+
+  &_visible,
+  &:hover,
+  &:active,
+  &:focus {
+    > .q-scrollbar__bar {
+      opacity: 1;
+      transition: opacity 340ms ease-out;
     }
   }
 }

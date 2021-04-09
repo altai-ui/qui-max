@@ -1,0 +1,248 @@
+<template>
+  <teleport
+    :to="teleportTo || 'body'"
+    :disabled="!teleportTo"
+  >
+    <transition
+      name="q-drawer-fade"
+      @after-enter="afterEnter"
+      @after-leave="afterLeave"
+    >
+      <div
+        v-if="isRendered"
+        v-show="visible"
+        class="q-drawer"
+        :style="{ zIndex }"
+        @click.self="handleWrapperClick"
+      >
+        <div
+          ref="drawer"
+          tabindex="-1"
+          class="q-drawer-wrapper"
+          :style="drawerStyle"
+          :class="[drawerClass, customClass]"
+          @keyup.esc="closeDrawer"
+        >
+          <div class="q-drawer__header">
+            <div
+              v-if="title"
+              class="q-drawer__title"
+            >{{ title }}</div>
+            <button
+              type="button"
+              class="q-drawer__close q-icon-close"
+              @click="closeDrawer"
+            />
+          </div>
+          <q-scrollbar>
+            <div class="q-drawer__content">
+              <slot />
+            </div>
+          </q-scrollbar>
+        </div>
+      </div>
+    </transition>
+  </teleport>
+</template>
+
+<script lang="ts">
+import {
+  defineComponent,
+  computed,
+  nextTick,
+  ref,
+  watch,
+  PropType,
+  onMounted,
+  onUnmounted
+} from 'vue';
+
+import { getConfig } from '@/qComponents/config';
+
+const OPENED_EVENT = 'opened';
+const CLOSED_EVENT = 'closed';
+const CLOSE_EVENT = 'close';
+const OPEN_EVENT = 'open';
+const UPDATE_VISIBLE_EVENT = 'update:visible';
+const DEFAULT_Z_INDEX = 2000;
+
+export default defineComponent({
+  name: 'QDrawer',
+  componentName: 'QDrawer',
+
+  props: {
+    width: {
+      type: [String, Number] as PropType<string | number>,
+      default: ''
+    },
+    /**
+     * Drawer's title
+     */
+    title: {
+      type: String,
+      default: ''
+    },
+    /**
+     * whether Drawer is visible
+     */
+    visible: {
+      type: Boolean,
+      default: false
+    },
+    /**
+     * whether the component will be deleted from layout
+     */
+    destroyOnClose: {
+      type: Boolean,
+      default: false
+    },
+    /**
+     * closes Drawer by click on shadow layer
+     */
+    wrapperClosable: {
+      type: Boolean,
+      default: true
+    },
+    /**
+     * callback before close
+     */
+    beforeClose: {
+      type: Function,
+      default: null
+    },
+    /**
+     * Drawer's position
+     */
+    position: {
+      type: String as PropType<'left' | 'right'>,
+      default: 'right',
+      validator: (value: string) => ['left', 'right'].includes(value)
+    },
+    /**
+     * Extra class names for Drawer's wrapper
+     */
+    customClass: {
+      type: String,
+      default: ''
+    },
+    /**
+     * Specifies a target element where QMessageBox will be moved.
+     * (has to be a valid query selector, or an HTMLElement)
+     */
+    teleportTo: {
+      type: [String, HTMLElement],
+      default: 'body'
+    },
+    renderOnMount: {
+      type: Boolean,
+      default: false
+    }
+  },
+
+  emits: [
+    OPEN_EVENT,
+    OPENED_EVENT,
+    CLOSE_EVENT,
+    CLOSED_EVENT,
+    UPDATE_VISIBLE_EVENT
+  ],
+
+  setup(props, ctx) {
+    const zIndex = ref(DEFAULT_Z_INDEX);
+    const isRendered = ref(false);
+    const drawer = ref<HTMLElement | null>(null);
+
+    let elementToFocusAfterClosing: HTMLElement | null = null;
+
+    const drawerStyle = computed(() => ({
+      width: Number(props.width) ? `${Number(props.width)}px` : props.width
+    }));
+
+    const drawerClass = computed(() => `q-drawer-wrapper_${props.position}`);
+
+    const handleDocumentFocus = (event: FocusEvent) => {
+      if (drawer.value && !drawer.value.contains(event.target as HTMLElement)) {
+        drawer.value.focus();
+      }
+    };
+
+    const afterEnter = () => {
+      ctx.emit(OPENED_EVENT);
+    };
+
+    const afterLeave = () => {
+      ctx.emit(CLOSED_EVENT);
+    };
+
+    const hide = () => {
+      ctx.emit(CLOSE_EVENT);
+      ctx.emit(UPDATE_VISIBLE_EVENT, false);
+    };
+
+    const closeDrawer = () => {
+      if (props.beforeClose) {
+        props.beforeClose(hide);
+      } else {
+        hide();
+      }
+    };
+
+    const handleWrapperClick = () => {
+      if (props.wrapperClosable) closeDrawer();
+    };
+
+    watch(
+      () => props.visible,
+      isVisible => {
+        if (!isVisible) {
+          document.body.style.overflow = '';
+
+          document.removeEventListener('focus', handleDocumentFocus, true);
+          if (props.destroyOnClose) {
+            isRendered.value = false;
+          }
+
+          nextTick(() => {
+            elementToFocusAfterClosing?.focus();
+          });
+          return;
+        }
+
+        elementToFocusAfterClosing = document.activeElement as HTMLElement;
+        nextTick(() => {
+          drawer.value?.focus();
+        });
+        ctx.emit(OPEN_EVENT);
+
+        zIndex.value = getConfig('nextZIndex') ?? DEFAULT_Z_INDEX;
+        document.body.style.overflow = 'hidden';
+        document.addEventListener('focus', handleDocumentFocus, true);
+
+        isRendered.value = true;
+      },
+      { immediate: true }
+    );
+
+    onMounted(() => {
+      if (props.renderOnMount) isRendered.value = true;
+    });
+
+    onUnmounted(() => {
+      document.body.style.overflow = '';
+      document.removeEventListener('focus', handleDocumentFocus, true);
+    });
+
+    return {
+      drawer,
+      zIndex,
+      isRendered,
+      drawerStyle,
+      drawerClass,
+      afterEnter,
+      afterLeave,
+      closeDrawer,
+      handleWrapperClick
+    };
+  }
+});
+</script>

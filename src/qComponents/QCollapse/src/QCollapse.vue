@@ -10,7 +10,7 @@ import { uniqueId } from 'lodash-es';
 
 import { QCollapseProvider } from './types';
 
-const UPDATE_MODEL_EVENT = 'update:modelValue';
+const UPDATE_MODEL_VALUE_EVENT = 'update:modelValue';
 const CHANGE_EVENT = 'change';
 
 export default defineComponent({
@@ -33,7 +33,7 @@ export default defineComponent({
     }
   },
 
-  emits: [UPDATE_MODEL_EVENT, CHANGE_EVENT],
+  emits: [UPDATE_MODEL_VALUE_EVENT, CHANGE_EVENT],
 
   setup(props, ctx) {
     const activeNames = ref<(string | number)[]>([]);
@@ -51,7 +51,7 @@ export default defineComponent({
         }
       }
 
-      ctx.emit(UPDATE_MODEL_EVENT, activeNames.value);
+      ctx.emit(UPDATE_MODEL_VALUE_EVENT, activeNames.value);
       ctx.emit(CHANGE_EVENT, activeNames.value);
     };
 

@@ -2,16 +2,13 @@
   --field-color-base: var(--color-primary-black);
   --field-color-placeholder: rgba(var(--color-rgb-gray), 0.32);
   --field-color-disabled: rgba(var(--color-rgb-gray), 0.64);
-
   --field-icon-color-base: var(--color-primary-blue);
   --field-icon-color-hover: var(--color-primary-black);
   --field-icon-color-inactive: rgba(var(--color-rgb-gray), 0.64);
-
   --field-background-color-base: var(--color-tertiary-gray-light);
   --field-background-color-hover: var(--color-tertiary-gray);
   --field-background-color-focus: var(--color-tertiary-gray-ultra-light);
   --field-background-color-disabled: var(--color-tertiary-gray);
-
   --field-box-shadow-base: -1px -1px 3px rgba(var(--color-rgb-white), 0.25),
     1px 1px 3px rgba(var(--color-rgb-blue), 0.4),
     4px 4px 8px rgba(var(--color-rgb-blue), 0.4),
@@ -36,8 +33,8 @@
     width: 100%;
     height: 40px;
     padding: 0 16px;
-    font-weight: var(--font-weight-base);
     font-size: var(--font-size-base);
+    font-weight: var(--font-weight-base);
     line-height: var(--line-height-base);
     color: var(--field-color-base);
     background-color: var(--field-background-color-base);
@@ -48,8 +45,8 @@
 
     &::-webkit-outer-spin-button,
     &::-webkit-inner-spin-button {
-      appearance: none;
       margin: 0;
+      appearance: none;
     }
 
     &::placeholder,
@@ -78,6 +75,24 @@
       box-shadow: var(--field-box-shadow-hover);
     }
 
+    .q-input_focus & {
+      background-color: var(--field-background-color-focus);
+      outline: none;
+      box-shadow: var(--field-box-shadow-focus);
+    }
+
+    .q-input_disabled & {
+      padding-right: 40px;
+      color: var(--field-color-disabled);
+      cursor: not-allowed;
+      background-color: var(--field-background-color-disabled);
+      box-shadow: var(--field-box-shadow-disabled);
+    }
+
+    .q-input__suffix & {
+      padding-right: 40px;
+    }
+
     .q-form-item_is-error & {
       &,
       &:focus {
@@ -87,38 +102,17 @@
     }
   }
 
-  &_focus {
-    .q-input__inner {
-      background-color: var(--field-background-color-focus);
-      outline: none;
-      box-shadow: var(--field-box-shadow-focus);
-    }
-  }
-
   &_disabled {
     &::after {
-      content: '\e912';
       position: absolute;
       top: 0;
       right: 8px;
+      // stylelint-disable-next-line font-family-no-missing-generic-family-keyword
+      font-family: 'qicon';
       font-size: 24px;
       line-height: 40px;
-      font-family: 'qicon';
       cursor: not-allowed;
-    }
-
-    .q-input__inner {
-      padding-right: 40px;
-      color: var(--field-color-disabled);
-      background-color: var(--field-background-color-disabled);
-      box-shadow: var(--field-box-shadow-disabled);
-      cursor: not-allowed;
-    }
-  }
-
-  &_suffix {
-    .q-input__inner {
-      padding-right: 40px;
+      content: '\e912';
     }
   }
 
@@ -129,8 +123,8 @@
     width: 40px;
     height: 100%;
     text-align: center;
-    transition: all 0.3s;
     pointer-events: none;
+    transition: all 0.3s;
 
     .q-input.q-input_disabled & {
       display: none;
@@ -144,8 +138,8 @@
 
   &__icon {
     width: 40px;
-    text-align: center;
     color: var(--field-icon-color-inactive);
+    text-align: center;
 
     &_reverse {
       color: var(--field-icon-color-base);
@@ -161,17 +155,13 @@
     }
 
     &.q-icon-close,
-    &.q-icon-eye-close,
-    &.q-icon-eye {
-      color: var(--field-icon-color-base);
-    }
-
-    &.q-icon-close,
     &.q-icon-eye,
     &.q-icon-eye-close {
+      color: var(--field-icon-color-base);
       cursor: pointer;
 
       &::before {
+        // stylelint-disable-next-line font-family-no-missing-generic-family-keyword
         font-family: 'qicon';
       }
 

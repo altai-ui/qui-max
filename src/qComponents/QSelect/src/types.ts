@@ -3,36 +3,27 @@ import { Instance as PopperInstance } from '@popperjs/core';
 
 import { QOptionInterface } from '@/qComponents/QOption';
 
-export interface QSelectProvider {
+type Option = {
+  value: string | { value: unknown; label: string; disabled: boolean };
+};
+type ModelValue = string | number | Option[] | [] | null;
+
+interface QSelectProvider {
   toggleMenu: () => void;
   toggleOptionSelection: (option: unknown) => void;
   setSelected: () => void;
-  options: QOptionInterface[];
+  options: QOptionInterface[] | null;
   query: string;
   multipleLimit: Ref<number>;
   valueKey: Ref<string>;
   remote: Ref<boolean>;
   multiple: Ref<boolean>;
   hoverIndex: number;
-  modelValue: Ref<
-    | string
-    | number
-    | {
-        value:
-          | string
-          | {
-              value: unknown;
-              label: string;
-              disabled: boolean;
-            }[]
-          | [];
-      }
-  >;
+  modelValue: Ref<ModelValue>;
 }
 
-export interface State {
+interface QSelectState {
   options: QOptionInterface[];
-  selected: QOptionInterface[] | null;
   inputWidth: number;
   visible: boolean;
   selectedLabel: string;
@@ -44,7 +35,7 @@ export interface State {
   isDropdownShown: boolean;
 }
 
-export interface QSelectDropdownInstance {
+interface QSelectDropdownInstance {
   zIndex: Ref<number>;
   styles: ComputedRef<{
     zIndex: number;
@@ -58,4 +49,7 @@ export interface QSelectDropdownInstance {
   root: Ref<HTMLDivElement | null>;
   multiple: boolean | Ref<boolean>;
   scrollbar: HTMLDivElement | null;
+  $el: HTMLElement;
 }
+export { QSelectProvider, QSelectState, QSelectDropdownInstance };
+export type { Option, ModelValue };

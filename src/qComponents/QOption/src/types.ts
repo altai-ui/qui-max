@@ -1,20 +1,20 @@
-import { Ref } from 'vue';
+import { Ref, ComputedRef } from 'vue';
 
 export interface QOptionInterface {
-  preparedLabel: Ref<string>;
-  isVisible: Ref<boolean>;
-  isSelected: Ref<boolean>;
-  isLimitReached: Ref<boolean>;
-  isDisabled: Ref<boolean>;
-  disabled: Ref<boolean>;
   created: Ref<boolean>;
+  disabled: Ref<boolean>;
+  isDisabled: ComputedRef<boolean>;
+  isLimitReached: ComputedRef<boolean>;
+  isSelected: ComputedRef<boolean>;
+  isVisible: ComputedRef<boolean>;
+  key: ComputedRef<string>;
   label: Ref<string | number>;
-  key: Ref<string>;
   modelValue: Ref<{
     value: {
       value: string;
     };
-    label: string;
-    disabled: boolean;
+    label?: string;
+    disabled?: boolean;
   }>;
+  preparedLabel?: ComputedRef<string>;
 }

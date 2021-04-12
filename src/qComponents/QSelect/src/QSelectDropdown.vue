@@ -140,7 +140,7 @@ export default defineComponent({
 
     const navigateDropdown = (e: KeyboardEvent) => {
       const target = e.target as HTMLElement;
-      if (!root.value || !target) return;
+      if (!root.value || !target || !qSelect) return;
       if (
         ['ArrowDown', 'ArrowUp'].includes(e.key) &&
         target instanceof HTMLInputElement
@@ -154,8 +154,8 @@ export default defineComponent({
         ({ isDisabled, isVisible }) => !isDisabled && isVisible
       );
       const availableElements = availableOptions.map(option => option.$el); //
-      let currentNodeIndex;
-      let nextNodeIndex;
+      let currentNodeIndex = 0;
+      let nextNodeIndex = 1;
       availableElements.forEach((element, index) => {
         if (document.activeElement === element) {
           currentNodeIndex = index;

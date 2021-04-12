@@ -1,9 +1,10 @@
 <template>
   <div
     ref="root"
-    v-click-outside="handleOutsideClick"
     class="q-select"
     @click="toggleMenu"
+    @mouseenter="state.inputHovering = true"
+    @mouseleave="state.inputHovering = false"
   >
     <q-input
       ref="input"
@@ -25,8 +26,6 @@
       @keyup.tab="state.visible = false"
       @keyup.backspace="clearSelected"
       @paste="onInputChange"
-      @mouseenter="state.inputHovering = true"
-      @mouseleave="state.inputHovering = false"
     >
       <template #suffix>
         <span
@@ -103,7 +102,7 @@ import {
   toRefs
 } from 'vue';
 import { isObject, isPlainObject, isNil, isEqual, get } from 'lodash-es';
-import { createPopper, Instance as PopperInstance } from '@popperjs/core';
+import { createPopper } from '@popperjs/core';
 import { useI18n } from 'vue-i18n';
 import {
   ResizableElement,
@@ -113,10 +112,11 @@ import {
 import { QFormProvider } from '@/qComponents/QForm';
 import { QInput } from '@/qComponents/QInput/src/types';
 import { QFormItemProvider } from '@/qComponents/QFormItem';
-import { QOptionInterface} from '@/qComponents/QOption/';
+import { QOptionInterface} from '@/qComponents/QOption';
 import QSelectDropdown from './QSelectDropdown.vue';
 import QSelectTags from './QSelectTags.vue';
-import { QSelectProvider, State, QSelectDropdownInstance } from './types';
+import { QSelectProvider, QSelectState, QSelectDropdownInstance } from './types';
+import type { ModelValue, Option } from './types';
 
 export default defineComponent({
   name: 'QSelect',
@@ -137,15 +137,7 @@ export default defineComponent({
         Number,
         Object,
         Array
-      ] as PropType<
-        string |
-        number |
-        {
-          value: string |
-          { value: unknown, label: string, disabled: boolean
-        }[] |
-        []
-      }>,
+      ] as PropType<ModelValue>,
       default: null
     },
     /**
@@ -269,7 +261,8 @@ export default defineComponent({
     'change',
     'remove-tag',
     'search',
-    'visible-change'
+    'visible-change',
+    'update:modelValue'
   ],
 
   setup(props, ctx) {
@@ -282,7 +275,7 @@ export default defineComponent({
 
     const { t } = useI18n();
 
-    const state = reactive<State>({
+    const state = reactive<QSelectState>({
       options: [],
       selected: props.multiple ? [] : null,
       inputWidth: 0,
@@ -305,9 +298,9 @@ export default defineComponent({
         return '';
       }
 
-      // if (state.visible && !props.multiple && state.selected) {
-      //   return state.selected.preparedLabel;
-      // }
+      if (state.visible && !props.multiple && state.selected) {
+        return state.selected.preparedLabel;
+      }
 
       return props.placeholder;
     });
@@ -388,7 +381,7 @@ export default defineComponent({
       return isPlainObject(value) ? get(value, props.valueKey) : value;
     };
 
-    const getOption = (value: QOptionInterface | null): {
+    const getOption = (value: ModelValue | QOptionInterface | null): {
       value: QOptionInterface,
       preparedLabel: string
     } | QOptionInterface | null => {
@@ -396,7 +389,8 @@ export default defineComponent({
 
       const keyByValueKey = getKey(value);
       const option = state.options.find(({ key }) => key === keyByValueKey);
-
+      console.log('option', option);
+      
       if (option) return option;
       if (!props.allowCreate) return null;
 
@@ -412,6 +406,8 @@ export default defineComponent({
      * @public
      */
     const setSelected = () => {
+      console.log('setSelected');
+      
       if (props.multiple && Array.isArray(props.modelValue)) {
         const result: QOptionInterface[] = [];
         props.modelValue.forEach(value => {
@@ -511,10 +507,25 @@ export default defineComponent({
       });
     };
 
+    const handleDocumentClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      const dropdownEl = dropdown.value?.$el as HTMLElement;
+
+      if (
+        root.value?.contains(target) ||
+        dropdownEl.contains(target)
+      ) {
+        return;
+      }
+
+      state.visible = false;
+    };
+
     const showPopper = () => {
       state.isDropdownShown = true;
       popperInit();
       document.addEventListener('keyup', handleKeyUp, true);
+      document.addEventListener('click', handleDocumentClick, true);
     };
 
     const hidePopper = () => {
@@ -526,9 +537,14 @@ export default defineComponent({
       state.popper.destroy();
       state.popper = null;
       document.removeEventListener('keyup', handleKeyUp, true);
+      document.removeEventListener('click', handleDocumentClick, true);
     };
 
-    watch(state.options, setSelected);
+    watch(state.options, () => {
+      console.log('watch', 'setSelected');
+      
+      setSelected()
+    });
 
     watch(
       () => props.modelValue,
@@ -562,10 +578,9 @@ export default defineComponent({
     watch(
       () => state.visible,
       val => {
+        console.log('tags.value', tags.value);
         const inputInsideTagsEl = tags?.value?.input.value as HTMLInputElement;
         if (!val) {
-          console.log(tags.value);
-          
           inputInsideTagsEl?.blur();
           state.menuVisibleOnFocus = false;
           state.hoverIndex = 0;
@@ -596,6 +611,7 @@ export default defineComponent({
     );
 
     const handleResize = async () => {
+      if (!root.value) return;
       state.inputWidth = root.value.getBoundingClientRect().width;
 
       if (!props.multiple || (props.collapseTags && !props.filterable)) return;
@@ -620,13 +636,8 @@ export default defineComponent({
       }
 
       document.removeEventListener('keyup', handleKeyUp, true);
+      document.removeEventListener('click', handleDocumentClick, true);
     });
-
-    const handleOutsideClick = () => {
-      console.log('handleOutsideClick');
-      
-      state.visible = false;
-    };
 
     const handleFocus = (event: MouseEvent) => {
       if (props.filterable) {
@@ -640,9 +651,7 @@ export default defineComponent({
       ctx.emit('focus', event);
     };
 
-    const blur = () => {
-      console.log('blur');
-      
+    const blur = () => {      
       state.visible = false;
       input?.value?.$el.blur();
     };
@@ -653,15 +662,15 @@ export default defineComponent({
       }, 50);
     };
 
-    const emitValueUpdate = value => {
-      ctx.emit('input', value);
+    const emitValueUpdate = (value: Option[] | null) => {
+      ctx.emit('update:modelValue', value);
+      
       if (!isEqual(props.modelValue, value)) ctx.emit('change', value);
     };
 
     const clearSelected = () => {
-      const value = props.multiple ? [] : null;
+      const value = props.multiple ? [] as Option[] : ref(null);
       emitValueUpdate(value);
-      console.log('clearSelected');
       
       state.visible = false;
       ctx.emit('clear');
@@ -679,10 +688,12 @@ export default defineComponent({
     /**
      * @public
      */
-    const toggleOptionSelection = option => {
-      if (props.multiple) {
-        const value = [...(props.valueModel ?? [])];
-        const optionIndex = getValueIndex(value, option.value);
+    const toggleOptionSelection = (option) => {
+      console.log('toggleOptionSelection', option, props.modelValue);
+      
+      if (props.multiple && Array.isArray(props.modelValue)) {
+        const value = [...(props.modelValue ?? [])];
+        const optionIndex = getValueIndex(value, option.modelValue.value);
         if (optionIndex > -1) {
           value.splice(optionIndex, 1);
         } else if (
@@ -692,13 +703,15 @@ export default defineComponent({
           value.push(option.value);
         }
 
+        console.log(value);
+        
         emitValueUpdate(value);
         if (option.created) {
           state.query = '';
         }
         if (props.filterable) tags.value.$refs.input.focus();
       } else {
-        emitValueUpdate(option.value);        
+        emitValueUpdate(option.modelValue);      
         state.visible = false;
       }
     };
@@ -772,7 +785,6 @@ export default defineComponent({
       iconClass,
       emptyText,
       isNewOptionShown,
-      handleOutsideClick,
       popperInit,
       showPopper,
       hidePopper,

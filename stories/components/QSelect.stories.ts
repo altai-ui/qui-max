@@ -13,30 +13,30 @@ export default {
 
 const options = [
   {
-    value: { value: 'value1' },
+    value: 'value1',
     label: 'Option 1'
   },
   {
-    value: { value: 'value2' },
+    value: 'value2',
     label: 'Option 2'
   },
   {
-    value: { value: 'value3' },
+    value: 'value3',
     label:
       'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
   },
   {
-    value: { value: 'value4' },
+    value: 'value4',
     label: 'Option 4',
     disabled: true
   },
   {
-    value: { value: 'value5' },
+    value: 'value5',
     label: 'Sed sit amet nibh consequat, pellentesque arcu ut, congue lorem.',
     disabled: true
   },
   {
-    value: { value: 'value6' },
+    value: 'value6',
     label: 'Option 6'
   }
 ];
@@ -47,15 +47,21 @@ const Template = (args: any) => ({
       remoteLoading: false,
       value: null,
       options
-    })
+    });
 
-    watch(() => args.multiple, () => {
-      state.value = null;
-    })
+    watch(
+      () => args.multiple,
+      () => {
+        state.value = null;
+      }
+    );
 
-    watch(() => args.remote, (value) => {
-      if(!value) state.options = options;
-    })
+    watch(
+      () => args.remote,
+      value => {
+        if (!value) state.options = options;
+      }
+    );
 
     const handleSearch = (query: string) => {
       if (!args.remote) return;
@@ -73,13 +79,13 @@ const Template = (args: any) => ({
           state.options = options;
         }
       }, 2000);
-    }
+    };
 
     return {
       handleSearch,
       args,
       state
-    }
+    };
   },
 
   template: `

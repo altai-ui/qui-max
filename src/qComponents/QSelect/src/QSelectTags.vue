@@ -50,6 +50,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
+import { QOptionInterface } from '@/qComponents/QOption';
 
 export default defineComponent({
   name: 'QSelectTags',
@@ -61,7 +62,7 @@ export default defineComponent({
     isDisabled: { type: Boolean, required: true },
     autocomplete: { type: String, required: true },
     query: { type: String, required: true },
-    selected: { type: [Array, Object], required: true }
+    selected: { type: Array, required: true }
   },
 
   emits: ['remove-tag', 'exit', 'update:query', 'focus', 'keyup-enter'],
@@ -74,7 +75,7 @@ export default defineComponent({
       }
     };
 
-    const handleTagClose = option => {
+    const handleTagClose = (option: QOptionInterface[] | null) => {
       ctx.emit('remove-tag', option);
     };
 
@@ -82,7 +83,8 @@ export default defineComponent({
       ctx.emit('exit');
     };
 
-    const handleInput = ({ target }) => {
+    const handleInput = (event: KeyboardEvent) => {
+      const target = event.target as HTMLInputElement;
       ctx.emit('update:query', target.value);
     };
 

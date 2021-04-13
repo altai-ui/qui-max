@@ -1,6 +1,5 @@
 /* eslint-disable no-underscore-dangle, global-require, no-param-reassign */
 import { isString, kebabCase } from 'lodash-es';
-import vClickOutside from 'v-click-outside';
 import mitt from 'mitt';
 import { App } from 'vue';
 
@@ -105,8 +104,7 @@ const install = (
     zIndex: zIndexCounter
   });
 
-  app.use(vClickOutside);
-  installI18n({ app, locale, customI18nMessages });
+  installI18n({ app, customI18nMessages });
 
   // setup modals
   // if (!app.config.globalProperties.$notify) {

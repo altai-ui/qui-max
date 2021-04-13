@@ -7,7 +7,7 @@
         'q-color-picker-trigger_is-disabled': isDisabled,
         'q-color-picker-trigger_is-opened': isPickerShown
       }"
-      @click.prevent="handleTriggerClick"
+      @click="handleTriggerClick"
     >
       <!-- @slot _Optional_. HTML element that triggers dropdown -->
       <slot
@@ -28,6 +28,7 @@
         <span :class="iconClasses" />
       </button>
     </div>
+
     <teleport to="body">
       <q-picker-dropdown
         ref="dropdown"
@@ -47,7 +48,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, inject, ref, computed, watch } from 'vue';
+import {
+  defineComponent,
+  PropType,
+  inject,
+  ref,
+  computed,
+  watch,
+  provide
+} from 'vue';
 import { createPopper, Instance, Placement, Options } from '@popperjs/core';
 import Color from 'color';
 
@@ -56,6 +65,7 @@ import type { QFormItemProvider } from '@/qComponents/QFormItem';
 import { getConfig } from '@/qComponents/config';
 import PLACEMENTS from '@/qComponents/constants/popperPlacements';
 import QPickerDropdown from './QPickerDropdown.vue';
+import type { QColorPickerProvider } from './types';
 
 const DEFAULT_Z_INDEX = 2000;
 const CLICK_EVENT = 'click';
@@ -120,12 +130,11 @@ export default defineComponent({
 
   emits: [UPDATE_MODEL_VALUE_EVENT, CHANGE_EVENT, CLICK_EVENT],
 
-  setup(props, { emit }) {
+  setup(props, ctx) {
     const qForm = inject<QFormProvider | null>('qForm', null);
     const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
 
     const zIndex = ref(DEFAULT_Z_INDEX);
-    const isClickIgnored = ref(false);
     const isPickerShown = ref(false);
     const popperJS = ref<Instance | null>(null);
 
@@ -158,24 +167,18 @@ export default defineComponent({
     }));
 
     const handleClose = () => {
-      if (isClickIgnored.value) {
-        isClickIgnored.value = false;
-        return;
-      }
-
       isPickerShown.value = false;
     };
 
     const handleTriggerClick = () => {
       if (isDisabled.value) return;
 
-      isClickIgnored.value = true;
       isPickerShown.value = !isPickerShown.value;
     };
 
     const handleClear = () => {
-      emit(CHANGE_EVENT, null);
-      emit(UPDATE_MODEL_VALUE_EVENT, null);
+      ctx.emit(CHANGE_EVENT, null);
+      ctx.emit(UPDATE_MODEL_VALUE_EVENT, null);
 
       if (props.modelValue !== null) {
         qFormItem?.validateField('change');
@@ -185,8 +188,8 @@ export default defineComponent({
     };
 
     const handlePick = (value: string) => {
-      emit(CHANGE_EVENT, value);
-      emit(UPDATE_MODEL_VALUE_EVENT, value);
+      ctx.emit(CHANGE_EVENT, value);
+      ctx.emit(UPDATE_MODEL_VALUE_EVENT, value);
 
       if (props.modelValue !== value) {
         qFormItem?.validateField('change');
@@ -221,6 +224,8 @@ export default defineComponent({
         createPopperJs();
       }
     );
+
+    provide<QColorPickerProvider>('qColorPicker', { trigger });
 
     return {
       trigger,

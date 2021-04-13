@@ -33,3 +33,6 @@ export const QColorPickerStory = (args: unknown): unknown => ({
 });
 
 QColorPickerStory.storyName = 'Default';
+QColorPickerStory.args = {
+  popperOptions: {}
+};

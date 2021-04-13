@@ -1,4 +1,5 @@
 import { App } from 'vue';
+
 import QDrawer from './src/QDrawer.vue';
 
 QDrawer.install = (app: App): void => {

@@ -1,4 +1,5 @@
 import { App } from 'vue';
+
 import QPagination from './src/QPagination.vue';
 
 /* istanbul ignore next */

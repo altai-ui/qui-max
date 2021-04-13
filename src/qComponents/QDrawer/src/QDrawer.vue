@@ -130,7 +130,7 @@ export default defineComponent({
      * (has to be a valid query selector, or an HTMLElement)
      */
     teleportTo: {
-      type: [String, HTMLElement],
+      type: [String, HTMLElement] as PropType<string | HTMLElement>,
       default: 'body'
     },
     renderOnMount: {

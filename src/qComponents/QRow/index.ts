@@ -1,4 +1,5 @@
 import { App } from 'vue';
+
 import QRow from './src/QRow.vue';
 
 /* istanbul ignore next */

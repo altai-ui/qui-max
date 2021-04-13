@@ -51,13 +51,14 @@ import { defineComponent, PropType, inject, ref, computed, watch } from 'vue';
 import { createPopper, Instance, Placement, Options } from '@popperjs/core';
 import Color from 'color';
 
-import { QFormProvider } from '@/qComponents/QForm';
-import { QFormItemProvider } from '@/qComponents/QFormItem';
-
-import PLACEMENTS from '../../constants/popperPlacements';
+import type { QFormProvider } from '@/qComponents/QForm';
+import type { QFormItemProvider } from '@/qComponents/QFormItem';
+import { getConfig } from '@/qComponents/config';
+import PLACEMENTS from '@/qComponents/constants/popperPlacements';
 import QPickerDropdown from './QPickerDropdown.vue';
 
 const DEFAULT_Z_INDEX = 2000;
+const CLICK_EVENT = 'click';
 const CHANGE_EVENT = 'change';
 const UPDATE_MODEL_VALUE_EVENT = 'update:modelValue';
 
@@ -117,7 +118,7 @@ export default defineComponent({
     }
   },
 
-  emits: [UPDATE_MODEL_VALUE_EVENT, CHANGE_EVENT, 'click'],
+  emits: [UPDATE_MODEL_VALUE_EVENT, CHANGE_EVENT, CLICK_EVENT],
 
   setup(props, { emit }) {
     const qForm = inject<QFormProvider | null>('qForm', null);
@@ -216,8 +217,7 @@ export default defineComponent({
       value => {
         if (isDisabled.value || !value) return;
 
-        // TODO get zindex
-        zIndex.value = DEFAULT_Z_INDEX;
+        zIndex.value = getConfig('nextZIndex') ?? DEFAULT_Z_INDEX;
         createPopperJs();
       }
     );

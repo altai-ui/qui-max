@@ -1,11 +1,11 @@
 import { App } from 'vue';
+
 import QTabs from './src/QTabs.vue';
-import type { QTabsProvider } from './src/types';
 
 /* istanbul ignore next */
 QTabs.install = (app: App): void => {
   app.component(QTabs.name, QTabs);
 };
 
-export { QTabsProvider };
+export type { QTabsProvider } from './src/types';
 export default QTabs;

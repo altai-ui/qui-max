@@ -1,4 +1,5 @@
 import { App } from 'vue';
+
 import QInputNumber from './src/QInputNumber.vue';
 
 /* istanbul ignore next */

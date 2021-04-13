@@ -1,4 +1,5 @@
 import { App } from 'vue';
+
 import QTag from './src/QTag.vue';
 
 /* istanbul ignore next */

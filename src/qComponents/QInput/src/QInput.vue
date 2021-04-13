@@ -60,8 +60,9 @@
 import { inject, computed, ref, reactive, watch, defineComponent } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import { QFormProvider } from '@/qComponents/QForm';
-import { QFormItemProvider } from '@/qComponents/QFormItem';
+import type { QFormProvider } from '@/qComponents/QForm';
+import type { QFormItemProvider } from '@/qComponents/QFormItem';
+import type { State } from './types';
 
 export default defineComponent({
   name: 'QInput',
@@ -126,16 +127,16 @@ export default defineComponent({
     const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
     const qForm = inject<QFormProvider | null>('qForm', null);
 
-    const state = reactive({
+    const state = reactive<State>({
       hovering: false,
       focused: false,
       isPasswordVisible: false // state of passwordSwitch
     });
 
     const inputType = computed(() => {
-      if (props.passwordSwitch)
-        return state.isPasswordVisible ? 'password' : 'text';
-      return ctx.attrs.type;
+      if (!props.passwordSwitch) return ctx.attrs.type;
+
+      return state.isPasswordVisible ? 'password' : 'text';
     });
 
     const isDisabled = computed(

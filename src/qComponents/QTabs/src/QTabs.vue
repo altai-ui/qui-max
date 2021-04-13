@@ -5,9 +5,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, provide, watch } from 'vue';
+import { defineComponent, ref, provide, watch, toRef } from 'vue';
 
-import { QTabsProvider } from './types';
+import type { QTabsProvider } from './types';
 
 const UPDATE_MODEL_VALUE_EVENT = 'update:modelValue';
 const CHANGE_EVENT = 'change';
@@ -58,8 +58,8 @@ export default defineComponent({
     );
 
     provide<QTabsProvider>('qTabs', {
-      disabled: props.disabled,
-      tabWidth: props.tabWidth,
+      disabled: toRef(props, 'disabled'),
+      tabWidth: toRef(props, 'tabWidth'),
       currentName,
       updateValue
     });

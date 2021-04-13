@@ -1,10 +1,11 @@
 import { Ref } from 'vue';
-import {
-  QFormItemContext,
-  FilteredRuleItem
-} from '@/qComponents/QFormItem/src/types';
+import { QFormItemContext, FilteredRuleItem } from '@/qComponents/QFormItem';
 
-type RulesOptions = {
+export type FormModel = {
+  [key: string]: unknown;
+};
+
+export type RulesOptions = {
   [key: string]: FilteredRuleItem | FilteredRuleItem[];
 };
 
@@ -22,9 +23,7 @@ export interface QFormProvider {
   ) => Promise<ValidateFnResult | null>;
   resetFields: (passedProps?: string[] | string) => void;
   clearValidate: (passedProps?: string[] | string) => void;
-  model: {
-    [key: string]: unknown;
-  };
+  model: FormModel;
   fields: Ref<QFormItemContext[]>;
   rules: RulesOptions;
   showErrorMessage: boolean;

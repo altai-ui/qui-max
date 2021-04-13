@@ -1,4 +1,5 @@
 import { App } from 'vue';
+
 import QBreadcrumbs from './src/QBreadcrumbs.vue';
 
 /* istanbul ignore next */

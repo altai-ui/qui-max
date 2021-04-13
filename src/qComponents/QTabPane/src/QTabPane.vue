@@ -28,7 +28,7 @@
 <script lang="ts">
 import { defineComponent, inject, computed } from 'vue';
 
-import { QTabsProvider } from '@/qComponents/QTabs';
+import type { QTabsProvider } from '@/qComponents/QTabs';
 
 export default defineComponent({
   name: 'QTabPane',
@@ -75,24 +75,24 @@ export default defineComponent({
   setup(props) {
     const qTabs = inject<QTabsProvider>('qTabs');
 
-    const isDisabled = computed(() => props.disabled || qTabs?.disabled);
+    const isDisabled = computed<boolean>(
+      () => props.disabled || Boolean(qTabs?.disabled.value)
+    );
 
     const tabWidthStyle = computed(() => {
-      const width = props.width ?? qTabs?.tabWidth;
+      const width = props.width ?? qTabs?.tabWidth.value;
 
       return {
         '--tab-pane-width': Number(width) ? `${Number(width)}px` : width
       };
     });
 
-    const tabBtnClasses = computed(() => {
-      return {
-        'q-tab-pane__btn_active': qTabs?.currentName.value === props.name,
-        'q-tab-pane__btn_disabled': isDisabled.value
-      };
-    });
+    const tabBtnClasses = computed(() => ({
+      'q-tab-pane__btn_active': qTabs?.currentName.value === props.name,
+      'q-tab-pane__btn_disabled': isDisabled.value
+    }));
 
-    const handleTabClick = () => {
+    const handleTabClick = (): void => {
       qTabs?.updateValue(props.name);
     };
 

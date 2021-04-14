@@ -1,6 +1,6 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { Story } from '@storybook/vue3';
-import { ref } from 'vue';
+import { defineComponent, ref } from 'vue';
 
 import QTextarea from '@/qComponents/QTextarea';
 
@@ -42,43 +42,51 @@ export default {
   }
 };
 
-export const QTextareaStory: Story = args => ({
-  setup() {
-    const model = ref('');
+export const QTextareaStory: Story = args =>
+  defineComponent({
+    setup() {
+      const model = ref('');
 
-    const handleFocus = (event: Event): void => {
-      console.log('handleFocus', event);
-    };
-    const handleBlur = (event: Event): void => {
-      console.log('handleBlur', event);
-    };
-    const handleInput = (event: Event): void => {
-      console.log('handleInput', event);
-    };
-    const handleChange = (event: Event): void => {
-      console.log('handleChange', event);
-    };
+      const handleFocus = (event: Event): void => {
+        console.log('handleFocus', event);
+      };
+      const handleBlur = (event: Event): void => {
+        console.log('handleBlur', event);
+      };
+      const handleInput = (event: Event): void => {
+        console.log('handleInput', event);
+      };
+      const handleChange = (event: Event): void => {
+        console.log('handleChange', event);
+      };
 
-    return { model, args, handleFocus, handleBlur, handleInput, handleChange };
-  },
+      return {
+        model,
+        args,
+        handleFocus,
+        handleBlur,
+        handleInput,
+        handleChange
+      };
+    },
 
-  template: `
-    <q-textarea
-      v-model="model"
-      :disabled="args.disabled"
-      :resize="args.resize"
-      :autosize="args.autosize"
-      :placeholder="args.placeholder"
-      :maxlength="args.maxlength"
-      :autocomplete="args.autocomplete"
-      :show-symbol-limit="args.showSymbolLimit"
-      @blur="handleBlur"
-      @focus="handleFocus"
-      @input="handleInput"
-      @change="handleChange"
-    />
-  `
-});
+    template: `
+      <q-textarea
+        v-model="model"
+        :disabled="args.disabled"
+        :resize="args.resize"
+        :autosize="args.autosize"
+        :placeholder="args.placeholder"
+        :maxlength="args.maxlength"
+        :autocomplete="args.autocomplete"
+        :show-symbol-limit="args.showSymbolLimit"
+        @blur="handleBlur"
+        @focus="handleFocus"
+        @input="handleInput"
+        @change="handleChange"
+      />
+    `
+  });
 
 QTextareaStory.storyName = 'Default';
 QTextareaStory.args = {

@@ -1,5 +1,6 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { Story } from '@storybook/vue3';
+import { defineComponent } from 'vue';
 
 import QButton from '@/qComponents/QButton';
 
@@ -15,32 +16,34 @@ export default {
   }
 };
 
-const Template: Story = args => ({
-  components: { QButton },
-  setup() {
-    const handleClick = (event: MouseEvent): void => {
-      console.log('click', event);
-    };
+const Template: Story = args =>
+  defineComponent({
+    components: { QButton },
+    setup() {
+      const handleClick = (event: MouseEvent): void => {
+        console.log('click', event);
+      };
 
-    return { args, handleClick };
-  },
-  template: `
-    <q-button
-      :type="args.type"
-      :theme="args.theme"
-      :size="args.size"
-      :icon="args.icon"
-      :nativeType="args.nativeType"
-      :loading="args.loading"
-      :disabled="args.disabled"
-      :autofocus="args.autofocus"
-      :circle="args.circle"
-      :fullWidth="args.fullWidth"
-      @click="handleClick"
-    >
-      {{ args.label }}
-    </q-button>`
-});
+      return { args, handleClick };
+    },
+    template: `
+      <q-button
+        :type="args.type"
+        :theme="args.theme"
+        :size="args.size"
+        :icon="args.icon"
+        :nativeType="args.nativeType"
+        :loading="args.loading"
+        :disabled="args.disabled"
+        :autofocus="args.autofocus"
+        :circle="args.circle"
+        :fullWidth="args.fullWidth"
+        @click="handleClick"
+      >
+        {{ args.label }}
+      </q-button>
+    `
+  });
 
 export const ThemePrimary: Story = Template.bind({});
 ThemePrimary.args = {

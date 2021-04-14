@@ -1,6 +1,6 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { Story } from '@storybook/vue3';
-import { ref } from 'vue';
+import { defineComponent, ref } from 'vue';
 
 import QDrawer from '@/qComponents/QDrawer';
 
@@ -14,18 +14,17 @@ export default {
   }
 };
 
-export const QDrawerStory: Story = args => ({
-  components: { QDrawer },
-  setup() {
-    const drawer = ref(false);
+export const QDrawerStory: Story = args =>
+  defineComponent({
+    components: { QDrawer },
+    setup() {
+      const drawer = ref(false);
 
-    return { args, drawer };
-  },
-  template: `
-    <div>
-      <q-button @click="drawer = true">
-        open
-      </q-button>
+      return { args, drawer };
+    },
+    template: `
+      <q-button @click="drawer = true">open</q-button>
+
       <q-drawer
         v-model:visible="drawer"
         :width="args.width"
@@ -39,9 +38,8 @@ export const QDrawerStory: Story = args => ({
         :teleport-to="args.teleportTo"
         :render-on-mount="args.renderOnMount"
       >I'm drawer's slot</q-drawer>
-    </div>
-  `
-});
+    `
+  });
 
 QDrawerStory.storyName = 'Default';
 QDrawerStory.args = {

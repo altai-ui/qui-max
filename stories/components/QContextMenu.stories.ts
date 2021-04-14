@@ -1,5 +1,6 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { Story } from '@storybook/vue3';
+import { defineComponent } from 'vue';
 
 import QContextMenu from '@/qComponents/QContextMenu';
 
@@ -11,24 +12,25 @@ export default {
   }
 };
 
-export const QContextMenuStory: Story = args => ({
-  components: { QContextMenu },
-  setup() {
-    const handleAction = (action: string) => {
-      console.log(action);
-    };
+export const QContextMenuStory: Story = args =>
+  defineComponent({
+    components: { QContextMenu },
+    setup() {
+      const handleAction = (action: string) => {
+        console.log(action);
+      };
 
-    return { args, handleAction };
-  },
-  template: `
-    <q-context-menu
-      :menu-items="args.menuItems"
-      :position="args.position"
-      :teleport-to="args.teleportTo"
-      @action="handleAction"
-    />
-  `
-});
+      return { args, handleAction };
+    },
+    template: `
+      <q-context-menu
+        :menu-items="args.menuItems"
+        :position="args.position"
+        :teleport-to="args.teleportTo"
+        @action="handleAction"
+      />
+    `
+  });
 
 QContextMenuStory.storyName = 'Default';
 QContextMenuStory.args = {

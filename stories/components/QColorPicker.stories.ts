@@ -1,6 +1,6 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { Story } from '@storybook/vue3';
-import { ref } from 'vue';
+import { defineComponent, ref } from 'vue';
 
 import QColorPicker from '@/qComponents/QColorPicker';
 import PLACEMENTS from '@/qComponents/constants/popperPlacements';
@@ -15,25 +15,26 @@ export default {
   }
 };
 
-export const QColorPickerStory: Story = args => ({
-  components: { QColorPicker },
-  setup() {
-    const color = ref('#f25');
+export const QColorPickerStory: Story = args =>
+  defineComponent({
+    components: { QColorPicker },
+    setup() {
+      const color = ref('#f25');
 
-    return { args, color };
-  },
-  template: `
-    <q-color-picker
-      v-model="color"
-      :disabled="args.disabled"
-      :clearable="args.clearable"
-      :alpha-shown="args.alphaShown"
-      :color-format="args.colorFormat"
-      :placement="args.placement"
-      :popper-options="args.popperOptions"
-    />
-  `
-});
+      return { args, color };
+    },
+    template: `
+      <q-color-picker
+        v-model="color"
+        :disabled="args.disabled"
+        :clearable="args.clearable"
+        :alpha-shown="args.alphaShown"
+        :color-format="args.colorFormat"
+        :placement="args.placement"
+        :popper-options="args.popperOptions"
+      />
+    `
+  });
 
 QColorPickerStory.storyName = 'Default';
 QColorPickerStory.args = {

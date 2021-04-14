@@ -1,6 +1,6 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { Story } from '@storybook/vue3';
-import { ref } from 'vue';
+import { defineComponent, ref } from 'vue';
 
 import QInput from '@/qComponents/QInput';
 import iconsList from '../core/iconsList';
@@ -24,58 +24,60 @@ export default {
   }
 };
 
-export const QInputStory: Story = args => ({
-  setup() {
-    const data = ref('');
+export const QInputStory: Story = args =>
+  defineComponent({
+    setup() {
+      const data = ref('');
 
-    const handleFocus = (event: Event) => {
-      console.log('handleFocus', event);
-    };
-    const handleBlur = (event: Event) => {
-      console.log('handleBlur', event);
-    };
-    const handleInput = (event: Event) => {
-      console.log('handleInput', event);
-    };
-    const handleChange = (event: Event) => {
-      console.log('handleChange', event);
-    };
-    const handleClear = (event: Event) => {
-      console.log('handleClear', event);
-    };
+      const handleFocus = (event: Event) => {
+        console.log('handleFocus', event);
+      };
+      const handleBlur = (event: Event) => {
+        console.log('handleBlur', event);
+      };
+      const handleInput = (event: Event) => {
+        console.log('handleInput', event);
+      };
+      const handleChange = (event: Event) => {
+        console.log('handleChange', event);
+      };
+      const handleClear = (event: Event) => {
+        console.log('handleClear', event);
+      };
 
-    return {
-      data,
-      args,
-      handleFocus,
-      handleBlur,
-      handleInput,
-      handleChange,
-      handleClear
-    };
-  },
+      return {
+        data,
+        args,
+        handleFocus,
+        handleBlur,
+        handleInput,
+        handleChange,
+        handleClear
+      };
+    },
 
-  template: `
-    <q-input
-      v-model="data"
-      :suffix-icon="args.suffixIcon"
-      :show-symbol-limit="args.showSymbolLimit"
-      :password-switch="args.passwordSwitch"
-      :disabled="args.disabled"
-      :clearable="args.clearable"
-      :validate-event="args.validateEvent"
-      :autocomplete="args.autocomplete"
-      :placeholder="args.placeholder"
-      :maxlength="args.maxlength"
-      :type="args.type"
-      :readonly="args.readonly"
-      @blur="handleBlur"
-      @focus="handleFocus"
-      @input="handleInput"
-      @change="handleChange"
-      @clear="handleClear"
-    />`
-});
+    template: `
+      <q-input
+        v-model="data"
+        :suffix-icon="args.suffixIcon"
+        :show-symbol-limit="args.showSymbolLimit"
+        :password-switch="args.passwordSwitch"
+        :disabled="args.disabled"
+        :clearable="args.clearable"
+        :validate-event="args.validateEvent"
+        :autocomplete="args.autocomplete"
+        :placeholder="args.placeholder"
+        :maxlength="args.maxlength"
+        :type="args.type"
+        :readonly="args.readonly"
+        @blur="handleBlur"
+        @focus="handleFocus"
+        @input="handleInput"
+        @change="handleChange"
+        @clear="handleClear"
+      />
+    `
+  });
 
 QInputStory.storyName = 'Default';
 QInputStory.args = {

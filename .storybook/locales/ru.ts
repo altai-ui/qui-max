@@ -1,8 +1,8 @@
 export default {
   qBreadcrumbsStories: {
-    routeA: 'Роут А',
+    routeA: 'Маршрут А',
     routeB: 'Очень длинный маршрут Б',
-    routeC: 'Роут С',
-    routeD: 'Роут D'
+    routeC: 'Маршрут В',
+    routeD: 'Маршрут Г'
   }
 };

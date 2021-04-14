@@ -1,4 +1,6 @@
-export default [
+import { Placement } from '@popperjs/core';
+
+const placements: Placement[] = [
   'top',
   'top-start',
   'top-end',
@@ -12,3 +14,5 @@ export default [
   'left-start',
   'left-end'
 ];
+
+export default placements;

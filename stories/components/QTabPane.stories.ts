@@ -1,11 +1,11 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { Story } from '@storybook/vue3';
+import { Meta, Story } from '@storybook/vue3';
 import { defineComponent, ref } from 'vue';
 
 import QTabPane from '@/qComponents/QTabPane';
 import QTabs from '@/qComponents/QTabs';
 
-export default {
+const storyMetadata: Meta = {
   title: 'Components/QTabs/QTabPane',
   component: QTabPane,
   subcomponents: { QTabs },
@@ -14,7 +14,7 @@ export default {
   }
 };
 
-export const QTabPaneStory: Story = args =>
+const QTabPaneStory: Story = args =>
   defineComponent({
     components: { QTabs, QTabPane },
     setup() {
@@ -50,3 +50,6 @@ QTabPaneStory.args = {
   description:
     'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
 };
+
+export { QTabPaneStory };
+export default storyMetadata;

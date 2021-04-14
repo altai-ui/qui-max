@@ -1,10 +1,10 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { Story } from '@storybook/vue3';
+import { Meta, Story } from '@storybook/vue3';
 import { defineComponent, ref } from 'vue';
 
 import QTextarea from '@/qComponents/QTextarea';
 
-export default {
+const storyMetadata: Meta = {
   title: 'Components/QTextarea',
   component: QTextarea,
   argTypes: {
@@ -42,7 +42,7 @@ export default {
   }
 };
 
-export const QTextareaStory: Story = args =>
+const QTextareaStory: Story = args =>
   defineComponent({
     setup() {
       const model = ref('');
@@ -94,3 +94,6 @@ QTextareaStory.args = {
   maxlength: 100,
   autosize: true
 };
+
+export default storyMetadata;
+export { QTextareaStory };

@@ -1,10 +1,10 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { Story } from '@storybook/vue3';
+import { Meta, Story } from '@storybook/vue3';
 import { defineComponent } from 'vue';
 
 import QContextMenu from '@/qComponents/QContextMenu';
 
-export default {
+const storyMetadata: Meta = {
   title: 'Components/QContextMenu',
   component: QContextMenu,
   argTypes: {
@@ -12,7 +12,7 @@ export default {
   }
 };
 
-export const QContextMenuStory: Story = args =>
+const QContextMenuStory: Story = args =>
   defineComponent({
     components: { QContextMenu },
     setup() {
@@ -52,3 +52,6 @@ QContextMenuStory.args = {
     }
   ]
 };
+
+export { QContextMenuStory };
+export default storyMetadata;

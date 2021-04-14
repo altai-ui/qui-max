@@ -1,12 +1,12 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { Story } from '@storybook/vue3';
+import { Meta, Story } from '@storybook/vue3';
 import { defineComponent, reactive, ref } from 'vue';
 
 import QForm from '@/qComponents/QForm';
 import QFormItem from '@/qComponents/QFormItem';
 import type { RulesOptions, QFormProvider } from '@/qComponents/QForm';
 
-export default {
+const storyMetadata: Meta = {
   title: 'Components/QForm',
   component: QForm,
   subcomponents: { QFormItem },
@@ -28,7 +28,7 @@ const INITIAL_RULES: RulesOptions = {
   }
 };
 
-export const QFormStory: Story = args =>
+const QFormStory: Story = args =>
   defineComponent({
     components: { QForm, QFormItem },
     setup() {
@@ -114,3 +114,6 @@ export const QFormStory: Story = args =>
   });
 
 QFormStory.storyName = 'Default';
+
+export { QFormStory };
+export default storyMetadata;

@@ -1,15 +1,15 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { Story } from '@storybook/vue3';
+import { Meta, Story } from '@storybook/vue3';
 import { defineComponent, ref } from 'vue';
 
 import QTag from '@/qComponents/QTag';
 
-export default {
+const storyMetadata: Meta = {
   title: 'Components/QTag',
   component: QTag
 };
 
-export const QTagStory: Story = args =>
+const QTagStory: Story = args =>
   defineComponent({
     components: { QTag },
     setup() {
@@ -35,3 +35,6 @@ export const QTagStory: Story = args =>
   });
 
 QTagStory.storyName = 'Default';
+
+export { QTagStory };
+export default storyMetadata;

@@ -1,12 +1,12 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { Story } from '@storybook/vue3';
+import { Meta, Story } from '@storybook/vue3';
 import { defineComponent } from 'vue';
 
 import QScrollbar from '@/qComponents/QScrollbar';
 
 import './q-scrollbar.scss';
 
-export default {
+const storyMetadata: Meta = {
   title: 'Components/QScrollbar',
   component: QScrollbar,
   argTypes: {
@@ -16,7 +16,7 @@ export default {
   }
 };
 
-export const QScrollbarStory: Story = args =>
+const QScrollbarStory: Story = args =>
   defineComponent({
     components: { QScrollbar },
     setup() {
@@ -54,3 +54,6 @@ QScrollbarStory.args = {
   wrapClass: 'scrollbar__wrap',
   viewClass: ''
 };
+
+export { QScrollbarStory };
+export default storyMetadata;

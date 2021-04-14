@@ -1,11 +1,11 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { Story } from '@storybook/vue3';
+import { Meta, Story } from '@storybook/vue3';
 import { defineComponent, ref } from 'vue';
 
 import QColorPicker from '@/qComponents/QColorPicker';
 import PLACEMENTS from '@/qComponents/constants/popperPlacements';
 
-export default {
+const storyMetadata: Meta = {
   title: 'Components/QColorPicker',
   component: QColorPicker,
   argTypes: {
@@ -15,7 +15,7 @@ export default {
   }
 };
 
-export const QColorPickerStory: Story = args =>
+const QColorPickerStory: Story = args =>
   defineComponent({
     components: { QColorPicker },
     setup() {
@@ -40,3 +40,6 @@ QColorPickerStory.storyName = 'Default';
 QColorPickerStory.args = {
   popperOptions: {}
 };
+
+export { QColorPickerStory };
+export default storyMetadata;

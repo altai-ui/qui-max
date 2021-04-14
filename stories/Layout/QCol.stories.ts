@@ -1,12 +1,12 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { Story } from '@storybook/vue3';
+import { Meta, Story } from '@storybook/vue3';
 import { defineComponent } from 'vue';
 
 import QRow from '@/qComponents/QRow';
 import QCol from '@/qComponents/QCol';
 import './layout.scss';
 
-export default {
+const storyMetadata: Meta = {
   title: 'Components/Layout/QCol',
   component: QCol,
   subcomponents: { QRow },
@@ -26,7 +26,7 @@ export default {
   }
 };
 
-export const QColStory: Story = args =>
+const QColStory: Story = args =>
   defineComponent({
     components: { QRow, QCol },
     setup() {
@@ -62,3 +62,6 @@ QColStory.args = {
   cols: 5,
   offset: 3
 };
+
+export { QColStory };
+export default storyMetadata;

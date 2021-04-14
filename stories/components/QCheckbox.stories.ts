@@ -1,10 +1,10 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { Story } from '@storybook/vue3';
+import { Meta, Story } from '@storybook/vue3';
 import { defineComponent, ref } from 'vue';
 
 import QCheckbox from '@/qComponents/QCheckbox';
 
-export default {
+const storyMetadata: Meta = {
   title: 'Components/QCheckbox/QCheckbox',
   component: QCheckbox,
   argTypes: {
@@ -35,19 +35,22 @@ const Template: Story = args =>
     `
   });
 
-export const Default: Story = Template.bind({});
+const Default: Story = Template.bind({});
 Default.args = {
   label: 'Option A'
 };
 
-export const Disabled: Story = Template.bind({});
+const Disabled: Story = Template.bind({});
 Disabled.args = {
   label: 'Option A',
   disabled: true
 };
 
-export const Indeterminate: Story = Template.bind({});
+const Indeterminate: Story = Template.bind({});
 Indeterminate.args = {
   label: 'Option A',
   indeterminate: true
 };
+
+export { Default, Disabled, Indeterminate };
+export default storyMetadata;

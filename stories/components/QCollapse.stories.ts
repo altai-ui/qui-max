@@ -1,11 +1,11 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { Story } from '@storybook/vue3';
+import { Meta, Story } from '@storybook/vue3';
 import { defineComponent, ref } from 'vue';
 
 import QCollapse from '@/qComponents/QCollapse';
 import QCollapseItem from '@/qComponents/QCollapseItem';
 
-export default {
+const storyMetadata: Meta = {
   title: 'Components/QCollapse',
   component: QCollapse,
   subcomponents: { QCollapseItem },
@@ -14,7 +14,7 @@ export default {
   }
 };
 
-export const QCollapseStory: Story = args =>
+const QCollapseStory: Story = args =>
   defineComponent({
     components: { QCollapse, QCollapseItem },
     setup() {
@@ -89,3 +89,6 @@ export const QCollapseStory: Story = args =>
   });
 
 QCollapseStory.storyName = 'Default';
+
+export { QCollapseStory };
+export default storyMetadata;

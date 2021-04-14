@@ -1,11 +1,11 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { Story } from '@storybook/vue3';
+import { Meta, Story } from '@storybook/vue3';
 import { defineComponent, ref } from 'vue';
 
 import QRadioGroup from '@/qComponents/QRadioGroup';
 import QRadio from '@/qComponents/QRadio';
 
-export default {
+const storyMetadata: Meta = {
   title: 'Components/QRadio/QRadioGroup',
   component: QRadioGroup,
   subcomponents: { QRadio },
@@ -17,7 +17,7 @@ export default {
   }
 };
 
-export const QRadioGroupStory: Story = args =>
+const QRadioGroupStory: Story = args =>
   defineComponent({
     components: { QRadio, QRadioGroup },
     setup() {
@@ -40,3 +40,6 @@ export const QRadioGroupStory: Story = args =>
   });
 
 QRadioGroupStory.storyName = 'Default';
+
+export { QRadioGroupStory };
+export default storyMetadata;

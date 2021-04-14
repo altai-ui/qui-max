@@ -1,10 +1,10 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { Story } from '@storybook/vue3';
+import { Meta, Story } from '@storybook/vue3';
 import { defineComponent, ref } from 'vue';
 
 import QDrawer from '@/qComponents/QDrawer';
 
-export default {
+const storyMetadata: Meta = {
   title: 'Components/QDrawer',
   component: QDrawer,
   argTypes: {
@@ -14,7 +14,7 @@ export default {
   }
 };
 
-export const QDrawerStory: Story = args =>
+const QDrawerStory: Story = args =>
   defineComponent({
     components: { QDrawer },
     setup() {
@@ -47,3 +47,6 @@ QDrawerStory.args = {
   title: 'What is Lorem Ipsum?',
   width: 350
 };
+
+export { QDrawerStory };
+export default storyMetadata;

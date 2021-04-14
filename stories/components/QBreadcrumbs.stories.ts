@@ -1,12 +1,12 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { app, Story } from '@storybook/vue3';
+import { app, Meta, Story } from '@storybook/vue3';
 import { defineComponent, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import QBreadcrumbs from '@/qComponents/QBreadcrumbs';
 import type { RouteItem } from '@/qComponents/QBreadcrumbs';
 
-export default {
+const storyMetadata: Meta = {
   title: 'Components/QBreadcrumbs',
   component: QBreadcrumbs
 };
@@ -28,7 +28,7 @@ interface Args {
   route: RouteItem[] | null;
 }
 
-export const QBreadcrumbsStory: Story<Args> = args =>
+const QBreadcrumbsStory: Story<Args> = args =>
   // eslint-disable-next-line vue/one-component-per-file
   defineComponent({
     components: {
@@ -70,3 +70,6 @@ export const QBreadcrumbsStory: Story<Args> = args =>
   });
 
 QBreadcrumbsStory.storyName = 'Default';
+
+export { QBreadcrumbsStory };
+export default storyMetadata;

@@ -1,11 +1,11 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { Story } from '@storybook/vue3';
+import { Meta, Story } from '@storybook/vue3';
 import { defineComponent, ref } from 'vue';
 
 import QInput from '@/qComponents/QInput';
 import iconsList from '../core/iconsList';
 
-export default {
+const storyMetadata: Meta = {
   title: 'Components/QInput',
   component: QInput,
   argTypes: {
@@ -24,7 +24,7 @@ export default {
   }
 };
 
-export const QInputStory: Story = args =>
+const QInputStory: Story = args =>
   defineComponent({
     setup() {
       const data = ref('');
@@ -85,3 +85,6 @@ QInputStory.args = {
   maxlength: 25,
   type: 'text'
 };
+
+export { QInputStory };
+export default storyMetadata;

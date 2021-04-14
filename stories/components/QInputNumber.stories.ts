@@ -1,10 +1,10 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { Story } from '@storybook/vue3';
+import { Meta, Story } from '@storybook/vue3';
 import { defineComponent, ref } from 'vue';
 
 import QInputNumber from '@/qComponents/QInputNumber';
 
-export default {
+const storyMetadata: Meta = {
   title: 'Components/QInputNumber',
   component: QInputNumber,
   argTypes: {
@@ -16,7 +16,7 @@ export default {
   }
 };
 
-export const QInputNumberStory: Story = args =>
+const QInputNumberStory: Story = args =>
   defineComponent({
     setup() {
       const numberValue = ref('2');
@@ -42,3 +42,6 @@ export const QInputNumberStory: Story = args =>
   });
 
 QInputNumberStory.storyName = 'Default';
+
+export { QInputNumberStory };
+export default storyMetadata;

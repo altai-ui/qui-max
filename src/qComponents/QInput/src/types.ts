@@ -25,4 +25,5 @@ export interface QInput {
   handlePasswordVisible: () => void;
   handleClearClick: (event: MouseEvent) => void;
   t: (key: string) => string;
+  $el: HTMLInputElement;
 }

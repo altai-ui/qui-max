@@ -19,9 +19,9 @@
         @click.stop="handleSelectAllClick"
       >
         <q-checkbox
+          v-model="areAllSelected"
           root-tag="div"
           input-tab-index="-1"
-          :value="areAllSelected"
           :indeterminate="isIndeterminate"
         />
 
@@ -30,7 +30,7 @@
 
       <q-option
         v-if="isNewOptionShown"
-        :value="query"
+        :model-value="query"
         :label="query"
         created
       />
@@ -63,6 +63,7 @@ import { get, isPlainObject } from 'lodash-es';
 import { getConfig } from '@/qComponents/config';
 import { computed, defineComponent, inject, ref, watch } from 'vue';
 import { QSelectProvider } from '@/qComponents/QSelect';
+import { Option } from './types';
 
 const DEFAULT_Z_INDEX = 2000;
 
@@ -71,6 +72,7 @@ export default defineComponent({
   componentName: 'QSelectDropdown',
 
   props: {
+    query: { type: String, required: true },
     shown: { type: Boolean, required: true },
     selectAllShown: { type: Boolean, required: true },
     selectAllText: { type: String, required: true },
@@ -91,9 +93,8 @@ export default defineComponent({
     const root = ref<HTMLDivElement | null>(null);
     const scrollbar = ref<HTMLDivElement | null>(null);
     const qSelect = inject<QSelectProvider | null>('qSelect', null);
-    const multiple = qSelect?.multiple ?? false; 
-    const options = qSelect?.options ?? [];
-    const modelValue = qSelect?.modelValue;
+    const multiple = qSelect?.multiple ?? false;
+    const options = qSelect?.state.options ?? [];
     const zIndex = ref(getConfig('nextZIndex') ?? DEFAULT_Z_INDEX);
 
     const styles = computed(() => {
@@ -130,8 +131,8 @@ export default defineComponent({
 
     watch(
       () => props.shown,
-      () => {
-        if (!modelValue) return;
+      (value) => {
+        if (!value) return;
 
         const newZIndex = getConfig('nextZIndex');
         if (newZIndex) zIndex.value = newZIndex;
@@ -191,13 +192,17 @@ export default defineComponent({
     };
 
     const handleSelectAllClick = () => {
+      const modelValue = qSelect?.modelValue.value;
+      const valueKey = qSelect?.valueKey.value ?? 'value';
+      
+      if (!Array.isArray(modelValue)) return;
       if (areAllSelected.value) {
         const keysToRemove = options
           .filter(({ isVisible, disabled }) => !disabled && isVisible)
           .map(({ key }) => key);
 
-        const getKey = value => {
-          return isPlainObject(value) ? get(value, props.valueKey) : value;
+        const getKey = (value: Option) => {
+          return isPlainObject(value) ? get(value, valueKey) : value;
         };
 
         ctx.emit(
@@ -209,9 +214,10 @@ export default defineComponent({
         return;
       }
 
+
       let newValue = options
         .filter(({ isSelected, disabled }) => !disabled && !isSelected)
-        .map(({ value }) => value);
+        .map((option) => option.modelValue);
 
       const multipleLimit = qSelect?.multipleLimit ?? null;
 
@@ -236,7 +242,7 @@ export default defineComponent({
       handleSelectAllClick,
       root,
       multiple,
-      scrollbar
+      scrollbar,
     };
   }
 });

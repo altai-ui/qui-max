@@ -1,20 +1,17 @@
-import { Ref, ComputedRef } from 'vue';
+import { Ref, Ref } from 'vue';
+
+import type { ModelValue } from '@/qComponents/QSelect/src/types';
 
 export interface QOptionInterface {
-  created: Ref<boolean>;
-  disabled: Ref<boolean>;
-  isDisabled: ComputedRef<boolean>;
-  isLimitReached: ComputedRef<boolean>;
-  isSelected: ComputedRef<boolean>;
-  isVisible: ComputedRef<boolean>;
-  key: ComputedRef<string>;
-  label: Ref<string | number>;
-  modelValue: Ref<{
-    value: {
-      value: string;
-    };
-    label?: string;
-    disabled?: boolean;
-  }>;
-  preparedLabel?: ComputedRef<string>;
+  created: boolean;
+  disabled: boolean;
+  isDisabled: boolean;
+  isLimitReached: boolean;
+  isSelected: boolean;
+  isVisible: boolean;
+  key: string | number;
+  label: string | number;
+  modelValue: ModelValue;
+  preparedLabel: string;
+  $el?: HTMLElement | undefined;
 }

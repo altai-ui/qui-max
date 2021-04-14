@@ -6,27 +6,35 @@ import { QOptionInterface } from '@/qComponents/QOption';
 type Option = {
   value: string | { value: unknown; label: string; disabled: boolean };
 };
-type ModelValue = string | number | Option[] | [] | null;
+type ModelValue = string | number | Option | Option[] | [] | null;
+type NewOption = {
+  value: ModelValue;
+  key: ModelValue;
+  preparedLabel: string | number;
+};
 
 interface QSelectProvider {
   toggleMenu: () => void;
-  toggleOptionSelection: (option: unknown) => void;
+  toggleOptionSelection: (option: QOptionInterface) => void;
   setSelected: () => void;
-  options: QOptionInterface[] | null;
-  query: string;
+  state: QSelectState;
   multipleLimit: Ref<number>;
   valueKey: Ref<string>;
   remote: Ref<boolean>;
   multiple: Ref<boolean>;
-  hoverIndex: number;
   modelValue: Ref<ModelValue>;
 }
 
 interface QSelectState {
   options: QOptionInterface[];
+  selected:
+    | QOptionInterface
+    | NewOption
+    | (QOptionInterface | NewOption)[]
+    | null;
   inputWidth: number;
   visible: boolean;
-  selectedLabel: string;
+  selectedLabel: string | number;
   hoverIndex: number;
   query: string;
   inputHovering: boolean;
@@ -51,5 +59,19 @@ interface QSelectDropdownInstance {
   scrollbar: HTMLDivElement | null;
   $el: HTMLElement;
 }
-export { QSelectProvider, QSelectState, QSelectDropdownInstance };
-export type { Option, ModelValue };
+
+interface QSelectTagsInstance {
+  handleBackspaceKeyDown: () => void;
+  handleTagClose: (option: QOptionInterface[] | null) => void;
+  handleInput: (event: KeyboardEvent) => void;
+  emitExit: () => void;
+  input: Ref<HTMLInputElement | null>;
+}
+
+export {
+  QSelectProvider,
+  QSelectState,
+  QSelectDropdownInstance,
+  QSelectTagsInstance
+};
+export type { Option, ModelValue, NewOption };

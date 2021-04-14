@@ -91,11 +91,28 @@ const Template = (args: any) => ({
   template: `
     <div style="width: 304px;">
       <q-select
-        v-bind="args"
         v-model="state.value"
-        :loading="state.remoteLoading"
-        @search="handleSearch"
+        :disabled="args.disabled"
+        :autocomplete="args.autocomplete"
+        :can-load-more="args.canLoadMore"
+        :clearable="args.clearable"
+        :filterable="args.filterable"
+        :allow-create="args.allowCreate"
+        :remote="args.remote"
+        :loading-text="args.loadingText"
+        :load-more-text="args.loadMoreText"
+        :no-match-text="args.noMatchText"
+        :no-data-text="args.noDataText"
+        :loading="args.remoteLoading"
+        :multiple="args.multiple"
+        :multiple-limit="args.multipleLimit"
+        :select-all-shown="args.selectAllShown"
+        :select-all-text="args.selectAllText"
+        :value-key="args.valueKey"
+        :collapse-tags="args.collapseTags"
+        :teleport-to="args.teleportTo"
         placeholder="Pick an option"
+        @search="handleSearch"
       >
         <q-option
           v-for="item in state.options"

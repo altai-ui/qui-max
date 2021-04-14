@@ -13,9 +13,9 @@
   >
     <q-checkbox
       v-if="qSelect.multiple.value"
+      v-model="isSelected"
       root-tag="div"
       input-tab-index="-1"
-      :value="isSelected"
       :disabled="isDisabled"
     />
 
@@ -34,6 +34,7 @@
 import { QSelectProvider } from '@/qComponents/QSelect';
 import { isObject, isEqual, get } from 'lodash-es';
 import { computed, defineComponent, inject, onBeforeUnmount, PropType, watch, toRefs } from 'vue';
+import { Option} from '@/qComponents/QSelect/src/types'; 
 import { QOptionInterface } from './types';
 
 export default defineComponent({
@@ -42,13 +43,7 @@ export default defineComponent({
 
   props: {
     modelValue: {
-      type: [Object, String, Number] as PropType<{
-        value: {
-          value: string
-        },
-        label: string,
-        disabled: boolean
-      }>,
+      type: [Object, String, Number] as PropType<string | number | Option>,
       required: true
     },
     label: {
@@ -78,10 +73,10 @@ export default defineComponent({
     })
 
     const isVisible = computed(() => {
-      if (qSelect?.remote || !qSelect?.query) return true;
+      if (qSelect?.remote || !qSelect?.state.query) return true;
 
       return (
-        preparedLabel.value.toLowerCase().includes(qSelect?.query.toLowerCase()) ||
+        preparedLabel.value.toLowerCase().includes(qSelect?.state.query.toLowerCase()) ||
         props.created
       )
     })
@@ -165,18 +160,18 @@ export default defineComponent({
     const handleMouseEnter = () => {
       if (props.disabled || qSelect === null) return;
       
-      qSelect.hoverIndex = qSelect.options?.indexOf(self);
+      qSelect.state.hoverIndex = qSelect.state.options?.indexOf(self);
     }
 
     onBeforeUnmount(() => {
       if (!qSelect) return;
-      const currentOptionIndex = qSelect.options.indexOf(self);
+      const currentOptionIndex = qSelect.state.options.indexOf(self);
       if (currentOptionIndex > -1) {
-        qSelect.options.splice(currentOptionIndex, 1);
+        qSelect.state.options.splice(currentOptionIndex, 1);
       }
-    });
+    });    
 
-    qSelect?.options.push(self);
+    qSelect?.state.options.push(self);
 
     return {
       preparedLabel,

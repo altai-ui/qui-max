@@ -22,14 +22,19 @@ export default {
   }
 };
 
-const Template = (args: any) => ({
+export const QRowStory = (args: unknown): unknown => ({
   components: { QRow, QCol },
   setup() {
     return { args };
   },
   template: `
     <div class="demo">
-      <q-row class="demo__row" v-bind="args">
+      <q-row
+        class="demo__row"
+        :align-v="args.alignV"
+        :align-h="args.alignH"
+        :tag="args.tag"
+      >
         <q-col class="demo-col" cols="2">
           <div class="demo__content">2</div>
         </q-col>
@@ -46,7 +51,6 @@ const Template = (args: any) => ({
   `
 });
 
-export const QRowStory: any = Template.bind({});
 QRowStory.storyName = 'Default';
 QRowStory.args = {
   tag: 'div'

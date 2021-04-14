@@ -13,7 +13,7 @@ export default {
   }
 };
 
-const Template = (args: any) => ({
+export const QTabsStory = (args: unknown): unknown => ({
   components: { QTabs, QTabPane },
   setup() {
     const activeTab = ref('first_tab');
@@ -22,8 +22,9 @@ const Template = (args: any) => ({
   },
   template: `
     <q-tabs
-      v-bind="args"
       v-model="activeTab"
+      :tab-width="args.tabWidth"
+      :disabled="args.disabled"
     >
       <q-tab-pane
         name="first_tab"
@@ -41,5 +42,4 @@ const Template = (args: any) => ({
   `
 });
 
-export const QTabsStory: any = Template.bind({});
 QTabsStory.storyName = 'Default';

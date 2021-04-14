@@ -12,13 +12,22 @@ export default {
   }
 };
 
-export const QScrollbarStory = (args: any) => ({
+export const QScrollbarStory = (args: unknown): unknown => ({
   components: { QScrollbar },
   setup() {
     return { args };
   },
   template: `
-    <q-scrollbar v-bind="args">
+    <q-scrollbar
+      :scroll-to="args.scrollTo"
+      :visible="args.visible"
+      :theme="args.theme"
+      :wrap-class="args.wrapClass"
+      :view-tag="args.viewTag"
+      :view-class="args.viewClass"
+      :view-style="args.viewStyle"
+      :noresize="args.noresize"
+    >
       <div class="french-bread">
         <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
         <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>

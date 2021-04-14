@@ -1,4 +1,5 @@
 import { defineAsyncComponent, ref } from 'vue';
+
 import QMessageBox, { QMessageBoxBeforeClose } from '@/qComponents/QMessageBox';
 
 export default {
@@ -9,7 +10,7 @@ export default {
   }
 };
 
-export const QMessageBoxStory = (args: any) => ({
+export const QMessageBoxStory = (args: unknown): unknown => ({
   setup() {
     const beforeClose = async ({ action, ctx }: QMessageBoxBeforeClose) => {
       if (action !== 'confirm') return true;
@@ -94,7 +95,7 @@ QMessageBoxStory.args = {
   cancelButtonText: 'Integer non'
 };
 
-export const QMessageBoxComponentStory = (args: any) => ({
+export const QMessageBoxComponentStory = (): unknown => ({
   components: {
     MessageBoxFormTest: defineAsyncComponent(
       () => import('./MessageBoxFormTest.vue')

@@ -1,7 +1,8 @@
 /* eslint-disable no-underscore-dangle, global-require, no-param-reassign */
-import { isString, kebabCase } from 'lodash-es';
-import mitt from 'mitt';
 import { App } from 'vue';
+import mitt from 'mitt';
+import { isString, kebabCase } from 'lodash-es';
+import { LocaleMessageDictionary, VueMessageType } from 'vue-i18n';
 
 import { setConfig } from './config';
 import { installI18n } from './constants/locales';
@@ -79,9 +80,7 @@ allComponents.forEach(component => {
 
 interface Localization {
   locale?: string;
-  customI18nMessages?: {
-    [key: string]: string;
-  };
+  customI18nMessages?: Record<string, LocaleMessageDictionary<VueMessageType>>;
 }
 
 interface ConfigOptions {

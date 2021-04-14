@@ -1,11 +1,7 @@
 import { ref, watch } from 'vue';
+
 import QCheckboxGroup from '@/qComponents/QCheckboxGroup';
 import QCheckbox from '@/qComponents/QCheckbox';
-
-const argsValues = {
-  min: 1,
-  max: 3
-};
 
 export default {
   title: 'Components/QCheckbox/QCheckboxGroup',
@@ -18,7 +14,7 @@ export default {
   }
 };
 
-const Template = (args: any) => ({
+const Template = (args: unknown) => ({
   components: { QCheckboxGroup, QCheckbox },
   setup() {
     const checkedCities = ref(['Shanghai', 'Beijing']);
@@ -51,9 +47,12 @@ const Template = (args: any) => ({
 });
 
 export const Default: any = Template.bind({});
-Default.args = argsValues;
+Default.args = {
+  min: 1,
+  max: 3
+};
 
-const IndeterminateTemplate = (args: any) => ({
+const IndeterminateTemplate = (args: unknown) => ({
   components: { QCheckboxGroup, QCheckbox },
   setup() {
     const areAllChecked = ref(false);

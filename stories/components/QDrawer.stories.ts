@@ -8,13 +8,11 @@ export default {
   argTypes: {
     visible: { control: { type: 'none' } },
     width: { control: { type: 'number' } },
-    position: {
-      control: { type: 'inline-radio', options: ['left', 'right'] }
-    }
+    position: { control: { type: 'inline-radio', options: ['left', 'right'] } }
   }
 };
 
-export const QNotificationStory = (args: unknown): unknown => ({
+export const QDrawerStory = (args: unknown): unknown => ({
   components: { QDrawer },
   setup() {
     const drawer = ref(false);
@@ -43,8 +41,8 @@ export const QNotificationStory = (args: unknown): unknown => ({
   `
 });
 
-QNotificationStory.storyName = 'Default';
-QNotificationStory.args = {
+QDrawerStory.storyName = 'Default';
+QDrawerStory.args = {
   visible: false,
   title: 'What is Lorem Ipsum?',
   width: 350

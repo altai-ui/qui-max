@@ -7,10 +7,12 @@ export default {
   title: 'Components/QTabs/QTabPane',
   component: QTabPane,
   subcomponents: { QTabs },
-  argTypes: { width: { control: { type: 'number' } } }
+  argTypes: {
+    width: { control: { type: 'number' } }
+  }
 };
 
-const Template = (args: any) => ({
+export const QTabPaneStory = (args: unknown): unknown => ({
   components: { QTabs, QTabPane },
   setup() {
     const activeTab = ref('first_tab');
@@ -19,7 +21,13 @@ const Template = (args: any) => ({
   },
   template: `
     <q-tabs v-model="activeTab">
-      <q-tab-pane v-bind="args" />
+      <q-tab-pane
+        :width="args.width"
+        :name="args.name"
+        :title="args.title"
+        :description="args.description"
+        :disabled="args.disabled"
+      />
       <q-tab-pane
         name="second_tab"
         title="Second tab"
@@ -32,7 +40,6 @@ const Template = (args: any) => ({
   `
 });
 
-export const QTabPaneStory: any = Template.bind({});
 QTabPaneStory.storyName = 'Default';
 QTabPaneStory.args = {
   name: 'first_tab',

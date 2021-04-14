@@ -12,7 +12,7 @@ export default {
   }
 };
 
-const Template = (args: any) => ({
+export const QCollapseStory = (args: unknown): unknown => ({
   components: { QCollapse, QCollapseItem },
   setup() {
     const activeNames = ref(['1']);
@@ -85,5 +85,4 @@ const Template = (args: any) => ({
   `
 });
 
-export const QCollapseStory: any = Template.bind({});
 QCollapseStory.storyName = 'Default';

@@ -2,7 +2,7 @@ import { reactive, ref } from 'vue';
 
 import QForm from '@/qComponents/QForm';
 import QFormItem from '@/qComponents/QFormItem';
-import { QFormProvider } from '@/qComponents/QForm/src/types';
+import type { RulesOptions, QFormProvider } from '@/qComponents/QForm';
 
 export default {
   title: 'Components/QForm',
@@ -14,7 +14,7 @@ export default {
   }
 };
 
-const INITIAL_RULES = {
+const INITIAL_RULES: RulesOptions = {
   name: [
     {
       required: false
@@ -33,7 +33,7 @@ const INITIAL_RULES = {
   }
 };
 
-const Template = (args: any) => ({
+export const QFormStory = (args: unknown): unknown => ({
   components: { QForm, QFormItem },
   setup() {
     const form = ref<QFormProvider | null>(null);
@@ -110,7 +110,6 @@ const Template = (args: any) => ({
         />
       </q-form-item>
 
-      
       <q-button @click="handleSubmitClick">Create</q-button>
       <q-button @click="handleResetClick" theme="secondary">Reset</q-button>
       <q-button @click="handleRule" theme="secondary">Make Name required</q-button>
@@ -118,4 +117,4 @@ const Template = (args: any) => ({
   `
 });
 
-export const Default: any = Template.bind({});
+QFormStory.storyName = 'Default';

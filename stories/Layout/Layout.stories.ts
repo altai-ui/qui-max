@@ -22,7 +22,7 @@ export default {
   }
 };
 
-const Template = (args: any) => ({
+export const LayoutStory = (args: { gutter: string }): unknown => ({
   components: { QRow, QCol },
   setup() {
     const demoStyles = computed(() => ({
@@ -114,5 +114,4 @@ const Template = (args: any) => ({
   `
 });
 
-export const LayoutStory: any = Template.bind({});
 LayoutStory.storyName = 'Default';

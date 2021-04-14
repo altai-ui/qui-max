@@ -4,19 +4,15 @@ export default {
   title: 'Components/Button',
   component: QButton,
   argTypes: {
-    type: {
-      control: { type: 'select', options: ['default', 'icon'] }
-    },
+    type: { control: { type: 'select', options: ['default', 'icon'] } },
     theme: {
       control: { type: 'select', options: ['primary', 'secondary', 'link'] }
     },
-    size: {
-      control: { type: 'select', options: ['small', 'medium'] }
-    }
+    size: { control: { type: 'select', options: ['small', 'medium'] } }
   }
 };
 
-const Template = (args: any) => ({
+const Template = (args: unknown) => ({
   components: { QButton },
   setup() {
     const handleClick = (event: MouseEvent): void => {

@@ -4,9 +4,7 @@ export default {
   title: 'Components/QContextMenu',
   component: QContextMenu,
   argTypes: {
-    position: {
-      control: { type: 'inline-radio', options: ['left', 'right'] }
-    }
+    position: { control: { type: 'inline-radio', options: ['left', 'right'] } }
   }
 };
 

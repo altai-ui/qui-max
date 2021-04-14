@@ -1,4 +1,5 @@
 import { ref } from 'vue';
+
 import QCheckbox from '@/qComponents/QCheckbox';
 
 export default {
@@ -9,7 +10,7 @@ export default {
   }
 };
 
-const Template = (args: any) => ({
+const Template = (args: unknown) => ({
   components: { QCheckbox },
   setup() {
     const isChecked = ref(true);

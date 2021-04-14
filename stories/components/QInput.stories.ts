@@ -1,60 +1,28 @@
 import { ref } from 'vue';
+
 import QInput from '@/qComponents/QInput';
 import iconsList from '../core/iconsList';
 
 export default {
   title: 'Components/QInput',
-
   component: QInput,
-
   argTypes: {
-    placeholder: {
-      control: {
-        type: 'text'
-      }
-    },
-
-    maxlength: {
-      control: {
-        type: 'number'
-      }
-    },
-
-    modelValue: {
-      control: {
-        type: 'none'
-      }
-    },
-
+    placeholder: { control: { type: 'text' } },
+    maxlength: { control: { type: 'number' } },
+    modelValue: { control: { type: 'none' } },
     type: {
       control: {
         type: 'select',
         options: ['text', 'password', 'number', 'email', 'hidden', 'tel', 'url']
       }
     },
-
-    suffixIcon: {
-      control: {
-        type: 'select',
-        options: iconsList
-      }
-    },
-
-    autocomplete: {
-      control: {
-        type: 'select',
-        options: ['on', 'off']
-      }
-    },
-    readonly: {
-      control: {
-        type: 'boolean'
-      }
-    }
+    suffixIcon: { control: { type: 'select', options: iconsList } },
+    autocomplete: { control: { type: 'select', options: ['on', 'off'] } },
+    readonly: { control: { type: 'boolean' } }
   }
 };
 
-const Template = (args: any) => ({
+export const QInputStory = (args: unknown): unknown => ({
   setup() {
     const data = ref('');
 
@@ -86,7 +54,7 @@ const Template = (args: any) => ({
   },
 
   template: `
-    <q-input 
+    <q-input
       v-model="data"
       :suffix-icon="args.suffixIcon"
       :show-symbol-limit="args.showSymbolLimit"
@@ -107,8 +75,8 @@ const Template = (args: any) => ({
     />`
 });
 
-export const Default: any = Template.bind({});
-Default.args = {
+QInputStory.storyName = 'Default';
+QInputStory.args = {
   placeholder: 'Input text',
   maxlength: 25,
   type: 'text'

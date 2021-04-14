@@ -7,12 +7,12 @@ export default {
   component: QTag
 };
 
-const Template = (args: any) => ({
+export const QTagStory = (args: unknown): unknown => ({
   components: { QTag },
   setup() {
     const tags = ref(['Tag 1', 'Tag 2', 'Tag 3', 'Tag 4', 'Tag 5']);
 
-    const handleCloseClick = (clickedTag: string) => {
+    const handleCloseClick = (clickedTag: string): void => {
       console.log('Close tag clicked');
       tags.value = tags.value.filter(tag => tag !== clickedTag);
     };
@@ -31,5 +31,4 @@ const Template = (args: any) => ({
   `
 });
 
-export const QTagStory: any = Template.bind({});
 QTagStory.storyName = 'Default';

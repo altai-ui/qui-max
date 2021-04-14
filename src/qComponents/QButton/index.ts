@@ -1,4 +1,5 @@
 import { App } from 'vue';
+
 import QButton from './src/QButton.vue';
 
 /* istanbul ignore next */

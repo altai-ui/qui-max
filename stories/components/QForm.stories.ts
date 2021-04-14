@@ -1,10 +1,12 @@
-import { reactive, ref } from 'vue';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { Meta, Story } from '@storybook/vue3';
+import { defineComponent, reactive, ref } from 'vue';
 
 import QForm from '@/qComponents/QForm';
 import QFormItem from '@/qComponents/QFormItem';
-import { QFormProvider } from '@/qComponents/QForm/src/types';
+import type { RulesOptions, QFormProvider } from '@/qComponents/QForm';
 
-export default {
+const storyMetadata: Meta = {
   title: 'Components/QForm',
   component: QForm,
   subcomponents: { QFormItem },
@@ -14,17 +16,10 @@ export default {
   }
 };
 
-const INITIAL_RULES = {
+const INITIAL_RULES: RulesOptions = {
   name: [
-    {
-      required: false
-    },
-    {
-      min: 3,
-      max: 10,
-      message: 'Length should be 3 to 10',
-      trigger: 'blur'
-    }
+    { required: false },
+    { min: 3, max: 10, message: 'Length should be 3 to 10', trigger: 'blur' }
   ],
   intro: {
     required: true,
@@ -33,89 +28,92 @@ const INITIAL_RULES = {
   }
 };
 
-const Template = (args: any) => ({
-  components: { QForm, QFormItem },
-  setup() {
-    const form = ref<QFormProvider | null>(null);
+const QFormStory: Story = args =>
+  defineComponent({
+    components: { QForm, QFormItem },
+    setup() {
+      const form = ref<QFormProvider | null>(null);
 
-    const formModel = reactive({
-      name: '',
-      intro: ''
-    });
+      const formModel = reactive({
+        name: '',
+        intro: ''
+      });
 
-    const rules = reactive(INITIAL_RULES);
+      const rules = reactive(INITIAL_RULES);
 
-    const handleSubmitClick = async () => {
-      const valid = await form?.value?.validate();
-      if (valid) {
-        const { isValid, invalidFields } = valid;
-        console.log('QForm | validate', isValid, invalidFields);
-        if (isValid) {
-          // eslint-disable-next-line no-alert
-          alert('Success');
+      const handleSubmitClick = async () => {
+        const valid = await form?.value?.validate();
+        if (valid) {
+          const { isValid, invalidFields } = valid;
+          console.log('QForm | validate', isValid, invalidFields);
+          if (isValid) {
+            // eslint-disable-next-line no-alert
+            alert('Success');
+          }
         }
-      }
-    };
-
-    const handleResetClick = () => {
-      form?.value?.resetFields();
-    };
-
-    const handleRule = () => {
-      rules.name = {
-        required: true,
-        message: 'Please input name',
-        trigger: 'blur'
       };
-    };
 
-    return {
-      form,
-      args,
-      formModel,
-      rules,
-      handleSubmitClick,
-      handleResetClick,
-      handleRule
-    };
-  },
+      const handleResetClick = () => {
+        form?.value?.resetFields();
+      };
 
-  template: `
-    <q-form
-      ref="form"
-      :model="formModel"
-      :rules="rules"
-      :disabled="args.disabled"
-      :hideRequiredAsterisk="args.hideRequiredAsterisk"
-      :showErrorMessage="args.showErrorMessage"
-      :validateOnRuleChange="args.validateOnRuleChange"
-    >
-      <q-form-item
-        label="Name"
-        prop="name"
+      const handleRule = () => {
+        rules.name = {
+          required: true,
+          message: 'Please input name',
+          trigger: 'blur'
+        };
+      };
+
+      return {
+        form,
+        args,
+        formModel,
+        rules,
+        handleSubmitClick,
+        handleResetClick,
+        handleRule
+      };
+    },
+
+    template: `
+      <q-form
+        ref="form"
+        :model="formModel"
+        :rules="rules"
+        :disabled="args.disabled"
+        :hideRequiredAsterisk="args.hideRequiredAsterisk"
+        :showErrorMessage="args.showErrorMessage"
+        :validateOnRuleChange="args.validateOnRuleChange"
       >
-        <q-input
-          v-model="formModel.name"
-          type="text"
-        />
-      </q-form-item>
+        <q-form-item
+          label="Name"
+          prop="name"
+        >
+          <q-input
+            v-model="formModel.name"
+            type="text"
+          />
+        </q-form-item>
 
-      <q-form-item
-        label="Intro"
-        prop="intro"
-      >
-        <q-input
-          v-model="formModel.intro"
-          type="text"
-        />
-      </q-form-item>
+        <q-form-item
+          label="Intro"
+          prop="intro"
+        >
+          <q-input
+            v-model="formModel.intro"
+            type="text"
+          />
+        </q-form-item>
 
-      
-      <q-button @click="handleSubmitClick">Create</q-button>
-      <q-button @click="handleResetClick" theme="secondary">Reset</q-button>
-      <q-button @click="handleRule" theme="secondary">Make Name required</q-button>
-    </q-form>
-  `
-});
+        <q-button @click="handleSubmitClick">Create</q-button>
+        <q-button @click="handleResetClick" theme="secondary">Reset</q-button>
+        <q-button @click="handleRule" theme="secondary">Make Name required</q-button>
+      </q-form>
+    `
+  });
 
-export const Default: any = Template.bind({});
+QFormStory.storyName = 'Default';
+
+export { QFormStory };
+export default storyMetadata;

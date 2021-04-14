@@ -5,10 +5,17 @@
 </template>
 
 <script lang="ts">
+import { defineComponent, PropType, provide, Ref, ref, watch } from 'vue';
 import { concat } from 'lodash-es';
-import { defineComponent, provide, Ref, ref, watch } from 'vue';
-import { QFormItemContext } from '@/qComponents/QFormItem/src/types';
-import { QFormProvider, ValidateFnResult } from './types';
+
+import type { QFormItemContext } from '@/qComponents/QFormItem';
+import type {
+  FormModel,
+  RulesOptions,
+  QFormProvider,
+  ValidateFnResult
+} from './types';
+
 /**
  * Form consists of `input`, `radio`, `select`, `checkbox` and so on.
  * With form, you can collect, verify and submit data. You must use QFormItem inside QForm
@@ -22,7 +29,7 @@ export default defineComponent({
      * data of form component
      */
     model: {
-      type: Object,
+      type: Object as PropType<FormModel>,
       default: () => ({})
     },
     /**
@@ -30,7 +37,7 @@ export default defineComponent({
      * https://github.com/yiminghe/async-validator#rules
      */
     rules: {
-      type: Object,
+      type: Object as PropType<RulesOptions>,
       default: () => ({})
     },
     /**
@@ -82,9 +89,7 @@ export default defineComponent({
     const clearValidate = (passedProps?: string[] | string): void => {
       const filteredFields = filterFields(passedProps);
 
-      filteredFields.forEach(field => {
-        field.clearValidate();
-      });
+      filteredFields.forEach(field => field.clearValidate());
     };
 
     const resetFields = (passedProps?: string[] | string): void => {
@@ -98,9 +103,7 @@ export default defineComponent({
       }
       const filteredFields = filterFields(passedProps);
 
-      filteredFields.forEach(field => {
-        field.resetField();
-      });
+      filteredFields.forEach(field => field.resetField());
     };
 
     const validate = async (
@@ -137,9 +140,7 @@ export default defineComponent({
     watch(
       () => props.rules,
       () => {
-        if (props.validateOnRuleChange) {
-          validate();
-        }
+        if (props.validateOnRuleChange) validate();
       },
       { deep: true }
     );

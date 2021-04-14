@@ -3,10 +3,8 @@
     <div
       v-show="isShown"
       ref="dropdown"
-      v-click-outside="closeDropdown"
       class="q-picker-dropdown"
       tabindex="-1"
-      @keyup.esc="closeDropdown"
     >
       <div class="q-picker-dropdown__base">
         <q-color-svpanel
@@ -56,7 +54,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, ref, computed, watch, nextTick } from 'vue';
+import {
+  defineComponent,
+  PropType,
+  ref,
+  computed,
+  watch,
+  nextTick,
+  inject
+} from 'vue';
 import { useI18n } from 'vue-i18n';
 import Color from 'color';
 
@@ -64,6 +70,7 @@ import QButton from '@/qComponents/QButton';
 import QColorSvpanel from './QColorSvpanel.vue';
 import QColorAlphaSlider from './QColorAlphaSlider.vue';
 import QColorHueSlider from './QColorHueSlider.vue';
+import type { QColorPickerProvider } from './types';
 
 const CLOSE_EVENT = 'close';
 const CLEAR_EVENT = 'clear';
@@ -106,7 +113,7 @@ export default defineComponent({
 
   emits: [CLOSE_EVENT, CLEAR_EVENT, PICK_EVENT],
 
-  setup(props, { emit }) {
+  setup(props, ctx) {
     const elementToFocusAfterClosing = ref<HTMLElement | null>(null);
     const tempColor = ref('');
     const hue = ref(0);
@@ -157,16 +164,28 @@ export default defineComponent({
       }
     };
 
-    const closeDropdown = () => {
-      emit(CLOSE_EVENT);
+    const qColorPicker = inject<QColorPickerProvider | null>(
+      'qColorPicker',
+      null
+    );
+
+    const closeDropdown = (e: KeyboardEvent | MouseEvent) => {
+      if (
+        (e.type === 'keyup' && (e as KeyboardEvent).key === 'Escape') ||
+        (e.type === 'click' &&
+          !qColorPicker?.trigger.value?.contains(e.target as HTMLElement) &&
+          !dropdown.value?.contains(e.target as HTMLElement))
+      ) {
+        ctx.emit(CLOSE_EVENT);
+      }
     };
 
     const handleClearBtnClick = () => {
-      emit(CLEAR_EVENT);
+      ctx.emit(CLEAR_EVENT);
     };
 
     const handleConfirmBtnClick = () => {
-      emit(PICK_EVENT, colorString.value);
+      ctx.emit(PICK_EVENT, colorString.value);
     };
 
     const refSv = ref<typeof QColorSvpanel | null>(null);
@@ -177,12 +196,16 @@ export default defineComponent({
       () => props.isShown,
       async newValue => {
         if (!newValue) {
+          document.removeEventListener('keyup', closeDropdown, true);
+          document.removeEventListener('click', closeDropdown, true);
           document.removeEventListener('focus', handleDocumentFocus, true);
           await nextTick();
           elementToFocusAfterClosing.value?.focus();
           return;
         }
 
+        document.addEventListener('keyup', closeDropdown, true);
+        document.addEventListener('click', closeDropdown, true);
         document.addEventListener('focus', handleDocumentFocus, true);
         updateHSVA(props.color);
         tempColor.value = colorString.value;
@@ -218,6 +241,7 @@ export default defineComponent({
 
     return {
       t,
+      dropdown,
       saturation,
       value,
       hue,

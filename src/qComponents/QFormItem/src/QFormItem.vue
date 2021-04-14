@@ -42,9 +42,6 @@
 </template>
 
 <script lang="ts">
-import { QFormProvider } from '@/qComponents/QForm';
-import AsyncValidator, { ErrorList, FieldErrorList } from 'async-validator';
-import { get, set } from 'lodash-es';
 import {
   provide,
   ref,
@@ -53,9 +50,18 @@ import {
   onMounted,
   onBeforeUnmount,
   inject,
-  watch
+  watch,
+  PropType
 } from 'vue';
-import { QFormItemContext, QFormItemProvider, FilteredRuleItem } from './types';
+import AsyncValidator, { ErrorList, FieldErrorList } from 'async-validator';
+import { get, set } from 'lodash-es';
+
+import type { QFormProvider } from '@/qComponents/QForm';
+import type {
+  QFormItemContext,
+  QFormItemProvider,
+  FilteredRuleItem
+} from './types';
 
 export default defineComponent({
   name: 'QFormItem',
@@ -98,7 +104,7 @@ export default defineComponent({
      * https://github.com/yiminghe/async-validator#rules
      */
     rules: {
-      type: [Object, Array],
+      type: [Object, Array] as PropType<FilteredRuleItem | FilteredRuleItem[]>,
       default: null
     },
     /**
@@ -186,9 +192,7 @@ export default defineComponent({
 
       return new Promise(resolve => {
         validator.validate(
-          {
-            [props.prop]: get(qForm?.model, props.prop)
-          },
+          { [props.prop]: get(qForm?.model, props.prop) },
           { firstFields: true },
           (errors, fields) => {
             if (!errors) resolve({});

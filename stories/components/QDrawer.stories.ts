@@ -1,31 +1,30 @@
-import { ref } from 'vue';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { Meta, Story } from '@storybook/vue3';
+import { defineComponent, ref } from 'vue';
 
 import QDrawer from '@/qComponents/QDrawer';
 
-export default {
+const storyMetadata: Meta = {
   title: 'Components/QDrawer',
   component: QDrawer,
   argTypes: {
     visible: { control: { type: 'none' } },
     width: { control: { type: 'number' } },
-    position: {
-      control: { type: 'inline-radio', options: ['left', 'right'] }
-    }
+    position: { control: { type: 'inline-radio', options: ['left', 'right'] } }
   }
 };
 
-export const QNotificationStory = (args: unknown): unknown => ({
-  components: { QDrawer },
-  setup() {
-    const drawer = ref(false);
+const QDrawerStory: Story = args =>
+  defineComponent({
+    components: { QDrawer },
+    setup() {
+      const drawer = ref(false);
 
-    return { args, drawer };
-  },
-  template: `
-    <div>
-      <q-button @click="drawer = true">
-        open
-      </q-button>
+      return { args, drawer };
+    },
+    template: `
+      <q-button @click="drawer = true">open</q-button>
+
       <q-drawer
         v-model:visible="drawer"
         :width="args.width"
@@ -39,13 +38,15 @@ export const QNotificationStory = (args: unknown): unknown => ({
         :teleport-to="args.teleportTo"
         :render-on-mount="args.renderOnMount"
       >I'm drawer's slot</q-drawer>
-    </div>
-  `
-});
+    `
+  });
 
-QNotificationStory.storyName = 'Default';
-QNotificationStory.args = {
+QDrawerStory.storyName = 'Default';
+QDrawerStory.args = {
   visible: false,
   title: 'What is Lorem Ipsum?',
   width: 350
 };
+
+export { QDrawerStory };
+export default storyMetadata;

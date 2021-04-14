@@ -1,4 +1,5 @@
 import { App } from 'vue';
+
 import QTabPane from './src/QTabPane.vue';
 
 /* istanbul ignore next */

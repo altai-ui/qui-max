@@ -1,17 +1,31 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { Meta, Story } from '@storybook/vue3';
+import { defineComponent } from 'vue';
+
 import QPagination from '@/qComponents/QPagination';
 
-export default {
+const storyMetadata: Meta = {
   title: 'Components/QPagination',
   component: QPagination
 };
 
-export const QPaginationStory = (args: any) => ({
-  components: { QPagination },
-  setup() {
-    return { args };
-  },
-  template: '<q-pagination v-bind="args" />'
-});
+const QPaginationStory: Story = args =>
+  defineComponent({
+    components: { QPagination },
+    setup() {
+      return { args };
+    },
+    template: `
+      <q-pagination
+        :page-count="args.pageCount"
+        :total="args.total"
+        :page-size="args.pageSize"
+        :current-page="args.currentPage"
+        :disabled="args.disabled"
+        :pager-count="args.pagerCount"
+      />
+    `
+  });
 
 QPaginationStory.storyName = 'Default';
 QPaginationStory.args = {
@@ -20,3 +34,6 @@ QPaginationStory.args = {
   total: 300,
   pageSize: 10
 };
+
+export { QPaginationStory };
+export default storyMetadata;

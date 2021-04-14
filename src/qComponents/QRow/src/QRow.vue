@@ -9,7 +9,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from 'vue';
+import { defineComponent, PropType, computed } from 'vue';
+
+import type { AlignV, AlignH } from './types';
 
 export default defineComponent({
   name: 'QRow',
@@ -28,7 +30,7 @@ export default defineComponent({
      * `['start', 'end', 'center', 'baseline', 'stretch']`
      */
     alignV: {
-      type: String,
+      type: String as PropType<AlignV>,
       default: null,
       validator: (value: string | null) =>
         [null, 'start', 'end', 'center', 'baseline', 'stretch'].includes(value)
@@ -38,7 +40,7 @@ export default defineComponent({
      * `['start', 'end', 'center', 'between', 'around']`
      */
     alignH: {
-      type: String,
+      type: String as PropType<AlignH>,
       default: null,
       validator: (value: string | null) =>
         [null, 'start', 'end', 'center', 'between', 'around'].includes(value)

@@ -31,9 +31,10 @@ import {
   watch,
   PropType
 } from 'vue';
-import { QFormProvider } from '@/qComponents/QForm';
-import { QFormItemProvider } from '@/qComponents/QFormItem';
 import { useI18n } from 'vue-i18n';
+
+import type { QFormProvider } from '@/qComponents/QForm';
+import type { QFormItemProvider } from '@/qComponents/QFormItem';
 import calcTextareaHeight from './calcTextareaHeight';
 
 export default defineComponent({
@@ -66,7 +67,6 @@ export default defineComponent({
       type: Boolean,
       default: false
     },
-
     /**
      * shows the counter
      */
@@ -74,7 +74,6 @@ export default defineComponent({
       type: Boolean,
       default: false
     },
-
     /**
      * whether textarea has an adaptive height. Can accept an object, e.g. { minRows: 2, maxRows: 6 }
      */
@@ -84,7 +83,6 @@ export default defineComponent({
       >,
       default: true
     },
-
     /** validate parent form if present */
     validateEvent: {
       type: Boolean,
@@ -134,31 +132,31 @@ export default defineComponent({
       resize: props.resize
     }));
 
-    const updateModel = (event: Event) => {
+    const updateModel = (event: Event): void => {
       const target = event.target as HTMLInputElement;
       ctx.emit('update:modelValue', target.value ?? '');
     };
 
-    const handleInput = (event: Event) => {
+    const handleInput = (event: Event): void => {
       ctx.emit('input', event);
       updateModel(event);
     };
 
-    const handleChange = (event: Event) => {
+    const handleChange = (event: Event): void => {
       ctx.emit('change', event);
       updateModel(event);
     };
 
-    const handleBlur = (event: FocusEvent) => {
+    const handleBlur = (event: FocusEvent): void => {
       ctx.emit('blur', event);
       if (props.validateEvent) qFormItem?.validateField('blur');
     };
 
-    const handleFocus = (event: FocusEvent) => {
+    const handleFocus = (event: FocusEvent): void => {
       ctx.emit('focus', event);
     };
 
-    const resizeTextarea = () => {
+    const resizeTextarea = (): void => {
       const { autosize } = props;
 
       if (!autosize) {

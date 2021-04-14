@@ -50,9 +50,13 @@
 
 <script lang="ts">
 import { computed, defineComponent, inject, watch, ref } from 'vue';
-import { QFormProvider } from '@/qComponents/QForm';
-import { QFormItemProvider } from '@/qComponents/QFormItem';
-import { QCheckboxGroupProvider } from '@/qComponents/QCheckboxGroup';
+
+import type { QFormProvider } from '@/qComponents/QForm';
+import type { QFormItemProvider } from '@/qComponents/QFormItem';
+import type { QCheckboxGroupProvider } from '@/qComponents/QCheckboxGroup';
+
+const UPDATE_MODEL_VALUE_EVENT = 'update:modelValue';
+const CHANGE_EVENT = 'change';
 
 export default defineComponent({
   name: 'QCheckbox',
@@ -86,7 +90,7 @@ export default defineComponent({
     validateEvent: { type: Boolean, default: false }
   },
 
-  emits: ['input', 'update:modelValue', 'change'],
+  emits: [UPDATE_MODEL_VALUE_EVENT, CHANGE_EVENT],
 
   setup(props, ctx) {
     const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
@@ -109,8 +113,10 @@ export default defineComponent({
 
     const isLimitDisabled = computed(() => {
       if (qCheckboxGroup === null) return false;
+
       const { max, min } = qCheckboxGroup;
       const groupLength = qCheckboxGroup.modelValue.value.length;
+
       return (
         (Boolean(max.value || min.value) &&
           groupLength >= max.value &&
@@ -119,24 +125,24 @@ export default defineComponent({
       );
     });
 
-    const isDisabled = computed(() => (
+    const isDisabled = computed(() =>
       qCheckboxGroup
         ? qCheckboxGroup?.disabled.value ||
-            props.disabled ||
-            (qForm?.disabled ?? false) ||
-            isLimitDisabled.value
+          props.disabled ||
+          (qForm?.disabled ?? false) ||
+          isLimitDisabled.value
         : props.disabled || (qForm?.disabled ?? false)
-        )
-      );
+    );
 
     const model = computed({
       get: () => isChecked.value,
       set: value => {
         if (!qCheckboxGroup) {
-          ctx.emit('update:modelValue', value);
-          ctx.emit('change', value);
+          ctx.emit(UPDATE_MODEL_VALUE_EVENT, value);
+          ctx.emit(CHANGE_EVENT, value);
         } else {
           const set = new Set(qCheckboxGroup.modelValue.value);
+
           if (value) {
             set.add(props.label);
           } else {

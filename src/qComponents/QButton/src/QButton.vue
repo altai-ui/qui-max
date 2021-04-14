@@ -24,7 +24,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, inject } from 'vue';
+import { defineComponent, PropType, computed, inject } from 'vue';
+
 import { QFormProvider } from '@/qComponents/QForm';
 
 export default defineComponent({
@@ -33,18 +34,18 @@ export default defineComponent({
 
   props: {
     type: {
-      type: String,
+      type: String as PropType<'default' | 'icon'>,
       default: 'default',
       validator: (value: string) => ['default', 'icon'].includes(value)
     },
     theme: {
-      type: String,
+      type: String as PropType<'primary' | 'secondary' | 'link'>,
       default: 'primary',
       validator: (value: string) =>
         ['primary', 'secondary', 'link'].includes(value)
     },
     size: {
-      type: String,
+      type: String as PropType<'small' | 'medium'>,
       default: 'medium',
       validator: (value: string) => ['small', 'medium'].includes(value)
     },
@@ -105,6 +106,7 @@ export default defineComponent({
     const isButtonDisabled = computed(
       () => props.disabled || (qForm?.disabled ?? false)
     );
+
     const classList = computed(() => {
       const classes: (string | { [key: string]: boolean })[] = Object.entries({
         theme: props.theme,

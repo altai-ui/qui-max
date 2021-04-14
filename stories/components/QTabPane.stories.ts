@@ -1,38 +1,48 @@
-import { ref } from 'vue';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { Meta, Story } from '@storybook/vue3';
+import { defineComponent, ref } from 'vue';
 
 import QTabPane from '@/qComponents/QTabPane';
 import QTabs from '@/qComponents/QTabs';
 
-export default {
+const storyMetadata: Meta = {
   title: 'Components/QTabs/QTabPane',
   component: QTabPane,
   subcomponents: { QTabs },
-  argTypes: { width: { control: { type: 'number' } } }
+  argTypes: {
+    width: { control: { type: 'number' } }
+  }
 };
 
-const Template = (args: any) => ({
-  components: { QTabs, QTabPane },
-  setup() {
-    const activeTab = ref('first_tab');
+const QTabPaneStory: Story = args =>
+  defineComponent({
+    components: { QTabs, QTabPane },
+    setup() {
+      const activeTab = ref('first_tab');
 
-    return { args, activeTab };
-  },
-  template: `
-    <q-tabs v-model="activeTab">
-      <q-tab-pane v-bind="args" />
-      <q-tab-pane
-        name="second_tab"
-        title="Second tab"
-      />
-      <q-tab-pane
-        name="third_tab"
-        title="Third tab"
-      />
-    </q-tabs>
-  `
-});
+      return { args, activeTab };
+    },
+    template: `
+      <q-tabs v-model="activeTab">
+        <q-tab-pane
+          :width="args.width"
+          :name="args.name"
+          :title="args.title"
+          :description="args.description"
+          :disabled="args.disabled"
+        />
+        <q-tab-pane
+          name="second_tab"
+          title="Second tab"
+        />
+        <q-tab-pane
+          name="third_tab"
+          title="Third tab"
+        />
+      </q-tabs>
+    `
+  });
 
-export const QTabPaneStory: any = Template.bind({});
 QTabPaneStory.storyName = 'Default';
 QTabPaneStory.args = {
   name: 'first_tab',
@@ -40,3 +50,6 @@ QTabPaneStory.args = {
   description:
     'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
 };
+
+export { QTabPaneStory };
+export default storyMetadata;

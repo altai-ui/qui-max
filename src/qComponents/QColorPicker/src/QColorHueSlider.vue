@@ -65,9 +65,7 @@ export default defineComponent({
     };
 
     const handleBarClick = (event: MouseEvent) => {
-      if (event.target !== thumb.value) {
-        handleDrag(event);
-      }
+      if (event.target !== thumb.value) handleDrag(event);
     };
 
     const getThumbTop = () => {

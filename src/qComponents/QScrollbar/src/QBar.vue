@@ -24,7 +24,7 @@ import {
   inject
 } from 'vue';
 
-import { QScrollbarProvider } from './types';
+import type { QScrollbarProvider } from './types';
 import { renderThumbStyle, BAR_MAP } from './util';
 
 export default defineComponent({

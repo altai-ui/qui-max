@@ -35,7 +35,7 @@
 <script lang="ts">
 import { defineComponent, inject, computed } from 'vue';
 
-import { QCollapseProvider } from '../../QCollapse';
+import { QCollapseProvider } from '@/qComponents/QCollapse';
 import QCollapseTransition from './QCollapseTransition.vue';
 
 export default defineComponent({

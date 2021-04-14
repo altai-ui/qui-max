@@ -1,9 +1,9 @@
 import { Ref } from 'vue';
 
-interface State {
-  hovering: Ref<boolean>;
-  focused: Ref<boolean>;
-  isPasswordVisible: Ref<boolean>;
+export interface State {
+  hovering: boolean;
+  focused: boolean;
+  isPasswordVisible: boolean;
 }
 
 export interface QInput {

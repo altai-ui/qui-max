@@ -23,6 +23,7 @@ import QInput from './QInput';
 import QInputNumber from './QInputNumber';
 import QMessageBox from './QMessageBox';
 import QPagination from './QPagination';
+import QPopover from './QPopover';
 import QRadio from './QRadio';
 import QRadioGroup from './QRadioGroup';
 import QRow from './QRow';
@@ -47,6 +48,7 @@ const Components = {
   QInputNumber,
   QMessageBox,
   QPagination,
+  QPopover,
   QRadio,
   QRadioGroup,
   QRow,
@@ -153,6 +155,7 @@ export {
   QInputNumber,
   QMessageBox,
   QPagination,
+  QPopover,
   QRadio,
   QRadioGroup,
   QRow,

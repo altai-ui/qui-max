@@ -1,0 +1,59 @@
+.q-popover {
+  display: flex;
+  align-items: flex-start;
+  min-width: 320px;
+  max-width: 552px;
+  padding: 24px;
+  color: var(--color-primary-black);
+  text-align: left;
+  letter-spacing: 0.2px;
+  background-color: var(--color-tertiary-white);
+  border-radius: var(--border-radius-base);
+  box-shadow: var(--box-shadow-primary);
+
+  &__icon {
+    margin-right: 16px;
+    color: var(--color-tertiary-white);
+    text-align: center;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    &::before {
+      font-size: 40px;
+      line-height: 40px;
+    }
+  }
+
+  &__inner {
+    max-height: 646px;
+    padding-top: 8px;
+  }
+
+  &__title {
+    min-width: 216px;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 22px;
+  }
+
+  &__content {
+    font-size: var(--font-size-base);
+    font-style: normal;
+    font-weight: var(--font-weight-base);
+    line-height: 20px;
+    color: var(--color-primary-black);
+
+    .q-popover__title + & {
+      margin-top: 16px;
+    }
+  }
+
+  &_without-icon {
+    padding: 16px;
+  }
+}
+
+.q-popover-trigger {
+  display: contents;
+}

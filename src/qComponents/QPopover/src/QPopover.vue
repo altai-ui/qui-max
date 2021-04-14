@@ -213,7 +213,7 @@ export default defineComponent({
 
     let popperJS: Instance | null = null;
     const createPopper = async () => {
-      if (!reference.value || !popover.value) return;
+      if (!reference.value?.firstElementChild || !popover.value) return;
 
       const options = {
         placement: props.placement,

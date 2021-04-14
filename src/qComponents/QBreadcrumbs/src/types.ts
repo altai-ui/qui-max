@@ -5,3 +5,11 @@ export interface RouteItem {
     breadcrumb: string;
   };
 }
+
+export type QBreadcrumbsPropRoute = RouteItem[];
+
+export interface QBreadcrumbsProps {
+  linkComponent: Nullable<string>;
+  last: Nullable<string>;
+  route: Nullable<QBreadcrumbsPropRoute>;
+}

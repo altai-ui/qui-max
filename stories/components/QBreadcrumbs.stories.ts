@@ -4,7 +4,7 @@ import { defineComponent, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import QBreadcrumbs from '@/qComponents/QBreadcrumbs';
-import type { RouteItem } from '@/qComponents/QBreadcrumbs';
+import type { QBreadcrumbsProps } from '@/qComponents/QBreadcrumbs';
 
 const storyMetadata: Meta = {
   title: 'Components/QBreadcrumbs',
@@ -22,13 +22,7 @@ app.component('RouterLink', {
   template: '<a href="#" @click.prevent.stop><slot/></a>'
 });
 
-interface Args {
-  linkComponent: string;
-  last: string;
-  route: RouteItem[] | null;
-}
-
-const QBreadcrumbsStory: Story<Args> = args =>
+const QBreadcrumbsStory: Story<QBreadcrumbsProps> = args =>
   // eslint-disable-next-line vue/one-component-per-file
   defineComponent({
     components: {

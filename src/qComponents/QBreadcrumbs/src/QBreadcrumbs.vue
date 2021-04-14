@@ -5,7 +5,7 @@
       :key="crumb.name || crumb.path"
     >
       <component
-        :is="linkComponent"
+        :is="linkComponent || 'RouterLink'"
         :to="pushTo(crumb)"
         active-class="q-breadcrumbs__crumb_active"
         exact-active-class="q-breadcrumbs__crumb_exact-active"
@@ -26,7 +26,7 @@
 <script lang="ts">
 import { defineComponent, computed, PropType } from 'vue';
 
-import type { RouteItem } from './types';
+import type { QBreadcrumbsProps, QBreadcrumbsPropRoute } from './types';
 
 export default defineComponent({
   name: 'QBreadcrumbs',
@@ -38,7 +38,7 @@ export default defineComponent({
      */
     linkComponent: {
       type: String,
-      default: 'RouterLink'
+      default: null
     },
     /**
      * custom last crumb
@@ -51,12 +51,12 @@ export default defineComponent({
      * Array of Objects, object must contain required fields: `path` - uses as route path, `name` - route name, `meta` - must contain `breadcrumb` - visible title
      */
     route: {
-      type: Array as PropType<RouteItem[] | null>,
+      type: Array as PropType<QBreadcrumbsPropRoute>,
       default: null
     }
   },
 
-  setup(props) {
+  setup(props: QBreadcrumbsProps) {
     const crumbs = computed(() => {
       return props.route?.filter(route => route.meta?.breadcrumb) ?? [];
     });
@@ -73,8 +73,13 @@ export default defineComponent({
       return crumbs.value[crumbs.value.length - 1]?.meta.breadcrumb ?? '';
     });
 
-    const pushTo = ({ name, path }: { name: string; path: string }) =>
-      name ? { name } : path;
+    const pushTo = ({
+      name,
+      path
+    }: {
+      name: string;
+      path: string;
+    }): string | Record<'name', string> => (name ? { name } : path);
 
     return {
       pushTo,

@@ -1,3 +1,5 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { Story } from '@storybook/vue3';
 import { reactive, ref } from 'vue';
 
 import QForm from '@/qComponents/QForm';
@@ -16,15 +18,8 @@ export default {
 
 const INITIAL_RULES: RulesOptions = {
   name: [
-    {
-      required: false
-    },
-    {
-      min: 3,
-      max: 10,
-      message: 'Length should be 3 to 10',
-      trigger: 'blur'
-    }
+    { required: false },
+    { min: 3, max: 10, message: 'Length should be 3 to 10', trigger: 'blur' }
   ],
   intro: {
     required: true,
@@ -33,7 +28,7 @@ const INITIAL_RULES: RulesOptions = {
   }
 };
 
-export const QFormStory = (args: unknown): unknown => ({
+export const QFormStory: Story = args => ({
   components: { QForm, QFormItem },
   setup() {
     const form = ref<QFormProvider | null>(null);

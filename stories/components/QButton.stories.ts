@@ -1,3 +1,6 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { Story } from '@storybook/vue3';
+
 import QButton from '@/qComponents/QButton';
 
 export default {
@@ -12,7 +15,7 @@ export default {
   }
 };
 
-const Template = (args: unknown) => ({
+const Template: Story = args => ({
   components: { QButton },
   setup() {
     const handleClick = (event: MouseEvent): void => {
@@ -39,7 +42,7 @@ const Template = (args: unknown) => ({
     </q-button>`
 });
 
-export const ThemePrimary: any = Template.bind({});
+export const ThemePrimary: Story = Template.bind({});
 ThemePrimary.args = {
   theme: 'primary',
   type: 'default',
@@ -47,7 +50,7 @@ ThemePrimary.args = {
   size: 'medium'
 };
 
-export const ThemeSecondary: any = Template.bind({});
+export const ThemeSecondary: Story = Template.bind({});
 ThemeSecondary.args = {
   theme: 'secondary',
   type: 'default',
@@ -55,7 +58,7 @@ ThemeSecondary.args = {
   size: 'medium'
 };
 
-export const ThemeLink: any = Template.bind({});
+export const ThemeLink: Story = Template.bind({});
 ThemeLink.args = {
   theme: 'link',
   type: 'default',
@@ -63,7 +66,7 @@ ThemeLink.args = {
   size: 'medium'
 };
 
-export const IconPrimary: any = Template.bind({});
+export const IconPrimary: Story = Template.bind({});
 IconPrimary.args = {
   theme: 'primary',
   type: 'icon',
@@ -71,7 +74,7 @@ IconPrimary.args = {
   size: 'medium'
 };
 
-export const IconSecondary: any = Template.bind({});
+export const IconSecondary: Story = Template.bind({});
 IconSecondary.args = {
   theme: 'secondary',
   type: 'icon',
@@ -79,7 +82,7 @@ IconSecondary.args = {
   size: 'medium'
 };
 
-export const IconLink: any = Template.bind({});
+export const IconLink: Story = Template.bind({});
 IconLink.args = {
   theme: 'link',
   type: 'icon',

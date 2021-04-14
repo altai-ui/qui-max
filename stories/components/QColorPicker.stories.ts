@@ -1,3 +1,5 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { Story } from '@storybook/vue3';
 import { ref } from 'vue';
 
 import QColorPicker from '@/qComponents/QColorPicker';
@@ -13,7 +15,7 @@ export default {
   }
 };
 
-export const QColorPickerStory = (args: unknown): unknown => ({
+export const QColorPickerStory: Story = args => ({
   components: { QColorPicker },
   setup() {
     const color = ref('#f25');

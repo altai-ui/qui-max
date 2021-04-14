@@ -1,6 +1,6 @@
-import { computed } from 'vue';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { app } from '@storybook/vue3';
+import { app, Story } from '@storybook/vue3';
+import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import QBreadcrumbs from '@/qComponents/QBreadcrumbs';
@@ -27,7 +27,7 @@ interface Args {
   route: RouteItem[] | null;
 }
 
-export const QBreadcrumbsStory = (args: Args): unknown => ({
+export const QBreadcrumbsStory: Story<Args> = args => ({
   components: {
     QBreadcrumbs
   },

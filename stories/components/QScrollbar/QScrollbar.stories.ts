@@ -1,3 +1,6 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { Story } from '@storybook/vue3';
+
 import QScrollbar from '@/qComponents/QScrollbar';
 
 import './q-scrollbar.scss';
@@ -12,7 +15,7 @@ export default {
   }
 };
 
-export const QScrollbarStory = (args: unknown): unknown => ({
+export const QScrollbarStory: Story = args => ({
   components: { QScrollbar },
   setup() {
     return { args };

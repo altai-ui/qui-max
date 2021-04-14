@@ -1,3 +1,6 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { Story } from '@storybook/vue3';
+
 import QRow from '@/qComponents/QRow';
 import QCol from '@/qComponents/QCol';
 import './layout.scss';
@@ -22,7 +25,7 @@ export default {
   }
 };
 
-export const QRowStory = (args: unknown): unknown => ({
+export const QRowStory: Story = args => ({
   components: { QRow, QCol },
   setup() {
     return { args };

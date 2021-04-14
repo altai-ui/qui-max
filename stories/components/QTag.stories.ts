@@ -1,3 +1,5 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { Story } from '@storybook/vue3';
 import { ref } from 'vue';
 
 import QTag from '@/qComponents/QTag';
@@ -7,7 +9,7 @@ export default {
   component: QTag
 };
 
-export const QTagStory = (args: unknown): unknown => ({
+export const QTagStory: Story = args => ({
   components: { QTag },
   setup() {
     const tags = ref(['Tag 1', 'Tag 2', 'Tag 3', 'Tag 4', 'Tag 5']);

@@ -1,3 +1,6 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { Story } from '@storybook/vue3';
+
 import QPagination from '@/qComponents/QPagination';
 
 export default {
@@ -5,7 +8,7 @@ export default {
   component: QPagination
 };
 
-export const QPaginationStory = (args: unknown): unknown => ({
+export const QPaginationStory: Story = args => ({
   components: { QPagination },
   setup() {
     return { args };

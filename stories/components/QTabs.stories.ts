@@ -1,3 +1,5 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { Story } from '@storybook/vue3';
 import { ref } from 'vue';
 
 import QTabs from '@/qComponents/QTabs';
@@ -13,7 +15,7 @@ export default {
   }
 };
 
-export const QTabsStory = (args: unknown): unknown => ({
+export const QTabsStory: Story = args => ({
   components: { QTabs, QTabPane },
   setup() {
     const activeTab = ref('first_tab');

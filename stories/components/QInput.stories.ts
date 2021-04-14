@@ -1,3 +1,5 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { Story } from '@storybook/vue3';
 import { ref } from 'vue';
 
 import QInput from '@/qComponents/QInput';
@@ -22,7 +24,7 @@ export default {
   }
 };
 
-export const QInputStory = (args: unknown): unknown => ({
+export const QInputStory: Story = args => ({
   setup() {
     const data = ref('');
 

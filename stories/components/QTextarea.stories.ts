@@ -1,3 +1,5 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { Story } from '@storybook/vue3';
 import { ref } from 'vue';
 
 import QTextarea from '@/qComponents/QTextarea';
@@ -40,7 +42,7 @@ export default {
   }
 };
 
-export const QTextareaStory = (args: unknown): unknown => ({
+export const QTextareaStory: Story = args => ({
   setup() {
     const model = ref('');
 

@@ -1,3 +1,5 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { Story } from '@storybook/vue3';
 import { ref } from 'vue';
 
 import QRadio from '@/qComponents/QRadio';
@@ -12,7 +14,7 @@ export default {
   }
 };
 
-export const QRadioStory = (args: unknown): unknown => ({
+export const QRadioStory: Story = args => ({
   components: { QRadio },
   setup() {
     const radio1 = ref(1);

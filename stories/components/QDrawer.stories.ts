@@ -1,3 +1,5 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { Story } from '@storybook/vue3';
 import { ref } from 'vue';
 
 import QDrawer from '@/qComponents/QDrawer';
@@ -12,7 +14,7 @@ export default {
   }
 };
 
-export const QDrawerStory = (args: unknown): unknown => ({
+export const QDrawerStory: Story = args => ({
   components: { QDrawer },
   setup() {
     const drawer = ref(false);

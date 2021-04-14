@@ -1,3 +1,5 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { Story } from '@storybook/vue3';
 import { computed } from 'vue';
 
 import QCol from '@/qComponents/QCol';
@@ -22,7 +24,11 @@ export default {
   }
 };
 
-export const LayoutStory = (args: { gutter: string }): unknown => ({
+interface Args {
+  gutter: string;
+}
+
+export const LayoutStory: Story<Args> = args => ({
   components: { QRow, QCol },
   setup() {
     const demoStyles = computed(() => ({

@@ -1,3 +1,5 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { Story } from '@storybook/vue3';
 import { defineAsyncComponent, ref } from 'vue';
 
 import QMessageBox, { QMessageBoxBeforeClose } from '@/qComponents/QMessageBox';
@@ -10,7 +12,7 @@ export default {
   }
 };
 
-export const QMessageBoxStory = (args: unknown): unknown => ({
+export const QMessageBoxStory: Story = args => ({
   setup() {
     const beforeClose = async ({ action, ctx }: QMessageBoxBeforeClose) => {
       if (action !== 'confirm') return true;
@@ -95,7 +97,7 @@ QMessageBoxStory.args = {
   cancelButtonText: 'Integer non'
 };
 
-export const QMessageBoxComponentStory = (): unknown => ({
+export const QMessageBoxComponentStory: Story = () => ({
   components: {
     MessageBoxFormTest: defineAsyncComponent(
       () => import('./MessageBoxFormTest.vue')

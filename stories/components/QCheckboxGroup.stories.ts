@@ -1,3 +1,5 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { Story } from '@storybook/vue3';
 import { ref, watch } from 'vue';
 
 import QCheckboxGroup from '@/qComponents/QCheckboxGroup';
@@ -6,7 +8,6 @@ import QCheckbox from '@/qComponents/QCheckbox';
 export default {
   title: 'Components/QCheckbox/QCheckboxGroup',
   component: QCheckboxGroup,
-
   argTypes: {
     direction: {
       control: { type: 'inline-radio', options: ['vertical', 'horizontal'] }
@@ -14,7 +15,7 @@ export default {
   }
 };
 
-const Template = (args: unknown) => ({
+export const QCheckboxGroupStory: Story = args => ({
   components: { QCheckboxGroup, QCheckbox },
   setup() {
     const checkedCities = ref(['Shanghai', 'Beijing']);
@@ -46,13 +47,13 @@ const Template = (args: unknown) => ({
   `
 });
 
-export const Default: any = Template.bind({});
-Default.args = {
+QCheckboxGroupStory.storyName = 'Default';
+QCheckboxGroupStory.args = {
   min: 1,
   max: 3
 };
 
-const IndeterminateTemplate = (args: unknown) => ({
+export const QCheckboxGroupIndeterminateStory: Story = args => ({
   components: { QCheckboxGroup, QCheckbox },
   setup() {
     const areAllChecked = ref(false);
@@ -110,4 +111,4 @@ const IndeterminateTemplate = (args: unknown) => ({
   `
 });
 
-export const Indeterminate: any = IndeterminateTemplate.bind({});
+QCheckboxGroupIndeterminateStory.storyName = 'Indeterminate';

@@ -1,3 +1,5 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { Story } from '@storybook/vue3';
 import { ref } from 'vue';
 
 import QCollapse from '@/qComponents/QCollapse';
@@ -12,7 +14,7 @@ export default {
   }
 };
 
-export const QCollapseStory = (args: unknown): unknown => ({
+export const QCollapseStory: Story = args => ({
   components: { QCollapse, QCollapseItem },
   setup() {
     const activeNames = ref(['1']);

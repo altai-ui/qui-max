@@ -123,15 +123,13 @@ export default defineComponent({
         multiple &&
         isVisibleOptionExist.value &&
         !areAllSelected.value &&
-        options.some(
-          ({ isVisible, isSelected }) => isVisible && isSelected
-        )
+        options.some(({ isVisible, isSelected }) => isVisible && isSelected)
       );
     });
 
     watch(
       () => props.shown,
-      (value) => {
+      value => {
         if (!value) return;
 
         const newZIndex = getConfig('nextZIndex');
@@ -147,6 +145,7 @@ export default defineComponent({
         target instanceof HTMLInputElement
       ) {
         const firstNode = root.value.querySelector(`.q-option`) as HTMLElement;
+
         firstNode?.focus();
       }
 
@@ -194,7 +193,7 @@ export default defineComponent({
     const handleSelectAllClick = () => {
       const modelValue = qSelect?.modelValue.value;
       const valueKey = qSelect?.valueKey.value ?? 'value';
-      
+
       if (!Array.isArray(modelValue)) return;
       if (areAllSelected.value) {
         const keysToRemove = options
@@ -207,17 +206,14 @@ export default defineComponent({
 
         ctx.emit(
           'select-all',
-          modelValue.filter(
-            value => !keysToRemove.includes(getKey(value))
-          )
+          modelValue.filter(value => !keysToRemove.includes(getKey(value)))
         );
         return;
       }
 
-
       let newValue = options
         .filter(({ isSelected, disabled }) => !disabled && !isSelected)
-        .map((option) => option.modelValue);
+        .map(option => option.modelValue);
 
       const multipleLimit = qSelect?.multipleLimit ?? null;
 
@@ -243,6 +239,7 @@ export default defineComponent({
       root,
       multiple,
       scrollbar,
+      options
     };
   }
 });

@@ -36,8 +36,8 @@ interface QSelectState {
   visible: boolean;
   selectedLabel: string | number;
   hoverIndex: number;
-  query: string;
-  inputHovering: boolean;
+  query: string | number;
+  hover: boolean;
   menuVisibleOnFocus: boolean;
   popper: PopperInstance | null;
   isDropdownShown: boolean;

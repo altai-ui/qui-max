@@ -126,4 +126,16 @@ const Template = (args: any) => ({
   `
 });
 
-export const Default = Template.bind({});
+export const Default: any = Template.bind({});
+Default.args = {
+  filterable: true,
+  allowCreate: true,
+  clearable: true
+};
+export const Multiple: any = Template.bind({});
+Multiple.args = {
+  multiple: true,
+  filterable: true,
+  allowCreate: true,
+  clearable: true
+};

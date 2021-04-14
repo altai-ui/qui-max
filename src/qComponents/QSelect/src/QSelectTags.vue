@@ -49,8 +49,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
-import { QOptionInterface } from '@/qComponents/QOption';
+import { defineComponent, inject, PropType, ref, watch } from 'vue';
+import type { QOptionInterface } from '@/qComponents/QOption';
+import type { QSelectProvider } from '@/qComponents/QSelect';
 
 export default defineComponent({
   name: 'QSelectTags',
@@ -61,17 +62,19 @@ export default defineComponent({
     filterable: { type: Boolean, required: true },
     isDisabled: { type: Boolean, required: true },
     autocomplete: { type: String, required: true },
-    query: { type: String, required: true },
-    selected: { type: Array, required: true }
+    query: { type: String, required: true }
   },
 
   emits: ['remove-tag', 'exit', 'update:query', 'focus', 'keyup-enter'],
 
   setup(props, ctx) {
-    const input = ref<HTMLInputElement | null>(null)
+    const input = ref<HTMLInputElement | null>(null);
+    const state = inject('selectState', null);
+    console.log(state.selected);
+
     const handleBackspaceKeyDown = () => {
-      if (!props.query) {
-        ctx.emit('remove-tag', props.selected[props.selected.length - 1]);
+      if (!props.query && Array.isArray(selected)) {
+        ctx.emit('remove-tag', selected[selected.length - 1]);
       }
     };
 
@@ -93,7 +96,8 @@ export default defineComponent({
       handleTagClose,
       handleInput,
       emitExit,
-      input
+      input,
+      selected
     };
   }
 });

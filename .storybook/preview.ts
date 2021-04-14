@@ -1,6 +1,6 @@
 import Qui from '../src/qComponents';
 import { app } from '@storybook/vue3';
-
+import 'focus-visible';
 import messages from './locales';
 
 app.use(Qui, {

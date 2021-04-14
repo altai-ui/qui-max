@@ -1,4 +1,4 @@
-import { Ref, Ref } from 'vue';
+import { Ref } from 'vue';
 
 import type { ModelValue } from '@/qComponents/QSelect/src/types';
 

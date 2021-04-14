@@ -1,4 +1,5 @@
 import { App } from 'vue';
+
 import QTextarea from './src/QTextarea.vue';
 
 /* istanbul ignore next */

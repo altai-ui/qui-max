@@ -23,9 +23,9 @@ import {
   onMounted
 } from 'vue';
 
-import { QFormItemProvider } from '@/qComponents/QFormItem';
-import { QRadioGroupProvider } from '@/qComponents/QRadioGroup';
-import { ModelValue } from './types';
+import type { QFormItemProvider } from '@/qComponents/QFormItem';
+import type { QRadioGroupProvider } from '@/qComponents/QRadioGroup';
+import type { ModelValue } from './types';
 
 const UPDATE_MODEL_VALUE_EVENT = 'update:modelValue';
 const CHANGE_EVENT = 'change';

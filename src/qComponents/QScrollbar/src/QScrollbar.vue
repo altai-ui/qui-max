@@ -41,6 +41,7 @@
 <script lang="ts">
 import {
   defineComponent,
+  PropType,
   onMounted,
   onBeforeUnmount,
   watch,
@@ -57,7 +58,7 @@ import {
 } from '@/qComponents/helpers/resizeEvent';
 
 import QBar from './QBar.vue';
-import { QScrollbarProvider } from './types';
+import type { QScrollbarProvider } from './types';
 
 const OFFSET = -10;
 
@@ -83,7 +84,7 @@ export default defineComponent({
      * changes style
      */
     theme: {
-      type: String,
+      type: String as PropType<'primary' | 'secondary'>,
       default: 'primary',
       validator: (value: string) => ['primary', 'secondary'].includes(value)
     },

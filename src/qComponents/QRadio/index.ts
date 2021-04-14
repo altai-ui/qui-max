@@ -1,4 +1,5 @@
 import { App } from 'vue';
+
 import QRadio from './src/QRadio.vue';
 
 /* istanbul ignore next */

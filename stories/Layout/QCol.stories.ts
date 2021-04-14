@@ -1,8 +1,12 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { Meta, Story } from '@storybook/vue3';
+import { defineComponent } from 'vue';
+
 import QRow from '@/qComponents/QRow';
 import QCol from '@/qComponents/QCol';
 import './layout.scss';
 
-export default {
+const storyMetadata: Meta = {
   title: 'Components/Layout/QCol',
   component: QCol,
   subcomponents: { QRow },
@@ -22,34 +26,42 @@ export default {
   }
 };
 
-const Template = (args: any) => ({
-  components: { QRow, QCol },
-  setup() {
-    return { args };
-  },
-  template: `
-    <div class="demo">
-      <q-row class="demo__row">
-        <q-col class="demo__col" cols="2">
-          <div class="demo__content">2</div>
-        </q-col>
+const QColStory: Story = args =>
+  defineComponent({
+    components: { QRow, QCol },
+    setup() {
+      return { args };
+    },
+    template: `
+      <div class="demo">
+        <q-row class="demo__row">
+          <q-col class="demo__col" cols="2">
+            <div class="demo__content">2</div>
+          </q-col>
 
-        <q-col class="demo__col" v-bind="args">
-          <div class="demo__content">dyn</div>
-        </q-col>
+          <q-col
+            class="demo__col"
+            :tag="args.tag"
+            :cols="args.cols"
+            :offset="args.offset"
+          >
+            <div class="demo__content">dyn</div>
+          </q-col>
 
-        <q-col class="demo__col" cols="2">
-          <div class="demo__content">2</div>
-        </q-col>
-      </q-row>
-    </div>
-  `
-});
+          <q-col class="demo__col" cols="2">
+            <div class="demo__content">2</div>
+          </q-col>
+        </q-row>
+      </div>
+    `
+  });
 
-export const QColStory: any = Template.bind({});
 QColStory.storyName = 'Default';
 QColStory.args = {
   tag: 'div',
   cols: 5,
   offset: 3
 };
+
+export { QColStory };
+export default storyMetadata;

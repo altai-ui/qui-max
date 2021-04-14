@@ -1,4 +1,5 @@
 import { App } from 'vue';
+
 import QPopover from './src/QPopover.vue';
 
 /* istanbul ignore next */

@@ -1,4 +1,5 @@
 import { App } from 'vue';
+
 import QScrollbar from './src/QScrollbar.vue';
 
 /* istanbul ignore next */

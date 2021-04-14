@@ -59,8 +59,7 @@ import {
 import { createPopper as createPopperJs, Options } from '@popperjs/core';
 
 import { getConfig } from '@/qComponents/config';
-
-import { MenuItem } from './types';
+import type { MenuItem } from './types';
 
 const ACTION_EVENT = 'action';
 const DEFAULT_Z_INDEX = 2000;
@@ -205,7 +204,6 @@ export default defineComponent({
       if (value) {
         document.addEventListener('click', handleDocumentClick, true);
         document.addEventListener('keyup', handleKeyUp, true);
-
         return;
       }
 

@@ -1,4 +1,5 @@
 import { App } from 'vue';
+
 import QColorPicker from './src/QColorPicker.vue';
 
 /* istanbul ignore next */

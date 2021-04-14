@@ -1,7 +1,10 @@
-import { ref } from 'vue';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { Meta, Story } from '@storybook/vue3';
+import { defineComponent, ref } from 'vue';
+
 import QCheckbox from '@/qComponents/QCheckbox';
 
-export default {
+const storyMetadata: Meta = {
   title: 'Components/QCheckbox/QCheckbox',
   component: QCheckbox,
   argTypes: {
@@ -9,41 +12,45 @@ export default {
   }
 };
 
-const Template = (args: any) => ({
-  components: { QCheckbox },
-  setup() {
-    const isChecked = ref(true);
+const Template: Story = args =>
+  defineComponent({
+    components: { QCheckbox },
+    setup() {
+      const isChecked = ref(true);
 
-    return {
-      isChecked,
-      args
-    };
-  },
+      return {
+        isChecked,
+        args
+      };
+    },
 
-  template: `
-    <q-checkbox
-      v-model="isChecked"
-      :label="args.label"
-      :indeterminate="args.indeterminate"
-      :disabled="args.disabled"
-      :rootTag="args.rootTag"
-    />
-  `
-});
+    template: `
+      <q-checkbox
+        v-model="isChecked"
+        :label="args.label"
+        :indeterminate="args.indeterminate"
+        :disabled="args.disabled"
+        :rootTag="args.rootTag"
+      />
+    `
+  });
 
-export const Default: any = Template.bind({});
+const Default: Story = Template.bind({});
 Default.args = {
   label: 'Option A'
 };
 
-export const Disabled: any = Template.bind({});
+const Disabled: Story = Template.bind({});
 Disabled.args = {
   label: 'Option A',
   disabled: true
 };
 
-export const Indeterminate: any = Template.bind({});
+const Indeterminate: Story = Template.bind({});
 Indeterminate.args = {
   label: 'Option A',
   indeterminate: true
 };
+
+export { Default, Disabled, Indeterminate };
+export default storyMetadata;

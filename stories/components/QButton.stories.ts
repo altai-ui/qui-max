@@ -1,49 +1,51 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { Meta, Story } from '@storybook/vue3';
+import { defineComponent } from 'vue';
+
 import QButton from '@/qComponents/QButton';
 
-export default {
+const storyMetadata: Meta = {
   title: 'Components/Button',
   component: QButton,
   argTypes: {
-    type: {
-      control: { type: 'select', options: ['default', 'icon'] }
-    },
+    type: { control: { type: 'select', options: ['default', 'icon'] } },
     theme: {
       control: { type: 'select', options: ['primary', 'secondary', 'link'] }
     },
-    size: {
-      control: { type: 'select', options: ['small', 'medium'] }
-    }
+    size: { control: { type: 'select', options: ['small', 'medium'] } }
   }
 };
 
-const Template = (args: any) => ({
-  components: { QButton },
-  setup() {
-    const handleClick = (event: MouseEvent): void => {
-      console.log('click', event);
-    };
+const Template: Story = args =>
+  defineComponent({
+    components: { QButton },
+    setup() {
+      const handleClick = (event: MouseEvent): void => {
+        console.log('click', event);
+      };
 
-    return { args, handleClick };
-  },
-  template: `
-    <q-button
-      :type="args.type"
-      :theme="args.theme"
-      :size="args.size"
-      :icon="args.icon"
-      :nativeType="args.nativeType"
-      :loading="args.loading"
-      :disabled="args.disabled"
-      :autofocus="args.autofocus"
-      :circle="args.circle"
-      :fullWidth="args.fullWidth"
-      @click="handleClick"
-    >
-      {{ args.label }}
-    </q-button>`
-});
+      return { args, handleClick };
+    },
+    template: `
+      <q-button
+        :type="args.type"
+        :theme="args.theme"
+        :size="args.size"
+        :icon="args.icon"
+        :nativeType="args.nativeType"
+        :loading="args.loading"
+        :disabled="args.disabled"
+        :autofocus="args.autofocus"
+        :circle="args.circle"
+        :fullWidth="args.fullWidth"
+        @click="handleClick"
+      >
+        {{ args.label }}
+      </q-button>
+    `
+  });
 
-export const ThemePrimary: any = Template.bind({});
+const ThemePrimary: Story = Template.bind({});
 ThemePrimary.args = {
   theme: 'primary',
   type: 'default',
@@ -51,7 +53,7 @@ ThemePrimary.args = {
   size: 'medium'
 };
 
-export const ThemeSecondary: any = Template.bind({});
+const ThemeSecondary: Story = Template.bind({});
 ThemeSecondary.args = {
   theme: 'secondary',
   type: 'default',
@@ -59,7 +61,7 @@ ThemeSecondary.args = {
   size: 'medium'
 };
 
-export const ThemeLink: any = Template.bind({});
+const ThemeLink: Story = Template.bind({});
 ThemeLink.args = {
   theme: 'link',
   type: 'default',
@@ -67,7 +69,7 @@ ThemeLink.args = {
   size: 'medium'
 };
 
-export const IconPrimary: any = Template.bind({});
+const IconPrimary: Story = Template.bind({});
 IconPrimary.args = {
   theme: 'primary',
   type: 'icon',
@@ -75,7 +77,7 @@ IconPrimary.args = {
   size: 'medium'
 };
 
-export const IconSecondary: any = Template.bind({});
+const IconSecondary: Story = Template.bind({});
 IconSecondary.args = {
   theme: 'secondary',
   type: 'icon',
@@ -83,10 +85,20 @@ IconSecondary.args = {
   size: 'medium'
 };
 
-export const IconLink: any = Template.bind({});
+const IconLink: Story = Template.bind({});
 IconLink.args = {
   theme: 'link',
   type: 'icon',
   icon: 'q-icon-bell',
   size: 'medium'
 };
+
+export {
+  ThemePrimary,
+  ThemeSecondary,
+  ThemeLink,
+  IconPrimary,
+  IconSecondary,
+  IconLink
+};
+export default storyMetadata;

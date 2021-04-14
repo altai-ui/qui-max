@@ -20,7 +20,8 @@ import {
   toRefs
 } from 'vue';
 import { QFormItemProvider } from '@/qComponents/QFormItem';
-import { QCheckboxGroupProvider } from './types';
+
+import type { QCheckboxGroupProvider } from './types';
 
 const UPDATE_MODEL_VALUE_EVENT = 'update:modelValue';
 
@@ -64,14 +65,22 @@ export default defineComponent({
   setup(props, ctx) {
     const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
 
-    const isLimitExceeded = computed(() => (
+    const isLimitExceeded = computed(
+      () =>
         props.modelValue.length < props.min ||
         props.modelValue.length > props.max
-      ))
+    );
 
     const update = (value: string[]) => {
       ctx.emit(UPDATE_MODEL_VALUE_EVENT, value);
     };
+
+    watch(
+      () => props.modelValue,
+      () => {
+        qFormItem?.validateField('change');
+      }
+    );
 
     const { modelValue, min, max, disabled } = toRefs(props);
 
@@ -83,13 +92,6 @@ export default defineComponent({
       isLimitExceeded,
       update
     });
-
-    watch(
-      () => props.modelValue,
-      () => {
-        qFormItem?.validateField('change');
-      }
-    );
   }
 });
 </script>

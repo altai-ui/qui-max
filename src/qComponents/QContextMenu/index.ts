@@ -1,4 +1,5 @@
 import { App } from 'vue';
+
 import QContextMenu from './src/QContextMenu.vue';
 
 /* istanbul ignore next */

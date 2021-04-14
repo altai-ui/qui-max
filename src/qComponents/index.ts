@@ -1,8 +1,8 @@
 /* eslint-disable no-underscore-dangle, global-require, no-param-reassign */
-import { isString, kebabCase } from 'lodash-es';
-import vClickOutside from 'v-click-outside';
-import mitt from 'mitt';
 import { App } from 'vue';
+import mitt from 'mitt';
+import { isString, kebabCase } from 'lodash-es';
+import { LocaleMessageDictionary, VueMessageType } from 'vue-i18n';
 
 import { setConfig } from './config';
 import { installI18n } from './constants/locales';
@@ -82,9 +82,7 @@ allComponents.forEach(component => {
 
 interface Localization {
   locale?: string;
-  customI18nMessages?: {
-    [key: string]: string;
-  };
+  customI18nMessages?: Record<string, LocaleMessageDictionary<VueMessageType>>;
 }
 
 interface ConfigOptions {
@@ -107,8 +105,7 @@ const install = (
     zIndex: zIndexCounter
   });
 
-  app.use(vClickOutside);
-  installI18n({ app, locale, customI18nMessages });
+  installI18n({ app, customI18nMessages });
 
   // setup modals
   // if (!app.config.globalProperties.$notify) {

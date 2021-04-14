@@ -1,5 +1,5 @@
 import { ComputedRef, Ref } from 'vue';
-import { Rules, RuleItem, ErrorList, FieldErrorList } from 'async-validator';
+import { RuleItem, ErrorList, FieldErrorList } from 'async-validator';
 
 export interface FilteredRuleItem extends RuleItem {
   trigger?: string | null;
@@ -21,7 +21,7 @@ export interface QFormItemContext {
   rootClasses: ComputedRef<{
     [key: string]: boolean;
   }>;
-  rules: Rules | null;
+  rules: FilteredRuleItem | FilteredRuleItem[] | null;
   showErrorMessage: boolean;
   for: string | null;
   prop: string | null;

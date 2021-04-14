@@ -46,17 +46,9 @@ import {
   nextTick
 } from 'vue';
 
-import { QFormProvider } from '@/qComponents/QForm';
-import { QFormItemProvider } from '@/qComponents/QFormItem';
-
-interface State {
-  number: number | null;
-  userNumber: number | string | null;
-  prevValue: number | null;
-  minValue: number;
-  maxValue: number;
-  step: number;
-}
+import type { QFormProvider } from '@/qComponents/QForm';
+import type { QFormItemProvider } from '@/qComponents/QFormItem';
+import type { State } from './types';
 
 export default defineComponent({
   name: 'QInputNumber',
@@ -92,11 +84,8 @@ export default defineComponent({
     modelValue: {
       type: [String, Number] as PropType<null | string | number>,
       default: '',
-      validator: (value: string | number): boolean => {
-        if (!Number.isNaN(Number(value)) || value === null) return true;
-
-        return false;
-      }
+      validator: (value: string | number): boolean =>
+        !Number.isNaN(Number(value)) || value === null
     },
     /** validate parent form if present */
     validateEvent: {

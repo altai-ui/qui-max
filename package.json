@@ -23,7 +23,6 @@
     "lodash-es": "^4.17.15",
     "mitt": "^2.1.0",
     "resize-observer-polyfill": "^1.5.0",
-    "v-click-outside": "^3.1.2",
     "vue": "^3.0.5",
     "vue-i18n": "^9.0.0"
   },

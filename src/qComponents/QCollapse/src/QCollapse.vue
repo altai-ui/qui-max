@@ -8,7 +8,7 @@
 import { defineComponent, PropType, provide, watch, ref } from 'vue';
 import { uniqueId } from 'lodash-es';
 
-import { QCollapseProvider } from './types';
+import type { QCollapseProvider } from './types';
 
 const UPDATE_MODEL_VALUE_EVENT = 'update:modelValue';
 const CHANGE_EVENT = 'change';

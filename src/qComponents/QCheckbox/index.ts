@@ -1,4 +1,5 @@
 import { App } from 'vue';
+
 import QCheckbox from './src/QCheckbox.vue';
 
 /* istanbul ignore next */

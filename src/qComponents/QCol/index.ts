@@ -1,4 +1,5 @@
 import { App } from 'vue';
+
 import QCol from './src/QCol.vue';
 
 /* istanbul ignore next */

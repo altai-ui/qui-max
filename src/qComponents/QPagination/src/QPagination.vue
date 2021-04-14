@@ -84,7 +84,6 @@
 
 <script lang="ts">
 import { defineComponent, computed } from 'vue';
-
 import { range } from 'lodash-es';
 
 const PREV_CLICK_EVENT = 'prev-click';

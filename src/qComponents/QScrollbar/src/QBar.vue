@@ -24,7 +24,7 @@ import {
   inject
 } from 'vue';
 
-import type { QScrollbarProvider } from './types';
+import type { QBarProps, QScrollbarProvider } from './types';
 import { renderThumbStyle, BAR_MAP } from './util';
 
 export default defineComponent({
@@ -35,14 +35,15 @@ export default defineComponent({
     type: {
       type: String as PropType<'vertical' | 'horizontal'>,
       default: 'horizontal',
-      validator: (value: string) => ['horizontal', 'vertical'].includes(value)
+      validator: (value: string): boolean =>
+        ['horizontal', 'vertical'].includes(value)
     },
     theme: { type: String, default: null },
     size: { type: String, default: '0' },
     move: { type: Number, default: 0 }
   },
 
-  setup(props) {
+  setup(props: QBarProps) {
     const qScrollbar = inject<QScrollbarProvider>('qScrollbar');
     const root = ref<HTMLElement | null>(null);
     const thumb = ref<HTMLElement | null>(null);
@@ -52,7 +53,7 @@ export default defineComponent({
 
     const bar = computed(() => BAR_MAP[props.type]);
     const thumbStyles = computed(() =>
-      renderThumbStyle(props.move, props.size, bar.value)
+      renderThumbStyle(props.move ?? 0, props.size ?? '', bar.value)
     );
 
     const classes = computed(() => [
@@ -67,12 +68,12 @@ export default defineComponent({
 
     const wrap = qScrollbar?.wrap;
 
-    const scrollToPx = (px: number) => {
+    const scrollToPx = (px: number): void => {
       const wrapValue = wrap?.value;
       if (wrapValue) wrapValue[bar.value.scroll] = px;
     };
 
-    const handleTrackerClick = (e: MouseEvent) => {
+    const handleTrackerClick = (e: MouseEvent): void => {
       if (!thumb.value || !root.value || !wrap?.value) return;
 
       const target = e.target as HTMLElement;
@@ -89,7 +90,7 @@ export default defineComponent({
       );
     };
 
-    const mouseMoveDocumentHandler = (e: MouseEvent) => {
+    const mouseMoveDocumentHandler = (e: MouseEvent): void => {
       if (!cursorDown.value || !root.value || !thumb.value || !wrap?.value)
         return;
       const prevPage = axis;
@@ -110,7 +111,7 @@ export default defineComponent({
       );
     };
 
-    const mouseUpDocumentHandler = () => {
+    const mouseUpDocumentHandler = (): void => {
       cursorDown.value = false;
       axis = 0;
 
@@ -122,16 +123,16 @@ export default defineComponent({
       document.onselectstart = null;
     };
 
-    const startDrag = (e: MouseEvent) => {
+    const startDrag = (e: MouseEvent): void => {
       e.stopImmediatePropagation();
       cursorDown.value = true;
 
       document.addEventListener('mousemove', mouseMoveDocumentHandler, false);
       document.addEventListener('mouseup', mouseMoveDocumentHandler, false);
-      document.onselectstart = () => false;
+      document.onselectstart = (): boolean => false;
     };
 
-    const handleThumbClick = (e: MouseEvent) => {
+    const handleThumbClick = (e: MouseEvent): void => {
       // prevent click event of right button
       if (e.ctrlKey || e.button === 2) return;
 

@@ -1,2 +1,13 @@
-export type AlignV = null | 'start' | 'end' | 'center' | 'baseline' | 'stretch';
-export type AlignH = null | 'start' | 'end' | 'center' | 'between' | 'around';
+export type QRowPropAlignV =
+  | 'start'
+  | 'end'
+  | 'center'
+  | 'baseline'
+  | 'stretch';
+export type QRowPropAlignH = 'start' | 'end' | 'center' | 'between' | 'around';
+
+export interface QRowProps {
+  tag: Nullable<string>;
+  alignV: Nullable<QRowPropAlignV>;
+  alignH: Nullable<QRowPropAlignH>;
+}

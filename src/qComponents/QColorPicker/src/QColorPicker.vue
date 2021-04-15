@@ -222,15 +222,12 @@ export default defineComponent({
       );
     };
 
-    watch(
-      () => isPickerShown.value,
-      value => {
-        if (isDisabled.value || !value) return;
+    watch(isPickerShown, value => {
+      if (isDisabled.value || !value) return;
 
-        zIndex.value = getConfig('nextZIndex') ?? DEFAULT_Z_INDEX;
-        createPopperJs();
-      }
-    );
+      zIndex.value = getConfig('nextZIndex') ?? DEFAULT_Z_INDEX;
+      createPopperJs();
+    });
 
     provide<QColorPickerProvider>('qColorPicker', { trigger });
 

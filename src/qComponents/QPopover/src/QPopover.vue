@@ -287,18 +287,15 @@ export default defineComponent({
       isPopoverShown.value = false;
     };
 
-    watch(
-      () => isPopoverShown.value,
-      value => {
-        if (value && !popperJS) {
-          zIndex.value = getConfig('nextZIndex') ?? DEFAULT_Z_INDEX;
-          ctx.emit(SHOW_EVENT);
-          createPopper();
-        } else {
-          ctx.emit(HIDE_EVENT);
-        }
+    watch(isPopoverShown, value => {
+      if (value && !popperJS) {
+        zIndex.value = getConfig('nextZIndex') ?? DEFAULT_Z_INDEX;
+        ctx.emit(SHOW_EVENT);
+        createPopper();
+      } else {
+        ctx.emit(HIDE_EVENT);
       }
-    );
+    });
 
     onMounted(() => {
       if (!reference.value || !popover.value) return;

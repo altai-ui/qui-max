@@ -18,8 +18,8 @@ export type QMessageBoxPropTeleportTo = Nullable<string | HTMLElement>;
 export type QMessageBoxPropBeforeClose = Nullable<
   (arg0: QMessageBoxFnBeforeCloseArg) => Promise<boolean>
 >;
-type Classes = Record<string, string | number>;
-type Styles = Record<string, boolean>;
+type Classes = Record<string, boolean>;
+type Styles = Record<string, string | number>;
 
 export interface QMessageBoxProps {
   isVisible: Nullable<boolean>;

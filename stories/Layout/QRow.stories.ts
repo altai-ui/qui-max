@@ -3,6 +3,7 @@ import { Meta, Story } from '@storybook/vue3';
 import { defineComponent } from 'vue';
 
 import QRow from '@/qComponents/QRow';
+import type { QRowProps } from '@/qComponents/QRow';
 import QCol from '@/qComponents/QCol';
 import './layout.scss';
 
@@ -26,7 +27,7 @@ const storyMetadata: Meta = {
   }
 };
 
-const QRowStory: Story = args =>
+const QRowStory: Story<QRowProps> = args =>
   defineComponent({
     components: { QRow, QCol },
     setup() {

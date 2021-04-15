@@ -11,7 +11,7 @@
 <script lang="ts">
 import { defineComponent, computed } from 'vue';
 
-import { QColProps } from './types';
+import type { QColProps } from './types';
 
 export default defineComponent({
   name: 'QCol',

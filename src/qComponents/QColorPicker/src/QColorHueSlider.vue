@@ -20,7 +20,7 @@
 import { defineComponent, ref, computed, onMounted, watch } from 'vue';
 
 import draggable from './draggable';
-import { QColorHueSliderProps } from './types';
+import type { QColorHueSliderProps } from './types';
 
 const UPDATE_HUE_EVENT = 'update:hue';
 

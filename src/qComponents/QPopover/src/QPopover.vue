@@ -59,21 +59,17 @@ import {
   onMounted,
   onUnmounted
 } from 'vue';
-import {
-  createPopper as createPopperJs,
-  Placement,
-  Instance,
-  Options
-} from '@popperjs/core';
+import { createPopper as createPopperJs, Instance } from '@popperjs/core';
+import { placements } from '@popperjs/core/lib/enums';
 
 import { getConfig } from '@/qComponents/config';
-
-import PLACEMENTS from '../../constants/popperPlacements';
-
-enum TRIGGER {
-  click = 'click',
-  hover = 'hover'
-}
+import type {
+  QPopoverProps,
+  QPopoverPropTeleportTo,
+  QPopoverPropTrigger,
+  QPopoverPropPlacement,
+  QPopoverPropPopperOptions
+} from './types';
 
 const SHOW_EVENT = 'show';
 const HIDE_EVENT = 'hide';
@@ -89,7 +85,7 @@ export default defineComponent({
      * (has to be a valid query selector, or an HTMLElement)
      */
     teleportTo: {
-      type: [String, HTMLElement] as PropType<string | HTMLElement>,
+      type: [String, HTMLElement] as PropType<QPopoverPropTeleportTo>,
       default: 'body'
     },
     /**
@@ -103,17 +99,19 @@ export default defineComponent({
      * opening event trigger
      */
     trigger: {
-      type: String as PropType<TRIGGER>,
+      type: String as PropType<QPopoverPropTrigger>,
       default: 'click',
-      validator: (value: TRIGGER) => Object.values(TRIGGER).includes(value)
+      validator: (value: QPopoverPropTrigger): boolean =>
+        ['click', 'hover'].includes(value)
     },
     /**
      * see: https://popper.js.org/docs/v2/constructors/#options
      */
     placement: {
-      type: String as PropType<Placement>,
+      type: String as PropType<QPopoverPropPlacement>,
       default: 'top-start',
-      validator: (value: Placement) => PLACEMENTS.includes(value)
+      validator: (value: QPopoverPropPlacement): boolean =>
+        placements.includes(value)
     },
     /**
      * icon class name
@@ -170,15 +168,16 @@ export default defineComponent({
      * see: https://popper.js.org/docs/v2/constructors/#options
      */
     popperOptions: {
-      type: Object as PropType<Partial<Options>>,
-      default: () => ({})
+      type: Object as PropType<QPopoverPropPopperOptions>,
+      default: (): QPopoverPropPopperOptions => ({})
     }
   },
 
   emits: [SHOW_EVENT, HIDE_EVENT],
 
-  setup(props, ctx) {
+  setup(props: QPopoverProps, ctx) {
     if (!ctx.slots.reference && process.env.NODE_ENV !== 'production') {
+      // eslint-disable-next-line no-console
       console.error('QPopover requires reference be provided in the slot.');
     }
 
@@ -191,17 +190,27 @@ export default defineComponent({
       'q-popover_without-icon': !props.icon
     }));
 
-    const popoverStyles = computed(() => ({
-      zIndex: zIndex.value,
-      minWidth: Number(props.minWidth)
-        ? `${Number(props.minWidth)}px`
-        : props.minWidth,
-      maxWidth: Number(props.maxWidth)
-        ? `${Number(props.maxWidth)}px`
-        : props.maxWidth
-    }));
+    const popoverStyles = computed<Record<string, string | number>>(() => {
+      const result: Record<string, string | number> = {
+        zIndex: zIndex.value
+      };
 
-    const popoverIconStyles = computed(() => {
+      const minWidth = Number(props.minWidth)
+        ? `${Number(props.minWidth)}px`
+        : props.minWidth;
+      if (minWidth) result.minWidth = minWidth;
+
+      const maxWidth = Number(props.maxWidth)
+        ? `${Number(props.maxWidth)}px`
+        : props.maxWidth;
+      if (maxWidth) result.maxWidth = maxWidth;
+
+      return result;
+    });
+
+    const popoverIconStyles = computed<Record<string, string>>(() => {
+      if (!props.iconColor) return {};
+
       const backgroundProperty = props.iconColor.includes('-gradient')
         ? 'backgroundImage'
         : 'backgroundColor';
@@ -212,7 +221,7 @@ export default defineComponent({
     });
 
     let popperJS: Instance | null = null;
-    const createPopper = async () => {
+    const createPopper = async (): Promise<void> => {
       if (!reference.value?.firstElementChild || !popover.value) return;
 
       const options = {
@@ -235,11 +244,11 @@ export default defineComponent({
       );
     };
 
-    const togglePopover = () => {
+    const togglePopover = (): void => {
       isPopoverShown.value = !isPopoverShown.value;
     };
 
-    const destroyPopper = () => {
+    const destroyPopper = (): void => {
       isPopoverShown.value = false;
 
       if (popperJS) {
@@ -250,23 +259,23 @@ export default defineComponent({
 
     let timer: ReturnType<typeof setTimeout> | null = null;
 
-    const handleMouseOver = () => {
+    const handleMouseOver = (): void => {
       if (timer) clearTimeout(timer);
 
       timer = setTimeout(() => {
         isPopoverShown.value = true;
-      }, props.openDelay);
+      }, props.openDelay ?? 0);
     };
 
-    const onMouseOut = () => {
+    const onMouseOut = (): void => {
       if (timer) clearTimeout(timer);
 
       timer = setTimeout(() => {
         isPopoverShown.value = false;
-      }, props.closeDelay);
+      }, props.closeDelay ?? 0);
     };
 
-    const handleDocumentClick = (event: MouseEvent) => {
+    const handleDocumentClick = (event: MouseEvent): void => {
       const target = event.target as HTMLElement;
       if (
         reference.value?.contains(target) ||
@@ -296,12 +305,12 @@ export default defineComponent({
 
       switch (props.trigger) {
         default:
-        case TRIGGER.click:
+        case 'click':
           reference.value.addEventListener('click', togglePopover, false);
           document.addEventListener('click', handleDocumentClick, false);
           break;
 
-        case TRIGGER.hover:
+        case 'hover':
           reference.value.addEventListener('mouseover', handleMouseOver, false);
           reference.value.addEventListener('mouseout', onMouseOut, false);
           popover.value.addEventListener('mouseover', handleMouseOver, false);

@@ -58,7 +58,7 @@ import {
 } from 'vue';
 
 import { getConfig } from '@/qComponents/config';
-import {
+import type {
   QDrawerProps,
   QDrawerPropBeforeClose,
   QDrawerPropPosition,

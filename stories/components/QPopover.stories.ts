@@ -4,6 +4,7 @@ import { defineComponent } from 'vue';
 import { placements } from '@popperjs/core/lib/enums';
 
 import QPopover from '@/qComponents/QPopover';
+import type { QPopoverProps } from '@/qComponents/QPopover';
 
 import iconsList from '../core/iconsList';
 
@@ -11,28 +12,13 @@ const storyMetadata: Meta = {
   title: 'Components/QPopover',
   component: QPopover,
   argTypes: {
-    trigger: {
-      control: {
-        type: 'inline-radio',
-        options: ['click', 'hover']
-      }
-    },
-    placement: {
-      control: {
-        type: 'select',
-        options: placements
-      }
-    },
-    icon: {
-      control: {
-        type: 'select',
-        options: iconsList
-      }
-    }
+    trigger: { control: { type: 'inline-radio', options: ['click', 'hover'] } },
+    placement: { control: { type: 'select', options: placements } },
+    icon: { control: { type: 'select', options: iconsList } }
   }
 };
 
-const QPopoverStory: Story = args =>
+const QPopoverStory: Story<QPopoverProps> = args =>
   defineComponent({
     components: { QPopover },
     setup() {
@@ -53,7 +39,6 @@ const QPopoverStory: Story = args =>
         :max-width="args.maxWidth"
         :popper-options="args.popperOptions"
       >
-
         <template #reference>
           <q-button
             circle

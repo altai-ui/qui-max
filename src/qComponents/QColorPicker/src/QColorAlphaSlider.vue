@@ -21,7 +21,7 @@
 import { defineComponent, ref, computed, onMounted, watch } from 'vue';
 
 import draggable from './draggable';
-import { QColorAlphaSliderProps } from './types';
+import type { QColorAlphaSliderProps } from './types';
 
 const UPDATE_ALPHA_EVENT = 'update:alpha';
 

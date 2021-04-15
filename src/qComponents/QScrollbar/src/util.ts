@@ -1,4 +1,4 @@
-import { BarMapItem, Styles } from './types';
+import type { BarMapItem, Styles } from './types';
 
 export const BAR_MAP = {
   vertical: {

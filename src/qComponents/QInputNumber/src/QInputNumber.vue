@@ -42,13 +42,12 @@ import {
   reactive,
   watch,
   defineComponent,
-  PropType,
   nextTick
 } from 'vue';
 
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
-import type { State } from './types';
+import type { QInputNumberProps, QInputNumberState } from './types';
 
 export default defineComponent({
   name: 'QInputNumber',
@@ -82,7 +81,7 @@ export default defineComponent({
      * default to v-model
      */
     modelValue: {
-      type: [String, Number] as PropType<null | string | number>,
+      type: [String, Number],
       default: '',
       validator: (value: string | number): boolean =>
         !Number.isNaN(Number(value)) || value === null
@@ -96,11 +95,11 @@ export default defineComponent({
 
   emits: ['blur', 'focus', 'input', 'change'],
 
-  setup(props, ctx) {
+  setup(props: QInputNumberProps, ctx) {
     const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
     const qForm = inject<QFormProvider | null>('qForm', null);
 
-    const state = reactive<State>({
+    const state = reactive<QInputNumberState>({
       number: null,
       userNumber: null,
       prevValue: null,
@@ -109,21 +108,21 @@ export default defineComponent({
       step: ctx.attrs.step ? Number(ctx.attrs.step) : 1
     });
 
-    const getIncreasedValue = (number: number, step: number) =>
+    const getIncreasedValue = (number: number, step: number): number =>
       Math.round((number + step) * 100) / 100;
 
-    const getDecreasedValue = (number: number, step: number) =>
+    const getDecreasedValue = (number: number, step: number): number =>
       Math.round((number - step) * 100) / 100;
 
-    const isDisabled = computed(
+    const isDisabled = computed<boolean>(
       () => props.disabled || (qForm?.disabled ?? false)
     );
 
-    const withControlsClass = computed(() => ({
+    const withControlsClass = computed<Record<string, boolean>>(() => ({
       'q-input-number_with-controls': !props.noControls
     }));
 
-    const isIncreaseDisabled = computed(() => {
+    const isIncreaseDisabled = computed<boolean>(() => {
       const number = state.number ?? 0;
 
       return (
@@ -132,7 +131,7 @@ export default defineComponent({
       );
     });
 
-    const isDecreaseDisabled = computed(() => {
+    const isDecreaseDisabled = computed<boolean>(() => {
       const number = state.number ?? 0;
 
       return (
@@ -141,11 +140,11 @@ export default defineComponent({
       );
     });
 
-    const currentValue = computed(() =>
+    const currentValue = computed<string>(() =>
       (state.userNumber ?? state.number ?? '').toString()
     );
 
-    const areControlsEnabled = computed(
+    const areControlsEnabled = computed<boolean>(
       () => !props.noControls && !isDisabled.value
     );
 
@@ -157,20 +156,20 @@ export default defineComponent({
       { immediate: true }
     );
 
-    const handleBlur = (event: FocusEvent) => {
+    const handleBlur = (event: FocusEvent): void => {
       ctx.emit('blur', event);
       if (props.validateEvent) qFormItem?.validateField('blur');
     };
 
-    const handleFocus = (event: FocusEvent) => {
+    const handleFocus = (event: FocusEvent): void => {
       ctx.emit('focus', event);
     };
 
-    const changesEmmiter = (value: number | null, type: string) => {
+    const changesEmmiter = (value: number | null, type: string): void => {
       let passedData: number | null = null;
 
       if (value !== null) {
-        state.number = Number(value.toFixed(props.precision));
+        state.number = Number(value.toFixed(props.precision ?? 0));
         passedData = state.number;
       }
 
@@ -184,13 +183,17 @@ export default defineComponent({
       if (props.validateEvent) qFormItem?.validateField('input');
     };
 
-    const processUserValue = async (value: number, type: string) => {
+    const processUserValue = async (
+      value: number,
+      type: string
+    ): Promise<void> => {
       state.userNumber = null;
 
       if (value > state.maxValue || value < state.minValue) {
         state.number = null;
 
         await nextTick();
+
         state.userNumber =
           value > state.maxValue ? state.maxValue : state.minValue;
         state.number = state.userNumber;
@@ -202,11 +205,11 @@ export default defineComponent({
         return;
       }
 
-      ctx.emit('input', Number(value.toFixed(props.precision)));
+      ctx.emit('input', Number(value.toFixed(props.precision ?? 0)));
       if (props.validateEvent) qFormItem?.validateField('input');
     };
 
-    const handleChangeInput = (event: Event, type: string) => {
+    const handleChangeInput = (event: Event, type: string): void => {
       const value = (event.target as HTMLInputElement)?.value ?? null;
 
       if (value === '-') return;
@@ -221,7 +224,7 @@ export default defineComponent({
       processUserValue(Number(value), type);
     };
 
-    const handleIncreaseClick = () => {
+    const handleIncreaseClick = (): void => {
       const number = state.number ?? 0;
       const updatedNumber = getIncreasedValue(number, state.step);
 
@@ -229,7 +232,7 @@ export default defineComponent({
       changesEmmiter(updatedNumber, 'change');
     };
 
-    const handleDecreaseClick = () => {
+    const handleDecreaseClick = (): void => {
       const number = state.number ?? 0;
       const updatedNumber = getDecreasedValue(number, state.step);
 

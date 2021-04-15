@@ -2,17 +2,23 @@
 import { Story } from '@storybook/vue3';
 import { defineComponent, ref } from 'vue';
 
-import type { QMessageBoxBeforeClose } from '@/qComponents/QMessageBox';
+import type {
+  QMessageBoxProps,
+  QMessageBoxPropBeforeClose
+} from '@/qComponents/QMessageBox';
 
-const QMessageBoxStory: Story = args =>
+const QMessageBoxStory: Story<QMessageBoxProps> = args =>
   defineComponent({
     setup() {
-      const beforeClose = async ({ action, ctx }: QMessageBoxBeforeClose) => {
+      const beforeClose: QMessageBoxPropBeforeClose = async ({
+        action,
+        ctx
+      }) => {
         if (action !== 'confirm') return true;
 
         ctx.isConfirmBtnLoading.value = true;
 
-        const promise = () =>
+        const promise = (): Promise<string> =>
           new Promise(resolve => {
             setTimeout(() => resolve('готово!'), 1000);
           });
@@ -31,17 +37,20 @@ const QMessageBoxStory: Story = args =>
 
       const isVisible = ref(false);
 
-      const handleClick = () => {
+      const handleClick = (): void => {
         isVisible.value = true;
       };
 
-      const handleConfirm = () => {
+      const handleConfirm = (): void => {
+        // eslint-disable-next-line no-console
         console.log('Confirm');
       };
-      const handleClose = () => {
+      const handleClose = (): void => {
+        // eslint-disable-next-line no-console
         console.log('Close');
       };
-      const handleCancel = () => {
+      const handleCancel = (): void => {
+        // eslint-disable-next-line no-console
         console.log('Cancel');
       };
 

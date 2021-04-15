@@ -7,4 +7,5 @@ QInputNumber.install = (app: App): void => {
   app.component(QInputNumber.name, QInputNumber);
 };
 
+export type { QInputNumberProps } from './src/types';
 export default QInputNumber;

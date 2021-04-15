@@ -3,6 +3,7 @@ import { Meta, Story } from '@storybook/vue3';
 import { defineComponent, ref } from 'vue';
 
 import QInput from '@/qComponents/QInput';
+import type { QInputProps } from '@/qComponents/QInput';
 import iconsList from '../core/iconsList';
 
 const storyMetadata: Meta = {
@@ -24,24 +25,35 @@ const storyMetadata: Meta = {
   }
 };
 
-const QInputStory: Story = args =>
+type StoryArgs = QInputProps & {
+  placeholder: string;
+  maxlength: string | number;
+  type: string;
+};
+
+const QInputStory: Story<StoryArgs> = args =>
   defineComponent({
     setup() {
       const data = ref('');
 
-      const handleFocus = (event: Event) => {
+      const handleFocus = (event: Event): void => {
+        // eslint-disable-next-line no-console
         console.log('handleFocus', event);
       };
-      const handleBlur = (event: Event) => {
+      const handleBlur = (event: Event): void => {
+        // eslint-disable-next-line no-console
         console.log('handleBlur', event);
       };
-      const handleInput = (event: Event) => {
+      const handleInput = (event: Event): void => {
+        // eslint-disable-next-line no-console
         console.log('handleInput', event);
       };
-      const handleChange = (event: Event) => {
+      const handleChange = (event: Event): void => {
+        // eslint-disable-next-line no-console
         console.log('handleChange', event);
       };
-      const handleClear = (event: Event) => {
+      const handleClear = (event: Event): void => {
+        // eslint-disable-next-line no-console
         console.log('handleClear', event);
       };
 

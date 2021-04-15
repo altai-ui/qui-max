@@ -86,6 +86,8 @@
 import { defineComponent, computed } from 'vue';
 import { range } from 'lodash-es';
 
+import type { QPaginationProps } from './types';
+
 const PREV_CLICK_EVENT = 'prev-click';
 const CURRENT_CHANGE_EVENT = 'current-change';
 const NEXT_CLICK_EVENT = 'next-click';
@@ -112,7 +114,11 @@ export default defineComponent({
     /**
      * current page number
      */
-    currentPage: { type: Number, default: null },
+    currentPage: {
+      type: Number,
+      default: 1,
+      validator: (value: number): boolean => value >= 1
+    },
     /**
      * whether Pagination is disabled
      */
@@ -123,7 +129,7 @@ export default defineComponent({
     pagerCount: {
       type: Number,
       default: 7,
-      validator: (value: number) => value >= 3
+      validator: (value: number): boolean => value >= 3
     }
   },
 
@@ -135,37 +141,38 @@ export default defineComponent({
     QUICK_NEXT_CLICK_EVENT
   ],
 
-  setup(props, { emit }) {
-    const preparedPageCount = computed(() => {
+  setup(props: QPaginationProps, { emit }) {
+    const preparedPageCount = computed<number>(() => {
       const pageCount =
-        props.pageCount ?? Math.ceil(props.total / props.pageSize);
+        props.pageCount ??
+        Math.ceil((props.total ?? 0) / (props.pageSize ?? 0));
 
       return pageCount && Number.isFinite(pageCount) ? pageCount : 1;
     });
 
-    const isPrevBtnDisabled = computed(
+    const isPrevBtnDisabled = computed<boolean>(
       () => props.disabled || props.currentPage <= 1
     );
 
-    const isNextBtnDisabled = computed(
+    const isNextBtnDisabled = computed<boolean>(
       () => props.disabled || props.currentPage >= preparedPageCount.value
     );
 
-    const isPrevQuickBtnShown = computed(() => {
+    const isPrevQuickBtnShown = computed<boolean>(() => {
       if (preparedPageCount.value <= props.pagerCount) return false;
 
       const halfPagerCount = (props.pagerCount - 1) / 2;
       return props.currentPage > props.pagerCount - halfPagerCount;
     });
 
-    const isNextQuickBtnShown = computed(() => {
+    const isNextQuickBtnShown = computed<boolean>(() => {
       if (preparedPageCount.value <= props.pagerCount) return false;
 
       const halfPagerCount = (props.pagerCount - 1) / 2;
       return props.currentPage < preparedPageCount.value - halfPagerCount;
     });
 
-    const pagers = computed(() => {
+    const pagers = computed<number[]>(() => {
       if (preparedPageCount.value <= 1) return [];
 
       let rangeStart = 2;
@@ -185,7 +192,7 @@ export default defineComponent({
       return range(rangeStart, rangeEnd);
     });
 
-    const handlePrevBtnClick = () => {
+    const handlePrevBtnClick = (): void => {
       let newPage = props.currentPage - 1;
       if (newPage > preparedPageCount.value) newPage = preparedPageCount.value;
 
@@ -199,12 +206,12 @@ export default defineComponent({
       emit(CURRENT_CHANGE_EVENT, newPage);
     };
 
-    const handlePageBtnClick = (newPage: number) => {
+    const handlePageBtnClick = (newPage: number): void => {
       if (props.currentPage === newPage) return;
       emit(CURRENT_CHANGE_EVENT, newPage);
     };
 
-    const handleNextBtnClick = () => {
+    const handleNextBtnClick = (): void => {
       const newPage = props.currentPage + 1;
 
       /**
@@ -214,7 +221,7 @@ export default defineComponent({
       emit(CURRENT_CHANGE_EVENT, newPage);
     };
 
-    const handlePrevQuickBtnClick = () => {
+    const handlePrevQuickBtnClick = (): void => {
       let newPage = props.currentPage - props.pagerCount - 2;
       if (newPage > preparedPageCount.value) newPage = preparedPageCount.value;
       else if (newPage < 1) newPage = 1;
@@ -223,7 +230,7 @@ export default defineComponent({
       emit(CURRENT_CHANGE_EVENT, newPage);
     };
 
-    const handleNextQuickBtnClick = () => {
+    const handleNextQuickBtnClick = (): void => {
       let newPage = props.currentPage + props.pagerCount - 2;
       if (newPage > preparedPageCount.value) newPage = preparedPageCount.value;
       else if (newPage < 1) newPage = 1;

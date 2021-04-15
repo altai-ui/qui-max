@@ -1,21 +1,22 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { Meta, Story } from '@storybook/vue3';
 import { defineComponent, ref } from 'vue';
+import { placements } from '@popperjs/core/lib/enums';
 
 import QColorPicker from '@/qComponents/QColorPicker';
-import PLACEMENTS from '@/qComponents/constants/popperPlacements';
+import type { QColorPickerProps } from '@/qComponents/QColorPicker';
 
 const storyMetadata: Meta = {
   title: 'Components/QColorPicker',
   component: QColorPicker,
   argTypes: {
     modelValue: { control: { type: 'none' } },
-    placement: { control: { type: 'select', options: PLACEMENTS } },
+    placement: { control: { type: 'select', options: placements } },
     colorFormat: { control: { type: 'select', options: ['hex', 'rgb'] } }
   }
 };
 
-const QColorPickerStory: Story = args =>
+const QColorPickerStory: Story<QColorPickerProps> = args =>
   defineComponent({
     components: { QColorPicker },
     setup() {

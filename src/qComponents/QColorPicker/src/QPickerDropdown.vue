@@ -70,7 +70,11 @@ import QButton from '@/qComponents/QButton';
 import QColorSvpanel from './QColorSvpanel.vue';
 import QColorAlphaSlider from './QColorAlphaSlider.vue';
 import QColorHueSlider from './QColorHueSlider.vue';
-import type { QColorPickerProvider } from './types';
+import type {
+  QPickerDropdownProps,
+  QPickerDropdownPropColorFormat,
+  QColorPickerProvider
+} from './types';
 
 const CLOSE_EVENT = 'close';
 const CLEAR_EVENT = 'clear';
@@ -101,9 +105,10 @@ export default defineComponent({
       default: null
     },
     colorFormat: {
-      type: String as PropType<'hex' | 'rgb'>,
+      type: String as PropType<QPickerDropdownPropColorFormat>,
       default: 'hex',
-      validator: (value: string) => ['hex', 'rgb'].includes(value)
+      validator: (value: string): boolean =>
+        ['hex', 'rgb'].includes(String(value))
     },
     alphaShown: {
       type: Boolean,
@@ -113,7 +118,7 @@ export default defineComponent({
 
   emits: [CLOSE_EVENT, CLEAR_EVENT, PICK_EVENT],
 
-  setup(props, ctx) {
+  setup(props: QPickerDropdownProps, ctx) {
     const elementToFocusAfterClosing = ref<HTMLElement | null>(null);
     const tempColor = ref('');
     const hue = ref(0);
@@ -143,7 +148,7 @@ export default defineComponent({
 
     const dropdown = ref<HTMLElement | null>(null);
 
-    const handleDocumentFocus = (event: FocusEvent) => {
+    const handleDocumentFocus = (event: FocusEvent): void => {
       const refDropdown = dropdown.value;
 
       if (refDropdown && !refDropdown.contains(event.target as HTMLElement)) {
@@ -151,7 +156,7 @@ export default defineComponent({
       }
     };
 
-    const updateHSVA = (newValue: string) => {
+    const updateHSVA = (newValue: string): void => {
       try {
         const color = Color(newValue);
 
@@ -169,7 +174,7 @@ export default defineComponent({
       null
     );
 
-    const closeDropdown = (e: KeyboardEvent | MouseEvent) => {
+    const closeDropdown = (e: KeyboardEvent | MouseEvent): void => {
       if (
         (e.type === 'keyup' && (e as KeyboardEvent).key === 'Escape') ||
         (e.type === 'click' &&
@@ -180,11 +185,11 @@ export default defineComponent({
       }
     };
 
-    const handleClearBtnClick = () => {
+    const handleClearBtnClick = (): void => {
       ctx.emit(CLEAR_EVENT);
     };
 
-    const handleConfirmBtnClick = () => {
+    const handleConfirmBtnClick = (): void => {
       ctx.emit(PICK_EVENT, colorString.value);
     };
 
@@ -207,14 +212,15 @@ export default defineComponent({
         document.addEventListener('keyup', closeDropdown, true);
         document.addEventListener('click', closeDropdown, true);
         document.addEventListener('focus', handleDocumentFocus, true);
-        updateHSVA(props.color);
+
+        if (props.color) updateHSVA(props.color);
+
         tempColor.value = colorString.value;
         elementToFocusAfterClosing.value = document.activeElement as HTMLElement;
 
         await nextTick();
 
         dropdown.value?.focus();
-
         refSv.value?.update();
         refHue.value?.update();
         refAlpha.value?.update();
@@ -223,8 +229,8 @@ export default defineComponent({
 
     watch(
       () => props.color,
-      (newColor: string) => {
-        updateHSVA(newColor);
+      newColor => {
+        if (newColor) updateHSVA(newColor);
       },
       { immediate: true }
     );

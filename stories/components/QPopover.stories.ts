@@ -1,9 +1,9 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { Meta, Story } from '@storybook/vue3';
 import { defineComponent } from 'vue';
+import { placements } from '@popperjs/core/lib/enums';
 
 import QPopover from '@/qComponents/QPopover';
-import PLACEMENTS from '@/qComponents/constants/popperPlacements';
 
 import iconsList from '../core/iconsList';
 
@@ -20,7 +20,7 @@ const storyMetadata: Meta = {
     placement: {
       control: {
         type: 'select',
-        options: PLACEMENTS
+        options: placements
       }
     },
     icon: {

@@ -11,6 +11,8 @@
 <script lang="ts">
 import { defineComponent, computed } from 'vue';
 
+import { QColProps } from './types';
+
 export default defineComponent({
   name: 'QCol',
   componentName: 'QCol',
@@ -45,12 +47,10 @@ export default defineComponent({
     }
   },
 
-  setup(props) {
+  setup(props: QColProps) {
     const classes = computed(() => ({
-      [`q-col_size_${props.cols}`]: Boolean(props.cols),
-      [`q-col_offset_${props.offset}`]: Number.isInteger(
-        Number(props.offset ?? 'hide')
-      )
+      [`q-col_size_${props.cols}`]: props.cols !== null,
+      [`q-col_offset_${props.offset}`]: props.offset !== null
     }));
 
     return { classes };

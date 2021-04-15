@@ -7,11 +7,11 @@ interface Options {
 }
 
 export default function (element: HTMLElement, options: Options): void {
-  const moveFn = (event: MouseEvent) => {
+  const moveFn = (event: MouseEvent): void => {
     options.drag?.(event);
   };
 
-  const upFn = (event: MouseEvent) => {
+  const upFn = (event: MouseEvent): void => {
     document.removeEventListener('mousemove', moveFn);
     document.removeEventListener('mouseup', upFn);
     document.onselectstart = null;
@@ -25,8 +25,8 @@ export default function (element: HTMLElement, options: Options): void {
   element.addEventListener('mousedown', event => {
     if (isDragging) return;
 
-    document.onselectstart = () => false;
-    document.ondragstart = () => false;
+    document.onselectstart = (): boolean => false;
+    document.ondragstart = (): boolean => false;
     document.addEventListener('mousemove', moveFn);
     document.addEventListener('mouseup', upFn);
 

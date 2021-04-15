@@ -3,6 +3,7 @@ import { Meta, Story } from '@storybook/vue3';
 import { defineComponent } from 'vue';
 
 import QContextMenu from '@/qComponents/QContextMenu';
+import type { QContextMenuProps } from '@/qComponents/QContextMenu';
 
 const storyMetadata: Meta = {
   title: 'Components/QContextMenu',
@@ -12,11 +13,12 @@ const storyMetadata: Meta = {
   }
 };
 
-const QContextMenuStory: Story = args =>
+const QContextMenuStory: Story<QContextMenuProps> = args =>
   defineComponent({
     components: { QContextMenu },
     setup() {
-      const handleAction = (action: string) => {
+      const handleAction = (action: string): void => {
+        // eslint-disable-next-line no-console
         console.log(action);
       };
 

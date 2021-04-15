@@ -59,7 +59,12 @@ import {
 import { createPopper as createPopperJs, Options } from '@popperjs/core';
 
 import { getConfig } from '@/qComponents/config';
-import type { MenuItem } from './types';
+import type {
+  QContextMenuProps,
+  QContextMenuPropPosition,
+  QContextMenuPropMenuItems,
+  QContextMenuPropTeleportTo
+} from './types';
 
 const ACTION_EVENT = 'action';
 const DEFAULT_Z_INDEX = 2000;
@@ -70,12 +75,12 @@ export default defineComponent({
 
   props: {
     position: {
-      type: String as PropType<'left' | 'right'>,
+      type: String as PropType<QContextMenuPropPosition>,
       default: 'left',
-      validator: (value: string) => ['left', 'right'].includes(value)
+      validator: (value: string): boolean => ['left', 'right'].includes(value)
     },
     menuItems: {
-      type: Array as PropType<MenuItem[]>,
+      type: Array as PropType<QContextMenuPropMenuItems>,
       required: true
     },
     /**
@@ -83,12 +88,12 @@ export default defineComponent({
      * (has to be a valid query selector, or an HTMLElement)
      */
     teleportTo: {
-      type: [String, HTMLElement] as PropType<string | HTMLElement | null>,
-      default: 'body'
+      type: [String, HTMLElement] as PropType<QContextMenuPropTeleportTo>,
+      default: null
     }
   },
 
-  setup(props, ctx) {
+  setup(props: QContextMenuProps, ctx) {
     const reference = ref<HTMLElement | null>(null);
     const contextMenu = ref<HTMLElement | null>(null);
     const isContextMenuShown = ref(false);
@@ -100,11 +105,11 @@ export default defineComponent({
 
     let menuItemElements: HTMLElement[] = [];
 
-    const setItemRef = (el: HTMLElement) => {
+    const setItemRef = (el: HTMLElement): void => {
       if (el) menuItemElements.push(el);
     };
 
-    const createPopper = () => {
+    const createPopper = (): void => {
       if (!reference.value || !contextMenu.value) return;
 
       isContextMenuShown.value = true;
@@ -126,12 +131,12 @@ export default defineComponent({
       zIndex.value = getConfig('nextZIndex') ?? DEFAULT_Z_INDEX;
     };
 
-    const closePopper = () => {
+    const closePopper = (): void => {
       isContextMenuShown.value = false;
       menuItemElements = [];
     };
 
-    const handleTriggerClick = () => {
+    const handleTriggerClick = (): void => {
       if (isContextMenuShown.value) {
         closePopper();
         return;
@@ -140,7 +145,7 @@ export default defineComponent({
       createPopper();
     };
 
-    const handleKeyUp = (e: KeyboardEvent) => {
+    const handleKeyUp = (e: KeyboardEvent): void => {
       if (e.key === 'Escape') closePopper();
 
       if (
@@ -182,12 +187,12 @@ export default defineComponent({
       menuItemElements[nextNodeIndex]?.focus();
     };
 
-    const handleItemClick = (actionName: string) => {
+    const handleItemClick = (actionName: string): void => {
       ctx.emit(ACTION_EVENT, actionName);
       closePopper();
     };
 
-    const handleDocumentClick = (e: MouseEvent) => {
+    const handleDocumentClick = (e: MouseEvent): void => {
       const target = e.target as HTMLElement;
 
       if (

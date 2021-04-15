@@ -58,6 +58,12 @@ import {
 } from 'vue';
 
 import { getConfig } from '@/qComponents/config';
+import {
+  QDrawerProps,
+  QDrawerPropBeforeClose,
+  QDrawerPropPosition,
+  QDrawerPropTeleportTo
+} from './types';
 
 const OPENED_EVENT = 'opened';
 const CLOSED_EVENT = 'closed';
@@ -107,16 +113,16 @@ export default defineComponent({
      * callback before close
      */
     beforeClose: {
-      type: Function,
+      type: Function as PropType<QDrawerPropBeforeClose>,
       default: null
     },
     /**
      * Drawer's position
      */
     position: {
-      type: String as PropType<'left' | 'right'>,
+      type: String as PropType<QDrawerPropPosition>,
       default: 'right',
-      validator: (value: string) => ['left', 'right'].includes(value)
+      validator: (value: string): boolean => ['left', 'right'].includes(value)
     },
     /**
      * Extra class names for Drawer's wrapper
@@ -130,8 +136,8 @@ export default defineComponent({
      * (has to be a valid query selector, or an HTMLElement)
      */
     teleportTo: {
-      type: [String, HTMLElement] as PropType<string | HTMLElement>,
-      default: 'body'
+      type: [String, HTMLElement] as PropType<QDrawerPropTeleportTo>,
+      default: null
     },
     renderOnMount: {
       type: Boolean,
@@ -147,7 +153,7 @@ export default defineComponent({
     UPDATE_VISIBLE_EVENT
   ],
 
-  setup(props, ctx) {
+  setup(props: QDrawerProps, ctx) {
     const zIndex = ref(DEFAULT_Z_INDEX);
     const isRendered = ref(false);
     const drawer = ref<HTMLElement | null>(null);
@@ -160,26 +166,26 @@ export default defineComponent({
 
     const drawerClass = computed(() => `q-drawer-wrapper_${props.position}`);
 
-    const handleDocumentFocus = (event: FocusEvent) => {
+    const handleDocumentFocus = (event: FocusEvent): void => {
       if (drawer.value && !drawer.value.contains(event.target as HTMLElement)) {
         drawer.value.focus();
       }
     };
 
-    const afterEnter = () => {
+    const afterEnter = (): void => {
       ctx.emit(OPENED_EVENT);
     };
 
-    const afterLeave = () => {
+    const afterLeave = (): void => {
       ctx.emit(CLOSED_EVENT);
     };
 
-    const hide = () => {
+    const hide = (): void => {
       ctx.emit(CLOSE_EVENT);
       ctx.emit(UPDATE_VISIBLE_EVENT, false);
     };
 
-    const closeDrawer = () => {
+    const closeDrawer = (): void => {
       if (props.beforeClose) {
         props.beforeClose(hide);
       } else {
@@ -187,7 +193,7 @@ export default defineComponent({
       }
     };
 
-    const handleWrapperClick = () => {
+    const handleWrapperClick = (): void => {
       if (props.wrapperClosable) closeDrawer();
     };
 

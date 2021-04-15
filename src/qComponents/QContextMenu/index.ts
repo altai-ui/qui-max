@@ -7,4 +7,5 @@ QContextMenu.install = (app: App): void => {
   app.component(QContextMenu.name, QContextMenu);
 };
 
+export { QContextMenuProps } from './src/types';
 export default QContextMenu;

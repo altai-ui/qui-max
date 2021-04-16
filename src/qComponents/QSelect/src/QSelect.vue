@@ -21,7 +21,7 @@
         @focus="handleFocus"
         @blur="handleBlur"
         @keyup="onInputChange"
-        @keyup.enter.prevent="handleEnterKeyUp"
+        @keyup.enter="handleEnterKeyUp"
         @keyup.esc.stop.prevent="state.visible = false"
         @keyup.tab="state.visible = false"
         @keyup.backspace="clearSelected"
@@ -43,13 +43,9 @@
     </div>
 
     <q-select-tags
-      v-show="multiple && state.selected"
+      v-if="multiple && state.selected"
       ref="tags"
       v-model:query="state.query"
-      :collapse-tags="collapseTags"
-      :autocomplete="autocomplete"
-      :filterable="filterable"
-      :is-disabled="isDisabled"
       @keyup-enter="handleEnterKeyUp"
       @focus="handleFocus"
       @remove-tag="deleteTag"
@@ -67,7 +63,6 @@
         :select-all-shown="selectAllShown"
         :select-all-text="selectAllText || t('QSelect.selectAll')"
         :show-empty-content="showEmptyContent"
-        :query="state.query"
         :empty-text="emptyText"
         :is-can-load-more-shown="isCanLoadMoreShown"
         :load-more-text="loadMoreText || t('QSelect.more')"
@@ -100,7 +95,7 @@ import {
   nextTick,
   provide,
   PropType,
-  toRefs
+  toRefs,
 } from 'vue';
 import { isObject, isPlainObject, isNil, isEqual, get } from 'lodash-es';
 import { createPopper } from '@popperjs/core';
@@ -145,7 +140,7 @@ export default defineComponent({
      * the autocomplete attribute of select input
      */
     autocomplete: {
-      type: String,
+      type: String as PropType<'on' | 'off'>,
       default: 'off'
     },
     /**
@@ -431,7 +426,8 @@ export default defineComponent({
         if (!state.isDropdownShown) state.selectedLabel = '';
       }
 
-      // state.selected = null;
+      state.selected = null;
+      state.selectedLabel = '';
     };
 
     const toggleMenu = () => {
@@ -447,8 +443,6 @@ export default defineComponent({
 
       if (state.visible) {
         const elementToFocus = tagsInputEl ?? input.value?.input;
-        console.log(tagsInputEl, input.value?.input);
-
         elementToFocus?.focus();
       }
     };
@@ -568,7 +562,6 @@ export default defineComponent({
       () => state.visible,
       val => {
         const inputInsideTagsEl = tags?.value?.input as HTMLInputElement;
-        console.log('inputInsideTagsEl', inputInsideTagsEl);
 
         if (!val) {
           inputInsideTagsEl?.blur();
@@ -628,10 +621,7 @@ export default defineComponent({
     const handleFocus = (event: MouseEvent) => {
       if (props.filterable) {
         state.visible = true;
-
-        if (props.filterable) {
-          state.menuVisibleOnFocus = true;
-        }
+        state.menuVisibleOnFocus = true;
       }
 
       ctx.emit('focus', event);
@@ -648,13 +638,15 @@ export default defineComponent({
       }, 50);
     };
 
-    const emitValueUpdate = (value: ModelValue) => {
+    const emitValueUpdate = (value: ModelValue): void => {
+      console.log('emitValueUpdate', value);
+      
       ctx.emit('update:modelValue', value);
 
       if (!isEqual(props.modelValue, value)) ctx.emit('change', value);
     };
 
-    const clearSelected = () => {
+    const clearSelected = (): void => {
       const value = props.multiple ? ([] as Option[]) : null;
       emitValueUpdate(value);
 
@@ -662,12 +654,12 @@ export default defineComponent({
       ctx.emit('clear');
     };
 
-    const getValueIndex = (arr = [], value) => {
-      const isValueObject = isObject(value);
-      if (!isValueObject) return arr.indexOf(value);
+    const getValueIndex = (arr = [] as (Option[]), optionValue: string): number => {
+      const isValueObject = isObject(optionValue);
+      if (!isValueObject) return arr.indexOf(optionValue);
 
       const valueKey = props.valueKey;
-      const valueByValuekey = get(value, valueKey);
+      const valueByValuekey = get(optionValue, valueKey);
       return arr.findIndex(item => get(item, valueKey) === valueByValuekey);
     };
 
@@ -675,14 +667,13 @@ export default defineComponent({
      * @public
      */
     const toggleOptionSelection = (option: QOptionInterface) => {
-      console.log('toggleOptionSelection');
-
-      if (props.multiple) {
-        const currentModelValue = Array.isArray(props.modelValue)
-          ? props.modelValue
-          : [];
-        const value = [...currentModelValue];
+      if (!option.modelValue) return;
+      if (props.multiple && Array.isArray(props.modelValue)) {
+        const value = [...(props.modelValue ?? [])];
+        console.log(option.modelValue);
+        
         const optionIndex = getValueIndex(value, option.modelValue.value);
+        
         if (optionIndex > -1) {
           value.splice(optionIndex, 1);
         } else if (
@@ -692,25 +683,27 @@ export default defineComponent({
           value.push(option.modelValue.value);
         }
 
-        console.log('emitValueUpdate', value);
-
+        
         emitValueUpdate(value);
         if (option.created) {
           state.query = '';
         }
-        if (props.filterable) tags.value.$refs.input.focus();
+        if (props.filterable) {
+          const inputElinsideTags = tags?.value?.input as HTMLElement;
+          
+          inputElinsideTags?.focus();
+        }
       } else {
-        emitValueUpdate(option.modelValue.value);
+        emitValueUpdate(option.modelValue);
         state.visible = false;
       }
     };
 
     const handleEnterKeyUp = () => {
-      if (!state.visible) {
-        toggleMenu();
-        return;
-      }
-
+      // if (!state.visible) {
+      //   toggleMenu();
+      // }
+      
       let option = null;
       if (isNewOptionShown.value) {
         option = state.options.find(({ created }) => created);
@@ -719,21 +712,23 @@ export default defineComponent({
       }
 
       if (option?.isVisible) {
-        toggleOptionSelection(option);
+        const refOption = toRefs(option);
+        console.log(refOption);
+          
+        toggleOptionSelection(refOption);
       }
     };
 
-    const deleteTag = tag => {
-      if (isDisabled.value) return;
+    const deleteTag = (tag: QOptionInterface ) => {
+      if (isDisabled.value || !Array.isArray(props.modelValue) || !Array.isArray(state.selected)) return;
 
       const index = state.selected.findIndex(({ key }) => key === tag.key);
-      if (index === -1) return;
-
+      if (index === -1) return; 
       const value = [...props.modelValue];
       value.splice(index, 1);
 
-      emitValueUpdate(value);
-      ctx.emit('remove-tag', tag.value);
+      emitValueUpdate(value);      
+      ctx.emit('remove-tag', tag.modelValue);
     };
 
     const onInputChange = () => {
@@ -742,7 +737,22 @@ export default defineComponent({
       }
     };
 
-    const { multipleLimit, valueKey, remote, multiple, modelValue } = toRefs(
+    const addOption = (optionInstance: QOptionInterface) => {
+      state.options.push(optionInstance);
+    }
+
+    const removeOption = (optionInstance: QOptionInterface) => {
+      const currentOptionIndex = state.options.indexOf(optionInstance);
+      if (currentOptionIndex > -1) {
+        state.options.splice(currentOptionIndex, 1);
+      }
+    }
+
+    const updateHoverIndex = (index: number) => {
+      state.hoverIndex = index;
+    }
+
+    const { autocomplete, multipleLimit, filterable, valueKey, remote, multiple, modelValue, collapseTags } = toRefs(
       props
     );
 
@@ -754,16 +764,21 @@ export default defineComponent({
     provide<QSelectProvider>('qSelect', {
       toggleMenu,
       setSelected,
-      state,
+      state: {...toRefs(state)},
       toggleOptionSelection,
       multipleLimit,
+      autocomplete,
       valueKey,
+      filterable,
       remote,
       multiple,
-      modelValue
+      modelValue,
+      collapseTags,
+      isDisabled,
+      addOption,
+      removeOption,
+      updateHoverIndex,
     });
-
-    provide('selectState', state);
 
     return {
       input,

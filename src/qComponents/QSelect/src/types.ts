@@ -1,7 +1,8 @@
-import { Ref, ComputedRef } from 'vue';
+import { Ref, ComputedRef, ToRefs } from 'vue';
 import { Instance as PopperInstance } from '@popperjs/core';
 
 import { QOptionInterface } from '@/qComponents/QOption';
+import { QScrollbarInstance } from '@/qComponents/QScrollbar/src/types';
 
 type Option = {
   value: string | { value: unknown; label: string; disabled: boolean };
@@ -17,8 +18,15 @@ interface QSelectProvider {
   toggleMenu: () => void;
   toggleOptionSelection: (option: QOptionInterface) => void;
   setSelected: () => void;
-  state: QSelectState;
+  state: ToRefs<QSelectState>;
+  addOption: (optionInstance: QOptionInterface) => void;
+  removeOption: (optionInstance: QOptionInterface) => void;
+  updateHoverIndex: (index: number) => void;
   multipleLimit: Ref<number>;
+  filterable: Ref<boolean>;
+  collapseTags: Ref<boolean>;
+  isDisabled: ComputedRef<boolean>;
+  autocomplete: Ref<'on' | 'off'>;
   valueKey: Ref<string>;
   remote: Ref<boolean>;
   multiple: Ref<boolean>;
@@ -56,7 +64,7 @@ interface QSelectDropdownInstance {
   handleSelectAllClick: () => void;
   root: Ref<HTMLDivElement | null>;
   multiple: boolean | Ref<boolean>;
-  scrollbar: HTMLDivElement | null;
+  scrollbar: QScrollbarInstance;
   $el: HTMLElement;
 }
 

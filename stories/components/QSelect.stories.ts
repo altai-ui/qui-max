@@ -1,13 +1,16 @@
 import QSelect from '@/qComponents/QSelect';
 import QOption from '@/qComponents/QOption';
 import { watch, reactive } from 'vue';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { Args, Meta, Story } from '@storybook/vue3';
 
-export default {
+export default <Meta>{
   title: 'Components/QSelect',
   component: QSelect,
   subcomponents: { QOption },
   argTypes: {
-    value: { control: { type: 'none' } }
+    modelValue: { control: { type: 'none' } },
+    loading: { control: { type: 'none' } }
   }
 };
 
@@ -41,7 +44,7 @@ const options = [
   }
 ];
 
-const Template = (args: any) => ({
+const Template: Story = (args: Args) => ({
   setup() {
     const state = reactive({
       remoteLoading: false,
@@ -103,7 +106,7 @@ const Template = (args: any) => ({
         :load-more-text="args.loadMoreText"
         :no-match-text="args.noMatchText"
         :no-data-text="args.noDataText"
-        :loading="args.remoteLoading"
+        :loading="state.remoteLoading"
         :multiple="args.multiple"
         :multiple-limit="args.multipleLimit"
         :select-all-shown="args.selectAllShown"
@@ -116,7 +119,7 @@ const Template = (args: any) => ({
       >
         <q-option
           v-for="item in state.options"
-          :key="item.value.id"
+          :key="item.value"
           :label="item.label"
           :model-value="item.value"
           :disabled="item.disabled"
@@ -128,12 +131,13 @@ const Template = (args: any) => ({
 
 export const Default: any = Template.bind({});
 Default.args = {
+  ...Default.args,
   filterable: true,
-  allowCreate: true,
   clearable: true
 };
 export const Multiple: any = Template.bind({});
 Multiple.args = {
+  ...Multiple.args,
   multiple: true,
   filterable: true,
   allowCreate: true,

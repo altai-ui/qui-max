@@ -17,6 +17,8 @@
 
     .q-input__inner {
       height: 100%;
+      padding-right: 30px;
+      text-overflow: ellipsis;
       user-select: none;
     }
   }

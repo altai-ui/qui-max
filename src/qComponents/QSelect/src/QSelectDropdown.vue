@@ -72,7 +72,6 @@ export default defineComponent({
   componentName: 'QSelectDropdown',
 
   props: {
-    query: { type: String, required: true },
     shown: { type: Boolean, required: true },
     selectAllShown: { type: Boolean, required: true },
     selectAllText: { type: String, required: true },
@@ -94,7 +93,8 @@ export default defineComponent({
     const scrollbar = ref<HTMLDivElement | null>(null);
     const qSelect = inject<QSelectProvider | null>('qSelect', null);
     const multiple = qSelect?.multiple ?? false;
-    const options = qSelect?.state.options ?? [];
+    const options = qSelect?.state.options.value ?? [];
+    const query = qSelect?.state.query;
     const zIndex = ref(getConfig('nextZIndex') ?? DEFAULT_Z_INDEX);
 
     const styles = computed(() => {
@@ -239,7 +239,8 @@ export default defineComponent({
       root,
       multiple,
       scrollbar,
-      options
+      options,
+      query
     };
   }
 });

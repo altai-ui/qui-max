@@ -33,7 +33,7 @@
 <script lang="ts">
 import { QSelectProvider } from '@/qComponents/QSelect';
 import { isObject, isEqual, get } from 'lodash-es';
-import { computed, defineComponent, inject, onBeforeUnmount, PropType, watch, toRefs } from 'vue';
+import { computed, defineComponent, inject, onBeforeUnmount, PropType, watch, toRefs, ToRefs } from 'vue';
 import { Option} from '@/qComponents/QSelect/src/types'; 
 import { QOptionInterface } from './types';
 
@@ -62,6 +62,7 @@ export default defineComponent({
 
   setup(props) {
     const qSelect = inject<QSelectProvider | null>('qSelect', null);
+
     const key = computed(
       () => (isObject(props.modelValue) && qSelect)
         ? get(props.modelValue, qSelect.valueKey.value)
@@ -73,10 +74,11 @@ export default defineComponent({
     })
 
     const isVisible = computed(() => {
-      if (qSelect?.remote || !qSelect?.state.query) return true;
-
+      if (qSelect?.remote.value || !qSelect?.state.query.value) return true;
+      const qSelectQuery = String(qSelect?.state.query.value).toLowerCase()
+      
       return (
-        preparedLabel.value.toLowerCase().includes(qSelect?.state.query.toLowerCase()) ||
+        preparedLabel.value.toLowerCase().includes(qSelectQuery) ||
         props.created
       )
     })
@@ -92,7 +94,7 @@ export default defineComponent({
         return isEqual(get(modelValue.value, valueKey.value), key.value);
       }
 
-      const prepareValue = (val: string) => (isObject(val) ? get(val, valueKey.value) : val);
+      const prepareValue = (val: string | Option) => (isObject(val) ? get(val, valueKey.value) : val);
       if (Array.isArray(modelValue.value)) {
         return modelValue.value.some(val => prepareValue(val) === key.value);
       }
@@ -103,13 +105,11 @@ export default defineComponent({
     const isLimitReached = computed(() => {
       if (!qSelect?.multiple) return false;
 
-      const { multipleLimit, modelValue } = qSelect;
-
       return (
         !isSelected.value &&
-        Array.isArray(modelValue.value) &&
-        multipleLimit.value > 0 &&
-        modelValue.value.length >= multipleLimit.value
+        Array.isArray(qSelect.modelValue.value) &&
+        qSelect.multipleLimit.value > 0 &&
+        qSelect.modelValue.value.length >= qSelect.multipleLimit.value
       );
     })
 
@@ -123,16 +123,13 @@ export default defineComponent({
 
     watch(() => props.modelValue, (val, oldVal) => {
       if (!qSelect) return;
-      const { remote } = qSelect;
-
-      if (!props.created && !remote) {
-        const { valueKey } = qSelect;
+      if (!props.created && !qSelect.remote) {
 
         if (
-          valueKey &&
+          qSelect.valueKey &&
           isObject(val) &&
           isObject(oldVal) &&
-          get(val, valueKey.value) === get(oldVal, valueKey.value)
+          get(val, qSelect.valueKey.value) === get(oldVal, qSelect.valueKey.value)
         )
           return;
 
@@ -153,25 +150,21 @@ export default defineComponent({
 
     const handleOptionClick = () => {
       if (props.disabled || !qSelect) return;
+      console.log(self);
       
       qSelect.toggleOptionSelection(self);
     }
 
     const handleMouseEnter = () => {
       if (props.disabled || qSelect === null) return;
-      
-      qSelect.state.hoverIndex = qSelect.state.options?.indexOf(self);
+      qSelect?.updateHoverIndex(qSelect.state.options.value?.indexOf(self))
     }
 
     onBeforeUnmount(() => {
-      if (!qSelect) return;
-      const currentOptionIndex = qSelect.state.options.indexOf(self);
-      if (currentOptionIndex > -1) {
-        qSelect.state.options.splice(currentOptionIndex, 1);
-      }
-    });    
+      qSelect?.removeOption(self);
+    });   
 
-    qSelect?.state.options.push(self);
+    qSelect?.addOption(self);
 
     return {
       preparedLabel,
@@ -181,7 +174,7 @@ export default defineComponent({
       isDisabled,
       handleMouseEnter,
       handleOptionClick,
-      qSelect
+      qSelect,
     }
   }
 })

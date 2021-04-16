@@ -40,8 +40,8 @@
       class="q-select-tags__input"
       :autocomplete="autocomplete"
       @focus="$emit('focus')"
-      @keyup.esc.stop.prevent="emitExit"
-      @keyup.enter.prevent="$emit('keyup-enter')"
+      @keyup.esc="emitExit"
+      @keyup.enter="$emit('keyup-enter')"
       @keydown.backspace.capture="handleBackspaceKeyDown"
       @input="handleInput"
     />
@@ -49,7 +49,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, PropType, ref, watch } from 'vue';
+import { defineComponent, inject, ref } from 'vue';
 import type { QOptionInterface } from '@/qComponents/QOption';
 import type { QSelectProvider } from '@/qComponents/QSelect';
 
@@ -57,24 +57,21 @@ export default defineComponent({
   name: 'QSelectTags',
   componentName: 'QSelectTags',
 
-  props: {
-    collapseTags: { type: Boolean, required: true },
-    filterable: { type: Boolean, required: true },
-    isDisabled: { type: Boolean, required: true },
-    autocomplete: { type: String, required: true },
-    query: { type: String, required: true }
-  },
-
   emits: ['remove-tag', 'exit', 'update:query', 'focus', 'keyup-enter'],
 
   setup(props, ctx) {
     const input = ref<HTMLInputElement | null>(null);
-    const state = inject('selectState', null);
-    console.log(state.selected);
+    const qSelect = inject<QSelectProvider | null>('qSelect', null);
+    const selected = qSelect?.state.selected;
+    const query = qSelect?.state.query;
+    const filterable = qSelect?.filterable;
+    const collapseTags = qSelect?.collapseTags;
+    const isDisabled = qSelect?.isDisabled;
+    const autocomplete = qSelect?.autocomplete;
 
     const handleBackspaceKeyDown = () => {
-      if (!props.query && Array.isArray(selected)) {
-        ctx.emit('remove-tag', selected[selected.length - 1]);
+      if (!query?.value && Array.isArray(selected?.value)) {
+        ctx.emit('remove-tag', selected?.value[selected.value.length - 1]);
       }
     };
 
@@ -97,7 +94,12 @@ export default defineComponent({
       handleInput,
       emitExit,
       input,
-      selected
+      selected,
+      filterable,
+      collapseTags,
+      isDisabled,
+      autocomplete,
+      query
     };
   }
 });

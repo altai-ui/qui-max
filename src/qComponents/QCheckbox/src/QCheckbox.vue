@@ -103,15 +103,15 @@ export default defineComponent({
 
     const focus = ref(false);
 
-    const isChecked = computed(() => {
-      if (!qCheckboxGroup) return props.modelValue;
+    const isChecked = computed<boolean>(() => {
+      if (!qCheckboxGroup) return Boolean(props.modelValue);
 
       return (
         qCheckboxGroup.modelValue.value?.includes(props.label ?? '') ?? false
       );
     });
 
-    const isLimitDisabled = computed(() => {
+    const isLimitDisabled = computed<boolean>(() => {
       if (qCheckboxGroup === null) return false;
 
       const { max, min, modelValue } = qCheckboxGroup;
@@ -123,7 +123,7 @@ export default defineComponent({
       );
     });
 
-    const isDisabled = computed(() =>
+    const isDisabled = computed<boolean>(() =>
       qCheckboxGroup
         ? qCheckboxGroup?.disabled.value ||
           props.disabled ||
@@ -132,7 +132,7 @@ export default defineComponent({
         : props.disabled || (qForm?.disabled ?? false)
     );
 
-    const model = computed({
+    const model = computed<boolean>({
       get: () => isChecked.value,
       set: value => {
         if (!qCheckboxGroup) {

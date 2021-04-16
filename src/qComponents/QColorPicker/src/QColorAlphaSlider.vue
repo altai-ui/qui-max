@@ -45,11 +45,11 @@ export default defineComponent({
   setup(props: QColorAlphaSliderProps, ctx) {
     const thumbLeft = ref(0);
 
-    const barStyles = computed(() => ({
+    const barStyles = computed<Record<string, string>>(() => ({
       backgroundImage: `linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, ${props.color})`
     }));
 
-    const thumbStyles = computed(() => ({
+    const thumbStyles = computed<Record<string, string>>(() => ({
       left: `${thumbLeft.value}px`
     }));
 

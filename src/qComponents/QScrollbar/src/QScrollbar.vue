@@ -62,6 +62,7 @@ import type {
   QScrollbarProps,
   QScrollbarPropScrollTo,
   QScrollbarPropTheme,
+  QScrollbarPropWrapClass,
   QScrollbarProvider
 } from './types';
 
@@ -129,19 +130,17 @@ export default defineComponent({
     const moveX = ref(0);
     const moveY = ref(0);
 
-    const isXBarShown = computed(() => sizeWidth.value !== '');
-    const isYBarShown = computed(() => sizeHeight.value !== '');
+    const isXBarShown = computed<boolean>(() => sizeWidth.value !== '');
+    const isYBarShown = computed<boolean>(() => sizeHeight.value !== '');
 
-    const classes = computed(() => {
-      return [
-        'q-scrollbar',
-        props.visible && 'q-scrollbar_visible',
-        isXBarShown.value && 'q-scrollbar_has-horizontal-bar',
-        isYBarShown.value && 'q-scrollbar_has-vertical-bar'
-      ];
-    });
+    const classes = computed<Record<string, boolean>>(() => ({
+      'q-scrollbar': true,
+      'q-scrollbar_visible': Boolean(props.visible),
+      'q-scrollbar_has-horizontal-bar': isXBarShown.value,
+      'q-scrollbar_has-vertical-bar': isYBarShown.value
+    }));
 
-    const wrapClasses = computed(() => {
+    const wrapClasses = computed<QScrollbarPropWrapClass[]>(() => {
       return [props.wrapClass, { 'q-scrollbar__wrap_hidden-default': true }];
     });
 

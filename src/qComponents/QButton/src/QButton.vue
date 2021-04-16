@@ -109,11 +109,11 @@ export default defineComponent({
   setup(props: QButtonProps) {
     const qForm = inject<QFormProvider | null>('qForm', null);
 
-    const isDisabled = computed(
+    const isDisabled = computed<boolean>(
       () => props.disabled || (qForm?.disabled ?? false)
     );
 
-    const classList = computed(() => {
+    const classList = computed<(string | Record<string, boolean>)[]>(() => {
       const classes: (string | Record<string, boolean>)[] = Object.entries({
         theme: props.theme,
         type: props.type,

@@ -126,7 +126,7 @@ export default defineComponent({
     const value = ref(100);
     const alpha = ref(100);
 
-    const colorModel = computed(() =>
+    const colorModel = computed<Color>(() =>
       Color({
         h: hue.value,
         s: saturation.value,
@@ -134,9 +134,9 @@ export default defineComponent({
       })
     );
 
-    const rgbString = computed(() => colorModel.value.rgb().string());
+    const rgbString = computed<string>(() => colorModel.value.rgb().string());
 
-    const colorString = computed(() => {
+    const colorString = computed<string>(() => {
       if (props.alphaShown || props.colorFormat === 'rgb') {
         return colorModel.value
           .alpha(alpha.value / 100)

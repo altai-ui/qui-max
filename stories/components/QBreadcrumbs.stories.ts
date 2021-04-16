@@ -4,7 +4,10 @@ import { defineComponent, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import QBreadcrumbs from '@/qComponents/QBreadcrumbs';
-import type { QBreadcrumbsProps } from '@/qComponents/QBreadcrumbs';
+import type {
+  QBreadcrumbsProps,
+  QBreadcrumbsPropRoute
+} from '@/qComponents/QBreadcrumbs';
 
 const storyMetadata: Meta = {
   title: 'Components/QBreadcrumbs',
@@ -31,7 +34,7 @@ const QBreadcrumbsStory: Story<QBreadcrumbsProps> = args =>
     setup() {
       const { t } = useI18n();
 
-      const route = computed(() => {
+      const route = computed<QBreadcrumbsPropRoute>(() => {
         if (args.route) return args.route;
 
         return [
@@ -47,6 +50,20 @@ const QBreadcrumbsStory: Story<QBreadcrumbsProps> = args =>
             name: 'ROUTE_b',
             meta: {
               breadcrumb: t('qBreadcrumbsStories.routeB')
+            }
+          },
+          {
+            path: 'path-c',
+            name: 'ROUTE_c',
+            meta: {
+              breadcrumb: t('qBreadcrumbsStories.routeC')
+            }
+          },
+          {
+            path: 'path-d',
+            name: 'ROUTE_d',
+            meta: {
+              breadcrumb: t('qBreadcrumbsStories.routeD')
             }
           }
         ];

@@ -39,7 +39,7 @@ export default defineComponent({
 
   setup(props: QColorHueSliderProps, ctx) {
     const thumbTop = ref(0);
-    const thumbStyles = computed(() => ({
+    const thumbStyles = computed<Record<string, string>>(() => ({
       top: `${thumbTop.value}px`
     }));
 

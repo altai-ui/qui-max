@@ -32,7 +32,7 @@ const LayoutStory: Story<StoryArgs> = args =>
   defineComponent({
     components: { QRow, QCol },
     setup() {
-      const demoStyles = computed(() => ({
+      const demoStyles = computed<Record<string, string>>(() => ({
         '--layout-gutter': (args.gutter ?? '').trim()
       }));
 

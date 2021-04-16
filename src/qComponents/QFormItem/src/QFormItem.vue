@@ -124,7 +124,7 @@ export default defineComponent({
 
     const qForm = inject<QFormProvider | null>('qForm', null);
 
-    const isErrorSlotShown = computed(() =>
+    const isErrorSlotShown = computed<boolean>(() =>
       Boolean(
         (errorMessage.value || ctx.slots.error) &&
           props.showErrorMessage &&
@@ -132,26 +132,26 @@ export default defineComponent({
       )
     );
 
-    const labelFor = computed(() => props.for ?? props.prop);
+    const labelFor = computed<string | null>(() => props.for ?? props.prop);
 
-    const propRules = computed(() => {
+    const propRules = computed<FilteredRuleItem[]>(() => {
       const rules =
         props.rules ?? (props.prop ? get(qForm?.rules, props.prop) ?? [] : []);
 
       return Array.isArray(rules) ? rules : [rules];
     });
 
-    const isRequired = computed(() =>
+    const isRequired = computed<boolean>(() =>
       propRules.value.some(({ required }) => required)
     );
 
-    const isHeaderShown = computed(() =>
+    const isHeaderShown = computed<boolean>(() =>
       Boolean(
         props.label || ctx.slots.label || props.sublabel || ctx.slots.sublabel
       )
     );
 
-    const rootClasses = computed(() => ({
+    const rootClasses = computed<Record<string, boolean>>(() => ({
       'q-form-item_is-required': isRequired.value,
       'q-form-item_is-error': Boolean(errorMessage.value),
       'q-form-item_is-no-asterisk': Boolean(qForm?.hideRequiredAsterisk)

@@ -229,7 +229,7 @@ export default defineComponent({
 
     let elementToFocusAfterClosing: HTMLElement | null = null;
 
-    const isActionsSectionShown = computed(
+    const isActionsSectionShown = computed<boolean>(
       () => Boolean(props.confirmButtonText) || Boolean(props.cancelButtonText)
     );
 

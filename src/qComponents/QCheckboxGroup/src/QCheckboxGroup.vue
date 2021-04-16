@@ -70,7 +70,7 @@ export default defineComponent({
   setup(props: QCheckboxGroupProps, ctx) {
     const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
 
-    const isLimitExceeded = computed(() => {
+    const isLimitExceeded = computed<boolean>(() => {
       const modelValueLength = props.modelValue?.length ?? 0;
 
       return (

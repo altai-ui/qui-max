@@ -6,10 +6,10 @@ export interface RouteItem {
   };
 }
 
-export type QBreadcrumbsPropRoute = RouteItem[];
+export type QBreadcrumbsPropRoute = Nullable<RouteItem[]>;
 
 export interface QBreadcrumbsProps {
   linkComponent: Nullable<string>;
   last: Nullable<string>;
-  route: Nullable<QBreadcrumbsPropRoute>;
+  route: QBreadcrumbsPropRoute;
 }

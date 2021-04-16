@@ -146,15 +146,15 @@ export default defineComponent({
     const isPickerShown = ref(false);
     const popperJS = ref<Instance | null>(null);
 
-    const isDisabled = computed(
+    const isDisabled = computed<boolean>(
       () => props.disabled || (qForm?.disabled ?? false)
     );
 
-    const isColorDark = computed(() =>
+    const isColorDark = computed<boolean>(() =>
       props.modelValue ? Color(props.modelValue).isDark() : false
     );
 
-    const iconClasses = computed(() => ({
+    const iconClasses = computed<Record<string, boolean>>(() => ({
       'q-color-picker-trigger__icon': true,
       'q-color-picker-trigger__icon_light': isColorDark.value,
       'q-icon-triangle-down': !isDisabled.value,

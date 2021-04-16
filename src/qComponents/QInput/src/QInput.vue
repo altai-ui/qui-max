@@ -181,16 +181,14 @@ export default defineComponent({
       )
     );
 
-    const classes = computed(() => {
+    const classes = computed<Record<string, boolean>>(() => {
       const mainClass = 'q-input';
 
-      return [
-        mainClass,
-        {
-          [`${mainClass}_disabled`]: isDisabled.value,
-          [`${mainClass}_suffix`]: isSuffixVisible.value
-        }
-      ];
+      return {
+        [mainClass]: true,
+        [`${mainClass}_disabled`]: isDisabled.value,
+        [`${mainClass}_suffix`]: isSuffixVisible.value
+      };
     });
 
     const textLength = computed<number>(() => props.modelValue?.length ?? 0);

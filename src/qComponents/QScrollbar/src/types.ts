@@ -29,12 +29,13 @@ export type Styles = Record<string, string | number>;
 
 export type QScrollbarPropScrollTo = Nullable<HTMLElement>;
 export type QScrollbarPropTheme = 'primary' | 'secondary';
+export type QScrollbarPropWrapClass = Nullable<string | Classes | Classes[]>;
 
 export interface QScrollbarProps {
   scrollTo: QScrollbarPropScrollTo;
   visible: Nullable<boolean>;
   theme: QScrollbarPropTheme;
-  wrapClass: Nullable<string | Classes | Classes[]>;
+  wrapClass: QScrollbarPropWrapClass;
   viewTag: Nullable<string>;
   viewClass: Nullable<string | Classes | Classes[]>;
   viewStyle: Nullable<string | Styles | Styles[]>;

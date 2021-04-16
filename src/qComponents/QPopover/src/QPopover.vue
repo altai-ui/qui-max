@@ -186,7 +186,7 @@ export default defineComponent({
     const zIndex = ref(DEFAULT_Z_INDEX);
     const popover = ref<HTMLElement | null>(null);
 
-    const popoverClasses = computed(() => ({
+    const popoverClasses = computed<Record<string, boolean>>(() => ({
       'q-popover_without-icon': !props.icon
     }));
 

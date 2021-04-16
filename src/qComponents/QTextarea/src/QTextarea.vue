@@ -118,9 +118,9 @@ export default defineComponent({
       )
     );
 
-    const textLength = computed(() => props.modelValue?.length ?? 0);
+    const textLength = computed<number>(() => props.modelValue?.length ?? 0);
 
-    const classes = computed(() => {
+    const classes = computed<(string | Record<string, boolean>)[]>(() => {
       const mainClass = 'q-textarea';
 
       return [
@@ -131,7 +131,7 @@ export default defineComponent({
       ];
     });
 
-    const textareaStyle = computed(() => ({
+    const textareaStyle = computed<Record<string, string>>(() => ({
       ...textareaCalcStyle.value,
       resize: props.resize
     }));

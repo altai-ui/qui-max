@@ -42,14 +42,14 @@ export default defineComponent({
   emits: [UPDATE_SATURATION_EVENT, UPDATE_VALUE_EVENT],
 
   setup(props: QColorSvpanelProps, ctx) {
-    const rootStyles = computed(() => ({
+    const rootStyles = computed<Record<string, string>>(() => ({
       backgroundColor: `hsl(${props.hue}, 100%, 50%)`
     }));
 
     const cursorTop = ref(0);
     const cursorLeft = ref(0);
 
-    const cursorStyles = computed(() => ({
+    const cursorStyles = computed<Record<string, string>>(() => ({
       top: `${cursorTop.value}px`,
       left: `${cursorLeft.value}px`
     }));

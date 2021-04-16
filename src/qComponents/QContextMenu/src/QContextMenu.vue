@@ -99,7 +99,7 @@ export default defineComponent({
     const isContextMenuShown = ref(false);
     const zIndex = ref(DEFAULT_Z_INDEX);
 
-    const placement = computed(() =>
+    const placement = computed<'bottom-start' | 'bottom-end'>(() =>
       props.position === 'right' ? 'bottom-start' : 'bottom-end'
     );
 

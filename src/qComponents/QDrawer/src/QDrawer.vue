@@ -160,11 +160,15 @@ export default defineComponent({
 
     let elementToFocusAfterClosing: HTMLElement | null = null;
 
-    const drawerStyle = computed(() => ({
-      width: Number(props.width) ? `${Number(props.width)}px` : props.width
-    }));
+    const drawerStyle = computed<Record<string, string | number | null>>(
+      () => ({
+        width: Number(props.width) ? `${Number(props.width)}px` : props.width
+      })
+    );
 
-    const drawerClass = computed(() => `q-drawer-wrapper_${props.position}`);
+    const drawerClass = computed<string>(
+      () => `q-drawer-wrapper_${props.position}`
+    );
 
     const handleDocumentFocus = (event: FocusEvent): void => {
       if (drawer.value && !drawer.value.contains(event.target as HTMLElement)) {

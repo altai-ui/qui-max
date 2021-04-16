@@ -51,7 +51,7 @@
 <script lang="ts">
 import { defineComponent, inject, ref } from 'vue';
 import type { QOptionInterface } from '@/qComponents/QOption';
-import type { QSelectProvider } from '@/qComponents/QSelect';
+import type { QSelectProvider, QSelectState } from '@/qComponents/QSelect';
 
 export default defineComponent({
   name: 'QSelectTags',
@@ -62,16 +62,19 @@ export default defineComponent({
   setup(props, ctx) {
     const input = ref<HTMLInputElement | null>(null);
     const qSelect = inject<QSelectProvider | null>('qSelect', null);
-    const selected = qSelect?.state.selected;
-    const query = qSelect?.state.query;
+    const selectState = inject<QSelectState | null>('selectState', null);
+    const selected = selectState?.selected;
+    console.log('selected tags', selected);
+
+    const query = selectState?.query;
     const filterable = qSelect?.filterable;
     const collapseTags = qSelect?.collapseTags;
     const isDisabled = qSelect?.isDisabled;
     const autocomplete = qSelect?.autocomplete;
 
     const handleBackspaceKeyDown = () => {
-      if (!query?.value && Array.isArray(selected?.value)) {
-        ctx.emit('remove-tag', selected?.value[selected.value.length - 1]);
+      if (!query && Array.isArray(selected)) {
+        ctx.emit('remove-tag', selected[selected.length - 1]);
       }
     };
 

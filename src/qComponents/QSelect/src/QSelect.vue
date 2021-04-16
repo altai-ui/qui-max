@@ -14,7 +14,7 @@
         :placeholder="preparedPlaceholder"
         :autocomplete="autocomplete"
         :disabled="isDisabled"
-        :readonly="readonly"
+        :readonly="isReadonly"
         :validate-event="false"
         :class="{ 'q-input_focus': state.visible }"
         :tabindex="multiple && filterable ? '-1' : null"
@@ -96,8 +96,16 @@ import {
   provide,
   PropType,
   toRefs,
+  readonly
 } from 'vue';
-import { isObject, isPlainObject, isNil, isEqual, get } from 'lodash-es';
+import {
+  isObject,
+  isPlainObject,
+  isNil,
+  isEqual,
+  get,
+  isString
+} from 'lodash-es';
 import { createPopper } from '@popperjs/core';
 import { useI18n } from 'vue-i18n';
 import {
@@ -333,7 +341,7 @@ export default defineComponent({
       )
     );
 
-    const readonly = computed(() => !props.filterable || props.multiple);
+    const isReadonly = computed(() => !props.filterable || props.multiple);
 
     const isClearBtnShown = computed(() => {
       const hasValue = props.multiple
@@ -639,9 +647,9 @@ export default defineComponent({
     };
 
     const emitValueUpdate = (value: ModelValue): void => {
-      console.log('emitValueUpdate', value);
-      
-      ctx.emit('update:modelValue', value);
+      console.log('emit value ', value);
+
+      ctx.emit('update:modelValue', ref(value));
 
       if (!isEqual(props.modelValue, value)) ctx.emit('change', value);
     };
@@ -654,9 +662,13 @@ export default defineComponent({
       ctx.emit('clear');
     };
 
-    const getValueIndex = (arr = [] as (Option[]), optionValue: string): number => {
-      const isValueObject = isObject(optionValue);
-      if (!isValueObject) return arr.indexOf(optionValue);
+    const getValueIndex = (
+      arr = [] as string[] | Option[],
+      optionValue: string
+    ): number => {
+      const valueIsString = isString(optionValue);
+
+      if (valueIsString) return arr.indexOf(optionValue);
 
       const valueKey = props.valueKey;
       const valueByValuekey = get(optionValue, valueKey);
@@ -669,28 +681,27 @@ export default defineComponent({
     const toggleOptionSelection = (option: QOptionInterface) => {
       if (!option.modelValue) return;
       if (props.multiple && Array.isArray(props.modelValue)) {
-        const value = [...(props.modelValue ?? [])];
-        console.log(option.modelValue);
-        
-        const optionIndex = getValueIndex(value, option.modelValue.value);
-        
+        const value = [...props.modelValue];
+        console.log('toggleOptionSelection', value, option.modelValue);
+
+        const optionIndex = getValueIndex(value, option.modelValue);
+
         if (optionIndex > -1) {
           value.splice(optionIndex, 1);
         } else if (
           props.multipleLimit <= 0 ||
           value.length < props.multipleLimit
         ) {
-          value.push(option.modelValue.value);
+          value.push(option.modelValue);
         }
 
-        
         emitValueUpdate(value);
         if (option.created) {
           state.query = '';
         }
         if (props.filterable) {
           const inputElinsideTags = tags?.value?.input as HTMLElement;
-          
+
           inputElinsideTags?.focus();
         }
       } else {
@@ -703,7 +714,7 @@ export default defineComponent({
       // if (!state.visible) {
       //   toggleMenu();
       // }
-      
+
       let option = null;
       if (isNewOptionShown.value) {
         option = state.options.find(({ created }) => created);
@@ -712,22 +723,26 @@ export default defineComponent({
       }
 
       if (option?.isVisible) {
-        const refOption = toRefs(option);
-        console.log(refOption);
-          
+        const refOption = option;
+
         toggleOptionSelection(refOption);
       }
     };
 
-    const deleteTag = (tag: QOptionInterface ) => {
-      if (isDisabled.value || !Array.isArray(props.modelValue) || !Array.isArray(state.selected)) return;
+    const deleteTag = (tag: QOptionInterface) => {
+      if (
+        isDisabled.value ||
+        !Array.isArray(props.modelValue) ||
+        !Array.isArray(state.selected)
+      )
+        return;
 
       const index = state.selected.findIndex(({ key }) => key === tag.key);
-      if (index === -1) return; 
+      if (index === -1) return;
       const value = [...props.modelValue];
       value.splice(index, 1);
 
-      emitValueUpdate(value);      
+      emitValueUpdate(value);
       ctx.emit('remove-tag', tag.modelValue);
     };
 
@@ -739,22 +754,29 @@ export default defineComponent({
 
     const addOption = (optionInstance: QOptionInterface) => {
       state.options.push(optionInstance);
-    }
+    };
 
     const removeOption = (optionInstance: QOptionInterface) => {
       const currentOptionIndex = state.options.indexOf(optionInstance);
       if (currentOptionIndex > -1) {
         state.options.splice(currentOptionIndex, 1);
       }
-    }
+    };
 
     const updateHoverIndex = (index: number) => {
       state.hoverIndex = index;
-    }
+    };
 
-    const { autocomplete, multipleLimit, filterable, valueKey, remote, multiple, modelValue, collapseTags } = toRefs(
-      props
-    );
+    const {
+      autocomplete,
+      multipleLimit,
+      filterable,
+      valueKey,
+      remote,
+      multiple,
+      modelValue,
+      collapseTags
+    } = toRefs(props);
 
     if (props.multiple) {
       if (!Array.isArray(props.modelValue)) ctx.emit('update:modelValue', []);
@@ -764,7 +786,6 @@ export default defineComponent({
     provide<QSelectProvider>('qSelect', {
       toggleMenu,
       setSelected,
-      state: {...toRefs(state)},
       toggleOptionSelection,
       multipleLimit,
       autocomplete,
@@ -777,8 +798,10 @@ export default defineComponent({
       isDisabled,
       addOption,
       removeOption,
-      updateHoverIndex,
+      updateHoverIndex
     });
+
+    provide('selectState', readonly(state));
 
     return {
       input,
@@ -790,7 +813,7 @@ export default defineComponent({
       visibleOptionsCount,
       isCanLoadMoreShown,
       showEmptyContent,
-      readonly,
+      isReadonly,
       isDisabled,
       isClearBtnShown,
       iconClass,

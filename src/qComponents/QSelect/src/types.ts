@@ -18,7 +18,7 @@ interface QSelectProvider {
   toggleMenu: () => void;
   toggleOptionSelection: (option: QOptionInterface) => void;
   setSelected: () => void;
-  state: ToRefs<QSelectState>;
+  // state: QSelectState;
   addOption: (optionInstance: QOptionInterface) => void;
   removeOption: (optionInstance: QOptionInterface) => void;
   updateHoverIndex: (index: number) => void;

@@ -63,7 +63,7 @@ import { get, isPlainObject } from 'lodash-es';
 import { getConfig } from '@/qComponents/config';
 import { computed, defineComponent, inject, ref, watch } from 'vue';
 import { QSelectProvider } from '@/qComponents/QSelect';
-import { Option } from './types';
+import { Option, QSelectState } from './types';
 
 const DEFAULT_Z_INDEX = 2000;
 
@@ -92,9 +92,10 @@ export default defineComponent({
     const root = ref<HTMLDivElement | null>(null);
     const scrollbar = ref<HTMLDivElement | null>(null);
     const qSelect = inject<QSelectProvider | null>('qSelect', null);
+    const selectState = inject<QSelectState | null>('selectState', null);
     const multiple = qSelect?.multiple ?? false;
-    const options = qSelect?.state.options.value ?? [];
-    const query = qSelect?.state.query;
+    const options = selectState?.options ?? [];
+    const query = selectState?.query;
     const zIndex = ref(getConfig('nextZIndex') ?? DEFAULT_Z_INDEX);
 
     const styles = computed(() => {

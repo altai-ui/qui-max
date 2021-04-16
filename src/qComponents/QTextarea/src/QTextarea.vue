@@ -36,6 +36,11 @@ import { useI18n } from 'vue-i18n';
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
 import calcTextareaHeight from './calcTextareaHeight';
+import type {
+  QTextareaProps,
+  QTextareaPropResize,
+  QTextareaPropAutosize
+} from './types';
 
 export default defineComponent({
   name: 'QTextarea',
@@ -55,9 +60,9 @@ export default defineComponent({
      * control the resizability
      */
     resize: {
-      type: String as PropType<'vertical' | 'horizontal' | 'both' | 'none'>,
+      type: String as PropType<QTextareaPropResize>,
       default: 'vertical',
-      validator: (value: string) =>
+      validator: (value: string): boolean =>
         ['vertical', 'horizontal', 'both', 'none'].includes(value)
     },
     /**
@@ -78,9 +83,7 @@ export default defineComponent({
      * whether textarea has an adaptive height. Can accept an object, e.g. { minRows: 2, maxRows: 6 }
      */
     autosize: {
-      type: [Boolean, Object] as PropType<
-        boolean | { minRows: number; maxRows: number }
-      >,
+      type: [Boolean, Object] as PropType<QTextareaPropAutosize>,
       default: true
     },
     /** validate parent form if present */
@@ -92,7 +95,7 @@ export default defineComponent({
 
   emits: ['blur', 'focus', 'input', 'change', 'update:modelValue'],
 
-  setup(props, ctx) {
+  setup(props: QTextareaProps, ctx) {
     const textareaCalcStyle = ref<{
       minHeight?: string;
       height?: string;
@@ -102,16 +105,17 @@ export default defineComponent({
     const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
     const textarea = ref<HTMLTextAreaElement | null>(null);
 
-    const isDisabled = computed(
+    const isDisabled = computed<boolean>(
       () => props.disabled || (qForm?.disabled ?? false)
     );
 
-    const isSymbolLimitShown = computed(
-      () =>
+    const isSymbolLimitShown = computed<boolean>(() =>
+      Boolean(
         props.showSymbolLimit &&
-        ctx.attrs.maxlength &&
-        !isDisabled.value &&
-        !ctx.attrs.readonly
+          ctx.attrs.maxlength &&
+          !isDisabled.value &&
+          !ctx.attrs.readonly
+      )
     );
 
     const textLength = computed(() => props.modelValue?.length ?? 0);

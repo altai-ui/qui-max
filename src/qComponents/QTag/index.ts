@@ -7,4 +7,5 @@ QTag.install = (app: App): void => {
   app.component(QTag.name, QTag);
 };
 
+export type { QTagProps } from './src/types';
 export default QTag;

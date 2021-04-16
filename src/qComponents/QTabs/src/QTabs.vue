@@ -7,7 +7,7 @@
 <script lang="ts">
 import { defineComponent, ref, provide, watch, toRef } from 'vue';
 
-import type { QTabsProvider } from './types';
+import type { QTabsProps, QTabsProvider } from './types';
 
 const UPDATE_MODEL_VALUE_EVENT = 'update:modelValue';
 const CHANGE_EVENT = 'change';
@@ -17,15 +17,15 @@ export default defineComponent({
   componentName: 'QTabs',
 
   props: {
+    modelValue: {
+      type: String,
+      default: null
+    },
     /**
      * width of QTabPanes
      */
     tabWidth: {
       type: [String, Number],
-      default: null
-    },
-    modelValue: {
-      type: String,
       default: null
     },
     /**
@@ -39,10 +39,10 @@ export default defineComponent({
 
   emits: [UPDATE_MODEL_VALUE_EVENT, CHANGE_EVENT],
 
-  setup(props, { emit }) {
+  setup(props: QTabsProps, { emit }) {
     const currentName = ref(props.modelValue);
 
-    const updateValue = (name: string) => {
+    const updateValue = (name: string): void => {
       emit(UPDATE_MODEL_VALUE_EVENT, name);
       /**
        * triggers when the tab changes
@@ -53,14 +53,16 @@ export default defineComponent({
 
     watch(
       () => props.modelValue,
-      (name: string) => updateValue(name),
+      name => {
+        if (name) updateValue(name);
+      },
       { immediate: true }
     );
 
     provide<QTabsProvider>('qTabs', {
-      disabled: toRef(props, 'disabled'),
-      tabWidth: toRef(props, 'tabWidth'),
       currentName,
+      tabWidth: toRef(props, 'tabWidth'),
+      disabled: toRef(props, 'disabled'),
       updateValue
     });
   }

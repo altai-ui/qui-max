@@ -24,11 +24,11 @@ const storyMetadata: Meta = {
   }
 };
 
-interface Args {
+interface StoryArgs {
   gutter: string;
 }
 
-const LayoutStory: Story<Args> = args =>
+const LayoutStory: Story<StoryArgs> = args =>
   defineComponent({
     components: { QRow, QCol },
     setup() {

@@ -57,7 +57,7 @@ import {
   watch,
   provide
 } from 'vue';
-import { createPopper, Placement, Instance, Options } from '@popperjs/core';
+import { createPopper, Instance, Options } from '@popperjs/core';
 import { placements } from '@popperjs/core/lib/enums';
 
 import Color from 'color';
@@ -127,11 +127,12 @@ export default defineComponent({
     placement: {
       type: String as PropType<QColorPickerPropPlacement>,
       default: 'right-start',
-      validator: (value: Placement): boolean => placements.includes(value)
+      validator: (value: QColorPickerPropPlacement): boolean =>
+        placements.includes(value)
     },
     popperOptions: {
       type: Object as PropType<QColorPickerPropPopperOptions>,
-      default: (): Partial<Options> => ({})
+      default: (): Partial<QColorPickerPropPopperOptions> => ({})
     }
   },
 

@@ -3,6 +3,7 @@ import { Meta, Story } from '@storybook/vue3';
 import { defineComponent, ref } from 'vue';
 
 import QDrawer from '@/qComponents/QDrawer';
+import type { QDrawerProps } from '@/qComponents/QDrawer';
 
 const storyMetadata: Meta = {
   title: 'Components/QDrawer',
@@ -14,7 +15,7 @@ const storyMetadata: Meta = {
   }
 };
 
-const QDrawerStory: Story = args =>
+const QDrawerStory: Story<QDrawerProps> = args =>
   defineComponent({
     components: { QDrawer },
     setup() {

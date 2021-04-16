@@ -3,6 +3,7 @@ import { Meta, Story } from '@storybook/vue3';
 import { defineComponent, ref } from 'vue';
 
 import QCheckbox from '@/qComponents/QCheckbox';
+import type { QCheckboxProps } from '@/qComponents/QCheckbox';
 
 const storyMetadata: Meta = {
   title: 'Components/QCheckbox/QCheckbox',
@@ -12,7 +13,7 @@ const storyMetadata: Meta = {
   }
 };
 
-const Template: Story = args =>
+const Template: Story<QCheckboxProps> = args =>
   defineComponent({
     components: { QCheckbox },
     setup() {
@@ -35,18 +36,18 @@ const Template: Story = args =>
     `
   });
 
-const Default: Story = Template.bind({});
+const Default: Story<QCheckboxProps> = Template.bind({});
 Default.args = {
   label: 'Option A'
 };
 
-const Disabled: Story = Template.bind({});
+const Disabled: Story<QCheckboxProps> = Template.bind({});
 Disabled.args = {
   label: 'Option A',
   disabled: true
 };
 
-const Indeterminate: Story = Template.bind({});
+const Indeterminate: Story<QCheckboxProps> = Template.bind({});
 Indeterminate.args = {
   label: 'Option A',
   indeterminate: true

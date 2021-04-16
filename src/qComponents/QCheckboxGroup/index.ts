@@ -7,5 +7,5 @@ QCheckboxGroup.install = (app: App): void => {
   app.component(QCheckboxGroup.name, QCheckboxGroup);
 };
 
-export type { QCheckboxGroupProvider } from './src/types';
+export type { QCheckboxGroupProps, QCheckboxGroupProvider } from './src/types';
 export default QCheckboxGroup;

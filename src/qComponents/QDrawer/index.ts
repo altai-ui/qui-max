@@ -6,4 +6,5 @@ QDrawer.install = (app: App): void => {
   app.component(QDrawer.name, QDrawer);
 };
 
+export type { QDrawerProps } from './src/types';
 export default QDrawer;

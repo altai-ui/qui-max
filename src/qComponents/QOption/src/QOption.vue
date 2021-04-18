@@ -1,6 +1,7 @@
 <template>
   <div
     v-show="isVisible"
+    ref="root"
     class="q-option"
     :class="{
       'q-option_selected': isSelected,
@@ -40,10 +41,9 @@ import {
   onBeforeUnmount,
   PropType,
   watch,
-  toRefs,
-  toRef,
   ref,
-  ToRefs
+  reactive,
+  toRefs
 } from 'vue';
 import { Option } from '@/qComponents/QSelect/src/types';
 import { QOptionInterface } from './types';
@@ -74,6 +74,7 @@ export default defineComponent({
   setup(props) {
     const qSelect = inject<QSelectProvider | null>('qSelect', null);
     const selectState = inject<QSelectState | null>('selectState', null);
+    const root = ref(null);
     const multiple = qSelect?.multiple;
     const modelValue = qSelect?.modelValue;
     const valueKey = qSelect?.valueKey ?? ref('');
@@ -109,7 +110,7 @@ export default defineComponent({
         return isEqual(get(modelValue.value, valueKey?.value), key.value);
       }
 
-      const prepareValue = (val: string | Option) =>
+      const prepareValue = (val: number | string | Option) =>
         isObject(val) ? get(val, valueKey.value) : val;
       if (Array.isArray(modelValue.value)) {
         return modelValue.value.some(val => prepareValue(val) === key.value);
@@ -156,15 +157,16 @@ export default defineComponent({
       }
     );
 
-    const self = <QOptionInterface>{
+    const self: QOptionInterface = reactive({
       ...toRefs(props),
       key,
       preparedLabel,
       isVisible,
       isSelected,
       isLimitReached,
-      isDisabled
-    };
+      isDisabled,
+      root
+    });
 
     const handleOptionClick = () => {
       if (props.disabled || !qSelect) return;
@@ -193,7 +195,9 @@ export default defineComponent({
       isDisabled,
       handleMouseEnter,
       handleOptionClick,
-      multiple
+      multiple,
+      selectState,
+      root
     };
   }
 });

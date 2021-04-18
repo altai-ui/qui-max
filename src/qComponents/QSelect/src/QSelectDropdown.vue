@@ -30,8 +30,8 @@
 
       <q-option
         v-if="isNewOptionShown"
-        :model-value="query"
-        :label="query"
+        :model-value="selectState.query"
+        :label="selectState.query"
         created
       />
 
@@ -94,8 +94,6 @@ export default defineComponent({
     const qSelect = inject<QSelectProvider | null>('qSelect', null);
     const selectState = inject<QSelectState | null>('selectState', null);
     const multiple = qSelect?.multiple ?? false;
-    const options = selectState?.options ?? [];
-    const query = selectState?.query;
     const zIndex = ref(getConfig('nextZIndex') ?? DEFAULT_Z_INDEX);
 
     const styles = computed(() => {
@@ -106,14 +104,14 @@ export default defineComponent({
     });
 
     const isVisibleOptionExist = computed(() => {
-      return options.some(({ isVisible }) => isVisible);
+      return selectState?.options.some(({ isVisible }) => isVisible);
     });
 
     const areAllSelected = computed(() => {
       return (
         multiple &&
         isVisibleOptionExist.value &&
-        options
+        selectState?.options
           .filter(({ isDisabled, isVisible }) => !isDisabled && isVisible)
           .every(({ isSelected }) => isSelected)
       );
@@ -124,7 +122,7 @@ export default defineComponent({
         multiple &&
         isVisibleOptionExist.value &&
         !areAllSelected.value &&
-        options.some(({ isVisible, isSelected }) => isVisible && isSelected)
+        selectState?.options.some(({ isVisible, isSelected }) => isVisible && isSelected)
       );
     });
 
@@ -151,10 +149,11 @@ export default defineComponent({
       }
 
       if (!target.classList.contains('q-option')) return;
-      const availableOptions = options.filter(
+      const availableOptions = selectState?.options.filter(
         ({ isDisabled, isVisible }) => !isDisabled && isVisible
-      );
-      const availableElements = availableOptions.map(option => option.$el); //
+      ) ?? [];
+      const availableElements = availableOptions.map(option => option.root); //
+      
       let currentNodeIndex = 0;
       let nextNodeIndex = 1;
       availableElements.forEach((element, index) => {
@@ -187,7 +186,7 @@ export default defineComponent({
       }
 
       const node = availableElements[nextNodeIndex];
-
+      
       node?.focus();
     };
 
@@ -197,11 +196,11 @@ export default defineComponent({
 
       if (!Array.isArray(modelValue)) return;
       if (areAllSelected.value) {
-        const keysToRemove = options
+        const keysToRemove = selectState?.options
           .filter(({ isVisible, disabled }) => !disabled && isVisible)
-          .map(({ key }) => key);
+          .map(({ key }) => key) ?? [];
 
-        const getKey = (value: Option) => {
+        const getKey = (value: string | number | Option) => {
           return isPlainObject(value) ? get(value, valueKey) : value;
         };
 
@@ -212,9 +211,9 @@ export default defineComponent({
         return;
       }
 
-      let newValue = options
+      let newValue = selectState?.options
         .filter(({ isSelected, disabled }) => !disabled && !isSelected)
-        .map(option => option.modelValue);
+        .map(option => option.modelValue) ?? [];
 
       const multipleLimit = qSelect?.multipleLimit ?? null;
 
@@ -240,8 +239,7 @@ export default defineComponent({
       root,
       multiple,
       scrollbar,
-      options,
-      query
+      selectState
     };
   }
 });

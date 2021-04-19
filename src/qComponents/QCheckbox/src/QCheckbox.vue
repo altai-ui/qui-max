@@ -139,12 +139,14 @@ export default defineComponent({
           ctx.emit(UPDATE_MODEL_VALUE_EVENT, value);
           ctx.emit(CHANGE_EVENT, value);
         } else {
+          if (!props.label) return;
+
           const set = new Set(qCheckboxGroup.modelValue.value);
 
           if (value) {
-            set.add(props.label ?? '');
+            set.add(props.label);
           } else {
-            set.delete(props.label ?? '');
+            set.delete(props.label);
           }
 
           qCheckboxGroup.update(Array.from(set));

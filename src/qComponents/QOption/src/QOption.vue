@@ -46,7 +46,7 @@ import {
   toRefs
 } from 'vue';
 import { Option } from '@/qComponents/QSelect/src/types';
-import { QOptionInstance } from './types';
+import type { QOptionInstance } from './types';
 
 export default defineComponent({
   name: 'QOption',

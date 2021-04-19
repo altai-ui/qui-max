@@ -378,7 +378,6 @@ export default defineComponent({
       value: ModelValue
     ): QOptionInstance | NewOption | null => {
       if (isNil(value)) return null;
-      // debugger
       const keyByValueKey = getKey(value);
       const option =
         state.options.find(({ key }) => key === keyByValueKey) ?? null;

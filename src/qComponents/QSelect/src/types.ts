@@ -62,7 +62,7 @@ interface QSelectDropdownInstance {
   navigateDropdown: (e: KeyboardEvent) => void;
   handleSelectAllClick: () => void;
   root: Ref<HTMLDivElement | null>;
-  multiple: boolean | Ref<boolean>;
+  multiple: Ref<boolean>;
   scrollbar: QScrollbarInstance;
   $el: HTMLElement;
 }

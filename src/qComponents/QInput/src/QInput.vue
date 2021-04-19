@@ -185,7 +185,7 @@ export default defineComponent({
       )
     );
 
-    const classes = computed(() => {      
+    const classes = computed(() => {
       const mainClass = 'q-input';
       const arrayPart: string[] = Array.isArray(props.rootClass) ? props.rootClass : [];
       const objectPart: { [key: string]: boolean } = !Array.isArray(props.rootClass) ? props.rootClass : {};

@@ -11,5 +11,5 @@ export interface QOptionInstance {
   label: string | number;
   modelValue: string | number | Option;
   preparedLabel: string;
-  root?: HTMLElement | undefined;
+  root?: HTMLElement | null;
 }

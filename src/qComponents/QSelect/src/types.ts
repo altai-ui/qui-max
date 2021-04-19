@@ -1,7 +1,7 @@
 import { Ref, ComputedRef } from 'vue';
 import { Instance as PopperInstance } from '@popperjs/core';
 
-import { QOptionInterface, QOptionInterfaceRefs } from '@/qComponents/QOption';
+import { QOptionIntance } from '@/qComponents/QOption';
 import { QScrollbarInstance } from '@/qComponents/QScrollbar/src/types';
 
 type Option = {
@@ -21,10 +21,10 @@ type NewOption = {
 
 interface QSelectProvider {
   toggleMenu: () => void;
-  toggleOptionSelection: (option: QOptionInterface) => void;
+  toggleOptionSelection: (option: QOptionIntance) => void;
   setSelected: () => void;
-  addOption: (optionInstance: QOptionInterface) => void;
-  removeOption: (optionInstance: QOptionInterface) => void;
+  addOption: (optionInstance: QOptionIntance) => void;
+  removeOption: (optionInstance: QOptionIntance) => void;
   updateHoverIndex: (index: number) => void;
   multipleLimit: Ref<number>;
   filterable: Ref<boolean>;
@@ -38,12 +38,8 @@ interface QSelectProvider {
 }
 
 interface QSelectState {
-  options: (QOptionInterface | QOptionInterfaceRefs)[];
-  selected:
-    | QOptionInterface
-    | NewOption
-    | (QOptionInterface | NewOption)[]
-    | null;
+  options: QOptionIntance[];
+  selected: QOptionIntance | NewOption | (QOptionIntance | NewOption)[] | null;
   inputWidth: number;
   selectedLabel: string | number;
   hoverIndex: number;
@@ -73,7 +69,7 @@ interface QSelectDropdownInstance {
 
 interface QSelectTagsInstance {
   handleBackspaceKeyDown: () => void;
-  handleTagClose: (option: QOptionInterface[] | null) => void;
+  handleTagClose: (option: QOptionIntance[] | null) => void;
   handleInput: (event: KeyboardEvent) => void;
   emitExit: () => void;
   input: Ref<HTMLInputElement | null>;

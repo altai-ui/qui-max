@@ -50,7 +50,7 @@
 
 <script lang="ts">
 import { defineComponent, inject, ref } from 'vue';
-import type { QOptionInterface } from '@/qComponents/QOption';
+import type { QOptionInstance } from '@/qComponents/QOption';
 import type { QSelectProvider, QSelectState } from '@/qComponents/QSelect';
 
 export default defineComponent({
@@ -75,7 +75,7 @@ export default defineComponent({
       }
     };
 
-    const handleTagClose = (option: QOptionInterface[] | null) => {
+    const handleTagClose = (option: QOptionInstance[] | null) => {
       ctx.emit('remove-tag', option);
     };
 

@@ -114,7 +114,7 @@ const Template: Story = (args: Args) => ({
         :value-key="args.valueKey"
         :collapse-tags="args.collapseTags"
         :teleport-to="args.teleportTo"
-        placeholder="Pick an option"
+        :placeholder="args.placeholder"
         @search="handleSearch"
       >
         <q-option
@@ -133,7 +133,8 @@ export const Default: any = Template.bind({});
 Default.args = {
   ...Default.args,
   filterable: true,
-  clearable: true
+  clearable: true,
+  placeholder: 'Pick an option'
 };
 export const Multiple: any = Template.bind({});
 Multiple.args = {

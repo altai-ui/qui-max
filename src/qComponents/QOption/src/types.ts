@@ -1,6 +1,6 @@
 import type { Option } from '@/qComponents/QSelect/src/types';
 
-export interface QOptionInterface {
+export interface QOptionInstance {
   created: boolean;
   disabled: boolean;
   isDisabled: boolean;

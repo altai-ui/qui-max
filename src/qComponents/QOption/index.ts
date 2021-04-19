@@ -6,4 +6,4 @@ QOption.install = (app: App): void => {
 };
 
 export default QOption;
-export { QOptionInterface, QOptionInterfaceRefs } from './src/types';
+export { QOptionInstance } from './src/types';

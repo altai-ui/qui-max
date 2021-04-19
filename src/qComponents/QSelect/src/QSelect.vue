@@ -16,7 +16,7 @@
         :disabled="isDisabled"
         :readonly="isReadonly"
         :validate-event="false"
-        :class="{ 'q-input_focus': state.isDropdownShown }"
+        :root-class="{ 'q-input_focus': state.isDropdownShown }"
         :tabindex="multiple && filterable ? '-1' : null"
         @focus="handleFocus"
         @blur="handleBlur"
@@ -116,7 +116,7 @@ import {
 import { QFormProvider } from '@/qComponents/QForm';
 import type { QInput } from '@/qComponents/QInput/src/types';
 import { QFormItemProvider } from '@/qComponents/QFormItem';
-import { QOptionInterface } from '@/qComponents/QOption';
+import { QOptionInstance } from '@/qComponents/QOption';
 import QSelectDropdown from './QSelectDropdown.vue';
 import QSelectTags from './QSelectTags.vue';
 import {
@@ -237,7 +237,7 @@ export default defineComponent({
      */
     selectAllText: { type: String, default: null },
     /**
-     * unique identity key name for value, required when value is an object
+     * unique identity key name for value, required when option's value is an object
      */
     valueKey: {
       type: String,
@@ -370,17 +370,18 @@ export default defineComponent({
       );
     });
 
-    const getKey = (value: ModelValue): Ref<string> => {
-      return isPlainObject(value) ? get(value, props.valueKey) : ref(value);
+    const getKey = (value: ModelValue): string => {
+      return isPlainObject(value) ? get(value, props.valueKey) : value;
     };
 
     const getOption = (
       value: ModelValue
-    ): QOptionInterface | NewOption | null => {
+    ): QOptionInstance | NewOption | null => {
       if (isNil(value)) return null;
+      // debugger
       const keyByValueKey = getKey(value);
       const option =
-        state.options.find(({ key }) => key === keyByValueKey.value) ?? null;
+        state.options.find(({ key }) => key === keyByValueKey) ?? null;
       
       if (option) return option;
       if (!props.allowCreate) return null;
@@ -397,7 +398,7 @@ export default defineComponent({
      * @public
      */
     const setSelected = () => {
-      const result: QOptionInterface | (QOptionInterface | NewOption)[] = [];
+      const result: QOptionInstance | (QOptionInstance | NewOption)[] = [];
       if (props.multiple) {
         if (Array.isArray(props.modelValue)) {
           props.modelValue.forEach(value => {
@@ -409,7 +410,7 @@ export default defineComponent({
 
             const keyByValueKey = getKey(value);
             if (Array.isArray(state.selected)) {
-              const cachedOption: QOptionInterface | NewOption | null =
+              const cachedOption: QOptionInstance | NewOption | null =
                 state.selected?.find(({ key }) => key === keyByValueKey) ??
                 null;
               if (cachedOption) result.push(cachedOption);
@@ -454,11 +455,6 @@ export default defineComponent({
     };
 
     const handleKeyUp = (e: KeyboardEvent) => {
-      const inputEl = input?.value?.$el as HTMLInputElement;
-      if (inputEl.querySelector('input') === e.target && e.key === 'Enter') {
-        toggleMenu();
-      }
-
       switch (e.key) {
         case 'Escape': {
           state.isDropdownShown = false;
@@ -528,12 +524,6 @@ export default defineComponent({
       document.removeEventListener('keyup', handleKeyUp, true);
       document.removeEventListener('click', handleDocumentClick, true);
     };
-
-    // watch(state.options, () => {
-    //   console.log('watch ---- options');
-
-    //   setSelected();
-    // });
 
     watch(
       () => props.modelValue,
@@ -643,8 +633,6 @@ export default defineComponent({
     };
 
     const emitValueUpdate = (value: ModelValue): void => {
-      console.log('emit value ', value);
-
       ctx.emit('update:modelValue', value);
 
       if (!isEqual(props.modelValue, value)) ctx.emit('change', value);
@@ -665,7 +653,6 @@ export default defineComponent({
       const valueIsString = isString(optionValue);
 
       if (valueIsString) return arr.indexOf(optionValue);
-
       const valueKey = props.valueKey;
       const valueByValuekey = get(optionValue, valueKey);
       return arr.findIndex(item => get(item, valueKey) === valueByValuekey);
@@ -674,7 +661,7 @@ export default defineComponent({
     /**
      * @public
      */
-    const toggleOptionSelection = (option: QOptionInterface) => {
+    const toggleOptionSelection = (option: QOptionInstance) => {
       if (!option.modelValue) return;
       if (props.multiple && Array.isArray(props.modelValue)) {
         const value = [...props.modelValue];
@@ -705,7 +692,7 @@ export default defineComponent({
       }
     };
 
-    const handleEnterKeyUp = () => {
+    const handleEnterKeyUp = () => {      
       let option = null;
       if (isNewOptionShown.value) {
         option = state.options.find(({ created }) => created);
@@ -718,7 +705,7 @@ export default defineComponent({
       }
     };
 
-    const deleteTag = (tag: QOptionInterface) => {
+    const deleteTag = (tag: QOptionInstance) => {
       if (
         isDisabled.value ||
         !Array.isArray(props.modelValue) ||
@@ -741,11 +728,11 @@ export default defineComponent({
       }
     };
 
-    const addOption = (optionInstance: QOptionInterface) => {
+    const addOption = (optionInstance: QOptionInstance) => {
       state.options.push(optionInstance);
     };
 
-    const removeOption = (optionInstance: QOptionInterface) => {
+    const removeOption = (optionInstance: QOptionInstance) => {
       const currentOptionIndex = state.options.indexOf(optionInstance);
       if (currentOptionIndex > -1) {
         state.options.splice(currentOptionIndex, 1);

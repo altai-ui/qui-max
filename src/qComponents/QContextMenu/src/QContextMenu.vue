@@ -56,7 +56,11 @@ import {
   onBeforeUpdate
 } from 'vue';
 
-import { createPopper as createPopperJs, Options } from '@popperjs/core';
+import {
+  createPopper as createPopperJs,
+  Options,
+  Placement
+} from '@popperjs/core';
 
 import { getConfig } from '@/qComponents/config';
 import type {
@@ -99,7 +103,7 @@ export default defineComponent({
     const isContextMenuShown = ref(false);
     const zIndex = ref(DEFAULT_Z_INDEX);
 
-    const placement = computed<'bottom-start' | 'bottom-end'>(() =>
+    const placement = computed<Placement>(() =>
       props.position === 'right' ? 'bottom-start' : 'bottom-end'
     );
 

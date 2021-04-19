@@ -55,7 +55,7 @@ import type { QFormProvider } from '@/qComponents/QForm';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
 import type { QCheckboxGroupProvider } from '@/qComponents/QCheckboxGroup';
 
-import { QCheckboxProps } from './types';
+import type { QCheckboxProps } from './types';
 
 const UPDATE_MODEL_VALUE_EVENT = 'update:modelValue';
 const CHANGE_EVENT = 'change';

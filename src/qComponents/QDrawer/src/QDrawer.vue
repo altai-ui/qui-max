@@ -57,6 +57,7 @@ import {
   onUnmounted
 } from 'vue';
 
+import { validateArray } from '@/qComponents/helpers';
 import { getConfig } from '@/qComponents/config';
 import type {
   QDrawerProps,
@@ -78,15 +79,15 @@ export default defineComponent({
 
   props: {
     width: {
-      type: [String, Number] as PropType<string | number>,
-      default: ''
+      type: [String, Number],
+      default: null
     },
     /**
      * Drawer's title
      */
     title: {
       type: String,
-      default: ''
+      default: null
     },
     /**
      * whether Drawer is visible
@@ -122,14 +123,14 @@ export default defineComponent({
     position: {
       type: String as PropType<QDrawerPropPosition>,
       default: 'right',
-      validator: (value: string): boolean => ['left', 'right'].includes(value)
+      validator: validateArray<QDrawerPropPosition>(['left', 'right'])
     },
     /**
      * Extra class names for Drawer's wrapper
      */
     customClass: {
       type: String,
-      default: ''
+      default: null
     },
     /**
      * Specifies a target element where QMessageBox will be moved.

@@ -33,6 +33,7 @@ import {
 } from 'vue';
 import { useI18n } from 'vue-i18n';
 
+import { validateArray } from '@/qComponents/helpers';
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
 import calcTextareaHeight from './calcTextareaHeight';
@@ -54,7 +55,7 @@ export default defineComponent({
      */
     modelValue: {
       type: String,
-      default: ''
+      default: null
     },
     /**
      * control the resizability
@@ -62,8 +63,12 @@ export default defineComponent({
     resize: {
       type: String as PropType<QTextareaPropResize>,
       default: 'vertical',
-      validator: (value: string): boolean =>
-        ['vertical', 'horizontal', 'both', 'none'].includes(value)
+      validator: validateArray<QTextareaPropResize>([
+        'vertical',
+        'horizontal',
+        'both',
+        'none'
+      ])
     },
     /**
      * whether textarea is disabled
@@ -106,7 +111,7 @@ export default defineComponent({
     const textarea = ref<HTMLTextAreaElement | null>(null);
 
     const isDisabled = computed<boolean>(
-      () => props.disabled || (qForm?.disabled ?? false)
+      () => props.disabled || (qForm?.disabled.value ?? false)
     );
 
     const isSymbolLimitShown = computed<boolean>(() =>

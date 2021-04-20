@@ -128,7 +128,7 @@ export default defineComponent({
       Boolean(
         (errorMessage.value || ctx.slots.error) &&
           props.showErrorMessage &&
-          qForm?.showErrorMessage
+          qForm?.showErrorMessage.value
       )
     );
 
@@ -136,7 +136,8 @@ export default defineComponent({
 
     const propRules = computed<FilteredRuleItem[]>(() => {
       const rules =
-        props.rules ?? (props.prop ? get(qForm?.rules, props.prop) ?? [] : []);
+        props.rules ??
+        (props.prop ? get(qForm?.rules.value, props.prop) ?? [] : []);
 
       return Array.isArray(rules) ? rules : [rules];
     });
@@ -154,7 +155,7 @@ export default defineComponent({
     const rootClasses = computed<Record<string, boolean>>(() => ({
       'q-form-item_is-required': isRequired.value,
       'q-form-item_is-error': Boolean(errorMessage.value),
-      'q-form-item_is-no-asterisk': Boolean(qForm?.hideRequiredAsterisk)
+      'q-form-item_is-no-asterisk': Boolean(qForm?.hideRequiredAsterisk.value)
     }));
 
     const getFilteredRules = (
@@ -190,7 +191,7 @@ export default defineComponent({
         [props.prop]: triggeredRules
       });
 
-      const formModel = { [props.prop]: get(qForm?.model, props.prop) };
+      const formModel = { [props.prop]: get(qForm?.model.value, props.prop) };
 
       return new Promise(resolve => {
         validator.validate(
@@ -207,8 +208,8 @@ export default defineComponent({
     };
 
     const resetField = (): void => {
-      if (qForm?.model && props.prop) {
-        set(qForm.model, props.prop, initialValue);
+      if (qForm?.model?.value && props.prop) {
+        set(qForm.model.value, props.prop, initialValue);
       }
 
       errorMessage.value = null;
@@ -240,7 +241,7 @@ export default defineComponent({
 
     onMounted(() => {
       if (!props.prop) return;
-      initialValue = get(qForm?.model, props.prop, null);
+      initialValue = get(qForm?.model.value, props.prop, null);
 
       qForm?.fields.value.push(qFormItem);
     });

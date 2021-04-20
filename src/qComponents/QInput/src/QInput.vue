@@ -76,7 +76,7 @@ export default defineComponent({
      */
     modelValue: {
       type: String,
-      default: ''
+      default: null
     },
     /**
      * whether input is disabled
@@ -92,7 +92,9 @@ export default defineComponent({
       type: Boolean,
       default: false
     },
-    /** validate parent form if present */
+    /**
+     * validate parent form if present
+     */
     validateEvent: {
       type: Boolean,
       default: true
@@ -102,7 +104,7 @@ export default defineComponent({
      */
     suffixIcon: {
       type: String,
-      default: ''
+      default: null
     },
     /**
      * whether to show clear button
@@ -140,7 +142,7 @@ export default defineComponent({
     });
 
     const isDisabled = computed<boolean>(
-      () => props.disabled || (qForm?.disabled ?? false)
+      () => props.disabled || (qForm?.disabled.value ?? false)
     );
 
     const isSymbolLimitShown = computed<boolean>(() =>

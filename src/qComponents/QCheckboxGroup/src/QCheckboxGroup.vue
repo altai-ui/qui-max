@@ -1,6 +1,6 @@
 <template>
   <component
-    :is="tag"
+    :is="tag || 'div'"
     :class="['q-checkbox-group', `q-checkbox-group_${direction}`]"
     role="group"
     aria-label="checkbox-group"
@@ -19,6 +19,8 @@ import {
   computed,
   toRefs
 } from 'vue';
+
+import { validateArray } from '@/qComponents/helpers';
 import { QFormItemProvider } from '@/qComponents/QFormItem';
 
 import type {
@@ -60,8 +62,10 @@ export default defineComponent({
     direction: {
       type: String as PropType<QCheckboxGroupPropDirection>,
       default: 'vertical',
-      validator: (value: string): boolean =>
-        ['vertical', 'horizontal'].includes(value)
+      validator: validateArray<QCheckboxGroupPropDirection>([
+        'vertical',
+        'horizontal'
+      ])
     }
   },
 

@@ -1,6 +1,6 @@
 <template>
   <component
-    :is="tag"
+    :is="tag || 'div'"
     ref="root"
     class="q-radio-group"
     :class="`q-radio-group_${direction}`"
@@ -23,6 +23,7 @@ import {
   onMounted
 } from 'vue';
 
+import { validateArray } from '@/qComponents/helpers';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
 import type { QRadioGroupProvider } from '@/qComponents/QRadioGroup';
 import type {
@@ -39,7 +40,7 @@ export default defineComponent({
   componentName: 'QRadioGroup',
 
   props: {
-    modelValue: { type: [String, Number, Boolean], default: '' },
+    modelValue: { type: [String, Number, Boolean], default: null },
     /**
      * whether Radio is disabled
      */
@@ -51,8 +52,10 @@ export default defineComponent({
     direction: {
       type: String as PropType<QRadioGroupPropDirection>,
       default: 'vertical',
-      validator: (value: string): boolean =>
-        ['vertical', 'horizontal'].includes(value)
+      validator: validateArray<QRadioGroupPropDirection>([
+        'vertical',
+        'horizontal'
+      ])
     }
   },
 

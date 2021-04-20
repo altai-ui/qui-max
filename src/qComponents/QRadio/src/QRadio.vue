@@ -50,11 +50,11 @@ export default defineComponent({
     /**
      * the value of Radio label
      */
-    label: { type: String, default: '' },
+    label: { type: String, default: null },
     /**
      * binding value
      */
-    value: { type: [String, Number, Boolean], default: '' },
+    value: { type: [String, Number, Boolean], default: null },
     checked: { type: Boolean, default: false },
     /**
      * whether Radio is disabled
@@ -79,7 +79,7 @@ export default defineComponent({
     const isDisabled = computed<boolean>(
       () =>
         props.disabled ||
-        (qForm?.disabled ?? false) ||
+        (qForm?.disabled.value ?? false) ||
         (qRadioGroup?.disabled.value ?? false)
     );
 

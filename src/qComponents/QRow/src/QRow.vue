@@ -11,6 +11,7 @@
 <script lang="ts">
 import { defineComponent, PropType, computed } from 'vue';
 
+import { validateArray } from '@/qComponents/helpers';
 import type { QRowProps, QRowPropAlignV, QRowPropAlignH } from './types';
 
 export default defineComponent({
@@ -32,8 +33,14 @@ export default defineComponent({
     alignV: {
       type: String as PropType<QRowPropAlignV>,
       default: null,
-      validator: (value: string | null): boolean =>
-        [null, 'start', 'end', 'center', 'baseline', 'stretch'].includes(value)
+      validator: validateArray<QRowPropAlignV | null>([
+        null,
+        'start',
+        'end',
+        'center',
+        'baseline',
+        'stretch'
+      ])
     },
     /**
      * horizontal alignment of flex layout.
@@ -42,8 +49,14 @@ export default defineComponent({
     alignH: {
       type: String as PropType<QRowPropAlignH>,
       default: null,
-      validator: (value: string | null): boolean =>
-        [null, 'start', 'end', 'center', 'between', 'around'].includes(value)
+      validator: validateArray<QRowPropAlignH | null>([
+        null,
+        'start',
+        'end',
+        'center',
+        'between',
+        'around'
+      ])
     }
   },
 

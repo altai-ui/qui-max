@@ -3,9 +3,9 @@ import { App } from 'vue';
 import QCheckboxGroup from './src/QCheckboxGroup.vue';
 
 /* istanbul ignore next */
-QCheckboxGroup.install = (app: App) => {
+QCheckboxGroup.install = (app: App): void => {
   app.component(QCheckboxGroup.name, QCheckboxGroup);
 };
 
-export type { QCheckboxGroupProvider } from './src/types';
+export type { QCheckboxGroupProps, QCheckboxGroupProvider } from './src/types';
 export default QCheckboxGroup;

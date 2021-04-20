@@ -7,4 +7,5 @@ QCollapseItem.install = (app: App): void => {
   app.component(QCollapseItem.name, QCollapseItem);
 };
 
+export type { QCollapseItemProps } from './src/types';
 export default QCollapseItem;

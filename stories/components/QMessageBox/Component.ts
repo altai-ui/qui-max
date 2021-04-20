@@ -2,7 +2,9 @@
 import { Story } from '@storybook/vue3';
 import { defineComponent, defineAsyncComponent, ref } from 'vue';
 
-const QMessageBoxComponentStory: Story = () =>
+import type { QMessageBoxProps } from '@/qComponents/QMessageBox';
+
+const QMessageBoxComponentStory: Story<QMessageBoxProps> = () =>
   defineComponent({
     components: {
       MessageBoxFormTest: defineAsyncComponent(
@@ -12,7 +14,7 @@ const QMessageBoxComponentStory: Story = () =>
     setup() {
       const isVisible = ref(false);
 
-      const handleClick = async () => {
+      const handleClick = async (): Promise<void> => {
         isVisible.value = true;
       };
 

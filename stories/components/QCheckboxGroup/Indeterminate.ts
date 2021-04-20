@@ -3,9 +3,11 @@ import { Story } from '@storybook/vue3';
 import { defineComponent, ref, watch } from 'vue';
 
 import QCheckboxGroup from '@/qComponents/QCheckboxGroup';
+import type { QCheckboxGroupProps } from '@/qComponents/QCheckboxGroup';
+
 import QCheckbox from '@/qComponents/QCheckbox';
 
-const QCheckboxGroupIndeterminateStory: Story = args =>
+const QCheckboxGroupIndeterminateStory: Story<QCheckboxGroupProps> = args =>
   defineComponent({
     components: { QCheckboxGroup, QCheckbox },
     setup() {
@@ -14,7 +16,7 @@ const QCheckboxGroupIndeterminateStory: Story = args =>
       const cities = ref(['Option A', 'Option B', 'Option C', 'Option D']);
       const isIndeterminate = ref(true);
 
-      const handleChange = (value: boolean) => {
+      const handleChange = (value: boolean): void => {
         checkedCities.value = value ? cities.value : [];
         isIndeterminate.value = false;
       };

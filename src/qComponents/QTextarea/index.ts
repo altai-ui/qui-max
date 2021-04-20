@@ -7,4 +7,5 @@ QTextarea.install = (app: App): void => {
   app.component(QTextarea.name, QTextarea);
 };
 
+export type { QTextareaProps } from './src/types';
 export default QTextarea;

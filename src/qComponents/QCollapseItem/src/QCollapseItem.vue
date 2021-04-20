@@ -8,7 +8,7 @@
     <button
       type="button"
       class="q-collapse-item__header"
-      @click="handleTabClick"
+      @click="handleHeaderClick"
     >
       <slot name="title">
         <div class="q-collapse-item__title">{{ title }}</div>
@@ -36,7 +36,9 @@
 import { defineComponent, inject, computed } from 'vue';
 
 import { QCollapseProvider } from '@/qComponents/QCollapse';
+import { randId } from '@/qComponents/helpers';
 import QCollapseTransition from './QCollapseTransition.vue';
+import type { QCollapseItemProps } from './types';
 
 export default defineComponent({
   name: 'QCollapseItem',
@@ -55,27 +57,30 @@ export default defineComponent({
     }
   },
 
-  setup(props) {
+  setup(props: QCollapseItemProps) {
     const qCollapse = inject<QCollapseProvider>('qCollapse');
 
-    const preparedName = computed(
-      () => props.name ?? qCollapse?.uniqueId('default-collapse-name-')
+    const preparedName = computed<string | number>(
+      () =>
+        props.name ?? qCollapse?.uniqueId('default-collapse-name-') ?? randId()
     );
-    const isActive = computed(
-      () => qCollapse?.activeNames?.value.includes(preparedName.value) ?? false
+    const isActive = computed<boolean>(
+      () =>
+        qCollapse?.activeNames?.value.includes(preparedName.value ?? '') ??
+        false
     );
-    const icon = computed(() =>
+    const icon = computed<'q-icon-minus' | 'q-icon-plus'>(() =>
       isActive.value ? 'q-icon-minus' : 'q-icon-plus'
     );
 
-    const handleTabClick = () => {
-      qCollapse?.updateValue(preparedName.value);
+    const handleHeaderClick = (): void => {
+      if (preparedName.value) qCollapse?.updateValue(preparedName.value);
     };
 
     return {
       isActive,
       icon,
-      handleTabClick
+      handleHeaderClick
     };
   }
 });

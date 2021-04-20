@@ -1,6 +1,6 @@
-import { BarMapItem, Styles } from './types';
+import type { BarMapItem, Styles } from './types';
 
-export const BAR_MAP = {
+export const BAR_MAP: Record<'vertical' | 'horizontal', BarMapItem> = {
   vertical: {
     offset: 'offsetHeight',
     scroll: 'scrollTop',
@@ -10,7 +10,7 @@ export const BAR_MAP = {
     axis: 'Y',
     client: 'clientY',
     direction: 'top'
-  } as BarMapItem,
+  },
   horizontal: {
     offset: 'offsetWidth',
     scroll: 'scrollLeft',
@@ -20,7 +20,7 @@ export const BAR_MAP = {
     axis: 'X',
     client: 'clientX',
     direction: 'left'
-  } as BarMapItem
+  }
 };
 
 export const renderThumbStyle = (

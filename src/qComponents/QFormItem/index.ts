@@ -8,8 +8,9 @@ QFormItem.install = (app: App): void => {
 };
 
 export type {
+  QFormItemProps,
+  QFormItemPropRules,
   QFormItemContext,
-  QFormItemProvider,
-  FilteredRuleItem
+  QFormItemProvider
 } from './src/types';
 export default QFormItem;

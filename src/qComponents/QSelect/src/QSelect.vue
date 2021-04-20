@@ -96,7 +96,6 @@ import {
   PropType,
   toRefs,
   readonly,
-  Ref
 } from 'vue';
 import {
   isObject,
@@ -114,7 +113,7 @@ import {
   removeResizeListener
 } from '@/qComponents/helpers/resizeEvent';
 import { QFormProvider } from '@/qComponents/QForm';
-import type { QInput } from '@/qComponents/QInput/src/types';
+import type { QInputInstance } from '@/qComponents/QInput/src/types';
 import { QFormItemProvider } from '@/qComponents/QFormItem';
 import { QOptionInstance } from '@/qComponents/QOption';
 import QSelectDropdown from './QSelectDropdown.vue';
@@ -270,7 +269,7 @@ export default defineComponent({
   ],
 
   setup(props, ctx) {
-    const input = ref<QInput | null>(null);
+    const input = ref<QInputInstance | null>(null);
     const root = ref<HTMLElement | null>(null);
     const tags = ref<QSelectTagsInstance | null>(null);
     const dropdown = ref<QSelectDropdownInstance | null>(null);
@@ -396,7 +395,7 @@ export default defineComponent({
     /**
      * @public
      */
-    const setSelected = () => {
+    const setSelected = (): void => {
       const result: QOptionInstance | (QOptionInstance | NewOption)[] = [];
       if (props.multiple) {
         if (Array.isArray(props.modelValue)) {
@@ -436,7 +435,7 @@ export default defineComponent({
       state.selected = null;
     };
 
-    const toggleMenu = () => {
+    const toggleMenu = (): void => {
       if (isDisabled.value) return;
 
       if (state.menuVisibleOnFocus) {
@@ -453,7 +452,7 @@ export default defineComponent({
       }
     };
 
-    const handleKeyUp = (e: KeyboardEvent) => {
+    const handleKeyUp = (e: KeyboardEvent): void => {
       switch (e.key) {
         case 'Escape': {
           state.isDropdownShown = false;
@@ -478,7 +477,7 @@ export default defineComponent({
       }
     };
 
-    const popperInit = () => {
+    const popperInit = (): void => {
       const inputEl = input?.value?.$el as HTMLInputElement;
       const dropdownEl = dropdown.value?.$el as HTMLElement;
 
@@ -494,7 +493,7 @@ export default defineComponent({
       });
     };
 
-    const handleDocumentClick = (e: MouseEvent) => {
+    const handleDocumentClick = (e: MouseEvent): void => {
       const target = e.target as HTMLElement;
       const dropdownEl = dropdown.value?.$el as HTMLElement;
 
@@ -505,14 +504,14 @@ export default defineComponent({
       state.isDropdownShown = false;
     };
 
-    const showPopper = () => {
+    const showPopper = (): void => {
       state.isDropdownShown = true;
       popperInit();
       document.addEventListener('keyup', handleKeyUp, true);
       document.addEventListener('click', handleDocumentClick, true);
     };
 
-    const hidePopper = () => {
+    const hidePopper = (): void => {
       state.isDropdownShown = false;
       state.query = '';
 
@@ -587,7 +586,7 @@ export default defineComponent({
       }
     );
 
-    const handleResize = async () => {
+    const handleResize = async (): Promise<void> => {
       if (!root.value) return;
       state.inputWidth = root.value.getBoundingClientRect().width;
 
@@ -611,7 +610,7 @@ export default defineComponent({
       document.removeEventListener('click', handleDocumentClick, true);
     });
 
-    const handleFocus = (event: MouseEvent) => {
+    const handleFocus = (event: MouseEvent): void => {
       if (props.filterable) {
         state.isDropdownShown = true;
         state.menuVisibleOnFocus = true;
@@ -620,12 +619,12 @@ export default defineComponent({
       ctx.emit('focus', event);
     };
 
-    const blur = () => {
+    const blur = (): void => {
       state.isDropdownShown = false;
       input?.value?.$el.blur();
     };
 
-    const handleBlur = (event: MouseEvent) => {
+    const handleBlur = (event: MouseEvent): void => {
       setTimeout(() => {
         ctx.emit('blur', event);
       }, 50);
@@ -660,7 +659,7 @@ export default defineComponent({
     /**
      * @public
      */
-    const toggleOptionSelection = (option: QOptionInstance) => {
+    const toggleOptionSelection = (option: QOptionInstance): void => {
       if (!option.modelValue) return;
       if (props.multiple && Array.isArray(props.modelValue)) {
         const value = [...props.modelValue];
@@ -691,7 +690,7 @@ export default defineComponent({
       }
     };
 
-    const handleEnterKeyUp = () => {      
+    const handleEnterKeyUp = (): void => {      
       let option = null;
       if (isNewOptionShown.value) {
         option = state.options.find(({ created }) => created);
@@ -704,7 +703,7 @@ export default defineComponent({
       }
     };
 
-    const deleteTag = (tag: QOptionInstance) => {
+    const deleteTag = (tag: QOptionInstance): void => {
       if (
         isDisabled.value ||
         !Array.isArray(props.modelValue) ||
@@ -721,24 +720,24 @@ export default defineComponent({
       ctx.emit('remove-tag', tag.modelValue);
     };
 
-    const onInputChange = () => {
+    const onInputChange = (): void => {
       if (props.filterable && state.query !== state.selectedLabel) {
         state.query = state.selectedLabel;
       }
     };
 
-    const addOption = (optionInstance: QOptionInstance) => {
+    const addOption = (optionInstance: QOptionInstance): void => {
       state.options.push(optionInstance);
     };
 
-    const removeOption = (optionInstance: QOptionInstance) => {
+    const removeOption = (optionInstance: QOptionInstance): void => {
       const currentOptionIndex = state.options.indexOf(optionInstance);
       if (currentOptionIndex > -1) {
         state.options.splice(currentOptionIndex, 1);
       }
     };
 
-    const updateHoverIndex = (index: number) => {
+    const updateHoverIndex = (index: number): void => {
       state.hoverIndex = index;
     };
 

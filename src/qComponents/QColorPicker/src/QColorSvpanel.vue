@@ -15,6 +15,7 @@
 import { defineComponent, ref, computed, onMounted, watch } from 'vue';
 
 import draggable from './draggable';
+import type { QColorSvpanelProps } from './types';
 
 const UPDATE_SATURATION_EVENT = 'update:saturation';
 const UPDATE_VALUE_EVENT = 'update:value';
@@ -40,22 +41,22 @@ export default defineComponent({
 
   emits: [UPDATE_SATURATION_EVENT, UPDATE_VALUE_EVENT],
 
-  setup(props, { emit }) {
-    const rootStyles = computed(() => ({
+  setup(props: QColorSvpanelProps, ctx) {
+    const rootStyles = computed<Record<string, string>>(() => ({
       backgroundColor: `hsl(${props.hue}, 100%, 50%)`
     }));
 
     const cursorTop = ref(0);
     const cursorLeft = ref(0);
 
-    const cursorStyles = computed(() => ({
+    const cursorStyles = computed<Record<string, string>>(() => ({
       top: `${cursorTop.value}px`,
       left: `${cursorLeft.value}px`
     }));
 
     const root = ref<HTMLElement | null>(null);
 
-    const update = () => {
+    const update = (): void => {
       if (!root.value) return;
 
       const { clientWidth: width, clientHeight: height } = root.value;
@@ -63,7 +64,7 @@ export default defineComponent({
       cursorTop.value = ((100 - props.value) * height) / 100;
     };
 
-    const handleDrag = (event: MouseEvent) => {
+    const handleDrag = (event: MouseEvent): void => {
       if (!root.value) return;
 
       const rect = root.value.getBoundingClientRect();
@@ -76,8 +77,8 @@ export default defineComponent({
       cursorLeft.value = left;
       cursorTop.value = top;
 
-      emit(UPDATE_SATURATION_EVENT, (left / rect.width) * 100);
-      emit(UPDATE_VALUE_EVENT, 100 - (top / rect.height) * 100);
+      ctx.emit(UPDATE_SATURATION_EVENT, (left / rect.width) * 100);
+      ctx.emit(UPDATE_VALUE_EVENT, 100 - (top / rect.height) * 100);
     };
 
     watch(

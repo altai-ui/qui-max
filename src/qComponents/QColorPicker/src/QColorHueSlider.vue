@@ -20,6 +20,7 @@
 import { defineComponent, ref, computed, onMounted, watch } from 'vue';
 
 import draggable from './draggable';
+import type { QColorHueSliderProps } from './types';
 
 const UPDATE_HUE_EVENT = 'update:hue';
 
@@ -36,9 +37,9 @@ export default defineComponent({
 
   emits: [UPDATE_HUE_EVENT],
 
-  setup(props, { emit }) {
+  setup(props: QColorHueSliderProps, ctx) {
     const thumbTop = ref(0);
-    const thumbStyles = computed(() => ({
+    const thumbStyles = computed<Record<string, string>>(() => ({
       top: `${thumbTop.value}px`
     }));
 
@@ -46,7 +47,7 @@ export default defineComponent({
     const thumb = ref<HTMLElement | null>(null);
     const bar = ref<HTMLElement | null>(null);
 
-    const handleDrag = (event: MouseEvent) => {
+    const handleDrag = (event: MouseEvent): void => {
       const thumbElement = thumb.value;
       if (!root.value || !thumbElement) return;
 
@@ -61,14 +62,14 @@ export default defineComponent({
           360
       );
 
-      emit(UPDATE_HUE_EVENT, hue);
+      ctx.emit(UPDATE_HUE_EVENT, hue);
     };
 
-    const handleBarClick = (event: MouseEvent) => {
+    const handleBarClick = (event: MouseEvent): void => {
       if (event.target !== thumb.value) handleDrag(event);
     };
 
-    const getThumbTop = () => {
+    const getThumbTop = (): number => {
       const rootElement = root.value;
       const thumbElement = thumb.value;
       if (!rootElement || !thumbElement) return 0;
@@ -80,7 +81,7 @@ export default defineComponent({
       );
     };
 
-    const update = () => {
+    const update = (): void => {
       thumbTop.value = getThumbTop();
     };
 

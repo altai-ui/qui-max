@@ -8,7 +8,11 @@
 import { defineComponent, PropType, provide, watch, ref } from 'vue';
 import { uniqueId } from 'lodash-es';
 
-import type { QCollapseProvider } from './types';
+import type {
+  QCollapseProps,
+  QCollapsePropModelValue,
+  QCollapseProvider
+} from './types';
 
 const UPDATE_MODEL_VALUE_EVENT = 'update:modelValue';
 const CHANGE_EVENT = 'change';
@@ -19,10 +23,8 @@ export default defineComponent({
 
   props: {
     modelValue: {
-      type: [Array, String, Number] as PropType<
-        null | string | number | (string | number)[]
-      >,
-      default: () => []
+      type: [Array, String, Number] as PropType<QCollapsePropModelValue>,
+      default: (): [] => []
     },
     /**
      * shrink all panels, except the last selected
@@ -35,10 +37,10 @@ export default defineComponent({
 
   emits: [UPDATE_MODEL_VALUE_EVENT, CHANGE_EVENT],
 
-  setup(props, ctx) {
+  setup(props: QCollapseProps, ctx) {
     const activeNames = ref<(string | number)[]>([]);
 
-    const updateValue = (name: string | number) => {
+    const updateValue = (name: string | number): void => {
       if (props.accordion) {
         activeNames.value = activeNames.value[0] === name ? [] : [name];
       } else {

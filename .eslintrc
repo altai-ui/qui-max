@@ -43,7 +43,9 @@
     "vue/html-closing-bracket-newline": "warn",
     "vue/html-indent": "warn",
 
-    "no-console": 0,
+    "@typescript-eslint/explicit-function-return-type": "error",
+
+    "no-console": 1,
     "no-debugger": 0
   }
 }

@@ -62,7 +62,7 @@ import { inject, computed, ref, reactive, watch, defineComponent, PropType } fro
 import { useI18n } from 'vue-i18n';
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
-import type { State } from './types';
+import type { QInputInstance, QInputProps, QInputState } from './types';
 
 export default defineComponent({
   name: 'QInput',
@@ -127,46 +127,48 @@ export default defineComponent({
 
   emits: ['blur', 'focus', 'input', 'change', 'clear', 'update:modelValue'],
 
-  setup(props, ctx) {
+  setup(props: QInputProps, ctx): QInputInstance {
     const root = ref<HTMLElement | null>(null);
     const input = ref<HTMLElement | null>(null);
     const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
     const qForm = inject<QFormProvider | null>('qForm', null);
 
-    const state = reactive<State>({
+    const state = reactive<QInputState>({
       hovering: false,
       focused: false,
       isPasswordVisible: false // state of passwordSwitch
     });
 
-    const inputType = computed(() => {
-      if (!props.passwordSwitch) return ctx.attrs.type;
+    const inputType = computed<string>(() => {
+      if (!props.passwordSwitch) return (ctx.attrs.type ?? 'text') as string;
 
       return state.isPasswordVisible ? 'password' : 'text';
     });
 
-    const isDisabled = computed(
+    const isDisabled = computed<boolean>(
       () => props.disabled || (qForm?.disabled ?? false)
     );
 
-    const isSymbolLimitShown = computed(
-      () =>
+    const isSymbolLimitShown = computed<boolean>(() =>
+      Boolean(
         props.showSymbolLimit &&
-        ctx.attrs.maxlength &&
-        !isDisabled.value &&
-        !ctx.attrs.readonly &&
-        !props.passwordSwitch
+          ctx.attrs.maxlength &&
+          !isDisabled.value &&
+          !ctx.attrs.readonly &&
+          !props.passwordSwitch
+      )
     );
 
-    const isPasswordSwitchShown = computed(
-      () =>
+    const isPasswordSwitchShown = computed<boolean>(() =>
+      Boolean(
         props.passwordSwitch &&
-        !isDisabled.value &&
-        !ctx.attrs.readonly &&
-        (Boolean(props.modelValue) || state.focused || state.hovering)
+          !isDisabled.value &&
+          !ctx.attrs.readonly &&
+          (props.modelValue || state.focused || state.hovering)
+      )
     );
 
-    const isClearButtonShown = computed(() =>
+    const isClearButtonShown = computed<boolean>(() =>
       Boolean(
         props.clearable &&
           !isDisabled.value &&
@@ -176,7 +178,7 @@ export default defineComponent({
       )
     );
 
-    const isSuffixVisible = computed(() =>
+    const isSuffixVisible = computed<boolean>(() =>
       Boolean(
         ctx.slots.suffix ||
           props.suffixIcon ||
@@ -187,44 +189,41 @@ export default defineComponent({
 
     const classes = computed(() => {
       const mainClass = 'q-input';
-      const arrayPart: string[] = Array.isArray(props.rootClass) ? props.rootClass : [];
-      const objectPart: { [key: string]: boolean } = !Array.isArray(props.rootClass) ? props.rootClass : {};
       
       return [
         mainClass,
-        ...arrayPart,
+        props.rootClass,
         {
           [`${mainClass}_disabled`]: isDisabled.value,
           [`${mainClass}_suffix`]: isSuffixVisible.value,
-          ...objectPart,
         },
       ];
     });
 
-    const textLength = computed(() => props.modelValue?.length ?? 0);
+    const textLength = computed<number>(() => props.modelValue?.length ?? 0);
 
-    const updateModel = (event: Event) => {
+    const updateModel = (event: Event): void => {
       const target = event.target as HTMLInputElement;
       ctx.emit('update:modelValue', target.value ?? '');
     };
 
-    const handleInput = (event: Event) => {
+    const handleInput = (event: Event): void => {
       ctx.emit('input', event);
       updateModel(event);
     };
 
-    const handleChange = (event: Event) => {
+    const handleChange = (event: Event): void => {
       ctx.emit('change', event);
       updateModel(event);
     };
 
-    const handleBlur = (event: FocusEvent) => {
+    const handleBlur = (event: FocusEvent): void => {
       state.focused = false;
       ctx.emit('blur', event);
       if (props.validateEvent) qFormItem?.validateField('blur');
     };
 
-    const handleFocus = (event: FocusEvent) => {
+    const handleFocus = (event: FocusEvent): void => {
       state.focused = true;
       ctx.emit('focus', event);
     };
@@ -234,7 +233,7 @@ export default defineComponent({
       input?.value?.focus();
     };
 
-    const handleClearClick = (event: MouseEvent) => {
+    const handleClearClick = (event: MouseEvent): void => {
       ctx.emit('update:modelValue', '');
       ctx.emit('clear', event);
     };

@@ -1,29 +1,46 @@
-import { Ref } from 'vue';
+import { Ref, ComputedRef } from 'vue';
 
-export interface State {
+type Classes = Record<string, boolean>;
+export type QInputClass = Nullable<string | Classes | Classes[]>;
+
+export interface QInputProps {
+  modelValue: Nullable<string>;
+  disabled: Nullable<boolean>;
+  showSymbolLimit: Nullable<boolean>;
+  validateEvent: Nullable<boolean>;
+  suffixIcon: Nullable<string>;
+  clearable: Nullable<boolean>;
+  passwordSwitch: Nullable<boolean>;
+  rootClass: QInputClass;
+}
+
+export interface QInputState {
   hovering: boolean;
   focused: boolean;
   isPasswordVisible: boolean;
 }
 
-export interface QInput {
-  state: State;
-  classes: Array<string | { [key: string]: string }>;
-  inputDisabled: Ref<boolean>;
+export interface QInputInstance {
+  state: QInputState;
+  classes: ComputedRef<QInputClass[]>;
+  isDisabled: ComputedRef<boolean>;
   isPasswordSwitchShown: Ref<boolean>;
   isSuffixVisible: Ref<boolean>;
   isClearButtonShown: Ref<boolean>;
   isSymbolLimitShown: Ref<boolean>;
-  upperLimit: Ref<number>;
   textLength: Ref<number>;
   inputType: Ref<string>;
   // refs
-  input: Ref<HTMLInputElement>;
+  input: Ref<HTMLElement | null>;
+  root: Ref<HTMLElement | null>;
   // methods
   handleBlur: (event: FocusEvent) => void;
   handleFocus: (event: FocusEvent) => void;
   handlePasswordVisible: () => void;
   handleClearClick: (event: MouseEvent) => void;
+  handleInput: (event: Event) => void;
+  handleChange: (event: Event) => void;
+  updateModel: (event: Event) => void;
   t: (key: string) => string;
-  $el: HTMLInputElement;
+  $el?: HTMLInputElement;
 }

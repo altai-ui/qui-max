@@ -3,6 +3,7 @@ import { Meta, Story } from '@storybook/vue3';
 import { defineComponent, ref } from 'vue';
 
 import QTextarea from '@/qComponents/QTextarea';
+import type { QTextareaProps } from '@/qComponents/QTextarea';
 
 const storyMetadata: Meta = {
   title: 'Components/QTextarea',
@@ -42,21 +43,30 @@ const storyMetadata: Meta = {
   }
 };
 
-const QTextareaStory: Story = args =>
+type StoryArgs = QTextareaProps & {
+  placeholder: string;
+  maxlength: string | number;
+};
+
+const QTextareaStory: Story<StoryArgs> = args =>
   defineComponent({
     setup() {
       const model = ref('');
 
       const handleFocus = (event: Event): void => {
+        // eslint-disable-next-line no-console
         console.log('handleFocus', event);
       };
       const handleBlur = (event: Event): void => {
+        // eslint-disable-next-line no-console
         console.log('handleBlur', event);
       };
       const handleInput = (event: Event): void => {
+        // eslint-disable-next-line no-console
         console.log('handleInput', event);
       };
       const handleChange = (event: Event): void => {
+        // eslint-disable-next-line no-console
         console.log('handleChange', event);
       };
 

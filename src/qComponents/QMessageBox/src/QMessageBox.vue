@@ -108,7 +108,12 @@ import {
 
 import { getConfig } from '@/qComponents/config';
 
-import type { QMessageBoxEvent, QMessageBoxBeforeClose } from './types';
+import type {
+  QMessageBoxProps,
+  QMessageBoxPropTeleportTo,
+  QMessageBoxPropBeforeClose,
+  QMessageBoxEvent
+} from './types';
 
 const DEFAULT_Z_INDEX = 2000;
 const UPDATE_IS_VISIBLE_EVENT = 'update:isVisible';
@@ -137,29 +142,29 @@ export default defineComponent({
      * (has to be a valid query selector, or an HTMLElement)
      */
     teleportTo: {
-      type: [String, HTMLElement],
-      default: 'body'
+      type: [String, HTMLElement] as PropType<QMessageBoxPropTeleportTo>,
+      default: null
     },
     /**
      * title of the QMessageBox
      */
     title: {
       type: String,
-      default: ''
+      default: null
     },
     /**
      * content of the QMessageBox
      */
     message: {
       type: String,
-      default: ''
+      default: null
     },
     /**
      * subcontent of the QMessageBox
      */
     submessage: {
       type: String,
-      default: ''
+      default: null
     },
     /**
      * text content of confirm button
@@ -193,9 +198,7 @@ export default defineComponent({
      * callback before QMessageBox closes, and it will prevent QMessageBox from closing
      */
     beforeClose: {
-      type: Function as PropType<
-        (arg0: QMessageBoxBeforeClose) => Promise<boolean>
-      >,
+      type: Function as PropType<QMessageBoxPropBeforeClose>,
       default: null
     },
     /**
@@ -216,7 +219,7 @@ export default defineComponent({
 
   emits: [UPDATE_IS_VISIBLE_EVENT, CONFIRM_EVENT, CLOSE_EVENT, CANCEL_EVENT],
 
-  setup(props, { emit }) {
+  setup(props: QMessageBoxProps, { emit }) {
     const isRendered = ref(false);
     const wrapZIndex = ref(DEFAULT_Z_INDEX);
 
@@ -226,7 +229,7 @@ export default defineComponent({
 
     let elementToFocusAfterClosing: HTMLElement | null = null;
 
-    const isActionsSectionShown = computed(
+    const isActionsSectionShown = computed<boolean>(
       () => Boolean(props.confirmButtonText) || Boolean(props.cancelButtonText)
     );
 
@@ -248,11 +251,11 @@ export default defineComponent({
       { immediate: true }
     );
 
-    const handleAfterLeave = () => {
+    const handleAfterLeave = (): void => {
       isRendered.value = false;
     };
 
-    const handleDocumentFocus = (event: FocusEvent) => {
+    const handleDocumentFocus = (event: FocusEvent): void => {
       const messageBoxValue = messageBox.value;
       if (
         messageBoxValue &&
@@ -262,7 +265,10 @@ export default defineComponent({
       }
     };
 
-    const closeBox = async ({ action, payload = null }: QMessageBoxEvent) => {
+    const closeBox = async ({
+      action,
+      payload = null
+    }: QMessageBoxEvent): Promise<void> => {
       let isReadyToClose = true;
 
       if (typeof props.beforeClose === 'function') {
@@ -288,15 +294,15 @@ export default defineComponent({
       }
     };
 
-    const handleConfirmBtnClick = () => {
+    const handleConfirmBtnClick = (): void => {
       closeBox({ action: CONFIRM_EVENT });
     };
 
-    const handleCancelBtnClick = () => {
+    const handleCancelBtnClick = (): void => {
       closeBox({ action: CANCEL_EVENT });
     };
 
-    const emitCloseEvent = () => {
+    const emitCloseEvent = (): void => {
       closeBox({
         action: props.distinguishCancelAndClose ? CLOSE_EVENT : CANCEL_EVENT
       });

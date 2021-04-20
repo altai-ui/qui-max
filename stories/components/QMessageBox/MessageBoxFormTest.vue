@@ -3,9 +3,7 @@
     distinguish-cancel-and-close
     @close="handleCancelClick"
   >
-    <template
-      #title
-    >Morbi massa libero, vehicula nec consequat sed, porta a sem.</template>
+    <template #title>Morbi massa libero, vehicula nec consequat sed, porta a sem.</template>
 
     <template #content>
       <q-form :model="formModel">
@@ -47,14 +45,14 @@ export default defineComponent({
     const isSending = ref(false);
     const formModel = reactive({ name: 'Testname' });
 
-    const handleCancelClick = () => {
+    const handleCancelClick = (): void => {
       emit(UPDATE_IS_VISIBLE_EVENT, false);
     };
 
-    const handleSendClick = async () => {
+    const handleSendClick = async (): Promise<void> => {
       isSending.value = true;
 
-      const promise = () =>
+      const promise = (): Promise<string> =>
         new Promise(resolve => {
           setTimeout(() => resolve('done'), 1000);
         });

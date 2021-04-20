@@ -69,17 +69,17 @@ export default defineComponent({
     const autocomplete = qSelect?.autocomplete;
 
 
-    const handleBackspaceKeyDown = () => {
+    const handleBackspaceKeyDown = (): void => {
       if (!selectState?.query && Array.isArray(selectState?.selected)) {
         ctx.emit('remove-tag', selectState?.selected[selectState.selected.length - 1]);
       }
     };
 
-    const handleTagClose = (option: QOptionInstance[] | null) => {
+    const handleTagClose = (option: QOptionInstance[] | null): void => {
       ctx.emit('remove-tag', option);
     };
 
-    const handleInput = (event: KeyboardEvent) => {
+    const handleInput = (event: KeyboardEvent): void => {
       const target = event.target as HTMLInputElement;
       ctx.emit('update:query', target.value);
     };

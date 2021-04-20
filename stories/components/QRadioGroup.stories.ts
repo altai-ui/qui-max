@@ -3,6 +3,7 @@ import { Meta, Story } from '@storybook/vue3';
 import { defineComponent, ref } from 'vue';
 
 import QRadioGroup from '@/qComponents/QRadioGroup';
+import type { QRadioGroupProps } from '@/qComponents/QRadioGroup';
 import QRadio from '@/qComponents/QRadio';
 
 const storyMetadata: Meta = {
@@ -17,7 +18,7 @@ const storyMetadata: Meta = {
   }
 };
 
-const QRadioGroupStory: Story = args =>
+const QRadioGroupStory: Story<QRadioGroupProps> = args =>
   defineComponent({
     components: { QRadio, QRadioGroup },
     setup() {

@@ -9,7 +9,7 @@ import { defineComponent } from 'vue';
 
 /* eslint-disable no-param-reassign */
 const on = {
-  beforeEnter(el: HTMLElement) {
+  beforeEnter(el: HTMLElement): void {
     el.classList.add('collapse-transition');
     if (!el.dataset) el.dataset = {};
     el.dataset.oldPaddingTop = el.style.paddingTop;
@@ -18,7 +18,7 @@ const on = {
     el.style.paddingTop = '0';
     el.style.paddingBottom = '0';
   },
-  enter(el: HTMLElement) {
+  enter(el: HTMLElement): void {
     el.dataset.oldOverflow = el.style.overflow;
     if (el.scrollHeight !== 0) {
       el.style.height = `${el.scrollHeight}px`;
@@ -31,13 +31,13 @@ const on = {
     }
     el.style.overflow = 'hidden';
   },
-  afterEnter(el: HTMLElement) {
+  afterEnter(el: HTMLElement): void {
     // for safari: remove class then reset height is necessary
     el.classList.remove('collapse-transition');
     el.style.height = '';
     el.style.overflow = el.dataset.oldOverflow ?? '';
   },
-  beforeLeave(el: HTMLElement) {
+  beforeLeave(el: HTMLElement): void {
     if (!el.dataset) el.dataset = {};
     el.dataset.oldPaddingTop = el.style.paddingTop;
     el.dataset.oldPaddingBottom = el.style.paddingBottom;
@@ -45,7 +45,7 @@ const on = {
     el.style.height = `${el.scrollHeight}px`;
     el.style.overflow = 'hidden';
   },
-  leave(el: HTMLElement) {
+  leave(el: HTMLElement): void {
     if (el.scrollHeight !== 0) {
       // for safari: add class after set height, or it will jump to zero height suddenly, weired
       el.classList.add('collapse-transition');
@@ -55,7 +55,7 @@ const on = {
       el.style.paddingBottom = '0';
     }
   },
-  afterLeave(el: HTMLElement) {
+  afterLeave(el: HTMLElement): void {
     el.classList.remove('collapse-transition');
     el.style.height = '';
     el.style.overflow = el.dataset.oldOverflow ?? '';

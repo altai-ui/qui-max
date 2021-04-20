@@ -7,7 +7,7 @@ export type ResizableElement = HTMLElement & {
 };
 
 /* istanbul ignore next */
-const resizeHandler = function (entries: ResizeObserverEntry[]) {
+const resizeHandler = function (entries: ResizeObserverEntry[]): void {
   Object.values(entries).forEach(entry => {
     const listeners =
       (entry.target as ResizableElement).__resizeListeners__ || [];

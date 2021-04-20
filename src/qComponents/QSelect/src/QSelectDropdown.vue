@@ -136,7 +136,7 @@ export default defineComponent({
       }
     );
 
-    const navigateDropdown = (e: KeyboardEvent) => {
+    const navigateDropdown = (e: KeyboardEvent): void => {
       const target = e.target as HTMLElement;
       if (!root.value || !target || !qSelect) return;
       if (
@@ -190,7 +190,7 @@ export default defineComponent({
       node?.focus();
     };
 
-    const handleSelectAllClick = () => {
+    const handleSelectAllClick = (): void => {
       const modelValue = qSelect?.modelValue.value;
       const valueKey = qSelect?.valueKey.value ?? 'value';
 
@@ -200,8 +200,8 @@ export default defineComponent({
           .filter(({ isVisible, disabled }) => !disabled && isVisible)
           .map(({ key }) => key) ?? [];
 
-        const getKey = (value: string | number | Option) => {
-          return isPlainObject(value) ? get(value, valueKey) : value;
+        const getKey = (value: string | number | Option): string | number | Option => {
+          return isPlainObject(value) ? get(value, valueKey) : value; 
         };
 
         ctx.emit(

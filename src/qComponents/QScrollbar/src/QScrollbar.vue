@@ -58,7 +58,13 @@ import {
 } from '@/qComponents/helpers/resizeEvent';
 
 import QBar from './QBar.vue';
-import type { QScrollbarProvider } from './types';
+import type {
+  QScrollbarProps,
+  QScrollbarPropScrollTo,
+  QScrollbarPropTheme,
+  QScrollbarPropWrapClass,
+  QScrollbarProvider
+} from './types';
 
 const OFFSET = -10;
 
@@ -73,7 +79,7 @@ export default defineComponent({
      * passing DOM element will scroll content to it (works dynamically)
      */
     scrollTo: {
-      type: HTMLElement,
+      type: HTMLElement as PropType<QScrollbarPropScrollTo>,
       default: null
     },
     /**
@@ -84,9 +90,10 @@ export default defineComponent({
      * changes style
      */
     theme: {
-      type: String as PropType<'primary' | 'secondary'>,
+      type: String as PropType<QScrollbarPropTheme>,
       default: 'primary',
-      validator: (value: string) => ['primary', 'secondary'].includes(value)
+      validator: (value: string): boolean =>
+        ['primary', 'secondary'].includes(value)
     },
     /**
      * custom wrapper content class (it helps you to style content)
@@ -106,14 +113,14 @@ export default defineComponent({
     /**
      * custom inner content class
      */
-    viewStyle: { type: Object, default: null },
+    viewStyle: { type: [Object, String, Array], default: null },
     /**
      * whether is resizeListener will watch for parent
      */
     noresize: { type: Boolean, default: false }
   },
 
-  setup(props) {
+  setup(props: QScrollbarProps) {
     const root = ref<HTMLElement | null>(null);
     const wrap = ref<HTMLElement | null>(null);
     const resize = ref<HTMLElement | null>(null);
@@ -123,26 +130,24 @@ export default defineComponent({
     const moveX = ref(0);
     const moveY = ref(0);
 
-    const isXBarShown = computed(() => sizeWidth.value !== '');
-    const isYBarShown = computed(() => sizeHeight.value !== '');
+    const isXBarShown = computed<boolean>(() => sizeWidth.value !== '');
+    const isYBarShown = computed<boolean>(() => sizeHeight.value !== '');
 
-    const classes = computed(() => {
-      return [
-        'q-scrollbar',
-        props.visible && 'q-scrollbar_visible',
-        isXBarShown.value && 'q-scrollbar_has-horizontal-bar',
-        isYBarShown.value && 'q-scrollbar_has-vertical-bar'
-      ];
-    });
+    const classes = computed<Record<string, boolean>>(() => ({
+      'q-scrollbar': true,
+      'q-scrollbar_visible': Boolean(props.visible),
+      'q-scrollbar_has-horizontal-bar': isXBarShown.value,
+      'q-scrollbar_has-vertical-bar': isYBarShown.value
+    }));
 
-    const wrapClasses = computed(() => {
+    const wrapClasses = computed<QScrollbarPropWrapClass[]>(() => {
       return [props.wrapClass, { 'q-scrollbar__wrap_hidden-default': true }];
     });
 
     /**
      * @public
      */
-    const handleScroll = () => {
+    const handleScroll = (): void => {
       const wrapValue = wrap.value;
       if (!wrapValue) return;
 
@@ -153,7 +158,7 @@ export default defineComponent({
     /**
      * @public
      */
-    const update = () => {
+    const update = (): void => {
       const wrapValue = wrap.value;
       if (!wrapValue) return;
 
@@ -184,7 +189,7 @@ export default defineComponent({
 
     watch(
       () => props.scrollTo,
-      (element: HTMLElement) => {
+      element => {
         if (element) {
           ybar.value?.scrollToPx(element.offsetTop + OFFSET);
         }
@@ -193,7 +198,7 @@ export default defineComponent({
 
     watch(
       () => props.visible,
-      (value: boolean) => {
+      value => {
         if (value) {
           const offset = props.scrollTo?.offsetTop ?? 0 + OFFSET;
           ybar.value?.scrollToPx(offset);

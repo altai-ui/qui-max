@@ -3,6 +3,7 @@ import { Meta, Story } from '@storybook/vue3';
 import { defineComponent, ref } from 'vue';
 
 import QInputNumber from '@/qComponents/QInputNumber';
+import type { QInputNumberProps } from '@/qComponents/QInputNumber';
 
 const storyMetadata: Meta = {
   title: 'Components/QInputNumber',
@@ -16,12 +17,13 @@ const storyMetadata: Meta = {
   }
 };
 
-const QInputNumberStory: Story = args =>
+const QInputNumberStory: Story<QInputNumberProps> = args =>
   defineComponent({
     setup() {
       const numberValue = ref('2');
 
-      const handleEmit = (value: number, type: string) => {
+      const handleEmit = (value: number, type: string): void => {
+        // eslint-disable-next-line no-console
         console.log(value, type);
       };
 

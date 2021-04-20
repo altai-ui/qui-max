@@ -25,7 +25,11 @@ import {
 
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
 import type { QRadioGroupProvider } from '@/qComponents/QRadioGroup';
-import type { ModelValue } from './types';
+import type {
+  QRadioGroupProps,
+  QRadioGroupPropModelValue,
+  QRadioGroupPropDirection
+} from './types';
 
 const UPDATE_MODEL_VALUE_EVENT = 'update:modelValue';
 const CHANGE_EVENT = 'change';
@@ -35,10 +39,7 @@ export default defineComponent({
   componentName: 'QRadioGroup',
 
   props: {
-    modelValue: {
-      type: [String, Number, Boolean] as PropType<ModelValue>,
-      default: ''
-    },
+    modelValue: { type: [String, Number, Boolean], default: '' },
     /**
      * whether Radio is disabled
      */
@@ -48,24 +49,25 @@ export default defineComponent({
      */
     tag: { type: String, default: 'div' },
     direction: {
-      type: String as PropType<'vertical' | 'horizontal'>,
+      type: String as PropType<QRadioGroupPropDirection>,
       default: 'vertical',
-      validator: (value: string) => ['vertical', 'horizontal'].includes(value)
+      validator: (value: string): boolean =>
+        ['vertical', 'horizontal'].includes(value)
     }
   },
 
   emits: [UPDATE_MODEL_VALUE_EVENT, CHANGE_EVENT],
 
-  setup(props, ctx) {
+  setup(props: QRadioGroupProps, ctx) {
     const root = ref<HTMLElement | null>(null);
     const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
 
-    const changeValue = (value: ModelValue) => {
+    const changeValue = (value: QRadioGroupPropModelValue): void => {
       ctx.emit(UPDATE_MODEL_VALUE_EVENT, value);
       ctx.emit(CHANGE_EVENT, value);
     };
 
-    const handleKeydown = (e: KeyboardEvent) => {
+    const handleKeydown = (e: KeyboardEvent): void => {
       const target = e.target as HTMLElement;
       const selector =
         target.nodeName === 'INPUT' ? '[type=radio]' : '[role=radio]';
@@ -121,16 +123,9 @@ export default defineComponent({
       const radios = root.value?.querySelectorAll<HTMLInputElement>(
         '[type=radio]'
       );
-      const firstLabel = root.value?.querySelector<HTMLInputElement>(
-        '[role=radio]'
-      );
 
-      if (
-        radios &&
-        firstLabel &&
-        !Array.from(radios).some(({ checked }) => checked)
-      ) {
-        firstLabel.tabIndex = 0;
+      if (radios && !Array.from(radios).some(({ checked }) => checked)) {
+        radios[0].tabIndex = 0;
       }
     });
 

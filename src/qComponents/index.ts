@@ -3,7 +3,6 @@ import { App } from 'vue';
 import mitt from 'mitt';
 import { isString, kebabCase } from 'lodash-es';
 import { LocaleMessageDictionary, VueMessageType } from 'vue-i18n';
-
 import { setConfig } from './config';
 import { installI18n } from './constants/locales';
 
@@ -110,6 +109,7 @@ const install = (
   });
 
   installI18n({ app, customI18nMessages });
+  require('focus-visible');
 
   // setup modals
   // if (!app.config.globalProperties.$notify) {

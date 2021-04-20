@@ -4,7 +4,11 @@ import { defineComponent, reactive, ref } from 'vue';
 
 import QForm from '@/qComponents/QForm';
 import QFormItem from '@/qComponents/QFormItem';
-import type { RulesOptions, QFormProvider } from '@/qComponents/QForm';
+import type {
+  QFormProps,
+  QFormPropRules,
+  QFormProvider
+} from '@/qComponents/QForm';
 
 const storyMetadata: Meta = {
   title: 'Components/QForm',
@@ -16,7 +20,7 @@ const storyMetadata: Meta = {
   }
 };
 
-const INITIAL_RULES: RulesOptions = {
+const INITIAL_RULES: QFormPropRules = {
   name: [
     { required: false },
     { min: 3, max: 10, message: 'Length should be 3 to 10', trigger: 'blur' }
@@ -28,7 +32,7 @@ const INITIAL_RULES: RulesOptions = {
   }
 };
 
-const QFormStory: Story = args =>
+const QFormStory: Story<QFormProps> = args =>
   defineComponent({
     components: { QForm, QFormItem },
     setup() {
@@ -41,10 +45,11 @@ const QFormStory: Story = args =>
 
       const rules = reactive(INITIAL_RULES);
 
-      const handleSubmitClick = async () => {
+      const handleSubmitClick = async (): Promise<void> => {
         const valid = await form?.value?.validate();
         if (valid) {
           const { isValid, invalidFields } = valid;
+          // eslint-disable-next-line no-console
           console.log('QForm | validate', isValid, invalidFields);
           if (isValid) {
             // eslint-disable-next-line no-alert
@@ -53,11 +58,11 @@ const QFormStory: Story = args =>
         }
       };
 
-      const handleResetClick = () => {
+      const handleResetClick = (): void => {
         form?.value?.resetFields();
       };
 
-      const handleRule = () => {
+      const handleRule = (): void => {
         rules.name = {
           required: true,
           message: 'Please input name',

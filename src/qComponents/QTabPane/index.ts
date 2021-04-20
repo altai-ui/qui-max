@@ -7,4 +7,5 @@ QTabPane.install = (app: App): void => {
   app.component(QTabPane.name, QTabPane);
 };
 
+export type { QTabPaneProps } from './src/types';
 export default QTabPane;

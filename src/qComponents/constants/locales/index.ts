@@ -16,6 +16,7 @@ const installI18n = ({
   /* eslint-disable-next-line no-underscore-dangle */
   const isI18nExist = Boolean(app.config.globalProperties._i18n);
   if (isI18nExist) {
+    // eslint-disable-next-line no-console
     console.warn(
       `Error: Qui can't setup VueI18n, it has detected in the app, please merge i18n messages, see the docs`
     );

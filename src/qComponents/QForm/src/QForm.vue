@@ -6,12 +6,14 @@
 
 <script lang="ts">
 import { defineComponent, PropType, provide, Ref, ref, watch } from 'vue';
+import { FieldErrorList } from 'async-validator';
 import { concat } from 'lodash-es';
 
 import type { QFormItemContext } from '@/qComponents/QFormItem';
 import type {
-  FormModel,
-  RulesOptions,
+  QFormProps,
+  QFormPropModel,
+  QFormPropRules,
   QFormProvider,
   ValidateFnResult
 } from './types';
@@ -29,16 +31,16 @@ export default defineComponent({
      * data of form component
      */
     model: {
-      type: Object as PropType<FormModel>,
-      default: () => ({})
+      type: Object as PropType<QFormPropModel>,
+      default: (): QFormPropModel => ({})
     },
     /**
      * validation rules of form.
      * https://github.com/yiminghe/async-validator#rules
      */
     rules: {
-      type: Object as PropType<RulesOptions>,
-      default: () => ({})
+      type: Object as PropType<QFormPropRules>,
+      default: (): QFormPropRules => ({})
     },
     /**
      * whether to disabled all components in this form. If set to true,
@@ -71,7 +73,7 @@ export default defineComponent({
     }
   },
 
-  setup(props) {
+  setup(props: QFormProps) {
     const fieldsList: Ref<QFormItemContext[]> = ref([]);
 
     const filterFields = (
@@ -86,15 +88,22 @@ export default defineComponent({
         : fieldsList.value;
     };
 
+    /**
+     *  @public
+     */
     const clearValidate = (passedProps?: string[] | string): void => {
       const filteredFields = filterFields(passedProps);
 
       filteredFields.forEach(field => field.clearValidate());
     };
 
+    /**
+     *  @public
+     */
     const resetFields = (passedProps?: string[] | string): void => {
       if (!props.model) {
         if (process.env.NODE_ENV !== 'production') {
+          // eslint-disable-next-line no-console
           console.warn(
             '[Warn][QForm] model is required for resetFields to work.'
           );
@@ -106,11 +115,15 @@ export default defineComponent({
       filteredFields.forEach(field => field.resetField());
     };
 
+    /**
+     *  @public
+     */
     const validate = async (
       passedProps?: string[] | string
     ): Promise<ValidateFnResult | null> => {
       if (!props.model) {
         if (process.env.NODE_ENV !== 'production') {
+          // eslint-disable-next-line no-console
           console.warn('[Warn][QForm] model is required for validate to work!');
         }
         return null;
@@ -119,22 +132,19 @@ export default defineComponent({
       const filteredFields = filterFields(passedProps);
 
       let isValid = true;
-      let invalidFields = {};
+      let invalidFields: FieldErrorList = {};
 
       await Promise.all(
         filteredFields.map(async field => {
           const { errors, fields } = (await field.validateField()) ?? {};
-          if (!errors) return;
+          if (!errors || !fields) return;
 
           isValid = false;
-          invalidFields = { ...invalidFields, ...fields };
+          invalidFields = { ...fields };
         })
       );
 
-      return {
-        isValid,
-        invalidFields
-      };
+      return { isValid, invalidFields };
     };
 
     watch(
@@ -145,12 +155,13 @@ export default defineComponent({
       { deep: true }
     );
 
+    // TODO: fix props with toRefs
     provide<QFormProvider>('qForm', {
-      disabled: props.disabled,
+      disabled: Boolean(props.disabled),
       model: props.model,
       rules: props.rules,
-      hideRequiredAsterisk: props.hideRequiredAsterisk,
-      showErrorMessage: props.showErrorMessage,
+      hideRequiredAsterisk: Boolean(props.hideRequiredAsterisk),
+      showErrorMessage: Boolean(props.showErrorMessage),
       validate,
       resetFields,
       clearValidate,

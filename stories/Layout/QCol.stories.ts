@@ -4,6 +4,7 @@ import { defineComponent } from 'vue';
 
 import QRow from '@/qComponents/QRow';
 import QCol from '@/qComponents/QCol';
+import type { QColProps } from '@/qComponents/QCol';
 import './layout.scss';
 
 const storyMetadata: Meta = {
@@ -26,7 +27,7 @@ const storyMetadata: Meta = {
   }
 };
 
-const QColStory: Story = args =>
+const QColStory: Story<QColProps> = args =>
   defineComponent({
     components: { QRow, QCol },
     setup() {

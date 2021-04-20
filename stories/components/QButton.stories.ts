@@ -3,6 +3,7 @@ import { Meta, Story } from '@storybook/vue3';
 import { defineComponent } from 'vue';
 
 import QButton from '@/qComponents/QButton';
+import type { QButtonProps } from '@/qComponents/QButton';
 
 const storyMetadata: Meta = {
   title: 'Components/Button',
@@ -16,11 +17,14 @@ const storyMetadata: Meta = {
   }
 };
 
-const Template: Story = args =>
+type StoryArgs = QButtonProps & Record<'label', string>;
+
+const Template: Story<StoryArgs> = args =>
   defineComponent({
     components: { QButton },
     setup() {
       const handleClick = (event: MouseEvent): void => {
+        // eslint-disable-next-line no-console
         console.log('click', event);
       };
 
@@ -45,7 +49,7 @@ const Template: Story = args =>
     `
   });
 
-const ThemePrimary: Story = Template.bind({});
+const ThemePrimary: Story<StoryArgs> = Template.bind({});
 ThemePrimary.args = {
   theme: 'primary',
   type: 'default',
@@ -53,7 +57,7 @@ ThemePrimary.args = {
   size: 'medium'
 };
 
-const ThemeSecondary: Story = Template.bind({});
+const ThemeSecondary: Story<StoryArgs> = Template.bind({});
 ThemeSecondary.args = {
   theme: 'secondary',
   type: 'default',
@@ -61,7 +65,7 @@ ThemeSecondary.args = {
   size: 'medium'
 };
 
-const ThemeLink: Story = Template.bind({});
+const ThemeLink: Story<StoryArgs> = Template.bind({});
 ThemeLink.args = {
   theme: 'link',
   type: 'default',
@@ -69,7 +73,7 @@ ThemeLink.args = {
   size: 'medium'
 };
 
-const IconPrimary: Story = Template.bind({});
+const IconPrimary: Story<StoryArgs> = Template.bind({});
 IconPrimary.args = {
   theme: 'primary',
   type: 'icon',
@@ -77,7 +81,7 @@ IconPrimary.args = {
   size: 'medium'
 };
 
-const IconSecondary: Story = Template.bind({});
+const IconSecondary: Story<StoryArgs> = Template.bind({});
 IconSecondary.args = {
   theme: 'secondary',
   type: 'icon',
@@ -85,7 +89,7 @@ IconSecondary.args = {
   size: 'medium'
 };
 
-const IconLink: Story = Template.bind({});
+const IconLink: Story<StoryArgs> = Template.bind({});
 IconLink.args = {
   theme: 'link',
   type: 'icon',

@@ -29,6 +29,7 @@
 import { defineComponent, inject, computed } from 'vue';
 
 import type { QTabsProvider } from '@/qComponents/QTabs';
+import type { QTabPaneProps } from './types';
 
 export default defineComponent({
   name: 'QTabPane',
@@ -72,22 +73,24 @@ export default defineComponent({
     }
   },
 
-  setup(props) {
+  setup(props: QTabPaneProps) {
     const qTabs = inject<QTabsProvider>('qTabs');
 
     const isDisabled = computed<boolean>(
       () => props.disabled || Boolean(qTabs?.disabled.value)
     );
 
-    const tabWidthStyle = computed(() => {
-      const width = props.width ?? qTabs?.tabWidth.value;
+    const tabWidthStyle = computed<Record<string, string>>(() => {
+      const width = props.width ?? qTabs?.tabWidth.value ?? '';
 
       return {
-        '--tab-pane-width': Number(width) ? `${Number(width)}px` : width
+        '--tab-pane-width': Number.isNaN(Number(width))
+          ? `${Number(width)}px`
+          : String(width)
       };
     });
 
-    const tabBtnClasses = computed(() => ({
+    const tabBtnClasses = computed<Record<string, boolean>>(() => ({
       'q-tab-pane__btn_active': qTabs?.currentName.value === props.name,
       'q-tab-pane__btn_disabled': isDisabled.value
     }));

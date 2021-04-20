@@ -3,6 +3,7 @@ import { Meta, Story } from '@storybook/vue3';
 import { defineComponent, ref } from 'vue';
 
 import QCollapse from '@/qComponents/QCollapse';
+import type { QCollapseProps } from '@/qComponents/QCollapse';
 import QCollapseItem from '@/qComponents/QCollapseItem';
 
 const storyMetadata: Meta = {
@@ -14,13 +15,14 @@ const storyMetadata: Meta = {
   }
 };
 
-const QCollapseStory: Story = args =>
+const QCollapseStory: Story<QCollapseProps> = args =>
   defineComponent({
     components: { QCollapse, QCollapseItem },
     setup() {
       const activeNames = ref(['1']);
 
-      const handleChange = (value: (string | number)[]) => {
+      const handleChange = (value: (string | number)[]): void => {
+        // eslint-disable-next-line no-console
         console.log('handleChange', value);
       };
 

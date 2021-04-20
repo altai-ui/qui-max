@@ -1,13 +1,23 @@
 import { Ref } from 'vue';
 
-export interface State {
+export interface QInputProps {
+  modelValue: Nullable<string>;
+  disabled: Nullable<boolean>;
+  showSymbolLimit: Nullable<boolean>;
+  validateEvent: Nullable<boolean>;
+  suffixIcon: Nullable<string>;
+  clearable: Nullable<boolean>;
+  passwordSwitch: Nullable<boolean>;
+}
+
+export interface QInputState {
   hovering: boolean;
   focused: boolean;
   isPasswordVisible: boolean;
 }
 
 export interface QInput {
-  state: State;
+  state: QInputState;
   classes: Array<string | { [key: string]: string }>;
   inputDisabled: Ref<boolean>;
   isPasswordSwitchShown: Ref<boolean>;

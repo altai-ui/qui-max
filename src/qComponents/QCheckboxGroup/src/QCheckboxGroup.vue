@@ -21,7 +21,11 @@ import {
 } from 'vue';
 import { QFormItemProvider } from '@/qComponents/QFormItem';
 
-import type { QCheckboxGroupProvider } from './types';
+import type {
+  QCheckboxGroupProps,
+  QCheckboxGroupPropDirection,
+  QCheckboxGroupProvider
+} from './types';
 
 const UPDATE_MODEL_VALUE_EVENT = 'update:modelValue';
 
@@ -32,7 +36,7 @@ export default defineComponent({
   props: {
     modelValue: {
       type: Array as PropType<string[]>,
-      default: () => []
+      default: (): [] => []
     },
     /**
      * disable all inner QCheckbox'es
@@ -54,24 +58,28 @@ export default defineComponent({
      * vertical renders to column, horizontal to row
      */
     direction: {
-      type: String as PropType<'vertical' | 'horizontal'>,
+      type: String as PropType<QCheckboxGroupPropDirection>,
       default: 'vertical',
-      validator: (value: string) => ['vertical', 'horizontal'].includes(value)
+      validator: (value: string): boolean =>
+        ['vertical', 'horizontal'].includes(value)
     }
   },
 
   emits: [UPDATE_MODEL_VALUE_EVENT],
 
-  setup(props, ctx) {
+  setup(props: QCheckboxGroupProps, ctx) {
     const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
 
-    const isLimitExceeded = computed(
-      () =>
-        props.modelValue.length < props.min ||
-        props.modelValue.length > props.max
-    );
+    const isLimitExceeded = computed<boolean>(() => {
+      const modelValueLength = props.modelValue?.length ?? 0;
 
-    const update = (value: string[]) => {
+      return (
+        (props.min !== null && modelValueLength < props.min) ||
+        (props.max !== null && modelValueLength > props.max)
+      );
+    });
+
+    const update = (value: string[]): void => {
       ctx.emit(UPDATE_MODEL_VALUE_EVENT, value);
     };
 

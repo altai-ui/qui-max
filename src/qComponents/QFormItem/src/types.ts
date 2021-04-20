@@ -5,6 +5,20 @@ export interface FilteredRuleItem extends RuleItem {
   trigger?: string | null;
 }
 
+export type QFormItemPropRules = Nullable<
+  FilteredRuleItem | FilteredRuleItem[]
+>;
+
+export interface QFormItemProps {
+  for: Nullable<string>;
+  prop: Nullable<string>;
+  label: Nullable<string>;
+  sublabel: Nullable<string>;
+  error: Nullable<string>;
+  rules: QFormItemPropRules;
+  showErrorMessage: Nullable<boolean>;
+}
+
 export interface QFormItemContext {
   validateField: (
     trigger?: string | null
@@ -12,17 +26,17 @@ export interface QFormItemContext {
   clearValidate: () => void;
   errorMessage: Ref<string | null>;
   getFilteredRules: (trigger: string | null) => FilteredRuleItem[] | null;
-  initialValue: Ref<string | null>;
+  initialValue: unknown;
   isErrorSlotShown: ComputedRef<boolean>;
   isHeaderShown: ComputedRef<boolean>;
   isRequired: ComputedRef<boolean>;
-  labelFor: ComputedRef<string>;
+  labelFor: ComputedRef<Nullable<string>>;
   resetField: () => void;
   rootClasses: ComputedRef<{
     [key: string]: boolean;
   }>;
   rules: FilteredRuleItem | FilteredRuleItem[] | null;
-  showErrorMessage: boolean;
+  showErrorMessage: Nullable<boolean>;
   for: string | null;
   prop: string | null;
   label: string | null;

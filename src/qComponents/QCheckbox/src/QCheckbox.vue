@@ -55,22 +55,22 @@ import type { QFormProvider } from '@/qComponents/QForm';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
 import type { QCheckboxGroupProvider } from '@/qComponents/QCheckboxGroup';
 
+import type { QCheckboxProps } from './types';
+
 const UPDATE_MODEL_VALUE_EVENT = 'update:modelValue';
 const CHANGE_EVENT = 'change';
 
 export default defineComponent({
   name: 'QCheckbox',
   componentName: 'QCheckbox',
+
   inheritAttrs: false,
 
   props: {
     /**
      * Array for group, Boolean for single
      */
-    modelValue: {
-      type: Boolean,
-      default: null
-    },
+    modelValue: { type: Boolean, default: null },
     /**
      * Checkbox label
      */
@@ -92,7 +92,7 @@ export default defineComponent({
 
   emits: [UPDATE_MODEL_VALUE_EVENT, CHANGE_EVENT],
 
-  setup(props, ctx) {
+  setup(props: QCheckboxProps, ctx) {
     const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
     const qForm = inject<QFormProvider | null>('qForm', null);
     const qCheckboxGroup = inject<QCheckboxGroupProvider | null>(
@@ -103,29 +103,27 @@ export default defineComponent({
 
     const focus = ref(false);
 
-    const isChecked = computed(() => {
-      if (qCheckboxGroup) {
-        return qCheckboxGroup.modelValue.value.includes(props.label);
-      }
-
-      return props.modelValue;
-    });
-
-    const isLimitDisabled = computed(() => {
-      if (qCheckboxGroup === null) return false;
-
-      const { max, min } = qCheckboxGroup;
-      const groupLength = qCheckboxGroup.modelValue.value.length;
+    const isChecked = computed<boolean>(() => {
+      if (!qCheckboxGroup) return Boolean(props.modelValue);
 
       return (
-        (Boolean(max.value || min.value) &&
-          groupLength >= max.value &&
-          !isChecked.value) ||
-        (groupLength <= min.value && isChecked.value)
+        qCheckboxGroup.modelValue.value?.includes(props.label ?? '') ?? false
       );
     });
 
-    const isDisabled = computed(() =>
+    const isLimitDisabled = computed<boolean>(() => {
+      if (qCheckboxGroup === null) return false;
+
+      const { max, min, modelValue } = qCheckboxGroup;
+      const groupLength = modelValue.value?.length ?? 0;
+
+      return (
+        (max.value !== null && groupLength >= max.value && !isChecked.value) ||
+        (min.value !== null && groupLength <= min.value && isChecked.value)
+      );
+    });
+
+    const isDisabled = computed<boolean>(() =>
       qCheckboxGroup
         ? qCheckboxGroup?.disabled.value ||
           props.disabled ||
@@ -134,13 +132,15 @@ export default defineComponent({
         : props.disabled || (qForm?.disabled ?? false)
     );
 
-    const model = computed({
+    const model = computed<boolean>({
       get: () => isChecked.value,
       set: value => {
         if (!qCheckboxGroup) {
           ctx.emit(UPDATE_MODEL_VALUE_EVENT, value);
           ctx.emit(CHANGE_EVENT, value);
         } else {
+          if (!props.label) return;
+
           const set = new Set(qCheckboxGroup.modelValue.value);
 
           if (value) {

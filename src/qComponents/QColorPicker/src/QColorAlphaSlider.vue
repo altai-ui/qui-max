@@ -21,6 +21,7 @@
 import { defineComponent, ref, computed, onMounted, watch } from 'vue';
 
 import draggable from './draggable';
+import type { QColorAlphaSliderProps } from './types';
 
 const UPDATE_ALPHA_EVENT = 'update:alpha';
 
@@ -41,14 +42,14 @@ export default defineComponent({
 
   emits: [UPDATE_ALPHA_EVENT],
 
-  setup(props, { emit }) {
+  setup(props: QColorAlphaSliderProps, ctx) {
     const thumbLeft = ref(0);
 
-    const barStyles = computed(() => ({
+    const barStyles = computed<Record<string, string>>(() => ({
       backgroundImage: `linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, ${props.color})`
     }));
 
-    const thumbStyles = computed(() => ({
+    const thumbStyles = computed<Record<string, string>>(() => ({
       left: `${thumbLeft.value}px`
     }));
 
@@ -56,7 +57,7 @@ export default defineComponent({
     const thumb = ref<HTMLElement | null>(null);
     const bar = ref<HTMLElement | null>(null);
 
-    const handleDrag = (event: MouseEvent) => {
+    const handleDrag = (event: MouseEvent): void => {
       const thumbElement = thumb.value;
       if (!root.value || !thumbElement) return;
 
@@ -71,16 +72,16 @@ export default defineComponent({
           100
       );
 
-      emit(UPDATE_ALPHA_EVENT, alpha);
+      ctx.emit(UPDATE_ALPHA_EVENT, alpha);
     };
 
-    const handleBarClick = (event: MouseEvent) => {
+    const handleBarClick = (event: MouseEvent): void => {
       if (event.target !== thumb.value) {
         handleDrag(event);
       }
     };
 
-    const getThumbLeft = () => {
+    const getThumbLeft = (): number => {
       const rootElement = root.value;
       const thumbElement = thumb.value;
       if (!rootElement || !thumbElement) return 0;
@@ -92,7 +93,7 @@ export default defineComponent({
       );
     };
 
-    const update = () => {
+    const update = (): void => {
       thumbLeft.value = getThumbLeft();
     };
 
@@ -100,7 +101,8 @@ export default defineComponent({
       () => props.alpha,
       () => {
         update();
-      }
+      },
+      { immediate: true }
     );
 
     onMounted(() => {
@@ -112,8 +114,6 @@ export default defineComponent({
       };
       draggable(bar.value, dragConfig);
       draggable(thumb.value, dragConfig);
-
-      update();
     });
 
     return {

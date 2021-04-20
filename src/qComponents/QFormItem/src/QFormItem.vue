@@ -58,6 +58,8 @@ import { get, set } from 'lodash-es';
 
 import type { QFormProvider } from '@/qComponents/QForm';
 import type {
+  QFormItemProps,
+  QFormItemPropRules,
   QFormItemContext,
   QFormItemProvider,
   FilteredRuleItem
@@ -104,7 +106,7 @@ export default defineComponent({
      * https://github.com/yiminghe/async-validator#rules
      */
     rules: {
-      type: [Object, Array] as PropType<FilteredRuleItem | FilteredRuleItem[]>,
+      type: [Object, Array] as PropType<QFormItemPropRules>,
       default: null
     },
     /**
@@ -116,63 +118,58 @@ export default defineComponent({
     }
   },
 
-  setup(props, ctx) {
+  setup(props: QFormItemProps, ctx) {
     let initialValue: unknown = null;
     const errorMessage = ref<string | null>(null);
 
     const qForm = inject<QFormProvider | null>('qForm', null);
 
-    const isErrorSlotShown = computed(
-      () =>
-        (Boolean(errorMessage.value) || Boolean(ctx.slots.error)) &&
-        props.showErrorMessage &&
-        qForm?.showErrorMessage
+    const isErrorSlotShown = computed<boolean>(() =>
+      Boolean(
+        (errorMessage.value || ctx.slots.error) &&
+          props.showErrorMessage &&
+          qForm?.showErrorMessage
+      )
     );
 
-    const labelFor = computed(() => props.for ?? props.prop);
+    const labelFor = computed<string | null>(() => props.for ?? props.prop);
 
-    const isRequired = computed(() => {
-      const propRules = props.rules || get(qForm?.rules, props.prop);
+    const propRules = computed<FilteredRuleItem[]>(() => {
+      const rules =
+        props.rules ?? (props.prop ? get(qForm?.rules, props.prop) ?? [] : []);
 
-      if (!propRules) return false;
-
-      const preparedPropRules = Array.isArray(propRules)
-        ? propRules
-        : [propRules];
-      return preparedPropRules.some(({ required }) => required);
+      return Array.isArray(rules) ? rules : [rules];
     });
 
-    const isHeaderShown = computed(() =>
+    const isRequired = computed<boolean>(() =>
+      propRules.value.some(({ required }) => required)
+    );
+
+    const isHeaderShown = computed<boolean>(() =>
       Boolean(
         props.label || ctx.slots.label || props.sublabel || ctx.slots.sublabel
       )
     );
 
-    const rootClasses = computed(() => ({
+    const rootClasses = computed<Record<string, boolean>>(() => ({
       'q-form-item_is-required': isRequired.value,
       'q-form-item_is-error': Boolean(errorMessage.value),
-      'q-form-item_is-no-asterisk': qForm?.hideRequiredAsterisk
+      'q-form-item_is-no-asterisk': Boolean(qForm?.hideRequiredAsterisk)
     }));
 
     const getFilteredRules = (
       trigger: string | null
     ): FilteredRuleItem[] | null => {
-      const formRules = qForm?.rules?.[props.prop] ?? [];
-
-      const propRules = props.rules || formRules;
-      if (!propRules) return null;
-
-      const preparedPropRules = Array.isArray(propRules)
-        ? propRules
-        : [propRules];
+      if (!propRules.value) return null;
 
       if (!trigger) {
-        return preparedPropRules.map(({ trigger: _, ...rule }) => rule);
+        return propRules.value.map(({ trigger: _, ...rule }) => rule);
       }
 
-      return preparedPropRules
+      return propRules.value
         .filter(rule => {
           if (!rule?.trigger) return true;
+
           const result: string[] = [];
           return result.concat(rule.trigger).includes(trigger);
         })
@@ -181,18 +178,23 @@ export default defineComponent({
 
     const validateField = (
       trigger: string | null = null
-    ): Promise<{ errors?: ErrorList; fields?: FieldErrorList }> | null => {
+    ): Promise<{
+      errors?: ErrorList;
+      fields?: FieldErrorList;
+    }> | null => {
       const triggeredRules = getFilteredRules(trigger);
 
-      if (!triggeredRules?.length) return null;
+      if (!props.prop || !triggeredRules?.length) return null;
 
       const validator = new AsyncValidator({
         [props.prop]: triggeredRules
       });
 
+      const formModel = { [props.prop]: get(qForm?.model, props.prop) };
+
       return new Promise(resolve => {
         validator.validate(
-          { [props.prop]: get(qForm?.model, props.prop) },
+          formModel,
           { firstFields: true },
           (errors, fields) => {
             if (!errors) resolve({});
@@ -205,7 +207,7 @@ export default defineComponent({
     };
 
     const resetField = (): void => {
-      if (qForm) {
+      if (qForm?.model && props.prop) {
         set(qForm.model, props.prop, initialValue);
       }
 
@@ -216,7 +218,7 @@ export default defineComponent({
       errorMessage.value = null;
     };
 
-    const qFormItem = <QFormItemContext>{
+    const qFormItem: QFormItemContext = {
       ...props,
       errorMessage,
       initialValue,

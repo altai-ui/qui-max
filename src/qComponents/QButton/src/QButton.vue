@@ -1,7 +1,7 @@
 <template>
   <button
     class="q-button"
-    :disabled="isButtonDisabled || loading"
+    :disabled="isDisabled || loading"
     :autofocus="autofocus"
     :type="nativeType"
     :class="classList"
@@ -27,6 +27,12 @@
 import { defineComponent, PropType, computed, inject } from 'vue';
 
 import { QFormProvider } from '@/qComponents/QForm';
+import type {
+  QButtonProps,
+  QButtonPropType,
+  QButtonPropTheme,
+  QButtonPropSize
+} from './types';
 
 export default defineComponent({
   name: 'QButton',
@@ -34,20 +40,20 @@ export default defineComponent({
 
   props: {
     type: {
-      type: String as PropType<'default' | 'icon'>,
+      type: String as PropType<QButtonPropType>,
       default: 'default',
-      validator: (value: string) => ['default', 'icon'].includes(value)
+      validator: (value: string): boolean => ['default', 'icon'].includes(value)
     },
     theme: {
-      type: String as PropType<'primary' | 'secondary' | 'link'>,
+      type: String as PropType<QButtonPropTheme>,
       default: 'primary',
-      validator: (value: string) =>
+      validator: (value: string): boolean =>
         ['primary', 'secondary', 'link'].includes(value)
     },
     size: {
-      type: String as PropType<'small' | 'medium'>,
+      type: String as PropType<QButtonPropSize>,
       default: 'medium',
-      validator: (value: string) => ['small', 'medium'].includes(value)
+      validator: (value: string): boolean => ['small', 'medium'].includes(value)
     },
     /**
      * any q-icon
@@ -100,15 +106,15 @@ export default defineComponent({
     }
   },
 
-  setup(props) {
+  setup(props: QButtonProps) {
     const qForm = inject<QFormProvider | null>('qForm', null);
 
-    const isButtonDisabled = computed(
+    const isDisabled = computed<boolean>(
       () => props.disabled || (qForm?.disabled ?? false)
     );
 
-    const classList = computed(() => {
-      const classes: (string | { [key: string]: boolean })[] = Object.entries({
+    const classList = computed<(string | Record<string, boolean>)[]>(() => {
+      const classes: (string | Record<string, boolean>)[] = Object.entries({
         theme: props.theme,
         type: props.type,
         size: props.size
@@ -117,10 +123,10 @@ export default defineComponent({
         .map(([key, value]) => `q-button_${key}_${value}`);
 
       classes.push({
-        'q-button_disabled': isButtonDisabled.value,
-        'q-button_loading': props.loading,
-        'q-button_circle': props.circle,
-        'q-button_full-width': props.fullWidth
+        'q-button_disabled': isDisabled.value,
+        'q-button_loading': Boolean(props.loading),
+        'q-button_circle': Boolean(props.circle),
+        'q-button_full-width': Boolean(props.fullWidth)
       });
 
       return classes;
@@ -128,7 +134,7 @@ export default defineComponent({
 
     return {
       classList,
-      isButtonDisabled
+      isDisabled
     };
   }
 });

@@ -7,4 +7,5 @@ QCol.install = (app: App): void => {
   app.component(QCol.name, QCol);
 };
 
+export type { QColProps } from './src/types';
 export default QCol;

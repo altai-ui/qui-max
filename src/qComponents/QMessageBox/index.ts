@@ -7,9 +7,5 @@ QMessageBox.install = (app: App): void => {
   app.component(QMessageBox.name, QMessageBox);
 };
 
-export type {
-  QMessageBoxAction,
-  QMessageBoxEvent,
-  QMessageBoxBeforeClose
-} from './src/types';
+export type { QMessageBoxProps, QMessageBoxPropBeforeClose } from './src/types';
 export default QMessageBox;

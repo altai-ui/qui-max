@@ -1,31 +1,35 @@
 import { Ref } from 'vue';
-import { QFormItemContext, FilteredRuleItem } from '@/qComponents/QFormItem';
+import { FieldErrorList } from 'async-validator';
 
-export type FormModel = {
-  [key: string]: unknown;
-};
+import { QFormItemContext, QFormItemPropRules } from '@/qComponents/QFormItem';
 
-export type RulesOptions = {
-  [key: string]: FilteredRuleItem | FilteredRuleItem[];
-};
+export type QFormPropModel = Nullable<Record<string, unknown>>;
+export type QFormPropRules = Nullable<Record<string, QFormItemPropRules>>;
+
+export interface QFormProps {
+  model: QFormPropModel;
+  rules: QFormPropRules;
+  disabled: Nullable<boolean>;
+  hideRequiredAsterisk: Nullable<boolean>;
+  showErrorMessage: Nullable<boolean>;
+  validateOnRuleChange: Nullable<boolean>;
+}
 
 export interface ValidateFnResult {
   isValid: boolean;
-  invalidFields: {
-    [key: string]: [];
-  };
+  invalidFields: FieldErrorList;
 }
 
 export interface QFormProvider {
   disabled: boolean;
   validate: (
     passedProps?: string[] | string
-  ) => Promise<ValidateFnResult | null>;
+  ) => Promise<Nullable<ValidateFnResult>>;
   resetFields: (passedProps?: string[] | string) => void;
   clearValidate: (passedProps?: string[] | string) => void;
-  model: FormModel;
+  model: QFormPropModel;
   fields: Ref<QFormItemContext[]>;
-  rules: RulesOptions;
+  rules: QFormPropRules;
   showErrorMessage: boolean;
   hideRequiredAsterisk: boolean;
 }

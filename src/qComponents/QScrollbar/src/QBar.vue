@@ -24,6 +24,7 @@ import {
   inject
 } from 'vue';
 
+import { validateArray } from '@/qComponents/helpers';
 import type {
   QBarProps,
   QBarPropType,
@@ -40,12 +41,11 @@ export default defineComponent({
     type: {
       type: String as PropType<QBarPropType>,
       default: 'horizontal',
-      validator: (value: string): boolean =>
-        ['horizontal', 'vertical'].includes(value)
+      validator: validateArray<QBarPropType>(['horizontal', 'vertical'])
     },
     theme: { type: String, default: null },
     size: { type: String, default: '0' },
-    move: { type: Number, default: 0 }
+    move: { type: Number, default: null }
   },
 
   setup(props: QBarProps) {
@@ -58,7 +58,7 @@ export default defineComponent({
 
     const bar = computed<BarMapItem>(() => BAR_MAP[props.type]);
     const thumbStyles = computed<Record<string, string | number>>(() =>
-      renderThumbStyle(props.move ?? 0, props.size ?? '', bar.value)
+      renderThumbStyle(props.move ?? 0, props.size ?? '0', bar.value)
     );
 
     const classes = computed<Record<string, boolean>>(() => ({

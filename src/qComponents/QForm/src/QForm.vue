@@ -5,7 +5,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, provide, Ref, ref, watch } from 'vue';
+import {
+  defineComponent,
+  PropType,
+  provide,
+  Ref,
+  ref,
+  watch,
+  toRef
+} from 'vue';
 import { FieldErrorList } from 'async-validator';
 import { concat } from 'lodash-es';
 
@@ -155,17 +163,16 @@ export default defineComponent({
       { deep: true }
     );
 
-    // TODO: fix props with toRefs
     provide<QFormProvider>('qForm', {
-      disabled: Boolean(props.disabled),
-      model: props.model,
-      rules: props.rules,
-      hideRequiredAsterisk: Boolean(props.hideRequiredAsterisk),
-      showErrorMessage: Boolean(props.showErrorMessage),
+      disabled: toRef(props, 'disabled'),
+      model: toRef(props, 'model'),
+      rules: toRef(props, 'rules'),
+      hideRequiredAsterisk: toRef(props, 'hideRequiredAsterisk'),
+      showErrorMessage: toRef(props, 'showErrorMessage'),
+      fields: fieldsList,
       validate,
       resetFields,
-      clearValidate,
-      fields: fieldsList
+      clearValidate
     });
 
     // for refs

@@ -82,7 +82,7 @@ export default defineComponent({
      */
     modelValue: {
       type: [String, Number],
-      default: '',
+      default: null,
       validator: (value: string | number): boolean =>
         !Number.isNaN(Number(value)) || value === null
     },
@@ -115,7 +115,7 @@ export default defineComponent({
       Math.round((number - step) * 100) / 100;
 
     const isDisabled = computed<boolean>(
-      () => props.disabled || (qForm?.disabled ?? false)
+      () => props.disabled || (qForm?.disabled.value ?? false)
     );
 
     const withControlsClass = computed<Record<string, boolean>>(() => ({

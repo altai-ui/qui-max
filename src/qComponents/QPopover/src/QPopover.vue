@@ -62,6 +62,7 @@ import {
 import { createPopper as createPopperJs, Instance } from '@popperjs/core';
 import { placements } from '@popperjs/core/lib/enums';
 
+import { validateArray } from '@/qComponents/helpers';
 import { getConfig } from '@/qComponents/config';
 import type {
   QPopoverProps,
@@ -81,19 +82,11 @@ export default defineComponent({
 
   props: {
     /**
-     * Specifies a target element where QMessageBox will be moved.
-     * (has to be a valid query selector, or an HTMLElement)
-     */
-    teleportTo: {
-      type: [String, HTMLElement] as PropType<QPopoverPropTeleportTo>,
-      default: 'body'
-    },
-    /**
      * Popover content title
      */
     title: {
       type: String,
-      default: ''
+      default: null
     },
     /**
      * opening event trigger
@@ -101,8 +94,7 @@ export default defineComponent({
     trigger: {
       type: String as PropType<QPopoverPropTrigger>,
       default: 'click',
-      validator: (value: QPopoverPropTrigger): boolean =>
-        ['click', 'hover'].includes(value)
+      validator: validateArray<QPopoverPropTrigger>(['click', 'hover'])
     },
     /**
      * see: https://popper.js.org/docs/v2/constructors/#options
@@ -110,15 +102,14 @@ export default defineComponent({
     placement: {
       type: String as PropType<QPopoverPropPlacement>,
       default: 'top-start',
-      validator: (value: QPopoverPropPlacement): boolean =>
-        placements.includes(value)
+      validator: validateArray<QPopoverPropPlacement>(placements)
     },
     /**
      * icon class name
      */
     icon: {
       type: String,
-      default: ''
+      default: null
     },
     /**
      * content icon color
@@ -155,14 +146,14 @@ export default defineComponent({
      */
     minWidth: {
       type: [String, Number],
-      default: ''
+      default: null
     },
     /**
      * popover max-width
      */
     maxWidth: {
       type: [String, Number],
-      default: ''
+      default: null
     },
     /**
      * see: https://popper.js.org/docs/v2/constructors/#options
@@ -170,6 +161,14 @@ export default defineComponent({
     popperOptions: {
       type: Object as PropType<QPopoverPropPopperOptions>,
       default: (): QPopoverPropPopperOptions => ({})
+    },
+    /**
+     * Specifies a target element where QMessageBox will be moved.
+     * (has to be a valid query selector, or an HTMLElement)
+     */
+    teleportTo: {
+      type: [String, HTMLElement] as PropType<QPopoverPropTeleportTo>,
+      default: 'body'
     }
   },
 

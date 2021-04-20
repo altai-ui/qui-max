@@ -66,6 +66,7 @@ import {
 import { useI18n } from 'vue-i18n';
 import Color from 'color';
 
+import { validateArray } from '@/qComponents/helpers';
 import QButton from '@/qComponents/QButton';
 import QColorSvpanel from './QColorSvpanel.vue';
 import QColorAlphaSlider from './QColorAlphaSlider.vue';
@@ -107,8 +108,7 @@ export default defineComponent({
     colorFormat: {
       type: String as PropType<QPickerDropdownPropColorFormat>,
       default: 'hex',
-      validator: (value: string): boolean =>
-        ['hex', 'rgb'].includes(String(value))
+      validator: validateArray<QPickerDropdownPropColorFormat>(['hex', 'rgb'])
     },
     alphaShown: {
       type: Boolean,

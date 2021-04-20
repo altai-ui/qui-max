@@ -21,15 +21,15 @@ export interface ValidateFnResult {
 }
 
 export interface QFormProvider {
-  disabled: boolean;
+  disabled: Ref<Nullable<boolean>>;
+  model: Ref<QFormPropModel>;
+  rules: Ref<QFormPropRules>;
+  hideRequiredAsterisk: Ref<Nullable<boolean>>;
+  showErrorMessage: Ref<Nullable<boolean>>;
+  fields: Ref<QFormItemContext[]>;
   validate: (
     passedProps?: string[] | string
   ) => Promise<Nullable<ValidateFnResult>>;
   resetFields: (passedProps?: string[] | string) => void;
   clearValidate: (passedProps?: string[] | string) => void;
-  model: QFormPropModel;
-  fields: Ref<QFormItemContext[]>;
-  rules: QFormPropRules;
-  showErrorMessage: boolean;
-  hideRequiredAsterisk: boolean;
 }

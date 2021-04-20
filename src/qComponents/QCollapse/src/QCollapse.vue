@@ -24,7 +24,7 @@ export default defineComponent({
   props: {
     modelValue: {
       type: [Array, String, Number] as PropType<QCollapsePropModelValue>,
-      default: (): [] => []
+      default: (): QCollapsePropModelValue => []
     },
     /**
      * shrink all panels, except the last selected

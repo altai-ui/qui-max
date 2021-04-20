@@ -29,7 +29,10 @@
       </button>
     </div>
 
-    <teleport to="body">
+    <teleport
+      :to="teleportTo || 'body'"
+      :disabled="!teleportTo"
+    >
       <q-picker-dropdown
         ref="dropdown"
         :is-shown="isPickerShown"
@@ -59,9 +62,9 @@ import {
 } from 'vue';
 import { createPopper, Instance, Options } from '@popperjs/core';
 import { placements } from '@popperjs/core/lib/enums';
-
 import Color from 'color';
 
+import { validateArray } from '@/qComponents/helpers';
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
 import { getConfig } from '@/qComponents/config';
@@ -71,6 +74,7 @@ import type {
   QColorPickerPropColorFormat,
   QColorPickerPropPlacement,
   QColorPickerPropPopperOptions,
+  QColorPickerPropTeleportTo,
   QColorPickerProvider
 } from './types';
 
@@ -122,17 +126,24 @@ export default defineComponent({
     colorFormat: {
       type: String as PropType<QColorPickerPropColorFormat>,
       default: 'hex',
-      validator: (value: string): boolean => ['hex', 'rgb'].includes(value)
+      validator: validateArray<QColorPickerPropColorFormat>(['hex', 'rgb'])
     },
     placement: {
       type: String as PropType<QColorPickerPropPlacement>,
       default: 'right-start',
-      validator: (value: QColorPickerPropPlacement): boolean =>
-        placements.includes(value)
+      validator: validateArray<QColorPickerPropPlacement>(placements)
     },
     popperOptions: {
       type: Object as PropType<QColorPickerPropPopperOptions>,
       default: (): Partial<QColorPickerPropPopperOptions> => ({})
+    },
+    /**
+     * Specifies a target element where QMessageBox will be moved.
+     * (has to be a valid query selector, or an HTMLElement)
+     */
+    teleportTo: {
+      type: [String, HTMLElement] as PropType<QColorPickerPropTeleportTo>,
+      default: null
     }
   },
 
@@ -147,7 +158,7 @@ export default defineComponent({
     const popperJS = ref<Instance | null>(null);
 
     const isDisabled = computed<boolean>(
-      () => props.disabled || (qForm?.disabled ?? false)
+      () => props.disabled || (qForm?.disabled.value ?? false)
     );
 
     const isColorDark = computed<boolean>(() =>

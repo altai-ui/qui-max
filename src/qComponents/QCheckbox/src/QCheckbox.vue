@@ -1,6 +1,6 @@
 <template>
   <component
-    :is="rootTag"
+    :is="rootTag || 'label'"
     class="q-checkbox"
     :class="{
       'q-checkbox_disabled': isDisabled,
@@ -74,7 +74,7 @@ export default defineComponent({
     /**
      * Checkbox label
      */
-    label: { type: String, default: '' },
+    label: { type: String, default: null },
     /**
      * wheteher Checkbox is indeterminate
      */
@@ -127,9 +127,9 @@ export default defineComponent({
       qCheckboxGroup
         ? qCheckboxGroup?.disabled.value ||
           props.disabled ||
-          (qForm?.disabled ?? false) ||
+          (qForm?.disabled.value ?? false) ||
           isLimitDisabled.value
-        : props.disabled || (qForm?.disabled ?? false)
+        : props.disabled || (qForm?.disabled.value ?? false)
     );
 
     const model = computed<boolean>({

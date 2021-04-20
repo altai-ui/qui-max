@@ -55,13 +55,13 @@ import {
   onUnmounted,
   onBeforeUpdate
 } from 'vue';
-
 import {
   createPopper as createPopperJs,
   Options,
   Placement
 } from '@popperjs/core';
 
+import { validateArray } from '@/qComponents/helpers';
 import { getConfig } from '@/qComponents/config';
 import type {
   QContextMenuProps,
@@ -78,14 +78,14 @@ export default defineComponent({
   componentName: 'QContextMenu',
 
   props: {
-    position: {
-      type: String as PropType<QContextMenuPropPosition>,
-      default: 'left',
-      validator: (value: string): boolean => ['left', 'right'].includes(value)
-    },
     menuItems: {
       type: Array as PropType<QContextMenuPropMenuItems>,
       required: true
+    },
+    position: {
+      type: String as PropType<QContextMenuPropPosition>,
+      default: 'left',
+      validator: validateArray<QContextMenuPropPosition>(['left', 'right'])
     },
     /**
      * Specifies a target element where QMessageBox will be moved.

@@ -33,6 +33,7 @@ const QColorPickerStory: Story<QColorPickerProps> = args =>
         :color-format="args.colorFormat"
         :placement="args.placement"
         :popper-options="args.popperOptions"
+        :teleport-to="args.teleportTo"
       />
     `
   });

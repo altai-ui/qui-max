@@ -10,7 +10,7 @@
       @scroll="handleScroll"
     >
       <component
-        :is="viewTag"
+        :is="viewTag || 'div'"
         ref="resize"
         class="q-scrollbar__view"
         :class="viewClass"
@@ -52,11 +52,11 @@ import {
 } from 'vue';
 
 import {
+  validateArray,
   ResizableElement,
   addResizeListener,
   removeResizeListener
-} from '@/qComponents/helpers/resizeEvent';
-
+} from '@/qComponents/helpers';
 import QBar from './QBar.vue';
 import type {
   QScrollbarProps,
@@ -92,13 +92,12 @@ export default defineComponent({
     theme: {
       type: String as PropType<QScrollbarPropTheme>,
       default: 'primary',
-      validator: (value: string): boolean =>
-        ['primary', 'secondary'].includes(value)
+      validator: validateArray<QScrollbarPropTheme>(['primary', 'secondary'])
     },
     /**
      * custom wrapper content class (it helps you to style content)
      */
-    wrapClass: { type: [Object, String, Array], default: '' },
+    wrapClass: { type: [Object, String, Array], default: null },
     /**
      * custom inner content tag
      */
@@ -109,7 +108,7 @@ export default defineComponent({
     /**
      * custom inner content class
      */
-    viewClass: { type: [Object, String, Array], default: '' },
+    viewClass: { type: [Object, String, Array], default: null },
     /**
      * custom inner content class
      */

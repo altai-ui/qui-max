@@ -15,6 +15,7 @@ export interface QColorHueSliderProps {
 export type QColorPickerPropColorFormat = ColorFormat;
 export type QColorPickerPropPlacement = Placement;
 export type QColorPickerPropPopperOptions = Nullable<Partial<Options>>;
+export type QColorPickerPropTeleportTo = Nullable<string | HTMLElement>;
 
 export interface QColorPickerProps {
   modelValue: Nullable<string>;
@@ -24,6 +25,7 @@ export interface QColorPickerProps {
   colorFormat: QColorPickerPropColorFormat;
   placement: QColorPickerPropPlacement;
   popperOptions: QColorPickerPropPopperOptions;
+  teleportTo: QColorPickerPropTeleportTo;
 }
 
 export interface QColorSvpanelProps {

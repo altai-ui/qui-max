@@ -1,2 +1,4 @@
-// eslint-disable-next-line import/prefer-default-export
 export { randId } from './randId';
+export { addResizeListener, removeResizeListener } from './resizeEvent';
+export type { ResizableElement } from './resizeEvent';
+export { validateArray } from './validateArray';

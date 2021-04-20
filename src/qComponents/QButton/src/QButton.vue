@@ -26,6 +26,8 @@
 <script lang="ts">
 import { defineComponent, PropType, computed, inject } from 'vue';
 
+import { validateArray } from '@/qComponents/helpers';
+
 import { QFormProvider } from '@/qComponents/QForm';
 import type {
   QButtonProps,
@@ -42,25 +44,28 @@ export default defineComponent({
     type: {
       type: String as PropType<QButtonPropType>,
       default: 'default',
-      validator: (value: string): boolean => ['default', 'icon'].includes(value)
+      validator: validateArray<QButtonPropType>(['default', 'icon'])
     },
     theme: {
       type: String as PropType<QButtonPropTheme>,
       default: 'primary',
-      validator: (value: string): boolean =>
-        ['primary', 'secondary', 'link'].includes(value)
+      validator: validateArray<QButtonPropTheme>([
+        'primary',
+        'secondary',
+        'link'
+      ])
     },
     size: {
       type: String as PropType<QButtonPropSize>,
       default: 'medium',
-      validator: (value: string): boolean => ['small', 'medium'].includes(value)
+      validator: validateArray<QButtonPropSize>(['small', 'medium'])
     },
     /**
      * any q-icon
      */
     icon: {
       type: String,
-      default: ''
+      default: null
     },
     /**
      * as native button type
@@ -110,7 +115,7 @@ export default defineComponent({
     const qForm = inject<QFormProvider | null>('qForm', null);
 
     const isDisabled = computed<boolean>(
-      () => props.disabled || (qForm?.disabled ?? false)
+      () => props.disabled || (qForm?.disabled.value ?? false)
     );
 
     const classList = computed<(string | Record<string, boolean>)[]>(() => {

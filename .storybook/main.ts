@@ -8,6 +8,9 @@ module.exports = {
     '@storybook/addon-storysource',
     '@storybook/preset-scss'
   ],
+  core: {
+    builder: 'webpack5'
+  },
   webpackFinal: config => {
     config.resolve.alias['@'] = path.resolve(__dirname, '../src');
 

@@ -49,3 +49,13 @@ export interface QFormItemProvider {
   ) => Promise<{ errors?: ErrorList; fields?: FieldErrorList }> | null;
   resetField: () => void;
 }
+
+export interface QFormItemInstance {
+  errorMessage: Ref<string | null>;
+  isErrorSlotShown: ComputedRef<boolean>;
+  labelFor: ComputedRef<string | null>;
+  isRequired: ComputedRef<boolean>;
+  isHeaderShown: ComputedRef<boolean>;
+  rootClasses: ComputedRef<Record<string, boolean>>;
+  getFilteredRules: (trigger: string | null) => FilteredRuleItem[] | null;
+}

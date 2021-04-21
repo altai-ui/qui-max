@@ -63,7 +63,8 @@ import type {
   QDrawerProps,
   QDrawerPropBeforeClose,
   QDrawerPropPosition,
-  QDrawerPropTeleportTo
+  QDrawerPropTeleportTo,
+  QDrawerInstance
 } from './types';
 
 const OPENED_EVENT = 'opened';
@@ -154,7 +155,7 @@ export default defineComponent({
     UPDATE_VISIBLE_EVENT
   ],
 
-  setup(props: QDrawerProps, ctx) {
+  setup(props: QDrawerProps, ctx): QDrawerInstance {
     const zIndex = ref(DEFAULT_Z_INDEX);
     const isRendered = ref(false);
     const drawer = ref<HTMLElement | null>(null);

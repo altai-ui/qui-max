@@ -40,7 +40,8 @@ import calcTextareaHeight from './calcTextareaHeight';
 import type {
   QTextareaProps,
   QTextareaPropResize,
-  QTextareaPropAutosize
+  QTextareaPropAutosize,
+  QTextareaInstance
 } from './types';
 
 export default defineComponent({
@@ -100,7 +101,7 @@ export default defineComponent({
 
   emits: ['blur', 'focus', 'input', 'change', 'update:modelValue'],
 
-  setup(props: QTextareaProps, ctx) {
+  setup(props: QTextareaProps, ctx): QTextareaInstance {
     const textareaCalcStyle = ref<{
       minHeight?: string;
       height?: string;
@@ -202,6 +203,7 @@ export default defineComponent({
     return {
       t,
       textareaCalcStyle,
+      textLength,
       classes,
       textarea,
       textareaStyle,
@@ -211,8 +213,7 @@ export default defineComponent({
       handleBlur,
       handleFocus,
       handleInput,
-      handleChange,
-      textLength
+      handleChange
     };
   }
 });

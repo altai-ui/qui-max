@@ -1,8 +1,6 @@
 import { Ref, ComputedRef } from 'vue';
 import { Placement, Options } from '@popperjs/core';
 
-// import QPickerDropdown from './QPickerDropdown.vue';
-
 export type ColorFormat = 'hex' | 'rgb';
 
 export interface QColorAlphaSliderProps {

@@ -20,7 +20,7 @@
 import { defineComponent, ref, computed, onMounted, watch } from 'vue';
 
 import draggable from './draggable';
-import type { QColorHueSliderProps } from './types';
+import type { QColorHueSliderProps, QColorHueSliderInstance } from './types';
 
 const UPDATE_HUE_EVENT = 'update:hue';
 
@@ -37,7 +37,7 @@ export default defineComponent({
 
   emits: [UPDATE_HUE_EVENT],
 
-  setup(props: QColorHueSliderProps, ctx) {
+  setup(props: QColorHueSliderProps, ctx): QColorHueSliderInstance {
     const thumbTop = ref(0);
     const thumbStyles = computed<Record<string, string>>(() => ({
       top: `${thumbTop.value}px`

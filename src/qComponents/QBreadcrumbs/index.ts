@@ -7,5 +7,9 @@ QBreadcrumbs.install = (app: App): void => {
   app.component(QBreadcrumbs.name, QBreadcrumbs);
 };
 
-export type { QBreadcrumbsProps, QBreadcrumbsPropRoute } from './src/types';
+export type {
+  QBreadcrumbsProps,
+  QBreadcrumbsPropRoute,
+  QBreadcrumbsInstance
+} from './src/types';
 export default QBreadcrumbs;

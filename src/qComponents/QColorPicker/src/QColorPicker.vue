@@ -75,7 +75,9 @@ import type {
   QColorPickerPropPlacement,
   QColorPickerPropPopperOptions,
   QColorPickerPropTeleportTo,
-  QColorPickerProvider
+  QColorPickerProvider,
+  QColorPickerInstance,
+  QPickerDropdownInstance
 } from './types';
 
 const DEFAULT_Z_INDEX = 2000;
@@ -149,7 +151,7 @@ export default defineComponent({
 
   emits: [UPDATE_MODEL_VALUE_EVENT, CHANGE_EVENT, CLICK_EVENT],
 
-  setup(props: QColorPickerProps, ctx) {
+  setup(props: QColorPickerProps, ctx): QColorPickerInstance {
     const qForm = inject<QFormProvider | null>('qForm', null);
     const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
 
@@ -218,7 +220,9 @@ export default defineComponent({
     };
 
     const trigger = ref<HTMLElement | null>(null);
-    const dropdown = ref<typeof QPickerDropdown | null>(null);
+    const dropdown = ref<
+      (typeof QPickerDropdown & QPickerDropdownInstance) | null
+    >(null);
 
     const createPopperJs = (): void => {
       if (popperJS.value?.destroy) {

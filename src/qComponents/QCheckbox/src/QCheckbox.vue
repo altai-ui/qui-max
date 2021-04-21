@@ -55,7 +55,7 @@ import type { QFormProvider } from '@/qComponents/QForm';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
 import type { QCheckboxGroupProvider } from '@/qComponents/QCheckboxGroup';
 
-import type { QCheckboxProps } from './types';
+import type { QCheckboxProps, QCheckboxInstance } from './types';
 
 const UPDATE_MODEL_VALUE_EVENT = 'update:modelValue';
 const CHANGE_EVENT = 'change';
@@ -92,7 +92,7 @@ export default defineComponent({
 
   emits: [UPDATE_MODEL_VALUE_EVENT, CHANGE_EVENT],
 
-  setup(props: QCheckboxProps, ctx) {
+  setup(props: QCheckboxProps, ctx): QCheckboxInstance {
     const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
     const qForm = inject<QFormProvider | null>('qForm', null);
     const qCheckboxGroup = inject<QCheckboxGroupProvider | null>(

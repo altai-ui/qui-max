@@ -7,5 +7,5 @@ QColorPicker.install = (app: App): void => {
   app.component(QColorPicker.name, QColorPicker);
 };
 
-export type { QColorPickerProps } from './src/types';
+export type { QColorPickerProps, QColorPickerInstance } from './src/types';
 export default QColorPicker;

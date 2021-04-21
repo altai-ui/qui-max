@@ -74,7 +74,8 @@ import QColorHueSlider from './QColorHueSlider.vue';
 import type {
   QPickerDropdownProps,
   QPickerDropdownPropColorFormat,
-  QColorPickerProvider
+  QColorPickerProvider,
+  QPickerDropdownInstance
 } from './types';
 
 const CLOSE_EVENT = 'close';
@@ -118,7 +119,7 @@ export default defineComponent({
 
   emits: [CLOSE_EVENT, CLEAR_EVENT, PICK_EVENT],
 
-  setup(props: QPickerDropdownProps, ctx) {
+  setup(props: QPickerDropdownProps, ctx): QPickerDropdownInstance {
     const elementToFocusAfterClosing = ref<HTMLElement | null>(null);
     const tempColor = ref('');
     const hue = ref(0);

@@ -15,7 +15,7 @@
 import { defineComponent, ref, computed, onMounted, watch } from 'vue';
 
 import draggable from './draggable';
-import type { QColorSvpanelProps } from './types';
+import type { QColorSvpanelProps, QColorSvpanelInstance } from './types';
 
 const UPDATE_SATURATION_EVENT = 'update:saturation';
 const UPDATE_VALUE_EVENT = 'update:value';
@@ -41,7 +41,7 @@ export default defineComponent({
 
   emits: [UPDATE_SATURATION_EVENT, UPDATE_VALUE_EVENT],
 
-  setup(props: QColorSvpanelProps, ctx) {
+  setup(props: QColorSvpanelProps, ctx): QColorSvpanelInstance {
     const rootStyles = computed<Record<string, string>>(() => ({
       backgroundColor: `hsl(${props.hue}, 100%, 50%)`
     }));

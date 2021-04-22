@@ -1,33 +1,35 @@
-import { Ref, ComputedRef } from 'vue';
+import { Ref, ComputedRef, ComponentPublicInstance, UnwrapRef } from 'vue';
 import { Instance as PopperInstance } from '@popperjs/core';
-
-import type { QOptionProvideInstance } from '@/qComponents/QOption';
-import QScrollbar from '@/qComponents/QScrollbar';
 import { TranslateResult, Path, Locale } from 'vue-i18n';
-import { QInput } from '@/qComponents';
-import QSelectTags from './QSelectTags.vue';
-import QSelectDropdown from './QSelectDropdown.vue';
+
+import type { QOptionModel } from '@/qComponents/QOption';
+import type { QScrollbarInstance } from '@/qComponents/QScrollbar';
+import type { QInputInstance } from '@/qComponents/QInput';
 
 type Option = {
-  value: string | { value: unknown; label: string; disabled: boolean };
+  value: string | Record<string, unknown>;
+  label: string;
+  disabled: boolean;
 };
 
-type ModelValue =
+type QSelectPropModelValue =
   | string
   | number
   | Option
   | (string | number | Option)[]
   | null;
 type NewOption = {
-  value: ModelValue;
-  key: ModelValue;
+  value: QSelectPropModelValue;
+  key: QSelectPropModelValue;
   preparedLabel: string | number;
 };
 
 interface QSelectInstance {
-  input: Ref<typeof QInput | null>;
-  tags: Ref<typeof QSelectTags | null>;
-  dropdown: Ref<typeof QSelectDropdown | null>;
+  input: Ref<Nullable<ComponentPublicInstance<UnwrapRef<QInputInstance>>>>;
+  tags: Ref<Nullable<ComponentPublicInstance<UnwrapRef<QSelectTagsInstance>>>>;
+  dropdown: Ref<
+    Nullable<ComponentPublicInstance<UnwrapRef<QSelectDropdownInstance>>>
+  >;
   root: Ref<HTMLElement | null>;
   state: QSelectState;
   preparedPlaceholder: ComputedRef<Nullable<string>>;
@@ -50,21 +52,21 @@ interface QSelectInstance {
     arr: (string | number | Option)[] | undefined,
     optionValue: string | number | Option
   ) => number;
-  toggleOptionSelection: (option: QOptionProvideInstance) => void;
-  emitValueUpdate: (value: ModelValue) => void;
+  toggleOptionSelection: (option: QOptionModel) => void;
+  emitValueUpdate: (value: QSelectPropModelValue) => void;
   toggleMenu: () => void;
   handleEnterKeyUp: () => void;
   onInputChange: () => void;
-  deleteTag: (tag: QOptionProvideInstance) => void;
+  deleteTag: (tag: QOptionModel) => void;
   t: (key: Path, locale: Locale) => TranslateResult;
 }
 
 interface QSelectProvider {
   toggleMenu: () => void;
-  toggleOptionSelection: (option: QOptionProvideInstance) => void;
+  toggleOptionSelection: (option: QOptionModel) => void;
   setSelected: () => void;
-  addOption: (optionInstance: QOptionProvideInstance) => void;
-  removeOption: (optionInstance: QOptionProvideInstance) => void;
+  addOption: (optionInstance: QOptionModel) => void;
+  removeOption: (optionInstance: QOptionModel) => void;
   updateHoverIndex: (index: number) => void;
   state: Partial<QSelectState>;
   multipleLimit: Ref<Nullable<number>>;
@@ -75,7 +77,7 @@ interface QSelectProvider {
   valueKey: Ref<Nullable<string>>;
   remote: Ref<Nullable<boolean>>;
   multiple: Ref<Nullable<boolean>>;
-  modelValue: Ref<ModelValue>;
+  modelValue: Ref<QSelectPropModelValue>;
 }
 
 interface QSelectProps {
@@ -86,7 +88,7 @@ interface QSelectProps {
   collapseTags: Nullable<boolean>;
   autocomplete: Nullable<'on' | 'off'>;
   multiple: Nullable<boolean>;
-  modelValue: Nullable<ModelValue>;
+  modelValue: Nullable<QSelectPropModelValue>;
   placeholder: Nullable<string>;
   disabled: Nullable<boolean>;
   canLoadMore: Nullable<boolean>;
@@ -102,12 +104,8 @@ interface QSelectProps {
 }
 
 interface QSelectState {
-  options: QOptionProvideInstance[];
-  selected:
-    | QOptionProvideInstance
-    | NewOption
-    | (QOptionProvideInstance | NewOption)[]
-    | null;
+  options: QOptionModel[];
+  selected: QOptionModel | NewOption | (QOptionModel | NewOption)[] | null;
   inputWidth: number;
   selectedLabel: string | number;
   hoverIndex: number;
@@ -128,9 +126,8 @@ interface QSelectDropdownInstance {
   handleSelectAllClick: () => void;
   root: Ref<HTMLDivElement | null>;
   multiple: Ref<Nullable<boolean>> | boolean;
-  scrollbar: Ref<typeof QScrollbar | null>;
-  qSelectState: Partial<QSelectState> | null;
-  $el?: HTMLElement;
+  scrollbar: Ref<ComponentPublicInstance<QScrollbarInstance> | null>;
+  qSelectState: Partial<Nullable<QSelectState>>;
 }
 
 interface QSelectDropdownProps {
@@ -153,14 +150,14 @@ interface QSelectTagsInstance {
   selected: Ref<QSelectState['selected'] | undefined>;
   query: Ref<string | undefined>;
   handleBackspaceKeyDown: () => void;
-  handleTagClose: (option: QOptionProvideInstance[] | null) => void;
+  handleTagClose: (option: Nullable<QOptionModel[]>) => void;
   handleInput: (event: KeyboardEvent) => void;
-  input: Ref<HTMLInputElement | null>;
+  input: Ref<Nullable<HTMLInputElement>>;
 }
 
 export {
   Option,
-  ModelValue,
+  QSelectPropModelValue,
   NewOption,
   QSelectInstance,
   QSelectProps,

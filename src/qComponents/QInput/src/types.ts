@@ -31,8 +31,8 @@ export interface QInputInstance {
   textLength: Ref<number>;
   inputType: Ref<string>;
   // refs
-  input: Ref<HTMLElement | null>;
-  root: Ref<HTMLElement | null>;
+  input: Ref<Nullable<HTMLElement>>;
+  root: Ref<Nullable<HTMLElement>>;
   // methods
   handleBlur: (event: FocusEvent) => void;
   handleFocus: (event: FocusEvent) => void;
@@ -42,5 +42,4 @@ export interface QInputInstance {
   handleChange: (event: Event) => void;
   updateModel: (event: Event) => void;
   t: (key: string) => string;
-  $el?: HTMLInputElement;
 }

@@ -69,7 +69,7 @@ import {
 import { useI18n } from 'vue-i18n';
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
-import type { QInputInstance, QInputProps, QInputState } from './types';
+import type { QInputInstance, QInputProps, QInputState, QInputClass } from './types';
 
 export default defineComponent({
   name: 'QInput',
@@ -127,7 +127,7 @@ export default defineComponent({
       type: Boolean,
       default: false
     },
-
+    /** as native attrs bind to native input, via rootСlass you can set class for q-input root */
     rootClass: {
       type: [Array, Object],
       default: null
@@ -196,7 +196,7 @@ export default defineComponent({
       )
     );
 
-    const classes = computed(() => {
+    const classes = computed<QInputClass[]>(() => {
       const mainClass = 'q-input';
 
       return [

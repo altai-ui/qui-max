@@ -1,9 +1,10 @@
 import { defineComponent, watch, reactive } from 'vue';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { Args, Meta, Story } from '@storybook/vue3';
+import { Meta, Story } from '@storybook/vue3';
 
 import QSelect from '@/qComponents/QSelect';
 import QOption from '@/qComponents/QOption';
+import type { QSelectProps, Option } from '@/qComponents/QSelect';
 
 const storyMetadata: Meta = {
   title: 'Components/QSelect',
@@ -15,7 +16,7 @@ const storyMetadata: Meta = {
   }
 };
 
-const options = [
+const options: Option[] = [
   {
     value: 'value1',
     label: 'Option 1'
@@ -45,7 +46,7 @@ const options = [
   }
 ];
 
-const Template: Story = (args: Args) =>
+const Template: Story<QSelectProps> = args =>
   defineComponent({
     setup() {
       const state = reactive({

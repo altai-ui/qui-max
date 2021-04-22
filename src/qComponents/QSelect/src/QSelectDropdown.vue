@@ -60,9 +60,9 @@
 
 <script lang="ts">
 import { get, isPlainObject } from 'lodash-es';
-import { computed, defineComponent, inject, ref, watch } from 'vue';
-import QScrollbar from '@/qComponents/QScrollbar';
+import { computed, defineComponent, inject, ref, watch, ComponentPublicInstance } from 'vue';
 
+import QScrollbar, { QScrollbarInstance } from '@/qComponents/QScrollbar';
 import { getConfig } from '@/qComponents/config';
 import type { QSelectProvider } from '@/qComponents/QSelect';
 import type {
@@ -93,7 +93,7 @@ export default defineComponent({
 
   setup(props: QSelectDropdownProps, ctx): QSelectDropdownInstance {
     const root = ref<HTMLDivElement | null>(null);
-    const scrollbar = ref<typeof QScrollbar | null>(null);
+    const scrollbar = ref<ComponentPublicInstance<QScrollbarInstance> | null>(null);
     const qSelect = inject<QSelectProvider | null>('qSelect', null);
     const qSelectState = qSelect?.state ?? null;
     const multiple = qSelect?.multiple ?? ref(false);
@@ -104,33 +104,25 @@ export default defineComponent({
       width: props.width ? `${props.width}px` : null
     }));
 
-    const isVisibleOptionExist = computed<boolean>(() => {
-      return Boolean(qSelectState?.options?.some(({ isVisible }) => isVisible));
-    });
+    const isVisibleOptionExist = computed<boolean>(() => Boolean(qSelectState?.options?.some(({ isVisible }) => isVisible)));
 
-    const areAllSelected = computed<boolean>(() => {
-      if (!qSelectState?.options) return false;
-
-      return Boolean(
+    const areAllSelected = computed<boolean>(() => Boolean(
+      qSelectState?.options &&
         multiple?.value &&
           isVisibleOptionExist.value &&
           qSelectState?.options
             .filter(({ isDisabled, isVisible }) => !isDisabled && isVisible)
-            .every(({ isSelected }) => isSelected)
-      );
-    });
+            .every(({ isSelected }) => isSelected)));
 
-    const isIndeterminate = computed<boolean>(() => {
-      if (!qSelectState?.options) return false;
-      return Boolean(
+    const isIndeterminate = computed<boolean>(() => Boolean(
+        qSelectState?.options &&
         multiple?.value &&
           isVisibleOptionExist.value &&
           !areAllSelected.value &&
           qSelectState?.options.some(
             ({ isVisible, isSelected }) => isVisible && isSelected
           )
-      );
-    });
+      ));
 
     watch(
       () => props.shown,
@@ -149,7 +141,7 @@ export default defineComponent({
         ['ArrowDown', 'ArrowUp'].includes(e.key) &&
         target instanceof HTMLInputElement
       ) {
-        const firstNode = root.value.querySelector('.q-option') as HTMLElement;
+        const firstNode = root.value.querySelector<HTMLElement>('.q-option');
 
         firstNode?.focus();
       }
@@ -159,7 +151,7 @@ export default defineComponent({
         qSelectState?.options?.filter(
           ({ isDisabled, isVisible }) => !isDisabled && isVisible
         ) ?? [];
-      const availableElements = availableOptions.map(option => option.root); //
+      const availableElements = availableOptions.map(option => option.root);
 
       let currentNodeIndex = 0;
       let nextNodeIndex = 1;

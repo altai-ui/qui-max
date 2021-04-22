@@ -1,7 +1,7 @@
 import { Ref, ComputedRef } from 'vue';
 
 export interface QScrollbarProvider {
-  wrap: Ref<HTMLElement | null>;
+  wrap: Ref<Nullable<HTMLElement>>;
 }
 
 export interface BarMapItem {

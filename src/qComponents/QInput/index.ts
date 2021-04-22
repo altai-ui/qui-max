@@ -7,5 +7,5 @@ QInput.install = (app: App): void => {
   app.component(QInput.name, QInput);
 };
 
-export type { QInputProps } from './src/types';
+export type { QInputProps, QInputInstance } from './src/types';
 export default QInput;

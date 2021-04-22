@@ -11,17 +11,7 @@ export interface QOptionInstance {
   isDisabled: ComputedRef<boolean>;
   handleMouseEnter: () => void;
   handleOptionClick: () => void;
-  root?: Ref<HTMLElement | null>;
-}
-
-export interface QOptionProvideInstance extends QOptionProps {
-  preparedLabel: string;
-  isVisible: Nullable<boolean>;
-  isSelected: boolean;
-  isLimitReached: boolean;
-  isDisabled: boolean;
-  key: string | number;
-  root: HTMLElement | null;
+  root: Ref<Nullable<HTMLElement>>;
 }
 
 export interface QOptionProps {
@@ -29,4 +19,14 @@ export interface QOptionProps {
   label: Nullable<string | number>;
   created: Nullable<boolean>;
   disabled: Nullable<boolean>;
+}
+
+export interface QOptionModel extends QOptionProps {
+  preparedLabel: string;
+  isVisible: Nullable<boolean>;
+  isSelected: boolean;
+  isLimitReached: boolean;
+  isDisabled: boolean;
+  key: string | number;
+  root: Nullable<HTMLElement>;
 }

@@ -96,6 +96,8 @@ import {
   PropType,
   toRefs,
   toRef,
+  ComponentPublicInstance,
+  UnwrapRef
 } from 'vue';
 import {
   isObject,
@@ -115,18 +117,20 @@ import {
   addResizeListener,
   removeResizeListener
 } from '@/qComponents/helpers/resizeEvent';
-import QInput from '@/qComponents/QInput';
+import type { QInputInstance } from '@/qComponents/QInput';
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
-import type { QOptionProvideInstance } from '@/qComponents/QOption';
+import type { QOptionModel } from '@/qComponents/QOption';
 import type {
-  ModelValue,
+  QSelectPropModelValue,
   Option,
   NewOption,
   QSelectInstance,
   QSelectProvider,
   QSelectState,
-  QSelectProps
+  QSelectProps,
+  QSelectTagsInstance,
+  QSelectDropdownInstance
 } from './types';
 import QSelectDropdown from './QSelectDropdown.vue';
 import QSelectTags from './QSelectTags.vue';
@@ -144,24 +148,15 @@ export default defineComponent({
     /**
      * binding value
      */
-    modelValue: {
-      type: [String, Number, Object, Array] as PropType<ModelValue>,
-      default: null
-    },
+    modelValue: { type: [String, Number, Object, Array] as PropType<QSelectPropModelValue>, default: null },
     /**
      * the autocomplete attribute of select input
      */
-    autocomplete: {
-      type: String as PropType<'on' | 'off'>,
-      default: 'off'
-    },
+    autocomplete: { type: String as PropType<'on' | 'off'>, default: 'off'},
     /**
      * whether loadMoreText is shown
      */
-    canLoadMore: {
-      type: Boolean,
-      default: false
-    },
+    canLoadMore: { type: Boolean, default: false },
     /**
      * whether Select is disabled
      */
@@ -189,31 +184,19 @@ export default defineComponent({
     /**
      * text that is shown when `loading` is true
      */
-    loadingText: {
-      type: String,
-      default: null
-    },
+    loadingText: { type: String, default: null },
     /**
      * text that is shown when `canLoadMore` is true
      */
-    loadMoreText: {
-      type: String,
-      default: null
-    },
+    loadMoreText: { type: String, default: null },
     /**
      * text of no match state
      */
-    noMatchText: {
-      type: String,
-      default: null
-    },
+    noMatchText: { type: String, default: null },
     /**
      * text of no data state
      */
-    noDataText: {
-      type: String,
-      default: null
-    },
+    noDataText: { type: String, default: null },
     /**
      * whether multiple-select is activated
      */
@@ -221,17 +204,11 @@ export default defineComponent({
     /**
      * maximum number of options user can select when `multiple` is true. No `limit` when set to 0
      */
-    multipleLimit: {
-      type: Number,
-      default: 0
-    },
+    multipleLimit: { type: Number, default: 0 },
     /**
      * placeholder
      */
-    placeholder: {
-      type: String,
-      default: ''
-    },
+    placeholder: { type: String, default: '' },
     /**
      * whether select all button is shown
      */
@@ -243,10 +220,7 @@ export default defineComponent({
     /**
      * unique identity key name for value, required when option's value is an object
      */
-    valueKey: {
-      type: String,
-      default: 'value'
-    },
+    valueKey: { type: String, default: 'value' },
     /**
      * whether to collapse tags to a text when multiple selecting
      */
@@ -255,10 +229,7 @@ export default defineComponent({
      * Specifies a target element where QMessageBox will be moved.
      * (has to be a valid query selector, or an HTMLElement)
      */
-    teleportTo: {
-      type: [String, HTMLElement],
-      default: null
-    }
+    teleportTo: { type: [String, HTMLElement], default: null }
   },
 
   emits: [
@@ -274,9 +245,9 @@ export default defineComponent({
   ],
 
   setup(props: QSelectProps, ctx): QSelectInstance {
-    const input = ref<typeof QInput | null>(null);
-    const dropdown = ref<typeof QSelectDropdown | null>(null);
-    const tags = ref<typeof QSelectTags | null>(null);
+    const input = ref<ComponentPublicInstance<UnwrapRef<QInputInstance>> | null>(null);
+    const dropdown = ref<ComponentPublicInstance<UnwrapRef<QSelectDropdownInstance>> | null>(null);
+    const tags = ref<ComponentPublicInstance<UnwrapRef<QSelectTagsInstance>> | null>(null);
     const root = ref<HTMLElement | null>(null);
     const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
     const qForm = inject<QFormProvider | null>('qForm', null);
@@ -376,13 +347,13 @@ export default defineComponent({
       );
     });
 
-    const getKey = (value: ModelValue): string => {
+    const getKey = (value: QSelectPropModelValue): string => {
       return isPlainObject(value) ? get(value, props.valueKey ?? '') : value;
     };
 
     const getOption = (
-      value: ModelValue
-    ): QOptionProvideInstance | NewOption | null => {
+      value: QSelectPropModelValue
+    ): QOptionModel | NewOption | null => {
       if (isNil(value)) return null;
       const keyByValueKey = getKey(value);
       const option =
@@ -404,8 +375,8 @@ export default defineComponent({
      */
     const setSelected = (): void => {
       const result:
-        | QOptionProvideInstance
-        | (QOptionProvideInstance | NewOption)[] = [];
+        | QOptionModel
+        | (QOptionModel | NewOption)[] = [];
       if (props.multiple) {
         if (Array.isArray(props.modelValue)) {
           props.modelValue.forEach(value => {
@@ -417,7 +388,7 @@ export default defineComponent({
 
             const keyByValueKey = getKey(value);
             if (Array.isArray(state.selected)) {
-              const cachedOption: QOptionProvideInstance | NewOption | null =
+              const cachedOption: QOptionModel | NewOption | null =
                 state.selected?.find(({ key }) => key === keyByValueKey) ??
                 null;
               if (cachedOption) result.push(cachedOption);
@@ -490,9 +461,10 @@ export default defineComponent({
     };
 
     const popperInit = (): void => {
-      const inputEl = input?.value?.$el as HTMLInputElement;
-      const dropdownEl = dropdown.value?.$el as HTMLElement;
-
+      const inputEl = input.value?.$el;
+      const dropdownEl = dropdown.value?.$el;
+      if (!inputEl || !dropdownEl) return;
+      
       state.popper = createPopper(inputEl, dropdownEl, {
         modifiers: [
           {
@@ -507,9 +479,9 @@ export default defineComponent({
 
     const handleDocumentClick = (e: MouseEvent): void => {
       const target = e.target as HTMLElement;
-      const dropdownEl = dropdown.value?.$el as HTMLElement;
+      const dropdownEl = dropdown.value?.$el;
 
-      if (root.value?.contains(target) || dropdownEl.contains(target)) {
+      if (root.value?.contains(target) || dropdownEl?.contains(target)) {
         return;
       }
 
@@ -566,7 +538,7 @@ export default defineComponent({
     watch(
       () => state.isDropdownShown,
       val => {
-        const inputInsideTagsEl = tags?.value?.input as HTMLInputElement;
+        const inputInsideTagsEl = tags?.value?.input;
 
         if (!val) {
           inputInsideTagsEl?.blur();
@@ -637,7 +609,7 @@ export default defineComponent({
       }, 50);
     };
 
-    const emitValueUpdate = (value: ModelValue): void => {
+    const emitValueUpdate = (value: QSelectPropModelValue): void => {
       ctx.emit('update:modelValue', value);
 
       if (!isEqual(props.modelValue, value)) ctx.emit('change', value);
@@ -655,9 +627,7 @@ export default defineComponent({
       arr = [] as (string | number | Option)[],
       optionValue: string | number | Option
     ): number => {
-      const valueIsString = isString(optionValue);
-
-      if (valueIsString) return arr.indexOf(optionValue);
+      if (isString(optionValue)) return arr.indexOf(optionValue);
       const valueKey = props.valueKey;
       const valueByValuekey = get(optionValue, valueKey ?? '');
       return arr.findIndex(
@@ -668,7 +638,7 @@ export default defineComponent({
     /**
      * @public
      */
-    const toggleOptionSelection = (option: QOptionProvideInstance): void => {
+    const toggleOptionSelection = (option: QOptionModel): void => {
       if (!option.modelValue) return;
       if (props.multiple && Array.isArray(props.modelValue)) {
         const value = [...props.modelValue];
@@ -687,7 +657,7 @@ export default defineComponent({
           state.query = '';
         }
         if (props.filterable) {
-          const inputElInsideTags = tags?.value?.input as HTMLElement;
+          const inputElInsideTags = tags?.value?.input;
 
           inputElInsideTags?.focus();
         }
@@ -710,7 +680,7 @@ export default defineComponent({
       }
     };
 
-    const deleteTag = (tag: QOptionProvideInstance): void => {
+    const deleteTag = (tag: QOptionModel): void => {
       if (
         isDisabled.value ||
         !Array.isArray(props.modelValue) ||
@@ -729,15 +699,15 @@ export default defineComponent({
 
     const onInputChange = (): void => {
       if (props.filterable && state.query !== state.selectedLabel) {
-        state.query = state.selectedLabel;
+        state.query = String(state.selectedLabel);
       }
     };
 
-    const addOption = (optionInstance: QOptionProvideInstance): void => {
+    const addOption = (optionInstance: QOptionModel): void => {
       state.options.push(optionInstance);
     };
 
-    const removeOption = (optionInstance: QOptionProvideInstance): void => {
+    const removeOption = (optionInstance: QOptionModel): void => {
       const currentOptionIndex = state.options.indexOf(optionInstance);
       if (currentOptionIndex > -1) {
         state.options.splice(currentOptionIndex, 1);

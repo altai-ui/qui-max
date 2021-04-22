@@ -51,7 +51,7 @@
 <script lang="ts">
 import { defineComponent, inject, ref, toRefs } from 'vue';
 
-import type { QOptionProvideInstance } from '@/qComponents/QOption';
+import type { QOptionModel } from '@/qComponents/QOption';
 import type { QSelectProvider } from '@/qComponents/QSelect';
 import type { QSelectTagsInstance } from './types';
 
@@ -75,7 +75,7 @@ export default defineComponent({
       }
     };
 
-    const handleTagClose = (option: QOptionProvideInstance[] | null): void => {
+    const handleTagClose = (option: QOptionModel[] | null): void => {
       ctx.emit('remove-tag', option);
     };
 
@@ -85,10 +85,10 @@ export default defineComponent({
     };
 
     return {
+      input,
       handleBackspaceKeyDown,
       handleTagClose,
       handleInput,
-      input,
       filterable: qSelect?.filterable ?? ref(false),
       collapseTags: qSelect?.collapseTags ?? ref(false),
       isDisabled: qSelect?.isDisabled ?? ref(false),

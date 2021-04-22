@@ -39,7 +39,6 @@ import {
   inject,
   onBeforeUnmount,
   PropType,
-  watch,
   ref,
   reactive,
   toRefs,
@@ -50,7 +49,7 @@ import type { Option, QSelectProvider } from '@/qComponents/QSelect';
 import type {
   QOptionInstance,
   QOptionProps,
-  QOptionProvideInstance
+  QOptionModel
 } from './types';
 
 export default defineComponent({
@@ -78,8 +77,8 @@ export default defineComponent({
 
   setup(props: QOptionProps): QOptionInstance {
     const qSelect = inject<QSelectProvider | null>('qSelect', null);
+    const root = ref<HTMLElement | null>(null);
     const qSelectState = qSelect?.state;
-    const root = ref(null);
     const multiple = qSelect?.multiple.value ?? false;
     const multipleLimit = qSelect?.multipleLimit.value ?? 0;
     const modelValue = qSelect?.modelValue;
@@ -93,9 +92,7 @@ export default defineComponent({
       )
     );
 
-    const preparedLabel = computed<string>(() => {
-      return String(props.label ?? key.value);
-    });
+    const preparedLabel = computed<string>(() => String(props.label ?? key.value));
 
     const isVisible = computed<boolean>(() => {
       if (qSelect?.remote.value || !qSelectState?.query) return true;
@@ -108,10 +105,7 @@ export default defineComponent({
     });
 
     const isSelected = computed<boolean>(() => {
-      if (!qSelect) return false;
-
-      if (!modelValue?.value) return false;
-
+      if (!qSelect || !modelValue?.value) return false;
       if (!multiple) {
         if (!isObject(props.modelValue)) return modelValue.value === key.value;
 
@@ -139,27 +133,9 @@ export default defineComponent({
       );
     });
 
-    const isDisabled = computed<boolean>(() => {
-      return props.disabled || isLimitReached.value;
-    });
+    const isDisabled = computed<boolean>(() => props.disabled || isLimitReached.value);
 
-    watch(
-      () => props.modelValue,
-      (val, oldVal) => {
-        if (!qSelect) return;
-        if (!props.created && !qSelect.remote) {
-          if (
-            get(val, valueKey) ===
-            get(oldVal, valueKey)
-          )
-            return;
-
-          qSelect?.setSelected();
-        }
-      }
-    );
-
-    const self: QOptionProvideInstance = reactive({
+    const self: QOptionModel = reactive({
       ...toRefs(props),
       key,
       preparedLabel,

@@ -29,7 +29,8 @@ import type {
   QBarProps,
   QBarPropType,
   QScrollbarProvider,
-  BarMapItem
+  BarMapItem,
+  QBarInstance
 } from './types';
 import { renderThumbStyle, BAR_MAP } from './util';
 
@@ -48,7 +49,7 @@ export default defineComponent({
     move: { type: Number, default: null }
   },
 
-  setup(props: QBarProps) {
+  setup(props: QBarProps): QBarInstance {
     const qScrollbar = inject<QScrollbarProvider>('qScrollbar');
     const root = ref<HTMLElement | null>(null);
     const thumb = ref<HTMLElement | null>(null);

@@ -1,3 +1,5 @@
+import { ComputedRef } from 'vue';
+
 export interface QInputNumberProps {
   precision: Nullable<number>;
   disabled: Nullable<boolean>;
@@ -13,4 +15,21 @@ export interface QInputNumberState {
   minValue: number;
   maxValue: number;
   step: number;
+}
+
+export interface QInputNumberInstance {
+  state: QInputNumberState;
+  isDisabled: ComputedRef<boolean>;
+  withControlsClass: ComputedRef<Record<string, boolean>>;
+  isIncreaseDisabled: ComputedRef<boolean>;
+  isDecreaseDisabled: ComputedRef<boolean>;
+  currentValue: ComputedRef<string>;
+  areControlsEnabled: ComputedRef<boolean>;
+  handleIncreaseClick: () => void;
+  handleDecreaseClick: () => void;
+  handleBlur: (event: FocusEvent) => void;
+  handleFocus: (event: FocusEvent) => void;
+  handleChangeInput: (event: Event, type: string) => void;
+  processUserValue: (value: number, type: string) => Promise<void>;
+  changesEmmiter: (value: number | null, type: string) => void;
 }

@@ -47,7 +47,11 @@ import {
 
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
-import type { QInputNumberProps, QInputNumberState } from './types';
+import type {
+  QInputNumberProps,
+  QInputNumberState,
+  QInputNumberInstance
+} from './types';
 
 export default defineComponent({
   name: 'QInputNumber',
@@ -95,7 +99,7 @@ export default defineComponent({
 
   emits: ['blur', 'focus', 'input', 'change'],
 
-  setup(props: QInputNumberProps, ctx) {
+  setup(props: QInputNumberProps, ctx): QInputNumberInstance {
     const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
     const qForm = inject<QFormProvider | null>('qForm', null);
 

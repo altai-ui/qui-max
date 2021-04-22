@@ -112,7 +112,8 @@ import type {
   QMessageBoxProps,
   QMessageBoxPropTeleportTo,
   QMessageBoxPropBeforeClose,
-  QMessageBoxEvent
+  QMessageBoxEvent,
+  QMessageBoxInstance
 } from './types';
 
 const DEFAULT_Z_INDEX = 2000;
@@ -219,7 +220,7 @@ export default defineComponent({
 
   emits: [UPDATE_IS_VISIBLE_EVENT, CONFIRM_EVENT, CLOSE_EVENT, CANCEL_EVENT],
 
-  setup(props: QMessageBoxProps, { emit }) {
+  setup(props: QMessageBoxProps, { emit }): QMessageBoxInstance {
     const isRendered = ref(false);
     const wrapZIndex = ref(DEFAULT_Z_INDEX);
 

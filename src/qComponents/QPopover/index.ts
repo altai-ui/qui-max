@@ -7,5 +7,5 @@ QPopover.install = (app: App): void => {
   app.component(QPopover.name, QPopover);
 };
 
-export type { QPopoverProps } from './src/types';
+export type { QPopoverProps, QPopoveInstance } from './src/types';
 export default QPopover;

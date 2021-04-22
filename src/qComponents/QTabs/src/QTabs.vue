@@ -7,7 +7,7 @@
 <script lang="ts">
 import { defineComponent, ref, provide, watch, toRef } from 'vue';
 
-import type { QTabsProps, QTabsProvider } from './types';
+import type { QTabsProps, QTabsProvider, QTabsInstance } from './types';
 
 const UPDATE_MODEL_VALUE_EVENT = 'update:modelValue';
 const CHANGE_EVENT = 'change';
@@ -39,7 +39,7 @@ export default defineComponent({
 
   emits: [UPDATE_MODEL_VALUE_EVENT, CHANGE_EVENT],
 
-  setup(props: QTabsProps, { emit }) {
+  setup(props: QTabsProps, { emit }): QTabsInstance {
     const currentName = ref(props.modelValue);
 
     const updateValue = (name: string): void => {

@@ -16,3 +16,5 @@ export interface QTabsProvider {
   disabled: Ref<QTabPropDisabled>;
   updateValue: (name: string) => void;
 }
+
+export type QTabsInstance = void;

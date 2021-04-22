@@ -12,7 +12,12 @@
 import { defineComponent, PropType, computed } from 'vue';
 
 import { validateArray } from '@/qComponents/helpers';
-import type { QRowProps, QRowPropAlignV, QRowPropAlignH } from './types';
+import type {
+  QRowProps,
+  QRowPropAlignV,
+  QRowPropAlignH,
+  QRowInstance
+} from './types';
 
 export default defineComponent({
   name: 'QRow',
@@ -60,7 +65,7 @@ export default defineComponent({
     }
   },
 
-  setup(props: QRowProps) {
+  setup(props: QRowProps): QRowInstance {
     const classes = computed<Record<string, boolean>>(() => ({
       [`q-row_align-h_${props.alignH}`]: Boolean(props.alignH),
       [`q-row_align-v_${props.alignV}`]: Boolean(props.alignV)

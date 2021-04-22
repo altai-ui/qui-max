@@ -16,3 +16,8 @@ export interface QRadioGroupProvider {
   disabled: Ref<QRadioGroupPropDisabled>;
   changeValue: (value: QRadioGroupPropModelValue) => void;
 }
+
+export interface QRadioGroupInstance {
+  root: Ref<HTMLElement | null>;
+  handleKeydown: (e: KeyboardEvent) => void;
+}

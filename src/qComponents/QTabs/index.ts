@@ -7,5 +7,5 @@ QTabs.install = (app: App): void => {
   app.component(QTabs.name, QTabs);
 };
 
-export type { QTabsProps, QTabsProvider } from './src/types';
+export type { QTabsProps, QTabsProvider, QTabsInstance } from './src/types';
 export default QTabs;

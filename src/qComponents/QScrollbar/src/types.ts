@@ -1,4 +1,4 @@
-import { Ref } from 'vue';
+import { Ref, ComputedRef } from 'vue';
 
 export interface QScrollbarProvider {
   wrap: Ref<HTMLElement | null>;
@@ -24,6 +24,18 @@ export interface QBarProps {
   move: Nullable<number>;
 }
 
+export interface QBarInstance {
+  root: Ref<HTMLElement | null>;
+  bar: ComputedRef<BarMapItem>;
+  thumb: Ref<HTMLElement | null>;
+  classes: ComputedRef<Record<string, boolean>>;
+  thumbClasses: ComputedRef<Record<string, boolean>>;
+  thumbStyles: ComputedRef<Record<string, string | number>>;
+  handleThumbClick: (e: MouseEvent) => void;
+  handleTrackerClick: (e: MouseEvent) => void;
+  scrollToPx: (px: number) => void;
+}
+
 type Classes = Record<string, boolean>;
 export type Styles = Record<string, string | number>;
 
@@ -40,4 +52,18 @@ export interface QScrollbarProps {
   viewClass: Nullable<string | Classes | Classes[]>;
   viewStyle: Nullable<string | Styles | Styles[]>;
   noresize: Nullable<boolean>;
+}
+
+export interface QScrollbarInstance {
+  wrap: Ref<HTMLElement | null>;
+  sizeWidth: Ref<string>;
+  sizeHeight: Ref<string>;
+  isXBarShown: ComputedRef<boolean>;
+  isYBarShown: ComputedRef<boolean>;
+  moveX: Ref<number>;
+  moveY: Ref<number>;
+  classes: ComputedRef<Record<string, boolean>>;
+  wrapClasses: ComputedRef<QScrollbarPropWrapClass[]>;
+  handleScroll: () => void;
+  update: () => void;
 }

@@ -1,3 +1,4 @@
+import { Ref, ComputedRef } from 'vue';
 import { Placement, Options } from '@popperjs/core';
 
 export type QPopoverPropTeleportTo = Nullable<string | HTMLElement>;
@@ -18,4 +19,14 @@ export interface QPopoverProps {
   minWidth: Nullable<string | number>;
   maxWidth: Nullable<string | number>;
   popperOptions: QPopoverPropPopperOptions;
+}
+
+export interface QPopoveInstance {
+  reference: Ref<Nullable<HTMLElement>>;
+  popover: Ref<Nullable<HTMLElement>>;
+  isPopoverShown: Ref<boolean>;
+  popoverClasses: ComputedRef<Record<string, boolean>>;
+  popoverStyles: ComputedRef<Record<string, string | number>>;
+  popoverIconStyles: ComputedRef<Record<string, string>>;
+  destroyPopper: () => void;
 }

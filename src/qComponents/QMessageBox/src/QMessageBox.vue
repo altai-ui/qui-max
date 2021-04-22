@@ -108,17 +108,18 @@ import {
 
 import { getConfig } from '@/qComponents/config';
 
+import { CLOSE_EVENT } from '@/qComponents/constants/events';
 import type {
   QMessageBoxProps,
   QMessageBoxPropTeleportTo,
   QMessageBoxPropBeforeClose,
-  QMessageBoxEvent
+  QMessageBoxEvent,
+  QMessageBoxInstance
 } from './types';
 
 const DEFAULT_Z_INDEX = 2000;
 const UPDATE_IS_VISIBLE_EVENT = 'update:isVisible';
 const CONFIRM_EVENT = 'confirm';
-const CLOSE_EVENT = 'close';
 const CANCEL_EVENT = 'cancel';
 
 export default defineComponent({
@@ -219,7 +220,7 @@ export default defineComponent({
 
   emits: [UPDATE_IS_VISIBLE_EVENT, CONFIRM_EVENT, CLOSE_EVENT, CANCEL_EVENT],
 
-  setup(props: QMessageBoxProps, { emit }) {
+  setup(props: QMessageBoxProps, { emit }): QMessageBoxInstance {
     const isRendered = ref(false);
     const wrapZIndex = ref(DEFAULT_Z_INDEX);
 

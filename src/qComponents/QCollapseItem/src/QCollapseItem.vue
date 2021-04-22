@@ -35,10 +35,10 @@
 <script lang="ts">
 import { defineComponent, inject, computed } from 'vue';
 
-import { QCollapseProvider } from '@/qComponents/QCollapse';
 import { randId } from '@/qComponents/helpers';
+import type { QCollapseProvider } from '@/qComponents/QCollapse';
 import QCollapseTransition from './QCollapseTransition.vue';
-import type { QCollapseItemProps } from './types';
+import type { QCollapseItemProps, QCollapseItemInstance } from './types';
 
 export default defineComponent({
   name: 'QCollapseItem',
@@ -57,7 +57,7 @@ export default defineComponent({
     }
   },
 
-  setup(props: QCollapseItemProps) {
+  setup(props: QCollapseItemProps): QCollapseItemInstance {
     const qCollapse = inject<QCollapseProvider>('qCollapse');
 
     const preparedName = computed<string | number>(

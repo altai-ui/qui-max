@@ -7,5 +7,5 @@ QRadio.install = (app: App): void => {
   app.component(QRadio.name, QRadio);
 };
 
-export type { QRadioProps } from './src/types';
+export type { QRadioProps, QRadioInstance } from './src/types';
 export default QRadio;

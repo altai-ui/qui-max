@@ -1,3 +1,5 @@
+import { ComputedRef } from 'vue';
+
 export type QButtonPropType = 'default' | 'icon';
 export type QButtonPropTheme = 'primary' | 'secondary' | 'link';
 export type QButtonPropSize = 'small' | 'medium';
@@ -13,4 +15,9 @@ export interface QButtonProps {
   autofocus: Nullable<boolean>;
   circle: Nullable<boolean>;
   fullWidth: Nullable<boolean>;
+}
+
+export interface QButtonInstance {
+  classList: ComputedRef<(string | Record<string, boolean>)[]>;
+  isDisabled: ComputedRef<boolean>;
 }

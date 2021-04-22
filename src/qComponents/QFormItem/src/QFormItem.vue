@@ -62,7 +62,8 @@ import type {
   QFormItemPropRules,
   QFormItemContext,
   QFormItemProvider,
-  FilteredRuleItem
+  FilteredRuleItem,
+  QFormItemInstance
 } from './types';
 
 export default defineComponent({
@@ -118,7 +119,7 @@ export default defineComponent({
     }
   },
 
-  setup(props: QFormItemProps, ctx) {
+  setup(props: QFormItemProps, ctx): QFormItemInstance {
     let initialValue: unknown = null;
     const errorMessage = ref<string | null>(null);
 

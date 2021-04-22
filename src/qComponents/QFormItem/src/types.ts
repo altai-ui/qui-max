@@ -2,7 +2,7 @@ import { ComputedRef, Ref } from 'vue';
 import { RuleItem, ErrorList, FieldErrorList } from 'async-validator';
 
 export interface FilteredRuleItem extends RuleItem {
-  trigger?: string | null;
+  trigger?: Nullable<string>;
 }
 
 export type QFormItemPropRules = Nullable<
@@ -21,11 +21,11 @@ export interface QFormItemProps {
 
 export interface QFormItemContext {
   validateField: (
-    trigger?: string | null
-  ) => Promise<{ errors?: ErrorList; fields?: FieldErrorList }> | null;
+    trigger?: Nullable<string>
+  ) => Nullable<Promise<{ errors?: ErrorList; fields?: FieldErrorList }>>;
   clearValidate: () => void;
-  errorMessage: Ref<string | null>;
-  getFilteredRules: (trigger: string | null) => FilteredRuleItem[] | null;
+  errorMessage: Ref<Nullable<string>>;
+  getFilteredRules: (trigger: Nullable<string>) => Nullable<FilteredRuleItem[]>;
   initialValue: unknown;
   isErrorSlotShown: ComputedRef<boolean>;
   isHeaderShown: ComputedRef<boolean>;
@@ -35,17 +35,27 @@ export interface QFormItemContext {
   rootClasses: ComputedRef<{
     [key: string]: boolean;
   }>;
-  rules: FilteredRuleItem | FilteredRuleItem[] | null;
+  rules: Nullable<FilteredRuleItem | FilteredRuleItem[]>;
   showErrorMessage: Nullable<boolean>;
-  for: string | null;
-  prop: string | null;
-  label: string | null;
-  sublabel: string | null;
+  for: Nullable<string>;
+  prop: Nullable<string>;
+  label: Nullable<string>;
+  sublabel: Nullable<string>;
 }
 
 export interface QFormItemProvider {
   validateField: (
-    trigger?: string | null
-  ) => Promise<{ errors?: ErrorList; fields?: FieldErrorList }> | null;
+    trigger?: Nullable<string>
+  ) => Nullable<Promise<{ errors?: ErrorList; fields?: FieldErrorList }>>;
   resetField: () => void;
+}
+
+export interface QFormItemInstance {
+  errorMessage: Ref<Nullable<string>>;
+  isErrorSlotShown: ComputedRef<boolean>;
+  labelFor: ComputedRef<Nullable<string>>;
+  isRequired: ComputedRef<boolean>;
+  isHeaderShown: ComputedRef<boolean>;
+  rootClasses: ComputedRef<Record<string, boolean>>;
+  getFilteredRules: (trigger: Nullable<string>) => Nullable<FilteredRuleItem[]>;
 }

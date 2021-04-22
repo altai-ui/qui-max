@@ -86,10 +86,10 @@
 import { defineComponent, computed } from 'vue';
 import { range } from 'lodash-es';
 
-import type { QPaginationProps } from './types';
+import type { QPaginationProps, QPaginationInstance } from './types';
 
-const PREV_CLICK_EVENT = 'prev-click';
 const CURRENT_CHANGE_EVENT = 'current-change';
+const PREV_CLICK_EVENT = 'prev-click';
 const NEXT_CLICK_EVENT = 'next-click';
 const QUICK_PREV_CLICK_EVENT = 'quick-prev-click';
 const QUICK_NEXT_CLICK_EVENT = 'quick-next-click';
@@ -134,14 +134,14 @@ export default defineComponent({
   },
 
   emits: [
-    PREV_CLICK_EVENT,
     CURRENT_CHANGE_EVENT,
+    PREV_CLICK_EVENT,
     NEXT_CLICK_EVENT,
     QUICK_PREV_CLICK_EVENT,
     QUICK_NEXT_CLICK_EVENT
   ],
 
-  setup(props: QPaginationProps, { emit }) {
+  setup(props: QPaginationProps, { emit }): QPaginationInstance {
     const preparedPageCount = computed<number>(() => {
       const pageCount =
         props.pageCount ??

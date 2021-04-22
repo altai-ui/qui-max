@@ -33,7 +33,8 @@ import type {
   QButtonProps,
   QButtonPropType,
   QButtonPropTheme,
-  QButtonPropSize
+  QButtonPropSize,
+  QButtonInstance
 } from './types';
 
 export default defineComponent({
@@ -111,7 +112,7 @@ export default defineComponent({
     }
   },
 
-  setup(props: QButtonProps) {
+  setup(props: QButtonProps): QButtonInstance {
     const qForm = inject<QFormProvider | null>('qForm', null);
 
     const isDisabled = computed<boolean>(

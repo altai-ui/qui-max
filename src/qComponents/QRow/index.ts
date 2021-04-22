@@ -7,5 +7,5 @@ QRow.install = (app: App): void => {
   app.component(QRow.name, QRow);
 };
 
-export type { QRowProps } from './src/types';
+export type { QRowProps, QRowInstance } from './src/types';
 export default QRow;

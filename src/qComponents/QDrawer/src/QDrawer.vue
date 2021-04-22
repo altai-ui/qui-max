@@ -58,17 +58,18 @@ import {
 } from 'vue';
 
 import { validateArray } from '@/qComponents/helpers';
+import { CLOSE_EVENT } from '@/qComponents/constants/events';
 import { getConfig } from '@/qComponents/config';
 import type {
   QDrawerProps,
   QDrawerPropBeforeClose,
   QDrawerPropPosition,
-  QDrawerPropTeleportTo
+  QDrawerPropTeleportTo,
+  QDrawerInstance
 } from './types';
 
 const OPENED_EVENT = 'opened';
 const CLOSED_EVENT = 'closed';
-const CLOSE_EVENT = 'close';
 const OPEN_EVENT = 'open';
 const UPDATE_VISIBLE_EVENT = 'update:visible';
 const DEFAULT_Z_INDEX = 2000;
@@ -154,7 +155,7 @@ export default defineComponent({
     UPDATE_VISIBLE_EVENT
   ],
 
-  setup(props: QDrawerProps, ctx) {
+  setup(props: QDrawerProps, ctx): QDrawerInstance {
     const zIndex = ref(DEFAULT_Z_INDEX);
     const isRendered = ref(false);
     const drawer = ref<HTMLElement | null>(null);

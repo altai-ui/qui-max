@@ -7,5 +7,5 @@ QCheckbox.install = (app: App): void => {
   app.component(QCheckbox.name, QCheckbox);
 };
 
-export type { QCheckboxProps } from './src/types';
+export type { QCheckboxProps, QCheckboxInstance } from './src/types';
 export default QCheckbox;

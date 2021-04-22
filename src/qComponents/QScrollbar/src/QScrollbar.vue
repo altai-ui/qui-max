@@ -63,7 +63,8 @@ import type {
   QScrollbarPropScrollTo,
   QScrollbarPropTheme,
   QScrollbarPropWrapClass,
-  QScrollbarProvider
+  QScrollbarProvider,
+  QScrollbarInstance
 } from './types';
 
 const OFFSET = -10;
@@ -119,7 +120,7 @@ export default defineComponent({
     noresize: { type: Boolean, default: false }
   },
 
-  setup(props: QScrollbarProps) {
+  setup(props: QScrollbarProps): QScrollbarInstance {
     const root = ref<HTMLElement | null>(null);
     const wrap = ref<HTMLElement | null>(null);
     const resize = ref<HTMLElement | null>(null);

@@ -1,4 +1,4 @@
-let hiddenTextarea: HTMLTextAreaElement | null;
+let hiddenTextarea: Nullable<HTMLTextAreaElement>;
 
 const HIDDEN_STYLE = `
   height:0 !important;
@@ -61,7 +61,7 @@ interface TextareaHeight {
 }
 
 export default function calcTextareaHeight(
-  targetElement: HTMLTextAreaElement | null,
+  targetElement: Nullable<HTMLTextAreaElement>,
   minRows = 1,
   maxRows: null | number = null
 ): TextareaHeight {

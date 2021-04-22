@@ -23,7 +23,8 @@ import type {
   QFormPropModel,
   QFormPropRules,
   QFormProvider,
-  ValidateFnResult
+  ValidateFnResult,
+  QFormInstance
 } from './types';
 
 /**
@@ -81,7 +82,7 @@ export default defineComponent({
     }
   },
 
-  setup(props: QFormProps) {
+  setup(props: QFormProps): QFormInstance {
     const fieldsList: Ref<QFormItemContext[]> = ref([]);
 
     const filterFields = (

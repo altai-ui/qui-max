@@ -29,7 +29,8 @@ import { defineComponent, computed, PropType } from 'vue';
 import type {
   QBreadcrumbsProps,
   QBreadcrumbsPropRoute,
-  RouteItem
+  RouteItem,
+  QBreadcrumbsInstance
 } from './types';
 
 export default defineComponent({
@@ -60,10 +61,10 @@ export default defineComponent({
     }
   },
 
-  setup(props: QBreadcrumbsProps) {
-    const crumbs = computed<RouteItem[]>(() => {
-      return props.route?.filter(route => route.meta?.breadcrumb) ?? [];
-    });
+  setup(props: QBreadcrumbsProps): QBreadcrumbsInstance {
+    const crumbs = computed<RouteItem[]>(
+      () => props.route?.filter(route => route.meta?.breadcrumb) ?? []
+    );
 
     const breadcrumbs = computed<RouteItem[]>(() => {
       const newBreadcrumbs = [...crumbs.value];

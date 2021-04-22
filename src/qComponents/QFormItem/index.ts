@@ -11,6 +11,7 @@ export type {
   QFormItemProps,
   QFormItemPropRules,
   QFormItemContext,
-  QFormItemProvider
+  QFormItemProvider,
+  QFormItemInstance
 } from './src/types';
 export default QFormItem;

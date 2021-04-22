@@ -19,3 +19,5 @@ export interface QCheckboxGroupProvider {
   isLimitExceeded: Ref<boolean>;
   update: (value: string[]) => void;
 }
+
+export type QCheckboxGroupInstance = void;

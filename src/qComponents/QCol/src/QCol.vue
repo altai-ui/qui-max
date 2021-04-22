@@ -11,7 +11,7 @@
 <script lang="ts">
 import { defineComponent, computed } from 'vue';
 
-import type { QColProps } from './types';
+import type { QColProps, QColInstance } from './types';
 
 export default defineComponent({
   name: 'QCol',
@@ -47,7 +47,7 @@ export default defineComponent({
     }
   },
 
-  setup(props: QColProps) {
+  setup(props: QColProps): QColInstance {
     const classes = computed<Record<string, boolean>>(() => ({
       [`q-col_size_${props.cols}`]: props.cols !== null,
       [`q-col_offset_${props.offset}`]: props.offset !== null

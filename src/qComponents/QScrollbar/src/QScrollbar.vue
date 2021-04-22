@@ -64,7 +64,8 @@ import type {
   QScrollbarPropScrollTo,
   QScrollbarPropTheme,
   QScrollbarPropWrapClass,
-  QScrollbarProvider
+  QScrollbarProvider,
+  QScrollbarInstance
 } from './types';
 
 const OFFSET = -10;

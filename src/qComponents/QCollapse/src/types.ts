@@ -14,3 +14,5 @@ export interface QCollapseProvider {
   activeNames: Ref<(string | number)[]>;
   updateValue: (name: string | number) => void;
 }
+
+export type QCollapseInstance = void;

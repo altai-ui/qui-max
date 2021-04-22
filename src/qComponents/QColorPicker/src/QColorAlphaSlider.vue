@@ -21,7 +21,10 @@
 import { defineComponent, ref, computed, onMounted, watch } from 'vue';
 
 import draggable from './draggable';
-import type { QColorAlphaSliderProps } from './types';
+import type {
+  QColorAlphaSliderProps,
+  QColorAlphaSliderInstance
+} from './types';
 
 const UPDATE_ALPHA_EVENT = 'update:alpha';
 
@@ -42,7 +45,7 @@ export default defineComponent({
 
   emits: [UPDATE_ALPHA_EVENT],
 
-  setup(props: QColorAlphaSliderProps, ctx) {
+  setup(props: QColorAlphaSliderProps, ctx): QColorAlphaSliderInstance {
     const thumbLeft = ref(0);
 
     const barStyles = computed<Record<string, string>>(() => ({

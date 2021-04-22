@@ -8,14 +8,17 @@
 import { defineComponent, PropType, provide, watch, ref } from 'vue';
 import { uniqueId } from 'lodash-es';
 
+import {
+  UPDATE_MODEL_VALUE_EVENT,
+  CHANGE_EVENT
+} from '@/qComponents/constants/events';
+
 import type {
   QCollapseProps,
   QCollapsePropModelValue,
-  QCollapseProvider
+  QCollapseProvider,
+  QCollapseInstance
 } from './types';
-
-const UPDATE_MODEL_VALUE_EVENT = 'update:modelValue';
-const CHANGE_EVENT = 'change';
 
 export default defineComponent({
   name: 'QCollapse',
@@ -37,7 +40,7 @@ export default defineComponent({
 
   emits: [UPDATE_MODEL_VALUE_EVENT, CHANGE_EVENT],
 
-  setup(props: QCollapseProps, ctx) {
+  setup(props: QCollapseProps, ctx): QCollapseInstance {
     const activeNames = ref<(string | number)[]>([]);
 
     const updateValue = (name: string | number): void => {

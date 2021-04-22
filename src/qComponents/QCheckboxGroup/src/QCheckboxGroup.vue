@@ -22,14 +22,14 @@ import {
 
 import { validateArray } from '@/qComponents/helpers';
 import { QFormItemProvider } from '@/qComponents/QFormItem';
+import { UPDATE_MODEL_VALUE_EVENT } from '@/qComponents/constants/events';
 
 import type {
   QCheckboxGroupProps,
   QCheckboxGroupPropDirection,
-  QCheckboxGroupProvider
+  QCheckboxGroupProvider,
+  QCheckboxGroupInstance
 } from './types';
-
-const UPDATE_MODEL_VALUE_EVENT = 'update:modelValue';
 
 export default defineComponent({
   name: 'QCheckboxGroup',
@@ -71,7 +71,7 @@ export default defineComponent({
 
   emits: [UPDATE_MODEL_VALUE_EVENT],
 
-  setup(props: QCheckboxGroupProps, ctx) {
+  setup(props: QCheckboxGroupProps, ctx): QCheckboxGroupInstance {
     const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
 
     const isLimitExceeded = computed<boolean>(() => {

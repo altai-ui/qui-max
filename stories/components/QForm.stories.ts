@@ -36,7 +36,7 @@ const QFormStory: Story<QFormProps> = args =>
   defineComponent({
     components: { QForm, QFormItem },
     setup() {
-      const form = ref<QFormProvider | null>(null);
+      const form = ref<Nullable<QFormProvider>>(null);
 
       const formModel = reactive({
         name: '',

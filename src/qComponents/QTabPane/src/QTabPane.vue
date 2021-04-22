@@ -29,7 +29,7 @@
 import { defineComponent, inject, computed } from 'vue';
 
 import type { QTabsProvider } from '@/qComponents/QTabs';
-import type { QTabPaneProps } from './types';
+import type { QTabPaneProps, QTabPaneInstance } from './types';
 
 export default defineComponent({
   name: 'QTabPane',
@@ -73,7 +73,7 @@ export default defineComponent({
     }
   },
 
-  setup(props: QTabPaneProps) {
+  setup(props: QTabPaneProps): QTabPaneInstance {
     const qTabs = inject<QTabsProvider>('qTabs');
 
     const isDisabled = computed<boolean>(

@@ -34,13 +34,21 @@ import {
 import { useI18n } from 'vue-i18n';
 
 import { validateArray } from '@/qComponents/helpers';
+import {
+  UPDATE_MODEL_VALUE_EVENT,
+  CHANGE_EVENT,
+  FOCUS_EVENT,
+  BLUR_EVENT,
+  INPUT_EVENT
+} from '@/qComponents/constants/events';
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
 import calcTextareaHeight from './calcTextareaHeight';
 import type {
   QTextareaProps,
   QTextareaPropResize,
-  QTextareaPropAutosize
+  QTextareaPropAutosize,
+  QTextareaInstance
 } from './types';
 
 export default defineComponent({
@@ -98,9 +106,15 @@ export default defineComponent({
     }
   },
 
-  emits: ['blur', 'focus', 'input', 'change', 'update:modelValue'],
+  emits: [
+    UPDATE_MODEL_VALUE_EVENT,
+    CHANGE_EVENT,
+    FOCUS_EVENT,
+    BLUR_EVENT,
+    INPUT_EVENT
+  ],
 
-  setup(props: QTextareaProps, ctx) {
+  setup(props: QTextareaProps, ctx): QTextareaInstance {
     const textareaCalcStyle = ref<{
       minHeight?: string;
       height?: string;
@@ -125,15 +139,13 @@ export default defineComponent({
 
     const textLength = computed<number>(() => props.modelValue?.length ?? 0);
 
-    const classes = computed<(string | Record<string, boolean>)[]>(() => {
+    const classes = computed<Record<string, boolean>>(() => {
       const mainClass = 'q-textarea';
 
-      return [
-        mainClass,
-        {
-          [`${mainClass}_disabled`]: isDisabled.value
-        }
-      ];
+      return {
+        mainClass: true,
+        [`${mainClass}_disabled`]: isDisabled.value
+      };
     });
 
     const textareaStyle = computed<Record<string, string>>(() => ({
@@ -143,26 +155,26 @@ export default defineComponent({
 
     const updateModel = (event: Event): void => {
       const target = event.target as HTMLInputElement;
-      ctx.emit('update:modelValue', target.value ?? '');
+      ctx.emit(UPDATE_MODEL_VALUE_EVENT, target.value ?? '');
     };
 
     const handleInput = (event: Event): void => {
-      ctx.emit('input', event);
+      ctx.emit(INPUT_EVENT, event);
       updateModel(event);
     };
 
     const handleChange = (event: Event): void => {
-      ctx.emit('change', event);
+      ctx.emit(CHANGE_EVENT, event);
       updateModel(event);
     };
 
     const handleBlur = (event: FocusEvent): void => {
-      ctx.emit('blur', event);
+      ctx.emit(BLUR_EVENT, event);
       if (props.validateEvent) qFormItem?.validateField('blur');
     };
 
     const handleFocus = (event: FocusEvent): void => {
-      ctx.emit('focus', event);
+      ctx.emit(FOCUS_EVENT, event);
     };
 
     const resizeTextarea = (): void => {
@@ -202,6 +214,7 @@ export default defineComponent({
     return {
       t,
       textareaCalcStyle,
+      textLength,
       classes,
       textarea,
       textareaStyle,
@@ -211,8 +224,7 @@ export default defineComponent({
       handleBlur,
       handleFocus,
       handleInput,
-      handleChange,
-      textLength
+      handleChange
     };
   }
 });

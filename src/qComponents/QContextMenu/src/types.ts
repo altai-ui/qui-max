@@ -1,3 +1,5 @@
+import { Ref } from 'vue';
+
 export interface MenuItem {
   action: string;
   name: string;
@@ -12,4 +14,14 @@ export interface QContextMenuProps {
   position: QContextMenuPropPosition;
   menuItems: QContextMenuPropMenuItems;
   teleportTo: QContextMenuPropTeleportTo;
+}
+
+export interface QContextMenuInstance {
+  reference: Ref<Nullable<HTMLElement>>;
+  contextMenu: Ref<Nullable<HTMLElement>>;
+  zIndex: Ref<number>;
+  isContextMenuShown: Ref<boolean>;
+  handleTriggerClick: () => void;
+  handleItemClick: (actionName: string) => void;
+  setItemRef: (el: HTMLElement) => void;
 }

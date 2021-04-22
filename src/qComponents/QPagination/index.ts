@@ -7,5 +7,5 @@ QPagination.install = (app: App): void => {
   app.component(QPagination.name, QPagination);
 };
 
-export type { QPaginationProps } from './src/types';
+export type { QPaginationProps, QPaginationInstance } from './src/types';
 export default QPagination;

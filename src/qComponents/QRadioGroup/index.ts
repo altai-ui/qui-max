@@ -7,5 +7,9 @@ QRadioGroup.install = (app: App): void => {
   app.component(QRadioGroup.name, QRadioGroup);
 };
 
-export type { QRadioGroupProps, QRadioGroupProvider } from './src/types';
+export type {
+  QRadioGroupProps,
+  QRadioGroupProvider,
+  QRadioGroupInstance
+} from './src/types';
 export default QRadioGroup;

@@ -79,7 +79,7 @@ const Template: Story<QSelectProps> = args =>
 
           if (query !== '') {
             state.options = options.filter(item => {
-              return item.label.toLowerCase().includes(query.toLowerCase());
+              return item.label?.toLowerCase().includes(query.toLowerCase());
             });
           } else {
             state.options = options;

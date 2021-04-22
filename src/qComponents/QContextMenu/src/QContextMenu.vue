@@ -67,7 +67,8 @@ import type {
   QContextMenuProps,
   QContextMenuPropPosition,
   QContextMenuPropMenuItems,
-  QContextMenuPropTeleportTo
+  QContextMenuPropTeleportTo,
+  QContextMenuInstance
 } from './types';
 
 const ACTION_EVENT = 'action';
@@ -97,7 +98,7 @@ export default defineComponent({
     }
   },
 
-  setup(props: QContextMenuProps, ctx) {
+  setup(props: QContextMenuProps, ctx): QContextMenuInstance {
     const reference = ref<HTMLElement | null>(null);
     const contextMenu = ref<HTMLElement | null>(null);
     const isContextMenuShown = ref(false);

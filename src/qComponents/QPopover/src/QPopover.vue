@@ -69,7 +69,8 @@ import type {
   QPopoverPropTeleportTo,
   QPopoverPropTrigger,
   QPopoverPropPlacement,
-  QPopoverPropPopperOptions
+  QPopoverPropPopperOptions,
+  QPopoveInstance
 } from './types';
 
 const SHOW_EVENT = 'show';
@@ -174,7 +175,7 @@ export default defineComponent({
 
   emits: [SHOW_EVENT, HIDE_EVENT],
 
-  setup(props: QPopoverProps, ctx) {
+  setup(props: QPopoverProps, ctx): QPopoveInstance {
     if (!ctx.slots.reference && process.env.NODE_ENV !== 'production') {
       // eslint-disable-next-line no-console
       console.error('QPopover requires reference be provided in the slot.');

@@ -7,5 +7,10 @@ QForm.install = (app: App): void => {
   app.component(QForm.name, QForm);
 };
 
-export type { QFormProps, QFormPropRules, QFormProvider } from './src/types';
+export type {
+  QFormProps,
+  QFormPropRules,
+  QFormProvider,
+  QFormInstance
+} from './src/types';
 export default QForm;

@@ -36,3 +36,17 @@ export interface QMessageBoxProps {
   wrapClass: Nullable<string | Classes | Classes[]>;
   wrapStyle: Nullable<string | Styles | Styles[]>;
 }
+
+export interface QMessageBoxInstance {
+  wrapZIndex: Ref<number>;
+  isRendered: Ref<boolean>;
+  messageBox: Ref<Nullable<HTMLElement>>;
+  isConfirmBtnLoading: Ref<boolean>;
+  isCancelBtnLoading: Ref<boolean>;
+  isActionsSectionShown: Ref<boolean>;
+  closeBox: ({ action, payload }: QMessageBoxEvent) => Promise<void>;
+  handleAfterLeave: () => void;
+  handleConfirmBtnClick: () => void;
+  handleCancelBtnClick: () => void;
+  emitCloseEvent: () => void;
+}

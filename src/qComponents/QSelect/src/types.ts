@@ -8,8 +8,8 @@ import type { QInputInstance } from '@/qComponents/QInput';
 
 type Option = {
   value: string | Record<string, unknown>;
-  label: string;
-  disabled: boolean;
+  label?: string;
+  disabled?: boolean;
 };
 
 type QSelectPropModelValue =

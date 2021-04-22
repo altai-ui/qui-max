@@ -150,8 +150,8 @@ interface QSelectTagsInstance {
   collapseTags: Ref<Nullable<boolean> | boolean>;
   isDisabled: Ref<Nullable<boolean> | boolean>;
   autocomplete: Ref<Nullable<string>>;
-  selected: Ref<QSelectState['selected'] | undefined> | undefined;
-  query: Ref<string | undefined> | undefined;
+  selected: Ref<QSelectState['selected'] | undefined>;
+  query: Ref<string | undefined>;
   handleBackspaceKeyDown: () => void;
   handleTagClose: (option: QOptionProvideInstance[] | null) => void;
   handleInput: (event: KeyboardEvent) => void;

@@ -64,7 +64,7 @@ export default defineComponent({
   setup(props, ctx): QSelectTagsInstance {
     const input = ref<HTMLInputElement | null>(null);
     const qSelect = inject<QSelectProvider | null>('qSelect', null);
-    const { selected, query } = toRefs(qSelect?.state ?? { selected: [], query: ''});
+    const { selected = ref([]), query = ref('') } = toRefs(qSelect?.state ?? {});
 
     const handleBackspaceKeyDown = (): void => {
       if (!qSelect?.state?.query && Array.isArray(qSelect?.state?.selected)) {

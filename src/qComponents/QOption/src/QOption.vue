@@ -128,7 +128,7 @@ export default defineComponent({
       return false;
     });
 
-    const isLimitReached = computed(() => {
+    const isLimitReached = computed<boolean>(() => {
       if (!qSelect) return false;
 
       return (
@@ -139,7 +139,7 @@ export default defineComponent({
       );
     });
 
-    const isDisabled = computed(() => {
+    const isDisabled = computed<boolean>(() => {
       return props.disabled || isLimitReached.value;
     });
 

@@ -96,7 +96,6 @@ import {
   PropType,
   toRefs,
   toRef,
-  Ref
 } from 'vue';
 import {
   isObject,
@@ -317,8 +316,8 @@ export default defineComponent({
       () => state.options.filter(({ isVisible }) => isVisible).length
     );
 
-    const isCanLoadMoreShown = computed<boolean | null>(
-      () => props.canLoadMore && !props.loading && visibleOptionsCount.value > 0
+    const isCanLoadMoreShown = computed<boolean>(
+      () => Boolean(props.canLoadMore && !props.loading && visibleOptionsCount.value > 0)
     );
 
     const emptyText = computed<string>(() => {

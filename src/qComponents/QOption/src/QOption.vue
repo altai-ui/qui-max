@@ -112,7 +112,7 @@ export default defineComponent({
 
       if (!modelValue?.value) return false;
 
-      if (!multiple?.value) {
+      if (!multiple) {
         if (!isObject(props.modelValue)) return modelValue.value === key.value;
 
         return isEqual(get(modelValue.value, valueKey), key.value);

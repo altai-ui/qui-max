@@ -132,7 +132,7 @@ const Template: Story<QSelectProps> = args =>
     `
   });
 
-export const Default: Story = Template.bind({});
+export const Default: Story<QSelectProps> = Template.bind({});
 Default.args = {
   ...Default.args,
   filterable: true,
@@ -140,7 +140,7 @@ Default.args = {
   placeholder: 'Pick an option'
 };
 
-export const Multiple: Story = Template.bind({});
+export const Multiple: Story<QSelectProps> = Template.bind({});
 Multiple.args = {
   ...Multiple.args,
   multiple: true,

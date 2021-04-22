@@ -62,6 +62,14 @@ import { useI18n } from 'vue-i18n';
 
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
+import {
+  UPDATE_MODEL_VALUE_EVENT,
+  CHANGE_EVENT,
+  FOCUS_EVENT,
+  BLUR_EVENT,
+  CLEAR_EVENT,
+  INPUT_EVENT
+} from '@/qComponents/constants/events';
 import type { QInputProps, QInputState } from './types';
 
 export default defineComponent({
@@ -122,7 +130,14 @@ export default defineComponent({
     }
   },
 
-  emits: ['blur', 'focus', 'input', 'change', 'clear', 'update:modelValue'],
+  emits: [
+    UPDATE_MODEL_VALUE_EVENT,
+    CHANGE_EVENT,
+    FOCUS_EVENT,
+    BLUR_EVENT,
+    CLEAR_EVENT,
+    INPUT_EVENT
+  ],
 
   setup(props: QInputProps, ctx) {
     const input = ref<HTMLElement | null>(null);
@@ -197,28 +212,28 @@ export default defineComponent({
 
     const updateModel = (event: Event): void => {
       const target = event.target as HTMLInputElement;
-      ctx.emit('update:modelValue', target.value ?? '');
+      ctx.emit(UPDATE_MODEL_VALUE_EVENT, target.value ?? '');
     };
 
     const handleInput = (event: Event): void => {
-      ctx.emit('input', event);
+      ctx.emit(INPUT_EVENT, event);
       updateModel(event);
     };
 
     const handleChange = (event: Event): void => {
-      ctx.emit('change', event);
+      ctx.emit(CHANGE_EVENT, event);
       updateModel(event);
     };
 
     const handleBlur = (event: FocusEvent): void => {
       state.focused = false;
-      ctx.emit('blur', event);
+      ctx.emit(BLUR_EVENT, event);
       if (props.validateEvent) qFormItem?.validateField('blur');
     };
 
     const handleFocus = (event: FocusEvent): void => {
       state.focused = true;
-      ctx.emit('focus', event);
+      ctx.emit(FOCUS_EVENT, event);
     };
 
     const handlePasswordVisible = (): void => {
@@ -227,8 +242,8 @@ export default defineComponent({
     };
 
     const handleClearClick = (event: MouseEvent): void => {
-      ctx.emit('update:modelValue', '');
-      ctx.emit('clear', event);
+      ctx.emit(UPDATE_MODEL_VALUE_EVENT, '');
+      ctx.emit(CLEAR_EVENT, event);
     };
 
     watch(

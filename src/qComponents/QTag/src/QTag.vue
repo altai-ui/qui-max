@@ -21,9 +21,8 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 
+import { CLOSE_EVENT } from '@/qComponents/constants/events';
 import type { QTagProps, QTagInstance } from './types';
-
-const CLOSE_EVENT = 'close';
 
 export default defineComponent({
   name: 'QTag',

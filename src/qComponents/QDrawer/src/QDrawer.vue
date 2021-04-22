@@ -58,6 +58,7 @@ import {
 } from 'vue';
 
 import { validateArray } from '@/qComponents/helpers';
+import { CLOSE_EVENT } from '@/qComponents/constants/events';
 import { getConfig } from '@/qComponents/config';
 import type {
   QDrawerProps,
@@ -69,7 +70,6 @@ import type {
 
 const OPENED_EVENT = 'opened';
 const CLOSED_EVENT = 'closed';
-const CLOSE_EVENT = 'close';
 const OPEN_EVENT = 'open';
 const UPDATE_VISIBLE_EVENT = 'update:visible';
 const DEFAULT_Z_INDEX = 2000;

@@ -108,6 +108,7 @@ import {
 
 import { getConfig } from '@/qComponents/config';
 
+import { CLOSE_EVENT } from '@/qComponents/constants/events';
 import type {
   QMessageBoxProps,
   QMessageBoxPropTeleportTo,
@@ -119,7 +120,6 @@ import type {
 const DEFAULT_Z_INDEX = 2000;
 const UPDATE_IS_VISIBLE_EVENT = 'update:isVisible';
 const CONFIRM_EVENT = 'confirm';
-const CLOSE_EVENT = 'close';
 const CANCEL_EVENT = 'cancel';
 
 export default defineComponent({

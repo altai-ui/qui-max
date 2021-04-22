@@ -59,7 +59,8 @@ import {
   computed,
   watch,
   provide,
-  ComponentPublicInstance
+  ComponentPublicInstance,
+  UnwrapRef
 } from 'vue';
 import { createPopper, Instance, Options } from '@popperjs/core';
 import { placements } from '@popperjs/core/lib/enums';
@@ -69,6 +70,11 @@ import { validateArray } from '@/qComponents/helpers';
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
 import { getConfig } from '@/qComponents/config';
+import {
+  UPDATE_MODEL_VALUE_EVENT,
+  CLICK_EVENT,
+  CHANGE_EVENT
+} from '@/qComponents/constants/events';
 import QPickerDropdown from './QPickerDropdown.vue';
 import type {
   QColorPickerProps,
@@ -82,9 +88,6 @@ import type {
 } from './types';
 
 const DEFAULT_Z_INDEX = 2000;
-const CLICK_EVENT = 'click';
-const CHANGE_EVENT = 'change';
-const UPDATE_MODEL_VALUE_EVENT = 'update:modelValue';
 
 export default defineComponent({
   name: 'QColorPicker',
@@ -221,9 +224,9 @@ export default defineComponent({
     };
 
     const trigger = ref<HTMLElement | null>(null);
-    const dropdown = ref<ComponentPublicInstance<QPickerDropdownInstance> | null>(
-      null
-    );
+    const dropdown = ref<ComponentPublicInstance<
+      UnwrapRef<QPickerDropdownInstance>
+    > | null>(null);
 
     const createPopperJs = (): void => {
       if (popperJS.value?.destroy) {

@@ -67,6 +67,7 @@ import { useI18n } from 'vue-i18n';
 import Color from 'color';
 
 import { validateArray } from '@/qComponents/helpers';
+import { CLEAR_EVENT, CLOSE_EVENT } from '@/qComponents/constants/events';
 import QButton from '@/qComponents/QButton';
 import QColorSvpanel from './QColorSvpanel.vue';
 import QColorAlphaSlider from './QColorAlphaSlider.vue';
@@ -78,8 +79,6 @@ import type {
   QPickerDropdownInstance
 } from './types';
 
-const CLOSE_EVENT = 'close';
-const CLEAR_EVENT = 'clear';
 const PICK_EVENT = 'pick';
 
 export default defineComponent({

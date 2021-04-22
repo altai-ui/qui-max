@@ -37,7 +37,7 @@ export interface QFormProvider {
 export interface QFormInstance {
   validate: (
     passedProps?: string | string[] | undefined
-  ) => Promise<ValidateFnResult | null>;
+  ) => Promise<Nullable<ValidateFnResult>>;
   resetFields: (passedProps?: string | string[] | undefined) => void;
   clearValidate: (passedProps?: string | string[] | undefined) => void;
 }

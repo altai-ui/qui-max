@@ -22,6 +22,7 @@ import {
 
 import { validateArray } from '@/qComponents/helpers';
 import { QFormItemProvider } from '@/qComponents/QFormItem';
+import { UPDATE_MODEL_VALUE_EVENT } from '@/qComponents/constants/events';
 
 import type {
   QCheckboxGroupProps,
@@ -29,8 +30,6 @@ import type {
   QCheckboxGroupProvider,
   QCheckboxGroupInstance
 } from './types';
-
-const UPDATE_MODEL_VALUE_EVENT = 'update:modelValue';
 
 export default defineComponent({
   name: 'QCheckboxGroup',

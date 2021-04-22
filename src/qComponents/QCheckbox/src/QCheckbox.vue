@@ -54,11 +54,12 @@ import { computed, defineComponent, inject, watch, ref } from 'vue';
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
 import type { QCheckboxGroupProvider } from '@/qComponents/QCheckboxGroup';
+import {
+  UPDATE_MODEL_VALUE_EVENT,
+  CHANGE_EVENT
+} from '@/qComponents/constants/events';
 
 import type { QCheckboxProps, QCheckboxInstance } from './types';
-
-const UPDATE_MODEL_VALUE_EVENT = 'update:modelValue';
-const CHANGE_EVENT = 'change';
 
 export default defineComponent({
   name: 'QCheckbox',

@@ -21,8 +21,8 @@ export interface QTextareaInstance {
     height?: string | undefined;
     resize?: string | undefined;
   }>;
-  classes: ComputedRef<(string | Record<string, boolean>)[]>;
-  textarea: Ref<HTMLTextAreaElement | null>;
+  classes: ComputedRef<Record<string, boolean>>;
+  textarea: Ref<Nullable<HTMLTextAreaElement>>;
   textareaStyle: ComputedRef<Record<string, string>>;
   isDisabled: ComputedRef<boolean>;
   isSymbolLimitShown: ComputedRef<boolean>;

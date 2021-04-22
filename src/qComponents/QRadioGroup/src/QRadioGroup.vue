@@ -26,15 +26,16 @@ import {
 import { validateArray } from '@/qComponents/helpers';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
 import type { QRadioGroupProvider } from '@/qComponents/QRadioGroup';
+import {
+  UPDATE_MODEL_VALUE_EVENT,
+  CHANGE_EVENT
+} from '@/qComponents/constants/events';
 import type {
   QRadioGroupProps,
   QRadioGroupPropModelValue,
   QRadioGroupPropDirection,
   QRadioGroupInstance
 } from './types';
-
-const UPDATE_MODEL_VALUE_EVENT = 'update:modelValue';
-const CHANGE_EVENT = 'change';
 
 export default defineComponent({
   name: 'QRadioGroup',

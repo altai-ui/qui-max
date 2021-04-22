@@ -40,7 +40,7 @@ export interface QMessageBoxProps {
 export interface QMessageBoxInstance {
   wrapZIndex: Ref<number>;
   isRendered: Ref<boolean>;
-  messageBox: Ref<HTMLElement | null>;
+  messageBox: Ref<Nullable<HTMLElement>>;
   isConfirmBtnLoading: Ref<boolean>;
   isCancelBtnLoading: Ref<boolean>;
   isActionsSectionShown: Ref<boolean>;

@@ -22,8 +22,8 @@ export interface QPopoverProps {
 }
 
 export interface QPopoveInstance {
-  reference: Ref<HTMLElement | null>;
-  popover: Ref<HTMLElement | null>;
+  reference: Ref<Nullable<HTMLElement>>;
+  popover: Ref<Nullable<HTMLElement>>;
   isPopoverShown: Ref<boolean>;
   popoverClasses: ComputedRef<Record<string, boolean>>;
   popoverStyles: ComputedRef<Record<string, string | number>>;

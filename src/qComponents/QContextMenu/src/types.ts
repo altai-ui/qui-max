@@ -17,8 +17,8 @@ export interface QContextMenuProps {
 }
 
 export interface QContextMenuInstance {
-  reference: Ref<HTMLElement | null>;
-  contextMenu: Ref<HTMLElement | null>;
+  reference: Ref<Nullable<HTMLElement>>;
+  contextMenu: Ref<Nullable<HTMLElement>>;
   zIndex: Ref<number>;
   isContextMenuShown: Ref<boolean>;
   handleTriggerClick: () => void;

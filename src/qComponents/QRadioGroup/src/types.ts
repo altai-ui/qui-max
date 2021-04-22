@@ -18,6 +18,6 @@ export interface QRadioGroupProvider {
 }
 
 export interface QRadioGroupInstance {
-  root: Ref<HTMLElement | null>;
+  root: Ref<Nullable<HTMLElement>>;
   handleKeydown: (e: KeyboardEvent) => void;
 }

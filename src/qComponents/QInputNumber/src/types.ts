@@ -31,5 +31,5 @@ export interface QInputNumberInstance {
   handleFocus: (event: FocusEvent) => void;
   handleChangeInput: (event: Event, type: string) => void;
   processUserValue: (value: number, type: string) => Promise<void>;
-  changesEmmiter: (value: number | null, type: string) => void;
+  changesEmmiter: (value: Nullable<number>, type: string) => void;
 }

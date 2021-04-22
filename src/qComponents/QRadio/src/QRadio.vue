@@ -36,9 +36,8 @@ import { defineComponent, inject, computed } from 'vue';
 
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QRadioGroupProvider } from '@/qComponents/QRadioGroup';
+import { CHANGE_EVENT } from '@/qComponents/constants/events';
 import type { QRadioProps, QRadioInstance } from './types';
-
-const CHANGE_EVENT = 'change';
 
 export default defineComponent({
   name: 'QRadio',

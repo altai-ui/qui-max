@@ -21,7 +21,7 @@ export interface QDrawerInstance {
   drawer: Ref<Nullable<HTMLElement>>;
   zIndex: Ref<number>;
   isRendered: Ref<boolean>;
-  drawerStyle: ComputedRef<Record<string, string | number | null>>;
+  drawerStyle: ComputedRef<Record<string, Nullable<string | number>>>;
   drawerClass: ComputedRef<string>;
   afterEnter: () => void;
   afterLeave: () => void;

@@ -1,7 +1,7 @@
 import { Ref, ComputedRef } from 'vue';
 
 export interface QScrollbarProvider {
-  wrap: Ref<HTMLElement | null>;
+  wrap: Ref<Nullable<HTMLElement>>;
 }
 
 export interface BarMapItem {
@@ -25,9 +25,9 @@ export interface QBarProps {
 }
 
 export interface QBarInstance {
-  root: Ref<HTMLElement | null>;
+  root: Ref<Nullable<HTMLElement>>;
   bar: ComputedRef<BarMapItem>;
-  thumb: Ref<HTMLElement | null>;
+  thumb: Ref<Nullable<HTMLElement>>;
   classes: ComputedRef<Record<string, boolean>>;
   thumbClasses: ComputedRef<Record<string, boolean>>;
   thumbStyles: ComputedRef<Record<string, string | number>>;
@@ -55,7 +55,7 @@ export interface QScrollbarProps {
 }
 
 export interface QScrollbarInstance {
-  wrap: Ref<HTMLElement | null>;
+  wrap: Ref<Nullable<HTMLElement>>;
   sizeWidth: Ref<string>;
   sizeHeight: Ref<string>;
   isXBarShown: ComputedRef<boolean>;

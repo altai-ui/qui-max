@@ -1,4 +1,4 @@
-import { Ref, ComputedRef } from 'vue';
+import { Ref, ComputedRef, ComponentPublicInstance, UnwrapRef } from 'vue';
 import { Placement, Options } from '@popperjs/core';
 
 export type ColorFormat = 'hex' | 'rgb';
@@ -9,9 +9,9 @@ export interface QColorAlphaSliderProps {
 }
 
 export interface QColorAlphaSliderInstance {
-  root: Ref<HTMLElement | null>;
-  thumb: Ref<HTMLElement | null>;
-  bar: Ref<HTMLElement | null>;
+  root: Ref<Nullable<HTMLElement>>;
+  thumb: Ref<Nullable<HTMLElement>>;
+  bar: Ref<Nullable<HTMLElement>>;
   barStyles: ComputedRef<Record<string, string>>;
   thumbStyles: ComputedRef<Record<string, string>>;
   handleBarClick: (event: MouseEvent) => void;
@@ -22,9 +22,9 @@ export interface QColorHueSliderProps {
 }
 
 export interface QColorHueSliderInstance {
-  root: Ref<HTMLElement | null>;
-  thumb: Ref<HTMLElement | null>;
-  bar: Ref<HTMLElement | null>;
+  root: Ref<Nullable<HTMLElement>>;
+  thumb: Ref<Nullable<HTMLElement>>;
+  bar: Ref<Nullable<HTMLElement>>;
   thumbStyles: ComputedRef<Record<string, string>>;
   handleBarClick: (event: MouseEvent) => void;
 }
@@ -46,8 +46,10 @@ export interface QColorPickerProps {
 }
 
 export interface QColorPickerInstance {
-  trigger: Ref<HTMLElement | null>;
-  dropdown: Ref<QPickerDropdownInstance | null>;
+  trigger: Ref<Nullable<HTMLElement>>;
+  dropdown: Ref<
+    Nullable<ComponentPublicInstance<UnwrapRef<QPickerDropdownInstance>>>
+  >;
   zIndex: Ref<number>;
   iconClasses: ComputedRef<Record<string, boolean>>;
   isDisabled: ComputedRef<boolean>;
@@ -65,7 +67,7 @@ export interface QColorSvpanelProps {
 }
 
 export interface QColorSvpanelInstance {
-  root: Ref<HTMLElement | null>;
+  root: Ref<Nullable<HTMLElement>>;
   rootStyles: ComputedRef<Record<string, string>>;
   cursorStyles: ComputedRef<Record<string, string>>;
 }
@@ -81,12 +83,12 @@ export interface QPickerDropdownProps {
 }
 
 export interface QColorPickerProvider {
-  trigger: Ref<HTMLElement | null>;
+  trigger: Ref<Nullable<HTMLElement>>;
 }
 
 export interface QPickerDropdownInstance {
   t: (arg0: string) => string;
-  dropdown: Ref<HTMLElement | null>;
+  dropdown: Ref<Nullable<HTMLElement>>;
   saturation: Ref<number>;
   value: Ref<number>;
   hue: Ref<number>;

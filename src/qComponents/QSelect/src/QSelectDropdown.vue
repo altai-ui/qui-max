@@ -60,7 +60,14 @@
 
 <script lang="ts">
 import { get, isPlainObject } from 'lodash-es';
-import { computed, defineComponent, inject, ref, watch, ComponentPublicInstance } from 'vue';
+import {
+  computed,
+  defineComponent,
+  inject,
+  ref,
+  watch,
+  ComponentPublicInstance
+} from 'vue';
 
 import QScrollbar, { QScrollbarInstance } from '@/qComponents/QScrollbar';
 import { getConfig } from '@/qComponents/config';
@@ -93,7 +100,9 @@ export default defineComponent({
 
   setup(props: QSelectDropdownProps, ctx): QSelectDropdownInstance {
     const root = ref<HTMLDivElement | null>(null);
-    const scrollbar = ref<ComponentPublicInstance<QScrollbarInstance> | null>(null);
+    const scrollbar = ref<ComponentPublicInstance<QScrollbarInstance> | null>(
+      null
+    );
     const qSelect = inject<QSelectProvider | null>('qSelect', null);
     const qSelectState = qSelect?.state ?? null;
     const multiple = qSelect?.multiple ?? ref(false);
@@ -104,25 +113,32 @@ export default defineComponent({
       width: props.width ? `${props.width}px` : null
     }));
 
-    const isVisibleOptionExist = computed<boolean>(() => Boolean(qSelectState?.options?.some(({ isVisible }) => isVisible)));
+    const isVisibleOptionExist = computed<boolean>(() =>
+      Boolean(qSelectState?.options?.some(({ isVisible }) => isVisible))
+    );
 
-    const areAllSelected = computed<boolean>(() => Boolean(
-      qSelectState?.options &&
-        multiple?.value &&
+    const areAllSelected = computed<boolean>(() =>
+      Boolean(
+        qSelectState?.options &&
+          multiple?.value &&
           isVisibleOptionExist.value &&
           qSelectState?.options
             .filter(({ isDisabled, isVisible }) => !isDisabled && isVisible)
-            .every(({ isSelected }) => isSelected)));
+            .every(({ isSelected }) => isSelected)
+      )
+    );
 
-    const isIndeterminate = computed<boolean>(() => Boolean(
+    const isIndeterminate = computed<boolean>(() =>
+      Boolean(
         qSelectState?.options &&
-        multiple?.value &&
+          multiple?.value &&
           isVisibleOptionExist.value &&
           !areAllSelected.value &&
           qSelectState?.options.some(
             ({ isVisible, isSelected }) => isVisible && isSelected
           )
-      ));
+      )
+    );
 
     watch(
       () => props.shown,

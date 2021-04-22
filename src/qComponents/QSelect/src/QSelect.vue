@@ -148,11 +148,14 @@ export default defineComponent({
     /**
      * binding value
      */
-    modelValue: { type: [String, Number, Object, Array] as PropType<QSelectPropModelValue>, default: null },
+    modelValue: {
+      type: [String, Number, Object, Array] as PropType<QSelectPropModelValue>,
+      default: null
+    },
     /**
      * the autocomplete attribute of select input
      */
-    autocomplete: { type: String as PropType<'on' | 'off'>, default: 'off'},
+    autocomplete: { type: String as PropType<'on' | 'off'>, default: 'off' },
     /**
      * whether loadMoreText is shown
      */
@@ -245,9 +248,15 @@ export default defineComponent({
   ],
 
   setup(props: QSelectProps, ctx): QSelectInstance {
-    const input = ref<ComponentPublicInstance<UnwrapRef<QInputInstance>> | null>(null);
-    const dropdown = ref<ComponentPublicInstance<UnwrapRef<QSelectDropdownInstance>> | null>(null);
-    const tags = ref<ComponentPublicInstance<UnwrapRef<QSelectTagsInstance>> | null>(null);
+    const input = ref<ComponentPublicInstance<
+      UnwrapRef<QInputInstance>
+    > | null>(null);
+    const dropdown = ref<ComponentPublicInstance<
+      UnwrapRef<QSelectDropdownInstance>
+    > | null>(null);
+    const tags = ref<ComponentPublicInstance<
+      UnwrapRef<QSelectTagsInstance>
+    > | null>(null);
     const root = ref<HTMLElement | null>(null);
     const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
     const qForm = inject<QFormProvider | null>('qForm', null);
@@ -279,16 +288,18 @@ export default defineComponent({
         : props.placeholder;
     });
 
-    const isDisabled = computed<boolean>(
-      () => Boolean(props.disabled || (qForm?.disabled.value ?? false))
+    const isDisabled = computed<boolean>(() =>
+      Boolean(props.disabled || (qForm?.disabled.value ?? false))
     );
 
     const visibleOptionsCount = computed<number>(
       () => state.options.filter(({ isVisible }) => isVisible).length
     );
 
-    const isCanLoadMoreShown = computed<boolean>(
-      () => Boolean(props.canLoadMore && !props.loading && visibleOptionsCount.value > 0)
+    const isCanLoadMoreShown = computed<boolean>(() =>
+      Boolean(
+        props.canLoadMore && !props.loading && visibleOptionsCount.value > 0
+      )
     );
 
     const emptyText = computed<string>(() => {
@@ -319,12 +330,16 @@ export default defineComponent({
       )
     );
 
-    const isReadonly = computed<boolean>(() => Boolean(!props.filterable || props.multiple));
+    const isReadonly = computed<boolean>(() =>
+      Boolean(!props.filterable || props.multiple)
+    );
 
     const isClearBtnShown = computed<boolean>(() => {
       const hasValue = isNumber(props.modelValue) || !isEmpty(props.modelValue);
 
-      return Boolean(props.clearable && !isDisabled.value && state.hover && hasValue);
+      return Boolean(
+        props.clearable && !isDisabled.value && state.hover && hasValue
+      );
     });
 
     const iconClass = computed<string>(() => {
@@ -341,9 +356,9 @@ export default defineComponent({
 
       return Boolean(
         props.filterable &&
-        props.allowCreate &&
-        state.query !== '' &&
-        !hasExistingOption
+          props.allowCreate &&
+          state.query !== '' &&
+          !hasExistingOption
       );
     });
 
@@ -374,9 +389,7 @@ export default defineComponent({
      * @public
      */
     const setSelected = (): void => {
-      const result:
-        | QOptionModel
-        | (QOptionModel | NewOption)[] = [];
+      const result: QOptionModel | (QOptionModel | NewOption)[] = [];
       if (props.multiple) {
         if (Array.isArray(props.modelValue)) {
           props.modelValue.forEach(value => {
@@ -464,7 +477,7 @@ export default defineComponent({
       const inputEl = input.value?.$el;
       const dropdownEl = dropdown.value?.$el;
       if (!inputEl || !dropdownEl) return;
-      
+
       state.popper = createPopper(inputEl, dropdownEl, {
         modifiers: [
           {

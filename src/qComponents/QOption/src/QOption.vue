@@ -46,11 +46,7 @@ import {
 } from 'vue';
 
 import type { Option, QSelectProvider } from '@/qComponents/QSelect';
-import type {
-  QOptionInstance,
-  QOptionProps,
-  QOptionModel
-} from './types';
+import type { QOptionInstance, QOptionProps, QOptionModel } from './types';
 
 export default defineComponent({
   name: 'QOption',
@@ -92,7 +88,9 @@ export default defineComponent({
       )
     );
 
-    const preparedLabel = computed<string>(() => String(props.label ?? key.value));
+    const preparedLabel = computed<string>(() =>
+      String(props.label ?? key.value)
+    );
 
     const isVisible = computed<boolean>(() => {
       if (qSelect?.remote.value || !qSelectState?.query) return true;
@@ -100,7 +98,7 @@ export default defineComponent({
 
       return Boolean(
         preparedLabel.value.toLowerCase().includes(qSelectQuery) ||
-        props.created
+          props.created
       );
     });
 
@@ -133,7 +131,9 @@ export default defineComponent({
       );
     });
 
-    const isDisabled = computed<boolean>(() => props.disabled || isLimitReached.value);
+    const isDisabled = computed<boolean>(
+      () => props.disabled || isLimitReached.value
+    );
 
     const self: QOptionModel = reactive({
       ...toRefs(props),

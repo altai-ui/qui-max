@@ -58,18 +58,16 @@
 </template>
 
 <script lang="ts">
-import {
-  inject,
-  computed,
-  ref,
-  reactive,
-  watch,
-  defineComponent,
-} from 'vue';
+import { inject, computed, ref, reactive, watch, defineComponent } from 'vue';
 import { useI18n } from 'vue-i18n';
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
-import type { QInputInstance, QInputProps, QInputState, QInputClass } from './types';
+import type {
+  QInputInstance,
+  QInputProps,
+  QInputState,
+  QInputClass
+} from './types';
 
 export default defineComponent({
   name: 'QInput',

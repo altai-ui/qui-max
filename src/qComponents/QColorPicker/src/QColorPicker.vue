@@ -58,7 +58,8 @@ import {
   ref,
   computed,
   watch,
-  provide
+  provide,
+  ComponentPublicInstance
 } from 'vue';
 import { createPopper, Instance, Options } from '@popperjs/core';
 import { placements } from '@popperjs/core/lib/enums';
@@ -220,9 +221,9 @@ export default defineComponent({
     };
 
     const trigger = ref<HTMLElement | null>(null);
-    const dropdown = ref<
-      (typeof QPickerDropdown & QPickerDropdownInstance) | null
-    >(null);
+    const dropdown = ref<ComponentPublicInstance<QPickerDropdownInstance> | null>(
+      null
+    );
 
     const createPopperJs = (): void => {
       if (popperJS.value?.destroy) {

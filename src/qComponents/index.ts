@@ -21,18 +21,18 @@ import QFormItem from './QFormItem';
 import QInput from './QInput';
 import QInputNumber from './QInputNumber';
 import QMessageBox from './QMessageBox';
+import QOption from './QOption';
 import QPagination from './QPagination';
 import QPopover from './QPopover';
 import QRadio from './QRadio';
 import QRadioGroup from './QRadioGroup';
 import QRow from './QRow';
+import QSelect from './QSelect';
 import QScrollbar from './QScrollbar';
 import QTabPane from './QTabPane';
 import QTabs from './QTabs';
 import QTag from './QTag';
 import QTextarea from './QTextarea';
-import QSelect from './QSelect';
-import QOption from './QOption';
 
 const Components = {
   QBreadcrumbs,
@@ -77,8 +77,10 @@ require('../main.scss');
 allComponents.forEach(component => {
   const kebabCaseComponent = kebabCase(component);
   try {
+    // eslint-disable-next-line import/no-dynamic-require
     require(`../qComponents/${component}/src/${kebabCaseComponent}.scss`);
   } catch (err) {
+    // eslint-disable-next-line no-console
     console.warn(err);
   }
 });

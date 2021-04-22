@@ -6,24 +6,24 @@
       'q-select-tags_collapse-tags': collapseTags
     }"
   >
-    <template v-if="collapseTags && selectState.selected.length">
+    <template v-if="collapseTags && selected.length">
       <q-tag
         :closable="!isDisabled"
-        @close="handleTagClose(selectState.selected[0])"
+        @close="handleTagClose(selected[0])"
       >
-        {{ selectState.selected[0].preparedLabel }}
+        {{ selected[0].preparedLabel }}
       </q-tag>
       <q-tag
-        v-if="selectState.selected.length > 1"
+        v-if="selected.length > 1"
         :closable="false"
       >
-        + {{ selectState.selected.length - 1 }}
+        + {{ selected.length - 1 }}
       </q-tag>
     </template>
 
     <template v-if="!collapseTags">
       <q-tag
-        v-for="option in selectState.selected"
+        v-for="option in selected"
         :key="option.key"
         :closable="!isDisabled"
         @close="handleTagClose(option)"
@@ -35,7 +35,7 @@
     <input
       v-if="filterable && !isDisabled"
       ref="input"
-      :value="selectState.query"
+      :value="query"
       type="text"
       class="q-select-tags__input"
       :autocomplete="autocomplete"
@@ -49,9 +49,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, ref } from 'vue';
-import type { QOptionInstance } from '@/qComponents/QOption';
-import type { QSelectProvider, QSelectState } from '@/qComponents/QSelect';
+import { defineComponent, inject, ref, toRefs } from 'vue';
+
+import type { QOptionProvideInstance } from '@/qComponents/QOption';
+import type { QSelectProvider } from '@/qComponents/QSelect';
+import type { QSelectTagsInstance } from './types';
 
 export default defineComponent({
   name: 'QSelectTags',
@@ -59,23 +61,21 @@ export default defineComponent({
 
   emits: ['remove-tag', 'exit', 'update:query', 'focus', 'keyup-enter'],
 
-  setup(props, ctx) {
+  setup(props, ctx): QSelectTagsInstance {
     const input = ref<HTMLInputElement | null>(null);
     const qSelect = inject<QSelectProvider | null>('qSelect', null);
-    const selectState = inject<QSelectState | null>('selectState', null);
-    const filterable = qSelect?.filterable;
-    const collapseTags = qSelect?.collapseTags;
-    const isDisabled = qSelect?.isDisabled;
-    const autocomplete = qSelect?.autocomplete;
-
+    const { selected, query } = toRefs(qSelect?.state ?? { selected: [], query: ''});
 
     const handleBackspaceKeyDown = (): void => {
-      if (!selectState?.query && Array.isArray(selectState?.selected)) {
-        ctx.emit('remove-tag', selectState?.selected[selectState.selected.length - 1]);
+      if (!qSelect?.state?.query && Array.isArray(qSelect?.state?.selected)) {
+        ctx.emit(
+          'remove-tag',
+          qSelect?.state?.selected[qSelect?.state.selected.length - 1]
+        );
       }
     };
 
-    const handleTagClose = (option: QOptionInstance[] | null): void => {
+    const handleTagClose = (option: QOptionProvideInstance[] | null): void => {
       ctx.emit('remove-tag', option);
     };
 
@@ -89,11 +89,12 @@ export default defineComponent({
       handleTagClose,
       handleInput,
       input,
-      filterable,
-      collapseTags,
-      isDisabled,
-      autocomplete,
-      selectState,
+      filterable: qSelect?.filterable ?? ref(false),
+      collapseTags: qSelect?.collapseTags ?? ref(false),
+      isDisabled: qSelect?.isDisabled ?? ref(false),
+      autocomplete: qSelect?.autocomplete ?? ref('off'),
+      selected,
+      query
     };
   }
 });

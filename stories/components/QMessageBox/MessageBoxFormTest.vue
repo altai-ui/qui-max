@@ -3,7 +3,9 @@
     distinguish-cancel-and-close
     @close="handleCancelClick"
   >
-    <template #title>Morbi massa libero, vehicula nec consequat sed, porta a sem.</template>
+    <template
+      #title
+    >Morbi massa libero, vehicula nec consequat sed, porta a sem.</template>
 
     <template #content>
       <q-form :model="formModel">

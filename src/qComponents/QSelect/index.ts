@@ -1,4 +1,5 @@
 import { App } from 'vue';
+
 import QSelect from './src/QSelect.vue';
 
 QSelect.install = (app: App): void => {
@@ -6,4 +7,11 @@ QSelect.install = (app: App): void => {
 };
 
 export default QSelect;
-export { QSelectProvider, QSelectState } from './src/types';
+export type {
+  Option,
+  ModelValue,
+  NewOption,
+  QSelectProvider,
+  QSelectState,
+  QSelectProps
+} from './src/types';

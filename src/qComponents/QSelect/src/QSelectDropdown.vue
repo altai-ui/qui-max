@@ -30,8 +30,8 @@
 
       <q-option
         v-if="isNewOptionShown"
-        :model-value="selectState.query"
-        :label="selectState.query"
+        :model-value="qSelectState.query"
+        :label="qSelectState.query"
         created
       />
 
@@ -60,17 +60,23 @@
 
 <script lang="ts">
 import { get, isPlainObject } from 'lodash-es';
-import { getConfig } from '@/qComponents/config';
 import { computed, defineComponent, inject, ref, watch } from 'vue';
-import { QSelectProvider } from '@/qComponents/QSelect';
-import { Option, QSelectState } from './types';
+import QScrollbar from '@/qComponents/QScrollbar';
+
+import { getConfig } from '@/qComponents/config';
+import type { QSelectProvider } from '@/qComponents/QSelect';
+import type {
+  Option,
+  QSelectDropdownInstance,
+  QSelectDropdownProps
+} from './types';
 
 const DEFAULT_Z_INDEX = 2000;
 
 export default defineComponent({
   name: 'QSelectDropdown',
   componentName: 'QSelectDropdown',
-
+  components: { QScrollbar },
   props: {
     shown: { type: Boolean, required: true },
     selectAllShown: { type: Boolean, required: true },
@@ -80,49 +86,49 @@ export default defineComponent({
     isCanLoadMoreShown: { type: Boolean, required: true },
     loadMoreText: { type: String, required: true },
     isNewOptionShown: { type: Boolean, required: true },
-    width: {
-      type: Number,
-      default: null
-    }
+    width: { type: Number, default: null }
   },
 
   emits: ['select-all'],
 
-  setup(props, ctx) {
+  setup(props: QSelectDropdownProps, ctx): QSelectDropdownInstance {
     const root = ref<HTMLDivElement | null>(null);
-    const scrollbar = ref<HTMLDivElement | null>(null);
+    const scrollbar = ref<typeof QScrollbar | null>(null);
     const qSelect = inject<QSelectProvider | null>('qSelect', null);
-    const selectState = inject<QSelectState | null>('selectState', null);
-    const multiple = qSelect?.multiple ?? false;
-    const zIndex = ref(getConfig('nextZIndex') ?? DEFAULT_Z_INDEX);
+    const qSelectState = qSelect?.state ?? null;
+    const multiple = qSelect?.multiple ?? ref(false);
+    const zIndex = ref(DEFAULT_Z_INDEX);
 
-    const styles = computed(() => {
-      return {
-        zIndex: zIndex.value,
-        width: props.width ? `${props.width}px` : null
-      };
+    const styles = computed<Record<string, string | number | null>>(() => ({
+      zIndex: zIndex.value,
+      width: props.width ? `${props.width}px` : null
+    }));
+
+    const isVisibleOptionExist = computed<boolean>(() => {
+      return Boolean(qSelectState?.options?.some(({ isVisible }) => isVisible));
     });
 
-    const isVisibleOptionExist = computed(() => {
-      return selectState?.options.some(({ isVisible }) => isVisible);
-    });
+    const areAllSelected = computed<boolean>(() => {
+      if (!qSelectState?.options) return false;
 
-    const areAllSelected = computed(() => {
-      return (
-        multiple &&
-        isVisibleOptionExist.value &&
-        selectState?.options
-          .filter(({ isDisabled, isVisible }) => !isDisabled && isVisible)
-          .every(({ isSelected }) => isSelected)
+      return Boolean(
+        multiple?.value &&
+          isVisibleOptionExist.value &&
+          qSelectState?.options
+            .filter(({ isDisabled, isVisible }) => !isDisabled && isVisible)
+            .every(({ isSelected }) => isSelected)
       );
     });
 
-    const isIndeterminate = computed(() => {
-      return (
-        multiple &&
-        isVisibleOptionExist.value &&
-        !areAllSelected.value &&
-        selectState?.options.some(({ isVisible, isSelected }) => isVisible && isSelected)
+    const isIndeterminate = computed<boolean>(() => {
+      if (!qSelectState?.options) return false;
+      return Boolean(
+        multiple?.value &&
+          isVisibleOptionExist.value &&
+          !areAllSelected.value &&
+          qSelectState?.options.some(
+            ({ isVisible, isSelected }) => isVisible && isSelected
+          )
       );
     });
 
@@ -143,17 +149,18 @@ export default defineComponent({
         ['ArrowDown', 'ArrowUp'].includes(e.key) &&
         target instanceof HTMLInputElement
       ) {
-        const firstNode = root.value.querySelector(`.q-option`) as HTMLElement;
+        const firstNode = root.value.querySelector('.q-option') as HTMLElement;
 
         firstNode?.focus();
       }
 
       if (!target.classList.contains('q-option')) return;
-      const availableOptions = selectState?.options.filter(
-        ({ isDisabled, isVisible }) => !isDisabled && isVisible
-      ) ?? [];
+      const availableOptions =
+        qSelectState?.options?.filter(
+          ({ isDisabled, isVisible }) => !isDisabled && isVisible
+        ) ?? [];
       const availableElements = availableOptions.map(option => option.root); //
-      
+
       let currentNodeIndex = 0;
       let nextNodeIndex = 1;
       availableElements.forEach((element, index) => {
@@ -186,7 +193,7 @@ export default defineComponent({
       }
 
       const node = availableElements[nextNodeIndex];
-      
+
       node?.focus();
     };
 
@@ -194,14 +201,15 @@ export default defineComponent({
       const modelValue = qSelect?.modelValue.value;
       const valueKey = qSelect?.valueKey.value ?? 'value';
 
-      if (!Array.isArray(modelValue)) return;
+      if (!Array.isArray(modelValue) || !qSelectState?.options) return;
       if (areAllSelected.value) {
-        const keysToRemove = selectState?.options
-          .filter(({ isVisible, disabled }) => !disabled && isVisible)
-          .map(({ key }) => key) ?? [];
+        const keysToRemove =
+          qSelectState?.options
+            .filter(({ isVisible, disabled }) => !disabled && isVisible)
+            .map(({ key }) => key) ?? [];
 
-        const getKey = (value: string | number | Option): string | number | Option => {
-          return isPlainObject(value) ? get(value, valueKey) : value; 
+        const getKey = (value: string | number | Option): string | number => {
+          return isPlainObject(value) ? get(value, valueKey) : value;
         };
 
         ctx.emit(
@@ -211,9 +219,10 @@ export default defineComponent({
         return;
       }
 
-      let newValue = selectState?.options
-        .filter(({ isSelected, disabled }) => !disabled && !isSelected)
-        .map(option => option.modelValue) ?? [];
+      let newValue =
+        qSelectState?.options
+          .filter(({ isSelected, disabled }) => !disabled && !isSelected)
+          .map(option => option.modelValue) ?? [];
 
       const multipleLimit = qSelect?.multipleLimit ?? null;
 
@@ -239,7 +248,7 @@ export default defineComponent({
       root,
       multiple,
       scrollbar,
-      selectState
+      qSelectState
     };
   }
 });

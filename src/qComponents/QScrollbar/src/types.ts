@@ -23,15 +23,8 @@ export interface QScrollbarInstance {
   isYBarShown: ComputedRef<boolean>;
   moveX: Ref<number>;
   moveY: Ref<number>;
-  classes: ComputedRef<(string | false)[]>;
-  wrapClasses: ComputedRef<
-    (
-      | string
-      | {
-          [key: string]: boolean;
-        }
-    )[]
-  >;
+  classes: ComputedRef<Record<string, boolean>>;
+  wrapClasses: ComputedRef<QScrollbarPropWrapClass[]>;
   handleScroll: () => void;
   update: () => void;
 }

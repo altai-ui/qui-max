@@ -59,6 +59,7 @@ import {
 } from '@/qComponents/helpers';
 import QBar from './QBar.vue';
 import type {
+  QScrollbarInstance,
   QScrollbarProps,
   QScrollbarPropScrollTo,
   QScrollbarPropTheme,
@@ -119,7 +120,7 @@ export default defineComponent({
     noresize: { type: Boolean, default: false }
   },
 
-  setup(props: QScrollbarProps) {
+  setup(props: QScrollbarProps): QScrollbarInstance {
     const root = ref<HTMLElement | null>(null);
     const wrap = ref<HTMLElement | null>(null);
     const resize = ref<HTMLElement | null>(null);

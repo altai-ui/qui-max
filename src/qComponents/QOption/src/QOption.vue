@@ -42,12 +42,16 @@ import {
   watch,
   ref,
   reactive,
-  toRefs
+  toRefs,
+  onMounted
 } from 'vue';
 
-import { QSelectProvider, QSelectState } from '@/qComponents/QSelect';
-import type { Option } from '@/qComponents/QSelect';
-import type { QOptionInstance } from './types';
+import type { Option, QSelectProvider } from '@/qComponents/QSelect';
+import type {
+  QOptionInstance,
+  QOptionProps,
+  QOptionProvideInstance
+} from './types';
 
 export default defineComponent({
   name: 'QOption',
@@ -72,47 +76,50 @@ export default defineComponent({
     }
   },
 
-  setup(props) {
+  setup(props: QOptionProps): QOptionInstance {
     const qSelect = inject<QSelectProvider | null>('qSelect', null);
-    const selectState = inject<QSelectState | null>('selectState', null);
+    const qSelectState = qSelect?.state;
     const root = ref(null);
-    const multiple = qSelect?.multiple;
+    const multiple = qSelect?.multiple.value ?? false;
+    const multipleLimit = qSelect?.multipleLimit.value ?? 0;
     const modelValue = qSelect?.modelValue;
-    const valueKey = qSelect?.valueKey ?? ref('');
+    const valueKey = qSelect?.valueKey.value ?? '';
 
-    const key = computed(() =>
-      isObject(props.modelValue) && qSelect
-        ? get(props.modelValue, qSelect.valueKey.value)
-        : props.modelValue
+    const key = computed<string>(() =>
+      String(
+        isObject(props.modelValue) && qSelect
+          ? get(props.modelValue, valueKey)
+          : props.modelValue
+      )
     );
 
-    const preparedLabel = computed(() => {
+    const preparedLabel = computed<string>(() => {
       return String(props.label ?? key.value);
     });
 
-    const isVisible = computed(() => {
-      if (qSelect?.remote.value || !selectState?.query) return true;
-      const qSelectQuery = String(selectState?.query).toLowerCase();
+    const isVisible = computed<boolean>(() => {
+      if (qSelect?.remote.value || !qSelectState?.query) return true;
+      const qSelectQuery = String(qSelectState?.query).toLowerCase();
 
-      return (
+      return Boolean(
         preparedLabel.value.toLowerCase().includes(qSelectQuery) ||
         props.created
       );
     });
 
-    const isSelected = computed(() => {
+    const isSelected = computed<boolean>(() => {
       if (!qSelect) return false;
 
       if (!modelValue?.value) return false;
 
       if (!multiple?.value) {
-        if (!isObject(props.modelValue)) return modelValue === key.value;
+        if (!isObject(props.modelValue)) return modelValue.value === key.value;
 
-        return isEqual(get(modelValue.value, valueKey?.value), key.value);
+        return isEqual(get(modelValue.value, valueKey), key.value);
       }
 
       const prepareValue = (val: number | string | Option): string =>
-        isObject(val) ? get(val, valueKey.value) : val;
+        isObject(val) ? get(val, valueKey) : val;
 
       if (Array.isArray(modelValue.value)) {
         return modelValue.value.some(val => prepareValue(val) === key.value);
@@ -122,22 +129,18 @@ export default defineComponent({
     });
 
     const isLimitReached = computed(() => {
-      if (!qSelect?.multiple.value) return false;
+      if (!qSelect) return false;
 
       return (
         !isSelected.value &&
         Array.isArray(qSelect.modelValue.value) &&
-        qSelect.multipleLimit.value > 0 &&
-        qSelect.modelValue.value.length >= qSelect.multipleLimit.value
+        multipleLimit > 0 &&
+        qSelect.modelValue.value.length >= multipleLimit
       );
     });
 
     const isDisabled = computed(() => {
       return props.disabled || isLimitReached.value;
-    });
-
-    watch(preparedLabel, () => {
-      if (!props.created && !qSelect?.remote) qSelect?.setSelected();
     });
 
     watch(
@@ -146,11 +149,8 @@ export default defineComponent({
         if (!qSelect) return;
         if (!props.created && !qSelect.remote) {
           if (
-            qSelect.valueKey &&
-            isObject(val) &&
-            isObject(oldVal) &&
-            get(val, qSelect.valueKey.value) ===
-              get(oldVal, qSelect.valueKey.value)
+            get(val, valueKey) ===
+            get(oldVal, valueKey)
           )
             return;
 
@@ -159,7 +159,7 @@ export default defineComponent({
       }
     );
 
-    const self: QOptionInstance = reactive({
+    const self: QOptionProvideInstance = reactive({
       ...toRefs(props),
       key,
       preparedLabel,
@@ -170,14 +170,14 @@ export default defineComponent({
       root
     });
 
-    const handleOptionClick = () => {
+    const handleOptionClick = (): void => {
       if (props.disabled || !qSelect) return;
       qSelect.toggleOptionSelection(self);
     };
 
-    const handleMouseEnter = () => {
+    const handleMouseEnter = (): void => {
       if (props.disabled || qSelect === null) return;
-      const index = selectState?.options?.indexOf(self);
+      const index = qSelectState?.options?.indexOf(self);
       if (index) {
         qSelect?.updateHoverIndex(index);
       }
@@ -187,7 +187,9 @@ export default defineComponent({
       qSelect?.removeOption(self);
     });
 
-    qSelect?.addOption(self);
+    onMounted(() => {
+      qSelect?.addOption(self);
+    });
 
     return {
       preparedLabel,
@@ -198,7 +200,6 @@ export default defineComponent({
       handleMouseEnter,
       handleOptionClick,
       multiple,
-      selectState,
       root
     };
   }

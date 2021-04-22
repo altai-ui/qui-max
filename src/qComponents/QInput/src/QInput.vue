@@ -58,7 +58,14 @@
 </template>
 
 <script lang="ts">
-import { inject, computed, ref, reactive, watch, defineComponent, PropType } from 'vue';
+import {
+  inject,
+  computed,
+  ref,
+  reactive,
+  watch,
+  defineComponent,
+} from 'vue';
 import { useI18n } from 'vue-i18n';
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
@@ -122,8 +129,8 @@ export default defineComponent({
     },
 
     rootClass: {
-      type: [Array, Object] as PropType<string[] | { [key: string]: boolean }>,
-      default: null,
+      type: [Array, Object],
+      default: null
     }
   },
 
@@ -191,14 +198,14 @@ export default defineComponent({
 
     const classes = computed(() => {
       const mainClass = 'q-input';
-      
+
       return [
         mainClass,
         props.rootClass,
         {
           [`${mainClass}_disabled`]: isDisabled.value,
-          [`${mainClass}_suffix`]: isSuffixVisible.value,
-        },
+          [`${mainClass}_suffix`]: isSuffixVisible.value
+        }
       ];
     });
 

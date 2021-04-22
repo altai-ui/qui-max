@@ -62,9 +62,9 @@ export default defineComponent({
   },
 
   setup(props: QBreadcrumbsProps): QBreadcrumbsInstance {
-    const crumbs = computed<RouteItem[]>(() => {
-      return props.route?.filter(route => route.meta?.breadcrumb) ?? [];
-    });
+    const crumbs = computed<RouteItem[]>(
+      () => props.route?.filter(route => route.meta?.breadcrumb) ?? []
+    );
 
     const breadcrumbs = computed<RouteItem[]>(() => {
       const newBreadcrumbs = [...crumbs.value];

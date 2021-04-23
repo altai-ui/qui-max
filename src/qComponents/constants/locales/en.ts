@@ -42,6 +42,7 @@ export default {
   QUpload: {
     uploadFile: 'upload file',
     replaceFile: 'replace file',
-    loading: 'loading'
+    loading: 'loading',
+    uploadedFiles: 'Uploaded files'
   }
 };

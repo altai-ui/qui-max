@@ -33,6 +33,7 @@ import QTabPane from './QTabPane';
 import QTabs from './QTabs';
 import QTag from './QTag';
 import QTextarea from './QTextarea';
+import QUpload from './QUpload';
 
 const Components = {
   QBreadcrumbs,
@@ -61,7 +62,8 @@ const Components = {
   QSelect,
   QOption,
   QCheckbox,
-  QCheckboxGroup
+  QCheckboxGroup,
+  QUpload
 };
 
 const allComponents = Object.keys(Components);
@@ -173,5 +175,6 @@ export {
   QSelect,
   QOption,
   QCheckbox,
-  QCheckboxGroup
+  QCheckboxGroup,
+  QUpload
 };

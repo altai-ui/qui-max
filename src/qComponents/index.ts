@@ -3,7 +3,6 @@ import { App } from 'vue';
 import mitt from 'mitt';
 import { isString, kebabCase } from 'lodash-es';
 import { LocaleMessageDictionary, VueMessageType } from 'vue-i18n';
-
 import { setConfig } from './config';
 import { installI18n } from './constants/locales';
 
@@ -22,11 +21,13 @@ import QFormItem from './QFormItem';
 import QInput from './QInput';
 import QInputNumber from './QInputNumber';
 import QMessageBox from './QMessageBox';
+import QOption from './QOption';
 import QPagination from './QPagination';
 import QPopover from './QPopover';
 import QRadio from './QRadio';
 import QRadioGroup from './QRadioGroup';
 import QRow from './QRow';
+import QSelect from './QSelect';
 import QScrollbar from './QScrollbar';
 import QTabPane from './QTabPane';
 import QTabs from './QTabs';
@@ -57,6 +58,8 @@ const Components = {
   QTabs,
   QTag,
   QTextarea,
+  QSelect,
+  QOption,
   QCheckbox,
   QCheckboxGroup
 };
@@ -74,8 +77,10 @@ require('../main.scss');
 allComponents.forEach(component => {
   const kebabCaseComponent = kebabCase(component);
   try {
+    // eslint-disable-next-line import/no-dynamic-require
     require(`../qComponents/${component}/src/${kebabCaseComponent}.scss`);
   } catch (err) {
+    // eslint-disable-next-line no-console
     console.warn(err);
   }
 });
@@ -106,6 +111,7 @@ const install = (
   });
 
   installI18n({ app, customI18nMessages });
+  require('focus-visible');
 
   // setup modals
   // if (!app.config.globalProperties.$notify) {
@@ -164,6 +170,8 @@ export {
   QTabs,
   QTag,
   QTextarea,
+  QSelect,
+  QOption,
   QCheckbox,
   QCheckboxGroup
 };

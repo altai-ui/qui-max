@@ -1,5 +1,6 @@
 <template>
   <div
+    ref="root"
     :class="classes"
     @mouseenter="state.hovering = true"
     @mouseleave="state.hovering = false"
@@ -59,7 +60,6 @@
 <script lang="ts">
 import { inject, computed, ref, reactive, watch, defineComponent } from 'vue';
 import { useI18n } from 'vue-i18n';
-
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
 import {
@@ -70,7 +70,12 @@ import {
   CLEAR_EVENT,
   INPUT_EVENT
 } from '@/qComponents/constants/events';
-import type { QInputProps, QInputState } from './types';
+import type {
+  QInputInstance,
+  QInputProps,
+  QInputState,
+  QInputClass
+} from './types';
 
 export default defineComponent({
   name: 'QInput',
@@ -127,6 +132,11 @@ export default defineComponent({
     passwordSwitch: {
       type: Boolean,
       default: false
+    },
+    /** as native attrs bind to native input, via rootСlass you can set class for q-input root */
+    rootClass: {
+      type: [Array, Object],
+      default: null
     }
   },
 
@@ -139,7 +149,8 @@ export default defineComponent({
     INPUT_EVENT
   ],
 
-  setup(props: QInputProps, ctx) {
+  setup(props: QInputProps, ctx): QInputInstance {
+    const root = ref<HTMLElement | null>(null);
     const input = ref<HTMLElement | null>(null);
     const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
     const qForm = inject<QFormProvider | null>('qForm', null);
@@ -198,14 +209,17 @@ export default defineComponent({
       )
     );
 
-    const classes = computed<Record<string, boolean>>(() => {
+    const classes = computed<QInputClass[]>(() => {
       const mainClass = 'q-input';
 
-      return {
-        [mainClass]: true,
-        [`${mainClass}_disabled`]: isDisabled.value,
-        [`${mainClass}_suffix`]: isSuffixVisible.value
-      };
+      return [
+        mainClass,
+        props.rootClass,
+        {
+          [`${mainClass}_disabled`]: isDisabled.value,
+          [`${mainClass}_suffix`]: isSuffixVisible.value
+        }
+      ];
     });
 
     const textLength = computed<number>(() => props.modelValue?.length ?? 0);
@@ -256,6 +270,7 @@ export default defineComponent({
     const { t } = useI18n();
 
     return {
+      root,
       state,
       classes,
       isDisabled,

@@ -4,7 +4,7 @@ import { Meta, Story } from '@storybook/vue3';
 
 import QSelect from '@/qComponents/QSelect';
 import QOption from '@/qComponents/QOption';
-import type { QSelectProps, Option } from '@/qComponents/QSelect';
+import type { QSelectProps } from '@/qComponents/QSelect';
 
 const storyMetadata: Meta = {
   title: 'Components/QSelect',
@@ -16,7 +16,7 @@ const storyMetadata: Meta = {
   }
 };
 
-const options: Option[] = [
+const options = [
   {
     value: 'value1',
     label: 'Option 1'

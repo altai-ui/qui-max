@@ -120,10 +120,9 @@ import {
 import type { QInputInstance } from '@/qComponents/QInput';
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
-import type { QOptionModel } from '@/qComponents/QOption';
+import type { QOptionModel, QOptionModelValue } from '@/qComponents/QOption';
 import type {
   QSelectPropModelValue,
-  Option,
   NewOption,
   QSelectInstance,
   QSelectProvider,
@@ -637,8 +636,8 @@ export default defineComponent({
     };
 
     const getValueIndex = (
-      arr = [] as (string | number | Option)[],
-      optionValue: string | number | Option
+      arr = [] as QOptionModelValue[],
+      optionValue: QOptionModelValue
     ): number => {
       if (isString(optionValue)) return arr.indexOf(optionValue);
       const valueKey = props.valueKey;

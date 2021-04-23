@@ -15,20 +15,6 @@ export interface BarMapItem {
   direction: 'top' | 'left';
 }
 
-export interface QScrollbarInstance {
-  wrap: Ref<HTMLElement | null>;
-  sizeWidth: Ref<string>;
-  sizeHeight: Ref<string>;
-  isXBarShown: ComputedRef<boolean>;
-  isYBarShown: ComputedRef<boolean>;
-  moveX: Ref<number>;
-  moveY: Ref<number>;
-  classes: ComputedRef<Record<string, boolean>>;
-  wrapClasses: ComputedRef<QScrollbarPropWrapClass[]>;
-  handleScroll: () => void;
-  update: () => void;
-}
-
 export type QBarPropType = 'vertical' | 'horizontal';
 
 export interface QBarProps {

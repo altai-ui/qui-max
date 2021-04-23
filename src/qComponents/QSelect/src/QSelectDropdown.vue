@@ -72,11 +72,8 @@ import {
 import QScrollbar, { QScrollbarInstance } from '@/qComponents/QScrollbar';
 import { getConfig } from '@/qComponents/config';
 import type { QSelectProvider } from '@/qComponents/QSelect';
-import type {
-  Option,
-  QSelectDropdownInstance,
-  QSelectDropdownProps
-} from './types';
+import type { QOptionModelValue } from '@/qComponents/QOption';
+import type { QSelectDropdownInstance, QSelectDropdownProps } from './types';
 
 const DEFAULT_Z_INDEX = 2000;
 
@@ -216,7 +213,7 @@ export default defineComponent({
             .filter(({ isVisible, disabled }) => !disabled && isVisible)
             .map(({ key }) => key) ?? [];
 
-        const getKey = (value: string | number | Option): string | number => {
+        const getKey = (value: QOptionModelValue): string | number => {
           return isPlainObject(value) ? get(value, valueKey) : value;
         };
 

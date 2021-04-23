@@ -2,22 +2,17 @@ import { Ref, ComputedRef, ComponentPublicInstance, UnwrapRef } from 'vue';
 import { Instance as PopperInstance } from '@popperjs/core';
 import { TranslateResult, Path, Locale } from 'vue-i18n';
 
-import type { QOptionModel } from '@/qComponents/QOption';
+import type { QOptionModel, QOptionModelValue } from '@/qComponents/QOption';
 import type { QScrollbarInstance } from '@/qComponents/QScrollbar';
 import type { QInputInstance } from '@/qComponents/QInput';
-
-type Option = {
-  value: string | Record<string, unknown>;
-  label?: string;
-  disabled?: boolean;
-};
 
 type QSelectPropModelValue =
   | string
   | number
-  | Option
-  | (string | number | Option)[]
+  | QOptionModelValue
+  | (string | number | QOptionModelValue)[]
   | null;
+
 type NewOption = {
   value: QSelectPropModelValue;
   key: QSelectPropModelValue;
@@ -49,8 +44,8 @@ interface QSelectInstance {
   handleBlur: (event: MouseEvent) => void;
   clearSelected: () => void;
   getValueIndex: (
-    arr: (string | number | Option)[] | undefined,
-    optionValue: string | number | Option
+    arr: (string | number | QOptionModelValue)[] | undefined,
+    optionValue: string | number | QOptionModelValue
   ) => number;
   toggleOptionSelection: (option: QOptionModel) => void;
   emitValueUpdate: (value: QSelectPropModelValue) => void;
@@ -156,7 +151,7 @@ interface QSelectTagsInstance {
 }
 
 export {
-  Option,
+  QOptionModelValue,
   QSelectPropModelValue,
   NewOption,
   QSelectInstance,

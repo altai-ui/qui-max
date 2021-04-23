@@ -8,7 +8,6 @@ QSelect.install = (app: App): void => {
 
 export default QSelect;
 export type {
-  Option,
   QSelectPropModelValue,
   NewOption,
   QSelectProvider,

@@ -32,7 +32,7 @@
 </template>
 
 <script lang="ts">
-import { isObject, isEqual, get } from 'lodash-es';
+import { isPlainObject, isEqual, get } from 'lodash-es';
 import {
   computed,
   defineComponent,
@@ -45,8 +45,13 @@ import {
   onMounted
 } from 'vue';
 
-import type { Option, QSelectProvider } from '@/qComponents/QSelect';
-import type { QOptionInstance, QOptionProps, QOptionModel } from './types';
+import type { QSelectProvider } from '@/qComponents/QSelect';
+import type {
+  QOptionModelValue,
+  QOptionInstance,
+  QOptionProps,
+  QOptionModel
+} from './types';
 
 export default defineComponent({
   name: 'QOption',
@@ -54,7 +59,7 @@ export default defineComponent({
 
   props: {
     modelValue: {
-      type: [Object, String, Number] as PropType<string | number | Option>,
+      type: [Object, String, Number] as PropType<QOptionModelValue>,
       required: true
     },
     label: {
@@ -82,7 +87,7 @@ export default defineComponent({
 
     const key = computed<string>(() =>
       String(
-        isObject(props.modelValue) && qSelect
+        isPlainObject(props.modelValue) && qSelect
           ? get(props.modelValue, valueKey)
           : props.modelValue
       )
@@ -105,13 +110,14 @@ export default defineComponent({
     const isSelected = computed<boolean>(() => {
       if (!qSelect || !modelValue?.value) return false;
       if (!multiple) {
-        if (!isObject(props.modelValue)) return modelValue.value === key.value;
+        if (!isPlainObject(props.modelValue))
+          return modelValue.value === key.value;
 
         return isEqual(get(modelValue.value, valueKey), key.value);
       }
 
-      const prepareValue = (val: number | string | Option): string =>
-        isObject(val) ? get(val, valueKey) : val;
+      const prepareValue = (val: QOptionModelValue): string =>
+        isPlainObject(val) ? get(val, valueKey) : val;
 
       if (Array.isArray(modelValue.value)) {
         return modelValue.value.some(val => prepareValue(val) === key.value);

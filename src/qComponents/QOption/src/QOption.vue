@@ -47,7 +47,7 @@ import {
 
 import type { QSelectProvider } from '@/qComponents/QSelect';
 import type {
-  QOptionModelValue,
+  QOptionPropModelValue,
   QOptionInstance,
   QOptionProps,
   QOptionModel
@@ -59,7 +59,7 @@ export default defineComponent({
 
   props: {
     modelValue: {
-      type: [Object, String, Number] as PropType<QOptionModelValue>,
+      type: [Object, String, Number] as PropType<QOptionPropModelValue>,
       required: true
     },
     label: {
@@ -116,7 +116,7 @@ export default defineComponent({
         return isEqual(get(modelValue.value, valueKey), key.value);
       }
 
-      const prepareValue = (val: QOptionModelValue): string =>
+      const prepareValue = (val: QOptionPropModelValue): string =>
         isPlainObject(val) ? get(val, valueKey) : val;
 
       if (Array.isArray(modelValue.value)) {

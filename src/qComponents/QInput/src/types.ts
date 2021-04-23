@@ -1,4 +1,5 @@
 import { Ref } from 'vue';
+import { Composer } from 'vue-i18n';
 
 export interface QInputProps {
   modelValue: Nullable<string>;
@@ -34,5 +35,5 @@ export interface QInput {
   handleFocus: (event: FocusEvent) => void;
   handlePasswordVisible: () => void;
   handleClearClick: (event: MouseEvent) => void;
-  t: (key: string) => string;
+  t: Composer['t'];
 }

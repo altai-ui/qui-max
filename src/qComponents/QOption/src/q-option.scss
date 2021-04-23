@@ -1,0 +1,93 @@
+.q-option {
+  --option-background-color-base: var(--color-tertiary-gray-light);
+  --option-background-color-hover: var(--color-tertiary-gray);
+  --option-background-color-focus: var(--color-tertiary-gray);
+  --option-background-color-selected: var(--color-tertiary-gray-ultra-light);
+  --option-background-color-disabled: var(--color-tertiary-gray-light);
+  --option-color-base: var(--color-primary-blue);
+  --option-color-hover: var(--color-primary-black);
+  --option-color-selected: var(--color-primary-black);
+  --option-color-disabled: rgba(var(--color-rgb-gray), 0.64);
+
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  height: 40px;
+  padding: 8px 16px;
+  cursor: pointer;
+  user-select: none;
+  background-color: var(--option-background-color-base);
+  outline: none;
+  box-shadow: -1px -1px 3px rgba(var(--color-rgb-white), 0.25),
+    1px 1px 3px rgba(var(--color-rgb-blue), 0.4);
+
+  &:focus {
+    outline: none;
+  }
+
+  &:not(:first-child) {
+    margin-top: 1px;
+  }
+
+  &_selected {
+    background-color: var(--option-background-color-selected);
+  }
+
+  &_disabled {
+    padding-right: 40px;
+    cursor: not-allowed;
+    background-color: var(--option-background-color-disabled);
+  }
+
+  &_all ~ .q-option {
+    padding-left: 24px;
+  }
+
+  &:hover:not(.q-option_disabled) {
+    background-color: var(--option-background-color-hover);
+  }
+
+  &_with-checkbox {
+    padding-left: 8px;
+  }
+
+  &.focus-visible {
+    background-color: var(--option-background-color-focus);
+  }
+
+  &__label {
+    overflow: hidden;
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-base);
+    color: var(--option-color-base);
+    text-align: left;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    .q-option_selected & {
+      color: var(--option-color-selected);
+    }
+
+    .q-option_with-checkbox & {
+      margin-left: 8px;
+    }
+
+    .q-option_disabled & {
+      color: var(--option-color-disabled);
+    }
+
+    .q-option:hover:not(.q-option_disabled) & {
+      color: var(--option-color-hover);
+    }
+  }
+
+  &__lock {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 40px;
+    font-size: 24px;
+    line-height: 40px;
+    text-align: center;
+  }
+}

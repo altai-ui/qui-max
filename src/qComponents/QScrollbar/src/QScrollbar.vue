@@ -59,12 +59,12 @@ import {
 } from '@/qComponents/helpers';
 import QBar from './QBar.vue';
 import type {
+  QScrollbarInstance,
   QScrollbarProps,
   QScrollbarPropScrollTo,
   QScrollbarPropTheme,
   QScrollbarPropWrapClass,
-  QScrollbarProvider,
-  QScrollbarInstance
+  QScrollbarProvider
 } from './types';
 
 const OFFSET = -10;

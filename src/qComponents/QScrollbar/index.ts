@@ -7,5 +7,9 @@ QScrollbar.install = (app: App): void => {
   app.component(QScrollbar.name, QScrollbar);
 };
 
-export type { QScrollbarProps } from './src/types';
+export type {
+  QScrollbarProps,
+  QScrollbarInstance,
+  QScrollbarProvider
+} from './src/types';
 export default QScrollbar;

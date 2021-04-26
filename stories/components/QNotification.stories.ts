@@ -7,38 +7,36 @@ import QNotification, {
   notifyClose,
   notifyCloseAll
 } from '@/qComponents/QNotification';
+
 import QNotificationCloud from '@/qComponents/QNotification/src/QNotificationCloud.vue';
-import type { QNotificationCloudItem } from '@/qComponents/QNotification';
+import type {
+  QNotificationProps,
+  QNotificationCloudItem
+} from '@/qComponents/QNotification';
 import iconsList from '../core/iconsList';
 
 const storyMetadata: Meta = {
   title: 'Components/QNotification',
-  component: QNotificationCloud,
+  component: QNotification,
+  subcomponents: { QNotificationCloud },
   argTypes: {
-    type: {
-      control: {
-        type: 'select',
-        options: [null, 'success', 'warning', 'info', 'error']
-      }
-    },
-    icon: { control: { type: 'select', options: iconsList } }
+    icon: { control: { type: 'select', options: iconsList } },
+    notifyArgs: { control: { type: 'object' } }
   }
 };
 
-const QNotificationStory: Story<QNotificationCloudItem> = args =>
+interface Args extends QNotificationProps {
+  notifyArgs: QNotificationCloudItem;
+}
+
+const QNotificationStory: Story<Args> = args =>
   defineComponent({
     components: { QNotification },
     setup() {
       let lastCloudId: string | null = null;
 
       const handleClick = (): void => {
-        const notifyId = notify({
-          message: args.message,
-          type: args.type,
-          dangerouslyUseHTMLString: args.dangerouslyUseHTMLString,
-          duration: args.duration,
-          icon: args.icon
-        });
+        const notifyId = notify(args.notifyArgs);
 
         lastCloudId = notifyId;
       };
@@ -52,13 +50,17 @@ const QNotificationStory: Story<QNotificationCloudItem> = args =>
       };
 
       return {
+        args,
         handleClick,
         handleCloseLastClick,
         handleCloseAllClick
       };
     },
     template: `
-      <q-notification />
+      <q-notification
+        :icon="args.icon"
+        :duration="args.duration"
+      />
 
       <q-button @click="handleClick">Click to open</q-button>
       <q-button @click="handleCloseLastClick">Close last</q-button>
@@ -71,7 +73,13 @@ const QNotificationStory: Story<QNotificationCloudItem> = args =>
 
 QNotificationStory.storyName = 'Default';
 QNotificationStory.args = {
-  message: 'Morbi massa libero, vehicula nec consequat sed, porta a sem.'
+  notifyArgs: {
+    message: 'Morbi massa libero, vehicula nec consequat sed, porta a sem.',
+    type: 'warning',
+    dangerouslyUseHTMLString: false,
+    duration: null,
+    icon: null
+  }
 };
 
 export { QNotificationStory };

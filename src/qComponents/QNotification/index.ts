@@ -24,6 +24,7 @@ const notifyClose = (id?: Nullable<string>): void => {
 };
 
 export type {
+  QNotificationProps,
   QNotificationCloudItem,
   QNotificationInstance
 } from './src/types';

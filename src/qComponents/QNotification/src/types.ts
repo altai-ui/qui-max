@@ -1,5 +1,18 @@
 import { Ref, ComputedRef } from 'vue';
 
+export type QNotificationCloudPropType =
+  | 'success'
+  | 'warning'
+  | 'info'
+  | 'error';
+
+export type QNotificationCloudPropOnClose = Nullable<(id: string) => void>;
+
+export interface QNotificationProps {
+  icon: Nullable<string>;
+  duration: Nullable<number>;
+}
+
 export interface QNotificationCloudItem {
   id?: string;
   message?: Nullable<string>;
@@ -10,20 +23,14 @@ export interface QNotificationCloudItem {
   onClose?: QNotificationCloudPropOnClose;
 }
 
-export type QNotificationAddCloud = (cloud?: QNotificationCloudItem) => void;
+export type QNotificationMethodAddCloud = (
+  cloud?: QNotificationCloudItem
+) => void;
 
 export interface QNotificationInstance {
   clouds: Ref<QNotificationCloudItem[]>;
-  handleRemove: (cloudId: string) => void;
+  removeCloud: (cloudId?: string | null) => void;
 }
-
-export type QNotificationCloudPropType =
-  | 'success'
-  | 'warning'
-  | 'info'
-  | 'error';
-
-export type QNotificationCloudPropOnClose = Nullable<(id: string) => void>;
 
 export interface QNotificationCloudProps {
   uniqId: string;

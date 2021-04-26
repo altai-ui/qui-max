@@ -8,8 +8,8 @@
         :message="cloud.message"
         :type="cloud.type"
         :dangerously-use-html-string="cloud.dangerouslyUseHTMLString"
-        :icon="cloud.icon"
-        :duration="cloud.duration"
+        :icon="cloud.icon ?? icon"
+        :duration="cloud.duration ?? duration"
         :on-close="cloud.onClose"
         @remove="removeCloud"
       />
@@ -22,7 +22,12 @@ import { defineComponent, ref } from 'vue';
 
 import { eventBus } from '@/qComponents/helpers';
 import QNotificationCloud from './QNotificationCloud.vue';
-import type { QNotificationCloudItem, QNotificationAddCloud } from './types';
+import type {
+  QNotificationProps,
+  QNotificationCloudItem,
+  QNotificationMethodAddCloud,
+  QNotificationInstance
+} from './types';
 
 export default defineComponent({
   name: 'QNotification',
@@ -30,10 +35,28 @@ export default defineComponent({
 
   components: { QNotificationCloud },
 
-  setup() {
+  props: {
+    /**
+     * icon class
+     */
+    icon: {
+      type: String,
+      default: null
+    },
+    /**
+     * duration before close
+     */
+    duration: {
+      type: Number,
+      default: 3000
+    }
+  },
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  setup(props: QNotificationProps): QNotificationInstance {
     const clouds = ref<QNotificationCloudItem[]>([]);
 
-    const addCloud: QNotificationAddCloud = (cloud): void => {
+    const addCloud: QNotificationMethodAddCloud = (cloud): void => {
       if (!cloud) return;
       clouds.value.push(cloud);
     };

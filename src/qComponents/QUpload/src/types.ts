@@ -29,7 +29,7 @@ export interface QUploadInstance {
   isDisabled: ComputedRef<boolean>;
   isLoading: ComputedRef<boolean>;
   fileInput: Ref<Nullable<HTMLInputElement>>;
-  classes: ComputedRef<Record<string, boolean | undefined>>;
+  classes: ComputedRef<Record<string, boolean>>;
   hasValue: ComputedRef<boolean>;
   processFile: ({ target }: MouseEvent) => void;
   handleUploadClick: () => void;

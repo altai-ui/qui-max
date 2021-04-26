@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="q-upload"
-    :class="classes"
-  >
+  <div :class="classes">
     <q-upload-drop-zone
       :has-value="hasValue"
       :is-multiple="multiple"
@@ -176,14 +173,15 @@ export default defineComponent({
         : props.value !== null
     );
 
-    const classes = computed<Record<string, boolean | undefined>>(() => {
-      if (!props.multiple) return {};
+    const classes = computed<Record<string, boolean>>(() => {
+      const isMultiple = Boolean(props.multiple);
 
       return {
-        'q-upload_multiple': true,
-        [`q-upload_multiple_open-${props.direction}`]: Boolean(
-          Array.isArray(props.value) && props.value.length
-        )
+        'q-upload': true,
+        'q-upload_multiple': isMultiple,
+        [`q-upload_multiple_open-${props.direction}`]:
+          isMultiple &&
+          Boolean(Array.isArray(props.value) && props.value.length)
       };
     });
 

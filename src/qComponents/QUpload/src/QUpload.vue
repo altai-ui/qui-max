@@ -135,28 +135,28 @@ export default defineComponent({
       default: true
     },
     /**
-     * text of text upload file
+     * used to change 'upload file' text
      */
     textUploadFile: {
       type: String,
       default: null
     },
     /**
-     * text of text replace file
+     * used to change 'replace file' text
      */
     textReplaceFile: {
       type: String,
       default: null
     },
     /**
-     * text of text loading file
+     * used to change 'loading file' text
      */
     textLoadingFile: {
       type: String,
       default: null
     },
     /**
-     * text of text uploaded files
+     * used to change 'uploaded files' text
      */
     textUploadedFiles: {
       type: String,

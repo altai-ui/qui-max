@@ -1,0 +1,98 @@
+.q-date-editor {
+  --field-box-shadow-focus: -1px -1px 3px rgba(var(--color-rgb-white), 0.25),
+    1px 1px 3px rgba(var(--color-rgb-blue), 0.4),
+    inset -1px -1px 1px rgba(var(--color-rgb-white), 0.7),
+    inset 1px 1px 2px rgba(var(--color-rgb-blue), 0.2);
+
+  position: relative;
+  display: inline-block;
+  text-align: left;
+
+  .q-input__icon.q-icon-close {
+    color: var(--color-primary-blue);
+    cursor: pointer;
+
+    &:hover {
+      color: var(--color-primary-black);
+    }
+  }
+
+  .q-range-input {
+    display: inline-block;
+    width: 42%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-weight: var(--font-weight-base);
+    font-size: inherit;
+    line-height: 40px;
+    color: var(--color-primary-black);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    border: none;
+    outline: none;
+    appearance: none;
+
+    &::placeholder {
+      color: rgba(var(--color-rgb-gray), 0.32);
+      opacity: 1;
+    }
+  }
+
+  .q-range-separator {
+    display: inline-block;
+    width: 5%;
+    height: 100%;
+    margin: 0;
+    padding: 0 2px;
+    font-size: 14px;
+    line-height: 32px;
+    text-align: center;
+    color: var(--color-primary-black);
+  }
+}
+
+.q-range-editor {
+  display: inline-flex;
+  align-items: center;
+  width: 100%;
+  padding-left: 5px;
+  background-color: var(--color-tertiary-gray-light);
+  border: none;
+  border-radius: var(--border-radius-base);
+  box-shadow: var(--box-shadow-primary);
+  cursor: pointer;
+
+  &:hover:not(.q-range-editor_disabled) {
+    background-color: var(--color-tertiary-gray);
+    box-shadow: var(--box-shadow-hover);
+  }
+
+  .q-range-input {
+    line-height: 1;
+    text-align: center;
+    background: none;
+  }
+
+  &_focused {
+    background-color: var(--color-tertiary-gray-ultra-light);
+    outline: none;
+    box-shadow: var(--field-box-shadow-focus);
+  }
+
+  &_disabled {
+    background-color: var(--color-tertiary-gray);
+    box-shadow: var(--box-shadow-pressed);
+    cursor: not-allowed;
+
+    .q-range-separator,
+    .q-range-input {
+      color: var(--field-color-disabled);
+      cursor: not-allowed;
+    }
+  }
+
+  .q-form-item_is-error & {
+    border: var(--border-error);
+  }
+}

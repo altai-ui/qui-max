@@ -1,0 +1,63 @@
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.q-table-loader {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  min-height: 115px;
+  padding-top: 120px;
+  background-color: var(--color-tertiary-gray-light);
+  opacity: 0;
+  transition: height 0.2s, background-color 0.5s, opacity 0.2s 0.6s;
+
+  &_is-loading {
+    z-index: 10;
+    opacity: 1;
+    transition: opacity 0.2s 0.1s;
+  }
+
+  &__circle {
+    width: 64px;
+    height: 64px;
+    border-radius: 100%;
+    animation: spin 4s linear infinite;
+  }
+
+  &__quarter {
+    position: absolute;
+    box-sizing: border-box;
+    display: block;
+    width: 64px;
+    height: 64px;
+    border-style: solid;
+    border-width: 8px;
+    border-top-color: var(--color-tertiary-gray-darker);
+    border-radius: 50%;
+    animation: spin 1s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+
+    &:nth-child(1) {
+      animation-delay: -0.3s;
+    }
+
+    &:nth-child(2) {
+      animation-delay: -0.2s;
+    }
+
+    &:nth-child(3) {
+      animation-delay: -0.1s;
+    }
+  }
+}

@@ -1,0 +1,90 @@
+.q-upload-drop-zone {
+  --background-color: var(--color-tertiary-gray-light);
+  --border-color: rgba(var(--color-rgb-gray), 0.16);
+  --text-color: var(--color-primary-blue);
+  --box-shadow: var(--box-shadow-primary);
+
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: var(--q-upload-size);
+  height: var(--q-upload-size);
+  overflow: hidden;
+  text-align: center;
+  cursor: pointer;
+  background-color: var(--background-color);
+  border-radius: 6px;
+  outline: none;
+  box-shadow: var(--box-shadow);
+
+  &:hover,
+  &[data-focus-visible-added] {
+    --background-color: var(--color-tertiary-gray);
+    --box-shadow: var(--box-shadow-hover);
+  }
+
+  &::before {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    bottom: 8px;
+    left: 8px;
+    content: '';
+    border: 1px dashed var(--border-color);
+  }
+
+  &__icon {
+    font-size: 40px;
+    line-height: 1;
+    color: var(--text-color);
+  }
+
+  &__text {
+    margin-top: 8px;
+    font-size: 12px;
+    font-weight: var(--font-weight-bold);
+    line-height: 15px;
+    color: var(--text-color);
+    text-transform: uppercase;
+  }
+
+  &_is-dragover {
+    --border-color: var(--color-primary-blue);
+    --background-color: var(--color-tertiary-gray);
+  }
+
+  &_is-loading {
+    --background-color: var(--color-tertiary-gray-ultra-light);
+    --text-color: rgba(var(--color-rgb-gray), 0.64);
+    --box-shadow: var(--box-shadow-pressed);
+
+    &:hover {
+      --background-color: var(--color-tertiary-gray-ultra-light);
+      --box-shadow: var(--box-shadow-pressed);
+    }
+
+    .q-upload-drop-zone__icon {
+      animation: rotating 2s linear infinite;
+    }
+  }
+
+  &_is-disabled {
+    --border-color: rgba(var(--color-rgb-gray), 0.64);
+    --text-color: rgba(var(--color-rgb-gray), 0.64);
+    --background-color: var(--color-tertiary-gray);
+    --box-shadow: var(--box-shadow-pressed);
+
+    cursor: not-allowed;
+
+    &:hover {
+      --box-shadow: var(--box-shadow-pressed);
+    }
+  }
+
+  .q-form-item_is-error & {
+    --border-color: var(--color-secondary-orange);
+  }
+}

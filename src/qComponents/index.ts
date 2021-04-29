@@ -1,8 +1,9 @@
 /* eslint-disable no-underscore-dangle, global-require, no-param-reassign */
 import { App } from 'vue';
-import mitt from 'mitt';
 import { isString, kebabCase } from 'lodash-es';
 import { LocaleMessageDictionary, VueMessageType } from 'vue-i18n';
+
+import { eventBus } from './helpers';
 import { setConfig } from './config';
 import { installI18n } from './constants/locales';
 
@@ -21,6 +22,11 @@ import QFormItem from './QFormItem';
 import QInput from './QInput';
 import QInputNumber from './QInputNumber';
 import QMessageBox from './QMessageBox';
+import QNotification, {
+  notify,
+  notifyClose,
+  notifyCloseAll
+} from './QNotification';
 import QOption from './QOption';
 import QPagination from './QPagination';
 import QPopover from './QPopover';
@@ -33,6 +39,7 @@ import QTabPane from './QTabPane';
 import QTabs from './QTabs';
 import QTag from './QTag';
 import QTextarea from './QTextarea';
+import QUpload from './QUpload';
 
 const Components = {
   QBreadcrumbs,
@@ -48,6 +55,7 @@ const Components = {
   QInput,
   QInputNumber,
   QMessageBox,
+  QNotification,
   QPagination,
   QPopover,
   QRadio,
@@ -61,7 +69,8 @@ const Components = {
   QSelect,
   QOption,
   QCheckbox,
-  QCheckboxGroup
+  QCheckboxGroup,
+  QUpload
 };
 
 const allComponents = Object.keys(Components);
@@ -137,7 +146,7 @@ const install = (
   // }
 
   // setup emitter
-  app.config.globalProperties.$eventHub = mitt();
+  app.config.globalProperties.$eventHub = eventBus;
   allComponentsExceptModals.forEach(name => {
     const newName =
       prefix && isString(prefix) ? name.replace(/^Q/, prefix) : name;
@@ -147,6 +156,10 @@ const install = (
 
 export default { install };
 export {
+  eventBus,
+  notify,
+  notifyClose,
+  notifyCloseAll,
   QBreadcrumbs,
   QButton,
   QCol,
@@ -160,6 +173,7 @@ export {
   QInput,
   QInputNumber,
   QMessageBox,
+  QNotification,
   QPagination,
   QPopover,
   QRadio,
@@ -173,5 +187,6 @@ export {
   QSelect,
   QOption,
   QCheckbox,
-  QCheckboxGroup
+  QCheckboxGroup,
+  QUpload
 };

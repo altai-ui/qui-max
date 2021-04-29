@@ -1,4 +1,5 @@
 import { Ref, ComputedRef } from 'vue';
+import { Composer } from 'vue-i18n';
 
 type Classes = Record<string, boolean>;
 export type QInputClass = Nullable<string | Classes | Classes[]>;
@@ -41,5 +42,5 @@ export interface QInputInstance {
   handleInput: (event: Event) => void;
   handleChange: (event: Event) => void;
   updateModel: (event: Event) => void;
-  t: (key: string) => string;
+  t: Composer['t'];
 }

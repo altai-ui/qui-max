@@ -1,4 +1,5 @@
 import { Ref, ComputedRef } from 'vue';
+import { Composer } from 'vue-i18n';
 
 export type QTextareaPropResize = 'vertical' | 'horizontal' | 'both' | 'none';
 export type QTextareaPropAutosize = Nullable<
@@ -15,7 +16,7 @@ export interface QTextareaProps {
 }
 
 export interface QTextareaInstance {
-  t: (arg0: string) => string;
+  t: Composer['t'];
   textareaCalcStyle: Ref<{
     minHeight?: string | undefined;
     height?: string | undefined;

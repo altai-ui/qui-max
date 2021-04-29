@@ -1,57 +1,8 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { Story } from '@storybook/vue3';
-import { defineComponent } from 'vue';
+import Template from './Default';
 
-// import QCheckboxGroup from '@/qComponents/QCheckboxGroup';
-import type { QTableProps } from '@/qComponents/QTable';
+const Total = Template.bind({});
 
-const QTableStory: Story<QTableProps> = args =>
-  defineComponent({
-    setup() {
-      const handleRowClick = (row: unknown): void => {
-        // eslint-disable-next-line no-console
-        console.log(row);
-      };
-      const changeOrder = (order): void => {
-        // eslint-disable-next-line no-console
-        console.log(order);
-      };
-
-      const changeSort = (sort): void => {
-        // eslint-disable-next-line no-console
-        console.log('sort', sort);
-      };
-
-      return {
-        args,
-        handleRowClick,
-        changeOrder,
-        changeSort
-      };
-    },
-    template: `
-      <q-table
-        :default-sort="args.defaultSort"
-        :fixed-layout="args.fixedLayout"
-        :groups-of-columns="args.groupsOfColumns"
-        :rows="args.rows"
-        :total="args.total"
-        @change-order="changeOrder"
-        @change-sort="changeSort"
-        @row-click="handleRowClick"
-      >
-        <template #customHeader="{ value }">
-          {{ value }} custom
-        </template>
-
-        <template #customRow="{ value }">
-          {{ value }} custom
-        </template>
-      </q-table>
-    `
-  });
-
-QTableStory.args = {
+Total.args = {
   defaultSort: {
     key: 'col1',
     direction: 'descending'
@@ -133,7 +84,15 @@ QTableStory.args = {
       col8:
         'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
     }
-  ]
+  ],
+  total: {
+    col1: 'Total 100',
+    col2: 'Total 200',
+    col3: 'Total 300',
+    col4: 'Total 400',
+    col5: 'Total 500',
+    col6: 'Total 600'
+  }
 };
 
-export default QTableStory;
+export default Total;

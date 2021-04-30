@@ -16,6 +16,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType, computed, provide, toRef } from 'vue';
+import { isEmpty } from 'lodash-es';
 
 import QTableContainer from './QTableContainer.vue';
 import QTableEmpty from './QTableEmpty.vue';
@@ -26,6 +27,8 @@ import type {
   QTablePropTotal,
   QTablePropRows,
   QTablePropSortBy,
+  QTablePropCustomRowClass,
+  QTablePropCustomRowStyle,
   QTableProvider,
   QTableInstance
 } from './QTable';
@@ -79,6 +82,20 @@ export default defineComponent({
       default: null
     },
     /**
+     * used to set classes for a row
+     */
+    customRowClass: {
+      type: (Function as unknown) as PropType<QTablePropCustomRowClass>,
+      default: null
+    },
+    /**
+     * used to set styles for a row
+     */
+    customRowStyle: {
+      type: (Function as unknown) as PropType<QTablePropCustomRowStyle>,
+      default: null
+    },
+    /**
      * used to change 'loading file' text
      */
     emptyText: {
@@ -96,13 +113,16 @@ export default defineComponent({
 
     const rootClasses = computed<Record<string, boolean>>(() => ({
       'q-table': true,
-      'q-table_has-color-groups': hasColorGroups.value
+      'q-table_has-color-groups': hasColorGroups.value,
+      'q-table_has-total': !isEmpty(props.total)
     }));
 
     provide<QTableProvider>('qTable', {
       groupsOfColumns: toRef(props, 'groupsOfColumns'),
       total: toRef(props, 'total'),
       rows: toRef(props, 'rows'),
+      customRowClass: toRef(props, 'customRowClass'),
+      customRowStyle: toRef(props, 'customRowStyle'),
       sortBy: toRef(props, 'sortBy'),
       slots: ctx.slots
     });

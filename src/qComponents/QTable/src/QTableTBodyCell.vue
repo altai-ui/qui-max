@@ -5,6 +5,7 @@ import type { QTableProvider } from './QTable';
 import type { ExtendedColumn } from './QTableContainer';
 import type {
   QTableTBodyCellProps,
+  QTableTBodyCellPropRow,
   QTableTBodyCellPropValue,
   QTableTBodyCellInstance
 } from './QTableTBodyCell';
@@ -14,6 +15,10 @@ export default defineComponent({
   componentName: ' QTableTBodyCell',
 
   props: {
+    row: {
+      type: Object as PropType<QTableTBodyCellPropRow>,
+      required: true
+    },
     rowIndex: {
       type: Number,
       required: true
@@ -27,7 +32,12 @@ export default defineComponent({
       required: true
     },
     value: {
-      type: Object as PropType<QTableTBodyCellPropValue>,
+      type: [
+        String,
+        Number,
+        Array,
+        Object
+      ] as PropType<QTableTBodyCellPropValue>,
       required: true
     }
   },
@@ -39,14 +49,18 @@ export default defineComponent({
       const slotName = props.column.slots?.row ?? 'row';
       const currentSlot = qTable?.slots[slotName];
 
-      if (!currentSlot) return String(props.value ?? '');
+      const value = props.column.formatter
+        ? props.column.formatter(props.value, props.row, props.column)
+        : props.value;
+
+      if (!currentSlot) return String(value ?? '');
 
       return currentSlot({
         rowIndex: props.rowIndex,
         column: props.column,
         columnKey: props.column.key,
         columnIndex: props.columnIndex,
-        value: props.value
+        value
       });
     });
 

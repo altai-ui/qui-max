@@ -1,0 +1,23 @@
+.q-table-t-body-row {
+  position: relative;
+
+  &::after {
+    position: absolute;
+    top: 1px;
+    bottom: 0;
+    left: 0;
+    z-index: 20;
+    display: block;
+    width: 4px;
+    content: '';
+    background-color: var(--row-custom-border-color, transparent);
+  }
+
+  &:first-child::after {
+    border-top-left-radius: var(--border-radius-base);
+  }
+
+  &:last-child::after {
+    border-bottom-left-radius: var(--border-radius-base);
+  }
+}

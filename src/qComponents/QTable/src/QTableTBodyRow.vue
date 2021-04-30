@@ -1,8 +1,12 @@
 <template>
-  <tr class="q-table-t-total">
+  <tr
+    :class="rootClasses"
+    :style="rootStyles"
+  >
     <q-table-t-body-cell
       v-for="(column, colIndex) in columnList"
       :key="randId(`body-row-${rowIndex}-cell-${colIndex}-`)"
+      :row="row"
       :row-index="rowIndex"
       :column="column"
       :column-index="colIndex"
@@ -16,6 +20,7 @@ import { defineComponent, PropType, computed, inject } from 'vue';
 
 import { randId } from '@/qComponents/helpers';
 import QTableTBodyCell from './QTableTBodyCell.vue';
+import type { QTableProvider } from './QTable';
 import type {
   ExtendedColumn,
   QTableContainerProvider
@@ -23,7 +28,9 @@ import type {
 import type {
   QTableTBodyRowProps,
   QTableTBodyRowPropRow,
-  QTableTBodyRowInstance
+  QTableTBodyRowInstance,
+  RootClasses,
+  RootStyles
 } from './QTableTBodyRow';
 
 export default defineComponent({
@@ -46,10 +53,44 @@ export default defineComponent({
   },
 
   setup(props: QTableTBodyRowProps): QTableTBodyRowInstance {
+    const qTable = inject<QTableProvider | null>('qTable', null);
     const qTableContainer = inject<QTableContainerProvider | null>(
       'qTableContainer',
       null
     );
+
+    const rootClasses = computed<RootClasses>(() => {
+      const classes: RootClasses = ['q-table-t-body-row'];
+
+      const getCustomClasses = qTable?.customRowClass.value;
+
+      if (getCustomClasses) {
+        const customClasses = getCustomClasses({
+          row: props.row,
+          rowIndex: props.rowIndex
+        });
+
+        if (customClasses) return classes.concat(customClasses);
+      }
+
+      return classes;
+    });
+
+    const rootStyles = computed<RootStyles>(() => {
+      const styles: RootStyles = [];
+
+      const getCustomStyles = qTable?.customRowStyle.value;
+      if (getCustomStyles) {
+        const customStyles = getCustomStyles({
+          row: props.row,
+          rowIndex: props.rowIndex
+        });
+
+        if (customStyles) return styles.concat(customStyles);
+      }
+
+      return styles;
+    });
 
     const columnList = computed<ExtendedColumn[]>(
       () => qTableContainer?.columnList.value ?? []
@@ -58,6 +99,8 @@ export default defineComponent({
     const getRowValue = (key: string): unknown | null => props.row[key] ?? null;
 
     return {
+      rootClasses,
+      rootStyles,
       randId,
       columnList,
       getRowValue

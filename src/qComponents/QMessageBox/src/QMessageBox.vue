@@ -199,7 +199,7 @@ export default defineComponent({
      * callback before QMessageBox closes, and it will prevent QMessageBox from closing
      */
     beforeClose: {
-      type: Function as PropType<QMessageBoxPropBeforeClose>,
+      type: (Function as unknown) as PropType<QMessageBoxPropBeforeClose>,
       default: null
     },
     /**

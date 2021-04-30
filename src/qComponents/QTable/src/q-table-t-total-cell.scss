@@ -23,6 +23,22 @@
     background-color: var(--color-tertiary-white);
   }
 
+  .q-table:not(.q-table_has-color-groups) & {
+    &:first-child {
+      &::after,
+      &::before {
+        border-top-left-radius: var(--border-radius-base);
+      }
+    }
+
+    &:last-child {
+      &::after,
+      &::before {
+        border-top-right-radius: var(--border-radius-base);
+      }
+    }
+  }
+
   &__container {
     position: relative;
     z-index: 15;

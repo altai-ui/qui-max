@@ -115,7 +115,7 @@ export default defineComponent({
      * callback before close
      */
     beforeClose: {
-      type: Function as PropType<QDrawerPropBeforeClose>,
+      type: (Function as unknown) as PropType<QDrawerPropBeforeClose>,
       default: null
     },
     /**

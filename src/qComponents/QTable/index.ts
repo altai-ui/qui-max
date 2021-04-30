@@ -7,5 +7,9 @@ QTable.install = (app: App): void => {
   app.component(QTable.name, QTable);
 };
 
-export type { QTableProps, QTableInstance } from './src/QTable';
+export type {
+  QTableProps,
+  QTablePropSortBy,
+  QTableInstance
+} from './src/QTable';
 export default QTable;

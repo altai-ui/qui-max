@@ -98,7 +98,7 @@ export default defineComponent({
      * callback function when closed
      */
     onClose: {
-      type: Function as PropType<QNotificationCloudPropOnClose>,
+      type: (Function as unknown) as PropType<QNotificationCloudPropOnClose>,
       default: null
     }
   },

@@ -1,19 +1,29 @@
 import Template from './Default';
 
+import { total, sortBy, rows } from './args';
+
 const Groups = Template.bind({});
 
 Groups.args = {
   fixedLayout: true,
+  rows,
+  total,
+  sortBy,
   groupsOfColumns: [
     {
       key: 'one',
-      color: '#de4b7a',
       columns: [
         {
           key: 'col1',
           value: 'Column 1',
-          formatter: val => `formatted_${val}`
-        },
+          formatter: (val): string => `formatted_${val}`
+        }
+      ]
+    },
+    {
+      key: 'two',
+      color: '#de4b7a',
+      columns: [
         {
           key: 'col2',
           value: 'Column 2'
@@ -28,7 +38,7 @@ Groups.args = {
     {
       color: '#74aff8',
       align: 'right',
-      key: 'two',
+      key: 'three',
       columns: [
         {
           key: 'col4',
@@ -41,7 +51,7 @@ Groups.args = {
         },
         {
           key: 'col5',
-          value: 'Column 6'
+          value: 'Column with very long title'
         },
         {
           key: 'col6',

@@ -23,13 +23,13 @@ const storyMetadata: Meta = {
 };
 
 export {
-  Default
+  Default,
   // CustomWidth,
   // Selectable,
   // Total,
   // StickyColumn,
-  // CustomRows,
-  // Groups,
+  CustomRows,
+  Groups
   // Draggable
 };
 export default storyMetadata;

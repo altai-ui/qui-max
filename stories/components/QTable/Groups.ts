@@ -5,7 +5,6 @@ import { total, sortBy, rows } from './args';
 const Groups = Template.bind({});
 
 Groups.args = {
-  fixedLayout: true,
   rows,
   total,
   sortBy,

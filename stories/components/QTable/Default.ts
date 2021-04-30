@@ -5,7 +5,7 @@ import { defineComponent } from 'vue';
 // import QCheckboxGroup from '@/qComponents/QCheckboxGroup';
 import type { QTableProps } from '@/qComponents/QTable';
 
-import { groupsOfColumns, total, sortBy, rows } from './args';
+import { groupsOfColumns, sortBy, rows } from './args';
 
 const QTableStory: Story<QTableProps> = args =>
   defineComponent({
@@ -60,7 +60,6 @@ const QTableStory: Story<QTableProps> = args =>
   });
 
 QTableStory.args = {
-  total,
   rows,
   sortBy,
   groupsOfColumns,

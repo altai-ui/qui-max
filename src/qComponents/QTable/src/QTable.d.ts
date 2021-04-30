@@ -47,6 +47,8 @@ export type QTablePropCustomRowStyle = Nullable<
 >;
 
 export interface QTableProps {
+  fixedLayout: Nullable<boolean>;
+  defaultColWidth: Nullable<string>;
   groupsOfColumns: QTablePropGroupsOfColumns;
   total: QTablePropTotal;
   rows: QTablePropRows;
@@ -57,6 +59,8 @@ export interface QTableProps {
 }
 
 export interface QTableProvider {
+  fixedLayout: Ref<Nullable<boolean>>;
+  defaultColWidth: Ref<Nullable<string>>;
   groupsOfColumns: Ref<QTablePropGroupsOfColumns>;
   total: Ref<QTablePropTotal>;
   rows: Ref<QTablePropRows>;

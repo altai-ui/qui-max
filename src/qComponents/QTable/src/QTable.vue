@@ -44,6 +44,21 @@ export default defineComponent({
 
   props: {
     /**
+     * do not shrink column's width as native table does
+     * (change `defaultColWidth` or pass the `width` to each column object for managing the width)
+     */
+    fixedLayout: {
+      type: Boolean,
+      default: true
+    },
+    /**
+     * Default columns width, required `fixedLayout: true`
+     */
+    defaultColWidth: {
+      type: String,
+      default: null
+    },
+    /**
      * `groupsOfColumns` MUST contain one or more groups of columns,
      * Each group MUST contain `key` and `columns` - array of objects.
      * Each group MAY contain:
@@ -118,6 +133,8 @@ export default defineComponent({
     }));
 
     provide<QTableProvider>('qTable', {
+      fixedLayout: toRef(props, 'fixedLayout'),
+      defaultColWidth: toRef(props, 'defaultColWidth'),
       groupsOfColumns: toRef(props, 'groupsOfColumns'),
       total: toRef(props, 'total'),
       rows: toRef(props, 'rows'),

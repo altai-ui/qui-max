@@ -3,8 +3,8 @@
     <q-table-t-total-cell
       v-for="(column, index) in columnList"
       :key="`total-cell-${column.group.key}-${column.key}`"
-      :index="index"
       :column="column"
+      :column-index="index"
     />
   </tr>
 </template>
@@ -17,7 +17,7 @@ import type {
   ExtendedColumn,
   QTableContainerProvider
 } from './QTableContainer';
-import type { QTableTTotalProps, QTableTTotalInstance } from './QTableTTotal';
+import type { QTableTTotalInstance } from './QTableTTotal';
 
 export default defineComponent({
   name: 'QTableTTotal',
@@ -27,10 +27,7 @@ export default defineComponent({
     QTableTTotalCell
   },
 
-  props: {},
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  setup(props: QTableTTotalProps): QTableTTotalInstance {
+  setup(): QTableTTotalInstance {
     const qTableContainer = inject<QTableContainerProvider | null>(
       'qTableContainer',
       null

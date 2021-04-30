@@ -8,8 +8,8 @@ export interface QTableTHeadCellPropSortBy {
 }
 
 export interface QTableTHeadCellProps {
-  index: number;
   column: ExtendedColumn;
+  columnIndex: number;
   sortBy: Nullable<QTableTHeadCellPropSortBy>;
 }
 

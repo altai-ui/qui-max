@@ -13,12 +13,12 @@ export default defineComponent({
   componentName: ' QTableTTotalCell',
 
   props: {
-    index: {
-      type: Number,
-      required: true
-    },
     column: {
       type: Object as PropType<ExtendedColumn>,
+      required: true
+    },
+    columnIndex: {
+      type: Number,
       required: true
     }
   },
@@ -37,7 +37,7 @@ export default defineComponent({
       return currentSlot({
         data: props.column,
         columnKey: props.column.key,
-        index: props.index,
+        index: props.columnIndex,
         value
       });
     });

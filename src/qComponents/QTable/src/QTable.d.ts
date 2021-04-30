@@ -38,6 +38,7 @@ export interface QTableProps {
 export interface QTableProvider {
   groupsOfColumns: Ref<QTablePropGroupsOfColumns>;
   total: Ref<QTablePropTotal>;
+  rows: Ref<QTablePropRows>;
   sortBy: Ref<QTablePropSortBy>;
   slots: Readonly<Slots>;
 }

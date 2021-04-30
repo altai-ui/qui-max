@@ -3,8 +3,8 @@
     <q-table-t-head-cell
       v-for="(column, index) in columnList"
       :key="`head-cell-${column.group.key}-${column.key}`"
-      :index="index"
       :column="column"
+      :column-index="index"
       :sort-by="sortBy"
     />
   </tr>
@@ -19,7 +19,7 @@ import type {
   ExtendedColumn,
   QTableContainerProvider
 } from './QTableContainer';
-import type { QTableTHeadProps, QTableTHeadInstance } from './QTableTHead';
+import type { QTableTHeadInstance } from './QTableTHead';
 
 export default defineComponent({
   name: 'QTableTHead',
@@ -29,10 +29,7 @@ export default defineComponent({
     QTableTHeadCell
   },
 
-  props: {},
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  setup(props: QTableTHeadProps): QTableTHeadInstance {
+  setup(): QTableTHeadInstance {
     const qTable = inject<QTableProvider | null>('qTable', null);
     const qTableContainer = inject<QTableContainerProvider | null>(
       'qTableContainer',

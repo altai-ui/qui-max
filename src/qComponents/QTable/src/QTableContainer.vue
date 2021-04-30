@@ -10,7 +10,6 @@ import { defineComponent, computed, provide, inject } from 'vue';
 import QTableT from './QTableT.vue';
 import type { QTableProvider } from './QTable';
 import type {
-  QTableContainerProps,
   QTableContainerProvider,
   QTableContainerInstance,
   ExtendedColumn
@@ -24,10 +23,7 @@ export default defineComponent({
     QTableT
   },
 
-  props: {},
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  setup(props: QTableContainerProps): QTableContainerInstance {
+  setup(): QTableContainerInstance {
     const qTable = inject<QTableProvider | null>('qTable', null);
 
     const columnList = computed<ExtendedColumn[]>(() => {

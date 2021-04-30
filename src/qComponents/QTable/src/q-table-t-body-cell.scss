@@ -1,15 +1,15 @@
-.q-table-t-total-cell {
+.q-table-t-body-cell {
   position: relative;
-  vertical-align: bottom;
+  vertical-align: middle;
 
   &::after,
   &::before {
     position: absolute;
-    top: 0;
+    top: 1px;
     left: 0;
     display: block;
     width: 100%;
-    height: 100%;
+    height: calc(100% - 1px);
     content: '';
   }
 
@@ -20,7 +20,7 @@
 
   &::before {
     z-index: 10;
-    background-color: var(--color-tertiary-white);
+    background-color: var(--color-tertiary-gray-light);
   }
 
   &__container {
@@ -28,7 +28,6 @@
     z-index: 15;
     display: flex;
     align-items: center;
-    height: 80px;
     padding: 12px 16px 12px 24px;
 
     .q-table-t-total-cell:first-child & {

@@ -102,6 +102,7 @@ export default defineComponent({
     provide<QTableProvider>('qTable', {
       groupsOfColumns: toRef(props, 'groupsOfColumns'),
       total: toRef(props, 'total'),
+      rows: toRef(props, 'rows'),
       sortBy: toRef(props, 'sortBy'),
       slots: ctx.slots
     });

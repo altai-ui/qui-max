@@ -44,6 +44,10 @@ const QTableStory: Story<QTableProps> = args =>
           {{ value }} custom
         </template>
 
+        <template #customTotal="{ value }">
+          {{ value }} custom
+        </template>
+
         <template #customRow="{ value }">
           {{ value }} custom
         </template>
@@ -81,6 +85,7 @@ QTableStory.args = {
           sortable: true,
           slots: {
             header: 'customHeader',
+            total: 'customTotal',
             row: 'customRow'
           }
         },
@@ -127,8 +132,8 @@ QTableStory.args = {
       col4: 'ut labore et dolore magna aliqua.',
       col5: 'Ut enim ad minim veniam',
       col6: 'quis nostrud exercitation ullamco laboris',
-      col8: 'quis nostrud exercitation ullamco laboris',
-      col7: 'quis nostrud exercitation ullamco laboris'
+      col7: 'quis nostrud exercitation ullamco laboris',
+      col8: 'quis nostrud exercitation ullamco laboris'
     },
     {
       col1: 'nisi ut aliquip ex ea commodo consequat',
@@ -158,7 +163,17 @@ QTableStory.args = {
       col8:
         'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
     }
-  ]
+  ],
+  total: {
+    col2: 'Total 200',
+    col1: 'Total 100',
+    col4: 'Total 400',
+    col3: 'Total 300',
+    col6: 'Total 600',
+    col5: 'Total 500',
+    col7: 'Total 700',
+    col8: 'Total 800'
+  }
 };
 
 export default QTableStory;

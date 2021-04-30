@@ -31,8 +31,8 @@ export default defineComponent({
   setup(props: QTableTHeadCellProps): QTableTHeadCellInstance {
     const qTable = inject<QTableProvider | null>('qTable', null);
 
-    const isSortable = computed(() => Boolean(props.column.sortable));
-    const isCurrentSorting = computed(
+    const isSortable = computed<boolean>(() => Boolean(props.column.sortable));
+    const isCurrentSorting = computed<boolean>(
       () => props.sortBy?.key === props.column.key
     );
 
@@ -58,51 +58,28 @@ export default defineComponent({
       };
     });
 
-    const content = computed(() => {
+    const content = computed<VNode[] | string | number | null>(() => {
       const slotName = props.column.slots?.header ?? 'header';
       const currentSlot = qTable?.slots[slotName];
 
-      if (slotName && currentSlot)
-        return currentSlot({
-          data: props.column,
-          columnKey: props.column.key,
-          index: props.index,
-          value: props.column.value
-        });
+      if (!currentSlot) return props.column.value;
 
-      return props.column.value;
+      return currentSlot({
+        data: props.column,
+        columnKey: props.column.key,
+        index: props.index,
+        value: props.column.value
+      });
     });
 
     return (): VNode =>
-      h(
-        'th',
-        {
-          class: cellClasses.value,
-          style: cellStyles.value
-        },
-        [
-          h(
-            'div',
-            {
-              class: 'q-table-t-head-cell__container'
-            },
-            [
-              h(
-                'div',
-                {
-                  class: 'q-table-t-head-cell__content'
-                },
-                [content.value]
-              ),
-              isSortable.value &&
-                h('button', {
-                  type: 'button',
-                  class: sortArrowClasses.value
-                })
-            ]
-          )
-        ]
-      );
+      h('th', { class: cellClasses.value, style: cellStyles.value }, [
+        h('div', { class: 'q-table-t-head-cell__container' }, [
+          h('div', { class: 'q-table-t-head-cell__content' }, [content.value]),
+          isSortable.value &&
+            h('button', { type: 'button', class: sortArrowClasses.value })
+        ])
+      ]);
   }
 });
 </script>

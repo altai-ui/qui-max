@@ -10,10 +10,7 @@
       <slot name="empty" />
     </q-table-empty>
 
-    <q-table-container
-      v-else
-      :groups-of-columns="groupsOfColumns"
-    />
+    <q-table-container v-else />
   </div>
 </template>
 
@@ -26,6 +23,7 @@ import QTableEmpty from './QTableEmpty.vue';
 import type {
   QTableProps,
   QTablePropGroupsOfColumns,
+  QTablePropTotal,
   QTablePropRows,
   QTablePropSortBy,
   QTableProvider,
@@ -63,6 +61,13 @@ export default defineComponent({
       required: true
     },
     /**
+     * Object, `[column.key]: value` pair, not all are required
+     */
+    total: {
+      type: Object as PropType<QTablePropTotal>,
+      default: null
+    },
+    /**
      * Array of objects, each object must contain `[column.key]: value` pair
      */
     rows: {
@@ -85,7 +90,7 @@ export default defineComponent({
   setup(props: QTableProps, ctx): QTableInstance {
     const isTableEmpty = computed<boolean>(() => !props.rows.length);
 
-    const hasColorGroups = computed(() =>
+    const hasColorGroups = computed<boolean>(() =>
       props.groupsOfColumns.some(({ color }) => Boolean(color))
     );
 
@@ -96,6 +101,7 @@ export default defineComponent({
 
     provide<QTableProvider>('qTable', {
       groupsOfColumns: toRef(props, 'groupsOfColumns'),
+      total: toRef(props, 'total'),
       sortBy: toRef(props, 'sortBy'),
       slots: ctx.slots
     });

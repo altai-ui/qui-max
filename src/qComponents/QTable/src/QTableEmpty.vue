@@ -37,7 +37,7 @@ export default defineComponent({
   setup(props: QTableEmptyProps): QTableEmptyInstance {
     const { t } = useI18n();
 
-    const noDataText = computed(
+    const noDataText = computed<string>(
       () => props.emptyText || t('QTable.noDataText')
     );
 

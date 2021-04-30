@@ -4,15 +4,24 @@
     cellspacing="0"
     cellpadding="0"
   >
-    QTableT
-    <q-table-t-head />
+    <thead class="q-table-t__thead">
+      <q-table-t-head />
+      <q-table-t-total v-if="isTotalShown" />
+    </thead>
+
+    <tbody class="q-table-t__tbody">
+
+    </tbody>
   </table>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, inject, computed } from 'vue';
+import { isEmpty } from 'lodash-es';
 
 import QTableTHead from './QTableTHead.vue';
+import QTableTTotal from './QTableTTotal.vue';
+import type { QTableProvider } from './QTable';
 import type { QTableTProps, QTableTInstance } from './QTableT';
 
 export default defineComponent({
@@ -20,7 +29,8 @@ export default defineComponent({
   componentName: ' QTableT',
 
   components: {
-    QTableTHead
+    QTableTHead,
+    QTableTTotal
   },
 
   props: {
@@ -32,7 +42,13 @@ export default defineComponent({
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   setup(props: QTableTProps): QTableTInstance {
-    return {};
+    const qTable = inject<QTableProvider | null>('qTable', null);
+
+    const isTotalShown = computed<boolean>(() => !isEmpty(qTable?.total.value));
+
+    return {
+      isTotalShown
+    };
   }
 });
 </script>

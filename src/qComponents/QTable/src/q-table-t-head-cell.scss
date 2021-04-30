@@ -1,18 +1,11 @@
 .q-table-t-head-cell {
   position: relative;
-  padding: 16px 24px;
   font-weight: var(--font-weight-bold);
   line-height: var(--line-height-base);
   color: var(--color-primary-black);
   vertical-align: bottom;
 
   .q-table_has-color-groups & {
-    padding-top: 12px;
-    background-color: var(--color-tertiary-gray-light);
-    border-top-color: var(--group-color, var(--color-tertiary-gray-darker));
-    border-top-style: solid;
-    border-top-width: 4px;
-
     &::after,
     &::before {
       position: absolute;
@@ -32,14 +25,23 @@
     &::before {
       z-index: 10;
       background-color: var(--color-tertiary-gray-light);
+      border-top-color: var(--group-color, var(--color-tertiary-gray-darker));
+      border-top-style: solid;
+      border-top-width: 4px;
     }
 
     &:first-child {
-      border-top-left-radius: var(--border-radius-base);
+      &::after,
+      &::before {
+        border-top-left-radius: var(--border-radius-base);
+      }
     }
 
     &:last-child {
-      border-top-right-radius: var(--border-radius-base);
+      &::after,
+      &::before {
+        border-top-right-radius: var(--border-radius-base);
+      }
     }
   }
 
@@ -48,6 +50,19 @@
     z-index: 15;
     display: flex;
     align-items: flex-end;
+    padding: 16px 16px 16px 24px;
+
+    .q-table-t-head-cell:first-child & {
+      padding-left: 16px;
+    }
+  }
+
+  &__content {
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-base);
+    color: var(--color-primary-black);
+    letter-spacing: var(--letter-spacing-base);
   }
 
   &__sort-arrow {

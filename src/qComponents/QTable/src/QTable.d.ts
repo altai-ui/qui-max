@@ -18,15 +18,18 @@ export interface GroupOfColumns {
   align?: 'left' | 'right';
 }
 
-export type QTablePropGroupsOfColumns = GroupOfColumns[];
-export type QTablePropRows = Record<string, unknown>[];
-export interface QTablePropSortBy {
+export interface SortBy {
   key: Nullable<string>;
   direction: Nullable<'ascending' | 'descending'>;
 }
+export type QTablePropGroupsOfColumns = GroupOfColumns[];
+export type QTablePropTotal = Nullable<Record<string, unknown>>;
+export type QTablePropRows = Record<string, unknown>[];
+export type QTablePropSortBy = Nullable<SortBy>;
 
 export interface QTableProps {
   groupsOfColumns: QTablePropGroupsOfColumns;
+  total: QTablePropTotal;
   rows: QTablePropRows;
   sortBy: QTablePropSortBy;
   emptyText: Nullable<string>;
@@ -34,6 +37,7 @@ export interface QTableProps {
 
 export interface QTableProvider {
   groupsOfColumns: Ref<QTablePropGroupsOfColumns>;
+  total: Ref<QTablePropTotal>;
   sortBy: Ref<QTablePropSortBy>;
   slots: Readonly<Slots>;
 }

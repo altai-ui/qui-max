@@ -1,5 +1,8 @@
+import { ComputedRef } from 'vue';
+
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface QTableTProps {}
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface QTableTInstance {}
+export interface QTableTInstance {
+  isTotalShown: ComputedRef<boolean>;
+}

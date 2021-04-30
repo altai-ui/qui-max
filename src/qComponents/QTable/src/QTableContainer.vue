@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="q-table-container"
-    style="border: 1px solid #f00"
-  >
+  <div class="q-table-container">
     <q-table-t />
   </div>
 </template>

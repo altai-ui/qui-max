@@ -1,11 +1,10 @@
 <template>
-  <tr class="q-table-t-head">
-    <q-table-t-head-cell
+  <tr class="q-table-t-total">
+    <q-table-t-total-cell
       v-for="(column, index) in columnList"
-      :key="`head-cell-${column.group.key}-${column.key}`"
+      :key="`total-cell-${column.group.key}-${column.key}`"
       :index="index"
       :column="column"
-      :sort-by="sortBy"
     />
   </tr>
 </template>
@@ -13,27 +12,25 @@
 <script lang="ts">
 import { defineComponent, computed, inject } from 'vue';
 
-import QTableTHeadCell from './QTableTHeadCell.vue';
-import type { QTablePropSortBy, QTableProvider } from './QTable';
+import QTableTTotalCell from './QTableTTotalCell.vue';
 import type {
   ExtendedColumn,
   QTableContainerProvider
 } from './QTableContainer';
-import type { QTableTHeadProps, QTableTHeadInstance } from './QTableTHead';
+import type { QTableTTotalProps, QTableTTotalInstance } from './QTableTTotal';
 
 export default defineComponent({
-  name: 'QTableTHead',
-  componentName: ' QTableTHead',
+  name: 'QTableTTotal',
+  componentName: ' QTableTTotal',
 
   components: {
-    QTableTHeadCell
+    QTableTTotalCell
   },
 
   props: {},
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  setup(props: QTableTHeadProps): QTableTHeadInstance {
-    const qTable = inject<QTableProvider | null>('qTable', null);
+  setup(props: QTableTTotalProps): QTableTTotalInstance {
     const qTableContainer = inject<QTableContainerProvider | null>(
       'qTableContainer',
       null
@@ -42,12 +39,8 @@ export default defineComponent({
     const columnList = computed<ExtendedColumn[]>(
       () => qTableContainer?.columnList.value ?? []
     );
-    const sortBy = computed<QTablePropSortBy>(
-      () => qTable?.sortBy.value ?? null
-    );
 
     return {
-      sortBy,
       columnList
     };
   }

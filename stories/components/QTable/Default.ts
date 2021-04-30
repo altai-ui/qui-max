@@ -31,7 +31,7 @@ const QTableStory: Story<QTableProps> = args =>
     },
     template: `
       <q-table
-        :default-sort="args.defaultSort"
+        :sort-by="args.sortBy"
         :fixed-layout="args.fixedLayout"
         :groups-of-columns="args.groupsOfColumns"
         :rows="args.rows"
@@ -52,9 +52,9 @@ const QTableStory: Story<QTableProps> = args =>
   });
 
 QTableStory.args = {
-  defaultSort: {
-    key: 'col1',
-    direction: 'descending'
+  sortBy: {
+    key: 'col4',
+    direction: 'ascending'
   },
   fixedLayout: false,
   groupsOfColumns: [
@@ -72,7 +72,8 @@ QTableStory.args = {
         },
         {
           key: 'col3',
-          value: 'Column 3'
+          value: 'Column 3',
+          sortable: true
         },
         {
           key: 'col4',
@@ -90,6 +91,30 @@ QTableStory.args = {
         {
           key: 'col6',
           value: 'Column 6'
+        }
+      ]
+    },
+    {
+      color: '#74aff8',
+      align: 'right',
+      key: 'two',
+      columns: [
+        {
+          key: 'col7',
+          value: 'Column 7',
+          sortable: true,
+          slots: {
+            header: 'customHeader',
+            row: 'customRow'
+          }
+        },
+        {
+          key: 'col8',
+          value: 'Column 8'
+        },
+        {
+          key: 'col9',
+          value: 'Column 9'
         }
       ]
     }

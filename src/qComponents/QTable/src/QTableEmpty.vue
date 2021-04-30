@@ -21,7 +21,7 @@ import { defineComponent, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import image from '@/assets/empty-table-v2.svg';
-import type { QTableEmptyProps, QTableEmptyInstance } from './types';
+import type { QTableEmptyProps, QTableEmptyInstance } from './QTableEmpty';
 
 export default defineComponent({
   name: 'QTableEmpty',

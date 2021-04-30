@@ -209,7 +209,9 @@ export default defineComponent({
     provide<QScrollbarProvider>('qScrollbar', { wrap });
 
     return {
+      root,
       wrap,
+      resize,
       sizeWidth,
       sizeHeight,
       isXBarShown,

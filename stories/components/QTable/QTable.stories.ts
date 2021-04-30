@@ -17,7 +17,8 @@ const storyMetadata: Meta = {
   component: QTable,
   decorators: [
     (): Record<'template', string> => ({
-      template: '<div style="width: 90vw;"><story /></div>'
+      template:
+        '<div style="width: 100vw;margin-left:-1rem;margin-right:-1rem;"><story /></div>'
     })
   ]
 };

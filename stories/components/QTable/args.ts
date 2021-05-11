@@ -7,7 +7,7 @@ const groupsOfColumns = [
       {
         key: 'col1',
         value: 'Column 1',
-        formatter: (val): string => `formatted_${val}`
+        formatter: (val: unknown): string => `formatted_${val}`
       },
       {
         key: 'col2',
@@ -30,7 +30,7 @@ const groupsOfColumns = [
       },
       {
         key: 'col5',
-        value: 'Column with very long title'
+        value: 'Column with a very long title with ellipsis in the second line'
       },
       {
         key: 'col6',

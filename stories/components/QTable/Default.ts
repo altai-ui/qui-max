@@ -17,7 +17,7 @@ const QTableStory: Story<QTableProps> = args =>
         // eslint-disable-next-line no-console
         console.log(row);
       };
-      const changeOrder = (order): void => {
+      const changeOrder = (order: unknown): void => {
         // eslint-disable-next-line no-console
         console.log(order);
       };

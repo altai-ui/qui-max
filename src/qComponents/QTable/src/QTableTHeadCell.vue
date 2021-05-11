@@ -1,5 +1,13 @@
 <script lang="ts">
-import { h, defineComponent, computed, PropType, inject, VNode } from 'vue';
+import {
+  h,
+  defineComponent,
+  computed,
+  PropType,
+  inject,
+  VNode,
+  Slot
+} from 'vue';
 
 import type { QTableProvider } from './QTable';
 import type { ExtendedColumn } from './QTableContainer';
@@ -48,6 +56,16 @@ export default defineComponent({
       '--group-color': props.column.group.color ?? ''
     }));
 
+    const currentSlot = computed<Slot | undefined>(() => {
+      const slotName = props.column.slots?.header ?? 'header';
+      return qTable?.slots[slotName];
+    });
+
+    const contentClasses = computed<Record<string, boolean>>(() => ({
+      'q-table-t-head-cell__content': true,
+      'q-table-t-head-cell__content_ellipsis': !currentSlot.value
+    }));
+
     const sortArrowClasses = computed<Record<string, boolean>>(() => {
       const isDirectionAsc = props.sortBy?.direction === 'ascending';
       const isArrowUpShown = isCurrentSorting.value && isDirectionAsc;
@@ -60,12 +78,9 @@ export default defineComponent({
     });
 
     const content = computed<VNode[] | string | number | null>(() => {
-      const slotName = props.column.slots?.header ?? 'header';
-      const currentSlot = qTable?.slots[slotName];
+      if (!currentSlot.value) return props.column.value;
 
-      if (!currentSlot) return props.column.value;
-
-      return currentSlot({
+      return currentSlot.value({
         data: props.column,
         columnKey: props.column.key,
         index: props.columnIndex,
@@ -100,7 +115,7 @@ export default defineComponent({
     return (): VNode =>
       h('th', { class: cellClasses.value, style: cellStyles.value }, [
         h('div', { class: 'q-table-t-head-cell__container' }, [
-          h('div', { class: 'q-table-t-head-cell__content' }, [content.value]),
+          h('div', { class: contentClasses.value }, [content.value]),
           isSortable.value &&
             h('button', {
               type: 'button',

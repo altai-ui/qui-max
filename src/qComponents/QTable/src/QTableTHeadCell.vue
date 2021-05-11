@@ -39,7 +39,8 @@ export default defineComponent({
     const cellClasses = computed<Record<string, boolean>>(() => ({
       'q-table-t-head-cell': true,
       'q-table-t-head-cell_sortable': isSortable.value,
-      'q-table-t-head-cell_sorted': isCurrentSorting.value
+      'q-table-t-head-cell_sorted':
+        isCurrentSorting.value && Boolean(props.sortBy?.direction)
     }));
 
     const cellStyles = computed<Record<string, string>>(() => ({
@@ -72,12 +73,40 @@ export default defineComponent({
       });
     });
 
+    const handleSortArrowClick = (): void => {
+      const oldDirection = props.sortBy?.direction ?? null;
+
+      let direction: 'ascending' | 'descending' | null = null;
+
+      switch (oldDirection) {
+        case null:
+          direction = 'descending';
+          break;
+
+        case 'descending':
+          direction = 'ascending';
+          break;
+
+        default:
+          break;
+      }
+
+      qTable?.updateSortBy({
+        key: props.column.key,
+        direction
+      });
+    };
+
     return (): VNode =>
       h('th', { class: cellClasses.value, style: cellStyles.value }, [
         h('div', { class: 'q-table-t-head-cell__container' }, [
           h('div', { class: 'q-table-t-head-cell__content' }, [content.value]),
           isSortable.value &&
-            h('button', { type: 'button', class: sortArrowClasses.value })
+            h('button', {
+              type: 'button',
+              class: sortArrowClasses.value,
+              onClick: handleSortArrowClick
+            })
         ])
       ]);
   }

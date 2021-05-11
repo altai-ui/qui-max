@@ -81,6 +81,7 @@ export interface QTableProvider {
   customRowStyle: Ref<QTablePropCustomRowStyle>;
   slots: Readonly<Slots>;
   updateCheckedRows: (value: number[]) => void;
+  updateSortBy: (value: QTablePropSortBy) => void;
 }
 
 export interface QTableInstance {

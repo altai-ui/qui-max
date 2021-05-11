@@ -36,6 +36,7 @@ import type {
 } from './QTable';
 
 const UPDATE_CHECKED_ROWS_EVENT = 'update:checkedRows';
+const UPDATE_SORT_BY_EVENT = 'update:sortBy';
 
 export default defineComponent({
   name: 'QTable',
@@ -112,14 +113,14 @@ export default defineComponent({
      * used to set classes for a row
      */
     customRowClass: {
-      type: Function as unknown as PropType<QTablePropCustomRowClass>,
+      type: (Function as unknown) as PropType<QTablePropCustomRowClass>,
       default: null
     },
     /**
      * used to set styles for a row
      */
     customRowStyle: {
-      type: Function as unknown as PropType<QTablePropCustomRowStyle>,
+      type: (Function as unknown) as PropType<QTablePropCustomRowStyle>,
       default: null
     },
     /**
@@ -131,7 +132,7 @@ export default defineComponent({
     }
   },
 
-  emits: [UPDATE_CHECKED_ROWS_EVENT],
+  emits: [UPDATE_CHECKED_ROWS_EVENT, UPDATE_SORT_BY_EVENT],
 
   setup(props: QTableProps, ctx): QTableInstance {
     const isTableEmpty = computed<boolean>(() => !props.rows.length);
@@ -156,6 +157,10 @@ export default defineComponent({
       ctx.emit(UPDATE_CHECKED_ROWS_EVENT, value);
     };
 
+    const updateSortBy = (value: QTablePropSortBy): void => {
+      ctx.emit(UPDATE_SORT_BY_EVENT, value);
+    };
+
     provide<QTableProvider>('qTable', {
       isSelectable,
       checkedRows,
@@ -169,7 +174,8 @@ export default defineComponent({
       customRowStyle: toRef(props, 'customRowStyle'),
       sortBy: toRef(props, 'sortBy'),
       slots: ctx.slots,
-      updateCheckedRows
+      updateCheckedRows,
+      updateSortBy
     });
 
     return {

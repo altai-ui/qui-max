@@ -5,12 +5,13 @@ import { defineComponent, ref } from 'vue';
 // import QCheckboxGroup from '@/qComponents/QCheckboxGroup';
 import type { QTableProps } from '@/qComponents/QTable';
 
-import { groupsOfColumns, sortBy, rows } from './args';
+import { groupsOfColumns, sortBy as sortByParams, rows } from './args';
 
 const QTableStory: Story<QTableProps> = args =>
   defineComponent({
     setup() {
       const checkedRows = ref(args.checkedRows ?? []);
+      const sortBy = ref(args.sortBy ?? []);
 
       const handleRowClick = (row: unknown): void => {
         // eslint-disable-next-line no-console
@@ -21,23 +22,18 @@ const QTableStory: Story<QTableProps> = args =>
         console.log(order);
       };
 
-      const changeSort = (sort): void => {
-        // eslint-disable-next-line no-console
-        console.log('sort', sort);
-      };
-
       return {
         args,
         checkedRows,
+        sortBy,
         handleRowClick,
-        changeOrder,
-        changeSort
+        changeOrder
       };
     },
     template: `
       <q-table
         v-model:checked-rows="checkedRows"
-        :sort-by="args.sortBy"
+        v-model:sort-by="sortBy"
         :fixed-layout="args.fixedLayout"
         :groups-of-columns="args.groupsOfColumns"
         :rows="args.rows"
@@ -46,7 +42,6 @@ const QTableStory: Story<QTableProps> = args =>
         :custom-row-style="args.customRowStyle"
         :selection-column="args.selectionColumn"
         @change-order="changeOrder"
-        @change-sort="changeSort"
         @row-click="handleRowClick"
       >
         <template #customHeader="{ value }">
@@ -66,7 +61,7 @@ const QTableStory: Story<QTableProps> = args =>
 
 QTableStory.args = {
   rows,
-  sortBy,
+  sortBy: sortByParams,
   groupsOfColumns,
   fixedLayout: false
 };

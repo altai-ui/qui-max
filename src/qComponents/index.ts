@@ -16,6 +16,7 @@ import QCollapse from './QCollapse';
 import QCollapseItem from './QCollapseItem';
 import QColorPicker from './QColorPicker';
 import QContextMenu from './QContextMenu';
+import QDialog from './QDialog';
 import QDrawer from './QDrawer';
 import QForm from './QForm';
 import QFormItem from './QFormItem';
@@ -52,6 +53,7 @@ const Components = {
   QCollapseItem,
   QColorPicker,
   QContextMenu,
+  QDialog,
   QDrawer,
   QForm,
   QFormItem,
@@ -148,6 +150,7 @@ export {
   QCollapseItem,
   QColorPicker,
   QContextMenu,
+  QDialog,
   QDrawer,
   QForm,
   QFormItem,

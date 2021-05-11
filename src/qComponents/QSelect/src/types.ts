@@ -1,6 +1,6 @@
 import { Ref, ComputedRef, ComponentPublicInstance, UnwrapRef } from 'vue';
 import { Instance as PopperInstance } from '@popperjs/core';
-import { TranslateResult, Path, Locale } from 'vue-i18n';
+import { Composer } from 'vue-i18n';
 
 import type {
   QOptionModel,
@@ -56,7 +56,7 @@ interface QSelectInstance {
   handleEnterKeyUp: () => void;
   onInputChange: () => void;
   deleteTag: (tag: QOptionModel) => void;
-  t: (key: Path, locale: Locale) => TranslateResult;
+  t: Composer['t'];
 }
 
 interface QSelectProvider {

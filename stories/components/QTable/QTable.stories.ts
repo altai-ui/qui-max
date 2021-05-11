@@ -26,7 +26,7 @@ const storyMetadata: Meta = {
 export {
   Default,
   CustomWidth,
-  // Selectable,
+  Selectable,
   Total,
   // StickyColumn,
   CustomRows,

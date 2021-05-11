@@ -67,19 +67,13 @@ const rows = [
     col8: 'Aenean id tincidunt tortor. Sed tempus tempus nibh, a congue'
   },
   {
-    col1:
-      'Integer commodo neque sed purus porttitor interdum. Duis dapibus finibus ex, sit amet iaculis nunc posuere id. Mauris consequat, lacus',
-    col2:
-      'Curabitur aliquet bibendum risus, in malesuada nisl suscipit ac. In hac habitasse platea dictumst. Integer lobortis sed lorem vel dignissim',
-    col3:
-      'Integer lobortis ornare ex eget sagittis. Praesent consectetur tempor tortor a vehicula. Nulla facilisi. Sed eu nunc rutrum, sagittis magna',
-    col4:
-      'Mauris gravida lacus at laoreet pharetra. Pellentesque eu lectus tellus. Morbi scelerisque lobortis dui in aliquet',
-    col5:
-      'Donec lorem ante, malesuada fermentum posuere vitae, tincidunt in leo',
+    col1: 'Integer commodo neque sed purus porttitor interdum. Duis dapibus finibus ex, sit amet iaculis nunc posuere id. Mauris consequat, lacus',
+    col2: 'Curabitur aliquet bibendum risus, in malesuada nisl suscipit ac. In hac habitasse platea dictumst. Integer lobortis sed lorem vel dignissim',
+    col3: 'Integer lobortis ornare ex eget sagittis. Praesent consectetur tempor tortor a vehicula. Nulla facilisi. Sed eu nunc rutrum, sagittis magna',
+    col4: 'Mauris gravida lacus at laoreet pharetra. Pellentesque eu lectus tellus. Morbi scelerisque lobortis dui in aliquet',
+    col5: 'Donec lorem ante, malesuada fermentum posuere vitae, tincidunt in leo',
     col6: 'Curabitur nunc purus, placerat id tellus ut, gravida pulvinar est',
-    col7:
-      'Proin posuere, justo a porttitor posuere, lectus nunc rhoncus libero',
+    col7: 'Proin posuere, justo a porttitor posuere, lectus nunc rhoncus libero',
     col8: 'Maecenas metus felis, porttitor nec aliquam ut, fermentum nec mi'
   }
 ];

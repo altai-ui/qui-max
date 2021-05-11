@@ -224,9 +224,10 @@ export default defineComponent({
     };
 
     const trigger = ref<HTMLElement | null>(null);
-    const dropdown = ref<ComponentPublicInstance<
-      UnwrapRef<QPickerDropdownInstance>
-    > | null>(null);
+    const dropdown =
+      ref<ComponentPublicInstance<UnwrapRef<QPickerDropdownInstance>> | null>(
+        null
+      );
 
     const createPopperJs = (): void => {
       if (popperJS.value?.destroy) {

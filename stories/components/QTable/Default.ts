@@ -1,6 +1,6 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { Story } from '@storybook/vue3';
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
 
 // import QCheckboxGroup from '@/qComponents/QCheckboxGroup';
 import type { QTableProps } from '@/qComponents/QTable';
@@ -10,6 +10,8 @@ import { groupsOfColumns, sortBy, rows } from './args';
 const QTableStory: Story<QTableProps> = args =>
   defineComponent({
     setup() {
+      const checkedRows = ref(args.checkedRows ?? []);
+
       const handleRowClick = (row: unknown): void => {
         // eslint-disable-next-line no-console
         console.log(row);
@@ -26,6 +28,7 @@ const QTableStory: Story<QTableProps> = args =>
 
       return {
         args,
+        checkedRows,
         handleRowClick,
         changeOrder,
         changeSort
@@ -33,6 +36,7 @@ const QTableStory: Story<QTableProps> = args =>
     },
     template: `
       <q-table
+        v-model:checked-rows="checkedRows"
         :sort-by="args.sortBy"
         :fixed-layout="args.fixedLayout"
         :groups-of-columns="args.groupsOfColumns"
@@ -40,6 +44,7 @@ const QTableStory: Story<QTableProps> = args =>
         :total="args.total"
         :custom-row-class="args.customRowClass"
         :custom-row-style="args.customRowStyle"
+        :selection-column="args.selectionColumn"
         @change-order="changeOrder"
         @change-sort="changeSort"
         @row-click="handleRowClick"

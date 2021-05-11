@@ -15,9 +15,12 @@ export interface QTableTBodyRowProps {
 }
 
 export interface QTableTBodyRowInstance {
+  isSelectable: Nullable<ComputedRef<boolean>>;
+  isChecked: ComputedRef<boolean>;
   rootClasses: ComputedRef<RootClasses>;
   rootStyles: ComputedRef<RootStyles>;
   randId: (prefix: string) => string;
   columnList: ComputedRef<ExtendedColumn[]>;
   getRowValue: (key: string) => Nullable<unknown>;
+  handleCheckboxChange: () => void;
 }

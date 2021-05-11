@@ -1,5 +1,14 @@
 <template>
   <tr class="q-table-t-head">
+    <q-table-cell-checkbox
+      v-if="isSelectable"
+      base-tag="th"
+      base-class="q-table-t-head-cell"
+      :checked="isChecked"
+      :indeterminate="isIndeterminate"
+      @change="handleCheckboxChange"
+    />
+
     <q-table-t-head-cell
       v-for="(column, index) in columnList"
       :key="`head-cell-${column.group.key}-${column.key}`"
@@ -12,8 +21,10 @@
 
 <script lang="ts">
 import { defineComponent, computed, inject } from 'vue';
+import { isEmpty } from 'lodash-es';
 
 import QTableTHeadCell from './QTableTHeadCell.vue';
+import QTableCellCheckbox from './QTableCellCheckbox.vue';
 import type { QTablePropSortBy, QTableProvider } from './QTable';
 import type {
   ExtendedColumn,
@@ -26,7 +37,8 @@ export default defineComponent({
   componentName: ' QTableTHead',
 
   components: {
-    QTableTHeadCell
+    QTableTHeadCell,
+    QTableCellCheckbox
   },
 
   setup(): QTableTHeadInstance {
@@ -36,6 +48,21 @@ export default defineComponent({
       null
     );
 
+    const isChecked = computed<boolean>(() => {
+      const rowsCount = qTable?.rows.value.length ?? 0;
+      const checkedRowsCount = qTable?.checkedRows.value.length ?? 0;
+      const isTotalShown = !isEmpty(qTable?.total.value);
+
+      if (!checkedRowsCount) return false;
+      if (isTotalShown) return rowsCount + 1 === checkedRowsCount;
+
+      return rowsCount === checkedRowsCount;
+    });
+
+    const isIndeterminate = computed<boolean>(
+      () => !isChecked.value && Boolean(qTable?.checkedRows.value.length ?? 0)
+    );
+
     const columnList = computed<ExtendedColumn[]>(
       () => qTableContainer?.columnList.value ?? []
     );
@@ -43,9 +70,27 @@ export default defineComponent({
       () => qTable?.sortBy.value ?? null
     );
 
+    const handleCheckboxChange = (): void => {
+      if (!qTable) return;
+
+      const rowsLength = qTable?.rows.value.length ?? 0;
+      let checkedRows: number[] = [];
+
+      if (!isChecked.value) {
+        checkedRows = Array.from(Array(rowsLength).keys());
+        checkedRows.push(-1);
+      }
+
+      qTable.updateCheckedRows(checkedRows);
+    };
+
     return {
+      isSelectable: qTable?.isSelectable ?? null,
+      isChecked,
+      isIndeterminate,
       sortBy,
-      columnList
+      columnList,
+      handleCheckboxChange
     };
   }
 });

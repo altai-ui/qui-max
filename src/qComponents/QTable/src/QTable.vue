@@ -23,15 +23,19 @@ import QTableEmpty from './QTableEmpty.vue';
 
 import type {
   QTableProps,
+  QTablePropSelectionColumn,
   QTablePropGroupsOfColumns,
   QTablePropTotal,
   QTablePropRows,
+  QTablePropCheckedRows,
   QTablePropSortBy,
   QTablePropCustomRowClass,
   QTablePropCustomRowStyle,
   QTableProvider,
   QTableInstance
 } from './QTable';
+
+const UPDATE_CHECKED_ROWS_EVENT = 'update:checkedRows';
 
 export default defineComponent({
   name: 'QTable',
@@ -56,6 +60,10 @@ export default defineComponent({
      */
     defaultColWidth: {
       type: String,
+      default: null
+    },
+    selectionColumn: {
+      type: Object as PropType<QTablePropSelectionColumn>,
       default: null
     },
     /**
@@ -92,6 +100,10 @@ export default defineComponent({
       type: Array as PropType<QTablePropRows>,
       required: true
     },
+    checkedRows: {
+      type: Array as PropType<QTablePropCheckedRows>,
+      default: null
+    },
     sortBy: {
       type: Object as PropType<QTablePropSortBy>,
       default: null
@@ -100,14 +112,14 @@ export default defineComponent({
      * used to set classes for a row
      */
     customRowClass: {
-      type: (Function as unknown) as PropType<QTablePropCustomRowClass>,
+      type: Function as unknown as PropType<QTablePropCustomRowClass>,
       default: null
     },
     /**
      * used to set styles for a row
      */
     customRowStyle: {
-      type: (Function as unknown) as PropType<QTablePropCustomRowStyle>,
+      type: Function as unknown as PropType<QTablePropCustomRowStyle>,
       default: null
     },
     /**
@@ -118,6 +130,8 @@ export default defineComponent({
       default: null
     }
   },
+
+  emits: [UPDATE_CHECKED_ROWS_EVENT],
 
   setup(props: QTableProps, ctx): QTableInstance {
     const isTableEmpty = computed<boolean>(() => !props.rows.length);
@@ -132,16 +146,30 @@ export default defineComponent({
       'q-table_has-total': !isEmpty(props.total)
     }));
 
+    const isSelectable = computed<boolean>(() =>
+      Boolean(props.selectionColumn?.enabled)
+    );
+
+    const checkedRows = computed<number[]>(() => props.checkedRows ?? []);
+
+    const updateCheckedRows = (value: number[]): void => {
+      ctx.emit(UPDATE_CHECKED_ROWS_EVENT, value);
+    };
+
     provide<QTableProvider>('qTable', {
+      isSelectable,
+      checkedRows,
       fixedLayout: toRef(props, 'fixedLayout'),
       defaultColWidth: toRef(props, 'defaultColWidth'),
+      selectionColumn: toRef(props, 'selectionColumn'),
       groupsOfColumns: toRef(props, 'groupsOfColumns'),
       total: toRef(props, 'total'),
       rows: toRef(props, 'rows'),
       customRowClass: toRef(props, 'customRowClass'),
       customRowStyle: toRef(props, 'customRowStyle'),
       sortBy: toRef(props, 'sortBy'),
-      slots: ctx.slots
+      slots: ctx.slots,
+      updateCheckedRows
     });
 
     return {

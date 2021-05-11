@@ -3,6 +3,14 @@
     :class="rootClasses"
     :style="rootStyles"
   >
+    <q-table-cell-checkbox
+      v-if="isSelectable"
+      base-tag="td"
+      base-class="q-table-t-body-cell"
+      :checked="isChecked"
+      @change="handleCheckboxChange"
+    />
+
     <q-table-t-body-cell
       v-for="(column, colIndex) in columnList"
       :key="randId(`body-row-${rowIndex}-cell-${colIndex}-`)"
@@ -20,6 +28,7 @@ import { defineComponent, PropType, computed, inject } from 'vue';
 
 import { randId } from '@/qComponents/helpers';
 import QTableTBodyCell from './QTableTBodyCell.vue';
+import QTableCellCheckbox from './QTableCellCheckbox.vue';
 import type { QTableProvider } from './QTable';
 import type {
   ExtendedColumn,
@@ -38,7 +47,8 @@ export default defineComponent({
   componentName: ' QTableTBodyRow',
 
   components: {
-    QTableTBodyCell
+    QTableTBodyCell,
+    QTableCellCheckbox
   },
 
   props: {
@@ -57,6 +67,10 @@ export default defineComponent({
     const qTableContainer = inject<QTableContainerProvider | null>(
       'qTableContainer',
       null
+    );
+
+    const isChecked = computed<boolean>(
+      () => qTable?.checkedRows.value.includes(props.rowIndex) ?? false
     );
 
     const rootClasses = computed<RootClasses>(() => {
@@ -98,12 +112,29 @@ export default defineComponent({
 
     const getRowValue = (key: string): unknown | null => props.row[key] ?? null;
 
+    const handleCheckboxChange = (): void => {
+      if (!qTable) return;
+
+      const checkedRowsSet = new Set(qTable.checkedRows.value);
+
+      if (isChecked.value) {
+        checkedRowsSet.delete(props.rowIndex);
+      } else {
+        checkedRowsSet.add(props.rowIndex);
+      }
+
+      qTable.updateCheckedRows(Array.from(checkedRowsSet));
+    };
+
     return {
+      isSelectable: qTable?.isSelectable ?? null,
+      isChecked,
       rootClasses,
       rootStyles,
       randId,
       columnList,
-      getRowValue
+      getRowValue,
+      handleCheckboxChange
     };
   }
 });

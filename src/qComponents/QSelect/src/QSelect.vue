@@ -120,7 +120,10 @@ import {
 import type { QInputInstance } from '@/qComponents/QInput';
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
-import type { QOptionModel, QOptionPropModelValue } from '@/qComponents/QOption';
+import type {
+  QOptionModel,
+  QOptionPropModelValue
+} from '@/qComponents/QOption';
 import type {
   QSelectPropModelValue,
   NewOption,
@@ -247,15 +250,14 @@ export default defineComponent({
   ],
 
   setup(props: QSelectProps, ctx): QSelectInstance {
-    const input = ref<ComponentPublicInstance<
-      UnwrapRef<QInputInstance>
-    > | null>(null);
-    const dropdown = ref<ComponentPublicInstance<
-      UnwrapRef<QSelectDropdownInstance>
-    > | null>(null);
-    const tags = ref<ComponentPublicInstance<
-      UnwrapRef<QSelectTagsInstance>
-    > | null>(null);
+    const input =
+      ref<ComponentPublicInstance<UnwrapRef<QInputInstance>> | null>(null);
+    const dropdown =
+      ref<ComponentPublicInstance<UnwrapRef<QSelectDropdownInstance>> | null>(
+        null
+      );
+    const tags =
+      ref<ComponentPublicInstance<UnwrapRef<QSelectTagsInstance>> | null>(null);
     const root = ref<HTMLElement | null>(null);
     const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
     const qForm = inject<QFormProvider | null>('qForm', null);

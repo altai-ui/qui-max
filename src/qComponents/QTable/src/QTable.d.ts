@@ -1,5 +1,9 @@
 import { Ref, ComputedRef, Slots } from 'vue';
 
+interface SelectionColumn {
+  enabled: boolean;
+}
+
 interface Column {
   key: string;
   value: Nullable<string | number>;
@@ -21,17 +25,20 @@ export interface GroupOfColumns {
   draggabble?: boolean;
   align?: 'left' | 'right';
 }
-
-type Row = Record<string, unknown>;
 export interface SortBy {
   key: Nullable<string>;
   direction: Nullable<'ascending' | 'descending'>;
 }
+
+type Row = Record<string, unknown>;
 type Classes = Record<string, boolean>;
 type Styles = Record<string, string | number>;
+
+export type QTablePropSelectionColumn = Nullable<SelectionColumn>;
 export type QTablePropGroupsOfColumns = GroupOfColumns[];
 export type QTablePropTotal = Nullable<Record<string, unknown>>;
 export type QTablePropRows = Row[];
+export type QTablePropCheckedRows = Nullable<number[]>;
 export type QTablePropSortBy = Nullable<SortBy>;
 export type QTablePropCustomRowClass = Nullable<
   (arg0: {
@@ -49,9 +56,11 @@ export type QTablePropCustomRowStyle = Nullable<
 export interface QTableProps {
   fixedLayout: Nullable<boolean>;
   defaultColWidth: Nullable<string>;
+  selectionColumn: QTablePropSelectionColumn;
   groupsOfColumns: QTablePropGroupsOfColumns;
   total: QTablePropTotal;
   rows: QTablePropRows;
+  checkedRows: QTablePropCheckedRows;
   sortBy: QTablePropSortBy;
   customRowClass: QTablePropCustomRowClass;
   customRowStyle: QTablePropCustomRowStyle;
@@ -61,13 +70,17 @@ export interface QTableProps {
 export interface QTableProvider {
   fixedLayout: Ref<Nullable<boolean>>;
   defaultColWidth: Ref<Nullable<string>>;
+  isSelectable: ComputedRef<boolean>;
+  selectionColumn: Ref<QTablePropSelectionColumn>;
   groupsOfColumns: Ref<QTablePropGroupsOfColumns>;
   total: Ref<QTablePropTotal>;
   rows: Ref<QTablePropRows>;
+  checkedRows: Ref<number[]>;
   sortBy: Ref<QTablePropSortBy>;
   customRowClass: Ref<QTablePropCustomRowClass>;
   customRowStyle: Ref<QTablePropCustomRowStyle>;
   slots: Readonly<Slots>;
+  updateCheckedRows: (value: number[]) => void;
 }
 
 export interface QTableInstance {

@@ -79,9 +79,8 @@ export default defineComponent({
       const radios = root.value?.querySelectorAll<HTMLElement>(selector) ?? [];
       const length = radios.length;
       const index = Array.from(radios).indexOf(target);
-      const roleRadios = root.value?.querySelectorAll<HTMLElement>(
-        '[role=radio]'
-      );
+      const roleRadios =
+        root.value?.querySelectorAll<HTMLElement>('[role=radio]');
 
       if (!roleRadios) return;
 
@@ -125,9 +124,8 @@ export default defineComponent({
     );
 
     onMounted(() => {
-      const radios = root.value?.querySelectorAll<HTMLInputElement>(
-        '[type=radio]'
-      );
+      const radios =
+        root.value?.querySelectorAll<HTMLInputElement>('[type=radio]');
 
       if (radios && !Array.from(radios).some(({ checked }) => checked)) {
         radios[0].tabIndex = 0;

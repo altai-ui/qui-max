@@ -6,6 +6,7 @@
       base-class="q-table-t-head-cell"
       :checked="isChecked"
       :indeterminate="isIndeterminate"
+      :is-checkable="isCheckable"
       @change="handleCheckboxChange"
     />
 
@@ -31,6 +32,7 @@ import type {
   QTableContainerProvider
 } from './QTableContainer';
 import type { QTableTHeadInstance } from './QTableTHead';
+import { TOTAL_CHECKED_INDEX } from './config';
 
 export default defineComponent({
   name: 'QTableTHead',
@@ -48,13 +50,26 @@ export default defineComponent({
       null
     );
 
+    const isSelectable = computed<boolean>(() =>
+      Boolean(qTable?.selectionColumn.value?.enabled)
+    );
+
+    const isCheckable = computed<boolean>(() =>
+      Boolean(qTable?.selectionColumn.value?.selectAllShown)
+    );
+
+    const isTotalCheckable = computed<boolean>(
+      () =>
+        !isEmpty(qTable?.total.value) &&
+        Boolean(qTable?.selectionColumn.value?.selectTotalShown)
+    );
+
     const isChecked = computed<boolean>(() => {
       const rowsCount = qTable?.rows.value.length ?? 0;
       const checkedRowsCount = qTable?.checkedRows.value.length ?? 0;
-      const isTotalShown = !isEmpty(qTable?.total.value);
 
       if (!checkedRowsCount) return false;
-      if (isTotalShown) return rowsCount + 1 === checkedRowsCount;
+      if (isTotalCheckable.value) return rowsCount + 1 === checkedRowsCount;
 
       return rowsCount === checkedRowsCount;
     });
@@ -78,14 +93,15 @@ export default defineComponent({
 
       if (!isChecked.value) {
         checkedRows = Array.from(Array(rowsLength).keys());
-        checkedRows.push(-1);
+        if (isTotalCheckable.value) checkedRows.push(TOTAL_CHECKED_INDEX);
       }
 
       qTable.updateCheckedRows(checkedRows);
     };
 
     return {
-      isSelectable: qTable?.isSelectable ?? null,
+      isSelectable,
+      isCheckable,
       isChecked,
       isIndeterminate,
       sortBy,

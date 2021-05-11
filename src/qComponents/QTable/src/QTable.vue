@@ -63,6 +63,9 @@ export default defineComponent({
       type: String,
       default: null
     },
+    /**
+     * Checkboxes column settings.
+     */
     selectionColumn: {
       type: Object as PropType<QTablePropSelectionColumn>,
       default: null
@@ -147,10 +150,6 @@ export default defineComponent({
       'q-table_has-total': !isEmpty(props.total)
     }));
 
-    const isSelectable = computed<boolean>(() =>
-      Boolean(props.selectionColumn?.enabled)
-    );
-
     const checkedRows = computed<number[]>(() => props.checkedRows ?? []);
 
     const updateCheckedRows = (value: number[]): void => {
@@ -162,7 +161,6 @@ export default defineComponent({
     };
 
     provide<QTableProvider>('qTable', {
-      isSelectable,
       checkedRows,
       fixedLayout: toRef(props, 'fixedLayout'),
       defaultColWidth: toRef(props, 'defaultColWidth'),

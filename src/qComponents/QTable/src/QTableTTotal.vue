@@ -5,6 +5,7 @@
       base-tag="th"
       base-class="q-table-t-total-cell"
       :checked="isChecked"
+      :is-checkable="isCheckable"
       @change="handleCheckboxChange"
     />
 
@@ -28,8 +29,7 @@ import type {
   QTableContainerProvider
 } from './QTableContainer';
 import type { QTableTTotalInstance } from './QTableTTotal';
-
-const TOTAL_CHECKED_INDEX = -1;
+import { TOTAL_CHECKED_INDEX } from './config';
 
 export default defineComponent({
   name: 'QTableTTotal',
@@ -45,6 +45,14 @@ export default defineComponent({
     const qTableContainer = inject<QTableContainerProvider | null>(
       'qTableContainer',
       null
+    );
+
+    const isSelectable = computed<boolean>(() =>
+      Boolean(qTable?.selectionColumn.value?.enabled)
+    );
+
+    const isCheckable = computed<boolean>(() =>
+      Boolean(qTable?.selectionColumn.value?.selectTotalShown)
     );
 
     const isChecked = computed<boolean>(
@@ -70,7 +78,8 @@ export default defineComponent({
     };
 
     return {
-      isSelectable: qTable?.isSelectable ?? null,
+      isSelectable,
+      isCheckable,
       isChecked,
       columnList,
       handleCheckboxChange

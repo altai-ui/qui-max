@@ -4,7 +4,8 @@ import type { QTablePropSortBy } from './QTable';
 import type { ExtendedColumn } from './QTableContainer';
 
 export interface QTableTHeadInstance {
-  isSelectable: Nullable<ComputedRef<boolean>>;
+  isSelectable: ComputedRef<boolean>;
+  isCheckable: ComputedRef<boolean>;
   isChecked: ComputedRef<boolean>;
   isIndeterminate: ComputedRef<boolean>;
   columnList: ComputedRef<ExtendedColumn[]>;

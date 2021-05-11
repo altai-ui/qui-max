@@ -5,6 +5,7 @@ export interface QTableCellCheckboxProps {
   baseClass: string;
   checked: boolean;
   indeterminate: Nullable<boolean>;
+  isCheckable: Nullable<boolean>;
 }
 
 export type QTableCellCheckboxInstance = () => VNode;

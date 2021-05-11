@@ -1,7 +1,9 @@
 import { Ref, ComputedRef, Slots } from 'vue';
 
 interface SelectionColumn {
-  enabled: boolean;
+  enabled?: Nullable<boolean>;
+  selectAllShown?: Nullable<boolean>;
+  selectTotalShown?: Nullable<boolean>;
 }
 
 interface Column {
@@ -70,7 +72,6 @@ export interface QTableProps {
 export interface QTableProvider {
   fixedLayout: Ref<Nullable<boolean>>;
   defaultColWidth: Ref<Nullable<string>>;
-  isSelectable: ComputedRef<boolean>;
   selectionColumn: Ref<QTablePropSelectionColumn>;
   groupsOfColumns: Ref<QTablePropGroupsOfColumns>;
   total: Ref<QTablePropTotal>;

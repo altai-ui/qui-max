@@ -10,7 +10,9 @@ Selectable.args = {
   sortBy,
   groupsOfColumns,
   selectionColumn: {
-    enabled: true
+    enabled: true,
+    selectAllShown: true,
+    selectTotalShown: true
   }
 };
 

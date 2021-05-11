@@ -35,6 +35,10 @@ export default defineComponent({
       null
     );
 
+    const isSelectable = computed<boolean>(() =>
+      Boolean(qTable?.selectionColumn.value?.enabled)
+    );
+
     const columnList = computed<ExtendedColumn[]>(
       () => qTableContainer?.columnList.value ?? []
     );
@@ -47,7 +51,7 @@ export default defineComponent({
 
     return {
       checkboxColWidth: CHECKBOX_COL_WIDTH,
-      isSelectable: qTable?.isSelectable ?? null,
+      isSelectable,
       columnList,
       getColWidth
     };

@@ -26,6 +26,10 @@ export default defineComponent({
     indeterminate: {
       type: Boolean,
       default: null
+    },
+    isCheckable: {
+      type: Boolean,
+      default: true
     }
   },
 
@@ -35,11 +39,12 @@ export default defineComponent({
       h(props.baseTag, { class: props.baseClass }, [
         h('div', { class: `${props.baseClass}__container` }, [
           h('div', { class: `${props.baseClass}__content` }, [
-            h(QCheckbox, {
-              modelValue: props.checked,
-              indeterminate: props.indeterminate,
-              validateEvent: false
-            })
+            props.isCheckable &&
+              h(QCheckbox, {
+                modelValue: props.checked,
+                indeterminate: props.indeterminate,
+                validateEvent: false
+              })
           ])
         ])
       ]);

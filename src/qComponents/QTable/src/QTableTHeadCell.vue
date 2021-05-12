@@ -2,20 +2,24 @@
 import {
   h,
   defineComponent,
+  ref,
   computed,
   PropType,
   inject,
   VNode,
-  Slot
+  Slot,
+  toRef
 } from 'vue';
 
 import type { QTableProvider } from './QTable';
 import type { ExtendedColumn } from './QTableContainer';
+import type { QTableTProvider } from './QTableT';
 import type {
   QTableTHeadCellProps,
   QTableTHeadCellPropSortBy,
   QTableTHeadCellInstance
 } from './QTableTHeadCell';
+import useSticky from './sticky';
 
 export default defineComponent({
   name: 'QTableTHeadCell',
@@ -38,6 +42,16 @@ export default defineComponent({
 
   setup(props: QTableTHeadCellProps): QTableTHeadCellInstance {
     const qTable = inject<QTableProvider | null>('qTable', null);
+    const qTableT = inject<QTableTProvider | null>('qTableT', null);
+    const root = ref<HTMLElement | null>(null);
+
+    const sticky = useSticky(
+      root,
+      toRef(props, 'column'),
+      toRef(props, 'columnIndex')
+    );
+
+    qTableT?.stickyConfig.value.push(sticky);
 
     const isSortable = computed<boolean>(() => Boolean(props.column.sortable));
     const isCurrentSorting = computed<boolean>(
@@ -46,6 +60,9 @@ export default defineComponent({
 
     const cellClasses = computed<Record<string, boolean>>(() => ({
       'q-table-t-head-cell': true,
+      'q-table-t-head-cell_sticked': sticky.isSticked.value,
+      [`q-table-t-head-cell_sticked_${sticky.position.value}`]: sticky.isSticked
+        .value,
       'q-table-t-head-cell_sortable': isSortable.value,
       'q-table-t-head-cell_sorted':
         isCurrentSorting.value && Boolean(props.sortBy?.direction)
@@ -53,7 +70,10 @@ export default defineComponent({
 
     const cellStyles = computed<Record<string, string>>(() => ({
       minWidth: props.column.minWidth ?? '',
-      '--group-color': props.column.group.color ?? ''
+      '--group-color': props.column.group.color ?? '',
+      [sticky.position.value]: sticky.isSticked.value
+        ? `${sticky.offset.value}px`
+        : ''
     }));
 
     const currentSlot = computed<Slot | undefined>(() => {
@@ -113,17 +133,21 @@ export default defineComponent({
     };
 
     return (): VNode =>
-      h('th', { class: cellClasses.value, style: cellStyles.value }, [
-        h('div', { class: 'q-table-t-head-cell__container' }, [
-          h('div', { class: contentClasses.value }, [content.value]),
-          isSortable.value &&
-            h('button', {
-              type: 'button',
-              class: sortArrowClasses.value,
-              onClick: handleSortArrowClick
-            })
-        ])
-      ]);
+      h(
+        'th',
+        { ref: root, class: cellClasses.value, style: cellStyles.value },
+        [
+          h('div', { class: 'q-table-t-head-cell__container' }, [
+            h('div', { class: contentClasses.value }, [content.value]),
+            isSortable.value &&
+              h('button', {
+                type: 'button',
+                class: sortArrowClasses.value,
+                onClick: handleSortArrowClick
+              })
+          ])
+        ]
+      );
   }
 });
 </script>

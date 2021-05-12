@@ -19,7 +19,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, ref, computed, provide } from 'vue';
+import {
+  defineComponent,
+  inject,
+  ref,
+  computed,
+  provide,
+  onBeforeUpdate,
+  UnwrapRef
+} from 'vue';
 import { isEmpty } from 'lodash-es';
 
 import type { QScrollbarProvider } from '@/qComponents/QScrollbar';
@@ -30,6 +38,7 @@ import QTableTHead from './QTableTHead.vue';
 import QTableTTotal from './QTableTTotal.vue';
 import type { QTableProvider } from './QTable';
 import type { QTableTProvider, QTableTInstance } from './QTableT';
+import type { StickyConfig } from './types';
 
 export default defineComponent({
   name: 'QTableT',
@@ -56,11 +65,19 @@ export default defineComponent({
       'q-table-t_fixed': isColgroupShown.value
     }));
 
+    const stickyConfig = ref<UnwrapRef<StickyConfig>[]>([]);
     const stickyOffsetLeftArr = ref<number[]>([]);
     const stickyOffsetRightArr = ref<number[]>([]);
 
+    onBeforeUpdate(() => {
+      stickyConfig.value = [];
+      stickyOffsetLeftArr.value = [];
+      stickyOffsetRightArr.value = [];
+    });
+
     provide<QTableTProvider>('qTableT', {
       moveXInPx: qScrollbar?.moveXInPx ?? null,
+      stickyConfig,
       stickyOffsetLeftArr,
       stickyOffsetRightArr
     });

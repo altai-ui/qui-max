@@ -1,5 +1,8 @@
 <template>
-  <div v-click-outside="handleClose">
+  <div
+    ref="root"
+    v-click-outside="handleClose"
+  >
     <q-input
       v-if="!isRanged"
       ref="reference"
@@ -98,10 +101,11 @@ import {
   startOfYear,
   parseISO
 } from 'date-fns';
-import { computed, defineComponent, inject, PropType, reactive, ref, watch, ComponentPublicInstance, UnwrapRef } from 'vue';
+import { computed, defineComponent, inject, PropType, reactive, ref, watch, ComponentPublicInstance, UnwrapRef, onBeforeUnmount } from 'vue';
 import { getConfig } from '@/qComponents/config';
 import { QFormProvider } from '@/qComponents/QForm';
 import { QInputInstance } from '@/qComponents/QInput';
+import { QFormItemProvider } from '@/qComponents/QFormItem';
 import { formatLocalDate } from './helpers';
 import Pickers from '../../mixins/pickers';
 
@@ -131,6 +135,16 @@ const dateValidator = function(val: QDatePickerPropModelValue): boolean {
   );
 };
 
+const formatToISO = (date: Date | Date[]): string | string[] => {
+  console.log(date);
+  
+  if (Array.isArray(date)) {
+    return [formatISO(date[0]), formatISO(date[1])];
+  }
+
+  return formatISO(date);
+}
+
 const convertDate = (value: string | Date): string | Date => {
   if (isString(value) && !isDate(value)) {
     return parseISO(value);
@@ -143,15 +157,6 @@ export default defineComponent({
   name: 'QDatePicker',
   componentName: 'QDatePicker',
   mixins: [Pickers],
-
-  inject: {
-    qForm: {
-      default: null
-    },
-    qFormItem: {
-      default: null
-    }
-  },
 
   provide() {
     return {
@@ -274,9 +279,17 @@ export default defineComponent({
     },
   },
 
+  emits: ['focus', 'change', 'input'],
+
   setup(props, ctx) {
+    const root = ref<null | HTMLElement>(null);
     const qForm = inject<QFormProvider | null>('qForm', null);
+    const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
     const reference = ref<ComponentPublicInstance<UnwrapRef<QInputInstance>> | HTMLElement | null>(null);
+    const referenceEl =
+      reference.value instanceof Element
+        ? reference.value
+        : reference.value?.$el;
     const panel = ref(null);
 
     const state = reactive<QDatePickerState>({
@@ -310,9 +323,9 @@ export default defineComponent({
       'q-range-editor_focused': state.pickerVisible
     }));
 
-    const isRanged = computed<boolean>(() => props.type.includes('range')),
+    const isRanged = computed<boolean>(() => props.type.includes('range'))
 
-    const timepicker = computed<boolean>(() => props.type.includes('time')),
+    const timepicker = computed<boolean>(() => props.type.includes('time'))
 
     const iconClass = computed(() => {
       if (isPickerDisabled.value) return 'q-icon-lock';
@@ -379,18 +392,107 @@ export default defineComponent({
       return '';
     })
 
-    const handlePickClick = (val, { hidePicker = true } = {}): void => {
+    const emitChange = (val: QDatePickerPropModelValue): void => {
+      if (val !== props.modelValue) {
+        ctx.emit('change', val);
+        if (props.validateEvent) {
+          qFormItem?.validateField('change');
+        }
+      }
+    }
+
+    const emitInput = (val: QDatePickerPropModelValue): void => {
+      let formatted = val;
+      if (props.outputFormat === 'iso' && val) {
+        formatted = formatToISO(val);
+      }
+
+      if (!isEqual(transformedValue.value, formatted)) {
+        ctx.emit('input', formatted);
+      }
+    }
+
+    const handlePickClick = (val: QDatePickerPropModelValue, { hidePicker = true } = {}): void => {
       state.pickerVisible = !hidePicker;
-      this.emitChange(val);
-      this.emitInput(val);
+      emitChange(val);
+      emitInput(val);
+    }
+
+    const handleChange = (): void => {
+      let value;
+      let format;
+      const date = state.userInput;
+      if (date) {
+        format = date.length === 10 ? 'dd.MM.yyyy' : 'dd.MM.yy';
+        if (timepicker.value && date.length > 10) {
+          format = "dd.MM.yyyy', 'HH:mm:ss";
+        }
+        value = parse(date, format, new Date());
+
+        if (!Number.isNaN(Number(value))) {
+          let resultValue = value;
+          switch (props.type) {
+            case 'week':
+              resultValue = startOfWeek(value, { weekStartsOn: 1 });
+              break;
+            case 'month':
+              resultValue = startOfMonth(value);
+              break;
+            case 'year':
+              resultValue = startOfYear(value);
+              break;
+            default:
+              resultValue = value;
+              break;
+          }
+          emitInput(resultValue);
+        }
+      } else {
+        emitInput(null);
+        emitChange(null);
+      }
+      state.userInput = null;
+    }
+
+    const handleKeyUp = (e: KeyboardEvent): void => {
+      // if user is typing, do not let picker handle key input
+      if (state.userInput) {
+        e.stopPropagation();
+      }
+
+      switch (e.key) {
+        case 'ArrowRight':
+        case 'ArrowUp':
+        case 'ArrowLeft':
+        case 'ArrowDown': {
+          panel.value?.navigateDropdown(e);
+          break;
+        }
+        case 'Escape': {
+          state.pickerVisible = false;
+          e.stopPropagation();
+          break;
+        }
+        case 'Tab': {
+          if (root.value?.contains(document.activeElement)) {
+            panel.value?.navigateDropdown(e);
+            return;
+          }
+
+          if (!isRanged.value) {
+            handleChange();
+          }
+
+          state.pickerVisible = false;
+          e.stopPropagation();
+          break;
+        }
+        default:
+          break;
+      }
     }
 
     const popperInit = (): void => {
-      const referenceEl =
-        reference.value instanceof Element
-          ? reference.value
-          : reference.value?.$el;
-
       const panelEl = panel.value?.$el ?? null;
 
       state.popper = createPopper(referenceEl, panelEl, {
@@ -414,30 +516,67 @@ export default defineComponent({
       document.addEventListener('keyup', handleKeyUp, true);
     }
 
-    const destroyPopper = () => {
+    const destroyPopper = (): void => {
       if (state.popper) {
         state.popper.destroy();
         state.popper = null;
       }
 
-      document.removeEventListener('keyup', this.handleKeyUp, true);
-    },
+      document.removeEventListener('keyup', handleKeyUp, true);
+    }
 
-    focus() {
-      if (!this.isRanged) {
-        this.$refs.reference.focus();
-      } else {
-        this.handleFocus();
+    const handleFocus = (): void => {
+      state.pickerVisible = true;
+      ctx.emit('focus'); // this was second arg
+      if (
+        !isDate(transformedValue.value) ||
+        Array.isArray(transformedValue.value)
+      )
+        return;
+      const format = timepicker.value ? 'dd.MM.yyyy, HH:mm:ss' : 'dd.MM.yy';
+      state.userInput = formatLocalDate(
+        transformedValue.value,
+        format,
+        getConfig('locale')
+      );
+    }
+
+    const handleMouseEnter = (): void => {
+      if (isPickerDisabled.value) return;
+      if (!isValueEmpty.value && props.clearable) {
+        state.showClose = true;
       }
-    },
+    }
+
+    const handleIconClick = (event: MouseEvent): void => {
+      if (isPickerDisabled.value) return;
+      if (state.showClose) {
+        event.stopPropagation();
+        emitInput(null);
+        emitChange(null);
+        state.showClose = false;
+      } else {
+        state.pickerVisible = !state.pickerVisible;
+      }
+    }
+
+    const handleClose = (): void => {
+      if (!state.pickerVisible) return;
+      state.pickerVisible = false;
+    }
+
+    const handleRangeClick = (): void => {
+      state.pickerVisible = true;
+      ctx.emit('focus');
+    }
 
     watch(() => state.pickerVisible, (val) => {
       if (isPickerDisabled.value) return;
       if (val) {
         popperInit();
       } else {
-        this.destroyPopper();
-        this.emitChange(transformedValue.value);
+        destroyPopper();
+        emitChange(transformedValue.value);
         state.userInput = null;
         if (props.validateEvent) {
           qFormItem?.validateField('blur');
@@ -451,6 +590,9 @@ export default defineComponent({
       }
     })
 
+    onBeforeUnmount(() => {
+      destroyPopper()
+    })
 
     return {
       state,
@@ -463,193 +605,13 @@ export default defineComponent({
       isValueEmpty,
       displayValue,
       iconClass,
-      handlePickClick
+      handlePickClick,
+      handleFocus,
+      handleMouseEnter,
+      handleRangeClick,
+      handleClose,
+      handleIconClick
     }
   },
-
-  beforeDestroy() {
-    this.destroyPopper();
-  },
-
-  methods: {
-    destroyPopper() {
-      if (this.popper) {
-        this.popper.destroy();
-        this.popper = null;
-      }
-
-      const dropdown = this.$refs?.panel?.$el;
-      if (dropdown?.parentNode === document.body) {
-        document.body.removeChild(dropdown);
-      }
-
-      document.removeEventListener('keyup', this.handleKeyUp, true);
-    },
-
-    focus() {
-      if (!this.isRanged) {
-        this.$refs.reference.focus();
-      } else {
-        this.handleFocus();
-      }
-    },
-
-    formatToISO(date) {
-      if (Array.isArray(date)) {
-        return [formatISO(date[0]), formatISO(date[1])];
-      }
-
-      return formatISO(date);
-    },
-
-    handleMouseEnter() {
-      if (this.isPickerDisabled) return;
-      if (!this.isValueEmpty && this.clearable) {
-        this.showClose = true;
-      }
-    },
-
-    handleKeyUp(e) {
-      // if user is typing, do not let picker handle key input
-      if (this.userInput) {
-        e.stopPropagation();
-      }
-
-      switch (e.key) {
-        case 'ArrowRight':
-        case 'ArrowUp':
-        case 'ArrowLeft':
-        case 'ArrowDown': {
-          this.$refs.panel.navigateDropdown(e);
-          break;
-        }
-        case 'Escape': {
-          this.pickerVisible = false;
-          e.stopPropagation();
-          break;
-        }
-        case 'Tab': {
-          if (this.$el.contains(document.activeElement)) {
-            this.$refs.panel.navigateDropdown(e);
-            return;
-          }
-
-          if (!this.isRanged) {
-            this.handleChange();
-          }
-
-          this.pickerVisible = false;
-          e.stopPropagation();
-          break;
-        }
-        default:
-          break;
-      }
-    },
-
-    handleChange() {
-      let value;
-      let format;
-      const date = this.userInput;
-      if (date) {
-        format = date.length === 10 ? 'dd.MM.yyyy' : 'dd.MM.yy';
-        if (this.timepicker && date.length > 10) {
-          format = "dd.MM.yyyy', 'HH:mm:ss";
-        }
-        value = parse(date, format, new Date());
-
-        if (!Number.isNaN(Number(value))) {
-          let resultValue = value;
-          switch (this.type) {
-            case 'week':
-              resultValue = startOfWeek(value, { weekStartsOn: 1 });
-              break;
-            case 'month':
-              resultValue = startOfMonth(value);
-              break;
-            case 'year':
-              resultValue = startOfYear(value);
-              break;
-            default:
-              resultValue = value;
-              break;
-          }
-          this.emitInput(resultValue);
-        }
-      } else {
-        this.emitInput(null);
-        this.emitChange(null);
-      }
-      this.userInput = null;
-    },
-
-    handleIconClick(event) {
-      if (this.isPickerDisabled) return;
-      if (this.showClose) {
-        event.stopPropagation();
-        this.emitInput(null);
-        this.emitChange(null);
-        this.showClose = false;
-      } else {
-        this.pickerVisible = !this.pickerVisible;
-      }
-    },
-
-    handleClose(e) {
-      if (!this.pickerVisible) return;
-      if (this.appendToBody) {
-        const path = e.path || (e.composedPath && e.composedPath());
-        const isClickToPanel = path.find(
-          element => element === this.$refs.panel.$el
-        );
-        if (!isClickToPanel) {
-          this.pickerVisible = false;
-        }
-      } else {
-        this.pickerVisible = false;
-      }
-    },
-
-    handleFocus() {
-      this.pickerVisible = true;
-      this.$emit('focus', this);
-      if (
-        !isDate(this.transformedValue) ||
-        Array.isArray(this.transformedValue)
-      )
-        return;
-      const format = this.timepicker ? 'dd.MM.yyyy, HH:mm:ss' : 'dd.MM.yy';
-      this.userInput = formatLocalDate(
-        this.transformedValue,
-        format,
-        this.$Q.locale
-      );
-    },
-
-    handleRangeClick() {
-      this.pickerVisible = true;
-      this.$emit('focus', this);
-    },
-
-    emitChange(val) {
-      if (val !== this.value) {
-        this.$emit('change', val);
-        if (this.validateEvent) {
-          this.qFormItem?.validateField('change');
-        }
-      }
-    },
-
-    emitInput(val) {
-      let formatted = val;
-      if (this.outputFormat === 'iso' && val) {
-        formatted = this.formatToISO(val);
-      }
-
-      if (!isEqual(this.transformedValue, formatted)) {
-        this.$emit('input', formatted);
-      }
-    }
-  }
 });
 </script>

@@ -1,5 +1,7 @@
 .q-table-t-body-row {
   position: relative;
+  overflow: hidden;
+  box-shadow: var(--box-shadow-pressed);
 
   &::after {
     position: absolute;
@@ -13,11 +15,21 @@
     background-color: var(--row-custom-border-color, transparent);
   }
 
-  &:first-child::after {
-    border-top-left-radius: var(--border-radius-base);
+  &:last-child {
+    border-bottom-right-radius: var(--border-radius-base);
+
+    &,
+    &::after {
+      border-bottom-left-radius: var(--border-radius-base);
+    }
   }
 
-  &:last-child::after {
-    border-bottom-left-radius: var(--border-radius-base);
+  .q-table:not(.q-table_has-total) &:nth-child(2) {
+    border-top-right-radius: var(--border-radius-base);
+
+    &,
+    &::after {
+      border-top-left-radius: var(--border-radius-base);
+    }
   }
 }

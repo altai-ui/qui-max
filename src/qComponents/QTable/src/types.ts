@@ -5,4 +5,5 @@ export interface StickyConfig {
   isSticked: Ref<boolean>;
   position: ComputedRef<string>;
   offset: ComputedRef<number>;
+  zIndex: Ref<number>;
 }

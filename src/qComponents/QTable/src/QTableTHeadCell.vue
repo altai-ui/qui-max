@@ -71,6 +71,7 @@ export default defineComponent({
     const cellStyles = computed<Record<string, string>>(() => ({
       minWidth: props.column.minWidth ?? '',
       '--group-color': props.column.group.color ?? '',
+      zIndex: sticky.isSticked.value ? String(sticky.zIndex.value) : '',
       [sticky.position.value]: sticky.isSticked.value
         ? `${sticky.offset.value}px`
         : ''

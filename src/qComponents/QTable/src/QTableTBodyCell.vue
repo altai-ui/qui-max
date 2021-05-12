@@ -1,7 +1,16 @@
 <script lang="ts">
-import { h, defineComponent, computed, PropType, inject, VNode } from 'vue';
+import {
+  h,
+  defineComponent,
+  toRefs,
+  computed,
+  PropType,
+  inject,
+  VNode
+} from 'vue';
 
 import type { QTableProvider } from './QTable';
+import type { QTableTProvider } from './QTableT';
 import type { ExtendedColumn } from './QTableContainer';
 import type {
   QTableTBodyCellProps,
@@ -43,7 +52,24 @@ export default defineComponent({
   },
 
   setup(props: QTableTBodyCellProps): QTableTBodyCellInstance {
-    const qTable = inject<QTableProvider | null>('qTable', null);
+    const qTable = inject<QTableProvider>('qTable', {} as QTableProvider);
+    const qTableT = inject<QTableTProvider>('qTableT', {} as QTableTProvider);
+
+    const sticky = toRefs(qTableT.stickyConfig.value[props.columnIndex]);
+
+    const rootClasses = computed<Record<string, boolean>>(() => ({
+      'q-table-t-body-cell': true,
+      'q-table-t-body-cell_sticked': sticky.isSticked.value,
+      [`q-table-t-body-cell_sticked_${sticky.position.value}`]: sticky.isSticked
+        .value
+    }));
+
+    const rootStyles = computed<Record<string, string>>(() => ({
+      zIndex: sticky.isSticked.value ? String(sticky.zIndex.value) : '',
+      [sticky.position.value]: sticky.isSticked.value
+        ? `${sticky.offset.value}px`
+        : ''
+    }));
 
     const content = computed<VNode[] | string | number | null>(() => {
       const slotName = props.column.slots?.row ?? 'row';
@@ -65,7 +91,7 @@ export default defineComponent({
     });
 
     return (): VNode =>
-      h('th', { class: 'q-table-t-body-cell' }, [
+      h('td', { class: rootClasses.value, style: rootStyles.value }, [
         h('div', { class: 'q-table-t-body-cell__container' }, [
           h('div', { class: 'q-table-t-body-cell__content' }, [content.value])
         ])

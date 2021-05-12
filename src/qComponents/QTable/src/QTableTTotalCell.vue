@@ -47,6 +47,7 @@ export default defineComponent({
     }));
 
     const rootStyles = computed<Record<string, string>>(() => ({
+      zIndex: sticky.isSticked.value ? String(sticky.zIndex.value) : '',
       [sticky.position.value]: sticky.isSticked.value
         ? `${sticky.offset.value}px`
         : ''

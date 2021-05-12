@@ -1,9 +1,11 @@
 @import './q-table-empty.scss';
 @import './q-table-t.scss';
+@import './q-table-t-body-cell.scss';
+@import './q-table-t-body-row.scss';
+@import './q-table-t-body.scss';
 @import './q-table-t-head-cell.scss';
 @import './q-table-t-total-cell.scss';
-@import './q-table-t-body-row.scss';
-@import './q-table-t-body-cell.scss';
+@import './q-table-t-total.scss';
 
 .q-table {
   text-align: left;

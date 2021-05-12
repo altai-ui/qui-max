@@ -1,4 +1,5 @@
 <template>
+  <tr class="q-table-t-body__space" />
   <tr
     :class="rootClasses"
     :style="rootStyles"

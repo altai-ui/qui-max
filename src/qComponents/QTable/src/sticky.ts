@@ -1,15 +1,25 @@
 import { ref, computed, inject, onMounted, watch, nextTick, Ref } from 'vue';
 
+import type {
+  QTableContainerProvider,
+  ExtendedColumn
+} from './QTableContainer';
 import type { QTableTProvider } from './QTableT';
-import type { ExtendedColumn } from './QTableContainer';
 import type { StickyConfig } from './types';
+
+const BASE_Z_INDEX = 20;
 
 const useSticky = (
   root: Ref<HTMLElement | null>,
   column: Ref<ExtendedColumn>,
   columnIndex: Ref<number>
 ): StickyConfig => {
-  const qTableT = inject<QTableTProvider | null>('qTableT', null);
+  const QTableContainer = inject<QTableContainerProvider>(
+    'qTableContainer',
+    {} as QTableContainerProvider
+  );
+
+  const qTableT = inject<QTableTProvider>('qTableT', {} as QTableTProvider);
 
   const isSticked = ref<boolean>(false);
   const triggerPoint = ref<number>(0);
@@ -23,7 +33,7 @@ const useSticky = (
   );
 
   const offset = computed<number>(() => {
-    if (!isStickable.value || !qTableT) return 0;
+    if (!isStickable.value) return 0;
 
     if (position.value === 'left') {
       return qTableT.stickyOffsetLeftArr.value
@@ -50,7 +60,7 @@ const useSticky = (
 
   if (isStickable.value) {
     watch(
-      () => qTableT?.moveXInPx?.value,
+      () => qTableT.moveXInPx?.value,
       value => {
         nextTick(() => checkSticky(value ?? 0));
       },
@@ -58,14 +68,24 @@ const useSticky = (
     );
   }
 
+  const zIndex = ref<number>(
+    BASE_Z_INDEX + QTableContainer.columnList.value.length
+  );
+
   onMounted(() => {
     if (!root.value) return;
-    qTableT?.stickyOffsetLeftArr.value.push(
+
+    zIndex.value =
+      position.value === 'left'
+        ? zIndex.value + columnIndex.value
+        : zIndex.value - columnIndex.value;
+
+    qTableT.stickyOffsetLeftArr.value.push(
       isStickable.value && position.value === 'left'
         ? root.value.clientWidth
         : 0
     );
-    qTableT?.stickyOffsetRightArr.value.unshift(
+    qTableT.stickyOffsetRightArr.value.unshift(
       isStickable.value && position.value === 'right'
         ? root.value.clientWidth
         : 0
@@ -81,7 +101,8 @@ const useSticky = (
     isStickable,
     isSticked,
     position,
-    offset
+    offset,
+    zIndex
   };
 };
 

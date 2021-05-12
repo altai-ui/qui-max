@@ -1,69 +1,31 @@
 .q-table-t-body-cell {
   position: relative;
   vertical-align: middle;
-
-  &::after,
-  &::before {
-    position: absolute;
-    top: 1px;
-    left: 0;
-    display: block;
-    width: 100%;
-    height: calc(100% - 1px);
-    content: '';
-  }
-
-  &::after {
-    z-index: 5;
-    box-shadow: var(--box-shadow-pressed);
-  }
-
-  &::before {
-    z-index: 10;
-    background-color: var(--color-tertiary-gray-light);
-  }
+  background-color: var(--color-tertiary-gray-light);
 
   .q-table-t-body-row:last-child & {
     &:first-child {
-      &::after,
-      &::before {
-        border-bottom-left-radius: var(--border-radius-base);
-      }
+      border-bottom-left-radius: var(--border-radius-base);
     }
 
     &:last-child {
-      &::after,
-      &::before {
-        border-bottom-right-radius: var(--border-radius-base);
-      }
+      border-bottom-right-radius: var(--border-radius-base);
     }
   }
 
-  .q-table:not(.q-table_has-total) .q-table-t-body-row:first-child & {
-    &:first-child {
-      &::after,
-      &::before {
-        border-top-left-radius: var(--border-radius-base);
-      }
-    }
-
-    &:last-child {
-      &::after,
-      &::before {
-        border-top-right-radius: var(--border-radius-base);
-      }
-    }
+  .q-table:not(.q-table_has-total) .q-table-t-body-row:nth-child(2) & {
+    border-top-left-radius: var(--border-radius-base);
+    border-top-right-radius: var(--border-radius-base);
   }
 
   &_sticked {
     position: sticky;
     z-index: 20;
+    box-shadow: var(--box-shadow-pressed);
 
     &_right {
-      &::after {
-        box-shadow: 1px -1px 3px rgba(var(--color-rgb-white), 0.25),
-          -2px 1px 3px rgba(var(--color-rgb-blue), 0.4);
-      }
+      box-shadow: 1px -1px 3px rgba(var(--color-rgb-white), 0.25),
+        -2px 1px 3px rgba(var(--color-rgb-blue), 0.4);
     }
   }
 
@@ -87,3 +49,10 @@
     letter-spacing: var(--letter-spacing-base);
   }
 }
+
+// // .q-table-t-head-cell_sticked.q-table-t-head-cell_sticked_left:nth-last-child(-n) {
+// //   background-color: red;
+// // }
+// [class~='q-table-t-head-cell_sticked_left']:last-of-type {
+//   background: #000;
+// }

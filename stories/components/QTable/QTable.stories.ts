@@ -28,7 +28,7 @@ export {
   CustomWidth,
   Selectable,
   Total,
-  // StickyColumn,
+  StickyColumn,
   CustomRows,
   Groups
   // Draggable

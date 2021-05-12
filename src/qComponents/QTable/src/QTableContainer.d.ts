@@ -13,6 +13,7 @@ export interface ExtendedColumn extends Column {
 
 export interface QTableContainerProvider {
   columnList: ComputedRef<ExtendedColumn[]>;
+  isSelectable: ComputedRef<boolean>;
 }
 
 export interface QTableContainerInstance {

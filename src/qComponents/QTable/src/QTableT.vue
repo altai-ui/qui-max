@@ -19,15 +19,17 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, computed } from 'vue';
+import { defineComponent, inject, ref, computed, provide } from 'vue';
 import { isEmpty } from 'lodash-es';
+
+import type { QScrollbarProvider } from '@/qComponents/QScrollbar';
 
 import QTableTBody from './QTableTBody.vue';
 import QTableTColgroup from './QTableTColgroup.vue';
 import QTableTHead from './QTableTHead.vue';
 import QTableTTotal from './QTableTTotal.vue';
 import type { QTableProvider } from './QTable';
-import type { QTableTInstance } from './QTableT';
+import type { QTableTProvider, QTableTInstance } from './QTableT';
 
 export default defineComponent({
   name: 'QTableT',
@@ -42,6 +44,7 @@ export default defineComponent({
 
   setup(): QTableTInstance {
     const qTable = inject<QTableProvider | null>('qTable', null);
+    const qScrollbar = inject<QScrollbarProvider | null>('qScrollbar', null);
 
     const isColgroupShown = computed<boolean>(() =>
       Boolean(qTable?.fixedLayout.value)
@@ -52,6 +55,15 @@ export default defineComponent({
       'q-table-t': true,
       'q-table-t_fixed': isColgroupShown.value
     }));
+
+    const stickyOffsetLeftArr = ref<number[]>([]);
+    const stickyOffsetRightArr = ref<number[]>([]);
+
+    provide<QTableTProvider>('qTableT', {
+      moveXInPx: qScrollbar?.moveXInPx ?? null,
+      stickyOffsetLeftArr,
+      stickyOffsetRightArr
+    });
 
     return {
       isColgroupShown,

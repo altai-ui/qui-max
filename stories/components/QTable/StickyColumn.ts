@@ -1,8 +1,18 @@
 import Template from './Default';
+import { total, sortBy, rows } from './args';
 
 const StickyColumn = Template.bind({});
 
 StickyColumn.args = {
+  total,
+  rows,
+  sortBy,
+  fixedLayout: true,
+  grid: true,
+  selectionColumn: {
+    enabled: true,
+    sticky: true
+  },
   groupsOfColumns: [
     {
       key: 'one',
@@ -10,7 +20,7 @@ StickyColumn.args = {
         {
           key: 'col1',
           value: 'Column 1',
-          formatter: val => `formatted_${val}`,
+          formatter: (val: unknown): string => `formatted_${val}`,
           width: '300px'
         },
         {
@@ -24,7 +34,10 @@ StickyColumn.args = {
           key: 'col3',
           value: 'Column 3',
           width: '150px',
-          sortable: true
+          sortable: true,
+          sticky: {
+            position: 'left'
+          }
         },
         {
           key: 'col4',
@@ -44,7 +57,10 @@ StickyColumn.args = {
         },
         {
           key: 'col6',
-          value: 'Column 6'
+          value: 'Column 6',
+          sticky: {
+            position: 'left'
+          }
         },
         {
           key: 'col7',
@@ -61,23 +77,7 @@ StickyColumn.args = {
         }
       ]
     }
-  ],
-  selectableColumn: {
-    sticky: true,
-    totalCheckboxPosition: 'total'
-  },
-  fixedLayout: true,
-  grid: true,
-  total: {
-    col1: 'Total 100',
-    col2: 'Total 200',
-    col3: 'Total 300',
-    col4: 'Total 400',
-    col5: 'Total 500',
-    col6: 'Total 600',
-    col7: 'Total 700',
-    col8: 'Total 800'
-  }
+  ]
 };
 
 export default StickyColumn;

@@ -55,6 +55,12 @@
     }
   }
 
+  &_sticked {
+    position: sticky;
+    left: 0;
+    z-index: 20;
+  }
+
   &__container {
     position: relative;
     z-index: 15;

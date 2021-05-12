@@ -69,12 +69,8 @@ export default defineComponent({
       null
     );
 
-    const isSelectable = computed<boolean>(() =>
-      Boolean(qTable?.selectionColumn.value?.enabled)
-    );
-
     const isChecked = computed<boolean>(
-      () => qTable?.checkedRows.value.includes(props.rowIndex) ?? false
+      () => qTable?.checkedRows.value?.includes(props.rowIndex) ?? false
     );
 
     const rootClasses = computed<RootClasses>(() => {
@@ -131,7 +127,7 @@ export default defineComponent({
     };
 
     return {
-      isSelectable,
+      isSelectable: qTableContainer?.isSelectable ?? null,
       isChecked,
       rootClasses,
       rootStyles,

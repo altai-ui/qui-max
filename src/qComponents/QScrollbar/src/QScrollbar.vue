@@ -128,6 +128,7 @@ export default defineComponent({
     const sizeWidth = ref('0');
     const sizeHeight = ref('0');
     const moveX = ref(0);
+    const moveXInPx = ref(0);
     const moveY = ref(0);
 
     const isXBarShown = computed<boolean>(() => sizeWidth.value !== '');
@@ -153,6 +154,7 @@ export default defineComponent({
 
       moveY.value = (wrapValue.scrollTop * 100) / wrapValue.clientHeight;
       moveX.value = (wrapValue.scrollLeft * 100) / wrapValue.clientWidth;
+      moveXInPx.value = wrapValue.scrollLeft;
     };
 
     /**
@@ -206,7 +208,7 @@ export default defineComponent({
       }
     );
 
-    provide<QScrollbarProvider>('qScrollbar', { wrap });
+    provide<QScrollbarProvider>('qScrollbar', { wrap, moveXInPx });
 
     return {
       root,

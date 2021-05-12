@@ -1,4 +1,8 @@
-import { ComputedRef } from 'vue';
+import { Ref, ComputedRef } from 'vue';
+
+export interface QTableTProvider {
+  moveXInPx: Nullable<Ref<number>>;
+}
 
 export interface QTableTInstance {
   isColgroupShown: ComputedRef<boolean>;

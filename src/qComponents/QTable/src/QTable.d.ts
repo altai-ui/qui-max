@@ -4,6 +4,7 @@ interface SelectionColumn {
   enabled?: Nullable<boolean>;
   selectAllShown?: Nullable<boolean>;
   selectTotalShown?: Nullable<boolean>;
+  sticky?: Nullable<boolean>;
 }
 
 interface Column {
@@ -14,6 +15,9 @@ interface Column {
   width?: string;
   minWidth?: string;
   customCellClass?: string;
+  sticky?: {
+    position?: 'left' | 'right';
+  };
   formatter?: (
     value: unknown,
     row: Record<string, unknown>,

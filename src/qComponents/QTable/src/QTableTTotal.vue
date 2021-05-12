@@ -47,16 +47,12 @@ export default defineComponent({
       null
     );
 
-    const isSelectable = computed<boolean>(() =>
-      Boolean(qTable?.selectionColumn.value?.enabled)
-    );
-
     const isCheckable = computed<boolean>(() =>
       Boolean(qTable?.selectionColumn.value?.selectTotalShown)
     );
 
     const isChecked = computed<boolean>(
-      () => qTable?.checkedRows.value.includes(TOTAL_CHECKED_INDEX) ?? false
+      () => qTable?.checkedRows.value?.includes(TOTAL_CHECKED_INDEX) ?? false
     );
 
     const columnList = computed<ExtendedColumn[]>(
@@ -78,7 +74,7 @@ export default defineComponent({
     };
 
     return {
-      isSelectable,
+      isSelectable: qTableContainer?.isSelectable ?? null,
       isCheckable,
       isChecked,
       columnList,

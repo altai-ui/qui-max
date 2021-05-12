@@ -40,8 +40,13 @@ export default defineComponent({
       }, []);
     });
 
+    const isSelectable = computed<boolean>(() =>
+      Boolean(qTable?.selectionColumn.value?.enabled)
+    );
+
     provide<QTableContainerProvider>('qTableContainer', {
-      columnList
+      columnList,
+      isSelectable
     });
 
     return { columnList };

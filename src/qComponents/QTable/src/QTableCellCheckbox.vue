@@ -1,6 +1,14 @@
 <script lang="ts">
-import { h, defineComponent, resolveComponent, VNode } from 'vue';
+import {
+  h,
+  defineComponent,
+  resolveComponent,
+  computed,
+  // inject,
+  VNode
+} from 'vue';
 
+// import type { QTableTProvider } from './QTableT';
 import type {
   QTableCellCheckboxProps,
   QTableCellCheckboxInstance
@@ -34,9 +42,18 @@ export default defineComponent({
   },
 
   setup(props: QTableCellCheckboxProps): QTableCellCheckboxInstance {
+    // const qTableT = inject<QTableTProvider | null>('qTableT', null);
+
+    const baseClass = computed<Record<string, boolean>>(() => ({
+      [props.baseClass]: true
+      // [`${props.baseClass}_sticked`]: Boolean(
+      //   qTableT?.isSelectionColumnSticky.value
+      // )
+    }));
+
     const QCheckbox = resolveComponent('q-checkbox');
     return (): VNode =>
-      h(props.baseTag, { class: props.baseClass }, [
+      h(props.baseTag, { class: baseClass.value }, [
         h('div', { class: `${props.baseClass}__container` }, [
           h('div', { class: `${props.baseClass}__content` }, [
             props.isCheckable &&

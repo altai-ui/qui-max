@@ -39,6 +39,18 @@
     }
   }
 
+  &_sticked {
+    position: sticky;
+    z-index: 20;
+
+    &_right {
+      &::after {
+        box-shadow: 1px -1px 3px rgba(var(--color-rgb-white), 0.25),
+          -2px 1px 3px rgba(var(--color-rgb-blue), 0.4);
+      }
+    }
+  }
+
   &__container {
     position: relative;
     z-index: 15;

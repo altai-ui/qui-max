@@ -1,4 +1,4 @@
-import { ComputedRef, ComponentPublicInstance } from 'vue';
+import { ComputedRef } from 'vue';
 
 import type { QTablePropSortBy } from './QTable';
 import type { ExtendedColumn } from './QTableContainer';
@@ -10,6 +10,6 @@ export interface QTableTHeadInstance {
   isIndeterminate: ComputedRef<boolean>;
   columnList: ComputedRef<ExtendedColumn[]>;
   sortBy: ComputedRef<Nullable<QTablePropSortBy>>;
-  setRef: (el: ComponentPublicInstance) => void;
+
   handleCheckboxChange: () => void;
 }

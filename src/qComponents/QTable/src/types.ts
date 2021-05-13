@@ -1,9 +1,8 @@
-import type { Ref, ComputedRef } from 'vue';
-
 export interface StickyConfig {
-  isStickable: ComputedRef<boolean>;
-  isSticked: Ref<boolean>;
-  position: ComputedRef<string>;
-  offset: ComputedRef<number>;
-  zIndex: Ref<number>;
+  isStickable: boolean;
+  isSticked: boolean;
+  isLastSticked: boolean;
+  position: string;
+  offset: number;
+  zIndex: number;
 }

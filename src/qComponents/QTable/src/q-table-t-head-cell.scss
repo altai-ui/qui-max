@@ -21,11 +21,20 @@
     position: sticky;
     z-index: 20;
     background-color: var(--color-tertiary-gray-light);
-    box-shadow: var(--box-shadow-pressed);
 
-    &_right {
-      box-shadow: 1px -1px 3px rgba(var(--color-rgb-white), 0.25),
-        -2px 1px 3px rgba(var(--color-rgb-blue), 0.4);
+    &_last {
+      &.q-table-t-head-cell_sticked {
+        &_right {
+          border-top-left-radius: var(--border-radius-base);
+          box-shadow: 1px -1px 3px rgba(var(--color-rgb-white), 0.25),
+            -1px 1px 3px rgba(var(--color-rgb-blue), 0.4);
+        }
+
+        &_left {
+          border-top-right-radius: var(--border-radius-base);
+          box-shadow: var(--box-shadow-pressed);
+        }
+      }
     }
   }
 

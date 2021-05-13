@@ -2,6 +2,7 @@ import { Ref, ComputedRef } from 'vue';
 
 export interface QScrollbarProvider {
   wrap: Ref<Nullable<HTMLElement>>;
+  sizeWidth: Ref<string>;
   moveXInPx: Ref<number>;
 }
 

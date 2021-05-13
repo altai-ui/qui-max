@@ -1,5 +1,15 @@
-import { ref, computed, inject, onMounted, watch, nextTick, Ref } from 'vue';
+import {
+  ref,
+  computed,
+  inject,
+  onMounted,
+  watch,
+  nextTick,
+  Ref,
+  reactive
+} from 'vue';
 
+import type { QScrollbarProvider } from '@/qComponents/QScrollbar';
 import type {
   QTableContainerProvider,
   ExtendedColumn
@@ -14,6 +24,10 @@ const useSticky = (
   column: Ref<ExtendedColumn>,
   columnIndex: Ref<number>
 ): StickyConfig => {
+  const qScrollbar = inject<QScrollbarProvider>(
+    'qScrollbar',
+    {} as QScrollbarProvider
+  );
   const QTableContainer = inject<QTableContainerProvider>(
     'qTableContainer',
     {} as QTableContainerProvider
@@ -49,6 +63,13 @@ const useSticky = (
       .reduce((acc: number, width: number): number => acc + width, 0);
   });
 
+  const isLastSticked = computed<boolean>(
+    () =>
+      qTableT.stickedRightColumnList.value.sort()[0] === columnIndex.value ||
+      qTableT.stickedLeftColumnList.value.sort().slice(-1)[0] ===
+        columnIndex.value
+  );
+
   const checkSticky = (value: number): void => {
     if (position.value === 'left') {
       isSticked.value = value > triggerPoint.value - offset.value;
@@ -60,8 +81,26 @@ const useSticky = (
 
   if (isStickable.value) {
     watch(
-      () => qTableT.moveXInPx?.value,
+      isSticked,
       value => {
+        if (value) {
+          if (position.value === 'left')
+            qTableT.stickedLeftColumnList.value.push(columnIndex.value);
+          if (position.value === 'right')
+            qTableT.stickedRightColumnList.value.push(columnIndex.value);
+        } else {
+          if (position.value === 'left')
+            qTableT.stickedLeftColumnList.value.sort().pop();
+          if (position.value === 'right')
+            qTableT.stickedRightColumnList.value.sort().shift();
+        }
+      },
+      { immediate: true }
+    );
+
+    watch(
+      [qScrollbar.moveXInPx, qScrollbar.sizeWidth],
+      ([value]) => {
         nextTick(() => checkSticky(value ?? 0));
       },
       { immediate: true }
@@ -77,8 +116,8 @@ const useSticky = (
 
     zIndex.value =
       position.value === 'left'
-        ? zIndex.value + columnIndex.value
-        : zIndex.value - columnIndex.value;
+        ? zIndex.value - columnIndex.value
+        : zIndex.value + columnIndex.value;
 
     qTableT.stickyOffsetLeftArr.value.push(
       isStickable.value && position.value === 'left'
@@ -97,13 +136,14 @@ const useSticky = (
     }
   });
 
-  return {
+  return reactive({
     isStickable,
     isSticked,
+    isLastSticked,
     position,
     offset,
     zIndex
-  };
+  });
 };
 
 export default useSticky;

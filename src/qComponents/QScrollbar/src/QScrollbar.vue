@@ -208,7 +208,7 @@ export default defineComponent({
       }
     );
 
-    provide<QScrollbarProvider>('qScrollbar', { wrap, moveXInPx });
+    provide<QScrollbarProvider>('qScrollbar', { wrap, sizeWidth, moveXInPx });
 
     return {
       root,

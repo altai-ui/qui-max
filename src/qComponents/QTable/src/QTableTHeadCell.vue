@@ -60,9 +60,9 @@ export default defineComponent({
 
     const cellClasses = computed<Record<string, boolean>>(() => ({
       'q-table-t-head-cell': true,
-      'q-table-t-head-cell_sticked': sticky.isSticked.value,
-      [`q-table-t-head-cell_sticked_${sticky.position.value}`]: sticky.isSticked
-        .value,
+      'q-table-t-head-cell_sticked': sticky.isSticked,
+      'q-table-t-head-cell_sticked_last': sticky.isLastSticked,
+      [`q-table-t-head-cell_sticked_${sticky.position}`]: sticky.isSticked,
       'q-table-t-head-cell_sortable': isSortable.value,
       'q-table-t-head-cell_sorted':
         isCurrentSorting.value && Boolean(props.sortBy?.direction)
@@ -71,10 +71,8 @@ export default defineComponent({
     const cellStyles = computed<Record<string, string>>(() => ({
       minWidth: props.column.minWidth ?? '',
       '--group-color': props.column.group.color ?? '',
-      zIndex: sticky.isSticked.value ? String(sticky.zIndex.value) : '',
-      [sticky.position.value]: sticky.isSticked.value
-        ? `${sticky.offset.value}px`
-        : ''
+      zIndex: sticky.isSticked ? String(sticky.zIndex) : '',
+      [sticky.position]: sticky.isSticked ? `${sticky.offset}px` : ''
     }));
 
     const currentSlot = computed<Slot | undefined>(() => {

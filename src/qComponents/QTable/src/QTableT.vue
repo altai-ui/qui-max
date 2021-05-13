@@ -25,12 +25,9 @@ import {
   ref,
   computed,
   provide,
-  onBeforeUpdate,
-  UnwrapRef
+  onBeforeUpdate
 } from 'vue';
 import { isEmpty } from 'lodash-es';
-
-import type { QScrollbarProvider } from '@/qComponents/QScrollbar';
 
 import QTableTBody from './QTableTBody.vue';
 import QTableTColgroup from './QTableTColgroup.vue';
@@ -52,8 +49,7 @@ export default defineComponent({
   },
 
   setup(): QTableTInstance {
-    const qTable = inject<QTableProvider | null>('qTable', null);
-    const qScrollbar = inject<QScrollbarProvider | null>('qScrollbar', null);
+    const qTable = inject<QTableProvider>('qTable', {} as QTableProvider);
 
     const isColgroupShown = computed<boolean>(() =>
       Boolean(qTable?.fixedLayout.value)
@@ -65,19 +61,24 @@ export default defineComponent({
       'q-table-t_fixed': isColgroupShown.value
     }));
 
-    const stickyConfig = ref<UnwrapRef<StickyConfig>[]>([]);
+    const stickyConfig = ref<StickyConfig[]>([]);
+    const stickedLeftColumnList = ref<number[]>([]);
+    const stickedRightColumnList = ref<number[]>([]);
     const stickyOffsetLeftArr = ref<number[]>([]);
     const stickyOffsetRightArr = ref<number[]>([]);
 
     onBeforeUpdate(() => {
       stickyConfig.value = [];
+      stickedLeftColumnList.value = [];
+      stickedRightColumnList.value = [];
       stickyOffsetLeftArr.value = [];
       stickyOffsetRightArr.value = [];
     });
 
     provide<QTableTProvider>('qTableT', {
-      moveXInPx: qScrollbar?.moveXInPx ?? null,
       stickyConfig,
+      stickedLeftColumnList,
+      stickedRightColumnList,
       stickyOffsetLeftArr,
       stickyOffsetRightArr
     });

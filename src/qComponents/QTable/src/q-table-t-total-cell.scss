@@ -16,11 +16,18 @@
   &_sticked {
     position: sticky;
     z-index: 20;
-    box-shadow: var(--box-shadow-pressed);
 
-    &_right {
-      box-shadow: 1px -1px 3px rgba(var(--color-rgb-white), 0.25),
-        -2px 1px 3px rgba(var(--color-rgb-blue), 0.4);
+    &_last {
+      &.q-table-t-total-cell_sticked {
+        &_right {
+          box-shadow: 1px -1px 3px rgba(var(--color-rgb-white), 0.25),
+            -1px 1px 3px rgba(var(--color-rgb-blue), 0.4);
+        }
+
+        &_left {
+          box-shadow: var(--box-shadow-pressed);
+        }
+      }
     }
   }
 

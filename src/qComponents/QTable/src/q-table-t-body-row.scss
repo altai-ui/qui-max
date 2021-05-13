@@ -1,11 +1,11 @@
 .q-table-t-body-row {
   position: relative;
   overflow: hidden;
-  box-shadow: var(--box-shadow-pressed);
+  box-shadow: var(--table-box-shadow-base);
 
   &::after {
     position: absolute;
-    top: 1px;
+    top: 0;
     bottom: 0;
     left: 0;
     z-index: 20;
@@ -13,6 +13,10 @@
     width: 4px;
     content: '';
     background-color: var(--row-custom-border-color, transparent);
+  }
+
+  &:not(:first-child)::after {
+    top: 1px;
   }
 
   &:last-child {
@@ -24,7 +28,7 @@
     }
   }
 
-  .q-table:not(.q-table_has-total) &:nth-child(2) {
+  .q-table:not(.q-table_has-total) &:first-child {
     border-top-right-radius: var(--border-radius-base);
 
     &,

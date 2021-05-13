@@ -61,6 +61,7 @@ export default defineComponent({
     const cellClasses = computed<Record<string, boolean>>(() => ({
       'q-table-t-head-cell': true,
       'q-table-t-head-cell_sticked': sticky.isSticked,
+      'q-table-t-head-cell_sticked_first': sticky.isFirstSticked,
       'q-table-t-head-cell_sticked_last': sticky.isLastSticked,
       [`q-table-t-head-cell_sticked_${sticky.position}`]: sticky.isSticked,
       'q-table-t-head-cell_sortable': isSortable.value,

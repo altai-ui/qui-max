@@ -49,6 +49,13 @@ export default defineComponent({
 
   props: {
     /**
+     * Show/hide grid view
+     */
+    grid: {
+      type: Boolean,
+      default: false
+    },
+    /**
      * do not shrink column's width as native table does
      * (change `defaultColWidth` or pass the `width` to each column object for managing the width)
      */
@@ -162,6 +169,7 @@ export default defineComponent({
 
     provide<QTableProvider>('qTable', {
       checkedRows,
+      grided: toRef(props, 'grid'),
       fixedLayout: toRef(props, 'fixedLayout'),
       defaultColWidth: toRef(props, 'defaultColWidth'),
       selectionColumn: toRef(props, 'selectionColumn'),

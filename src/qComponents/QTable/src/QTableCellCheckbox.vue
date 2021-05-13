@@ -47,6 +47,7 @@ export default defineComponent({
     const rootClasses = computed<Record<string, boolean>>(() => ({
       [props.baseClass]: true,
       [`${props.baseClass}_sticked`]: qTableT.selectionColumn.isSticked,
+      [`${props.baseClass}_sticked_first`]: qTableT.selectionColumn.isSticked,
       [`${props.baseClass}_sticked_last`]: qTableT.selectionColumn
         .isLastSticked,
       [`${props.baseClass}_sticked_left`]: qTableT.selectionColumn.isSticked

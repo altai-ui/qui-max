@@ -78,11 +78,17 @@ const useSticky = (
         columnIndex.value
   );
 
+  const isFirstSticked = computed<boolean>(
+    () =>
+      qTableT.stickedRightColumnList.value.sort().slice(-1)[0] ===
+        columnIndex.value ||
+      (!qTableT.isSelectionColumnStickable.value &&
+        qTableT.stickedLeftColumnList.value.sort()[0] === columnIndex.value)
+  );
+
   const checkSticky = (value: number): void => {
     if (position.value === 'left') {
-      isSticked.value =
-        value >
-        triggerPoint.value - offset.value - selectionColumnCorrection.value;
+      isSticked.value = value > triggerPoint.value - offset.value;
     } else {
       const parentWidth = root.value?.offsetParent?.clientWidth ?? 0;
       isSticked.value = parentWidth + value < triggerPoint.value + offset.value;
@@ -149,6 +155,7 @@ const useSticky = (
   return reactive({
     isStickable,
     isSticked,
+    isFirstSticked,
     isLastSticked,
     position,
     offset,

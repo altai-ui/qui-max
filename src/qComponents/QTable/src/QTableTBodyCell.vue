@@ -60,6 +60,7 @@ export default defineComponent({
     const rootClasses = computed<Record<string, boolean>>(() => ({
       'q-table-t-body-cell': true,
       'q-table-t-body-cell_sticked': sticky.isSticked.value,
+      'q-table-t-body-cell_sticked_first': sticky.isFirstSticked.value,
       'q-table-t-body-cell_sticked_last': sticky.isLastSticked.value,
       [`q-table-t-body-cell_sticked_${sticky.position.value}`]: sticky.isSticked
         .value

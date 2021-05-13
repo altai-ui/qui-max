@@ -3,6 +3,18 @@
   vertical-align: middle;
   background-color: var(--color-tertiary-gray-light);
 
+  .q-table-t_grided &.q-table-t-body-cell {
+    &:not(:last-child):not(.q-table-t-body-cell_sticked),
+    &.q-table-t-body-cell_sticked_left:not(.q-table-t-body-cell_sticked_last),
+    &.q-table-t-body-cell_sticked_right:not(.q-table-t-body-cell_sticked_first) {
+      border-right: 1px solid var(--color-tertiary-gray-dark);
+    }
+  }
+
+  .q-table-t-body-row:not(:first-child) & {
+    border-top: 1px solid var(--color-tertiary-gray-dark);
+  }
+
   .q-table-t-body-row:last-child & {
     &:first-child {
       border-bottom-left-radius: var(--border-radius-base);
@@ -13,7 +25,7 @@
     }
   }
 
-  .q-table:not(.q-table_has-total) .q-table-t-body-row:nth-child(2) & {
+  .q-table:not(.q-table_has-total) .q-table-t-body-row:first-child & {
     border-top-left-radius: var(--border-radius-base);
     border-top-right-radius: var(--border-radius-base);
   }
@@ -25,12 +37,11 @@
     &_last {
       &.q-table-t-body-cell_sticked {
         &_right {
-          box-shadow: 1px -1px 3px rgba(var(--color-rgb-white), 0.25),
-            -1px 1px 3px rgba(var(--color-rgb-blue), 0.4);
+          box-shadow: var(--table-box-shadow-inverted);
         }
 
         &_left {
-          box-shadow: var(--box-shadow-pressed);
+          box-shadow: var(--table-box-shadow-base);
         }
 
         .q-table-t-body-row:last-child & {
@@ -53,8 +64,24 @@
     align-items: center;
     padding: 12px 16px 12px 24px;
 
+    .q-table-t-body-row:not(:first-child) & {
+      padding-top: 11px;
+    }
+
     .q-table-t-body-cell:first-child & {
       padding-left: 16px;
+    }
+
+    .q-table-t_grided
+      .q-table-t-body-cell:not(:last-child):not(.q-table-t-body-cell_sticked)
+      &,
+    .q-table-t_grided
+      .q-table-t-body-cell.q-table-t-body-cell_sticked_left:not(.q-table-t-body-cell_sticked_last)
+      &,
+    .q-table-t_grided
+      .q-table-t-body-cell.q-table-t-body-cell_sticked_right:not(.q-table-t-body-cell_sticked_first)
+      & {
+      padding-right: 15px;
     }
   }
 

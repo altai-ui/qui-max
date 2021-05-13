@@ -74,9 +74,12 @@ export default defineComponent({
     const stickyOffsetLeftArr = ref<number[]>([]);
     const stickyOffsetRightArr = ref<number[]>([]);
 
-    const isLastSticked = computed(() => !stickedLeftColumnList.value.length);
+    const isSticked = ref<boolean>(false);
+    const isLastSticked = computed(
+      () => isSticked.value && !stickedLeftColumnList.value.length
+    );
     const selectionColumn = reactive({
-      isSticked: false,
+      isSticked,
       isLastSticked
     });
 
@@ -87,7 +90,7 @@ export default defineComponent({
     const thead = ref<HTMLElement | null>(null);
 
     const checkSticky = (value: number): void => {
-      selectionColumn.isSticked = value > (thead.value?.offsetLeft ?? 0);
+      isSticked.value = value > (thead.value?.offsetLeft ?? 0);
     };
 
     watch(
@@ -102,7 +105,8 @@ export default defineComponent({
 
     const rootClasses = computed<Record<string, boolean>>(() => ({
       'q-table-t': true,
-      'q-table-t_fixed': isColgroupShown.value
+      'q-table-t_fixed': isColgroupShown.value,
+      'q-table-t_grided': Boolean(qTable.grided.value)
     }));
 
     onBeforeUpdate(() => {

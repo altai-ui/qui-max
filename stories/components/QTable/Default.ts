@@ -35,6 +35,7 @@ const QTableStory: Story<QTableProps> = args =>
         v-model:checked-rows="checkedRows"
         v-model:sort-by="sortBy"
         :fixed-layout="args.fixedLayout"
+        :grid="args.grid"
         :groups-of-columns="args.groupsOfColumns"
         :rows="args.rows"
         :total="args.total"

@@ -3,10 +3,15 @@
 @import './q-table-t-body-cell.scss';
 @import './q-table-t-body-row.scss';
 @import './q-table-t-body.scss';
+@import './q-table-t-head.scss';
 @import './q-table-t-head-cell.scss';
 @import './q-table-t-total-cell.scss';
 @import './q-table-t-total.scss';
 
 .q-table {
+  --table-box-shadow-base: var(--box-shadow-pressed);
+  --table-box-shadow-inverted: 1px -1px 3px rgba(var(--color-rgb-white), 0.25),
+    -1px 1px 3px rgba(var(--color-rgb-blue), 0.4);
+
   text-align: left;
 }

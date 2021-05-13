@@ -3,6 +3,8 @@
   vertical-align: bottom;
 
   .q-table_has-color-groups & {
+    background-color: var(--color-tertiary-gray-light);
+
     &::before {
       position: absolute;
       top: 0;
@@ -15,6 +17,25 @@
       border-top-style: solid;
       border-top-width: 4px;
     }
+
+    &:not(.q-table-t-head-cell_sticked):first-child {
+      &,
+      &::before {
+        border-top-left-radius: var(--border-radius-base);
+      }
+    }
+
+    &:not(.q-table-t-head-cell_sticked):last-child {
+      &,
+      &::before {
+        border-top-right-radius: var(--border-radius-base);
+      }
+    }
+  }
+  .q-table_has-color-groups
+    .q-table-t_grided
+    &:not(:last-child):not(.q-table-t-head-cell_sticked) {
+    border-right: 1px solid var(--color-tertiary-gray-dark);
   }
 
   &_sticked {
@@ -22,17 +43,23 @@
     z-index: 20;
     background-color: var(--color-tertiary-gray-light);
 
+    .q-table-t_grided &.q-table-t-head-cell {
+      &.q-table-t-head-cell_sticked_left:not(.q-table-t-head-cell_sticked_last),
+      &.q-table-t-head-cell_sticked_right:not(.q-table-t-head-cell_sticked_first) {
+        border-right: 1px solid var(--color-tertiary-gray-dark);
+      }
+    }
+
     &_last {
       &.q-table-t-head-cell_sticked {
         &_right {
           border-top-left-radius: var(--border-radius-base);
-          box-shadow: 1px -1px 3px rgba(var(--color-rgb-white), 0.25),
-            -1px 1px 3px rgba(var(--color-rgb-blue), 0.4);
+          box-shadow: var(--table-box-shadow-inverted);
         }
 
         &_left {
           border-top-right-radius: var(--border-radius-base);
-          box-shadow: var(--box-shadow-pressed);
+          box-shadow: var(--table-box-shadow-base);
         }
       }
     }
@@ -47,6 +74,13 @@
 
     .q-table-t-head-cell:first-child & {
       padding-left: 16px;
+    }
+
+    .q-table-t_grided .q-table-t-head-cell_sticked_right &,
+    .q-table-t_grided
+      .q-table-t-head-cell:not(:last-child):not(.q-table-t-head-cell_sticked_last):not(.q-table-t-head-cell_sticked_right)
+      & {
+      padding-right: 15px;
     }
   }
 

@@ -21,8 +21,7 @@ import type {
   QTableContainerProvider
 } from './QTableContainer';
 import type { QTableTColgroupInstance } from './QTableTColgroup.d';
-
-const CHECKBOX_COL_WIDTH = 56;
+import { CHECKBOX_COL_WIDTH } from './config';
 
 export default defineComponent({
   name: 'QTableTColgroup',

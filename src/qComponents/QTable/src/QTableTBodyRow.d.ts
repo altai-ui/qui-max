@@ -15,6 +15,7 @@ export interface QTableTBodyRowProps {
 }
 
 export interface QTableTBodyRowInstance {
+  isSpacerShown: ComputedRef<boolean>;
   isSelectable: Nullable<ComputedRef<boolean>>;
   isChecked: ComputedRef<boolean>;
   rootClasses: ComputedRef<RootClasses>;

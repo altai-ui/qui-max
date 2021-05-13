@@ -1,5 +1,8 @@
 <template>
-  <tr class="q-table-t-body__space" />
+  <tr
+    v-if="isSpacerShown"
+    class="q-table-t-body__space"
+  />
   <tr
     :class="rootClasses"
     :style="rootStyles"
@@ -26,6 +29,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType, computed, inject } from 'vue';
+import { isEmpty } from 'lodash-es';
 
 import { randId } from '@/qComponents/helpers';
 import QTableTBodyCell from './QTableTBodyCell.vue';
@@ -68,6 +72,10 @@ export default defineComponent({
     const qTableContainer = inject<QTableContainerProvider | null>(
       'qTableContainer',
       null
+    );
+
+    const isSpacerShown = computed<boolean>(
+      () => Boolean(props.rowIndex) || !isEmpty(qTable?.total.value)
     );
 
     const isChecked = computed<boolean>(
@@ -128,6 +136,7 @@ export default defineComponent({
     };
 
     return {
+      isSpacerShown,
       isSelectable: qTableContainer?.isSelectable ?? null,
       isChecked,
       rootClasses,

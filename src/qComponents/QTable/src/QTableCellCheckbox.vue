@@ -4,11 +4,11 @@ import {
   defineComponent,
   resolveComponent,
   computed,
-  // inject,
+  inject,
   VNode
 } from 'vue';
 
-// import type { QTableTProvider } from './QTableT';
+import type { QTableTProvider } from './QTableT';
 import type {
   QTableCellCheckboxProps,
   QTableCellCheckboxInstance
@@ -42,18 +42,23 @@ export default defineComponent({
   },
 
   setup(props: QTableCellCheckboxProps): QTableCellCheckboxInstance {
-    // const qTableT = inject<QTableTProvider | null>('qTableT', null);
+    const qTableT = inject<QTableTProvider>('qTableT', {} as QTableTProvider);
 
-    const baseClass = computed<Record<string, boolean>>(() => ({
-      [props.baseClass]: true
-      // [`${props.baseClass}_sticked`]: Boolean(
-      //   qTableT?.isSelectionColumnSticky.value
-      // )
+    const rootClasses = computed<Record<string, boolean>>(() => ({
+      [props.baseClass]: true,
+      [`${props.baseClass}_sticked`]: qTableT.selectionColumn.isSticked,
+      [`${props.baseClass}_sticked_last`]: qTableT.selectionColumn
+        .isLastSticked,
+      [`${props.baseClass}_sticked_left`]: qTableT.selectionColumn.isSticked
+    }));
+
+    const rootStyles = computed<Record<string, string>>(() => ({
+      left: qTableT.selectionColumn.isSticked ? '0' : ''
     }));
 
     const QCheckbox = resolveComponent('q-checkbox');
     return (): VNode =>
-      h(props.baseTag, { class: baseClass.value }, [
+      h(props.baseTag, { class: rootClasses.value, style: rootStyles.value }, [
         h('div', { class: `${props.baseClass}__container` }, [
           h('div', { class: `${props.baseClass}__content` }, [
             props.isCheckable &&

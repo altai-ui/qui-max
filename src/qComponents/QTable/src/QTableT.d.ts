@@ -3,6 +3,11 @@ import { Ref, ComputedRef, UnwrapRef } from 'vue';
 import type { StickyConfig } from './types';
 
 export interface QTableTProvider {
+  selectionColumn: {
+    isSticked: boolean;
+    isLastSticked: boolean;
+  };
+  isSelectionColumnStickable: ComputedRef<boolean>;
   stickyConfig: Ref<UnwrapRef<StickyConfig>[]>;
   stickedLeftColumnList: Ref<number[]>;
   stickedRightColumnList: Ref<number[]>;
@@ -11,6 +16,7 @@ export interface QTableTProvider {
 }
 
 export interface QTableTInstance {
+  thead: Ref<Nullable<HTMLElement>>;
   isColgroupShown: ComputedRef<boolean>;
   isTotalShown: ComputedRef<boolean>;
   rootClasses: ComputedRef<Record<string, boolean>>;

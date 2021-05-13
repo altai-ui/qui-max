@@ -5,6 +5,7 @@
   padding-left: 32px;
 
   &_fixed {
+    width: max-content;
     table-layout: fixed;
   }
 }

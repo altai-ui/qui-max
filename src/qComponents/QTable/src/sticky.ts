@@ -16,6 +16,7 @@ import type {
 } from './QTableContainer';
 import type { QTableTProvider } from './QTableT';
 import type { StickyConfig } from './types';
+import { CHECKBOX_COL_WIDTH } from './config';
 
 const BASE_Z_INDEX = 20;
 
@@ -35,6 +36,10 @@ const useSticky = (
 
   const qTableT = inject<QTableTProvider>('qTableT', {} as QTableTProvider);
 
+  const selectionColumnCorrection = computed<number>(() =>
+    qTableT.isSelectionColumnStickable ? CHECKBOX_COL_WIDTH : 0
+  );
+
   const isSticked = ref<boolean>(false);
   const triggerPoint = ref<number>(0);
 
@@ -50,9 +55,12 @@ const useSticky = (
     if (!isStickable.value) return 0;
 
     if (position.value === 'left') {
-      return qTableT.stickyOffsetLeftArr.value
-        .slice(0, columnIndex.value)
-        .reduce((acc: number, width: number): number => acc + width, 0);
+      return (
+        qTableT.stickyOffsetLeftArr.value
+          .slice(0, columnIndex.value)
+          .reduce((acc: number, width: number): number => acc + width, 0) +
+        selectionColumnCorrection.value
+      );
     }
 
     return qTableT.stickyOffsetRightArr.value
@@ -72,7 +80,9 @@ const useSticky = (
 
   const checkSticky = (value: number): void => {
     if (position.value === 'left') {
-      isSticked.value = value > triggerPoint.value - offset.value;
+      isSticked.value =
+        value >
+        triggerPoint.value - offset.value - selectionColumnCorrection.value;
     } else {
       const parentWidth = root.value?.offsetParent?.clientWidth ?? 0;
       isSticked.value = parentWidth + value < triggerPoint.value + offset.value;

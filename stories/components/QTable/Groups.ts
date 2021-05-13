@@ -36,13 +36,13 @@ Groups.args = {
     },
     {
       color: '#74aff8',
-      align: 'right',
       key: 'three',
       columns: [
         {
           key: 'col4',
           value: 'Column 4',
           sortable: true,
+          align: 'right',
           slots: {
             header: 'customHeader',
             row: 'customRow'

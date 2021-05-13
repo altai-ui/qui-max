@@ -72,6 +72,10 @@
     align-items: flex-end;
     padding: 16px 16px 16px 24px;
 
+    .q-table-t-head-cell_align_right & {
+      flex-direction: row-reverse;
+    }
+
     .q-table-t-head-cell:first-child & {
       padding-left: 16px;
     }

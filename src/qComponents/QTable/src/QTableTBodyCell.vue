@@ -59,6 +59,9 @@ export default defineComponent({
 
     const rootClasses = computed<Record<string, boolean>>(() => ({
       'q-table-t-body-cell': true,
+      [`q-table-t-body-cell_align_${props.column.align ?? ''}`]: Boolean(
+        props.column.align
+      ),
       'q-table-t-body-cell_sticked': sticky.isSticked.value,
       'q-table-t-body-cell_sticked_first': sticky.isFirstSticked.value,
       'q-table-t-body-cell_sticked_last': sticky.isLastSticked.value,

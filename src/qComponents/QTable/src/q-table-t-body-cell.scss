@@ -57,6 +57,10 @@
     }
   }
 
+  &_align_right {
+    text-align: right;
+  }
+
   &__container {
     position: relative;
     z-index: 15;

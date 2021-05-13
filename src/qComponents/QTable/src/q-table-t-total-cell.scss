@@ -43,6 +43,10 @@
     }
   }
 
+  &_align_right {
+    text-align: right;
+  }
+
   &__container {
     position: relative;
     z-index: 15;
@@ -69,6 +73,7 @@
   }
 
   &__content {
+    width: 100%;
     font-size: var(--font-size-base);
     font-weight: var(--font-weight-base);
     line-height: var(--line-height-base);

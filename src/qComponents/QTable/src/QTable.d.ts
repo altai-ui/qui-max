@@ -11,6 +11,7 @@ interface Column {
   key: string;
   value: Nullable<string | number>;
   sortable?: boolean;
+  align?: 'left' | 'right';
   slots?: Record<string, string>;
   width?: string;
   minWidth?: string;
@@ -29,7 +30,6 @@ export interface GroupOfColumns {
   columns: Column[];
   color?: string;
   draggabble?: boolean;
-  align?: 'left' | 'right';
 }
 export interface SortBy {
   key: Nullable<string>;

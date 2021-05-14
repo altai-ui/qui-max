@@ -178,8 +178,11 @@ export default defineComponent({
     const updateSortBy = (value: QTablePropSortBy): void => {
       ctx.emit(UPDATE_SORT_BY_EVENT, value);
     };
-    const emitRowClick = (value: Record<string, unknown>): void => {
-      ctx.emit(ROW_CLICK_EVENT, value);
+    const emitRowClick = (
+      row: Record<string, unknown>,
+      rowIndex: number
+    ): void => {
+      ctx.emit(ROW_CLICK_EVENT, row, rowIndex);
     };
 
     provide<QTableProvider>('qTable', {

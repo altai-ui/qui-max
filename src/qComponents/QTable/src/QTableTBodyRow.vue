@@ -130,7 +130,7 @@ export default defineComponent({
     };
 
     const handleRowClick = (): void => {
-      qTable.emitRowClick(props.row);
+      qTable.emitRowClick(props.row, props.rowIndex);
     };
 
     return {

@@ -37,6 +37,7 @@ import type {
 
 const UPDATE_CHECKED_ROWS_EVENT = 'update:checkedRows';
 const UPDATE_SORT_BY_EVENT = 'update:sortBy';
+const ROW_CLICK_EVENT = 'row-click';
 
 export default defineComponent({
   name: 'QTable',
@@ -150,10 +151,13 @@ export default defineComponent({
     }
   },
 
-  emits: [UPDATE_CHECKED_ROWS_EVENT, UPDATE_SORT_BY_EVENT],
+  emits: [UPDATE_CHECKED_ROWS_EVENT, UPDATE_SORT_BY_EVENT, ROW_CLICK_EVENT],
 
   setup(props: QTableProps, ctx): QTableInstance {
     const isTableEmpty = computed<boolean>(() => !props.rows.length);
+    const isRowClickable = computed<boolean>(() =>
+      Boolean(ctx.attrs.onRowClick)
+    );
 
     const hasColorGroups = computed<boolean>(() =>
       props.groupsOfColumns.some(({ color }) => Boolean(color))
@@ -174,6 +178,9 @@ export default defineComponent({
     const updateSortBy = (value: QTablePropSortBy): void => {
       ctx.emit(UPDATE_SORT_BY_EVENT, value);
     };
+    const emitRowClick = (value: Record<string, unknown>): void => {
+      ctx.emit(ROW_CLICK_EVENT, value);
+    };
 
     provide<QTableProvider>('qTable', {
       checkedRows,
@@ -190,8 +197,10 @@ export default defineComponent({
       customRowStyle: toRef(props, 'customRowStyle'),
       sortBy: toRef(props, 'sortBy'),
       slots: ctx.slots,
+      isRowClickable,
       updateCheckedRows,
-      updateSortBy
+      updateSortBy,
+      emitRowClick
     });
 
     return {

@@ -22,5 +22,6 @@ export interface QTableTBodyRowInstance {
   randId: (prefix: string) => string;
   columnList: ComputedRef<ExtendedColumn[]>;
   getRowValue: (key: string) => Nullable<unknown>;
+  handleRowClick: () => void;
   handleCheckboxChange: () => void;
 }

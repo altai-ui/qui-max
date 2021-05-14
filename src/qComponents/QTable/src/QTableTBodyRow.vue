@@ -2,6 +2,7 @@
   <tr
     :class="rootClasses"
     :style="rootStyles"
+    @click="handleRowClick"
   >
     <q-table-cell-checkbox
       v-if="isSelectable"
@@ -63,10 +64,10 @@ export default defineComponent({
   },
 
   setup(props: QTableTBodyRowProps): QTableTBodyRowInstance {
-    const qTable = inject<QTableProvider | null>('qTable', null);
-    const qTableContainer = inject<QTableContainerProvider | null>(
+    const qTable = inject<QTableProvider>('qTable', {} as QTableProvider);
+    const qTableContainer = inject<QTableContainerProvider>(
       'qTableContainer',
-      null
+      {} as QTableContainerProvider
     );
 
     const isChecked = computed<boolean>(
@@ -75,6 +76,8 @@ export default defineComponent({
 
     const rootClasses = computed<RootClasses>(() => {
       const classes: RootClasses = ['q-table-t-body-row'];
+
+      if (qTable?.isRowClickable) classes.push('q-table-t-body-row_clickable');
 
       const getCustomClasses = qTable?.customRowClass.value;
 
@@ -126,6 +129,10 @@ export default defineComponent({
       qTable.updateCheckedRows(Array.from(checkedRowsSet));
     };
 
+    const handleRowClick = (): void => {
+      qTable.emitRowClick(props.row);
+    };
+
     return {
       isSelectable: qTableContainer?.isSelectable ?? null,
       isChecked,
@@ -134,6 +141,7 @@ export default defineComponent({
       randId,
       columnList,
       getRowValue,
+      handleRowClick,
       handleCheckboxChange
     };
   }

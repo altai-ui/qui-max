@@ -3,6 +3,11 @@
   vertical-align: middle;
   background-color: var(--color-tertiary-gray-light);
 
+  .q-table-t-body-row_clickable:hover & {
+    cursor: pointer;
+    background-color: var(--color-tertiary-gray);
+  }
+
   .q-table-t_grided &.q-table-t-body-cell {
     &:not(:last-child):not(.q-table-t-body-cell_sticked),
     &.q-table-t-body-cell_sticked_left:not(.q-table-t-body-cell_sticked_last),

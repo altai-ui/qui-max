@@ -91,8 +91,10 @@ export interface QTableProvider {
   customRowClass: Ref<QTablePropCustomRowClass>;
   customRowStyle: Ref<QTablePropCustomRowStyle>;
   slots: Readonly<Slots>;
+  isRowClickable: ComputedRef<boolean>;
   updateCheckedRows: (value: number[]) => void;
   updateSortBy: (value: QTablePropSortBy) => void;
+  emitRowClick: (value: Record<string, unknown>) => void;
 }
 
 export interface QTableInstance {

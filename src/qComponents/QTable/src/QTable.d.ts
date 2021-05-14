@@ -29,7 +29,7 @@ export interface GroupOfColumns {
   key: string;
   columns: Column[];
   color?: string;
-  draggabble?: boolean;
+  draggable?: boolean;
 }
 export interface SortBy {
   key: Nullable<string>;

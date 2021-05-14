@@ -82,7 +82,7 @@ export default defineComponent({
      * Each group MUST contain `key` and `columns` - array of objects.
      * Each group MAY contain:
      *  `color` (hex string) - column's header color.
-     *  `draggabble` (boolean) - whether to drag and drop columns inside the group.
+     *  `draggable` (boolean) - whether to drag and drop columns inside the group.
      *  `align` (left/right) - content's align.
      * Each column MUST contain `key` and `value`.
      * Each column MAY contain:
@@ -134,7 +134,7 @@ export default defineComponent({
       default: null
     },
     /**
-     * used to change 'loading file' text
+     * used to change 'No data' text
      */
     emptyText: {
       type: String,

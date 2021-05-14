@@ -6,7 +6,7 @@ export interface ExtendedColumn extends Column {
   group: {
     key: string;
     color?: string;
-    draggabble?: boolean;
+    draggable?: boolean;
     align?: 'left' | 'right';
   };
 }

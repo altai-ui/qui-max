@@ -59,6 +59,9 @@ export default defineComponent({
     }));
 
     const content = computed<VNode[] | string | number | null>(() => {
+      if (qTable.isLoading.value)
+        return [h('div', { class: 'q-table-t__skeleton' })];
+
       const slotName = props.column.slots?.total ?? 'total';
       const currentSlot = qTable.slots[slotName];
 

@@ -3,7 +3,7 @@ import { VNode } from 'vue';
 import type { ExtendedColumn } from './QTableContainer';
 
 export type QTableTBodyCellPropRow = Record<string, unknown>;
-export type QTableTBodyCellPropValue = unknown;
+export type QTableTBodyCellPropValue = Nullable<unknown>;
 
 export interface QTableTBodyCellProps {
   row: QTableTBodyCellPropRow;

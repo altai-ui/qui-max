@@ -63,6 +63,14 @@ export default defineComponent({
       type: Boolean,
       default: true
     },
+    isLoading: {
+      type: Boolean,
+      default: false
+    },
+    loadingRowCount: {
+      type: Number,
+      default: 30
+    },
     /**
      * Default columns width, required `fixedLayout: true`
      */
@@ -171,6 +179,8 @@ export default defineComponent({
       checkedRows,
       grided: toRef(props, 'grid'),
       fixedLayout: toRef(props, 'fixedLayout'),
+      isLoading: toRef(props, 'isLoading'),
+      loadingRowCount: toRef(props, 'loadingRowCount'),
       defaultColWidth: toRef(props, 'defaultColWidth'),
       selectionColumn: toRef(props, 'selectionColumn'),
       groupsOfColumns: toRef(props, 'groupsOfColumns'),

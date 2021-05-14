@@ -62,6 +62,8 @@ export type QTablePropCustomRowStyle = Nullable<
 export interface QTableProps {
   grid: Nullable<boolean>;
   fixedLayout: Nullable<boolean>;
+  isLoading: Nullable<boolean>;
+  loadingRowCount: Nullable<number>;
   defaultColWidth: Nullable<string>;
   selectionColumn: QTablePropSelectionColumn;
   groupsOfColumns: QTablePropGroupsOfColumns;
@@ -77,6 +79,8 @@ export interface QTableProps {
 export interface QTableProvider {
   grided: Ref<Nullable<boolean>>;
   fixedLayout: Ref<Nullable<boolean>>;
+  isLoading: Ref<Nullable<boolean>>;
+  loadingRowCount: Ref<Nullable<number>>;
   defaultColWidth: Ref<Nullable<string>>;
   selectionColumn: Ref<QTablePropSelectionColumn>;
   groupsOfColumns: Ref<QTablePropGroupsOfColumns>;

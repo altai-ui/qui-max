@@ -26,10 +26,14 @@ export default defineComponent({
   },
 
   setup(): QTableTBodyInstance {
-    const qTable = inject<QTableProvider | null>('qTable', null);
+    const qTable = inject<QTableProvider>('qTable', {} as QTableProvider);
 
-    const rowsList = computed<Record<string, unknown>[]>(
-      () => qTable?.rows.value ?? []
+    const mockedRows = computed<Record<string, unknown>[]>(() =>
+      Array.from({ length: qTable.loadingRowCount.value ?? 30 }, () => ({}))
+    );
+
+    const rowsList = computed<Record<string, unknown>[]>(() =>
+      qTable.isLoading.value ? mockedRows.value : qTable.rows.value
     );
 
     return {

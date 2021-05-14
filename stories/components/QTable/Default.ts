@@ -2,7 +2,6 @@
 import { Story } from '@storybook/vue3';
 import { defineComponent, ref } from 'vue';
 
-// import QCheckboxGroup from '@/qComponents/QCheckboxGroup';
 import type { QTableProps } from '@/qComponents/QTable';
 
 import { groupsOfColumns, sortBy as sortByParams, rows } from './args';
@@ -35,6 +34,7 @@ const QTableStory: Story<QTableProps> = args =>
         v-model:checked-rows="checkedRows"
         v-model:sort-by="sortBy"
         :fixed-layout="args.fixedLayout"
+        :is-loading="args.isLoading"
         :grid="args.grid"
         :groups-of-columns="args.groupsOfColumns"
         :rows="args.rows"

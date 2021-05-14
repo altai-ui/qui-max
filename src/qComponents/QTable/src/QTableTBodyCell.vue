@@ -47,7 +47,7 @@ export default defineComponent({
         Array,
         Object
       ] as PropType<QTableTBodyCellPropValue>,
-      required: true
+      default: null
     }
   },
 
@@ -80,12 +80,15 @@ export default defineComponent({
     }));
 
     const content = computed<VNode[] | string | number | null>(() => {
+      if (qTable.isLoading.value)
+        return [h('div', { class: 'q-table-t__skeleton' })];
+
       const slotName = props.column.slots?.row ?? 'row';
       const currentSlot = qTable?.slots[slotName];
 
-      const value = props.column.formatter
-        ? props.column.formatter(props.value, props.row, props.column)
-        : props.value;
+      const value =
+        props.column.formatter?.(props.value, props.row, props.column) ??
+        props.value;
 
       if (!currentSlot) return String(value ?? '');
 

@@ -8,6 +8,7 @@ import {
   VNode
 } from 'vue';
 
+import type { QTableProvider } from './QTable';
 import type { QTableTProvider } from './QTableT';
 import type {
   QTableCellCheckboxProps,
@@ -42,6 +43,7 @@ export default defineComponent({
   },
 
   setup(props: QTableCellCheckboxProps): QTableCellCheckboxInstance {
+    const qTable = inject<QTableProvider>('qTable', {} as QTableProvider);
     const qTableT = inject<QTableTProvider>('qTableT', {} as QTableTProvider);
 
     const rootClasses = computed<Record<string, boolean>>(() => ({
@@ -58,17 +60,23 @@ export default defineComponent({
     }));
 
     const QCheckbox = resolveComponent('q-checkbox');
+    const content = computed<VNode | null>(() => {
+      if (qTable.isLoading.value && props.isCheckable)
+        return h('div', { class: 'q-table-t__skeleton' });
+
+      if (!props.isCheckable) return null;
+
+      return h(QCheckbox, {
+        modelValue: props.checked,
+        indeterminate: props.indeterminate,
+        validateEvent: false
+      });
+    });
+
     return (): VNode =>
       h(props.baseTag, { class: rootClasses.value, style: rootStyles.value }, [
         h('div', { class: `${props.baseClass}__container` }, [
-          h('div', { class: `${props.baseClass}__content` }, [
-            props.isCheckable &&
-              h(QCheckbox, {
-                modelValue: props.checked,
-                indeterminate: props.indeterminate,
-                validateEvent: false
-              })
-          ])
+          h('div', { class: `${props.baseClass}__content` }, [content.value])
         ])
       ]);
   }

@@ -50,7 +50,7 @@ export default defineComponent({
 
   props: {
     /**
-     * Show/hide grid view
+     * whether QTable has vertical border
      */
     grid: {
       type: Boolean,
@@ -64,10 +64,16 @@ export default defineComponent({
       type: Boolean,
       default: true
     },
+    /**
+     * whether to show skeleton
+     */
     isLoading: {
       type: Boolean,
       default: false
     },
+    /**
+     * count of rows, when table is loading
+     */
     loadingRowCount: {
       type: Number,
       default: 30
@@ -91,16 +97,15 @@ export default defineComponent({
      * Each group MUST contain `key` and `columns` - array of objects.
      * Each group MAY contain:
      *  `color` (hex string) - column's header color.
-     *  `draggable` (boolean) - whether to drag and drop columns inside the group.
-     *  `align` (left/right) - content's align.
      * Each column MUST contain `key` and `value`.
      * Each column MAY contain:
-     *  `sortable`,
-     *  `slots`,
-     *  `width` (works with `fixedLayout: true`),
-     *  `minWidth` (works with `fixedLayout: false`),
-     *  `customCellClass`,
-     *  `formatter` (fn)
+     *  `sortable`.
+     *  `slots`.
+     *  `align` (left/right) - content's align.
+     *  `width` (works with `fixedLayout: true`).
+     *  `minWidth` (works with `fixedLayout: false`).
+     *  `customCellClass`.
+     *  `formatter` (fn).
      */
     groupsOfColumns: {
       type: Array as PropType<QTablePropGroupsOfColumns>,
@@ -120,10 +125,16 @@ export default defineComponent({
       type: Array as PropType<QTablePropRows>,
       required: true
     },
+    /**
+     * Array of checked rows indexs
+     */
     checkedRows: {
       type: Array as PropType<QTablePropCheckedRows>,
       default: null
     },
+    /**
+     * used to set sort the table
+     */
     sortBy: {
       type: Object as PropType<QTablePropSortBy>,
       default: null

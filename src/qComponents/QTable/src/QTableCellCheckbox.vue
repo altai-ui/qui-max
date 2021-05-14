@@ -15,6 +15,8 @@ import type {
   QTableCellCheckboxInstance
 } from './QTableCellCheckbox';
 
+const CHANGE_EVENT = 'change';
+
 export default defineComponent({
   name: 'QTableCellCheckbox',
   componentName: ' QTableCellCheckbox',
@@ -42,7 +44,9 @@ export default defineComponent({
     }
   },
 
-  setup(props: QTableCellCheckboxProps): QTableCellCheckboxInstance {
+  emits: [CHANGE_EVENT],
+
+  setup(props: QTableCellCheckboxProps, ctx): QTableCellCheckboxInstance {
     const qTable = inject<QTableProvider>('qTable', {} as QTableProvider);
     const qTableT = inject<QTableTProvider>('qTableT', {} as QTableTProvider);
 
@@ -59,6 +63,10 @@ export default defineComponent({
       left: qTableT.selectionColumn.isSticked ? '0' : ''
     }));
 
+    const handleCheckboxChange = (value: boolean): void => {
+      ctx.emit(CHANGE_EVENT, value);
+    };
+
     const QCheckbox = resolveComponent('q-checkbox');
     const content = computed<VNode | null>(() => {
       if (qTable.isLoading.value && props.isCheckable)
@@ -69,7 +77,8 @@ export default defineComponent({
       return h(QCheckbox, {
         modelValue: props.checked,
         indeterminate: props.indeterminate,
-        validateEvent: false
+        validateEvent: false,
+        onChange: handleCheckboxChange
       });
     });
 

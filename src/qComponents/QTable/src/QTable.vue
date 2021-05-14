@@ -154,7 +154,13 @@ export default defineComponent({
   emits: [UPDATE_CHECKED_ROWS_EVENT, UPDATE_SORT_BY_EVENT, ROW_CLICK_EVENT],
 
   setup(props: QTableProps, ctx): QTableInstance {
-    const isTableEmpty = computed<boolean>(() => !props.rows.length);
+    const isTableEmpty = computed<boolean>(() => {
+      const doesColumnsExist = props.groupsOfColumns.some(
+        ({ columns }) => columns.length
+      );
+
+      return !props.rows.length || !doesColumnsExist;
+    });
     const isRowClickable = computed<boolean>(() =>
       Boolean(ctx.attrs.onRowClick)
     );

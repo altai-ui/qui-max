@@ -3,8 +3,9 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 100%;
+  width: calc(100% - 64px);
   height: 228px;
+  margin: 8px 32px 16px;
   background-color: var(--color-tertiary-gray-light);
   border-radius: var(--border-radius-base);
   box-shadow: var(--table-box-shadow-base);

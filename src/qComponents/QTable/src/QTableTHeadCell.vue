@@ -73,10 +73,10 @@ export default defineComponent({
     }));
 
     const cellStyles = computed<Record<string, string>>(() => ({
-      minWidth: props.column.minWidth ?? '',
       '--group-color': props.column.group.color ?? '',
       zIndex: sticky.isSticked ? String(sticky.zIndex) : '',
-      [sticky.position]: sticky.isSticked ? `${sticky.offset}px` : ''
+      [sticky.position]: sticky.isSticked ? `${sticky.offset}px` : '',
+      minWidth: qTable?.fixedLayout.value ? props.column.minWidth ?? '' : ''
     }));
 
     const currentSlot = computed<Slot | undefined>(() => {

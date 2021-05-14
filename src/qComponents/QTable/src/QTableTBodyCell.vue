@@ -66,7 +66,10 @@ export default defineComponent({
       'q-table-t-body-cell_sticked_first': sticky.isFirstSticked.value,
       'q-table-t-body-cell_sticked_last': sticky.isLastSticked.value,
       [`q-table-t-body-cell_sticked_${sticky.position.value}`]: sticky.isSticked
-        .value
+        .value,
+      [props.column.customCellClass ?? '']: Boolean(
+        props.column.customCellClass
+      )
     }));
 
     const rootStyles = computed<Record<string, string>>(() => ({

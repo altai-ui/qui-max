@@ -15,7 +15,7 @@ import type {
   ExtendedColumn
 } from './QTableContainer';
 import type { QTableTProvider } from './QTableT';
-import type { StickyConfig } from './types';
+import type { StickyConfig } from './sticky.d';
 import { CHECKBOX_COL_WIDTH } from './config';
 
 const BASE_Z_INDEX = 20;

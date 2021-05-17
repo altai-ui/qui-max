@@ -1,12 +1,12 @@
-@import './q-table-empty.scss';
-@import './q-table-t.scss';
-@import './q-table-t-body-cell.scss';
-@import './q-table-t-body-row.scss';
-@import './q-table-t-body.scss';
-@import './q-table-t-head.scss';
-@import './q-table-t-head-cell.scss';
-@import './q-table-t-total-cell.scss';
-@import './q-table-t-total.scss';
+@import './QTableEmpty/q-table-empty.scss';
+@import './QTableT/q-table-t.scss';
+@import './QTableTHead/q-table-t-head.scss';
+@import './QTableTHead/q-table-t-head-cell.scss';
+@import './QTableTTotal/q-table-t-total-cell.scss';
+@import './QTableTTotal/q-table-t-total.scss';
+@import './QTableTBody/q-table-t-body-cell.scss';
+@import './QTableTBody/q-table-t-body-row.scss';
+@import './QTableTBody/q-table-t-body.scss';
 
 .q-table {
   --table-box-shadow-base: var(--box-shadow-pressed);

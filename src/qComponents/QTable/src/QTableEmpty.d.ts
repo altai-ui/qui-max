@@ -1,5 +1,5 @@
-import { ComputedRef } from 'vue';
-import { Composer } from 'vue-i18n';
+import type { ComputedRef } from 'vue';
+import type { Composer } from 'vue-i18n';
 
 export interface QTableEmptyProps {
   emptyText: Nullable<string>;

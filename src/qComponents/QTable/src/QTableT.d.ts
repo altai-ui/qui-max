@@ -1,4 +1,4 @@
-import { Ref, ComputedRef, UnwrapRef } from 'vue';
+import type { Ref, ComputedRef, UnwrapRef } from 'vue';
 
 import type { StickyConfig } from './sticky.d';
 

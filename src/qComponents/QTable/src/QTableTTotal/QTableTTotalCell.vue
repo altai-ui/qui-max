@@ -9,9 +9,9 @@ import {
   toRefs
 } from 'vue';
 
-import type { QTableProvider } from './QTable';
-import type { QTableTProvider } from './QTableT';
-import type { ExtendedColumn } from './QTableContainer';
+import type { QTableProvider } from '../QTable';
+import type { QTableTProvider } from '../QTableT/QTableT';
+import type { ExtendedColumn } from '../QTableContainer/QTableContainer';
 
 import type {
   QTableTTotalCellProps,
@@ -47,8 +47,8 @@ export default defineComponent({
       'q-table-t-total-cell_sticked': sticky.isSticked.value,
       'q-table-t-total-cell_sticked_first': sticky.isFirstSticked.value,
       'q-table-t-total-cell_sticked_last': sticky.isLastSticked.value,
-      [`q-table-t-total-cell_sticked_${sticky.position.value}`]: sticky
-        .isSticked.value
+      [`q-table-t-total-cell_sticked_${sticky.position.value}`]:
+        sticky.isSticked.value
     }));
 
     const rootStyles = computed<Record<string, string>>(() => ({

@@ -29,12 +29,12 @@ import { defineComponent, PropType, computed, inject } from 'vue';
 
 import { randId } from '@/qComponents/helpers';
 import QTableTBodyCell from './QTableTBodyCell.vue';
-import QTableCellCheckbox from './QTableCellCheckbox.vue';
-import type { QTableProvider } from './QTable';
+import QTableCellCheckbox from '../QTableCellCheckbox/QTableCellCheckbox.vue';
+import type { QTableProvider } from '../QTable';
 import type {
   ExtendedColumn,
   QTableContainerProvider
-} from './QTableContainer';
+} from '../QTableContainer/QTableContainer';
 import type {
   QTableTBodyRowProps,
   QTableTBodyRowPropRow,

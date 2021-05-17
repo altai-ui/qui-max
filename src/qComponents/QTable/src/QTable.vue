@@ -18,8 +18,8 @@
 import { defineComponent, PropType, computed, provide, toRef } from 'vue';
 import { isEmpty } from 'lodash-es';
 
-import QTableContainer from './QTableContainer.vue';
-import QTableEmpty from './QTableEmpty.vue';
+import QTableContainer from './QTableContainer/QTableContainer.vue';
+import QTableEmpty from './QTableEmpty/QTableEmpty.vue';
 
 import type {
   QTableProps,
@@ -143,14 +143,14 @@ export default defineComponent({
      * used to set classes for a row
      */
     customRowClass: {
-      type: (Function as unknown) as PropType<QTablePropCustomRowClass>,
+      type: Function as unknown as PropType<QTablePropCustomRowClass>,
       default: null
     },
     /**
      * used to set styles for a row
      */
     customRowStyle: {
-      type: (Function as unknown) as PropType<QTablePropCustomRowStyle>,
+      type: Function as unknown as PropType<QTablePropCustomRowStyle>,
       default: null
     },
     /**

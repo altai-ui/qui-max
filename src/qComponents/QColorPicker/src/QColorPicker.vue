@@ -67,14 +67,14 @@ import { placements } from '@popperjs/core/lib/enums';
 import Color from 'color';
 
 import { validateArray } from '@/qComponents/helpers';
-import type { QFormProvider } from '@/qComponents/QForm';
-import type { QFormItemProvider } from '@/qComponents/QFormItem';
 import { getConfig } from '@/qComponents/config';
 import {
   UPDATE_MODEL_VALUE_EVENT,
   CLICK_EVENT,
   CHANGE_EVENT
 } from '@/qComponents/constants/events';
+import type { QFormProvider } from '@/qComponents/QForm';
+import type { QFormItemProvider } from '@/qComponents/QFormItem';
 import QPickerDropdown from './QPickerDropdown.vue';
 import type {
   QColorPickerProps,

@@ -11,15 +11,16 @@ import {
   toRef
 } from 'vue';
 
-import type { QTableProvider } from './QTable';
-import type { ExtendedColumn } from './QTableContainer';
-import type { QTableTProvider } from './QTableT';
+import useSticky from '../helpers/sticky';
+import type { QTableProvider } from '../QTable';
+import type { ExtendedColumn } from '../QTableContainer/QTableContainer';
+import type { QTableTProvider } from '../QTableT/QTableT';
+
 import type {
   QTableTHeadCellProps,
   QTableTHeadCellPropSortBy,
   QTableTHeadCellInstance
 } from './QTableTHeadCell';
-import useSticky from './sticky';
 
 export default defineComponent({
   name: 'QTableTHeadCell',

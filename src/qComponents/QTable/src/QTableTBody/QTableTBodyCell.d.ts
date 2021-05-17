@@ -1,6 +1,6 @@
 import type { VNode } from 'vue';
 
-import type { ExtendedColumn } from './QTableContainer';
+import type { ExtendedColumn } from '../QTableContainer/QTableContainer';
 
 export type QTableTBodyCellPropRow = Record<string, unknown>;
 export type QTableTBodyCellPropValue = Nullable<unknown>;

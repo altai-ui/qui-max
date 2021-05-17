@@ -21,15 +21,16 @@
 <script lang="ts">
 import { defineComponent, computed, inject } from 'vue';
 
-import QTableTTotalCell from './QTableTTotalCell.vue';
-import QTableCellCheckbox from './QTableCellCheckbox.vue';
-import type { QTableProvider } from './QTable';
+import { TOTAL_CHECKED_INDEX } from '../config';
+import QTableCellCheckbox from '../QTableCellCheckbox/QTableCellCheckbox.vue';
+import type { QTableProvider } from '../QTable';
 import type {
   ExtendedColumn,
   QTableContainerProvider
-} from './QTableContainer';
+} from '../QTableContainer/QTableContainer';
+
+import QTableTTotalCell from './QTableTTotalCell.vue';
 import type { QTableTTotalInstance } from './QTableTTotal';
-import { TOTAL_CHECKED_INDEX } from './config';
 
 export default defineComponent({
   name: 'QTableTTotal',

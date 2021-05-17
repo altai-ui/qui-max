@@ -1,6 +1,6 @@
 import type { ComputedRef } from 'vue';
 
-import type { Column } from './QTable';
+import type { Column } from '../QTable';
 
 export interface ExtendedColumn extends Column {
   group: {

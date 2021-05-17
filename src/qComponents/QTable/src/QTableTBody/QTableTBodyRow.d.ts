@@ -1,6 +1,6 @@
 import type { ComputedRef } from 'vue';
 
-import type { ExtendedColumn } from './QTableContainer';
+import type { ExtendedColumn } from '../QTableContainer/QTableContainer';
 
 type Classes = Record<string, boolean>;
 export type RootClasses = (string | string[] | Classes | Classes[])[];

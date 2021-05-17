@@ -37,13 +37,14 @@ import { isEmpty } from 'lodash-es';
 
 import type { QScrollbarProvider } from '@/qComponents/QScrollbar';
 
-import QTableTBody from './QTableTBody.vue';
-import QTableTColgroup from './QTableTColgroup.vue';
-import QTableTHead from './QTableTHead.vue';
-import QTableTTotal from './QTableTTotal.vue';
-import type { QTableProvider } from './QTable';
+import QTableTBody from '../QTableTBody/QTableTBody.vue';
+import QTableTColgroup from '../QTableTColgroup/QTableTColgroup.vue';
+import QTableTHead from '../QTableTHead/QTableTHead.vue';
+import QTableTTotal from '../QTableTTotal/QTableTTotal.vue';
+import type { StickyConfig } from '../helpers/sticky.d';
+import type { QTableProvider } from '../QTable';
+
 import type { QTableTProvider, QTableTInstance } from './QTableT';
-import type { StickyConfig } from './sticky.d';
 
 export default defineComponent({
   name: 'QTableT',

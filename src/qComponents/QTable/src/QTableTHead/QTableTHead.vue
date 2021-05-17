@@ -24,15 +24,15 @@
 import { defineComponent, computed, inject } from 'vue';
 import { isEmpty } from 'lodash-es';
 
+import { TOTAL_CHECKED_INDEX } from '../config';
 import QTableTHeadCell from './QTableTHeadCell.vue';
-import QTableCellCheckbox from './QTableCellCheckbox.vue';
-import type { QTablePropSortBy, QTableProvider } from './QTable';
+import QTableCellCheckbox from '../QTableCellCheckbox/QTableCellCheckbox.vue';
+import type { QTablePropSortBy, QTableProvider } from '../QTable';
 import type {
   ExtendedColumn,
   QTableContainerProvider
-} from './QTableContainer';
+} from '../QTableContainer/QTableContainer';
 import type { QTableTHeadInstance } from './QTableTHead';
-import { TOTAL_CHECKED_INDEX } from './config';
 
 export default defineComponent({
   name: 'QTableTHead',

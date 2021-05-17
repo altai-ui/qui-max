@@ -10,7 +10,7 @@ import Total from './Total';
 import StickyColumn from './StickyColumn';
 import CustomRows from './CustomRows';
 import Groups from './Groups';
-import Draggable from './Draggable';
+// import Draggable from './Draggable';
 
 const storyMetadata: Meta = {
   title: 'Components/QTable',

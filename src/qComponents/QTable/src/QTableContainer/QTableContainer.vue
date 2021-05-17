@@ -12,8 +12,9 @@
 <script lang="ts">
 import { defineComponent, computed, provide, inject } from 'vue';
 
-import QTableT from './QTableT.vue';
-import type { QTableProvider } from './QTable';
+import QTableT from '../QTableT/QTableT.vue';
+import type { QTableProvider } from '../QTable';
+
 import type {
   QTableContainerProvider,
   QTableContainerInstance,

@@ -34,9 +34,9 @@
 <script lang="ts">
 import { defineComponent, inject, computed } from 'vue';
 
+import { CHANGE_EVENT } from '@/qComponents/constants/events';
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QRadioGroupProvider } from '@/qComponents/QRadioGroup';
-import { CHANGE_EVENT } from '@/qComponents/constants/events';
 import type { QRadioProps, QRadioInstance } from './types';
 
 export default defineComponent({

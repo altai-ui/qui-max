@@ -19,5 +19,5 @@
     "plugins": [{ "name": "@vuedx/typescript-plugin-vue" }]
   },
   "exclude": ["node_modules"],
-  "include": ["src/**/*", "stories/**/*"]
+  "include": ["src/**/*", "stories/**/*", "vite.config.ts"]
 }

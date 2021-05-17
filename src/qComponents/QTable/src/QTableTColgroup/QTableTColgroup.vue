@@ -15,13 +15,14 @@
 <script lang="ts">
 import { defineComponent, computed, inject } from 'vue';
 
-import type { QTableProvider } from './QTable';
+import { CHECKBOX_COL_WIDTH } from '../config';
+import type { QTableProvider } from '../QTable';
 import type {
   ExtendedColumn,
   QTableContainerProvider
-} from './QTableContainer';
-import type { QTableTColgroupInstance } from './QTableTColgroup.d';
-import { CHECKBOX_COL_WIDTH } from './config';
+} from '../QTableContainer/QTableContainer';
+
+import type { QTableTColgroupInstance } from './QTableTColgroup';
 
 export default defineComponent({
   name: 'QTableTColgroup',

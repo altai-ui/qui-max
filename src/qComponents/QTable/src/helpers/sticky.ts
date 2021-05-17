@@ -13,10 +13,10 @@ import type { QScrollbarProvider } from '@/qComponents/QScrollbar';
 import type {
   QTableContainerProvider,
   ExtendedColumn
-} from './QTableContainer';
-import type { QTableTProvider } from './QTableT';
+} from '../QTableContainer/QTableContainer';
+import type { QTableTProvider } from '../QTableT/QTableT';
 import type { StickyConfig } from './sticky.d';
-import { CHECKBOX_COL_WIDTH } from './config';
+import { CHECKBOX_COL_WIDTH } from '../config';
 
 const BASE_Z_INDEX = 20;
 

@@ -13,8 +13,10 @@
 import { defineComponent, computed, inject } from 'vue';
 
 import { randId } from '@/qComponents/helpers';
+
+import type { QTableProvider } from '../QTable';
+
 import QTableTBodyRow from './QTableTBodyRow.vue';
-import type { QTableProvider } from './QTable';
 import type { QTableTBodyInstance } from './QTableTBody';
 
 export default defineComponent({

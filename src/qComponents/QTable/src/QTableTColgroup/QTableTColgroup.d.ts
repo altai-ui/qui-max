@@ -1,6 +1,6 @@
 import type { ComputedRef } from 'vue';
 
-import type { ExtendedColumn } from './QTableContainer';
+import type { ExtendedColumn } from '../QTableContainer/QTableContainer';
 
 export interface QTableTColgroupInstance {
   checkboxColWidth: number;

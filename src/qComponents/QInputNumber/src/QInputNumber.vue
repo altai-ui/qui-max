@@ -48,14 +48,14 @@ import {
   nextTick
 } from 'vue';
 
-import type { QFormProvider } from '@/qComponents/QForm';
-import type { QFormItemProvider } from '@/qComponents/QFormItem';
 import {
   CHANGE_EVENT,
   FOCUS_EVENT,
   BLUR_EVENT,
   INPUT_EVENT
 } from '@/qComponents/constants/events';
+import type { QFormProvider } from '@/qComponents/QForm';
+import type { QFormItemProvider } from '@/qComponents/QFormItem';
 import type {
   QInputNumberProps,
   QInputNumberState,

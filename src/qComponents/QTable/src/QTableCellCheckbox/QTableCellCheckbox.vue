@@ -8,14 +8,14 @@ import {
   VNode
 } from 'vue';
 
-import type { QTableProvider } from './QTable';
-import type { QTableTProvider } from './QTableT';
+import { CHANGE_EVENT } from '@/qComponents/constants/events';
+import type { QTableProvider } from '../QTable';
+import type { QTableTProvider } from '../QTableT/QTableT';
+
 import type {
   QTableCellCheckboxProps,
   QTableCellCheckboxInstance
 } from './QTableCellCheckbox';
-
-const CHANGE_EVENT = 'change';
 
 export default defineComponent({
   name: 'QTableCellCheckbox',
@@ -54,8 +54,8 @@ export default defineComponent({
       [props.baseClass]: true,
       [`${props.baseClass}_sticked`]: qTableT.selectionColumn.isSticked,
       [`${props.baseClass}_sticked_first`]: qTableT.selectionColumn.isSticked,
-      [`${props.baseClass}_sticked_last`]: qTableT.selectionColumn
-        .isLastSticked,
+      [`${props.baseClass}_sticked_last`]:
+        qTableT.selectionColumn.isLastSticked,
       [`${props.baseClass}_sticked_left`]: qTableT.selectionColumn.isSticked
     }));
 

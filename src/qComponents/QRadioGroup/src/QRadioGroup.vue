@@ -24,12 +24,12 @@ import {
 } from 'vue';
 
 import { validateArray } from '@/qComponents/helpers';
-import type { QFormItemProvider } from '@/qComponents/QFormItem';
-import type { QRadioGroupProvider } from '@/qComponents/QRadioGroup';
 import {
   UPDATE_MODEL_VALUE_EVENT,
   CHANGE_EVENT
 } from '@/qComponents/constants/events';
+import type { QFormItemProvider } from '@/qComponents/QFormItem';
+import type { QRadioGroupProvider } from '@/qComponents/QRadioGroup';
 import type {
   QRadioGroupProps,
   QRadioGroupPropModelValue,

@@ -1,6 +1,6 @@
 import { Ref, ComputedRef, UnwrapRef } from 'vue';
 
-import type { StickyConfig } from './types';
+import type { StickyConfig } from './sticky.d';
 
 export interface QTableTProvider {
   selectionColumn: {

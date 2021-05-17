@@ -36,7 +36,9 @@ export default defineComponent({
       const groups = qTable.groupsOfColumns.value ?? [];
 
       return groups.reduce<ExtendedColumn[]>((acc, { columns, ...group }) => {
-        const extendedColumns = columns.map(column => ({ group, ...column }));
+        const extendedColumns = columns
+          .filter(({ isHidden }) => !isHidden)
+          .map(column => ({ group, ...column }));
         return acc.concat(extendedColumns);
       }, []);
     });

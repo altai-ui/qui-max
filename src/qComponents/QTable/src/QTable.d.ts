@@ -10,6 +10,7 @@ interface SelectionColumn {
 interface Column {
   key: string;
   value: Nullable<string | number>;
+  isHidden?: boolean;
   sortable?: boolean;
   align?: 'left' | 'right';
   slots?: Record<string, string>;

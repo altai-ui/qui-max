@@ -99,6 +99,7 @@ export default defineComponent({
      *  `color` (hex string) - column's header color.
      * Each column MUST contain `key` and `value`.
      * Each column MAY contain:
+     *  `isHidden`.
      *  `sortable`.
      *  `slots`.
      *  `align` (left/right) - content's align.

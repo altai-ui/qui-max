@@ -1,10 +1,11 @@
 import Template from './Default';
 
-import { groupsOfColumns, sortBy, rows } from './args';
+import { groupsOfColumns, sortBy, rows, loadingRowCount } from './args';
 
 const CustomWidth = Template.bind({});
 
 CustomWidth.args = {
+  loadingRowCount,
   rows,
   sortBy,
   groupsOfColumns,

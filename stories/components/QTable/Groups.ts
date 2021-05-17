@@ -1,6 +1,6 @@
 import Template from './Default';
 
-import { total, sortBy, rows } from './args';
+import { total, sortBy, rows, loadingRowCount } from './args';
 
 const Groups = Template.bind({});
 
@@ -8,6 +8,7 @@ Groups.args = {
   rows,
   total,
   sortBy,
+  loadingRowCount,
   groupsOfColumns: [
     {
       key: 'one',

@@ -41,22 +41,22 @@ export default defineComponent({
   },
 
   setup(): QTableTTotalInstance {
-    const qTable = inject<QTableProvider | null>('qTable', null);
-    const qTableContainer = inject<QTableContainerProvider | null>(
+    const qTable = inject<QTableProvider>('qTable', {} as QTableProvider);
+    const qTableContainer = inject<QTableContainerProvider>(
       'qTableContainer',
-      null
+      {} as QTableContainerProvider
     );
 
     const isCheckable = computed<boolean>(() =>
-      Boolean(qTable?.selectionColumn.value?.selectTotalShown)
+      Boolean(qTable.selectionColumn.value?.selectTotalShown)
     );
 
     const isChecked = computed<boolean>(
-      () => qTable?.checkedRows.value?.includes(TOTAL_CHECKED_INDEX) ?? false
+      () => qTable.checkedRows.value?.includes(TOTAL_CHECKED_INDEX) ?? false
     );
 
     const columnList = computed<ExtendedColumn[]>(
-      () => qTableContainer?.columnList.value ?? []
+      () => qTableContainer.columnList.value ?? []
     );
 
     const handleCheckboxChange = (): void => {
@@ -74,7 +74,7 @@ export default defineComponent({
     };
 
     return {
-      isSelectable: qTableContainer?.isSelectable ?? null,
+      isSelectable: qTableContainer.isSelectable,
       isCheckable,
       isChecked,
       columnList,

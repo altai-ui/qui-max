@@ -1,6 +1,6 @@
 import Template from './Default';
 
-import { groupsOfColumns, total, sortBy, rows } from './args';
+import { groupsOfColumns, total, sortBy, rows, loadingRowCount } from './args';
 
 const Selectable = Template.bind({});
 
@@ -9,6 +9,7 @@ Selectable.args = {
   rows,
   sortBy,
   groupsOfColumns,
+  loadingRowCount,
   selectionColumn: {
     enabled: true,
     selectAllShown: true,

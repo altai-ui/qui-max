@@ -71,15 +71,16 @@ export default defineComponent({
     );
 
     const isChecked = computed<boolean>(
-      () => qTable?.checkedRows.value?.includes(props.rowIndex) ?? false
+      () => qTable.checkedRows.value.includes(props.rowIndex) ?? false
     );
 
     const rootClasses = computed<RootClasses>(() => {
       const classes: RootClasses = ['q-table-t-body-row'];
 
-      if (qTable?.isRowClickable) classes.push('q-table-t-body-row_clickable');
+      if (qTable.isRowClickable.value)
+        classes.push('q-table-t-body-row_clickable');
 
-      const getCustomClasses = qTable?.customRowClass.value;
+      const getCustomClasses = qTable.customRowClass.value;
 
       if (getCustomClasses) {
         const customClasses = getCustomClasses({
@@ -96,7 +97,7 @@ export default defineComponent({
     const rootStyles = computed<RootStyles>(() => {
       const styles: RootStyles = [];
 
-      const getCustomStyles = qTable?.customRowStyle.value;
+      const getCustomStyles = qTable.customRowStyle.value;
       if (getCustomStyles) {
         const customStyles = getCustomStyles({
           row: props.row,

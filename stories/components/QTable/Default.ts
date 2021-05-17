@@ -4,7 +4,12 @@ import { defineComponent, ref } from 'vue';
 
 import type { QTableProps } from '@/qComponents/QTable';
 
-import { groupsOfColumns, sortBy as sortByParams, rows } from './args';
+import {
+  groupsOfColumns,
+  sortBy as sortByParams,
+  rows,
+  loadingRowCount
+} from './args';
 
 const QTableStory: Story<QTableProps> = args =>
   defineComponent({
@@ -35,6 +40,7 @@ const QTableStory: Story<QTableProps> = args =>
         v-model:sort-by="sortBy"
         :fixed-layout="args.fixedLayout"
         :is-loading="args.isLoading"
+        :loading-row-count="args.loadingRowCount"
         :grid="args.grid"
         :groups-of-columns="args.groupsOfColumns"
         :rows="args.rows"
@@ -64,6 +70,7 @@ QTableStory.args = {
   rows,
   sortBy: sortByParams,
   groupsOfColumns,
+  loadingRowCount,
   fixedLayout: false
 };
 

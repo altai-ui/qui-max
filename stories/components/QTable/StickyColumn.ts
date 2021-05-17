@@ -1,5 +1,5 @@
 import Template from './Default';
-import { total, sortBy, rows } from './args';
+import { total, sortBy, rows, loadingRowCount } from './args';
 
 const StickyColumn = Template.bind({});
 
@@ -7,6 +7,7 @@ StickyColumn.args = {
   total,
   rows,
   sortBy,
+  loadingRowCount,
   fixedLayout: true,
   grid: true,
   selectionColumn: {

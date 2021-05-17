@@ -1,12 +1,13 @@
 import Template from './Default';
 
-import { groupsOfColumns, rows } from './args';
+import { groupsOfColumns, rows, loadingRowCount } from './args';
 
 const CustomRows = Template.bind({});
 
 CustomRows.args = {
   groupsOfColumns,
   rows,
+  loadingRowCount,
   customRowClass: ({ rowIndex }): string => `custom-row-class-${rowIndex}`,
   customRowStyle: ({ rowIndex }): string => {
     if (rowIndex === 0) {

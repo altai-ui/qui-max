@@ -85,7 +85,13 @@ export default defineComponent({
     return (): VNode =>
       h(props.baseTag, { class: rootClasses.value, style: rootStyles.value }, [
         h('div', { class: `${props.baseClass}__container` }, [
-          h('div', { class: `${props.baseClass}__content` }, [content.value])
+          h(
+            'div',
+            {
+              class: `${props.baseClass}__content ${props.baseClass}__content_checkbox`
+            },
+            [content.value]
+          )
         ])
       ]);
   }

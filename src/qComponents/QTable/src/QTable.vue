@@ -172,8 +172,9 @@ export default defineComponent({
 
       return !props.rows.length || !doesColumnsExist;
     });
+
     const isRowClickable = computed<boolean>(() =>
-      Boolean(ctx.attrs.onRowClick)
+      Boolean(!props.isLoading && ctx.attrs.onRowClick)
     );
 
     const hasColorGroups = computed<boolean>(() =>

@@ -89,7 +89,6 @@
   }
 
   &__content {
-    width: 100%;
     font-size: var(--font-size-base);
     font-weight: var(--font-weight-bold);
     line-height: var(--line-height-base);
@@ -105,6 +104,10 @@
       white-space: initial;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
+    }
+
+    &_checkbox {
+      width: 100%;
     }
   }
 

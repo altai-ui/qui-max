@@ -89,4 +89,6 @@ const total = {
   col8: 'Total 800'
 };
 
-export { groupsOfColumns, sortBy, rows, total };
+const loadingRowCount = 3;
+
+export { groupsOfColumns, sortBy, rows, total, loadingRowCount };

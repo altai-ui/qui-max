@@ -43,7 +43,7 @@ import QTableTHead from './QTableTHead.vue';
 import QTableTTotal from './QTableTTotal.vue';
 import type { QTableProvider } from './QTable';
 import type { QTableTProvider, QTableTInstance } from './QTableT';
-import type { StickyConfig } from './types';
+import type { StickyConfig } from './sticky.d';
 
 export default defineComponent({
   name: 'QTableT',
@@ -60,9 +60,9 @@ export default defineComponent({
     const qTable = inject<QTableProvider>('qTable', {} as QTableProvider);
 
     const isColgroupShown = computed<boolean>(() =>
-      Boolean(qTable?.fixedLayout.value)
+      Boolean(qTable.fixedLayout.value)
     );
-    const isTotalShown = computed<boolean>(() => !isEmpty(qTable?.total.value));
+    const isTotalShown = computed<boolean>(() => !isEmpty(qTable.total.value));
 
     const isSelectionColumnStickable = computed<boolean>(() =>
       Boolean(qTable.selectionColumn.value?.sticky)

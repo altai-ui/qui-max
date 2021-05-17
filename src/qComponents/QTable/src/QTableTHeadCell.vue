@@ -41,8 +41,8 @@ export default defineComponent({
   },
 
   setup(props: QTableTHeadCellProps): QTableTHeadCellInstance {
-    const qTable = inject<QTableProvider | null>('qTable', null);
-    const qTableT = inject<QTableTProvider | null>('qTableT', null);
+    const qTable = inject<QTableProvider>('qTable', {} as QTableProvider);
+    const qTableT = inject<QTableTProvider>('qTableT', {} as QTableTProvider);
     const root = ref<HTMLElement | null>(null);
 
     const sticky = useSticky(
@@ -51,7 +51,7 @@ export default defineComponent({
       toRef(props, 'columnIndex')
     );
 
-    qTableT?.stickyConfig.value.push(sticky);
+    qTableT.stickyConfig.value.push(sticky);
 
     const isSortable = computed<boolean>(() => Boolean(props.column.sortable));
     const isCurrentSorting = computed<boolean>(
@@ -76,12 +76,12 @@ export default defineComponent({
       '--group-color': props.column.group.color ?? '',
       zIndex: sticky.isSticked ? String(sticky.zIndex) : '',
       [sticky.position]: sticky.isSticked ? `${sticky.offset}px` : '',
-      minWidth: qTable?.fixedLayout.value ? props.column.minWidth ?? '' : ''
+      minWidth: qTable.fixedLayout.value ? props.column.minWidth ?? '' : ''
     }));
 
     const currentSlot = computed<Slot | undefined>(() => {
       const slotName = props.column.slots?.header ?? 'header';
-      return qTable?.slots[slotName];
+      return qTable.slots[slotName];
     });
 
     const contentClasses = computed<Record<string, boolean>>(() => ({
@@ -129,7 +129,7 @@ export default defineComponent({
           break;
       }
 
-      qTable?.updateSortBy({
+      qTable.updateSortBy({
         key: props.column.key,
         direction
       });

@@ -28,25 +28,25 @@ export default defineComponent({
   componentName: ' QTableTColgroup',
 
   setup(): QTableTColgroupInstance {
-    const qTable = inject<QTableProvider | null>('qTable', null);
-    const qTableContainer = inject<QTableContainerProvider | null>(
+    const qTable = inject<QTableProvider>('qTable', {} as QTableProvider);
+    const qTableContainer = inject<QTableContainerProvider>(
       'qTableContainer',
-      null
+      {} as QTableContainerProvider
     );
 
     const columnList = computed<ExtendedColumn[]>(
-      () => qTableContainer?.columnList.value ?? []
+      () => qTableContainer.columnList.value ?? []
     );
 
     const getColWidth = ({
       width
     }: ExtendedColumn): Record<'width', string> => ({
-      width: width ?? qTable?.defaultColWidth.value ?? '200px'
+      width: width ?? qTable.defaultColWidth.value ?? '200px'
     });
 
     return {
       checkboxColWidth: CHECKBOX_COL_WIDTH,
-      isSelectable: qTableContainer?.isSelectable ?? null,
+      isSelectable: qTableContainer.isSelectable,
       columnList,
       getColWidth
     };

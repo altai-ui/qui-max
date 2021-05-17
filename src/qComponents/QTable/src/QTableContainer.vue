@@ -29,10 +29,10 @@ export default defineComponent({
   },
 
   setup(): QTableContainerInstance {
-    const qTable = inject<QTableProvider | null>('qTable', null);
+    const qTable = inject<QTableProvider>('qTable', {} as QTableProvider);
 
     const columnList = computed<ExtendedColumn[]>(() => {
-      const groups = qTable?.groupsOfColumns.value ?? [];
+      const groups = qTable.groupsOfColumns.value ?? [];
 
       return groups.reduce<ExtendedColumn[]>((acc, { columns, ...group }) => {
         const extendedColumns = columns.map(column => ({ group, ...column }));
@@ -41,7 +41,7 @@ export default defineComponent({
     });
 
     const isSelectable = computed<boolean>(() =>
-      Boolean(qTable?.selectionColumn.value?.enabled)
+      Boolean(qTable.selectionColumn.value?.enabled)
     );
 
     provide<QTableContainerProvider>('qTableContainer', {

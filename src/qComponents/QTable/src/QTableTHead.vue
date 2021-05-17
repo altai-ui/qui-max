@@ -44,25 +44,25 @@ export default defineComponent({
   },
 
   setup(): QTableTHeadInstance {
-    const qTable = inject<QTableProvider | null>('qTable', null);
-    const qTableContainer = inject<QTableContainerProvider | null>(
+    const qTable = inject<QTableProvider>('qTable', {} as QTableProvider);
+    const qTableContainer = inject<QTableContainerProvider>(
       'qTableContainer',
-      null
+      {} as QTableContainerProvider
     );
 
     const isCheckable = computed<boolean>(() =>
-      Boolean(qTable?.selectionColumn.value?.selectAllShown)
+      Boolean(qTable.selectionColumn.value?.selectAllShown)
     );
 
     const isTotalCheckable = computed<boolean>(
       () =>
-        !isEmpty(qTable?.total.value) &&
-        Boolean(qTable?.selectionColumn.value?.selectTotalShown)
+        !isEmpty(qTable.total.value) &&
+        Boolean(qTable.selectionColumn.value?.selectTotalShown)
     );
 
     const isChecked = computed<boolean>(() => {
-      const rowsCount = qTable?.rows.value.length ?? 0;
-      const checkedRowsCount = qTable?.checkedRows.value.length ?? 0;
+      const rowsCount = qTable.rows.value.length ?? 0;
+      const checkedRowsCount = qTable.checkedRows.value.length ?? 0;
 
       if (!checkedRowsCount) return false;
       if (isTotalCheckable.value) return rowsCount + 1 === checkedRowsCount;
@@ -71,20 +71,20 @@ export default defineComponent({
     });
 
     const isIndeterminate = computed<boolean>(
-      () => !isChecked.value && Boolean(qTable?.checkedRows.value.length ?? 0)
+      () => !isChecked.value && Boolean(qTable.checkedRows.value.length ?? 0)
     );
 
     const columnList = computed<ExtendedColumn[]>(
-      () => qTableContainer?.columnList.value ?? []
+      () => qTableContainer.columnList.value ?? []
     );
     const sortBy = computed<QTablePropSortBy>(
-      () => qTable?.sortBy.value ?? null
+      () => qTable.sortBy.value ?? null
     );
 
     const handleCheckboxChange = (): void => {
       if (!qTable) return;
 
-      const rowsLength = qTable?.rows.value.length ?? 0;
+      const rowsLength = qTable.rows.value.length ?? 0;
       let checkedRows: number[] = [];
 
       if (!isChecked.value) {
@@ -96,7 +96,7 @@ export default defineComponent({
     };
 
     return {
-      isSelectable: qTableContainer?.isSelectable ?? null,
+      isSelectable: qTableContainer.isSelectable ?? null,
       isCheckable,
       isChecked,
       isIndeterminate,

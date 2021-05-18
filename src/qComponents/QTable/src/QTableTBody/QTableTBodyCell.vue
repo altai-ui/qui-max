@@ -1,14 +1,7 @@
 <script lang="ts">
-import {
-  h,
-  defineComponent,
-  toRefs,
-  computed,
-  PropType,
-  inject,
-  VNode
-} from 'vue';
+import { h, defineComponent, computed, PropType, inject, VNode } from 'vue';
 
+import useSticky from '../helpers/sticky';
 import type { QTableProvider } from '../QTable';
 import type { QTableTProvider } from '../QTableT/QTableT';
 import type { ExtendedColumn } from '../QTableContainer/QTableContainer';
@@ -55,27 +48,35 @@ export default defineComponent({
     const qTable = inject<QTableProvider>('qTable', {} as QTableProvider);
     const qTableT = inject<QTableTProvider>('qTableT', {} as QTableTProvider);
 
-    const sticky = toRefs(qTableT.stickyConfig.value[props.columnIndex]);
+    const stickyConfig = computed(() =>
+      useSticky(
+        props.column.sticky?.position,
+        props.columnIndex,
+        qTableT.stickyGlobalConfig.value
+      )
+    );
 
     const rootClasses = computed<Record<string, boolean>>(() => ({
       'q-table-t-body-cell': true,
       [`q-table-t-body-cell_align_${props.column.align ?? ''}`]: Boolean(
         props.column.align
       ),
-      'q-table-t-body-cell_sticked': sticky.isSticked.value,
-      'q-table-t-body-cell_sticked_first': sticky.isFirstSticked.value,
-      'q-table-t-body-cell_sticked_last': sticky.isLastSticked.value,
-      [`q-table-t-body-cell_sticked_${sticky.position.value}`]:
-        sticky.isSticked.value,
+      'q-table-t-body-cell_sticked': stickyConfig.value.isSticked,
+      'q-table-t-body-cell_sticked_first': stickyConfig.value.isFirstSticked,
+      'q-table-t-body-cell_sticked_last': stickyConfig.value.isLastSticked,
+      [`q-table-t-body-cell_sticked_${stickyConfig.value.position}`]:
+        stickyConfig.value.isSticked,
       [props.column.customCellClass ?? '']: Boolean(
         props.column.customCellClass
       )
     }));
 
     const rootStyles = computed<Record<string, string>>(() => ({
-      zIndex: sticky.isSticked.value ? String(sticky.zIndex.value) : '',
-      [sticky.position.value]: sticky.isSticked.value
-        ? `${sticky.offset.value}px`
+      zIndex: stickyConfig.value.isSticked
+        ? String(stickyConfig.value.zIndex)
+        : '',
+      [stickyConfig.value.position]: stickyConfig.value.isSticked
+        ? `${stickyConfig.value.offset}px`
         : ''
     }));
 

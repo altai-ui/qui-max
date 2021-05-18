@@ -10,6 +10,7 @@
       ref="thead"
       class="q-table-t__thead"
     >
+      <q-table-t-sticky ref="sticky" />
       <q-table-t-head class="q-table-t__head" />
       <q-table-t-total
         v-if="isTotalShown"
@@ -28,21 +29,21 @@ import {
   ref,
   computed,
   provide,
-  onBeforeUpdate,
-  watch,
-  reactive,
-  nextTick
+  ComponentPublicInstance,
+  UnwrapRef
 } from 'vue';
 import { isEmpty } from 'lodash-es';
-
-import type { QScrollbarProvider } from '@/qComponents/QScrollbar';
 
 import QTableTBody from '../QTableTBody/QTableTBody.vue';
 import QTableTColgroup from '../QTableTColgroup/QTableTColgroup.vue';
 import QTableTHead from '../QTableTHead/QTableTHead.vue';
+import QTableTSticky from '../QTableTSticky/QTableTSticky.vue';
 import QTableTTotal from '../QTableTTotal/QTableTTotal.vue';
-import type { StickyConfig } from '../helpers/sticky.d';
 import type { QTableProvider } from '../QTable';
+import type {
+  StickyGlobalConfig,
+  QTableTStickyInstance
+} from '../QTableTSticky/QTableTSticky';
 
 import type { QTableTProvider, QTableTInstance } from './QTableT';
 
@@ -54,6 +55,7 @@ export default defineComponent({
     QTableTBody,
     QTableTColgroup,
     QTableTHead,
+    QTableTSticky,
     QTableTTotal
   },
 
@@ -65,44 +67,10 @@ export default defineComponent({
     );
     const isTotalShown = computed<boolean>(() => !isEmpty(qTable.total.value));
 
-    const isSelectionColumnStickable = computed<boolean>(() =>
-      Boolean(qTable.selectionColumn.value?.sticky)
-    );
-
-    const stickyConfig = ref<StickyConfig[]>([]);
-    const stickedLeftColumnList = ref<number[]>([]);
-    const stickedRightColumnList = ref<number[]>([]);
-    const stickyOffsetLeftArr = ref<number[]>([]);
-    const stickyOffsetRightArr = ref<number[]>([]);
-
-    const isSticked = ref<boolean>(false);
-    const isLastSticked = computed(
-      () => isSticked.value && !stickedLeftColumnList.value.length
-    );
-    const selectionColumn = reactive({
-      isSticked,
-      isLastSticked
-    });
-
-    const qScrollbar = inject<QScrollbarProvider>(
-      'qScrollbar',
-      {} as QScrollbarProvider
-    );
     const thead = ref<HTMLElement | null>(null);
-
-    const checkSticky = (value: number): void => {
-      isSticked.value = value > (thead.value?.offsetLeft ?? 0);
-    };
-
-    watch(
-      [qScrollbar.moveXInPx, qScrollbar.sizeWidth],
-      ([value]) => {
-        if (qTable.selectionColumn.value?.sticky) {
-          nextTick(() => checkSticky(value ?? 0));
-        }
-      },
-      { immediate: true }
-    );
+    const sticky = ref<ComponentPublicInstance<
+      UnwrapRef<QTableTStickyInstance>
+    > | null>(null);
 
     const rootClasses = computed<Record<string, boolean>>(() => ({
       'q-table-t': true,
@@ -110,26 +78,19 @@ export default defineComponent({
       'q-table-t_grided': Boolean(qTable.grided.value)
     }));
 
-    onBeforeUpdate(() => {
-      stickyConfig.value = [];
-      stickedLeftColumnList.value = [];
-      stickedRightColumnList.value = [];
-      stickyOffsetLeftArr.value = [];
-      stickyOffsetRightArr.value = [];
-    });
+    const stickyGlobalConfig = computed<StickyGlobalConfig>(
+      () =>
+        sticky.value?.stickyConfig ?? {
+          columnsLeftNew: {},
+          columnsRightNew: {}
+        }
+    );
 
-    provide<QTableTProvider>('qTableT', {
-      isSelectionColumnStickable,
-      selectionColumn,
-      stickyConfig,
-      stickedLeftColumnList,
-      stickedRightColumnList,
-      stickyOffsetLeftArr,
-      stickyOffsetRightArr
-    });
+    provide<QTableTProvider>('qTableT', { stickyGlobalConfig });
 
     return {
       thead,
+      sticky,
       isColgroupShown,
       isTotalShown,
       rootClasses

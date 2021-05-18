@@ -9,6 +9,8 @@ import {
 } from 'vue';
 
 import { CHANGE_EVENT } from '@/qComponents/constants/events';
+
+import useSticky from '../helpers/sticky';
 import type { QTableProvider } from '../QTable';
 import type { QTableTProvider } from '../QTableT/QTableT';
 
@@ -50,17 +52,23 @@ export default defineComponent({
     const qTable = inject<QTableProvider>('qTable', {} as QTableProvider);
     const qTableT = inject<QTableTProvider>('qTableT', {} as QTableTProvider);
 
+    const stickyConfig = computed(() =>
+      useSticky('left', -1, qTableT.stickyGlobalConfig.value)
+    );
+
     const rootClasses = computed<Record<string, boolean>>(() => ({
       [props.baseClass]: true,
-      [`${props.baseClass}_sticked`]: qTableT.selectionColumn.isSticked,
-      [`${props.baseClass}_sticked_first`]: qTableT.selectionColumn.isSticked,
-      [`${props.baseClass}_sticked_last`]:
-        qTableT.selectionColumn.isLastSticked,
-      [`${props.baseClass}_sticked_left`]: qTableT.selectionColumn.isSticked
+      [`${props.baseClass}_sticked`]: stickyConfig.value.isSticked,
+      [`${props.baseClass}_sticked_first`]: stickyConfig.value.isSticked,
+      [`${props.baseClass}_sticked_last`]: stickyConfig.value.isLastSticked,
+      [`${props.baseClass}_sticked_left`]: stickyConfig.value.isSticked
     }));
 
     const rootStyles = computed<Record<string, string>>(() => ({
-      left: qTableT.selectionColumn.isSticked ? '0' : ''
+      left: stickyConfig.value.isSticked ? '0' : '',
+      zIndex: stickyConfig.value.isSticked
+        ? String(stickyConfig.value.zIndex)
+        : ''
     }));
 
     const handleCheckboxChange = (value: boolean): void => {

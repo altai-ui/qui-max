@@ -7,8 +7,7 @@ import {
   PropType,
   inject,
   VNode,
-  Slot,
-  toRef
+  Slot
 } from 'vue';
 
 import useSticky from '../helpers/sticky';
@@ -46,13 +45,13 @@ export default defineComponent({
     const qTableT = inject<QTableTProvider>('qTableT', {} as QTableTProvider);
     const root = ref<HTMLElement | null>(null);
 
-    const sticky = useSticky(
-      root,
-      toRef(props, 'column'),
-      toRef(props, 'columnIndex')
+    const stickyConfig = computed(() =>
+      useSticky(
+        props.column.sticky?.position,
+        props.columnIndex,
+        qTableT.stickyGlobalConfig.value
+      )
     );
-
-    qTableT.stickyConfig.value.push(sticky);
 
     const isSortable = computed<boolean>(() => Boolean(props.column.sortable));
     const isCurrentSorting = computed<boolean>(
@@ -64,10 +63,11 @@ export default defineComponent({
       [`q-table-t-head-cell_align_${props.column.align ?? ''}`]: Boolean(
         props.column.align
       ),
-      'q-table-t-head-cell_sticked': sticky.isSticked,
-      'q-table-t-head-cell_sticked_first': sticky.isFirstSticked,
-      'q-table-t-head-cell_sticked_last': sticky.isLastSticked,
-      [`q-table-t-head-cell_sticked_${sticky.position}`]: sticky.isSticked,
+      'q-table-t-head-cell_sticked': stickyConfig.value.isSticked,
+      'q-table-t-head-cell_sticked_first': stickyConfig.value.isFirstSticked,
+      'q-table-t-head-cell_sticked_last': stickyConfig.value.isLastSticked,
+      [`q-table-t-head-cell_sticked_${stickyConfig.value.position}`]:
+        stickyConfig.value.isSticked,
       'q-table-t-head-cell_sortable': isSortable.value,
       'q-table-t-head-cell_sorted':
         isCurrentSorting.value && Boolean(props.sortBy?.direction)
@@ -75,8 +75,12 @@ export default defineComponent({
 
     const cellStyles = computed<Record<string, string>>(() => ({
       '--group-color': props.column.group.color ?? '',
-      zIndex: sticky.isSticked ? String(sticky.zIndex) : '',
-      [sticky.position]: sticky.isSticked ? `${sticky.offset}px` : '',
+      zIndex: stickyConfig.value.isSticked
+        ? String(stickyConfig.value.zIndex)
+        : '',
+      [stickyConfig.value.position]: stickyConfig.value.isSticked
+        ? `${stickyConfig.value.offset}px`
+        : '',
       minWidth: qTable.fixedLayout.value ? props.column.minWidth ?? '' : ''
     }));
 

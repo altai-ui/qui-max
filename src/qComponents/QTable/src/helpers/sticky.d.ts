@@ -3,7 +3,7 @@ export interface StickyConfig {
   isSticked: boolean;
   isFirstSticked: boolean;
   isLastSticked: boolean;
-  position: string;
+  position: 'left' | 'right';
   offset: number;
   zIndex: number;
 }

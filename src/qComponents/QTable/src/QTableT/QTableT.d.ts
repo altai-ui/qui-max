@@ -1,22 +1,17 @@
-import type { Ref, ComputedRef, UnwrapRef } from 'vue';
+import type { Ref, ComputedRef, ComponentPublicInstance, UnwrapRef } from 'vue';
 
-import type { StickyConfig } from '../helpers/sticky.d';
+import type {
+  StickyGlobalConfig,
+  QTableTStickyInstance
+} from '../QTableTSticky/QTableTSticky';
 
 export interface QTableTProvider {
-  selectionColumn: {
-    isSticked: boolean;
-    isLastSticked: boolean;
-  };
-  isSelectionColumnStickable: ComputedRef<boolean>;
-  stickyConfig: Ref<UnwrapRef<StickyConfig>[]>;
-  stickedLeftColumnList: Ref<number[]>;
-  stickedRightColumnList: Ref<number[]>;
-  stickyOffsetLeftArr: Ref<number[]>;
-  stickyOffsetRightArr: Ref<number[]>;
+  stickyGlobalConfig: ComputedRef<StickyGlobalConfig>;
 }
 
 export interface QTableTInstance {
   thead: Ref<Nullable<HTMLElement>>;
+  sticky: Ref<ComponentPublicInstance<UnwrapRef<QTableTStickyInstance>> | null>;
   isColgroupShown: ComputedRef<boolean>;
   isTotalShown: ComputedRef<boolean>;
   rootClasses: ComputedRef<Record<string, boolean>>;

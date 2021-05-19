@@ -3,7 +3,11 @@ import { ru, enGB as en } from 'date-fns/locale';
 
 const locales = { ru, en };
 
-const formatLocalDate = (value, dateFnsFormat, dateFnsLocale = 'ru') => {
+const formatLocalDate = (
+  value: Date | number,
+  dateFnsFormat: string,
+  dateFnsLocale = 'ru'
+): Date | number | string => {
   let parsedValue = value;
   if (!isDate(parsedValue)) {
     parsedValue = parseISO(parsedValue);
@@ -18,7 +22,7 @@ const formatLocalDate = (value, dateFnsFormat, dateFnsLocale = 'ru') => {
   return parsedValue;
 };
 
-const setTimeToDate = (date, type, value) => {
+const setTimeToDate = (date: Date, type: string, value: string): Date => {
   let newDate = date;
   if (isDate(date)) {
     newDate = new Date(date);
@@ -40,11 +44,11 @@ const setTimeToDate = (date, type, value) => {
   return newDate;
 };
 
-const clearTime = function(date) {
+const clearTime = function (date: Date): Date {
   return new Date(date.getFullYear(), date.getMonth(), date.getDate());
 };
 
-const clearMilliseconds = function(date) {
+const clearMilliseconds = function (date: Date): Date {
   return new Date(
     date.getFullYear(),
     date.getMonth(),

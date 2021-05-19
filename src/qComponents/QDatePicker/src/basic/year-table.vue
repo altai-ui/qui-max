@@ -28,7 +28,7 @@
   </table>
 </template>
 
-<script>
+<script lang="ts">
 import {
   isSameYear,
   addYears,
@@ -38,8 +38,11 @@ import {
   isBefore,
   isAfter
 } from 'date-fns';
+import { reactive, computed } from 'vue';
 
-const checkDisabled = (year, disabledValues) => {
+import type { YearTableState, YearTableInterface } from './types';
+
+const checkDisabled = (year: number, disabledValues: Record<string, Date>): boolean => {
   if (!disabledValues) return false;
   const disabled = [];
   if (Array.isArray(disabledValues.ranges)) {
@@ -87,31 +90,32 @@ export default {
     }
   },
 
-  data() {
-    return {
+  emits: ['changerange', 'pick'],
+
+  setup(props, ctx): YearTableInterface {
+    const state = reactive<YearTableState>({
       tableRows: [[], [], []],
       lastHoveredCell: null
-    };
-  },
+    });
 
-  computed: {
-    startYear() {
-      if (this.year) {
+    const startYear = computed<Date>(() => {
+      if (props.year) {
         return startOfDecade(new Date(this.year, 0, 1));
       }
 
       return startOfDecade(new Date());
-    },
-    rows() {
-      let startYear = this.startYear;
-      return this.tableRows.map((row, i) => {
+    });
+
+    const rows = computed(() => {
+      let startYearValue = startYear.value;
+      return state.tableRows.map((row, i) => {
         const newRow = [];
         const cellCount = i < 2 ? 4 : 2;
         for (let j = 0; j < cellCount; j += 1) {
-          let maxDate = this.maxDate;
-          let minDate = this.minDate;
-          if (this.rangeState.selecting) {
-            maxDate = this.rangeState.endDate;
+          let maxDate = state.maxDate;
+          let minDate = state.minDate;
+          if (state.rangeState.selecting) {
+            maxDate = state.rangeState.endDate;
           }
 
           minDate = startOfMonth(minDate);
@@ -121,44 +125,42 @@ export default {
             Math.max(minDate, maxDate)
           ];
           newRow.push({
-            year: startYear,
-            disabled: checkDisabled(startYear, this.disabledValues),
+            year: startYearValue,
+            disabled: checkDisabled(startYearValue, props.disabledValues),
             inRange:
               minDate &&
-              startYear.getTime() >= minDate &&
-              startYear.getTime() <= maxDate
+              startYearValue.getTime() >= minDate &&
+              startYearValue.getTime() <= maxDate
           });
 
-          startYear = addYears(startYear, 1);
+          startYearValue = addYears(startYearValue, 1);
         }
 
         return newRow;
       });
-    }
-  },
+    });
 
-  methods: {
-    handleMouseMove(event, { year }) {
+    const handleMouseMove = (event, { year }) => {
       // update data only different cell's hover
-      if (event.target === this.lastHoveredCell) return;
-      this.lastHoveredCell = event.target;
-      if (!this.rangeState.selecting) return;
-      this.$emit('changerange', {
-        minDate: this.minDate,
-        maxDate: this.maxDate,
+      if (event.target === state.lastHoveredCell) return;
+      state.lastHoveredCell = event.target;
+      if (!state.rangeState.selecting) return;
+      ctx.emit('changerange', {
+        minDate: state.minDate,
+        maxDate: state.maxDate,
         rangeState: {
           selecting: true,
           endDate: year
         }
       });
-    },
+    };
 
-    getCellClasses(cell) {
+    const getCellClasses = (cell) => {
       const style = ['cell', 'cell_year'];
-      if (this.selectionMode === 'year') {
+      if (props.selectionMode === 'year') {
         if (
-          isDate(this.value) &&
-          this.value.getFullYear() === cell.year.getFullYear()
+          isDate(props.modelValue) &&
+          props.modelValue.getFullYear() === cell.year.getFullYear()
         )
           style.push('cell_current');
         if (new Date().getFullYear() === cell.year.getFullYear())
@@ -172,33 +174,41 @@ export default {
       }
 
       return style;
-    },
+  };
 
-    handleYearTableClick(event, { year }) {
-      if (this.selectionMode === 'range') {
-        if (!this.rangeState.selecting) {
-          this.$emit('pick', {
+    const handleYearTableClick = (event: MouseEvent, { year }: { year: number}): void => {
+      if (props.selectionMode === 'range') {
+        if (!state.rangeState.selecting) {
+          ctx.emit('pick', {
             minDate: year,
             maxDate: null,
             rangeState: { selecting: true, end: null }
           });
-        } else if (year.getTime() >= this.minDate.getTime()) {
-          this.$emit('pick', {
-            minDate: this.minDate,
+        } else if (year.getTime() >= state.minDate.getTime()) {
+          ctx.emit('pick', {
+            minDate: state.minDate,
             maxDate: year,
             rangeState: { selecting: false, end: null }
           });
         } else {
-          this.$emit('pick', {
+          ctx.emit('pick', {
             minDate: year,
-            maxDate: this.minDate,
+            maxDate: state.minDate,
             rangeState: { selecting: false, end: null }
           });
         }
       } else {
-        this.$emit('pick', year);
+        ctx.emit('pick', year);
       }
     }
-  }
+
+    return {
+      state,
+      startYear,
+      rows,
+      handleMouseMove,
+      handleYearTableClick
+    }
+  },
 };
 </script>

@@ -87,15 +87,19 @@
   </div>
 </template>
 
-<script>
-import { isDate, addYears } from 'date-fns';
+<script lang="ts">
+import { isDate, addYears, getDecade, addMonths } from 'date-fns';
+import { reactive, computed, watch, inject } from 'vue';
+import isSameMonth from 'date-fns/isSameMonth';
 import MonthTable from '../basic/month-table';
-import rangeMixin from './range-mixin';
 import focusMixin from './focus-mixin';
+import { leftYearComposable, handleShortcutClick } from './composition';
+
+import type { MonthRangeState, MonthRangeInterface } from './types';
 
 export default {
   components: { MonthTable },
-  mixins: [rangeMixin, focusMixin],
+  mixins: [focusMixin],
   props: {
     value: {
       type: Array,
@@ -106,8 +110,11 @@ export default {
       default: null
     }
   },
-  data() {
-    return {
+
+  emits: ['pick'],
+
+  setup(props, ctx): MonthRangeInterface {
+    const state = reactive<MonthRangeState>({
       minDate: '',
       maxDate: '',
       leftDate: new Date(),
@@ -118,48 +125,83 @@ export default {
       },
       shortcuts: '',
       isRanged: true,
-      currentView: 'monthrange'
-    };
-  },
+      currentView: 'monthrange',
+      panelInFocus: null,
+    });
 
-  computed: {
-    leftPanelClasses() {
-      return {
-        'q-picker-panel__content': true,
-        'q-picker-panel__content_no-right-borders': true,
-        'q-picker-panel__content_focused': this.panelInFocus === 'left'
-      };
-    },
-    rightPanelClasses() {
-      return {
-        'q-picker-panel__content': true,
-        'q-picker-panel__content_no-left-borders': true,
-        'q-picker-panel__content_focused': this.panelInFocus === 'right'
-      };
-    },
-    rightYear() {
-      if (isDate(this.rightDate) && isDate(this.leftDate)) {
-        return this.rightDate.getFullYear() === this.leftDate.getFullYear()
-          ? this.leftDate.getFullYear() + 1
-          : this.rightDate.getFullYear();
+    const picker = inject('qDatePicker');
+
+    const leftPanelClasses = computed<Record<string, boolean>>(() => ({
+      'q-picker-panel__content': true,
+      'q-picker-panel__content_no-right-borders': true,
+      'q-picker-panel__content_focused': state.panelInFocus === 'left'
+    }))
+
+    const rightPanelClasses = computed<Record<string, boolean>>(() => ({
+      'q-picker-panel__content': true,
+      'q-picker-panel__content_no-left-borders': true,
+      'q-picker-panel__content_focused': state.panelInFocus === 'right'
+    }))
+
+    const rightYear = computed(() => {
+      if (isDate(state.rightDate) && isDate(state.leftDate)) {
+        return state.rightDate.getFullYear() === state.leftDate.getFullYear()
+          ? state.leftDate.getFullYear() + 1
+          : state.rightDate.getFullYear();
       }
 
       return new Date().getFullYear() + 1;
-    },
+    });
 
-    enableYearArrow() {
-      return this.rightYear > this.leftYear + 1;
+    const leftYear = leftYearComposable(state.leftDate);
+
+    const enableYearArrow = computed<boolean>(() => rightYear.value > leftYear.value + 1);
+
+    const handleClear = (): void => {
+      state.minDate = null;
+      state.maxDate = null;
+      state.leftDate = new Date();
+      state.rightDate = addYears(new Date(), 1);
+      ctx.emit('pick', null);
+    }
+
+    watch(() => props.modelValue, (newVal) => {
+      if (!newVal || !newVal?.length) {
+        handleClear();
+      } else {
+        state.minDate = newVal[0];
+        state.maxDate = newVal[1];
+        switch (picker.type.value) {
+          case 'yearrange': {
+            if (getDecade(state.minDate) === getDecade(state.maxDate)) {
+              state.leftDate = state.minDate;
+              state.rightDate = addYears(state.minDate, 10);
+            }
+            break;
+          }
+          default: {
+            if (isSameMonth(state.minDate, state.maxDate)) {
+              state.leftDate = state.minDate;
+              state.rightDate = addMonths(state.minDate, 1);
+            } else {
+              state.leftDate = state.minDate;
+              state.rightDate = state.maxDate;
+            }
+          }
+        }
+      }
+    }, { immediate: true })
+
+    return {
+      state,
+      leftPanelClasses,
+      rightPanelClasses,
+      rightYear,
+      leftYear,
+      enableYearArrow,
+      handleClear,
+      handleShortcutClick
     }
   },
-
-  methods: {
-    handleClear() {
-      this.minDate = null;
-      this.maxDate = null;
-      this.leftDate = new Date();
-      this.rightDate = addYears(new Date(), 1);
-      this.$emit('pick', null);
-    }
-  }
 };
 </script>

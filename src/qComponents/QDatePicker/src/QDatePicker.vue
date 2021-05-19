@@ -10,7 +10,7 @@
       :readonly="!editable"
       :disabled="isPickerDisabled"
       :name="name"
-      :placeholder="placeholder || $t('QDatePicker.placeholder')"
+      :placeholder="placeholder || t('QDatePicker.placeholder')"
       :value="displayValue"
       @focus="handleFocus"
       @keyup="handleKeyUp"
@@ -19,8 +19,8 @@
       @mouseenter="handleMouseEnter"
       @mouseleave="showClose = false"
     >
-      <span
-        slot="suffix"
+      <template
+        #suffix
         class="q-input__icon"
         :class="iconClass"
         @click="handleIconClick"
@@ -40,7 +40,7 @@
       <input
         autocomplete="off"
         class="q-range-input"
-        :placeholder="startPlaceholder || $t('QDatePicker.startPlaceholder')"
+        :placeholder="startPlaceholder || t('QDatePicker.startPlaceholder')"
         :value="displayValue && displayValue[0]"
         :disabled="isPickerDisabled"
         :name="name && name[0]"
@@ -52,7 +52,7 @@
       </slot>
       <input
         autocomplete="off"
-        :placeholder="endPlaceholder || $t('QDatePicker.endPlaceholder')"
+        :placeholder="endPlaceholder || t('QDatePicker.endPlaceholder')"
         :value="displayValue && displayValue[1]"
         :disabled="isPickerDisabled"
         :name="name && name[1]"
@@ -79,10 +79,9 @@
       :show-time="timepicker"
       @pick="handlePickClick"
     >
-      <slot
+      <template
         v-if="$slots.sidebar"
-        :slot="$slots.sidebar"
-        name="sidebar"
+        #sidebar
       />
     </component>
   </div>
@@ -101,11 +100,12 @@ import {
   startOfYear,
   parseISO
 } from 'date-fns';
-import { computed, defineComponent, inject, PropType, reactive, ref, watch, ComponentPublicInstance, UnwrapRef, onBeforeUnmount } from 'vue';
+import { computed, defineComponent, inject, PropType, reactive, ref, watch, ComponentPublicInstance, UnwrapRef, onBeforeUnmount, provide, toRef } from 'vue';
 import { getConfig } from '@/qComponents/config';
 import { QFormProvider } from '@/qComponents/QForm';
 import { QInputInstance } from '@/qComponents/QInput';
 import { QFormItemProvider } from '@/qComponents/QFormItem';
+import { useI18n } from 'vue-i18n';
 import { formatLocalDate } from './helpers';
 import Pickers from '../../mixins/pickers';
 
@@ -135,9 +135,7 @@ const dateValidator = function(val: QDatePickerPropModelValue): boolean {
   );
 };
 
-const formatToISO = (date: Date | Date[]): string | string[] => {
-  console.log(date);
-  
+const formatToISO = (date: QDatePickerPropModelValue): string | string[] => {
   if (Array.isArray(date)) {
     return [formatISO(date[0]), formatISO(date[1])];
   }
@@ -290,7 +288,7 @@ export default defineComponent({
       reference.value instanceof Element
         ? reference.value
         : reference.value?.$el;
-    const panel = ref(null);
+    const panel = ref<null | HTMLElement>(null);
 
     const state = reactive<QDatePickerState>({
       pickerVisible: false,
@@ -590,8 +588,15 @@ export default defineComponent({
       }
     })
 
+    const { t } = useI18n();
+
     onBeforeUnmount(() => {
       destroyPopper()
+    })
+
+    provide('qDatePicker', {
+      emitChange,
+      type: toRef('type', props.type)
     })
 
     return {
@@ -610,7 +615,8 @@ export default defineComponent({
       handleMouseEnter,
       handleRangeClick,
       handleClose,
-      handleIconClick
+      handleIconClick,
+      t
     }
   },
 });

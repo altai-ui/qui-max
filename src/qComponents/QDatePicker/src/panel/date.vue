@@ -1,5 +1,8 @@
 <template>
-  <div class="q-picker-panel">
+  <div
+    ref="root"
+    class="q-picker-panel"
+  >
     <div class="q-picker-panel__body">
       <slot
         name="sidebar"
@@ -27,14 +30,14 @@
         <div class="q-picker-panel__header">
           <button
             type="button"
-            :title="$t('QDatePicker.prevYear')"
+            :title="t('QDatePicker.prevYear')"
             class="q-picker-panel__icon-btn q-icon-double-triangle-left"
             @click="handlePrevYearClick"
           />
           <button
             v-show="currentView === 'date'"
             type="button"
-            :title="$t('QDatePicker.prevMonth')"
+            :title="t('QDatePicker.prevMonth')"
             class="q-picker-panel__icon-btn q-icon-triangle-left"
             @click="handlePrevMonthClick"
           />
@@ -59,13 +62,13 @@
           <button
             v-show="currentView === 'date'"
             type="button"
-            :title="$t('QDatePicker.nextMonth')"
+            :title="t('QDatePicker.nextMonth')"
             class="q-picker-panel__icon-btn q-icon-triangle-right"
             @click="handleNextMonthClick"
           />
           <button
             type="button"
-            :title="$t('QDatePicker.nextYear')"
+            :title="t('QDatePicker.nextYear')"
             class="q-picker-panel__icon-btn q-icon-double-triangle-right"
             @click="handleNextYearClick"
           />
@@ -114,16 +117,21 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { isDate, subMonths, addMonths, subYears, addYears } from 'date-fns';
+import { useI18n } from 'vue-i18n';
+import { reactive, computed, watch, PropType, onMounted, ref } from 'vue';
+import { getConfig } from '@/qComponents/config';
 import { clearTime, clearMilliseconds, setTimeToDate } from '../helpers';
 import { addZero } from '../../../helpers/dateHelpers';
 import TimePanel from '../../../QTimePicker/src/components/panel';
 import YearTable from '../basic/year-table';
 import MonthTable from '../basic/month-table';
 import DateTable from '../basic/date-table';
-import focusMixin from './focus-mixin';
 import focusTimeMixin from './focus-time-mixin';
+
+import type { QDatePickerPropModelValue } from '../types';
+import type { DatePanelPropShortcuts, DatePanelInterface } from './types';
 
 export default {
   name: 'QDatePickerPanelDate',
@@ -133,7 +141,7 @@ export default {
     MonthTable,
     DateTable
   },
-  mixins: [focusMixin, focusTimeMixin],
+  mixins: [focusTimeMixin],
   props: {
     firstDayOfWeek: {
       type: Number,
@@ -146,7 +154,7 @@ export default {
     },
 
     shortcuts: {
-      type: Array,
+      type: Array as PropType<DatePanelPropShortcuts>,
       default: () => []
     },
 
@@ -160,199 +168,350 @@ export default {
       default: false
     },
 
-    value: {
+    modelValue: {
       type: [Object, Array, Date, String],
       default: null
     }
   },
 
-  data() {
-    return {
+  emits: ['pick'],
+
+  setup(props, ctx): DatePanelInterface {
+    if (props.modelValue && isDate(props.modelValue)) {
+      state.year = props.modelValue.getFullYear();
+      state.month = props.modelValue.getMonth();
+    }
+
+    const state = reactive({
       year: new Date().getFullYear(),
       month: new Date().getMonth(),
       currentView: 'date',
-      isRanged: false
-    };
-  },
+      isRanged: false,
+      panelInFocus: null,
+      lastFocusedCellIndex: null,
+      dateCells: null,
+      monthCells: null,
+      yearCells: null
+    });
 
-  computed: {
-    panelContentClasses() {
-      return {
-        'q-picker-panel__content': true,
-        'q-picker-panel__content_no-right-borders': this.showTime,
-        'q-picker-panel__content_focused': this.panelInFocus === 'date'
-      };
-    },
-    parsedTime() {
-      if (isDate(this.value)) {
+    const root = ref(null);
+    const datePanel = ref<HTMLElement | null>(null);
+    const timePanel = ref<HTMLElement | null>(null);
+
+    onMounted(() => {
+      state.dateCells = root.value.querySelectorAll('.q-date-table .cell');
+      state.monthCells = root.value.querySelectorAll('.q-month-table .cell');
+      state.yearCells = root.value.querySelectorAll('.q-year-table .cell');
+    })
+
+    const setPanelFocus = (): void => {
+      if (datePanel.value?.contains(document.activeElement)) {
+        state.panelInFocus = 'date';
+      } else if (timePanel.value?.$el.contains(document.activeElement)) {
+        state.panelInFocus = 'time';
+      } else {
+        state.panelInFocus = null;
+      }
+    };
+
+    const panelContentClasses = computed<Record<string, boolean>>(() => ({
+      'q-picker-panel__content': true,
+      'q-picker-panel__content_no-right-borders': props.showTime,
+      'q-picker-panel__content_focused': state.panelInFocus === 'date'
+    }));
+
+    const parsedTime = computed<null | Record<string, Date>>(() => {
+      if (props.modelValue && isDate(props.modelValue)) {
         return {
-          hours: addZero(this.value.getHours()),
-          minutes: addZero(this.value.getMinutes()),
-          seconds: addZero(this.value.getSeconds())
+          hours: addZero(props.modelValue.getHours()),
+          minutes: addZero(props.modelValue.getMinutes()),
+          seconds: addZero(props.modelValue.getSeconds())
         };
       }
 
       return null;
-    },
+    });
 
-    selectionMode() {
-      return this.type ?? 'day';
-    },
-
-    currentMonth() {
-      const formatter = new Intl.DateTimeFormat(this.$Q.locale, {
+    const selectionMode = computed<string>(() => props.type ?? 'day');
+    const currentMonth = computed<string>(() => {
+      const formatter = new Intl.DateTimeFormat(getConfig('locale'), {
         month: 'short'
       });
-      return formatter.format(new Date(this.year, this.month));
-    },
+      return formatter.format(new Date(state.year, state.month));
+    });
 
-    yearLabel() {
-      if (this.currentView === 'year') {
-        const startYear = Math.floor(this.year / 10) * 10;
+    const yearLabel = computed<string | number>(() => {
+      if (state.currentView === 'year') {
+        const startYear = Math.floor(state.year / 10) * 10;
         return `${startYear} - ${startYear + 9}`;
       }
-      return this.year;
-    }
-  },
+      return state.year;
+    });
 
-  watch: {
-    type: {
-      handler(value) {
-        let currentView;
-        switch (value) {
-          case 'week':
-          case 'date':
-          case 'datetime':
-            currentView = 'date';
-            break;
-          default:
-            currentView = value;
-        }
-        this.currentView = currentView;
-      },
-      immediate: true
-    },
-
-    value(date) {
-      if (isDate(date)) {
-        this.year = date.getFullYear();
-        this.month = date.getMonth();
-      } else {
-        this.year = new Date().getFullYear();
-        this.month = new Date().getMonth();
+    watch(() => props.type, (value) => {
+      let currentView;
+      switch (value) {
+        case 'week': 
+        case 'date':
+        case 'datetime':
+          currentView = 'date';
+          break;
+        default:
+          currentView = value;
       }
-    }
-  },
+      state.currentView = currentView;
+    }, { immediate: true });
 
-  created() {
-    if (isDate(this.value)) {
-      this.year = this.value.getFullYear();
-      this.month = this.value.getMonth();
-    }
-  },
+    watch(() => props.modelValue, (date: QDatePickerPropModelValue) => {
+      if (date && isDate(date)) {
+        state.year = date.getFullYear();
+        state.month = date.getMonth();
+      } else {
+        state.year = new Date().getFullYear();
+        state.month = new Date().getMonth();
+      }
+    });
 
-  methods: {
-    handleTimeChange({ type, value }) {
-      const newDate = setTimeToDate(this.value || new Date(), type, value);
-
-      this.emit(newDate, { hidePicker: false });
-    },
-
-    emit(value, ...args) {
+    const emit = (value: QDatePickerPropModelValue, ...args: unknown[]): void => {
       if (Array.isArray(value)) {
         const dates = value.map(date =>
-          this.showTime ? clearMilliseconds(date) : clearTime(date)
+          props.showTime ? clearMilliseconds(date) : clearTime(date)
         );
-        this.$emit('pick', dates, ...args);
+        ctx.emit('pick', dates, ...args);
       } else {
-        this.$emit('pick', value, ...args);
+        ctx.emit('pick', value, ...args);
       }
-    },
+    };
 
-    showMonthPicker() {
-      this.currentView = 'month';
-    },
+    const handleTimeChange = ({ type, value }: Record<string, string>): void => {
+      const newDate = setTimeToDate(props.modelValue || new Date(), type, value);
 
-    showYearPicker() {
-      this.currentView = 'year';
-    },
-
-    showDatePicker() {
-      this.currentView = 'date';
-    },
-
-    handlePrevMonthClick() {
-      const year = this.year;
-      if (this.month === 0) {
-        this.year -= 1;
+      emit(newDate, { hidePicker: false });
+    };
+    
+    const showMonthPicker = (): void => { state.currentView = 'month' };
+    const showYearPicker = (): void => { state.currentView = 'year' };
+    const showDatePicker = (): void => { state.currentView = 'date' };
+    const handlePrevMonthClick = (): void => {
+      const year = state.year;
+      if (state.month === 0) {
+        state.year -= 1;
       }
-      this.month = subMonths(new Date(year, this.month), 1).getMonth();
-    },
+      state.month = subMonths(new Date(year, state.month), 1).getMonth();
+    };
 
-    handleNextMonthClick() {
-      const year = this.year;
-      if (this.month === 11) {
-        this.year += 1;
+    const handleNextMonthClick = (): void => {
+      const year = state.year;
+      if (state.month === 11) {
+        state.year += 1;
       }
-      this.month = addMonths(new Date(year, this.month), 1).getMonth();
-    },
+      state.month = addMonths(new Date(year, state.month), 1).getMonth();
+    };
 
-    handlePrevYearClick() {
-      if (this.currentView === 'year') {
-        this.year = subYears(new Date(this.year, this.month), 10).getFullYear();
+    const handlePrevYearClick = (): void => {
+      if (state.currentView === 'year') {
+        state.year = subYears(new Date(state.year, state.month), 10).getFullYear();
       } else {
-        this.year = subYears(new Date(this.year, this.month), 1).getFullYear();
+        state.year = subYears(new Date(state.year, state.month), 1).getFullYear();
       }
-    },
+    };
 
-    handleNextYearClick() {
-      if (this.currentView === 'year') {
-        this.year = addYears(new Date(this.year, 1), 10).getFullYear();
+    const handleNextYearClick = (): void => {
+      if (state.currentView === 'year') {
+        state.year = addYears(new Date(state.year, 1), 10).getFullYear();
       } else {
-        this.year = addYears(new Date(this.year, 1), 1).getFullYear();
+        state.year = addYears(new Date(state.year, 1), 1).getFullYear();
       }
-    },
+    };
 
-    handleShortcutClick(shortcut) {
+    const handleShortcutClick = (shortcut: Record<string, (model: unknown) => void>): void => {
       if (shortcut.onClick) {
         shortcut.onClick(this);
       }
-    },
+    };
 
-    handleMonthPick(month, year) {
-      if (this.selectionMode === 'month') {
-        this.emit(new Date(year, month, 1));
-      } else if (isDate(this.value) && !Array.isArray(this.value)) {
-        this.emit(new Date(year, month, this.value.getDate()));
-        this.showDatePicker();
+    const handleMonthPick = (month: number, year: number): void => {
+      if (selectionMode.value === 'month') {
+        emit(new Date(year, month, 1));
+      } else if (isDate(props.modelValue) && !Array.isArray(props.modelValue)) {
+        emit(new Date(year, month, props.modelValue.getDate()));
+        showDatePicker();
       } else {
-        this.month = month;
-        this.year = year;
-        this.showDatePicker();
+        state.month = month;
+        state.year = year;
+        showDatePicker();
       }
-    },
+    };
 
-    handleDatePick(value) {
-      this.emit(value, { hidePicker: !this.showTime }); // set false to keep panel open
-    },
-
-    handleYearPick(year) {
-      if (this.selectionMode === 'year') {
-        this.emit(year);
-      } else if (isDate(this.value) && !Array.isArray(this.value)) {
-        this.emit(
+    const handleYearPick = (year: Date): void => {
+      if (selectionMode.value === 'year') {
+        emit(year);
+      } else if (isDate(props.modelValue) && !Array.isArray(props.modelValue)) {
+        emit(
           new Date(
             year.getFullYear(),
-            this.value.getMonth(),
-            this.value.getDate()
+            props.modelValue.getMonth(),
+            props.modelValue.getDate()
           )
         );
-        this.showDatePicker();
+        showDatePicker();
       } else {
-        this.year = year.getFullYear();
-        this.showMonthPicker();
+        state.year = year.getFullYear();
+        showMonthPicker();
       }
     }
-  }
+
+    const handleDatePick = (value: QDatePickerPropModelValue): void => {
+      emit(value, { hidePicker: !props.showTime }); // set false to keep panel open
+    };
+
+    const { t } = useI18n();
+
+    const navigateDropdown = (e: KeyboardEvent): void => {
+      if (e.key !== 'Tab') {
+        if (e.target.classList.contains('cell_time')) {
+          moveWithinTime(e);
+        } else if (e.target.classList.contains('cell_date')) {
+          moveWithinDates(e);
+        } else if (e.target.classList.contains('cell_month')) {
+          moveWithinPeriod({ period: 'month', e });
+        } else if (e.target.classList.contains('cell_year')) {
+          moveWithinPeriod({ period: 'year', e });
+        } else if (['monthrange', 'month'].includes(state.currentView)) {
+          state.monthCells[0]?.focus();
+        } else if (['yearrange', 'year'].includes(state.currentView)) {
+          state.yearCells[0]?.focus();
+        } else {
+          state.dateCells[0]?.focus();
+        }
+      }
+
+      setPanelFocus();
+    };
+
+    const moveWithinPeriod = ({ period, e }: { period: string, e: KeyboardEvent}): void => {
+      let currentNodeIndex;
+      let nextNodeIndex;
+      const periodCells = period === 'month' ? state.monthCells : state.yearCells;
+      Array.from(periodCells).some((element, index) => {
+        if (document.activeElement === element) {
+          currentNodeIndex = index;
+          return true;
+        }
+
+        return false;
+      });
+
+      switch (e.key) {
+        case 'ArrowUp': {
+          nextNodeIndex = currentNodeIndex - PERIOD_CELLS_IN_ROW_COUNT;
+          break;
+        }
+
+        case 'ArrowRight':
+          nextNodeIndex = currentNodeIndex + 1;
+          break;
+
+        case 'ArrowLeft':
+          nextNodeIndex = currentNodeIndex - 1;
+          break;
+
+        case 'ArrowDown': {
+          nextNodeIndex = currentNodeIndex + PERIOD_CELLS_IN_ROW_COUNT;
+          break;
+        }
+        default:
+          break;
+      }
+
+      const node = periodCells[nextNodeIndex];
+      const newIndex = nextNodeIndex % PERIOD_CELLS_IN_ROW_COUNT;
+      if (node) {
+        node.focus();
+        state.lastFocusedCellIndex = nextNodeIndex;
+      } else if (nextNodeIndex > state.lastFocusedCellIndex) {
+        handleNextYearClick();
+        periodCells[newIndex]?.focus();
+      } else if (nextNodeIndex < state.lastFocusedCellIndex) {
+        handlePrevYearClick();
+      }
+    };
+
+    const moveWithinDates = (e: KeyboardEvent) => {
+      let currentNodeIndex;
+      let nextNodeIndex;
+      Array.from(state.dateCells).some((element, index) => {
+        const isItActiveElement = document.activeElement === element;
+        if (isItActiveElement) currentNodeIndex = index;
+        return isItActiveElement;
+      });
+
+      switch (e.key) {
+        case 'ArrowUp': {
+          nextNodeIndex = currentNodeIndex - DATE_CELLS_IN_ROW_COUNT;
+          break;
+        }
+
+        case 'ArrowRight':
+          if(
+            props.showTime &&
+            (currentNodeIndex + 1) % DATE_CELLS_IN_ROW_COUNT === 0
+          ) {
+            moveWithinTime();
+          } else {
+            nextNodeIndex = currentNodeIndex + 1;
+          }
+
+          break;
+
+        case 'ArrowLeft':
+          nextNodeIndex = currentNodeIndex - 1;
+          break;
+
+        case 'ArrowDown': {
+          nextNodeIndex = currentNodeIndex + DATE_CELLS_IN_ROW_COUNT;
+          break;
+        }
+        default:
+          break;
+      }
+
+      const node = state.dateCells[nextNodeIndex];
+      const newIndex = nextNodeIndex % DATE_CELLS_IN_ROW_COUNT;
+      if (node) {
+        node.focus();
+        state.lastFocusedCellIndex = nextNodeIndex;
+      } else if (nextNodeIndex > state.lastFocusedCellIndex) {
+        handleNextMonthClick();
+        state.dateCells[newIndex]?.focus();
+      } else if (nextNodeIndex < state.lastFocusedCellIndex) {
+        handlePrevMonthClick();
+        state.dateCells[DATE_CELLS_COUNT + newIndex]?.focus();
+      }
+    }
+
+    return {
+      state,
+      panelContentClasses,
+      parsedTime,
+      selectionMode,
+      currentMonth,
+      yearLabel,
+      handleTimeChange,
+      showMonthPicker,
+      showYearPicker,
+      showDatePicker,
+      handleYearPick,
+      handlePrevMonthClick,
+      handleNextMonthClick,
+      handlePrevYearClick,
+      handleNextYearClick,
+      handleShortcutClick,
+      navigateDropdown,
+      handleMonthPick,
+      handleDatePick,
+      t
+    }
+  },
 };
 </script>

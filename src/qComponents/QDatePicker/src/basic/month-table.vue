@@ -28,11 +28,13 @@
   </table>
 </template>
 
-<script>
+<script lang="ts">
 import { startOfMonth, isSameMonth, isBefore, isAfter } from 'date-fns';
+import { reactive, computed } from 'vue';
+import { getConfig } from '@/qComponents/config';
 import { formatLocalDate } from '../helpers';
 
-const checkDisabled = ({ date }, disabledValues) => {
+const checkDisabled = ({ date }: { date: Date }, disabledValues): boolean => {
   if (!disabledValues) return false;
   const disabled = [];
   if (Array.isArray(disabledValues.ranges)) {
@@ -87,20 +89,18 @@ export default {
     }
   },
 
-  data() {
-    return {
+  emits: ['pick', 'changerange'],
+
+  setup(props, ctx) {
+    const state = reactive({
       tableRows: [[], [], []],
       lastRow: null,
       lastColumn: null
-    };
-  },
+    });
 
-  computed: {
-    rows() {
-      // TODO: refactory rows / getCellClasses
-      const rows = this.tableRows;
-
-      return rows.map((row, i) => {
+    const rows = computed(() => {
+      const tableRows = state.tableRows;
+      return tableRows.map((row, i) => {
         const newRow = [];
         for (let j = 0; j < 4; j += 1) {
           const cell = {
@@ -116,17 +116,17 @@ export default {
           const index = i * 4 + j;
 
           cell.text = index;
-          cell.month = startOfMonth(new Date(this.year, index));
+          cell.month = startOfMonth(new Date(props.year, index));
           cell.disabled = checkDisabled(
             { date: cell.month },
-            this.disabledValues
+            props.disabledValues
           );
 
-          let maxDate = this.maxDate;
-          let minDate = this.minDate;
+          let maxDate = state.maxDate;
+          let minDate = state.minDate;
 
-          if (this.rangeState.selecting) {
-            maxDate = this.rangeState.endDate;
+          if (state.rangeState.selecting) {
+            maxDate = state.rangeState.endDate;
           }
 
           minDate = startOfMonth(minDate);
@@ -151,21 +151,19 @@ export default {
 
         return newRow;
       });
-    }
-  },
+    })
 
-  methods: {
-    getMonthName(monthIndex) {
+    const getMonthName = (monthIndex: number): Date => {
       return formatLocalDate(
-        new Date(this.year, monthIndex, 1),
+        new Date(props.year, monthIndex, 1),
         'MMM',
-        this.$Q.locale
+        getConfig('locale')
       );
     },
 
-    getCellClasses(cell) {
+    const getCellClasses = (cell) => {
       const classes = ['cell', 'cell_month'];
-      if (this.value && isSameMonth(this.value, cell.month))
+      if (props.modelValue && isSameMonth(props.modelValue, cell.month))
         classes.push('cell_current');
       if (cell.type === 'today') classes.push('cell_today');
 
@@ -173,10 +171,10 @@ export default {
         classes.push('cell_in-range');
       }
       return classes;
-    },
+    };
 
-    handleMouseMove(event) {
-      if (!this.rangeState.selecting) return;
+    const handleMouseMove = (event: MouseEvent): void => {
+      if (!state.rangeState.selecting) return;
 
       let target = event.target;
       if (target.tagName === 'BUTTON') {
@@ -188,52 +186,58 @@ export default {
       const row = target.parentNode.rowIndex;
       const column = target.cellIndex;
       // can not select disabled date
-      if (this.rows[row][column].disabled) return;
+      if (rows.value[row][column].disabled) return;
 
       // only update rangeState when mouse moves to a new cell
       // this avoids frequent Date object creation and improves performance
-      if (row !== this.lastRow || column !== this.lastColumn) {
-        this.lastRow = row;
-        this.lastColumn = column;
-        this.$emit('changerange', {
-          minDate: this.minDate,
-          maxDate: this.maxDate,
+      if (row !== state.lastRow || column !== state.lastColumn) {
+        state.lastRow = row;
+        state.lastColumn = column;
+        ctx.emit('changerange', {
+          minDate: state.minDate,
+          maxDate: state.maxDate,
           rangeState: {
             selecting: true,
-            endDate: new Date(this.year, row * 4 + column, 1)
+            endDate: new Date(props.year, row * 4 + column, 1)
           }
         });
       }
     },
 
-    handleMonthTableClick(cell) {
+    const handleMonthTableClick = (cell) => {
       if (cell.disabled) return;
       const month = cell.month.getMonth();
       const newDate = cell.month;
-      if (this.selectionMode === 'range') {
-        if (!this.rangeState.selecting) {
-          this.$emit('pick', {
+      if (props.selectionMode === 'range') {
+        if (!state.rangeState.selecting) {
+          ctx.emit('pick', {
             minDate: newDate,
             maxDate: null,
-            rangeState: { ...this.rangeState, selecting: true }
+            rangeState: { ...state.rangeState, selecting: true }
           });
-        } else if (newDate >= this.minDate) {
-          this.$emit('pick', {
-            minDate: this.minDate,
+        } else if (newDate >= state.minDate) {
+          ctx.emit('pick', {
+            minDate: state.minDate,
             maxDate: newDate,
-            rangeState: { ...this.rangeState, selecting: false }
+            rangeState: { ...state.rangeState, selecting: false }
           });
         } else {
-          this.$emit('pick', {
+          ctx.emit('pick', {
             minDate: newDate,
-            maxDate: this.minDate,
-            rangeState: { ...this.rangeState, selecting: false }
+            maxDate: state.minDate,
+            rangeState: { ...state.rangeState, selecting: false }
           });
         }
       } else {
-        this.$emit('pick', month, this.year);
+        ctx.emit('pick', month, props.year);
       }
     }
-  }
+
+    return {
+      state,
+      rows,
+      getMonthName
+    }
+  },
 };
 </script>

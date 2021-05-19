@@ -91,19 +91,22 @@
   </div>
 </template>
 
-<script>
-import { addYears, getDecade, isDate, subYears } from 'date-fns';
+<script lang="ts">
+import { addMonths, addYears, getDecade, isDate, subYears } from 'date-fns';
+import { reactive, computed, watch, inject } from 'vue';
+import isSameMonth from 'date-fns/isSameMonth';
 import YearTable from '../basic/year-table';
-import rangeMixin from './range-mixin';
 import focusMixin from './focus-mixin';
+import { leftYearComposable } from './composition';
+import { YearRangeInterface, YearRangeState } from './types';
 
 const YEARS_IN_DECADE = 10;
 
 export default {
   components: { YearTable },
-  mixins: [rangeMixin, focusMixin],
+  mixins: [focusMixin],
   props: {
-    value: {
+    modelValue: {
       type: Array,
       default: () => []
     },
@@ -112,8 +115,11 @@ export default {
       default: null
     }
   },
-  data() {
-    return {
+
+  emits: ['pick'],
+
+  setup(props, ctx): YearRangeInterface {
+    const state = reactive<YearRangeState>({
       minDate: '',
       maxDate: '',
       leftDate: new Date(),
@@ -122,62 +128,98 @@ export default {
         endDate: null,
         selecting: false
       },
-      shortcuts: '',
+      shortcuts: null,
       isRanged: true,
-      currentView: 'yearrange'
-    };
-  },
+      currentView: 'yearrange',
+      panelInFocus: null
+    });
+    
+    const picker = inject('qDatePicker');
 
-  computed: {
-    rightYear() {
-      if (isDate(this.rightDate) && isDate(this.leftDate)) {
-        return getDecade(this.rightDate) === getDecade(this.leftDate)
-          ? this.leftDate.getFullYear() + YEARS_IN_DECADE
-          : this.rightDate.getFullYear();
+    const rightYear = computed<number>(() => {
+      if (isDate(state.rightDate) && isDate(state.leftDate)) {
+        return getDecade(state.rightDate) === getDecade(state.leftDate)
+          ? state.leftDate.getFullYear() + YEARS_IN_DECADE
+          : state.rightDate.getFullYear();
       }
 
       return new Date().getFullYear() + YEARS_IN_DECADE;
-    },
+    })
+    
+    const leftYear = leftYearComposable(state.leftDate);
+    const enableYearArrow = computed(() => rightYear.value > leftYear.value + YEARS_IN_DECADE);
+    const leftPanelClasses = computed(() => ({
+      'q-picker-panel__content': true,
+      'q-picker-panel__content_no-right-borders': true,
+      'q-picker-panel__content_focused': state.panelInFocus === 'left'
+    }));
 
-    enableYearArrow() {
-      return this.rightYear > this.leftYear + YEARS_IN_DECADE;
-    },
-    leftPanelClasses() {
-      return {
-        'q-picker-panel__content': true,
-        'q-picker-panel__content_no-right-borders': true,
-        'q-picker-panel__content_focused': this.panelInFocus === 'left'
-      };
-    },
-    rightPanelClasses() {
-      return {
-        'q-picker-panel__content': true,
-        'q-picker-panel__content_no-left-borders': true,
-        'q-picker-panel__content_focused': this.panelInFocus === 'right'
-      };
+    const rightPanelClasses = computed(() => ({
+      'q-picker-panel__content': true,
+      'q-picker-panel__content_no-left-borders': true,
+      'q-picker-panel__content_focused': state.panelInFocus === 'right'
+    }));
+
+    const leftNextYear = (): void => {
+      state.leftDate = addYears(state.leftDate, YEARS_IN_DECADE);
+    };
+    const leftPrevYear = (): void => {
+      state.leftDate = subYears(state.leftDate, YEARS_IN_DECADE);
+    };
+    const rightNextYear = (): void => {
+      state.rightDate = addYears(state.rightDate, YEARS_IN_DECADE);
+    };
+    const rightPrevYear = (): void => {
+      state.rightDate = subYears(state.rightDate, YEARS_IN_DECADE);
+    };
+    const handleClear = (): void => {
+      state.minDate = null;
+      state.maxDate = null;
+      state.leftDate = new Date();
+      state.rightDate = addYears(new Date(), YEARS_IN_DECADE);
+      ctx.emit('pick', null);
+    }
+
+    watch(() => props.modelValue, (newVal) => {
+      if (!newVal || !newVal?.length) {
+        handleClear();
+      } else {
+        state.minDate = newVal[0];
+        state.maxDate = newVal[1];
+        switch (picker.type.value) {
+          case 'yearrange': {
+            if (getDecade(state.minDate) === getDecade(state.maxDate)) {
+              state.leftDate = state.minDate;
+              state.rightDate = addYears(state.minDate, 10);
+            }
+            break;
+          }
+          default: {
+            if (isSameMonth(state.minDate, state.maxDate)) {
+              state.leftDate = state.minDate;
+              state.rightDate = addMonths(state.minDate, 1);
+            } else {
+              state.leftDate = state.minDate;
+              state.rightDate = state.maxDate;
+            }
+          }
+        }
+      }
+    },{ immediate: true })
+
+    return {
+      state,
+      rightYear,
+      leftYear,
+      enableYearArrow,
+      leftPanelClasses,
+      rightPanelClasses,
+      leftNextYear,
+      leftPrevYear,
+      rightNextYear,
+      rightPrevYear,
+      handleClear
     }
   },
-
-  methods: {
-    leftNextYear() {
-      this.leftDate = addYears(this.leftDate, YEARS_IN_DECADE);
-    },
-    leftPrevYear() {
-      this.leftDate = subYears(this.leftDate, YEARS_IN_DECADE);
-    },
-    rightNextYear() {
-      this.rightDate = addYears(this.rightDate, YEARS_IN_DECADE);
-    },
-    rightPrevYear() {
-      this.rightDate = subYears(this.rightDate, YEARS_IN_DECADE);
-    },
-    handleClear() {
-      this.minDate = null;
-      this.maxDate = null;
-      this.leftDate = new Date();
-      this.rightDate = addYears(new Date(), YEARS_IN_DECADE);
-      this.$emit('pick', null);
-    }
-  }
 };
 </script>

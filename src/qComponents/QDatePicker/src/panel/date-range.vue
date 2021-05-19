@@ -149,22 +149,29 @@
   </div>
 </template>
 
-<script>
-import { addMonths, isDate, isSameDay, isSameMonth, subMonths } from 'date-fns';
+<script lang="ts">
+import { addMonths, isDate, isSameDay, subMonths } from 'date-fns';
+import { reactive, computed, inject, watch } from 'vue';
+import endOfDay from 'date-fns/esm/endOfDay/index';
+import { getDecade } from 'date-fns/esm/fp';
+import addYears from 'date-fns/fp/addYears';
+import isSameMonth from 'date-fns/esm/isSameMonth/index';
+import { leftMonthComposable, leftYearComposable, isValidValue, rightMonthComposable, handleShortcutClick } from './composition';
 import DateTable from '../basic/date-table';
-import rangeMixin from './range-mixin';
 import focusMixin from './focus-mixin';
 import focusTimeMixin from './focus-time-mixin';
 import { setTimeToDate } from '../helpers';
-import { addZero } from '../../../helpers/dateHelpers';
+import { addZero , isTimeValueValid } from '../../../helpers/dateHelpers';
 import TimePanel from '../../../QTimePicker/src/components/panel';
+
+import type { DateRangeState, DateRangeInterface } from './types';
 
 const MONTHS_COUNT = 12;
 
 export default {
   name: 'QDatePickerPanelDateRange',
   components: { DateTable, TimePanel },
-  mixins: [rangeMixin, focusMixin, focusTimeMixin],
+  mixins: [focusMixin, focusTimeMixin],
   props: {
     firstDayOfWeek: {
       type: Number,
@@ -175,7 +182,7 @@ export default {
       default: false
     },
 
-    value: {
+    modelValue: {
       type: Array,
       default: () => []
     },
@@ -196,8 +203,10 @@ export default {
     }
   },
 
-  data() {
-    return {
+  emits: ['pick'],
+
+  setup(props, ctx): DateRangeInterface {
+    const state = reactive<DateRangeState>({
       minDate: '',
       maxDate: '',
       leftDate: new Date(),
@@ -206,34 +215,31 @@ export default {
         endDate: null,
         selecting: false
       },
-      isRanged: true
-    };
-  },
+      isRanged: true,
+      panelInFocus: null
+    });
 
-  computed: {
-    transformedValue() {
-      if (Array.isArray(this.value)) {
-        return this.value;
+    const picker = inject('qDatePicker');
+
+    const transformedValue = computed<Date[]>(() => {
+      if (Array.isArray(props.modelValue)) {
+        return props.modelValue;
       }
 
       return [];
-    },
-    disabledRightTimeValues() {
-      const values = { ...this.disabledValues.time };
-      if (
-        isSameDay(this.transformedValue[0], this.transformedValue[1]) &&
-        this.parsedLeftTime
-      ) {
-        values.to = Object.values(this.parsedLeftTime).join(':');
-      }
-      return values;
-    },
+    });
 
-    isLeftTimeDisabled() {
-      return !this.transformedValue[0];
-    },
-    parsedLeftTime() {
-      const value = this.transformedValue[0];
+    const btnDisabled = computed<boolean>(() => {
+      return !(
+        state.minDate &&
+        state.maxDate &&
+        !state.rangeState.selecting &&
+        isValidValue([state.minDate, state.maxDate])
+      );
+    });
+
+    const parsedLeftTime = computed<Record<string, string> | string | Date>(() => {
+      const value = transformedValue.value[0];
       if (isDate(value)) {
         return {
           hours: addZero(value.getHours()),
@@ -243,10 +249,27 @@ export default {
       }
 
       return value;
-    },
+    });
 
-    parsedRightTime() {
-      const value = this.transformedValue[1] ?? null;
+    const leftMonth = leftMonthComposable(state.leftDate);
+    const rightMonth = rightMonthComposable(state.rightDate);
+    const leftYear = leftYearComposable(state.leftDate);
+
+    const disabledRightTimeValues = computed<Record<string, string>>(() => {
+      const values = { ...props.disabledValues.time };
+      if (
+        isSameDay(transformedValue.value[0], transformedValue.value[1]) &&
+        parsedLeftTime.value
+      ) {
+        values.to = Object.values(parsedLeftTime.value).join(':');
+      }
+      return values;
+    });
+
+    const isLeftTimeDisabled = computed(() => !transformedValue.value[0]);
+
+    const parsedRightTime = computed<Record<string, string> | Date>(() => {
+      const value = transformedValue.value[1] ?? null;
       if (isDate(value)) {
         return {
           hours: addZero(value.getHours()),
@@ -255,73 +278,92 @@ export default {
         };
       }
 
-      return value ?? null;
-    },
+      return value;
+    });
 
-    rightPanelClasses() {
-      return {
-        'q-picker-panel__content': true,
-        'q-picker-panel__content_no-left-borders': true,
-        'q-picker-panel__content_no-right-borders': this.showTime,
-        'q-picker-panel__content_focused': this.panelInFocus === 'right'
-      };
-    },
-    leftPanelClasses() {
-      return {
-        'q-picker-panel__content': true,
-        'q-picker-panel__content_no-left-borders':
-          this.$slots.sidebar || this.shortcuts.length,
-        'q-picker-panel__content_no-right-borders': true,
-        'q-picker-panel__content_focused': this.panelInFocus === 'left'
-      };
-    },
+    const rightPanelClasses = computed<Record<string, boolean>>(() => ({
+      'q-picker-panel__content': true,
+      'q-picker-panel__content_no-left-borders': true,
+      'q-picker-panel__content_no-right-borders': props.showTime,
+      'q-picker-panel__content_focused': state.panelInFocus === 'right'
+    }));
 
-    rightYear() {
-      return this.rightDate.getFullYear();
-    },
+    const leftPanelClasses = computed(() => ({
+      'q-picker-panel__content': true,
+      'q-picker-panel__content_no-left-borders':
+        Boolean(ctx.slots.sidebar || props.shortcuts.length),
+      'q-picker-panel__content_no-right-borders': true,
+      'q-picker-panel__content_focused': state.panelInFocus === 'left'
+    }));
 
-    enableMonthArrow() {
-      const nextMonth = (this.leftMonth + 1) % 12;
-      const yearOffset = this.leftMonth + 1 >= 12 ? 1 : 0;
+    const rightYear = computed(() => state.rightDate.getFullYear());
+    const enableMonthArrow = computed(() => {
+      const nextMonth = (leftMonth.value + 1) % 12;
+      const yearOffset = leftMonth.value + 1 >= 12 ? 1 : 0;
       return (
-        new Date(this.leftYear + yearOffset, nextMonth) <
-        new Date(this.rightYear, this.rightMonth)
+        new Date(leftYear.value + yearOffset, nextMonth) <
+        new Date(rightYear.value, rightMonth.value)
       );
-    },
+    });
 
-    enableYearArrow() {
-      return (
-        this.rightYear * MONTHS_COUNT +
-          this.rightMonth -
-          (this.leftYear * MONTHS_COUNT + this.leftMonth + 1) >=
+    const enableYearArrow = computed(() => {
+      return Boolean(
+        rightYear.value * MONTHS_COUNT +
+          rightMonth.value -
+          (leftYear.value * MONTHS_COUNT + leftMonth.value + 1) >=
         MONTHS_COUNT
       );
-    }
-  },
+    });
 
-  watch: {
-    visible() {
-      if (this.transformedValue.length) {
-        if (isDate(this.transformedValue[0])) {
-          this.leftDate = this.transformedValue[0];
-        }
+    const handleChangeRange = (val): void => {
+      state.minDate = val.minDate;
+      state.maxDate = val.maxDate;
+      state.rangeState = val.rangeState;
+    };
 
-        if (isDate(this.transformedValue[1])) {
-          this.rightDate = this.transformedValue[1];
-        }
+    const handleRangePick = (val, close = true): void => {
+      if (state.maxDate === val.maxDate && state.minDate === val.minDate) {
+        return;
       }
 
-      if (isSameMonth(this.leftDate, this.rightDate)) {
-        this.rightDate = addMonths(this.leftDate, 1);
+      if (isDate(val.maxDate)) {
+        // eslint-disable-next-line no-param-reassign
+        val.maxDate = endOfDay(val.maxDate);
       }
-    }
-  },
 
-  methods: {
-    handleLeftTimeChange({ value, type }) {
-      let rightTime = this.transformedValue[1] || new Date();
+      if (val.rangeState) {
+        state.rangeState = val.rangeState;
+      }
+
+      state.maxDate = val.maxDate;
+      state.minDate = val.minDate;
+      const to = props.disabledValues?.time?.to;
+
+      if (state.maxDate && to && isTimeValueValid(to)) {
+        const [hours, minutes, seconds] = to.split(':');
+        state.minDate.setHours(Number(hours));
+        state.minDate.setMinutes(Number(minutes));
+        state.minDate.setSeconds(Number(seconds));
+        state.maxDate.setHours(Number(hours));
+        state.maxDate.setMinutes(Number(minutes));
+        state.maxDate.setSeconds(Number(seconds));
+      }
+
+      // emit QDatepicker intermediate value
+      picker?.emitChange('rangepick', val);
+
+      if (!close) return;
+      if (isValidValue([state.minDate, state.maxDate])) {
+        ctx.emit('pick', [state.minDate, state.maxDate], {
+          hidePicker: !props.showTime
+        });
+      }
+    };
+
+    const handleLeftTimeChange = ({ value, type }: { value: string, type: string}): void => {
+      let rightTime = transformedValue.value[1] || new Date();
       const newDate = setTimeToDate(
-        this.transformedValue[0] || new Date(),
+        transformedValue.value[0] || new Date(),
         type,
         value
       );
@@ -330,43 +372,97 @@ export default {
         rightTime = newDate;
       }
 
-      this.$emit('pick', [newDate, rightTime], { hidePicker: false });
-    },
+      ctx.emit('pick', [newDate, rightTime], { hidePicker: false });
+    }
 
-    handleRightTimeChange({ value, type }) {
-      const leftTime = this.transformedValue[0] || new Date();
+    const handleRightTimeChange = ({ value, type }: { value: string, type: string}): void => {
+      const leftTime = transformedValue.value[0] || new Date();
       const newDate = setTimeToDate(
-        this.transformedValue[1] || new Date(),
+        transformedValue.value[1] || new Date(),
         type,
         value
       );
 
-      this.$emit('pick', [leftTime, newDate], { hidePicker: false });
-    },
+      ctx.emit('pick', [leftTime, newDate], { hidePicker: false });
+    };
 
-    handleClear() {
-      this.minDate = null;
-      this.maxDate = null;
-      this.leftDate = new Date();
-      this.rightDate = addMonths(new Date(), 1);
-      this.$emit('pick', null);
-    },
+    const handleClear = (): void => {
+      state.minDate = null;
+      state.maxDate = null;
+      state.leftDate = new Date();
+      state.rightDate = addMonths(new Date(), 1);
+      ctx.emit('pick', null);
+    };
 
-    handleLeftPrevMonthClick() {
-      this.leftDate = subMonths(this.leftDate, 1);
-    },
+    const handleLeftPrevMonthClick = (): void => {
+      state.leftDate = subMonths(state.leftDate, 1);
+    };
 
-    handleRightNextMonthClick() {
-      this.rightDate = addMonths(this.rightDate, 1);
-    },
+    const handleRightNextMonthClick = (): void => {
+      state.rightDate = addMonths(state.rightDate, 1);
+    };
 
-    handleLeftNextMonthClick() {
-      this.leftDate = addMonths(this.leftDate, 1);
-    },
+    const handleLeftNextMonthClick = (): void => {
+      state.leftDate = addMonths(state.leftDate, 1);
+    };
 
-    handleRightPrevMonthClick() {
-      this.rightDate = subMonths(this.rightDate, 1);
+    const handleRightPrevMonthClick = (): void => {
+      state.rightDate = subMonths(state.rightDate, 1);
+    };
+
+    watch(() => props.modelValue, (newVal) => {
+      if (!newVal || !newVal?.length) {
+        handleClear();
+      } else {
+        state.minDate = newVal[0];
+        state.maxDate = newVal[1];
+        switch (picker.type.value) {
+          case 'yearrange': {
+            if (getDecade(state.minDate) === getDecade(state.maxDate)) {
+              state.leftDate = state.minDate;
+              state.rightDate = addYears(state.minDate, 10);
+            }
+            break;
+          }
+          default: {
+            if (isSameMonth(state.minDate, state.maxDate)) {
+              state.leftDate = state.minDate;
+              state.rightDate = addMonths(state.minDate, 1);
+            } else {
+              state.leftDate = state.minDate;
+              state.rightDate = state.maxDate;
+            }
+          }
+        }
+      }
+    },{ immediate: true })
+
+    return {
+      state,
+      picker,
+      transformedValue,
+      btnDisabled,
+      disabledRightTimeValues,
+      parsedLeftTime,
+      enableMonthArrow,
+      isLeftTimeDisabled,
+      parsedRightTime,
+      enableYearArrow,
+      rightPanelClasses,
+      leftPanelClasses,
+      rightYear,
+      leftMonth,
+      rightMonth,
+      handleChangeRange,
+      handleRangePick,
+      handleLeftTimeChange,
+      handleRightTimeChange,
+      handleClear,
+      handleLeftPrevMonthClick,
+      handleRightNextMonthClick,
+      handleLeftNextMonthClick,
+      handleRightPrevMonthClick
     }
-  }
+  },
 };
 </script>

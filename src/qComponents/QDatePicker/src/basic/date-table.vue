@@ -41,7 +41,7 @@
   </table>
 </template>
 
-<script>
+<script lang="ts">
 import {
   getDaysInMonth,
   startOfMonth,
@@ -56,10 +56,14 @@ import {
   isDate
 } from 'date-fns';
 import { ru, enGB as en } from 'date-fns/locale';
+import { reactive, computed } from 'vue';
+import { getConfig } from '@/qComponents/config';
+
+import type { DateTableInterface, DateTableState } from './types';
 
 const locales = { ru, en };
 
-const checkDisabled = ({ date }, disabledValues) => {
+const checkDisabled = ({ date }: { date: Date}, disabledValues: Record<string, Date>): boolean => {
   if (!disabledValues) return false;
   const disabled = [];
   if (Array.isArray(disabledValues.ranges)) {
@@ -105,7 +109,7 @@ export default {
       default: new Date().getMonth()
     },
 
-    value: { type: [Array, String, Date], default: null },
+    modelValue: { type: [Array, String, Date], default: null },
 
     selectionMode: {
       type: String,
@@ -127,49 +131,44 @@ export default {
     }
   },
 
-  data() {
-    return {
+  emits: ['changerange', 'pick'],
+
+  setup(props, ctx): DateTableInterface {
+    const state = reactive<DateTableState>({
       lastRow: null,
       lastColumn: null,
       tableRows: [[], [], [], [], [], []]
-    };
-  },
+    });
 
-  computed: {
-    offsetDay() {
-      const week = this.firstDayOfWeek;
+    const offsetDay = computed(() => {
+      const week = props.firstDayOfWeek;
       return week > 3 ? 7 - week : -week;
-    },
+    });
 
-    days() {
+    const days = computed(() => {
       const DAYS_OF_WEEK = [...Array(7).keys()].map(i => {
-        return locales[this.$Q.locale].localize.day(i, { width: 'short' });
+        return locales[getConfig('locale')].localize.day(i, { width: 'short' });
       });
 
-      const day = this.firstDayOfWeek;
+      const day = props.firstDayOfWeek;
       return [...DAYS_OF_WEEK, ...DAYS_OF_WEEK].slice(day, day + 7);
-    },
+    });
 
-    startMonthDate() {
-      return startOfMonth(new Date(this.year, this.month, 1));
-    },
+    const startMonthDate = computed(() => startOfMonth(new Date(props.year, props.month, 1)));
+    const endMonthDate = computed(() => endOfMonth(new Date(props.year, props.month, 1)));
 
-    endMonthDate() {
-      return endOfMonth(new Date(this.year, this.month, 1));
-    },
-
-    rows() {
-      const date = new Date(this.year, this.month, 1);
-      const firstDay = this.startMonthDate.getDay();
+    const rows = computed(() => {
+      const date = new Date(props.year, props.month, 1);
+      const firstDay = startMonthDate.value.getDay();
       const dateCountOfMonth = getDaysInMonth(date);
       const dateCountOfLastMonth = getDaysInMonth(
-        new Date(this.year, this.month === 0 ? 11 : this.month - 1)
+        new Date(props.year, props.month === 0 ? 11 : props.month - 1)
       );
 
-      const offset = this.offsetDay;
+      const offset = offsetDay.value;
       let count = 1;
 
-      return this.tableRows.map((row, i) => {
+      return state.tableRows.map((row, i) => {
         const newRow = [];
         for (let j = 0; j < 7; j += 1) {
           const cell = {
@@ -188,7 +187,7 @@ export default {
             if (j + i * 7 >= numberOfDaysFromPreviousMonth) {
               cell.text = count;
               count += 1;
-              cell.date = new Date(this.year, this.month, cell.text);
+              cell.date = new Date(props.year, props.month, cell.text);
             } else {
               cell.text =
                 dateCountOfLastMonth -
@@ -196,23 +195,23 @@ export default {
                 1 +
                 i * 7;
               cell.type = 'prev-month';
-              cell.date = new Date(this.year, this.month - 1, cell.text);
+              cell.date = new Date(props.year, props.month - 1, cell.text);
             }
           } else if (count <= dateCountOfMonth) {
             cell.text = count;
             count += 1;
-            cell.date = new Date(this.year, this.month, cell.text);
+            cell.date = new Date(props.year, props.month, cell.text);
           } else {
             cell.text = count - dateCountOfMonth;
             count += 1;
             cell.type = 'next-month';
-            cell.date = new Date(this.year, this.month + 1, cell.text);
+            cell.date = new Date(props.year, props.month + 1, cell.text);
           }
 
-          let maxDate = this.maxDate;
-          let minDate = this.minDate;
-          if (this.rangeState.selecting) {
-            maxDate = this.rangeState.endDate;
+          let maxDate = state.maxDate;
+          let minDate = state.minDate;
+          if (state.rangeState.selecting) {
+            maxDate = state.rangeState.endDate;
           }
 
           minDate = minDate?.getTime() ?? null;
@@ -233,17 +232,15 @@ export default {
             }
           }
 
-          cell.disabled = checkDisabled(cell, this.disabledValues);
+          cell.disabled = checkDisabled(cell, props.disabledValues);
           newRow.push(cell);
         }
 
         return newRow;
       });
-    }
-  },
+    });
 
-  methods: {
-    getCellClasses(cell) {
+    const getCellClasses = (cell): string[] => {
       const classes = ['cell', 'cell_date'];
       if (['today', 'prev-month', 'next-month'].includes(cell.type)) {
         classes.push(`cell_${cell.type}`);
@@ -251,21 +248,21 @@ export default {
 
       if (
         ['normal', 'today'].includes(cell.type) &&
-        this.value &&
-        isSameDay(cell.date, this.value)
+        props.modelValue &&
+        isSameDay(cell.date, props.modelValue)
       ) {
         classes.push('cell_current');
       }
 
       if (
         cell.inRange ||
-        (this.minDate && isSameDay(cell.date, this.minDate)) ||
-        (this.maxDate && isSameDay(cell.date, this.maxDate)) ||
-        (this.selectionMode === 'week' &&
-          this.value &&
+        (state.minDate && isSameDay(cell.date, state.minDate)) ||
+        (state.maxDate && isSameDay(cell.date, state.maxDate)) ||
+        (props.selectionMode === 'week' &&
+          props.modelValue &&
           isWithinInterval(cell.date, {
-            start: startOfWeek(this.value, { weekStartsOn: 1 }),
-            end: endOfWeek(this.value, { weekStartsOn: 1 })
+            start: startOfWeek(props.modelValue, { weekStartsOn: 1 }),
+            end: endOfWeek(props.modelValue, { weekStartsOn: 1 })
           }))
       ) {
         classes.push('cell_in-range');
@@ -276,10 +273,10 @@ export default {
       }
 
       return classes;
-    },
+    };
 
-    handleMouseMove(event) {
-      if (!this.rangeState.selecting) return;
+    const handleMouseMove = (event: MouseEvent): void => {
+      if (!state.rangeState.selecting) return;
       let target = event.target;
       if (target.tagName === 'BUTTON') {
         target = target.parentNode;
@@ -290,55 +287,67 @@ export default {
       const row = target.parentNode.rowIndex - 1;
       const column = target.cellIndex;
       // can not select disabled date
-      if (this.rows[row]?.[column].disabled) return;
+      if (rows.value[row]?.[column].disabled) return;
 
       // only update rangeState when mouse moves to a new cell
       // this avoids frequent Date object creation and improves performance
-      if (row !== this.lastRow || column !== this.lastColumn) {
-        this.lastRow = row;
-        this.lastColumn = column;
-        this.$emit('changerange', {
-          minDate: this.minDate,
-          maxDate: this.maxDate,
+      if (row !== state.lastRow || column !== state.lastColumn) {
+        state.lastRow = row;
+        state.lastColumn = column;
+        ctx.emit('changerange', {
+          minDate: state.minDate,
+          maxDate: state.maxDate,
           rangeState: {
             selecting: true,
-            endDate: this.rows[row][column].date
+            endDate: rows.value[row][column].date
           }
         });
       }
-    },
+    };
 
-    handleClick(cell) {
+    const handleClick = (cell): void => {
       if (cell.disabled || cell.type === 'week') return;
       const newDate = cell.date;
 
-      if (this.selectionMode === 'range') {
-        if (!this.rangeState.selecting) {
-          this.$emit('pick', { minDate: newDate, maxDate: null });
-          this.rangeState.selecting = true;
+      if (props.selectionMode === 'range') {
+        if (!state.rangeState.selecting) {
+          ctx.emit('pick', { minDate: newDate, maxDate: null });
+          state.rangeState.selecting = true;
         } else {
-          if (newDate >= this.minDate) {
-            this.$emit('pick', { minDate: this.minDate, maxDate: newDate });
+          if (newDate >= state.minDate) {
+            ctx.emit('pick', { minDate: state.minDate, maxDate: newDate });
           } else {
-            this.$emit('pick', { minDate: newDate, maxDate: this.minDate });
+            ctx.emit('pick', { minDate: newDate, maxDate: state.minDate });
           }
-          this.rangeState.selecting = false;
+          state.rangeState.selecting = false;
         }
-      } else if (this.selectionMode === 'day') {
-        this.$emit('pick', newDate);
-      } else if (this.selectionMode === 'datetime') {
-        this.$emit('pick', newDate, { hidePicker: false });
-      } else if (this.selectionMode === 'week') {
+      } else if (props.selectionMode === 'day') {
+        ctx.emit('pick', newDate);
+      } else if (props.selectionMode === 'datetime') {
+        ctx.emit('pick', newDate, { hidePicker: false });
+      } else if (props.selectionMode === 'week') {
         const value = startOfWeek(newDate, { weekStartsOn: 1 });
-        this.$emit('pick', value);
-      } else if (this.selectionMode === 'dates') {
-        const value = this.value || [];
+        ctx.emit('pick', value);
+      } else if (props.selectionMode === 'dates') {
+        const value = props.modelValue || [];
         const newValue = [...value, newDate];
-        this.$emit('pick', newValue);
+        ctx.emit('pick', newValue);
       } else {
-        this.$emit('pick', newDate);
+        ctx.emit('pick', newDate);
       }
     }
-  }
+
+    return {
+      state,
+      offsetDay,
+      days,
+      rows,
+      startMonthDate,
+      endMonthDate,
+      getCellClasses,
+      handleMouseMove,
+      handleClick
+    }
+  },
 };
 </script>

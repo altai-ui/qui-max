@@ -1,6 +1,7 @@
 <template>
   <div :class="rootClasses">
     <div
+      ref="reference"
       class="q-cascader__input"
       @click="handleTriggerClick"
     >
@@ -30,14 +31,25 @@
       :to="teleportTo"
       :disabled="!teleportTo"
     >
-      <q-cascader-dropdown v-if="state.isDropdownShown" />
+      <q-cascader-dropdown
+        v-if="state.isDropdownShown"
+        @close="handleDropdownClose"
+      />
     </teleport>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, reactive, computed, PropType } from 'vue';
-import { isNumber, isEmpty } from 'lodash-es';
+import {
+  defineComponent,
+  inject,
+  ref,
+  reactive,
+  computed,
+  provide,
+  PropType
+} from 'vue';
+import { uniqueId, isNumber, isEmpty } from 'lodash-es';
 
 import type { QFormProvider } from '@/qComponents/QForm';
 // import type { QFormItemProvider } from '@/qComponents/QFormItem';
@@ -50,7 +62,8 @@ import type {
   QCascaderPropTeleportTo,
   QCascaderProps,
   QCascaderInstance,
-  QCascaderState
+  QCascaderState,
+  QCascaderProvider
 } from './QCascader';
 
 export default defineComponent({
@@ -118,6 +131,7 @@ export default defineComponent({
   setup(props: QCascaderProps): QCascaderInstance {
     const qForm = inject<QFormProvider | null>('qForm', null);
     // const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
+    const reference = ref<HTMLElement | null>(null);
 
     const state = reactive<QCascaderState>({
       isDropdownShown: false
@@ -148,13 +162,24 @@ export default defineComponent({
       state.isDropdownShown = !state.isDropdownShown;
     };
 
+    const handleDropdownClose = (): void => {
+      state.isDropdownShown = false;
+    };
+
+    provide<QCascaderProvider>('qCascader', {
+      uniqueId: uniqueId('default-collapse-name-'),
+      popoverReference: reference
+    });
+
     return {
+      reference,
       state,
       isDisabled,
       rootClasses,
       isClearBtnShown,
       arrowIconClass,
-      handleTriggerClick
+      handleTriggerClick,
+      handleDropdownClose
     };
   }
 });

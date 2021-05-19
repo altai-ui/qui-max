@@ -22,18 +22,20 @@ const Template: Story<QCascaderProps> = args =>
       return { args, modelValue };
     },
     template: `
-      <q-cascader
-        v-model="modelValue"
-        :check-strictly="args.checkStrictly"
-        :options="args.options"
-        :placeholder="args.placeholder"
-        :disabled="args.disabled"
-        :clearable="args.clearable"
-        :multiple="args.multiple"
-        :separator="args.separator"
-        :all-levels-shown="args.allLevelsShown"
-        :collapse-tags="args.collapseTags"
-      />
+      <div style="width: 304px;">
+        <q-cascader
+          v-model="modelValue"
+          :check-strictly="args.checkStrictly"
+          :options="args.options"
+          :placeholder="args.placeholder"
+          :disabled="args.disabled"
+          :clearable="args.clearable"
+          :multiple="args.multiple"
+          :separator="args.separator"
+          :all-levels-shown="args.allLevelsShown"
+          :collapse-tags="args.collapseTags"
+        />
+      </div>
     `
   });
 

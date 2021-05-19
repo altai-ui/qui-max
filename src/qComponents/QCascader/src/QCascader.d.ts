@@ -7,9 +7,10 @@ interface Option {
 }
 
 export type QCascaderPropModelValue = Nullable<
-  number | string | string[] | number[]
+  number | string | number[] | string[]
 >;
 export type QCascaderPropOptions = Nullable<Option[]>;
+export type QCascaderPropTeleportTo = Nullable<string | HTMLElement>;
 
 export interface QCascaderProps {
   modelValue: QCascaderPropModelValue;
@@ -18,8 +19,18 @@ export interface QCascaderProps {
   multiple: Nullable<boolean>;
   clearable: Nullable<boolean>;
   disabled: Nullable<boolean>;
+  teleportTo: QCascaderPropTeleportTo;
 }
 
 export interface QCascaderInstance {
+  state: QCascaderState;
+  isDisabled: ComputedRef<boolean>;
   rootClasses: ComputedRef<Record<string, boolean>>;
+  isClearBtnShown: ComputedRef<boolean>;
+  arrowIconClass: ComputedRef<string>;
+  handleTriggerClick: () => void;
+}
+
+export interface QCascaderState {
+  isDropdownShown: boolean;
 }

@@ -1,28 +1,72 @@
 <template>
   <div :class="rootClasses">
-    cascader
+    <div
+      class="q-cascader__input"
+      @click="handleTriggerClick"
+    >
+      <q-input
+        ref="input"
+        type="text"
+        readonly
+        :disabled="isDisabled"
+        :validate-event="false"
+        :tabindex="multiple ? '-1' : null"
+      >
+        <template #suffix>
+          <span
+            v-if="isClearBtnShown"
+            class="q-cascader__icon-close q-input__icon q-icon-close"
+          />
+          <span
+            class="q-cascader__icon-arrow q-input__icon q-icon-triangle-down"
+            :class="arrowIconClass"
+          />
+
+        </template>
+      </q-input>
+    </div>
+
+    <teleport
+      :to="teleportTo"
+      :disabled="!teleportTo"
+    >
+      <q-cascader-dropdown v-if="state.isDropdownShown" />
+    </teleport>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, computed } from 'vue';
+import { defineComponent, inject, reactive, computed, PropType } from 'vue';
+import { isNumber, isEmpty } from 'lodash-es';
 
 import type { QFormProvider } from '@/qComponents/QForm';
 // import type { QFormItemProvider } from '@/qComponents/QFormItem';
 
+import QCascaderDropdown from './QCascaderDropdown';
+
 import type {
   QCascaderPropModelValue,
+  QCascaderPropOptions,
+  QCascaderPropTeleportTo,
   QCascaderProps,
-  QCascaderInstance
+  QCascaderInstance,
+  QCascaderState
 } from './QCascader';
 
 export default defineComponent({
+  name: 'QCascader',
+  componentName: 'QCascader',
+
+  components: {
+    QCascaderDropdown
+  },
+
   props: {
     /**
      * binding value
      */
     modelValue: {
-      type: [String, Number, Array] as QCascaderPropModelValue,
+      type: [String, Number, Array] as PropType<QCascaderPropModelValue>,
       default: null
     },
     /**
@@ -30,7 +74,7 @@ export default defineComponent({
      * `{ value: 'guide', label: 'Guide', children: [{ ... }] }`
      */
     options: {
-      type: Array,
+      type: Array as PropType<QCascaderPropOptions>,
       default: null
     },
     /**
@@ -60,6 +104,14 @@ export default defineComponent({
     disabled: {
       type: Boolean,
       default: false
+    },
+    /**
+     * Specifies a target element where Drawer will be moved.
+     * (has to be a valid query selector, or an HTMLElement)
+     */
+    teleportTo: {
+      type: [String, HTMLElement] as PropType<QCascaderPropTeleportTo>,
+      default: null
     }
   },
 
@@ -67,7 +119,11 @@ export default defineComponent({
     const qForm = inject<QFormProvider | null>('qForm', null);
     // const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
 
-    const isDisabled = computed(
+    const state = reactive<QCascaderState>({
+      isDropdownShown: false
+    });
+
+    const isDisabled = computed<boolean>(
       () => props.disabled || (qForm?.disabled.value ?? false)
     );
 
@@ -78,8 +134,27 @@ export default defineComponent({
       'q-cascader_clearable': Boolean(props.clearable)
     }));
 
+    const isClearBtnShown = computed<boolean>(() => {
+      const hasValue = isNumber(props.modelValue) || !isEmpty(props.modelValue);
+      return Boolean(props.clearable) && !isDisabled.value && hasValue;
+    });
+
+    const arrowIconClass = computed<string>(() =>
+      state.isDropdownShown ? 'q-cascader__icon-arrow_reverse' : ''
+    );
+
+    const handleTriggerClick = (): void => {
+      if (isDisabled.value) return;
+      state.isDropdownShown = !state.isDropdownShown;
+    };
+
     return {
-      rootClasses
+      state,
+      isDisabled,
+      rootClasses,
+      isClearBtnShown,
+      arrowIconClass,
+      handleTriggerClick
     };
   }
 });

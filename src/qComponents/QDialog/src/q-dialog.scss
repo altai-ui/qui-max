@@ -1,0 +1,81 @@
+.q-dialog {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+
+  &__container {
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: var(--color-tertiary-gray-ultra-light);
+  }
+
+  &__view {
+    display: flex;
+  }
+
+  &__inner {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 36px 32px 32px;
+  }
+
+  &__close {
+    position: absolute;
+    top: 24px;
+    right: 32px;
+  }
+
+  &__title {
+    padding-right: 104px;
+    font-size: 24px;
+    font-weight: 800;
+    line-height: 31px;
+    color: var(--color-primary-black);
+    word-break: break-word;
+  }
+
+  &__content {
+    flex: 1;
+    margin-top: 32px;
+  }
+}
+
+.q-dialog-fade-enter-active {
+  animation: q-dialog-fade-in 0.3s;
+}
+
+.q-dialog-fade-leave-active {
+  animation: q-dialog-fade-out 0.3s;
+}
+
+@keyframes q-dialog-fade-in {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, -20px, 0);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes q-dialog-fade-out {
+  0% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate3d(0, -20px, 0);
+  }
+}

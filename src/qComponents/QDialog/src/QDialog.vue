@@ -4,39 +4,46 @@
     :disabled="!teleportTo"
   >
     <transition
-      name="q-drawer-fade"
+      name="q-dialog-fade"
       @after-enter="afterEnter"
       @after-leave="afterLeave"
     >
       <div
         v-if="isRendered"
         v-show="visible"
-        class="q-drawer"
+        class="q-dialog"
         :style="{ zIndex }"
         @click.self="handleWrapperClick"
       >
         <div
-          ref="drawer"
+          ref="dialog"
           tabindex="-1"
-          class="q-drawer-wrapper"
-          :style="drawerStyle"
-          :class="[drawerClass, customClass]"
-          @keyup.esc="closeDrawer"
+          :style="dialogStyle"
+          class="q-dialog__container"
+          :class="[dialogClass, customClass]"
+          @keyup.esc="closeDialog"
         >
-          <div class="q-drawer__header">
-            <div
-              v-if="title"
-              class="q-drawer__title"
-            >{{ title }}</div>
-            <button
-              type="button"
-              class="q-drawer__close q-icon-close"
-              @click="closeDrawer"
-            />
-          </div>
-          <q-scrollbar>
-            <div class="q-drawer__content">
-              <slot />
+          <q-scrollbar
+            theme="secondary"
+            view-class="q-dialog__view"
+          >
+            <div class="q-dialog__inner">
+              <div class="q-dialog__title">
+                {{ title }}
+              </div>
+
+              <q-button
+                class="q-dialog__close"
+                circle
+                theme="secondary"
+                type="icon"
+                icon="q-icon-close"
+                @click="closeDialog"
+              />
+
+              <div class="q-dialog__content">
+                <slot />
+              </div>
             </div>
           </q-scrollbar>
         </div>
@@ -57,15 +64,13 @@ import {
   onUnmounted
 } from 'vue';
 
-import { validateArray } from '@/qComponents/helpers';
 import { CLOSE_EVENT } from '@/qComponents/constants/events';
 import { getConfig } from '@/qComponents/config';
 import type {
-  QDrawerProps,
-  QDrawerPropBeforeClose,
-  QDrawerPropPosition,
-  QDrawerPropTeleportTo,
-  QDrawerInstance
+  QDialogProps,
+  QDialogPropBeforeClose,
+  QDialogPropTeleportTo,
+  QDialogInstance
 } from './types';
 
 const OPENED_EVENT = 'opened';
@@ -75,23 +80,26 @@ const UPDATE_VISIBLE_EVENT = 'update:visible';
 const DEFAULT_Z_INDEX = 2000;
 
 export default defineComponent({
-  name: 'QDrawer',
-  componentName: 'QDrawer',
+  name: 'QDialog',
+  componentName: 'QDialog',
 
   props: {
-    width: {
-      type: [String, Number],
+    /**
+     * offset from top border of parent relative element
+     */
+    offsetTop: {
+      type: Number,
       default: null
     },
     /**
-     * Drawer's title
+     * QDialog's title
      */
     title: {
       type: String,
       default: null
     },
     /**
-     * whether Drawer is visible
+     * whether QDialog is visible
      */
     visible: {
       type: Boolean,
@@ -105,7 +113,7 @@ export default defineComponent({
       default: false
     },
     /**
-     * closes Drawer by click on shadow layer
+     * closes QDialog by click on shadow layer
      */
     wrapperClosable: {
       type: Boolean,
@@ -115,30 +123,22 @@ export default defineComponent({
      * callback before close
      */
     beforeClose: {
-      type: Function as PropType<QDrawerPropBeforeClose>,
+      type: Function as PropType<QDialogPropBeforeClose>,
       default: null
     },
     /**
-     * Drawer's position
-     */
-    position: {
-      type: String as PropType<QDrawerPropPosition>,
-      default: 'right',
-      validator: validateArray<QDrawerPropPosition>(['left', 'right'])
-    },
-    /**
-     * Extra class names for Drawer's wrapper
+     * Extra class names for QDialog's wrapper
      */
     customClass: {
       type: String,
       default: null
     },
     /**
-     * Specifies a target element where Drawer will be moved.
+     * Specifies a target element where QDialog will be moved.
      * (has to be a valid query selector, or an HTMLElement)
      */
     teleportTo: {
-      type: [String, HTMLElement] as PropType<QDrawerPropTeleportTo>,
+      type: [String, HTMLElement] as PropType<QDialogPropTeleportTo>,
       default: null
     },
     renderOnMount: {
@@ -155,26 +155,26 @@ export default defineComponent({
     UPDATE_VISIBLE_EVENT
   ],
 
-  setup(props: QDrawerProps, ctx): QDrawerInstance {
+  setup(props: QDialogProps, ctx): QDialogInstance {
     const zIndex = ref(DEFAULT_Z_INDEX);
     const isRendered = ref(false);
-    const drawer = ref<HTMLElement | null>(null);
+    const dialog = ref<HTMLElement | null>(null);
 
     let elementToFocusAfterClosing: HTMLElement | null = null;
 
-    const drawerStyle = computed<Record<string, string | number | null>>(
+    const dialogStyle = computed<Record<string, string | number | null>>(
       () => ({
         width: Number(props.width) ? `${Number(props.width)}px` : props.width
       })
     );
 
-    const drawerClass = computed<string>(
-      () => `q-drawer-wrapper_${props.position}`
+    const dialogClass = computed<string>(
+      () => `q-dialog-wrapper_${props.position}`
     );
 
     const handleDocumentFocus = (event: FocusEvent): void => {
-      if (drawer.value && !drawer.value.contains(event.target as HTMLElement)) {
-        drawer.value.focus();
+      if (dialog.value && !dialog.value.contains(event.target as HTMLElement)) {
+        dialog.value.focus();
       }
     };
 
@@ -191,7 +191,7 @@ export default defineComponent({
       ctx.emit(UPDATE_VISIBLE_EVENT, false);
     };
 
-    const closeDrawer = (): void => {
+    const closeDialog = (): void => {
       if (props.beforeClose) {
         props.beforeClose(hide);
       } else {
@@ -200,7 +200,7 @@ export default defineComponent({
     };
 
     const handleWrapperClick = (): void => {
-      if (props.wrapperClosable) closeDrawer();
+      if (props.wrapperClosable) closeDialog();
     };
 
     watch(
@@ -222,7 +222,7 @@ export default defineComponent({
 
         elementToFocusAfterClosing = document.activeElement as HTMLElement;
         nextTick(() => {
-          drawer.value?.focus();
+          dialog.value?.focus();
         });
         ctx.emit(OPEN_EVENT);
 
@@ -245,14 +245,14 @@ export default defineComponent({
     });
 
     return {
-      drawer,
+      dialog,
       zIndex,
       isRendered,
-      drawerStyle,
-      drawerClass,
+      dialogStyle,
+      dialogClass,
       afterEnter,
       afterLeave,
-      closeDrawer,
+      closeDialog,
       handleWrapperClick
     };
   }

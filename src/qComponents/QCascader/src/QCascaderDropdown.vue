@@ -20,6 +20,7 @@
 import {
   defineComponent,
   inject,
+  provide,
   onMounted,
   onUnmounted,
   ref,
@@ -31,7 +32,11 @@ import { getConfig } from '@/qComponents/config';
 import { CLOSE_EVENT } from '@/qComponents/constants/events';
 
 import type { QCascaderProvider } from './QCascader';
-import type { MenuBar, QCascaderDropdownInstance } from './QCascaderDropdown';
+import type {
+  MenuBar,
+  QCascaderDropdownInstance,
+  QCascaderDropdownProvider
+} from './QCascaderDropdown';
 import QCascaderColumn from './QCascaderColumn.vue';
 
 const DEFAULT_Z_INDEX = 2000;
@@ -116,6 +121,10 @@ export default defineComponent({
 
       document.removeEventListener('keyup', closeDropdown, true);
       document.removeEventListener('click', closeDropdown, true);
+    });
+
+    provide<QCascaderDropdownProvider>('qCascaderDropdown', {
+      expandedRows
     });
 
     return {

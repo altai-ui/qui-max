@@ -23,6 +23,11 @@
     cursor: not-allowed;
   }
 
+  &_expanded {
+    color: var(--color-primary-black);
+    background-color: var(--color-tertiary-gray-ultra-light);
+  }
+
   &__checkbox {
     height: 40px;
     padding: 8px;
@@ -44,5 +49,10 @@
     padding: 8px;
     margin-left: auto;
     font-size: 24px;
+    transition: transform 0.3s;
+
+    &_reverse {
+      transform: rotateZ(180deg);
+    }
   }
 }

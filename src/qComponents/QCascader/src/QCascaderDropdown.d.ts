@@ -12,3 +12,7 @@ export interface QCascaderDropdownInstance {
   columnList: ComputedRef<MenuBar[][]>;
   expandRow: (rowIndex: number, columnIndex: number) => void;
 }
+
+export interface QCascaderDropdownProvider {
+  expandedRows: Ref<number[]>;
+}

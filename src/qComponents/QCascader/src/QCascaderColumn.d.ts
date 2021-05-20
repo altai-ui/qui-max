@@ -12,6 +12,7 @@ export interface QCascaderColumnProps {
 export interface QCascaderColumnInstance {
   uniqueId: string;
   isMultiple: ComputedRef<boolean>;
-  handleRowExpand: (row: Option, rowIndex: number) => void;
+  checkExpanded: (rowIndex: number) => boolean;
+  handleRowExpand: (rowIndex: number) => void;
   handleRowCheck: (row: Option, rowIndex: number) => void;
 }

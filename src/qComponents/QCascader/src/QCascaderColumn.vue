@@ -9,8 +9,9 @@
         :label="row.label"
         :has-children="Boolean(row.children?.length)"
         :disabled="row.disabled"
+        :expanded="checkExpanded(rowIndex)"
         :multiple="isMultiple"
-        @expand="handleRowExpand(row, rowIndex)"
+        @expand="handleRowExpand(rowIndex)"
         @check="handleRowCheck(row, rowIndex)"
       />
     </q-scrollbar>
@@ -21,6 +22,7 @@
 import { defineComponent, inject, computed, PropType } from 'vue';
 
 import type { Option, QCascaderProvider } from './QCascader';
+import type { QCascaderDropdownProvider } from './QCascaderDropdown';
 import type {
   QCascaderColumnPropColumn,
   QCascaderColumnProps,
@@ -55,12 +57,19 @@ export default defineComponent({
       'qCascader',
       {} as QCascaderProvider
     );
+    const qCascaderDropdown = inject<QCascaderDropdownProvider>(
+      'qCascaderDropdown',
+      {} as QCascaderDropdownProvider
+    );
 
     const isMultiple = computed<boolean>(
       () => qCascader.multiple.value ?? false
     );
 
-    const handleRowExpand = (row: Option, rowIndex: number): void => {
+    const checkExpanded = (rowIndex: number): boolean =>
+      qCascaderDropdown.expandedRows.value[props.columnIndex] === rowIndex;
+
+    const handleRowExpand = (rowIndex: number): void => {
       ctx.emit(EXPAND_EVENT, rowIndex, props.columnIndex);
     };
 
@@ -74,6 +83,7 @@ export default defineComponent({
     return {
       uniqueId: qCascader.uniqueId,
       isMultiple,
+      checkExpanded,
       handleRowExpand,
       handleRowCheck
     };

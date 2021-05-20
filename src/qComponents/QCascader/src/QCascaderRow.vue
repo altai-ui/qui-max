@@ -69,6 +69,10 @@ export default defineComponent({
       type: Boolean,
       required: true
     },
+    expanded: {
+      type: Boolean,
+      default: false
+    },
     disabled: {
       type: Boolean,
       default: false
@@ -84,25 +88,30 @@ export default defineComponent({
 
     const rootClasses = computed<Record<string, boolean>>(() => ({
       'q-cascader-row': true,
-      'q-cascader-row_disabled': Boolean(props.disabled)
+      'q-cascader-row_disabled': Boolean(props.disabled),
+      'q-cascader-row_expanded': Boolean(props.expanded)
     }));
 
     const isIconShown = computed<boolean>(
       () => props.disabled || props.hasChildren
     );
 
-    const iconClasses = computed<Record<string, boolean>>(() => ({
-      'q-cascader-row__icon': true,
-      'q-icon-lock': Boolean(props.disabled),
-      'q-icon-triangle-right': !props.disabled && props.hasChildren
-    }));
+    const iconClasses = computed<Record<string, boolean>>(() => {
+      const isArrowShown = !props.disabled && props.hasChildren;
+
+      return {
+        'q-cascader-row__icon': true,
+        'q-icon-lock': Boolean(props.disabled),
+        'q-icon-triangle-right': isArrowShown,
+        'q-cascader-row__icon_reverse': isArrowShown && Boolean(props.expanded)
+      };
+    });
 
     const handleClick = (): void => {
-      if (props.disabled || (props.multiple && !props.hasChildren)) return;
+      if (props.disabled) return;
 
       if (!props.multiple && !props.hasChildren) {
         ctx.emit(CHECK_EVENT);
-        return;
       }
 
       ctx.emit(EXPAND_EVENT);

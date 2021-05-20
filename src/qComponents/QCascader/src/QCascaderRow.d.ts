@@ -8,6 +8,7 @@ export interface QCascaderRowProps {
   label: string;
   hasChildren: boolean;
   multiple: boolean;
+  expanded: Nullable<boolean>;
   disabled: Nullable<boolean>;
 }
 

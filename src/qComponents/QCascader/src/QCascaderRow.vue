@@ -4,6 +4,9 @@
     :class="rootClasses"
     role="menuitem"
     tabindex="-1"
+    @click="handleClick"
+    @keyup.right="handleRightKeyUp"
+    @keyup.enter="handleEnterKeyUp"
   >
     <div
       v-if="multiple"
@@ -26,9 +29,20 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed } from 'vue';
+import {
+  defineComponent,
+  ref,
+  computed,
+  ComponentPublicInstance,
+  UnwrapRef
+} from 'vue';
+
+import type { QCheckboxInstance } from '@/qComponents/QCheckbox';
 
 import type { QCascaderRowProps, QCascaderRowInstance } from './QCascaderRow';
+
+const EXPAND_EVENT = 'expand';
+const CHECK_EVENT = 'check';
 
 export default defineComponent({
   name: 'QCascaderRow',
@@ -61,8 +75,12 @@ export default defineComponent({
     }
   },
 
-  setup(props: QCascaderRowProps): QCascaderRowInstance {
-    const checkbox = ref<HTMLElement | null>(null);
+  emits: [EXPAND_EVENT, CHECK_EVENT],
+
+  setup(props: QCascaderRowProps, ctx): QCascaderRowInstance {
+    const checkbox = ref<ComponentPublicInstance<
+      UnwrapRef<QCheckboxInstance>
+    > | null>(null);
 
     const rootClasses = computed<Record<string, boolean>>(() => ({
       'q-cascader-row': true,
@@ -79,11 +97,37 @@ export default defineComponent({
       'q-icon-triangle-right': !props.disabled && props.hasChildren
     }));
 
+    const handleClick = (): void => {
+      if (props.disabled || (props.multiple && !props.hasChildren)) return;
+
+      if (!props.multiple && !props.hasChildren) {
+        ctx.emit(CHECK_EVENT);
+        return;
+      }
+
+      ctx.emit(EXPAND_EVENT);
+    };
+
+    const handleRightKeyUp = (): void => {
+      if (props.disabled || !props.hasChildren) return;
+
+      ctx.emit(EXPAND_EVENT);
+    };
+
+    const handleEnterKeyUp = (): void => {
+      if (props.disabled || (!props.multiple && props.hasChildren)) return;
+
+      ctx.emit(CHECK_EVENT);
+    };
+
     return {
       checkbox,
       rootClasses,
       isIconShown,
-      iconClasses
+      iconClasses,
+      handleClick,
+      handleRightKeyUp,
+      handleEnterKeyUp
     };
   }
 });

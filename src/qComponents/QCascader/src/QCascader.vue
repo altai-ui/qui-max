@@ -86,7 +86,7 @@ export default defineComponent({
     },
     /**
      * array of objects with required fields, example:
-     * `{ value: 'guide', label: 'Guide', children: [{ ... }] }`
+     * `{ value: 'guide', label: 'Guide', disabled: false, children: [{ ... }] }`
      */
     options: {
       type: Array as PropType<QCascaderPropOptions>,

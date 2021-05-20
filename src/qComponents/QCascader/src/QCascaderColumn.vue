@@ -10,6 +10,8 @@
         :has-children="Boolean(row.children?.length)"
         :disabled="row.disabled"
         :multiple="isMultiple"
+        @expand="handleRowExpand(row, rowIndex)"
+        @check="handleRowCheck(row, rowIndex)"
       />
     </q-scrollbar>
   </div>
@@ -18,7 +20,7 @@
 <script lang="ts">
 import { defineComponent, inject, computed, PropType } from 'vue';
 
-import type { QCascaderProvider } from './QCascader';
+import type { Option, QCascaderProvider } from './QCascader';
 import type {
   QCascaderColumnPropColumn,
   QCascaderColumnProps,
@@ -56,9 +58,21 @@ export default defineComponent({
       () => qCascader.multiple.value ?? false
     );
 
+    const handleRowExpand = (row: Option, rowIndex: number): void => {
+      // eslint-disable-next-line no-console
+      console.log('handleRowExpand', row, rowIndex);
+    };
+
+    const handleRowCheck = (row: Option, rowIndex: number): void => {
+      // eslint-disable-next-line no-console
+      console.log('handleRowCheck', row, rowIndex);
+    };
+
     return {
       uniqueId: qCascader.uniqueId,
-      isMultiple
+      isMultiple,
+      handleRowExpand,
+      handleRowCheck
     };
   }
 });

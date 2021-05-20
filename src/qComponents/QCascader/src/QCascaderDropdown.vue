@@ -1,27 +1,50 @@
 <template>
   <div
     ref="dropdown"
+    class="q-cascader-dropdown"
     :style="{ zIndex }"
   >
-    dropdown
+    <q-cascader-column
+      v-for="(column, columnIndex) in barList"
+      :key="`${uniqueId}-col-${columnIndex}`"
+      role="menu"
+      :aria-labelledby="uniqueId"
+      :column-index="columnIndex"
+      :column="column"
+    />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, onMounted, onUnmounted, ref } from 'vue';
+import {
+  defineComponent,
+  inject,
+  onMounted,
+  onUnmounted,
+  ref,
+  computed
+} from 'vue';
 import { createPopper, Instance } from '@popperjs/core';
 
 import { getConfig } from '@/qComponents/config';
 import { CLOSE_EVENT } from '@/qComponents/constants/events';
 
-import type { QCascaderProvider } from './QCascader';
-import type { QCascaderDropdownInstance } from './QCascaderDropdown';
+import type { Option, QCascaderProvider } from './QCascader';
+import type { MenuBar, QCascaderDropdownInstance } from './QCascaderDropdown';
+import QCascaderColumn from './QCascaderColumn.vue';
 
 const DEFAULT_Z_INDEX = 2000;
+
+const clearChild = (bar: Option[]): MenuBar[] =>
+  bar.map(({ children, ...restBar }) => restBar);
 
 export default defineComponent({
   name: 'QCascaderDropdown',
   componentName: 'QCascaderDropdown',
+
+  components: {
+    QCascaderColumn
+  },
 
   emits: [CLOSE_EVENT],
 
@@ -35,14 +58,23 @@ export default defineComponent({
     const dropdown = ref<HTMLElement | null>(null);
     const popperJS = ref<Instance | null>(null);
 
+    const barList = computed<MenuBar[][]>(() => {
+      const options = qCascader.options.value;
+      if (!options) return [];
+
+      // some logic
+
+      return [options];
+    });
+
     const closeDropdown = (e: KeyboardEvent | MouseEvent): void => {
+      const target = e.target as HTMLElement;
+
       if (
         (e.type === 'keyup' && (e as KeyboardEvent).key === 'Escape') ||
         (e.type === 'click' &&
-          !qCascader.popoverReference.value?.contains(
-            e.target as HTMLElement
-          ) &&
-          !dropdown.value?.contains(e.target as HTMLElement))
+          !qCascader.popoverReference.value?.contains(target) &&
+          !dropdown.value?.contains(target))
       ) {
         ctx.emit(CLOSE_EVENT);
       }
@@ -56,14 +88,7 @@ export default defineComponent({
         dropdown.value,
         {
           placement: 'bottom-start',
-          modifiers: [
-            {
-              name: 'offset',
-              options: {
-                offset: [0, 8]
-              }
-            }
-          ]
+          modifiers: [{ name: 'offset', options: { offset: [0, 8] } }]
         }
       );
     };
@@ -83,8 +108,10 @@ export default defineComponent({
     });
 
     return {
+      uniqueId: qCascader.uniqueId,
       dropdown,
-      zIndex
+      zIndex,
+      barList
     };
   }
 });

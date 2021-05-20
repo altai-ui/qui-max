@@ -1,8 +1,9 @@
 import { Ref, ComputedRef } from 'vue';
 
-interface Option {
+export interface Option {
   value: number | string;
   label: string;
+  disabled?: boolean;
   children?: Nullable<Option[]>;
 }
 
@@ -38,6 +39,8 @@ export interface QCascaderState {
 }
 
 export interface QCascaderProvider {
+  options: Ref<Nullable<Option[]>>;
+  multiple: Ref<Nullable<boolean>>;
   uniqueId: string;
   popoverReference: Ref<HTMLElement | null>;
 }

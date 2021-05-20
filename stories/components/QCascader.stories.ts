@@ -86,6 +86,21 @@ const defaultArgs = {
       ]
     },
     {
+      value: 'dresource',
+      label: 'Disabled resource',
+      disabled: true,
+      children: [
+        {
+          value: 'side nav',
+          label: 'Side Navigation'
+        },
+        {
+          value: 'top nav',
+          label: 'Top Navigation'
+        }
+      ]
+    },
+    {
       value: 'resource',
       label: 'Resource'
     }

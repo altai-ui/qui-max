@@ -47,10 +47,12 @@ import {
   reactive,
   computed,
   provide,
+  toRef,
   PropType
 } from 'vue';
-import { uniqueId, isNumber, isEmpty } from 'lodash-es';
+import { isNumber, isEmpty } from 'lodash-es';
 
+import { randId } from '@/qComponents/helpers';
 import type { QFormProvider } from '@/qComponents/QForm';
 // import type { QFormItemProvider } from '@/qComponents/QFormItem';
 
@@ -167,7 +169,9 @@ export default defineComponent({
     };
 
     provide<QCascaderProvider>('qCascader', {
-      uniqueId: uniqueId('default-collapse-name-'),
+      options: toRef(props, 'options'),
+      multiple: toRef(props, 'multiple'),
+      uniqueId: randId('q-cascader-'),
       popoverReference: reference
     });
 

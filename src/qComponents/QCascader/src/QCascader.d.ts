@@ -8,7 +8,7 @@ export interface Option {
 }
 
 export type QCascaderPropModelValue = Nullable<
-  number | string | number[] | string[]
+  number | string | (number | string)[]
 >;
 export type QCascaderPropOptions = Nullable<Option[]>;
 export type QCascaderPropTeleportTo = Nullable<string | HTMLElement>;
@@ -43,4 +43,5 @@ export interface QCascaderProvider {
   multiple: Ref<Nullable<boolean>>;
   uniqueId: string;
   popoverReference: Ref<HTMLElement | null>;
+  updateValue: (value: string | number) => void;
 }

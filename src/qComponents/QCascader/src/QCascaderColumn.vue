@@ -66,6 +66,8 @@ export default defineComponent({
     const handleRowCheck = (row: Option, rowIndex: number): void => {
       // eslint-disable-next-line no-console
       console.log('handleRowCheck', row, rowIndex);
+
+      qCascader.updateValue(row.value);
     };
 
     return {

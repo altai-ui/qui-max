@@ -53,8 +53,12 @@ import {
 import { isNumber, isEmpty } from 'lodash-es';
 
 import { randId } from '@/qComponents/helpers';
+import {
+  UPDATE_MODEL_VALUE_EVENT,
+  CHANGE_EVENT
+} from '@/qComponents/constants/events';
 import type { QFormProvider } from '@/qComponents/QForm';
-// import type { QFormItemProvider } from '@/qComponents/QFormItem';
+import type { QFormItemProvider } from '@/qComponents/QFormItem';
 
 import QCascaderDropdown from './QCascaderDropdown';
 
@@ -130,9 +134,11 @@ export default defineComponent({
     }
   },
 
-  setup(props: QCascaderProps): QCascaderInstance {
+  emits: [UPDATE_MODEL_VALUE_EVENT, CHANGE_EVENT],
+
+  setup(props: QCascaderProps, ctx): QCascaderInstance {
     const qForm = inject<QFormProvider | null>('qForm', null);
-    // const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
+    const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
     const reference = ref<HTMLElement | null>(null);
 
     const state = reactive<QCascaderState>({
@@ -168,11 +174,39 @@ export default defineComponent({
       state.isDropdownShown = false;
     };
 
+    const updateValue = (value: string | number): void => {
+      let newValue: QCascaderPropModelValue = null;
+
+      if (props.multiple) {
+        const currentVal =
+          Array.isArray(props.modelValue) || props.modelValue === null
+            ? props.modelValue
+            : [props.modelValue];
+        const currentValue = new Set(currentVal);
+
+        if (currentValue.has(value)) {
+          currentValue.delete(value);
+        } else {
+          currentValue.add(value);
+        }
+
+        newValue = Array.from(currentValue);
+      } else {
+        newValue = value;
+      }
+
+      ctx.emit(UPDATE_MODEL_VALUE_EVENT, newValue);
+      ctx.emit(CHANGE_EVENT, newValue);
+
+      qFormItem?.validateField('change');
+    };
+
     provide<QCascaderProvider>('qCascader', {
       options: toRef(props, 'options'),
       multiple: toRef(props, 'multiple'),
       uniqueId: randId('q-cascader-'),
-      popoverReference: reference
+      popoverReference: reference,
+      updateValue
     });
 
     return {

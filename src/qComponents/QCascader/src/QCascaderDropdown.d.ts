@@ -9,5 +9,6 @@ export interface QCascaderDropdownInstance {
   uniqueId: string;
   dropdown: Ref<HTMLElement | null>;
   zIndex: Ref<number>;
-  barList: ComputedRef<MenuBar[][]>;
+  columnList: ComputedRef<MenuBar[][]>;
+  expandRow: (rowIndex: number, columnIndex: number) => void;
 }

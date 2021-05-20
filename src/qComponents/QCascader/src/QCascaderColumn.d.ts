@@ -1,6 +1,6 @@
 import { ComputedRef } from 'vue';
 
-import { Option } from './QCascader';
+import type { Option } from './QCascader';
 
 export type QCascaderColumnPropColumn = Option[];
 

@@ -5,12 +5,13 @@
     :style="{ zIndex }"
   >
     <q-cascader-column
-      v-for="(column, columnIndex) in barList"
+      v-for="(column, columnIndex) in columnList"
       :key="`${uniqueId}-col-${columnIndex}`"
       role="menu"
       :aria-labelledby="uniqueId"
       :column-index="columnIndex"
       :column="column"
+      @expand="expandRow"
     />
   </div>
 </template>
@@ -29,14 +30,11 @@ import { createPopper, Instance } from '@popperjs/core';
 import { getConfig } from '@/qComponents/config';
 import { CLOSE_EVENT } from '@/qComponents/constants/events';
 
-import type { Option, QCascaderProvider } from './QCascader';
+import type { QCascaderProvider } from './QCascader';
 import type { MenuBar, QCascaderDropdownInstance } from './QCascaderDropdown';
 import QCascaderColumn from './QCascaderColumn.vue';
 
 const DEFAULT_Z_INDEX = 2000;
-
-const clearChild = (bar: Option[]): MenuBar[] =>
-  bar.map(({ children, ...restBar }) => restBar);
 
 export default defineComponent({
   name: 'QCascaderDropdown',
@@ -58,13 +56,26 @@ export default defineComponent({
     const dropdown = ref<HTMLElement | null>(null);
     const popperJS = ref<Instance | null>(null);
 
-    const barList = computed<MenuBar[][]>(() => {
+    const expandedRows = ref<number[]>([]);
+
+    const expandRow = (rowIndex: number, columnIndex: number): void => {
+      const newExpandedRows = expandedRows.value.slice(0, columnIndex);
+      newExpandedRows.push(rowIndex);
+      expandedRows.value = newExpandedRows;
+    };
+
+    const columnList = computed<MenuBar[][]>(() => {
       const options = qCascader.options.value;
       if (!options) return [];
 
-      // some logic
+      const columns = [options];
 
-      return [options];
+      expandedRows.value.forEach((rowIndex, colIndex) => {
+        const children = columns[colIndex][rowIndex].children;
+        if (children) columns.push(children);
+      });
+
+      return columns;
     });
 
     const closeDropdown = (e: KeyboardEvent | MouseEvent): void => {
@@ -101,7 +112,7 @@ export default defineComponent({
     });
 
     onUnmounted(() => {
-      if (popperJS.value?.destroy) popperJS.value.destroy();
+      popperJS.value?.destroy();
 
       document.removeEventListener('keyup', closeDropdown, true);
       document.removeEventListener('click', closeDropdown, true);
@@ -111,7 +122,8 @@ export default defineComponent({
       uniqueId: qCascader.uniqueId,
       dropdown,
       zIndex,
-      barList
+      columnList,
+      expandRow
     };
   }
 });

@@ -28,6 +28,8 @@ import type {
 } from './QCascaderColumn';
 import QCascaderRow from './QCascaderRow';
 
+const EXPAND_EVENT = 'expand';
+
 export default defineComponent({
   name: 'QCascaderColumn',
   componentName: 'QCascaderColumn',
@@ -48,7 +50,7 @@ export default defineComponent({
   },
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  setup(props: QCascaderColumnProps): QCascaderColumnInstance {
+  setup(props: QCascaderColumnProps, ctx): QCascaderColumnInstance {
     const qCascader = inject<QCascaderProvider>(
       'qCascader',
       {} as QCascaderProvider
@@ -59,8 +61,7 @@ export default defineComponent({
     );
 
     const handleRowExpand = (row: Option, rowIndex: number): void => {
-      // eslint-disable-next-line no-console
-      console.log('handleRowExpand', row, rowIndex);
+      ctx.emit(EXPAND_EVENT, rowIndex, props.columnIndex);
     };
 
     const handleRowCheck = (row: Option, rowIndex: number): void => {

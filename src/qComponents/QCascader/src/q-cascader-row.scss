@@ -4,6 +4,7 @@
   min-width: 200px;
   max-width: 300px;
   min-height: 40px;
+  color: var(--color-primary-blue);
   cursor: pointer;
   background-color: var(--color-tertiary-gray-light);
   box-shadow: var(--box-shadow-pressed);
@@ -13,6 +14,7 @@
   }
 
   &:not(.q-cascader-row_disabled):hover {
+    color: var(--color-primary-black);
     background-color: var(--color-tertiary-gray);
   }
 

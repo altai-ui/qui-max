@@ -1,5 +1,8 @@
 .q-cascader-column {
   background-color: var(--color-tertiary-gray-light);
-  border-radius: var(--border-radius-base);
   box-shadow: var(--box-shadow-secondary);
+
+  &:not(:first-child) {
+    border-left: 1px solid var(--color-tertiary-gray-dark);
+  }
 }

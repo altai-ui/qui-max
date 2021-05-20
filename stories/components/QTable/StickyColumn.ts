@@ -33,7 +33,7 @@ StickyColumn.args = {
         },
         {
           key: 'col3',
-          value: 'Column 3',
+          value: 'Column 3 sticky',
           width: '150px',
           sortable: true,
           sticky: {
@@ -58,7 +58,7 @@ StickyColumn.args = {
         },
         {
           key: 'col6',
-          value: 'Column 6',
+          value: 'Column 6 sticky',
           sticky: {
             position: 'left'
           }

@@ -48,7 +48,6 @@ export default defineComponent({
   componentName: ' QTableTSticky',
 
   setup(): QTableTStickyInstance {
-    // const qTable = inject<QTableProvider>('qTable', {} as QTableProvider);
     const qTableContainer = inject<QTableContainerProvider>(
       'qTableContainer',
       {} as QTableContainerProvider

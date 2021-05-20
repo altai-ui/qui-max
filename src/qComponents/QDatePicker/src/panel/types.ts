@@ -50,7 +50,6 @@ interface DateRangeInterface {
   rightYear: ComputedRef<number>;
   leftMonth: ComputedRef<number>;
   rightMonth: ComputedRef<number>;
-  handleChangeRange: (val: any) => void;
   handleRangePick: (val: any, close?: boolean) => void;
   handleLeftTimeChange: ({
     value,

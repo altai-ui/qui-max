@@ -1,5 +1,7 @@
-import { format, isDate, parseISO } from 'date-fns';
+import { format, formatISO, isDate, parseISO } from 'date-fns';
 import { ru, enGB as en } from 'date-fns/locale';
+import { isString } from 'lodash-es';
+import { QDatePickerPropModelValue } from './types';
 
 const locales = { ru, en };
 
@@ -60,4 +62,83 @@ const clearMilliseconds = function (date: Date): Date {
   );
 };
 
-export { clearTime, clearMilliseconds, formatLocalDate, setTimeToDate };
+const calcInputData = (
+  data: string,
+  inputType: string,
+  timeLength: number
+): string => {
+  const clearVal = data.replace(/ |,|:|\./g, '');
+  const array = clearVal.split('');
+  const options = { separator: '.', maxLength: 10 + timeLength };
+
+  if (inputType === 'insertText' && !array[array.length - 1]?.match(/[0-9]+/))
+    return data;
+
+  if (array.length > 1) array.splice(2, 0, options.separator);
+  if (array.length > 3 && array.length !== 4)
+    array.splice(5, 0, options.separator);
+  if (array.length > options.maxLength) return data;
+
+  if (timeLength) {
+    if (array.length > 10) array.splice(10, 0, ', ');
+    if (array.length > 13) array.splice(13, 0, ':');
+    if (array.length > 15) array.splice(16, 0, ':');
+  }
+
+  if (
+    inputType === 'deleteContentBackward' &&
+    ['.', ':'].includes(array[array.length - 1])
+  ) {
+    array.pop();
+  }
+
+  return array.join('');
+};
+
+const validator = function (val: string | string[] | null): boolean {
+  return Boolean(
+    val === null ||
+      val === undefined ||
+      isString(val) ||
+      (Array.isArray(val) && val.length === 2 && val.every(isString))
+  );
+};
+
+const dateValidator = function (val: QDatePickerPropModelValue): boolean {
+  return Boolean(
+    null ||
+      isDate(val) ||
+      isDate(parseISO(val)) ||
+      (Array.isArray(val) &&
+        val.length === 2 &&
+        (val.every(isDate) || val.every(isDate(parseISO))))
+  );
+};
+
+const formatToISO = (date: QDatePickerPropModelValue): string | string[] => {
+  if (Array.isArray(date)) {
+    return [formatISO(date[0]), formatISO(date[1])];
+  }
+
+  return formatISO(date);
+};
+
+const convertDate = (value: string | Date): string | Date => {
+  if (isString(value) && !isDate(value)) {
+    return parseISO(value);
+  }
+
+  return value;
+};
+
+export {
+  clearTime,
+  clearMilliseconds,
+  formatLocalDate,
+  setTimeToDate,
+  calcInputData,
+  validator,
+  dateValidator,
+  formatToISO,
+  convertDate
+};

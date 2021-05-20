@@ -35,7 +35,7 @@
             @click="handlePrevYearClick"
           />
           <button
-            v-show="currentView === 'date'"
+            v-show="state.currentView === 'date'"
             type="button"
             :title="t('QDatePicker.prevMonth')"
             class="q-picker-panel__icon-btn q-icon-triangle-left"
@@ -43,10 +43,10 @@
           />
           <div class="q-picker-panel__header-sign">
             <span
-              v-show="currentView === 'date'"
+              v-show="state.currentView === 'date'"
               role="button"
               class="q-picker-panel__header-label"
-              :class="{ active: currentView === 'month' }"
+              :class="{ active: state.currentView === 'month' }"
               @click="showMonthPicker"
             >
               {{ currentMonth }}
@@ -60,7 +60,7 @@
             </span>
           </div>
           <button
-            v-show="currentView === 'date'"
+            v-show="state.currentView === 'date'"
             type="button"
             :title="t('QDatePicker.nextMonth')"
             class="q-picker-panel__icon-btn q-icon-triangle-right"
@@ -75,43 +75,43 @@
         </div>
 
         <date-table
-          v-if="currentView === 'date'"
+          v-if="state.currentView === 'date'"
           :selection-mode="selectionMode"
           :first-day-of-week="firstDayOfWeek"
-          :value="value"
-          :year="year"
-          :month="month"
+          :value="modelValue"
+          :year="state.year"
+          :month="state.month"
           :disabled-values="disabledValues"
           @pick="handleDatePick"
         />
         <year-table
-          v-if="currentView === 'year'"
-          :value="value"
-          :year="year"
+          v-if="state.currentView === 'year'"
+          :value="modelValue"
+          :year="state.year"
           :disabled-values="disabledValues"
           @pick="handleYearPick"
         />
         <month-table
-          v-if="currentView === 'month'"
-          :value="value"
-          :month="month"
-          :year="year"
+          v-if="state.currentView === 'month'"
+          :value="modelValue"
+          :month="state.month"
+          :year="state.year"
           :disabled-values="disabledValues"
           @pick="handleMonthPick"
         />
       </div>
       <div
-        v-if="showTime && currentView === 'date'"
+        v-if="showTime && state.currentView === 'date'"
         class="q-picker-panel__timepickers"
       >
-        <time-panel
+        <!-- <time-panel
           ref="timePanel"
           class="time-panel_no-left-borders"
           :value="parsedTime"
           :disabled-values="disabledValues"
           :panel-in-focus="panelInFocus === 'time'"
           @change="handleTimeChange"
-        />
+        /> -->
       </div>
     </div>
   </div>
@@ -124,19 +124,24 @@ import { reactive, computed, watch, PropType, onMounted, ref } from 'vue';
 import { getConfig } from '@/qComponents/config';
 import { clearTime, clearMilliseconds, setTimeToDate } from '../helpers';
 import { addZero } from '../../../helpers/dateHelpers';
-import TimePanel from '../../../QTimePicker/src/components/panel';
-import YearTable from '../basic/year-table';
-import MonthTable from '../basic/month-table';
-import DateTable from '../basic/date-table';
+// import TimePanel from '../../../QTimePicker/src/components/panel';
+import YearTable from '../tables/year-table';
+import MonthTable from '../tables/month-table';
+import DateTable from '../tables/date-table';
 import focusTimeMixin from './focus-time-mixin';
 
 import type { QDatePickerPropModelValue } from '../types';
 import type { DatePanelPropShortcuts, DatePanelInterface } from './types';
+import {
+DATE_CELLS_COUNT,
+DATE_CELLS_IN_ROW_COUNT,
+PERIOD_CELLS_IN_ROW_COUNT
+} from './constants';
 
 export default {
   name: 'QDatePickerPanelDate',
   components: {
-    TimePanel,
+    // TimePanel,
     YearTable,
     MonthTable,
     DateTable
@@ -194,7 +199,7 @@ export default {
       yearCells: null
     });
 
-    const root = ref(null);
+    const root = ref<HTMLElement | null>(null);
     const datePanel = ref<HTMLElement | null>(null);
     const timePanel = ref<HTMLElement | null>(null);
 
@@ -202,7 +207,7 @@ export default {
       state.dateCells = root.value.querySelectorAll('.q-date-table .cell');
       state.monthCells = root.value.querySelectorAll('.q-month-table .cell');
       state.yearCells = root.value.querySelectorAll('.q-year-table .cell');
-    })
+    });
 
     const setPanelFocus = (): void => {
       if (datePanel.value?.contains(document.activeElement)) {
@@ -248,31 +253,41 @@ export default {
       return state.year;
     });
 
-    watch(() => props.type, (value) => {
-      let currentView;
-      switch (value) {
-        case 'week': 
-        case 'date':
-        case 'datetime':
-          currentView = 'date';
-          break;
-        default:
-          currentView = value;
-      }
-      state.currentView = currentView;
-    }, { immediate: true });
+    watch(
+      () => props.type,
+      value => {
+        let currentView;
+        switch (value) {
+          case 'week':
+          case 'date':
+          case 'datetime':
+            currentView = 'date';
+            break;
+          default:
+            currentView = value;
+        }
+        state.currentView = currentView;
+      },
+      { immediate: true }
+    );
 
-    watch(() => props.modelValue, (date: QDatePickerPropModelValue) => {
-      if (date && isDate(date)) {
-        state.year = date.getFullYear();
-        state.month = date.getMonth();
-      } else {
-        state.year = new Date().getFullYear();
-        state.month = new Date().getMonth();
+    watch(
+      () => props.modelValue,
+      (date: QDatePickerPropModelValue) => {
+        if (date && isDate(date)) {
+          state.year = date.getFullYear();
+          state.month = date.getMonth();
+        } else {
+          state.year = new Date().getFullYear();
+          state.month = new Date().getMonth();
+        }
       }
-    });
+    );
 
-    const emit = (value: QDatePickerPropModelValue, ...args: unknown[]): void => {
+    const emit = (
+      value: QDatePickerPropModelValue,
+      ...args: unknown[]
+    ): void => {
       if (Array.isArray(value)) {
         const dates = value.map(date =>
           props.showTime ? clearMilliseconds(date) : clearTime(date)
@@ -283,15 +298,28 @@ export default {
       }
     };
 
-    const handleTimeChange = ({ type, value }: Record<string, string>): void => {
-      const newDate = setTimeToDate(props.modelValue || new Date(), type, value);
+    const handleTimeChange = ({
+      type,
+      value
+    }: Record<string, string>): void => {
+      const newDate = setTimeToDate(
+        props.modelValue || new Date(),
+        type,
+        value
+      );
 
       emit(newDate, { hidePicker: false });
     };
-    
-    const showMonthPicker = (): void => { state.currentView = 'month' };
-    const showYearPicker = (): void => { state.currentView = 'year' };
-    const showDatePicker = (): void => { state.currentView = 'date' };
+
+    const showMonthPicker = (): void => {
+      state.currentView = 'month';
+    };
+    const showYearPicker = (): void => {
+      state.currentView = 'year';
+    };
+    const showDatePicker = (): void => {
+      state.currentView = 'date';
+    };
     const handlePrevMonthClick = (): void => {
       const year = state.year;
       if (state.month === 0) {
@@ -310,9 +338,15 @@ export default {
 
     const handlePrevYearClick = (): void => {
       if (state.currentView === 'year') {
-        state.year = subYears(new Date(state.year, state.month), 10).getFullYear();
+        state.year = subYears(
+          new Date(state.year, state.month),
+          10
+        ).getFullYear();
       } else {
-        state.year = subYears(new Date(state.year, state.month), 1).getFullYear();
+        state.year = subYears(
+          new Date(state.year, state.month),
+          1
+        ).getFullYear();
       }
     };
 
@@ -324,7 +358,9 @@ export default {
       }
     };
 
-    const handleShortcutClick = (shortcut: Record<string, (model: unknown) => void>): void => {
+    const handleShortcutClick = (
+      shortcut: Record<string, (model: unknown) => void>
+    ): void => {
       if (shortcut.onClick) {
         shortcut.onClick(this);
       }
@@ -359,7 +395,7 @@ export default {
         state.year = year.getFullYear();
         showMonthPicker();
       }
-    }
+    };
 
     const handleDatePick = (value: QDatePickerPropModelValue): void => {
       emit(value, { hidePicker: !props.showTime }); // set false to keep panel open
@@ -389,10 +425,17 @@ export default {
       setPanelFocus();
     };
 
-    const moveWithinPeriod = ({ period, e }: { period: string, e: KeyboardEvent}): void => {
+    const moveWithinPeriod = ({
+      period,
+      e
+    }: {
+      period: string;
+      e: KeyboardEvent;
+    }): void => {
       let currentNodeIndex;
       let nextNodeIndex;
-      const periodCells = period === 'month' ? state.monthCells : state.yearCells;
+      const periodCells =
+        period === 'month' ? state.monthCells : state.yearCells;
       Array.from(periodCells).some((element, index) => {
         if (document.activeElement === element) {
           currentNodeIndex = index;
@@ -453,7 +496,7 @@ export default {
         }
 
         case 'ArrowRight':
-          if(
+          if (
             props.showTime &&
             (currentNodeIndex + 1) % DATE_CELLS_IN_ROW_COUNT === 0
           ) {
@@ -488,10 +531,13 @@ export default {
         handlePrevMonthClick();
         state.dateCells[DATE_CELLS_COUNT + newIndex]?.focus();
       }
-    }
+    };
 
     return {
       state,
+      root,
+      datePanel,
+      timePanel,
       panelContentClasses,
       parsedTime,
       selectionMode,
@@ -511,7 +557,7 @@ export default {
       handleMonthPick,
       handleDatePick,
       t
-    }
-  },
+    };
+  }
 };
 </script>

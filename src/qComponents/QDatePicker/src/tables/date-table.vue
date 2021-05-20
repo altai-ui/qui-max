@@ -53,17 +53,21 @@ import {
   startOfWeek,
   endOfWeek,
   isToday,
-  isDate
+  isDate,
+  Locale
 } from 'date-fns';
 import { ru, enGB as en } from 'date-fns/locale';
 import { reactive, computed } from 'vue';
 import { getConfig } from '@/qComponents/config';
 
-import type { DateTableInterface, DateTableState } from './types';
+import type { DateTableInterface, DateTableState, CellModel, RangeStateProp } from './types';
 
-const locales = { ru, en };
+const locales: Record<string, Locale> = { ru, en };
 
-const checkDisabled = ({ date }: { date: Date}, disabledValues: Record<string, Date>): boolean => {
+const checkDisabled = (
+  { date }: { date: null | Date },
+  disabledValues: Record<string, Date>
+): boolean => {
   if (!disabledValues) return false;
   const disabled = [];
   if (Array.isArray(disabledValues.ranges)) {
@@ -101,33 +105,31 @@ export default {
     },
 
     year: {
-      type: [String, Number],
+      type: Number,
       default: new Date().getFullYear()
     },
     month: {
-      type: [String, Number],
+      type: Number,
       default: new Date().getMonth()
     },
 
-    modelValue: { type: [Array, String, Date], default: null },
+    modelValue: { type: Date, default: null },
 
     selectionMode: {
       type: String,
       default: 'date'
     },
 
-    minDate: { type: [Date, String], default: null },
+    minDate: { type: Date, default: null },
 
-    maxDate: { type: [Date, String], default: null },
+    maxDate: { type: Date, default: null },
 
     rangeState: {
       type: Object,
-      default() {
-        return {
-          endDate: null,
-          selecting: false
-        };
-      }
+      default: (): RangeStateProp => ({
+        endDate: null,
+        selecting: false
+      })
     }
   },
 
@@ -147,15 +149,19 @@ export default {
 
     const days = computed(() => {
       const DAYS_OF_WEEK = [...Array(7).keys()].map(i => {
-        return locales[getConfig('locale')].localize.day(i, { width: 'short' });
+        return locales[getConfig('locale')]?.localize?.day(i, { width: 'short' });
       });
 
       const day = props.firstDayOfWeek;
       return [...DAYS_OF_WEEK, ...DAYS_OF_WEEK].slice(day, day + 7);
     });
 
-    const startMonthDate = computed(() => startOfMonth(new Date(props.year, props.month, 1)));
-    const endMonthDate = computed(() => endOfMonth(new Date(props.year, props.month, 1)));
+    const startMonthDate = computed(() =>
+      startOfMonth(new Date(props.year, props.month, 1))
+    );
+    const endMonthDate = computed(() =>
+      endOfMonth(new Date(props.year, props.month, 1))
+    );
 
     const rows = computed(() => {
       const date = new Date(props.year, props.month, 1);
@@ -171,13 +177,16 @@ export default {
       return state.tableRows.map((row, i) => {
         const newRow = [];
         for (let j = 0; j < 7; j += 1) {
-          const cell = {
+          const cell: CellModel = {
             row: i,
             column: j,
             type: 'normal',
             inRange: false,
             start: false,
-            end: false
+            end: false,
+            text: '',
+            date: null,
+            disabled: false
           };
 
           if (i === 0 || i === 1) {
@@ -208,23 +217,21 @@ export default {
             cell.date = new Date(props.year, props.month + 1, cell.text);
           }
 
-          let maxDate = state.maxDate;
-          let minDate = state.minDate;
-          if (state.rangeState.selecting) {
-            maxDate = state.rangeState.endDate;
+          let minDateNum = props.minDate?.getTime() ?? null;
+          let maxDateNum = props.maxDate?.getTime() ?? minDateNum;
+          if (props.rangeState.selecting) {
+            maxDateNum = props.rangeState.endDate?.getTime() ?? null;
           }
 
-          minDate = minDate?.getTime() ?? null;
-          maxDate = maxDate?.getTime() ?? minDate;
-          [minDate, maxDate] = [
-            Math.min(minDate, maxDate),
-            Math.max(minDate, maxDate)
+          [minDateNum, maxDateNum] = [
+            Math.min(minDateNum, maxDateNum),
+            Math.max(minDateNum, maxDateNum)
           ];
 
-          cell.inRange =
-            minDate &&
-            cell.date.getTime() >= minDate &&
-            cell.date.getTime() <= maxDate;
+          cell.inRange = Boolean(
+            minDateNum &&
+            cell.date.getTime() >= minDateNum &&
+            cell.date.getTime() <= maxDateNum);
 
           if (isToday(cell.date)) {
             if (!['prev-month', 'next-month'].includes(cell.type)) {
@@ -240,7 +247,7 @@ export default {
       });
     });
 
-    const getCellClasses = (cell): string[] => {
+    const getCellClasses = (cell: CellModel): string[] => {
       const classes = ['cell', 'cell_date'];
       if (['today', 'prev-month', 'next-month'].includes(cell.type)) {
         classes.push(`cell_${cell.type}`);
@@ -248,22 +255,23 @@ export default {
 
       if (
         ['normal', 'today'].includes(cell.type) &&
-        props.modelValue &&
+        props.modelValue && cell.date &&
         isSameDay(cell.date, props.modelValue)
       ) {
         classes.push('cell_current');
       }
 
       if (
-        cell.inRange ||
-        (state.minDate && isSameDay(cell.date, state.minDate)) ||
-        (state.maxDate && isSameDay(cell.date, state.maxDate)) ||
+        cell.inRange || (cell.date && (
+        (props.minDate && isSameDay(cell.date, props.minDate)) ||
+        (props.maxDate && isSameDay(cell.date, props.maxDate)) ||
         (props.selectionMode === 'week' &&
           props.modelValue &&
           isWithinInterval(cell.date, {
             start: startOfWeek(props.modelValue, { weekStartsOn: 1 }),
             end: endOfWeek(props.modelValue, { weekStartsOn: 1 })
           }))
+        ))
       ) {
         classes.push('cell_in-range');
       }
@@ -276,8 +284,9 @@ export default {
     };
 
     const handleMouseMove = (event: MouseEvent): void => {
-      if (!state.rangeState.selecting) return;
-      let target = event.target;
+      if (!props.rangeState.selecting) return;
+      let target = event.target as HTMLElement;
+      
       if (target.tagName === 'BUTTON') {
         target = target.parentNode;
       }
@@ -295,8 +304,8 @@ export default {
         state.lastRow = row;
         state.lastColumn = column;
         ctx.emit('changerange', {
-          minDate: state.minDate,
-          maxDate: state.maxDate,
+          minDate: props.minDate,
+          maxDate: props.maxDate,
           rangeState: {
             selecting: true,
             endDate: rows.value[row][column].date
@@ -305,28 +314,33 @@ export default {
       }
     };
 
-    const handleClick = (cell): void => {
+    const handleClick = (cell: CellModel): void => {
       if (cell.disabled || cell.type === 'week') return;
       const newDate = cell.date;
-
       if (props.selectionMode === 'range') {
-        if (!state.rangeState.selecting) {
-          ctx.emit('pick', { minDate: newDate, maxDate: null });
-          state.rangeState.selecting = true;
+        if (!props.rangeState.selecting) {
+          ctx.emit('pick', { minDate: newDate, maxDate: null, rangeState: {
+            ...props.rangeState,
+            selecting: true
+          } });
         } else {
-          if (newDate >= state.minDate) {
-            ctx.emit('pick', { minDate: state.minDate, maxDate: newDate });
+          let dates;
+          if (newDate && newDate >= props.minDate) {
+            dates = { minDate: props.minDate, maxDate: newDate };
           } else {
-            ctx.emit('pick', { minDate: newDate, maxDate: state.minDate });
+            dates = { minDate: newDate, maxDate: props.minDate };
           }
-          state.rangeState.selecting = false;
+          ctx.emit('pick', { ...dates, rangeState: {
+            ...props.rangeState,
+            selecting: true
+          } });
         }
       } else if (props.selectionMode === 'day') {
         ctx.emit('pick', newDate);
       } else if (props.selectionMode === 'datetime') {
         ctx.emit('pick', newDate, { hidePicker: false });
       } else if (props.selectionMode === 'week') {
-        const value = startOfWeek(newDate, { weekStartsOn: 1 });
+        const value = newDate ? startOfWeek(newDate, { weekStartsOn: 1 }) : null;
         ctx.emit('pick', value);
       } else if (props.selectionMode === 'dates') {
         const value = props.modelValue || [];
@@ -335,7 +349,7 @@ export default {
       } else {
         ctx.emit('pick', newDate);
       }
-    }
+    };
 
     return {
       state,
@@ -347,7 +361,7 @@ export default {
       getCellClasses,
       handleMouseMove,
       handleClick
-    }
-  },
+    };
+  }
 };
 </script>

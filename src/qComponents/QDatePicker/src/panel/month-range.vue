@@ -47,7 +47,6 @@
             :year="leftYear"
             :range-state="rangeState"
             :disabled-values="disabledValues"
-            @changerange="handleChangeRange"
             @pick="handleRangePick"
           />
         </div>
@@ -78,7 +77,6 @@
             :max-date="maxDate"
             :range-state="rangeState"
             :disabled-values="disabledValues"
-            @changerange="handleChangeRange"
             @pick="handleRangePick"
           />
         </div>
@@ -91,7 +89,7 @@
 import { isDate, addYears, getDecade, addMonths } from 'date-fns';
 import { reactive, computed, watch, inject } from 'vue';
 import isSameMonth from 'date-fns/isSameMonth';
-import MonthTable from '../basic/month-table';
+import MonthTable from '../tables/month-table';
 import focusMixin from './focus-mixin';
 import { leftYearComposable, handleShortcutClick } from './composition';
 

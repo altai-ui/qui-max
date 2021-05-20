@@ -1,8 +1,8 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { Meta } from '@storybook/vue3';
+import { Meta, Story } from '@storybook/vue3';
 import { addMonths, subMonths } from 'date-fns';
-import QDatePicker from '../../../src/qComponents/QDatePicker';
-import Default from './Default';
+import QDatePicker from '@/qComponents/QDatePicker';
+import { defineComponent, reactive } from 'vue';
 // import DateTime from './DateTime';
 // import Month from './Month';
 // import Year from './Year';
@@ -45,7 +45,7 @@ const storyMetadata: Meta = {
             {
               text: 'Сегодня',
               onClick(picker) {
-                picker.$emit('pick', new Date());
+                picker.emit('pick', new Date());
               }
             },
             {
@@ -53,7 +53,7 @@ const storyMetadata: Meta = {
               onClick(picker) {
                 const date = new Date();
                 date.setTime(date.getTime() - 3600 * 1000 * 24);
-                picker.$emit('pick', date);
+                picker.emit('pick', date);
               }
             },
             {
@@ -61,7 +61,7 @@ const storyMetadata: Meta = {
               onClick(picker) {
                 const date = new Date();
                 date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
-                picker.$emit('pick', date);
+                picker.emit('pick', date);
               }
             }
           ]
@@ -101,15 +101,47 @@ const storyMetadata: Meta = {
   }
 };
 
-export { Default };
+const Template: Story = args =>
+  defineComponent({
+    setup() {
+      const state = reactive({
+        value: null,
+        format: 'dd MMMM yyyy'
+      });
+
+      const handleRangePickClick = val => {
+        console.log('handleRangePickClick', val);
+      };
+
+      return {
+        args,
+        state,
+        handleRangePickClick
+      };
+    },
+    template: `
+      <q-date-picker
+        v-model="state.value"
+        :clearable="args.clearable"
+        :editable="args.editable"
+        :placeholder="args.placeholder"
+        :type="args.type"
+        :format="state.format"
+        :output-format="args.outputFormat"
+        :name="args.name"
+        :disabled="args.disabled"
+        :disabled-values="args.disabledValues"
+        :shortcuts="args.shortcuts"
+        :start-placeholder="args.startPlaceholder"
+        :end-placeholder="args.endPlaceholder"
+        :first-day-of-week="args.firstDayOfWeek"
+        :range-separator="args.rangeSeparator"
+        :validate-event="args.validateEvent"
+        @rangepick="handleRangePickClick"
+        :append-to-body="args.appendToBody"
+      />`
+  });
+
+export const Default: Story = Template.bind({});
+
 export default storyMetadata;
-// export {
-//   Default,
-// DateTime,
-// Month,
-// Year,
-// DateRange,
-// DateTimeRange,
-// MonthRange,
-// YearRange
-// };

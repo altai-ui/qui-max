@@ -1,17 +1,14 @@
 <template>
-  <div
-    ref="root"
-    v-click-outside="handleClose"
-  >
+  <div ref="root">
     <q-input
       v-if="!isRanged"
       ref="reference"
-      :class="['q-date-editor', { 'q-input_focus': pickerVisible }]"
+      v-model="displayValue"
+      :class="['q-date-editor', { 'q-input_focus': state.pickerVisible }]"
       :readonly="!editable"
       :disabled="isPickerDisabled"
       :name="name"
       :placeholder="placeholder || t('QDatePicker.placeholder')"
-      :value="displayValue"
       @focus="handleFocus"
       @keyup="handleKeyUp"
       @input="handleInput"
@@ -69,13 +66,13 @@
     <component
       :is="panelComponent"
       ref="panel"
-      :class="{ 'q-picker-panel_shown': Boolean(popper) }"
-      :visible="Boolean(popper)"
+      :class="{ 'q-picker-panel_shown': Boolean(state.popper) }"
+      :visible="Boolean(state.popper)"
       :type="type"
       :shortcuts="shortcuts"
       :disabled-values="disabledValues"
       :first-day-of-week="calcFirstDayOfWeek"
-      :value="transformedValue"
+      :v-model="transformedValue"
       :show-time="timepicker"
       @pick="handlePickClick"
     >
@@ -89,25 +86,37 @@
 
 <script lang="ts">
 import { createPopper } from '@popperjs/core';
-import { isEqual, isString } from 'lodash-es';
+import { isString } from 'lodash-es';
 import {
-  formatISO,
   isDate,
   isValid,
   parse,
   startOfMonth,
   startOfWeek,
   startOfYear,
-  parseISO
 } from 'date-fns';
-import { computed, defineComponent, inject, PropType, reactive, ref, watch, ComponentPublicInstance, UnwrapRef, onBeforeUnmount, provide, toRef } from 'vue';
+import {
+  computed,
+  defineComponent,
+  inject,
+  PropType,
+  reactive,
+  ref,
+  watch,
+  ComponentPublicInstance,
+  UnwrapRef,
+  onBeforeUnmount,
+  provide,
+  toRefs
+} from 'vue';
 import { getConfig } from '@/qComponents/config';
 import { QFormProvider } from '@/qComponents/QForm';
 import { QInputInstance } from '@/qComponents/QInput';
 import { QFormItemProvider } from '@/qComponents/QFormItem';
 import { useI18n } from 'vue-i18n';
-import { formatLocalDate } from './helpers';
-import Pickers from '../../mixins/pickers';
+import { calcInputData, formatLocalDate, validator,
+  dateValidator,
+  convertDate } from './helpers';
 
 import DatePanel from './panel/date.vue';
 import DateRangePanel from './panel/date-range.vue';
@@ -115,52 +124,9 @@ import MonthRangePanel from './panel/month-range.vue';
 import YearRangePanel from './panel/year-range.vue';
 import type { QDatePickerPropModelValue, QDatePickerState } from './types';
 
-const validator = function(val: string | string[] | null): boolean {
-  return Boolean(
-    val === null ||
-    val === undefined ||
-    isString(val) ||
-    (Array.isArray(val) && val.length === 2 && val.every(isString))
-  );
-};
-
-const dateValidator = function(val: QDatePickerPropModelValue): boolean {
-  return Boolean(
-    null ||
-    isDate(val) ||
-    isDate(parseISO(val)) ||
-    (Array.isArray(val) &&
-      val.length === 2 &&
-      (val.every(isDate) || val.every(isDate(parseISO))))
-  );
-};
-
-const formatToISO = (date: QDatePickerPropModelValue): string | string[] => {
-  if (Array.isArray(date)) {
-    return [formatISO(date[0]), formatISO(date[1])];
-  }
-
-  return formatISO(date);
-}
-
-const convertDate = (value: string | Date): string | Date => {
-  if (isString(value) && !isDate(value)) {
-    return parseISO(value);
-  }
-
-  return value;
-};
-
 export default defineComponent({
   name: 'QDatePicker',
   componentName: 'QDatePicker',
-  mixins: [Pickers],
-
-  provide() {
-    return {
-      picker: this
-    };
-  },
 
   props: {
     /**
@@ -274,45 +240,49 @@ export default defineComponent({
     validateEvent: {
       type: Boolean,
       default: true
-    },
+    }
   },
 
-  emits: ['focus', 'change', 'input'],
+  emits: ['focus', 'change', 'input', 'update:modelValue'],
 
   setup(props, ctx) {
     const root = ref<null | HTMLElement>(null);
+    const panel = ref<null | HTMLElement>(null);
     const qForm = inject<QFormProvider | null>('qForm', null);
     const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
-    const reference = ref<ComponentPublicInstance<UnwrapRef<QInputInstance>> | HTMLElement | null>(null);
-    const referenceEl =
-      reference.value instanceof Element
-        ? reference.value
-        : reference.value?.$el;
-    const panel = ref<null | HTMLElement>(null);
+    const reference = ref<
+      ComponentPublicInstance<UnwrapRef<QInputInstance>> | HTMLElement | null
+    >(null);
 
     const state = reactive<QDatePickerState>({
       pickerVisible: false,
       showClose: false,
       userInput: null,
       popper: null
-    })
+    });
 
     const calcFirstDayOfWeek = computed<number>(() => {
-      if (!Number.isNaN(Number(props.firstDayOfWeek))) return props.firstDayOfWeek;
+      if (!Number.isNaN(Number(props.firstDayOfWeek)))
+        return props.firstDayOfWeek;
       return getConfig('locale') === 'ru' ? 1 : 0;
-    })
+    });
 
-    const transformedValue = computed<QDatePickerPropModelValue>(() =>  {
+    const transformedValue = computed<QDatePickerPropModelValue>(() => {
       if (Array.isArray(props.modelValue) && props.modelValue.length) {
-        return [convertDate(props.modelValue[0]), convertDate(props.modelValue[1])];
+        return [
+          convertDate(props.modelValue[0]),
+          convertDate(props.modelValue[1])
+        ];
       }
 
       if (isString(props.modelValue)) return convertDate(props.modelValue);
 
       return props.modelValue;
-    })
+    });
 
-    const isPickerDisabled = computed<boolean>(() => Boolean(props.disabled || qForm?.disabled));
+    const isPickerDisabled = computed<boolean>(() =>
+      Boolean(props.disabled || qForm?.disabled)
+    );
 
     const rangeClasses = computed<Record<string, boolean>>(() => ({
       'q-date-editor': true,
@@ -321,9 +291,9 @@ export default defineComponent({
       'q-range-editor_focused': state.pickerVisible
     }));
 
-    const isRanged = computed<boolean>(() => props.type.includes('range'))
+    const isRanged = computed<boolean>(() => props.type.includes('range'));
 
-    const timepicker = computed<boolean>(() => props.type.includes('time'))
+    const timepicker = computed<boolean>(() => props.type.includes('time'));
 
     const iconClass = computed(() => {
       if (isPickerDisabled.value) return 'q-icon-lock';
@@ -331,7 +301,7 @@ export default defineComponent({
         ? 'q-icon-calendar-clock'
         : 'q-icon-calendar';
       return state.showClose ? 'q-icon-close' : calendarIcon;
-    })
+    });
 
     const panelComponent = computed(() => {
       switch (props.type) {
@@ -345,8 +315,7 @@ export default defineComponent({
         default:
           return DatePanel;
       }
-    })
-
+    });
 
     const isValueEmpty = computed<boolean>(() => {
       if (Array.isArray(transformedValue.value)) {
@@ -354,9 +323,10 @@ export default defineComponent({
       }
 
       return !transformedValue.value;
-    })
+    });
 
     const displayValue = computed<string | string[] | null>(() => {
+
       let formattedValue: string | string[] = '';
 
       if (Array.isArray(transformedValue.value)) {
@@ -388,33 +358,38 @@ export default defineComponent({
       }
 
       return '';
-    })
+    });
 
     const emitChange = (val: QDatePickerPropModelValue): void => {
       if (val !== props.modelValue) {
+        ctx.emit('update:modelValue', val);
         ctx.emit('change', val);
         if (props.validateEvent) {
           qFormItem?.validateField('change');
         }
       }
-    }
+    };
 
     const emitInput = (val: QDatePickerPropModelValue): void => {
-      let formatted = val;
-      if (props.outputFormat === 'iso' && val) {
-        formatted = formatToISO(val);
-      }
+      console.log('emitInput', val);
+      
+      // let formatted = val;
+      // if (props.outputFormat === 'iso' && val) {
+      //   formatted = formatToISO(val);
+      // }
 
-      if (!isEqual(transformedValue.value, formatted)) {
-        ctx.emit('input', formatted);
-      }
-    }
+      // if (!isEqual(transformedValue.value, formatted)) {
+      //   ctx.emit('input', formatted);
+      // }
+    };
 
-    const handlePickClick = (val: QDatePickerPropModelValue, { hidePicker = true } = {}): void => {
+    const handlePickClick = (
+      val: QDatePickerPropModelValue,
+      { hidePicker = true } = {}
+    ): void => {
       state.pickerVisible = !hidePicker;
       emitChange(val);
-      emitInput(val);
-    }
+    };
 
     const handleChange = (): void => {
       let value;
@@ -443,14 +418,13 @@ export default defineComponent({
               resultValue = value;
               break;
           }
-          emitInput(resultValue);
+          emitChange(resultValue);
         }
       } else {
-        emitInput(null);
         emitChange(null);
       }
       state.userInput = null;
-    }
+    };
 
     const handleKeyUp = (e: KeyboardEvent): void => {
       // if user is typing, do not let picker handle key input
@@ -488,12 +462,12 @@ export default defineComponent({
         default:
           break;
       }
-    }
+    };
 
     const popperInit = (): void => {
       const panelEl = panel.value?.$el ?? null;
 
-      state.popper = createPopper(referenceEl, panelEl, {
+      state.popper = createPopper(reference.value.$el, panelEl, {
         modifiers: [
           {
             name: 'offset',
@@ -512,7 +486,8 @@ export default defineComponent({
 
       panelEl.style.zIndex = getConfig('nextZIndex') ?? 2000;
       document.addEventListener('keyup', handleKeyUp, true);
-    }
+      document.addEventListener('click', handleDocumentClick, true);
+    };
 
     const destroyPopper = (): void => {
       if (state.popper) {
@@ -521,7 +496,8 @@ export default defineComponent({
       }
 
       document.removeEventListener('keyup', handleKeyUp, true);
-    }
+      document.removeEventListener('click', handleDocumentClick, true);
+    };
 
     const handleFocus = (): void => {
       state.pickerVisible = true;
@@ -537,87 +513,127 @@ export default defineComponent({
         format,
         getConfig('locale')
       );
-    }
+    };
 
     const handleMouseEnter = (): void => {
       if (isPickerDisabled.value) return;
       if (!isValueEmpty.value && props.clearable) {
         state.showClose = true;
       }
-    }
+    };
 
     const handleIconClick = (event: MouseEvent): void => {
       if (isPickerDisabled.value) return;
       if (state.showClose) {
         event.stopPropagation();
-        emitInput(null);
         emitChange(null);
         state.showClose = false;
       } else {
         state.pickerVisible = !state.pickerVisible;
       }
-    }
+    };
 
     const handleClose = (): void => {
       if (!state.pickerVisible) return;
       state.pickerVisible = false;
-    }
+    };
 
     const handleRangeClick = (): void => {
       state.pickerVisible = true;
       ctx.emit('focus');
+    };
+
+    const handleInput = ({ target, inputType }: { target: HTMLInputElement, inputType: string}): void => {
+      const data = target.value;
+      
+      const timeLength = timepicker.value ? 6 : 0;
+
+      if (inputType === 'deleteContentBackward' && !state.userInput) {
+        state.userInput = '';
+        return;
+      }
+
+      const parsedInputValue = calcInputData(data, inputType, timeLength);
+      state.userInput = parsedInputValue;
+      ctx.emit('input', parsedInputValue);
     }
 
-    watch(() => state.pickerVisible, (val) => {
-      if (isPickerDisabled.value) return;
-      if (val) {
-        popperInit();
-      } else {
-        destroyPopper();
-        emitChange(transformedValue.value);
-        state.userInput = null;
-        if (props.validateEvent) {
-          qFormItem?.validateField('blur');
+    const handleDocumentClick = (e: MouseEvent): void => {
+      const target = e.target as HTMLElement;
+      const dropdownEl = panel.value?.$el;
+
+      if (root.value?.contains(target) || dropdownEl?.contains(target)) {
+        return;
+      }
+
+      state.pickerVisible = false;
+    };
+
+    watch(
+      () => state.pickerVisible,
+      val => {
+        if (isPickerDisabled.value) return;
+        if (val) {
+          popperInit();
+        } else {
+          destroyPopper();
+          emitChange(transformedValue.value);
+          state.userInput = null;
+          if (props.validateEvent) {
+            qFormItem?.validateField('blur');
+          }
         }
       }
-    })
+    );
 
-    watch(() => props.modelValue, () => {
-      if (!state.pickerVisible && props.validateEvent) {
-        qFormItem?.validateField('change');
+    watch(
+      () => props.modelValue,
+      () => {
+        if (!state.pickerVisible && props.validateEvent) {
+          qFormItem?.validateField('change');
+        }
       }
-    })
+    );
 
     const { t } = useI18n();
 
     onBeforeUnmount(() => {
-      destroyPopper()
-    })
+      destroyPopper();
+    });
+
+    const { type } = toRefs(props);
 
     provide('qDatePicker', {
       emitChange,
-      type: toRef('type', props.type)
-    })
+      type
+    });
 
     return {
       state,
+      panel,
+      root,
+      reference,
       isRanged,
+      isPickerDisabled,
       timepicker,
       calcFirstDayOfWeek,
       transformedValue,
       rangeClasses,
       panelComponent,
+      handleChange,
+      handleKeyUp,
       isValueEmpty,
       displayValue,
       iconClass,
       handlePickClick,
       handleFocus,
+      handleInput,
       handleMouseEnter,
       handleRangeClick,
       handleClose,
       handleIconClick,
       t
-    }
-  },
+    };
+  }
 });
 </script>

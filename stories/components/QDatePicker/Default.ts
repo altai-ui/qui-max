@@ -1,8 +1,8 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { Story } from '@storybook/vue3';
-import { defineComponent, reactive, ref } from 'vue';
+import { defineComponent, reactive } from 'vue';
 
-const QDatePickerStory: Story = args =>
+const Template: Story = args =>
   defineComponent({
     setup() {
       const state = reactive({
@@ -15,31 +15,32 @@ const QDatePickerStory: Story = args =>
       };
 
       return {
+        args,
         state,
         handleRangePickClick
       };
     },
     template: `
       <q-date-picker
-        v-model="value"
-        :clearable="clearable"
-        :editable="editable"
-        :placeholder="placeholder"
-        :type="type"
-        :format="format"
-        :output-format="outputFormat"
-        :name="name"
-        :disabled="disabled"
-        :disabled-values="disabledValues"
-        :shortcuts="shortcuts"
-        :start-placeholder="startPlaceholder"
-        :end-placeholder="endPlaceholder"
-        :first-day-of-week="firstDayOfWeek"
-        :range-separator="rangeSeparator"
-        :validate-event="validateEvent"
+        v-model="state.value"
+        :clearable="args.clearable"
+        :editable="args.editable"
+        :placeholder="args.placeholder"
+        :type="args.type"
+        :format="state.format"
+        :output-format="args.outputFormat"
+        :name="args.name"
+        :disabled="args.disabled"
+        :disabled-values="args.disabledValues"
+        :shortcuts="args.shortcuts"
+        :start-placeholder="args.startPlaceholder"
+        :end-placeholder="args.endPlaceholder"
+        :first-day-of-week="args.firstDayOfWeek"
+        :range-separator="args.rangeSeparator"
+        :validate-event="args.validateEvent"
         @rangepick="handleRangePickClick"
-        :append-to-body="appendToBody"
+        :append-to-body="args.appendToBody"
       />`
   });
 
-export default QDatePickerStory;
+export default Template;

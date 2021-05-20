@@ -95,7 +95,7 @@
 import { addMonths, addYears, getDecade, isDate, subYears } from 'date-fns';
 import { reactive, computed, watch, inject } from 'vue';
 import isSameMonth from 'date-fns/isSameMonth';
-import YearTable from '../basic/year-table';
+import YearTable from '../tables/year-table';
 import focusMixin from './focus-mixin';
 import { leftYearComposable } from './composition';
 import { YearRangeInterface, YearRangeState } from './types';

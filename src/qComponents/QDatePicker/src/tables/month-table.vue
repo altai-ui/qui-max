@@ -33,6 +33,7 @@ import { startOfMonth, isSameMonth, isBefore, isAfter } from 'date-fns';
 import { reactive, computed } from 'vue';
 import { getConfig } from '@/qComponents/config';
 import { formatLocalDate } from '../helpers';
+import { RangeStateProp } from './types';
 
 const checkDisabled = ({ date }: { date: Date }, disabledValues): boolean => {
   if (!disabledValues) return false;
@@ -80,7 +81,7 @@ export default {
     },
     rangeState: {
       type: Object,
-      default() {
+      default: (): RangeStateProp => {
         return {
           endDate: null,
           selecting: false
@@ -125,8 +126,8 @@ export default {
           let maxDate = state.maxDate;
           let minDate = state.minDate;
 
-          if (state.rangeState.selecting) {
-            maxDate = state.rangeState.endDate;
+          if (props.rangeState.selecting) {
+            maxDate = props.rangeState.endDate;
           }
 
           minDate = startOfMonth(minDate);
@@ -174,7 +175,7 @@ export default {
     };
 
     const handleMouseMove = (event: MouseEvent): void => {
-      if (!state.rangeState.selecting) return;
+      if (!props.rangeState.selecting) return;
 
       let target = event.target;
       if (target.tagName === 'BUTTON') {
@@ -193,7 +194,7 @@ export default {
       if (row !== state.lastRow || column !== state.lastColumn) {
         state.lastRow = row;
         state.lastColumn = column;
-        ctx.emit('changerange', {
+        ctx.emit('pick', {
           minDate: state.minDate,
           maxDate: state.maxDate,
           rangeState: {
@@ -209,23 +210,23 @@ export default {
       const month = cell.month.getMonth();
       const newDate = cell.month;
       if (props.selectionMode === 'range') {
-        if (!state.rangeState.selecting) {
+        if (!props.rangeState.selecting) {
           ctx.emit('pick', {
             minDate: newDate,
             maxDate: null,
-            rangeState: { ...state.rangeState, selecting: true }
+            rangeState: { ...props.rangeState, selecting: true }
           });
         } else if (newDate >= state.minDate) {
           ctx.emit('pick', {
             minDate: state.minDate,
             maxDate: newDate,
-            rangeState: { ...state.rangeState, selecting: false }
+            rangeState: { ...props.rangeState, selecting: false }
           });
         } else {
           ctx.emit('pick', {
             minDate: newDate,
             maxDate: state.minDate,
-            rangeState: { ...state.rangeState, selecting: false }
+            rangeState: { ...props.rangeState, selecting: false }
           });
         }
       } else {
@@ -236,7 +237,10 @@ export default {
     return {
       state,
       rows,
-      getMonthName
+      getMonthName,
+      handleMonthTableClick,
+      getCellClasses,
+      handleMouseMove
     }
   },
 };

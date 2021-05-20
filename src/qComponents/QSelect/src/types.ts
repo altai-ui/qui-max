@@ -28,18 +28,18 @@ interface QSelectInstance {
   dropdown: Ref<
     Nullable<ComponentPublicInstance<UnwrapRef<QSelectDropdownInstance>>>
   >;
-  root: Ref<HTMLElement | null>;
+  root: Ref<Nullable<HTMLElement>>;
   state: QSelectState;
   preparedPlaceholder: ComputedRef<Nullable<string>>;
   visibleOptionsCount: ComputedRef<number>;
-  isCanLoadMoreShown: ComputedRef<boolean | null>;
+  isCanLoadMoreShown: ComputedRef<Nullable<boolean>>;
   showEmptyContent: ComputedRef<boolean>;
   isReadonly: ComputedRef<Nullable<boolean>>;
   isDisabled: ComputedRef<boolean>;
-  isClearBtnShown: ComputedRef<boolean | null>;
+  isClearBtnShown: ComputedRef<Nullable<boolean>>;
   iconClass: ComputedRef<string>;
   emptyText: ComputedRef<string>;
-  isNewOptionShown: ComputedRef<boolean | null>;
+  isNewOptionShown: ComputedRef<Nullable<boolean>>;
   popperInit: () => void;
   showPopper: () => void;
   hidePopper: () => void;

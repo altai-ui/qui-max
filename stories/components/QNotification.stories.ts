@@ -33,7 +33,7 @@ const QNotificationStory: Story<Args> = args =>
   defineComponent({
     components: { QNotification },
     setup() {
-      let lastCloudId: string | null = null;
+      let lastCloudId: Nullable<string> = null;
 
       const handleClick = (): void => {
         const notifyId = notify(args.notifyArgs);

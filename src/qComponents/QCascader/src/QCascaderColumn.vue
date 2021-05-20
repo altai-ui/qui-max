@@ -28,7 +28,7 @@ import type {
   QCascaderColumnProps,
   QCascaderColumnInstance
 } from './QCascaderColumn';
-import QCascaderRow from './QCascaderRow';
+import QCascaderRow from './QCascaderRow.vue';
 
 const EXPAND_EVENT = 'expand';
 

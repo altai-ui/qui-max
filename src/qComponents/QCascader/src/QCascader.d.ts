@@ -1,4 +1,6 @@
-import { Ref, ComputedRef } from 'vue';
+import { Ref, ComputedRef, ComponentPublicInstance, UnwrapRef } from 'vue';
+
+import type { QCascaderInputInstance } from './QCascaderInput';
 
 export interface Option {
   value: number | string;
@@ -23,13 +25,15 @@ export interface QCascaderProps {
   teleportTo: QCascaderPropTeleportTo;
 }
 
+type Reference = Ref<
+  Nullable<ComponentPublicInstance<UnwrapRef<QCascaderInputInstance>>>
+>;
+
 export interface QCascaderInstance {
-  reference: Ref<Nullable<HTMLElement>>;
+  reference: Reference;
   state: QCascaderState;
   isDisabled: ComputedRef<boolean>;
   rootClasses: ComputedRef<Record<string, boolean>>;
-  isClearBtnShown: ComputedRef<boolean>;
-  arrowIconClass: ComputedRef<string>;
   handleTriggerClick: () => void;
   handleDropdownClose: () => void;
 }
@@ -39,9 +43,13 @@ export interface QCascaderState {
 }
 
 export interface QCascaderProvider {
-  options: Ref<Nullable<Option[]>>;
+  isDropdownShown: Ref<boolean>;
+  modelValue: Ref<QCascaderPropModelValue>;
+  options: Ref<QCascaderPropOptions>;
+  disabled: ComputedRef<boolean>;
   multiple: Ref<Nullable<boolean>>;
+  clearable: Ref<Nullable<boolean>>;
   uniqueId: string;
-  popoverReference: Ref<HTMLElement | null>;
+  popoverReference: Reference;
   updateValue: (value: string | number) => void;
 }

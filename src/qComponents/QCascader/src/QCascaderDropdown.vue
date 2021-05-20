@@ -89,7 +89,7 @@ export default defineComponent({
       if (
         (e.type === 'keyup' && (e as KeyboardEvent).key === 'Escape') ||
         (e.type === 'click' &&
-          !qCascader.popoverReference.value?.contains(target) &&
+          !qCascader.popoverReference.value?.$el?.contains(target) &&
           !dropdown.value?.contains(target))
       ) {
         ctx.emit(CLOSE_EVENT);
@@ -100,7 +100,7 @@ export default defineComponent({
       if (!qCascader.popoverReference.value || !dropdown.value) return;
 
       popperJS.value = createPopper(
-        qCascader.popoverReference.value,
+        qCascader.popoverReference.value.$el,
         dropdown.value,
         {
           placement: 'bottom-start',

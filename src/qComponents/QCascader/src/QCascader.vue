@@ -1,31 +1,9 @@
 <template>
   <div :class="rootClasses">
-    <div
+    <q-cascader-input
       ref="reference"
-      class="q-cascader__input"
       @click="handleTriggerClick"
-    >
-      <q-input
-        ref="input"
-        type="text"
-        readonly
-        :disabled="isDisabled"
-        :validate-event="false"
-        :tabindex="multiple ? '-1' : null"
-      >
-        <template #suffix>
-          <span
-            v-if="isClearBtnShown"
-            class="q-cascader__icon-close q-input__icon q-icon-close"
-          />
-          <span
-            class="q-cascader__icon-arrow q-input__icon q-icon-triangle-down"
-            :class="arrowIconClass"
-          />
-
-        </template>
-      </q-input>
-    </div>
+    />
 
     <teleport
       :to="teleportTo"
@@ -48,9 +26,10 @@ import {
   computed,
   provide,
   toRef,
-  PropType
+  PropType,
+  ComponentPublicInstance,
+  UnwrapRef
 } from 'vue';
-import { isNumber, isEmpty } from 'lodash-es';
 
 import { randId } from '@/qComponents/helpers';
 import {
@@ -60,7 +39,9 @@ import {
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
 
-import QCascaderDropdown from './QCascaderDropdown';
+import QCascaderDropdown from './QCascaderDropdown.vue';
+import QCascaderInput from './QCascaderInput.vue';
+import type { QCascaderInputInstance } from './QCascaderInput';
 
 import type {
   QCascaderPropModelValue,
@@ -77,7 +58,8 @@ export default defineComponent({
   componentName: 'QCascader',
 
   components: {
-    QCascaderDropdown
+    QCascaderDropdown,
+    QCascaderInput
   },
 
   props: {
@@ -139,7 +121,9 @@ export default defineComponent({
   setup(props: QCascaderProps, ctx): QCascaderInstance {
     const qForm = inject<QFormProvider | null>('qForm', null);
     const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
-    const reference = ref<HTMLElement | null>(null);
+    const reference = ref<ComponentPublicInstance<
+      UnwrapRef<QCascaderInputInstance>
+    > | null>(null);
 
     const state = reactive<QCascaderState>({
       isDropdownShown: false
@@ -155,15 +139,6 @@ export default defineComponent({
       'q-cascader_multiple': Boolean(props.multiple),
       'q-cascader_clearable': Boolean(props.clearable)
     }));
-
-    const isClearBtnShown = computed<boolean>(() => {
-      const hasValue = isNumber(props.modelValue) || !isEmpty(props.modelValue);
-      return Boolean(props.clearable) && !isDisabled.value && hasValue;
-    });
-
-    const arrowIconClass = computed<string>(() =>
-      state.isDropdownShown ? 'q-cascader__icon-arrow_reverse' : ''
-    );
 
     const handleTriggerClick = (): void => {
       if (isDisabled.value) return;
@@ -202,8 +177,12 @@ export default defineComponent({
     };
 
     provide<QCascaderProvider>('qCascader', {
+      isDropdownShown: toRef(state, 'isDropdownShown'),
+      modelValue: toRef(props, 'modelValue'),
       options: toRef(props, 'options'),
+      disabled: isDisabled,
       multiple: toRef(props, 'multiple'),
+      clearable: toRef(props, 'clearable'),
       uniqueId: randId('q-cascader-'),
       popoverReference: reference,
       updateValue
@@ -214,8 +193,6 @@ export default defineComponent({
       state,
       isDisabled,
       rootClasses,
-      isClearBtnShown,
-      arrowIconClass,
       handleTriggerClick,
       handleDropdownClose
     };

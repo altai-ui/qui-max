@@ -23,6 +23,7 @@ export interface QCascaderProps {
   clearable: Nullable<boolean>;
   disabled: Nullable<boolean>;
   allLevelsShown: Nullable<boolean>;
+  placeholder: Nullable<string>;
   teleportTo: QCascaderPropTeleportTo;
 }
 
@@ -52,6 +53,7 @@ export interface QCascaderProvider {
   disabled: ComputedRef<boolean>;
   multiple: Ref<Nullable<boolean>>;
   clearable: Ref<Nullable<boolean>>;
+  placeholder: Ref<Nullable<string>>;
   uniqueId: string;
   popoverReference: Reference;
   updateValue: (value: Nullable<string | number>) => void;

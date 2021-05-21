@@ -114,6 +114,13 @@ export default defineComponent({
       default: false
     },
     /**
+     * as native placeholder
+     */
+    placeholder: {
+      type: String,
+      default: null
+    },
+    /**
      * Specifies a target element where Drawer will be moved.
      * (has to be a valid query selector, or an HTMLElement)
      */
@@ -194,6 +201,7 @@ export default defineComponent({
       disabled: isDisabled,
       multiple: toRef(props, 'multiple'),
       clearable: toRef(props, 'clearable'),
+      placeholder: toRef(props, 'placeholder'),
       uniqueId: randId('q-cascader-'),
       popoverReference: reference,
       updateValue

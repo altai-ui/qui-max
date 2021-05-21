@@ -1,0 +1,34 @@
+.q-cascader-input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  .q-input__inner {
+    height: 100%;
+    padding-right: 40px;
+    text-overflow: ellipsis;
+    user-select: none;
+  }
+
+  &__icon-arrow {
+    transition: transform 0.3s;
+
+    &_reverse {
+      transform: rotateZ(180deg);
+    }
+  }
+
+  &__icon-close {
+    display: none;
+
+    .q-cascader-input:hover & {
+      display: block;
+
+      & + .q-cascader-input__icon-arrow {
+        display: none;
+      }
+    }
+  }
+}

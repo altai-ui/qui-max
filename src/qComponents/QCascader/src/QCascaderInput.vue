@@ -1,10 +1,11 @@
 <template>
-  <div class="q-cascader__input">
+  <div class="q-cascader-input">
     <q-input
       ref="input"
       :model-value="value"
       type="text"
       readonly
+      :placeholder="placeholder"
       :disabled="disabled"
       :validate-event="false"
       :tabindex="multiple ? '-1' : null"
@@ -12,11 +13,11 @@
       <template #suffix>
         <span
           v-if="isClearBtnShown"
-          class="q-cascader__icon-close q-input__icon q-icon-close"
+          class="q-cascader-input__icon-close q-input__icon q-icon-close"
           @click.stop="handleClearBtnClick"
         />
         <span
-          class="q-cascader__icon-arrow q-input__icon q-icon-triangle-down"
+          class="q-cascader-input__icon-arrow q-input__icon q-icon-triangle-down"
           :class="arrowIconClass"
         />
       </template>
@@ -56,20 +57,29 @@ export default defineComponent({
       return fullPath.join(separator);
     });
 
-    const isClearBtnShown = computed<boolean>(() => {
-      const hasValue =
+    const hasValue = computed<boolean>(
+      () =>
         isNumber(qCascader.modelValue.value) ||
-        !isEmpty(qCascader.modelValue.value);
+        !isEmpty(qCascader.modelValue.value)
+    );
 
-      return (
-        Boolean(qCascader.clearable.value) &&
-        !qCascader.disabled.value &&
-        hasValue
-      );
+    const placeholder = computed<string | null>(() => {
+      const text = qCascader.placeholder.value;
+      if (!qCascader.multiple.value) return text;
+      return hasValue.value ? null : text;
     });
 
+    const isClearBtnShown = computed<boolean>(
+      () =>
+        Boolean(qCascader.clearable.value) &&
+        !qCascader.disabled.value &&
+        hasValue.value
+    );
+
     const arrowIconClass = computed<string>(() =>
-      qCascader.isDropdownShown.value ? 'q-cascader__icon-arrow_reverse' : ''
+      qCascader.isDropdownShown.value
+        ? 'q-cascader-input__icon-arrow_reverse'
+        : ''
     );
 
     const handleClearBtnClick = (): void => {
@@ -80,6 +90,7 @@ export default defineComponent({
       value,
       multiple: qCascader.multiple,
       disabled: qCascader.disabled,
+      placeholder,
       isClearBtnShown,
       arrowIconClass,
       handleClearBtnClick

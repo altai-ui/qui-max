@@ -90,7 +90,7 @@ export default defineComponent({
         (e.type === 'keyup' && (e as KeyboardEvent).key === 'Escape') ||
         (e.type === 'click' &&
           !qCascader.popoverReference.value?.$el?.contains(target) &&
-          !dropdown.value?.contains(target))
+          (!dropdown.value?.contains(target) || target === dropdown.value))
       ) {
         ctx.emit(CLOSE_EVENT);
       }

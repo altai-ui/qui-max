@@ -79,6 +79,13 @@ export default defineComponent({
       default: null
     },
     /**
+     * whether all path to value in tags is shown
+     */
+    allLevelsShown: {
+      type: Boolean,
+      default: true
+    },
+    /**
      * separator in tags
      */
     separator: {
@@ -180,6 +187,8 @@ export default defineComponent({
       isDropdownShown: toRef(state, 'isDropdownShown'),
       modelValue: toRef(props, 'modelValue'),
       options: toRef(props, 'options'),
+      allLevelsShown: toRef(props, 'allLevelsShown'),
+      separator: toRef(props, 'separator'),
       disabled: isDisabled,
       multiple: toRef(props, 'multiple'),
       clearable: toRef(props, 'clearable'),

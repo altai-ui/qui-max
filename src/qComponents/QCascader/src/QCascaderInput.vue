@@ -2,6 +2,7 @@
   <div class="q-cascader__input">
     <q-input
       ref="input"
+      :model-value="value"
       type="text"
       readonly
       :disabled="disabled"
@@ -26,6 +27,7 @@
 import { defineComponent, inject, computed } from 'vue';
 import { isNumber, isEmpty } from 'lodash-es';
 
+import findFullPath from './helpers/findFullPath';
 import type { QCascaderProvider } from './QCascader';
 import type { QCascaderInputInstance } from './QCascaderInput';
 
@@ -38,6 +40,20 @@ export default defineComponent({
       'qCascader',
       {} as QCascaderProvider
     );
+
+    const value = computed<string | number | null>(() => {
+      const modelValue = qCascader.modelValue.value;
+
+      if (Array.isArray(modelValue)) return null;
+
+      const fullPath = findFullPath(qCascader.options.value, modelValue);
+      if (!fullPath) return null;
+
+      if (!qCascader.allLevelsShown.value) return fullPath[fullPath.length - 1];
+
+      const separator = qCascader.separator.value ?? ' ';
+      return fullPath.join(separator);
+    });
 
     const isClearBtnShown = computed<boolean>(() => {
       const hasValue =
@@ -56,6 +72,7 @@ export default defineComponent({
     );
 
     return {
+      value,
       multiple: qCascader.multiple,
       disabled: qCascader.disabled,
       isClearBtnShown,

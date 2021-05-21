@@ -22,6 +22,7 @@ export interface QCascaderProps {
   multiple: Nullable<boolean>;
   clearable: Nullable<boolean>;
   disabled: Nullable<boolean>;
+  allLevelsShown: Nullable<boolean>;
   teleportTo: QCascaderPropTeleportTo;
 }
 
@@ -46,6 +47,8 @@ export interface QCascaderProvider {
   isDropdownShown: Ref<boolean>;
   modelValue: Ref<QCascaderPropModelValue>;
   options: Ref<QCascaderPropOptions>;
+  allLevelsShown: Ref<Nullable<boolean>>;
+  separator: Ref<Nullable<string>>;
   disabled: ComputedRef<boolean>;
   multiple: Ref<Nullable<boolean>>;
   clearable: Ref<Nullable<boolean>>;

@@ -18,6 +18,22 @@
     background-color: var(--color-tertiary-gray);
   }
 
+  .q-cascader-column:last-child &:first-child {
+    border-top-right-radius: var(--border-radius-base);
+  }
+
+  .q-cascader-column:first-child &:first-child {
+    border-top-left-radius: var(--border-radius-base);
+  }
+
+  .q-cascader-column:last-child &:last-child {
+    border-bottom-right-radius: var(--border-radius-base);
+  }
+
+  .q-cascader-column:first-child &:last-child {
+    border-bottom-left-radius: var(--border-radius-base);
+  }
+
   &_disabled {
     color: var(--color-opacity-gray-dark);
     cursor: not-allowed;

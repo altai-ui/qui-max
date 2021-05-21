@@ -54,5 +54,5 @@ export interface QCascaderProvider {
   clearable: Ref<Nullable<boolean>>;
   uniqueId: string;
   popoverReference: Reference;
-  updateValue: (value: string | number) => void;
+  updateValue: (value: Nullable<string | number>) => void;
 }

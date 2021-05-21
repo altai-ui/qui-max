@@ -13,6 +13,7 @@
         <span
           v-if="isClearBtnShown"
           class="q-cascader__icon-close q-input__icon q-icon-close"
+          @click.stop="handleClearBtnClick"
         />
         <span
           class="q-cascader__icon-arrow q-input__icon q-icon-triangle-down"
@@ -71,12 +72,17 @@ export default defineComponent({
       qCascader.isDropdownShown.value ? 'q-cascader__icon-arrow_reverse' : ''
     );
 
+    const handleClearBtnClick = (): void => {
+      qCascader.updateValue(null);
+    };
+
     return {
       value,
       multiple: qCascader.multiple,
       disabled: qCascader.disabled,
       isClearBtnShown,
-      arrowIconClass
+      arrowIconClass,
+      handleClearBtnClick
     };
   }
 });

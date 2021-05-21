@@ -6,4 +6,5 @@ export interface QCascaderInputInstance {
   disabled: ComputedRef<boolean>;
   isClearBtnShown: ComputedRef<boolean>;
   arrowIconClass: ComputedRef<string>;
+  handleClearBtnClick: () => void;
 }

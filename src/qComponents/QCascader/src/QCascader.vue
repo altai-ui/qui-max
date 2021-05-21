@@ -156,31 +156,33 @@ export default defineComponent({
       state.isDropdownShown = false;
     };
 
-    const updateValue = (value: string | number): void => {
-      let newValue: QCascaderPropModelValue = null;
-
-      if (props.multiple) {
-        const currentVal =
-          Array.isArray(props.modelValue) || props.modelValue === null
-            ? props.modelValue
-            : [props.modelValue];
-        const currentValue = new Set(currentVal);
-
-        if (currentValue.has(value)) {
-          currentValue.delete(value);
-        } else {
-          currentValue.add(value);
-        }
-
-        newValue = Array.from(currentValue);
-      } else {
-        newValue = value;
-      }
-
-      ctx.emit(UPDATE_MODEL_VALUE_EVENT, newValue);
-      ctx.emit(CHANGE_EVENT, newValue);
+    const emitChange = (value: QCascaderPropModelValue = null): void => {
+      ctx.emit(UPDATE_MODEL_VALUE_EVENT, value);
+      ctx.emit(CHANGE_EVENT, value);
 
       qFormItem?.validateField('change');
+    };
+
+    const updateValue = (value: string | number | null): void => {
+      if (!props.multiple || value === null) {
+        emitChange(value);
+        return;
+      }
+
+      const currentVal =
+        Array.isArray(props.modelValue) || props.modelValue === null
+          ? props.modelValue
+          : [props.modelValue];
+      const currentValue = new Set(currentVal);
+
+      if (currentValue.has(value)) {
+        currentValue.delete(value);
+      } else {
+        currentValue.add(value);
+      }
+
+      const newValue = Array.from(currentValue);
+      emitChange(newValue.length ? newValue : null);
     };
 
     provide<QCascaderProvider>('qCascader', {

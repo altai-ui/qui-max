@@ -1,5 +1,5 @@
 <template>
-  <div class="q-cascader-column">
+  <div :class="rootClasses">
     <q-scrollbar wrap-class="q-cascader-column__scrollbar">
       <q-cascader-row
         v-for="(row, rowIndex) in column"
@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, PropType } from 'vue';
+import { defineComponent, inject, computed, PropType } from 'vue';
 
 import findAllLeaves from '../helpers/findAllLeaves';
 import QCascaderRow from '../QCascaderRow/QCascaderRow.vue';
@@ -49,7 +49,6 @@ export default defineComponent({
     }
   },
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   setup(props: QCascaderColumnProps, ctx): QCascaderColumnInstance {
     const qCascader = inject<QCascaderProvider>(
       'qCascader',
@@ -59,6 +58,22 @@ export default defineComponent({
       'qCascaderDropdown',
       {} as QCascaderDropdownProvider
     );
+
+    const rootClasses = computed<Record<string, boolean>>(() => {
+      const columnList = qCascaderDropdown.columnList.value;
+
+      const prevRowsCount = columnList[props.columnIndex - 1]?.length ?? 0;
+      const currentRowsCount = props.column.length;
+      const nextRowsCount = columnList[props.columnIndex + 1]?.length ?? 0;
+
+      return {
+        'q-cascader-column': true,
+        'q-cascader-column_left-bottom-border':
+          currentRowsCount > prevRowsCount,
+        'q-cascader-column_right-bottom-border':
+          currentRowsCount > nextRowsCount
+      };
+    });
 
     const checkExpanded = (rowIndex: number): boolean =>
       qCascaderDropdown.expandedRows.value[props.columnIndex] === rowIndex;
@@ -78,6 +93,7 @@ export default defineComponent({
     };
 
     return {
+      rootClasses,
       uniqueId: qCascader.uniqueId,
       checkExpanded,
       handleRowExpand,

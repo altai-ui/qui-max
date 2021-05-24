@@ -1,4 +1,4 @@
-import { Ref, ComputedRef, ComponentPublicInstance, UnwrapRef } from 'vue';
+import type { Ref, ComputedRef, ComponentPublicInstance, UnwrapRef } from 'vue';
 
 import type { QCascaderInputInstance } from './QCascaderInput/QCascaderInput';
 

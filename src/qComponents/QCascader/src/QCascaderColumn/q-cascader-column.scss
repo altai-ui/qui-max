@@ -10,6 +10,22 @@
     max-height: 204px;
   }
 
+  &_left-bottom-border {
+    &,
+    .q-cascader-column__scrollbar {
+      border-top-left-radius: var(--border-radius-base);
+      border-bottom-left-radius: var(--border-radius-base);
+    }
+  }
+
+  &_right-bottom-border {
+    &,
+    .q-cascader-column__scrollbar {
+      border-top-right-radius: var(--border-radius-base);
+      border-bottom-right-radius: var(--border-radius-base);
+    }
+  }
+
   &:first-child {
     &,
     .q-cascader-column__scrollbar {

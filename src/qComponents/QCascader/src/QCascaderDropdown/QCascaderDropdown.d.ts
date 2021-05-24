@@ -1,4 +1,4 @@
-import { Ref, ComputedRef } from 'vue';
+import type { Ref, ComputedRef } from 'vue';
 
 export interface MenuBar {
   value: number | string;
@@ -15,4 +15,5 @@ export interface QCascaderDropdownInstance {
 
 export interface QCascaderDropdownProvider {
   expandedRows: Ref<number[]>;
+  columnList: ComputedRef<MenuBar[][]>;
 }

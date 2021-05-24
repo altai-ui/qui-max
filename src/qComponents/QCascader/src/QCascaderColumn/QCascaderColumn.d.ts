@@ -1,3 +1,5 @@
+import type { ComputedRef } from 'vue';
+
 import type { Option } from '../QCascader';
 
 export type QCascaderColumnPropColumn = Option[];
@@ -8,6 +10,7 @@ export interface QCascaderColumnProps {
 }
 
 export interface QCascaderColumnInstance {
+  rootClasses: ComputedRef<Record<string, boolean>>;
   uniqueId: string;
   checkExpanded: (rowIndex: number) => boolean;
   handleRowExpand: (rowIndex: number) => void;

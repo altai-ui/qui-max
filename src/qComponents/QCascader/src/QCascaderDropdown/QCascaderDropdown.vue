@@ -144,7 +144,8 @@ export default defineComponent({
     });
 
     provide<QCascaderDropdownProvider>('qCascaderDropdown', {
-      expandedRows
+      expandedRows,
+      columnList
     });
 
     return {

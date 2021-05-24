@@ -9,18 +9,19 @@
     @keyup.enter="handleEnterKeyUp"
   >
     <div
-      v-if="multiple"
+      v-if="isMultiple"
       class="q-cascader-row__checkbox"
     >
       <q-checkbox
         input-tab-index="-1"
         :model-value="isChecked"
-        :disabled="disabled"
+        :indeterminate="isIndeterminate"
+        :disabled="row.disabled"
         @change="handleCheckboxChange"
       />
     </div>
 
-    <span class="q-cascader-row__label">{{ label }}</span>
+    <span class="q-cascader-row__label">{{ row.label }}</span>
 
     <span
       v-if="isIconShown"
@@ -30,10 +31,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, computed } from 'vue';
+import { defineComponent, inject, computed, PropType } from 'vue';
 
+import getChildStatuses from './helpers/getChildStatuses';
 import type { QCascaderProvider } from './QCascader';
-import type { QCascaderRowProps, QCascaderRowInstance } from './QCascaderRow';
+import type {
+  QCascaderRowPropRow,
+  QCascaderRowProps,
+  QCascaderRowInstance
+} from './QCascaderRow';
 
 const EXPAND_EVENT = 'expand';
 const CHECK_EVENT = 'check';
@@ -47,31 +53,11 @@ export default defineComponent({
       type: String,
       required: true
     },
-    value: {
-      type: [Number, String],
-      required: true
-    },
-    label: {
-      type: String,
-      required: true
-    },
-    checked: {
-      type: Boolean,
-      required: true
-    },
-    hasChildren: {
-      type: Boolean,
-      required: true
-    },
-    multiple: {
-      type: Boolean,
+    row: {
+      type: [Object] as PropType<QCascaderRowPropRow>,
       required: true
     },
     expanded: {
-      type: Boolean,
-      default: false
-    },
-    disabled: {
       type: Boolean,
       default: false
     }
@@ -85,41 +71,68 @@ export default defineComponent({
       {} as QCascaderProvider
     );
 
+    const isMultiple = computed<boolean>(
+      () => qCascader.multiple.value ?? false
+    );
+
+    const childStatuses = computed<boolean[]>(() => {
+      if (!qCascader.multiple.value || qCascader.checkStrictly.value) return [];
+      return getChildStatuses(props.row, qCascader.modelValue.value);
+    });
+
     const isChecked = computed<boolean>(() => {
       const modelValue = qCascader.modelValue.value;
-      if (!props.multiple) return modelValue === props.value;
+      if (!isMultiple.value) return modelValue === props.row.value;
+
+      if (!qCascader.checkStrictly.value)
+        return (
+          Boolean(childStatuses.value.length) &&
+          childStatuses.value.every(Boolean)
+        );
 
       return Array.isArray(modelValue)
-        ? modelValue.includes(props.value)
+        ? modelValue.includes(props.row.value)
         : false;
+    });
+
+    const isIndeterminate = computed<boolean>(() => {
+      if (
+        !qCascader.multiple.value ||
+        qCascader.checkStrictly.value ||
+        isChecked.value
+      )
+        return false;
+
+      if (childStatuses.value.every(Boolean)) return false;
+      return childStatuses.value.some(Boolean);
     });
 
     const rootClasses = computed<Record<string, boolean>>(() => ({
       'q-cascader-row': true,
-      'q-cascader-row_disabled': Boolean(props.disabled),
+      'q-cascader-row_disabled': Boolean(props.row.disabled),
       'q-cascader-row_expanded': Boolean(props.expanded),
       'q-cascader-row_checked': isChecked.value
     }));
 
     const isIconShown = computed<boolean>(
-      () => props.disabled || props.hasChildren
+      () => props.row.disabled || Boolean(props.row.children)
     );
 
     const iconClasses = computed<Record<string, boolean>>(() => {
-      const isArrowShown = !props.disabled && props.hasChildren;
+      const isArrowShown = !props.row.disabled && Boolean(props.row.children);
 
       return {
         'q-cascader-row__icon': true,
-        'q-icon-lock': Boolean(props.disabled),
+        'q-icon-lock': Boolean(props.row.disabled),
         'q-icon-triangle-right': isArrowShown,
         'q-cascader-row__icon_reverse': isArrowShown && Boolean(props.expanded)
       };
     });
 
     const handleClick = (): void => {
-      if (props.disabled) return;
+      if (props.row.disabled) return;
 
-      if (!props.multiple && !props.hasChildren) {
+      if (!isMultiple.value && !props.row.children) {
         ctx.emit(CHECK_EVENT);
       }
 
@@ -127,13 +140,17 @@ export default defineComponent({
     };
 
     const handleRightKeyUp = (): void => {
-      if (props.disabled || !props.hasChildren) return;
+      if (props.row.disabled || !props.row.children) return;
 
       ctx.emit(EXPAND_EVENT);
     };
 
     const handleEnterKeyUp = (): void => {
-      if (props.disabled || (!props.multiple && props.hasChildren)) return;
+      if (
+        props.row.disabled ||
+        (!isMultiple.value && Boolean(props.row.children))
+      )
+        return;
 
       ctx.emit(CHECK_EVENT);
     };
@@ -144,7 +161,9 @@ export default defineComponent({
 
     return {
       rootClasses,
+      isMultiple,
       isChecked,
+      isIndeterminate,
       isIconShown,
       iconClasses,
       handleClick,

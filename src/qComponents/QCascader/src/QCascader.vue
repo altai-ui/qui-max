@@ -114,6 +114,13 @@ export default defineComponent({
       default: false
     },
     /**
+     * check each value as independent
+     */
+    checkStrictly: {
+      type: Boolean,
+      default: false
+    },
+    /**
      * as native placeholder
      */
     placeholder: {
@@ -170,7 +177,9 @@ export default defineComponent({
       qFormItem?.validateField('change');
     };
 
-    const updateValue = (value: string | number | null): void => {
+    const updateValue = (
+      value: string | number | (string | number)[] | null
+    ): void => {
       if (!props.multiple || value === null) {
         emitChange(value);
         return;
@@ -182,10 +191,18 @@ export default defineComponent({
           : [props.modelValue];
       const currentValue = new Set(currentVal);
 
-      if (currentValue.has(value)) {
-        currentValue.delete(value);
+      const updateCurrentValue = (rowValue: string | number): void => {
+        if (currentValue.has(rowValue)) {
+          currentValue.delete(rowValue);
+        } else {
+          currentValue.add(rowValue);
+        }
+      };
+
+      if (Array.isArray(value)) {
+        value.forEach(updateCurrentValue);
       } else {
-        currentValue.add(value);
+        updateCurrentValue(value);
       }
 
       const newValue = Array.from(currentValue);
@@ -201,6 +218,7 @@ export default defineComponent({
       disabled: isDisabled,
       multiple: toRef(props, 'multiple'),
       clearable: toRef(props, 'clearable'),
+      checkStrictly: toRef(props, 'checkStrictly'),
       placeholder: toRef(props, 'placeholder'),
       uniqueId: randId('q-cascader-'),
       popoverReference: reference,

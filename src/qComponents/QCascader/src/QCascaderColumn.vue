@@ -5,12 +5,8 @@
         v-for="(row, rowIndex) in column"
         :key="`${uniqueId}-${columnIndex}-${rowIndex}`"
         :unique-id="`${uniqueId}-col-${columnIndex}-row-${rowIndex}`"
-        :value="row.value"
-        :label="row.label"
-        :has-children="Boolean(row.children?.length)"
-        :disabled="row.disabled"
+        :row="row"
         :expanded="checkExpanded(rowIndex)"
-        :multiple="isMultiple"
         @expand="handleRowExpand(rowIndex)"
         @check="handleRowCheck(row, rowIndex)"
       />
@@ -19,8 +15,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, computed, PropType } from 'vue';
+import { defineComponent, inject, PropType } from 'vue';
 
+import findAllLeaves from './helpers/findAllLeaves';
 import type { Option, QCascaderProvider } from './QCascader';
 import type { QCascaderDropdownProvider } from './QCascaderDropdown';
 import type {
@@ -62,10 +59,6 @@ export default defineComponent({
       {} as QCascaderDropdownProvider
     );
 
-    const isMultiple = computed<boolean>(
-      () => qCascader.multiple.value ?? false
-    );
-
     const checkExpanded = (rowIndex: number): boolean =>
       qCascaderDropdown.expandedRows.value[props.columnIndex] === rowIndex;
 
@@ -73,16 +66,18 @@ export default defineComponent({
       ctx.emit(EXPAND_EVENT, rowIndex, props.columnIndex);
     };
 
-    const handleRowCheck = (row: Option, rowIndex: number): void => {
-      // eslint-disable-next-line no-console
-      console.log('handleRowCheck', row, rowIndex);
+    const handleRowCheck = (row: Option): void => {
+      if (!qCascader.multiple.value || qCascader.checkStrictly.value) {
+        qCascader.updateValue(row.value);
+        return;
+      }
 
-      qCascader.updateValue(row.value);
+      const leaves = findAllLeaves(row);
+      qCascader.updateValue(leaves);
     };
 
     return {
       uniqueId: qCascader.uniqueId,
-      isMultiple,
       checkExpanded,
       handleRowExpand,
       handleRowCheck

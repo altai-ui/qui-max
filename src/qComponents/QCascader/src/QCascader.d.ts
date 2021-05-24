@@ -35,15 +35,11 @@ type Reference = Ref<
 
 export interface QCascaderInstance {
   reference: Reference;
-  state: QCascaderState;
+  isDropdownShown: Ref<boolean>;
   isDisabled: ComputedRef<boolean>;
   rootClasses: ComputedRef<Record<string, boolean>>;
   handleTriggerClick: () => void;
   handleDropdownClose: () => void;
-}
-
-export interface QCascaderState {
-  isDropdownShown: boolean;
 }
 
 export interface QCascaderProvider {

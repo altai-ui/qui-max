@@ -12,7 +12,7 @@
       :disabled="!teleportTo"
     >
       <q-cascader-dropdown
-        v-if="state.isDropdownShown"
+        v-if="isDropdownShown"
         @close="handleDropdownClose"
       />
     </teleport>
@@ -24,13 +24,13 @@ import {
   defineComponent,
   inject,
   ref,
-  reactive,
   computed,
   provide,
   toRef,
   PropType,
   ComponentPublicInstance,
-  UnwrapRef
+  UnwrapRef,
+  watch
 } from 'vue';
 
 import { randId } from '@/qComponents/helpers';
@@ -52,7 +52,6 @@ import type {
   QCascaderPropTeleportTo,
   QCascaderProps,
   QCascaderInstance,
-  QCascaderState,
   QCascaderProvider
 } from './QCascader';
 
@@ -157,13 +156,15 @@ export default defineComponent({
       UnwrapRef<QCascaderInputInstance>
     > | null>(null);
 
-    const state = reactive<QCascaderState>({
-      isDropdownShown: false
-    });
+    const isDropdownShown = ref<boolean>(false);
 
     const isDisabled = computed<boolean>(
       () => props.disabled || (qForm?.disabled.value ?? false)
     );
+
+    watch(isDisabled, value => {
+      if (value) isDropdownShown.value = false;
+    });
 
     const rootClasses = computed<Record<string, boolean>>(() => ({
       'q-cascader': true,
@@ -174,11 +175,11 @@ export default defineComponent({
 
     const handleTriggerClick = (): void => {
       if (isDisabled.value) return;
-      state.isDropdownShown = !state.isDropdownShown;
+      isDropdownShown.value = !isDropdownShown.value;
     };
 
     const handleDropdownClose = (): void => {
-      state.isDropdownShown = false;
+      isDropdownShown.value = false;
     };
 
     const emitChange = (value: QCascaderPropModelValue = null): void => {
@@ -222,7 +223,7 @@ export default defineComponent({
     };
 
     provide<QCascaderProvider>('qCascader', {
-      isDropdownShown: toRef(state, 'isDropdownShown'),
+      isDropdownShown,
       modelValue: toRef(props, 'modelValue'),
       options: toRef(props, 'options'),
       allLevelsShown: toRef(props, 'allLevelsShown'),
@@ -240,7 +241,7 @@ export default defineComponent({
 
     return {
       reference,
-      state,
+      isDropdownShown,
       isDisabled,
       rootClasses,
       handleTriggerClick,

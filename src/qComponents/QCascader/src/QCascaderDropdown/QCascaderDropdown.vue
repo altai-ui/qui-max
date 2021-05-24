@@ -42,7 +42,7 @@ import type {
   QCascaderDropdownInstance,
   QCascaderDropdownProvider
 } from './QCascaderDropdown';
-import QCascaderColumn from '../QCascaderColumn.vue';
+import QCascaderColumn from '../QCascaderColumn/QCascaderColumn.vue';
 
 const DEFAULT_Z_INDEX = 2000;
 

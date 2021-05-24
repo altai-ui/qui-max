@@ -17,15 +17,15 @@
 <script lang="ts">
 import { defineComponent, inject, PropType } from 'vue';
 
-import findAllLeaves from './helpers/findAllLeaves';
-import type { Option, QCascaderProvider } from './QCascader';
-import type { QCascaderDropdownProvider } from './QCascaderDropdown/QCascaderDropdown';
+import findAllLeaves from '../helpers/findAllLeaves';
+import type { Option, QCascaderProvider } from '../QCascader';
+import type { QCascaderDropdownProvider } from '../QCascaderDropdown/QCascaderDropdown';
 import type {
   QCascaderColumnPropColumn,
   QCascaderColumnProps,
   QCascaderColumnInstance
 } from './QCascaderColumn';
-import QCascaderRow from './QCascaderRow/QCascaderRow.vue';
+import QCascaderRow from '../QCascaderRow/QCascaderRow.vue';
 
 const EXPAND_EVENT = 'expand';
 

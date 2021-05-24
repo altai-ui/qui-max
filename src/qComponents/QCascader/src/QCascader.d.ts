@@ -1,6 +1,6 @@
 import { Ref, ComputedRef, ComponentPublicInstance, UnwrapRef } from 'vue';
 
-import type { QCascaderInputInstance } from './QCascaderInput';
+import type { QCascaderInputInstance } from './QCascaderInput/QCascaderInput';
 
 export interface Option {
   value: number | string;

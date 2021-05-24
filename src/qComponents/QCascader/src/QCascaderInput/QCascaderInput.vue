@@ -33,8 +33,9 @@
 import { defineComponent, inject, computed } from 'vue';
 import { isNumber, isEmpty } from 'lodash-es';
 
-import findFullPath from './helpers/findFullPath';
-import type { QCascaderProvider } from './QCascader';
+import findFullPath from '../helpers/findFullPath';
+import type { QCascaderProvider } from '../QCascader';
+
 import type { QCascaderInputInstance } from './QCascaderInput';
 
 export default defineComponent({

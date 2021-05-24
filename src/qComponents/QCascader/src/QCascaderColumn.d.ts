@@ -11,5 +11,5 @@ export interface QCascaderColumnInstance {
   uniqueId: string;
   checkExpanded: (rowIndex: number) => boolean;
   handleRowExpand: (rowIndex: number) => void;
-  handleRowCheck: (row: Option, rowIndex: number) => void;
+  handleRowCheck: (row: Option, isExist: boolean) => void;
 }

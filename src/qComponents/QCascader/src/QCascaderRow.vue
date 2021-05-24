@@ -133,7 +133,7 @@ export default defineComponent({
       if (props.row.disabled) return;
 
       if (!isMultiple.value && !props.row.children) {
-        ctx.emit(CHECK_EVENT);
+        ctx.emit(CHECK_EVENT, props.row, isChecked.value);
       }
 
       ctx.emit(EXPAND_EVENT);
@@ -152,11 +152,11 @@ export default defineComponent({
       )
         return;
 
-      ctx.emit(CHECK_EVENT);
+      ctx.emit(CHECK_EVENT, props.row, isChecked.value);
     };
 
     const handleCheckboxChange = (): void => {
-      ctx.emit(CHECK_EVENT);
+      ctx.emit(CHECK_EVENT, props.row, isChecked.value);
     };
 
     return {

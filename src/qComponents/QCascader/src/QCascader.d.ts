@@ -58,5 +58,8 @@ export interface QCascaderProvider {
   placeholder: Ref<Nullable<string>>;
   uniqueId: string;
   popoverReference: Reference;
-  updateValue: (value: Nullable<number | string | (number | string)[]>) => void;
+  updateValue: (
+    value: Nullable<number | string | (number | string)[]>,
+    isExist: boolean
+  ) => void;
 }

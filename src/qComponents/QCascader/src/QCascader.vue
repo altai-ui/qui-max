@@ -179,7 +179,8 @@ export default defineComponent({
     };
 
     const updateValue = (
-      value: string | number | (string | number)[] | null
+      value: string | number | (string | number)[] | null,
+      isExist:boolean
     ): void => {
       if (!props.multiple || value === null) {
         emitChange(value);
@@ -193,7 +194,7 @@ export default defineComponent({
       const currentValue = new Set(currentVal);
 
       const updateCurrentValue = (rowValue: string | number): void => {
-        if (currentValue.has(rowValue)) {
+        if (isExist) {
           currentValue.delete(rowValue);
         } else {
           currentValue.add(rowValue);

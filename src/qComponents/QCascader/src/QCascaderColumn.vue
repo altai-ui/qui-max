@@ -8,7 +8,7 @@
         :row="row"
         :expanded="checkExpanded(rowIndex)"
         @expand="handleRowExpand(rowIndex)"
-        @check="handleRowCheck(row, rowIndex)"
+        @check="handleRowCheck"
       />
     </q-scrollbar>
   </div>
@@ -66,14 +66,14 @@ export default defineComponent({
       ctx.emit(EXPAND_EVENT, rowIndex, props.columnIndex);
     };
 
-    const handleRowCheck = (row: Option): void => {
+    const handleRowCheck = (row: Option, isExist: boolean): void => {
       if (!qCascader.multiple.value || qCascader.checkStrictly.value) {
-        qCascader.updateValue(row.value);
+        qCascader.updateValue(row.value, isExist);
         return;
       }
 
       const leaves = findAllLeaves(row);
-      qCascader.updateValue(leaves);
+      qCascader.updateValue(leaves, isExist);
     };
 
     return {

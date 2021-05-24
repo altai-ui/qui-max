@@ -12,6 +12,13 @@
     user-select: none;
   }
 
+  .q-cascader:not(.q-cascader_disabled) & {
+    .q-input__inner,
+    .q-input__suffix-inner {
+      cursor: pointer;
+    }
+  }
+
   &__icon-arrow {
     transition: transform 0.3s;
 

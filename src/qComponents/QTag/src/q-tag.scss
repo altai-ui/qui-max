@@ -40,9 +40,10 @@
     background-color: transparent;
     border: none;
 
-    &:focus,
+    &.focus-visible,
     &:hover {
       color: var(--color-primary-black);
+      outline: none;
     }
   }
 }

@@ -14,6 +14,7 @@
     >
       <q-checkbox
         input-tab-index="-1"
+        :model-value="isChecked"
         :disabled="disabled"
         @change="handleCheckboxChange"
       />
@@ -29,8 +30,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from 'vue';
+import { defineComponent, inject, computed } from 'vue';
 
+import type { QCascaderProvider } from './QCascader';
 import type { QCascaderRowProps, QCascaderRowInstance } from './QCascaderRow';
 
 const EXPAND_EVENT = 'expand';
@@ -51,6 +53,10 @@ export default defineComponent({
     },
     label: {
       type: String,
+      required: true
+    },
+    checked: {
+      type: Boolean,
       required: true
     },
     hasChildren: {
@@ -74,10 +80,25 @@ export default defineComponent({
   emits: [EXPAND_EVENT, CHECK_EVENT],
 
   setup(props: QCascaderRowProps, ctx): QCascaderRowInstance {
+    const qCascader = inject<QCascaderProvider>(
+      'qCascader',
+      {} as QCascaderProvider
+    );
+
+    const isChecked = computed<boolean>(() => {
+      const modelValue = qCascader.modelValue.value;
+      if (!props.multiple) return modelValue === props.value;
+
+      return Array.isArray(modelValue)
+        ? modelValue.includes(props.value)
+        : false;
+    });
+
     const rootClasses = computed<Record<string, boolean>>(() => ({
       'q-cascader-row': true,
       'q-cascader-row_disabled': Boolean(props.disabled),
-      'q-cascader-row_expanded': Boolean(props.expanded)
+      'q-cascader-row_expanded': Boolean(props.expanded),
+      'q-cascader-row_checked': isChecked.value
     }));
 
     const isIconShown = computed<boolean>(
@@ -123,6 +144,7 @@ export default defineComponent({
 
     return {
       rootClasses,
+      isChecked,
       isIconShown,
       iconClasses,
       handleClick,

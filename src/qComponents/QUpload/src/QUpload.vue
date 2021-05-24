@@ -167,7 +167,7 @@ export default defineComponent({
     const qForm = inject<QFormProvider | null>('qForm', null);
     const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
 
-    const hasValue = computed(() =>
+    const hasValue = computed<boolean>(() =>
       props.multiple
         ? Boolean(Array.isArray(props.value) && props.value.length)
         : props.value !== null

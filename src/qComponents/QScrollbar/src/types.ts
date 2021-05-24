@@ -2,6 +2,8 @@ import { Ref, ComputedRef } from 'vue';
 
 export interface QScrollbarProvider {
   wrap: Ref<Nullable<HTMLElement>>;
+  sizeWidth: Ref<string>;
+  moveXInPx: Ref<number>;
 }
 
 export interface BarMapItem {
@@ -55,7 +57,9 @@ export interface QScrollbarProps {
 }
 
 export interface QScrollbarInstance {
+  root: Ref<Nullable<HTMLElement>>;
   wrap: Ref<Nullable<HTMLElement>>;
+  resize: Ref<Nullable<HTMLElement>>;
   sizeWidth: Ref<string>;
   sizeHeight: Ref<string>;
   isXBarShown: ComputedRef<boolean>;

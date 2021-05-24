@@ -77,12 +77,8 @@ export default function calcTextareaHeight(
     document.body.appendChild(hiddenTextarea);
   }
 
-  const {
-    paddingSize,
-    borderSize,
-    boxSizing,
-    contextStyle
-  } = calculateNodeStyling(targetElement);
+  const { paddingSize, borderSize, boxSizing, contextStyle } =
+    calculateNodeStyling(targetElement);
 
   hiddenTextarea.setAttribute('style', `${contextStyle};${HIDDEN_STYLE}`);
   hiddenTextarea.value = targetElement.value || targetElement.placeholder || '';

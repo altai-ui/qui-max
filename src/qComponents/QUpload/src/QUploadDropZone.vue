@@ -76,7 +76,7 @@ export default defineComponent({
 
     const { t } = useI18n();
 
-    const text = computed(() => {
+    const text = computed<string>(() => {
       if (props.isLoading) return props.textLoadingFile ?? t('QUpload.loading');
 
       const textUploadFile = props.textUploadFile ?? t('QUpload.uploadFile');

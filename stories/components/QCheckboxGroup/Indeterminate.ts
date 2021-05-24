@@ -3,9 +3,8 @@ import { Story } from '@storybook/vue3';
 import { defineComponent, ref, watch } from 'vue';
 
 import QCheckboxGroup from '@/qComponents/QCheckboxGroup';
-import type { QCheckboxGroupProps } from '@/qComponents/QCheckboxGroup';
-
 import QCheckbox from '@/qComponents/QCheckbox';
+import type { QCheckboxGroupProps } from '@/qComponents/QCheckboxGroup';
 
 const QCheckboxGroupIndeterminateStory: Story<QCheckboxGroupProps> = args =>
   defineComponent({

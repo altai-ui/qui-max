@@ -1,6 +1,4 @@
-import { Ref, ComputedRef, ComponentPublicInstance, UnwrapRef } from 'vue';
-
-import type { QCheckboxInstance } from '@/qComponents/QCheckbox';
+import { ComputedRef } from 'vue';
 
 export interface QCascaderRowProps {
   uniqueId: string;
@@ -13,13 +11,11 @@ export interface QCascaderRowProps {
 }
 
 export interface QCascaderRowInstance {
-  checkbox: Ref<
-    Nullable<ComponentPublicInstance<UnwrapRef<QCheckboxInstance>>>
-  >;
   rootClasses: ComputedRef<Record<string, boolean>>;
   isIconShown: ComputedRef<boolean>;
   iconClasses: ComputedRef<Record<string, boolean>>;
   handleClick: () => void;
   handleRightKeyUp: () => void;
   handleEnterKeyUp: () => void;
+  handleCheckboxChange: () => void;
 }

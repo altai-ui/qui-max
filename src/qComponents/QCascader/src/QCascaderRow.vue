@@ -13,9 +13,9 @@
       class="q-cascader-row__checkbox"
     >
       <q-checkbox
-        ref="checkbox"
         input-tab-index="-1"
         :disabled="disabled"
+        @change="handleCheckboxChange"
       />
     </div>
 
@@ -29,15 +29,7 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  ref,
-  computed,
-  ComponentPublicInstance,
-  UnwrapRef
-} from 'vue';
-
-import type { QCheckboxInstance } from '@/qComponents/QCheckbox';
+import { defineComponent, computed } from 'vue';
 
 import type { QCascaderRowProps, QCascaderRowInstance } from './QCascaderRow';
 
@@ -82,10 +74,6 @@ export default defineComponent({
   emits: [EXPAND_EVENT, CHECK_EVENT],
 
   setup(props: QCascaderRowProps, ctx): QCascaderRowInstance {
-    const checkbox = ref<ComponentPublicInstance<
-      UnwrapRef<QCheckboxInstance>
-    > | null>(null);
-
     const rootClasses = computed<Record<string, boolean>>(() => ({
       'q-cascader-row': true,
       'q-cascader-row_disabled': Boolean(props.disabled),
@@ -129,14 +117,18 @@ export default defineComponent({
       ctx.emit(CHECK_EVENT);
     };
 
+    const handleCheckboxChange = (): void => {
+      ctx.emit(CHECK_EVENT);
+    };
+
     return {
-      checkbox,
       rootClasses,
       isIconShown,
       iconClasses,
       handleClick,
       handleRightKeyUp,
-      handleEnterKeyUp
+      handleEnterKeyUp,
+      handleCheckboxChange
     };
   }
 });

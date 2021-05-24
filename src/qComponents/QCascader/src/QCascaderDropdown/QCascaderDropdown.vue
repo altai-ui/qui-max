@@ -36,13 +36,13 @@ import {
 import { getConfig } from '@/qComponents/config';
 import { CLOSE_EVENT } from '@/qComponents/constants/events';
 
-import type { QCascaderProvider } from './QCascader';
+import type { QCascaderProvider } from '../QCascader';
 import type {
   MenuBar,
   QCascaderDropdownInstance,
   QCascaderDropdownProvider
 } from './QCascaderDropdown';
-import QCascaderColumn from './QCascaderColumn.vue';
+import QCascaderColumn from '../QCascaderColumn.vue';
 
 const DEFAULT_Z_INDEX = 2000;
 

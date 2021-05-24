@@ -19,7 +19,7 @@ import { defineComponent, inject, PropType } from 'vue';
 
 import findAllLeaves from './helpers/findAllLeaves';
 import type { Option, QCascaderProvider } from './QCascader';
-import type { QCascaderDropdownProvider } from './QCascaderDropdown';
+import type { QCascaderDropdownProvider } from './QCascaderDropdown/QCascaderDropdown';
 import type {
   QCascaderColumnPropColumn,
   QCascaderColumnProps,

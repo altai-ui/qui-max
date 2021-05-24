@@ -33,6 +33,7 @@ import { defineComponent, inject, computed } from 'vue';
 
 import findFullPath from '../helpers/findFullPath';
 import type { QCascaderProvider } from '../QCascader';
+
 import type { TagItem, QCascaderTagsInstance } from './QCascaderTags';
 
 export default defineComponent({

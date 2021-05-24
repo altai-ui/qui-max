@@ -35,6 +35,7 @@ import { defineComponent, inject, computed, PropType } from 'vue';
 
 import getChildStatuses from '../helpers/getChildStatuses';
 import type { QCascaderProvider } from '../QCascader';
+
 import type {
   QCascaderRowPropRow,
   QCascaderRowProps,

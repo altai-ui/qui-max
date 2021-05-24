@@ -2,7 +2,8 @@
   <div :class="rootClasses">
     <q-cascader-input
       ref="reference"
-      @click="handleTriggerClick"
+      @click="handleReferenceTrigger"
+      @keyup.enter="handleReferenceTrigger"
     />
 
     <q-cascader-tags />
@@ -170,10 +171,11 @@ export default defineComponent({
       'q-cascader': true,
       'q-cascader_disabled': isDisabled.value,
       'q-cascader_multiple': Boolean(props.multiple),
+      'q-cascader_single': !props.multiple,
       'q-cascader_clearable': Boolean(props.clearable)
     }));
 
-    const handleTriggerClick = (): void => {
+    const handleReferenceTrigger = (): void => {
       if (isDisabled.value) return;
       isDropdownShown.value = !isDropdownShown.value;
     };
@@ -244,7 +246,7 @@ export default defineComponent({
       isDropdownShown,
       isDisabled,
       rootClasses,
-      handleTriggerClick,
+      handleReferenceTrigger,
       handleDropdownClose
     };
   }

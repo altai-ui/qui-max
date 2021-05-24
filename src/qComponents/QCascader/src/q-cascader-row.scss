@@ -44,6 +44,13 @@
     background-color: var(--color-tertiary-gray-ultra-light);
   }
 
+  &_checked {
+    .q-cascader_single & {
+      color: var(--color-primary-black);
+      background-color: var(--color-tertiary-gray-ultra-light);
+    }
+  }
+
   &__checkbox {
     height: 40px;
     padding: 8px;

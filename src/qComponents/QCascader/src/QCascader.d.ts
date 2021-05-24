@@ -38,7 +38,7 @@ export interface QCascaderInstance {
   isDropdownShown: Ref<boolean>;
   isDisabled: ComputedRef<boolean>;
   rootClasses: ComputedRef<Record<string, boolean>>;
-  handleTriggerClick: () => void;
+  handleReferenceTrigger: () => void;
   handleDropdownClose: () => void;
 }
 

@@ -1,6 +1,6 @@
 <template>
   <div class="q-cascader-column">
-    <q-scrollbar>
+    <q-scrollbar wrap-class="q-cascader-column__scrollbar">
       <q-cascader-row
         v-for="(row, rowIndex) in column"
         :key="`${uniqueId}-${columnIndex}-${rowIndex}`"

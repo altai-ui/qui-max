@@ -8,13 +8,13 @@
       :placeholder="placeholder"
       :disabled="disabled"
       :validate-event="false"
-      :tabindex="multiple ? '-1' : null"
+      @keyup.backspace="clearValue"
     >
       <template #suffix>
         <span
           v-if="isClearBtnShown"
           class="q-cascader-input__icon-close q-input__icon q-icon-close"
-          @click.stop="handleClearBtnClick"
+          @click.stop="clearValue"
         />
         <span
           class="
@@ -86,7 +86,7 @@ export default defineComponent({
         : ''
     );
 
-    const handleClearBtnClick = (): void => {
+    const clearValue = (): void => {
       qCascader.updateValue(null);
     };
 
@@ -97,7 +97,7 @@ export default defineComponent({
       placeholder,
       isClearBtnShown,
       arrowIconClass,
-      handleClearBtnClick
+      clearValue
     };
   }
 });

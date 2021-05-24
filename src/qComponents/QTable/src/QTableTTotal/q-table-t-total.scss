@@ -1,0 +1,9 @@
+.q-table-t-total {
+  overflow: hidden;
+  box-shadow: var(--table-box-shadow-base);
+
+  .q-table:not(.q-table_has-color-groups) & {
+    border-top-left-radius: var(--border-radius-base);
+    border-top-right-radius: var(--border-radius-base);
+  }
+}

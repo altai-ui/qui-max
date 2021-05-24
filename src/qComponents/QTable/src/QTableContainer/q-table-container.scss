@@ -1,0 +1,8 @@
+.q-table-container {
+  & > .q-scrollbar {
+    & > .q-scrollbar__bar.q-scrollbar__bar_horizontal {
+      right: 32px;
+      left: 32px;
+    }
+  }
+}

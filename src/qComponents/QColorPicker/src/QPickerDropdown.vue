@@ -216,7 +216,8 @@ export default defineComponent({
         if (props.color) updateHSVA(props.color);
 
         tempColor.value = colorString.value;
-        elementToFocusAfterClosing.value = document.activeElement as HTMLElement;
+        elementToFocusAfterClosing.value =
+          document.activeElement as HTMLElement;
 
         await nextTick();
 

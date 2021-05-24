@@ -1,4 +1,4 @@
-import { Ref, ComputedRef, WritableComputedRef } from 'vue';
+import { Ref, ComputedRef } from 'vue';
 
 export interface QCheckboxProps {
   modelValue: Nullable<boolean>;
@@ -11,10 +11,10 @@ export interface QCheckboxProps {
 
 export interface QCheckboxInstance {
   focus: Ref<boolean>;
-  model: WritableComputedRef<boolean>;
   isChecked: ComputedRef<boolean>;
   isLimitDisabled: ComputedRef<boolean>;
   isDisabled: ComputedRef<boolean>;
   nativeClick: () => void;
+  handleCheckboxClick: () => void;
   checkboxInput: Ref<Nullable<HTMLInputElement>>;
 }

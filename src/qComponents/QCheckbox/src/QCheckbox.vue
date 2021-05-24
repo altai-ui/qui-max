@@ -6,6 +6,7 @@
       'q-checkbox_disabled': isDisabled,
       'q-checkbox_checked': isChecked
     }"
+    @click.prevent="handleCheckboxClick"
   >
     <span
       class="q-checkbox__input"
@@ -30,7 +31,7 @@
       <input
         v-bind="$attrs"
         ref="checkboxInput"
-        v-model="model"
+        :value="isChecked"
         class="q-checkbox__original"
         type="checkbox"
         :aria-hidden="indeterminate ? 'true' : 'false'"
@@ -51,13 +52,13 @@
 <script lang="ts">
 import { computed, defineComponent, inject, watch, ref } from 'vue';
 
-import type { QFormProvider } from '@/qComponents/QForm';
-import type { QFormItemProvider } from '@/qComponents/QFormItem';
-import type { QCheckboxGroupProvider } from '@/qComponents/QCheckboxGroup';
 import {
   UPDATE_MODEL_VALUE_EVENT,
   CHANGE_EVENT
 } from '@/qComponents/constants/events';
+import type { QFormProvider } from '@/qComponents/QForm';
+import type { QFormItemProvider } from '@/qComponents/QFormItem';
+import type { QCheckboxGroupProvider } from '@/qComponents/QCheckboxGroup';
 
 import type { QCheckboxProps, QCheckboxInstance } from './types';
 
@@ -133,34 +134,33 @@ export default defineComponent({
         : props.disabled || (qForm?.disabled.value ?? false)
     );
 
-    const model = computed<boolean>({
-      get: () => isChecked.value,
-      set: value => {
-        if (!qCheckboxGroup) {
-          ctx.emit(UPDATE_MODEL_VALUE_EVENT, value);
-          ctx.emit(CHANGE_EVENT, value);
+    const handleCheckboxClick = (): void => {
+      const value = !isChecked.value;
+
+      if (!qCheckboxGroup) {
+        ctx.emit(UPDATE_MODEL_VALUE_EVENT, value);
+        ctx.emit(CHANGE_EVENT, value);
+      } else {
+        if (!props.label) return;
+
+        const set = new Set(qCheckboxGroup.modelValue.value);
+
+        if (value) {
+          set.add(props.label);
         } else {
-          if (!props.label) return;
-
-          const set = new Set(qCheckboxGroup.modelValue.value);
-
-          if (value) {
-            set.add(props.label);
-          } else {
-            set.delete(props.label);
-          }
-
-          qCheckboxGroup.update(Array.from(set));
+          set.delete(props.label);
         }
-      }
-    });
 
-    watch(
-      () => props.modelValue,
-      () => {
-        if (props.validateEvent) qFormItem?.validateField('change');
+        qCheckboxGroup.update(Array.from(set));
       }
-    );
+
+      watch(
+        () => props.modelValue,
+        () => {
+          if (props.validateEvent) qFormItem?.validateField('change');
+        }
+      );
+    };
 
     /**
      * @public
@@ -172,12 +172,12 @@ export default defineComponent({
 
     return {
       focus,
-      model,
       isChecked,
       isLimitDisabled,
       isDisabled,
       nativeClick,
-      checkboxInput
+      checkboxInput,
+      handleCheckboxClick
     };
   }
 });

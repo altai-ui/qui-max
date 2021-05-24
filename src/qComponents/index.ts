@@ -37,6 +37,7 @@ import QRadioGroup from './QRadioGroup';
 import QRow from './QRow';
 import QSelect from './QSelect';
 import QScrollbar from './QScrollbar';
+import QTable from './QTable';
 import QTabPane from './QTabPane';
 import QTabs from './QTabs';
 import QTag from './QTag';
@@ -47,6 +48,8 @@ const Components = {
   QBreadcrumbs,
   QButton,
   QCascader,
+  QCheckbox,
+  QCheckboxGroup,
   QCol,
   QCollapse,
   QCollapseItem,
@@ -60,20 +63,19 @@ const Components = {
   QInputNumber,
   QMessageBox,
   QNotification,
+  QOption,
   QPagination,
   QPopover,
   QRadio,
   QRadioGroup,
   QRow,
   QScrollbar,
+  QSelect,
+  QTable,
   QTabPane,
   QTabs,
   QTag,
   QTextarea,
-  QSelect,
-  QOption,
-  QCheckbox,
-  QCheckboxGroup,
   QUpload
 };
 
@@ -126,29 +128,6 @@ const install = (
   installI18n({ app, customI18nMessages });
   require('focus-visible');
 
-  // setup modals
-  // if (!app.config.globalProperties.$notify) {
-  //   app.config.globalProperties.$notify = options =>
-  //     QNotification({
-  //       duration: 3000, // - ms
-  //       ...options
-  //     });
-  // } else if (process.env.NODE_ENV !== 'production') {
-  //   console.warn(`$notify hasn't been registered, it has existed before`);
-  // }
-
-  // if (!app.config.globalProperties.$message) {
-  //   app.config.globalProperties.$message = QMessageBox;
-  // } else if (process.env.NODE_ENV !== 'production') {
-  //   console.warn(`$message hasn't been registered, it has existed before`);
-  // }
-
-  // if (!app.config.globalProperties.$dialog) {
-  //   app.config.globalProperties.$dialog = QDialog;
-  // } else if (process.env.NODE_ENV !== 'production') {
-  //   console.warn(`$dialog hasn't been registered, it has existed before`);
-  // }
-
   // setup emitter
   app.config.globalProperties.$eventHub = eventBus;
   allComponentsExceptModals.forEach(name => {
@@ -167,6 +146,8 @@ export {
   QBreadcrumbs,
   QButton,
   QCascader,
+  QCheckbox,
+  QCheckboxGroup,
   QCol,
   QCollapse,
   QCollapseItem,
@@ -180,19 +161,18 @@ export {
   QInputNumber,
   QMessageBox,
   QNotification,
+  QOption,
   QPagination,
   QPopover,
   QRadio,
   QRadioGroup,
   QRow,
   QScrollbar,
+  QSelect,
+  QTable,
   QTabPane,
   QTabs,
   QTag,
   QTextarea,
-  QSelect,
-  QOption,
-  QCheckbox,
-  QCheckboxGroup,
   QUpload
 };

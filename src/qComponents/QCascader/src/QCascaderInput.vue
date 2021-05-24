@@ -17,7 +17,11 @@
           @click.stop="handleClearBtnClick"
         />
         <span
-          class="q-cascader-input__icon-arrow q-input__icon q-icon-triangle-down"
+          class="
+            q-cascader-input__icon-arrow
+            q-input__icon
+            q-icon-triangle-down
+          "
           :class="arrowIconClass"
         />
       </template>

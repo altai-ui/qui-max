@@ -5,7 +5,10 @@
   >
     <button
       v-if="areControlsEnabled"
-      class="q-input-number__button q-input-number__button_decrease q-icon-minus"
+      class="
+        q-input-number__button q-input-number__button_decrease
+        q-icon-minus
+      "
       type="button"
       :disabled="isDisabled || isDecreaseDisabled"
       :class="isDecreaseDisabled && 'q-input-number__button_is-disabled'"
@@ -45,14 +48,14 @@ import {
   nextTick
 } from 'vue';
 
-import type { QFormProvider } from '@/qComponents/QForm';
-import type { QFormItemProvider } from '@/qComponents/QFormItem';
 import {
   CHANGE_EVENT,
   FOCUS_EVENT,
   BLUR_EVENT,
   INPUT_EVENT
 } from '@/qComponents/constants/events';
+import type { QFormProvider } from '@/qComponents/QForm';
+import type { QFormItemProvider } from '@/qComponents/QFormItem';
 import type {
   QInputNumberProps,
   QInputNumberState,

@@ -142,9 +142,10 @@ export default defineComponent({
   setup(props: QCascaderProps, ctx): QCascaderInstance {
     const qForm = inject<QFormProvider | null>('qForm', null);
     const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
-    const reference = ref<ComponentPublicInstance<
-      UnwrapRef<QCascaderInputInstance>
-    > | null>(null);
+    const reference =
+      ref<ComponentPublicInstance<UnwrapRef<QCascaderInputInstance>> | null>(
+        null
+      );
 
     const state = reactive<QCascaderState>({
       isDropdownShown: false

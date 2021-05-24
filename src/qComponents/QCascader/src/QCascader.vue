@@ -5,6 +5,8 @@
       @click="handleTriggerClick"
     />
 
+    <q-cascader-tags />
+
     <teleport
       :to="teleportTo"
       :disabled="!teleportTo"
@@ -41,6 +43,7 @@ import type { QFormItemProvider } from '@/qComponents/QFormItem';
 
 import QCascaderDropdown from './QCascaderDropdown.vue';
 import QCascaderInput from './QCascaderInput.vue';
+import QCascaderTags from './QCascaderTags.vue';
 import type { QCascaderInputInstance } from './QCascaderInput';
 
 import type {
@@ -59,7 +62,8 @@ export default defineComponent({
 
   components: {
     QCascaderDropdown,
-    QCascaderInput
+    QCascaderInput,
+    QCascaderTags
   },
 
   props: {
@@ -121,6 +125,13 @@ export default defineComponent({
       default: false
     },
     /**
+     * hide tags in counter
+     */
+    collapseTags: {
+      type: Boolean,
+      default: false
+    },
+    /**
      * as native placeholder
      */
     placeholder: {
@@ -142,10 +153,9 @@ export default defineComponent({
   setup(props: QCascaderProps, ctx): QCascaderInstance {
     const qForm = inject<QFormProvider | null>('qForm', null);
     const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
-    const reference =
-      ref<ComponentPublicInstance<UnwrapRef<QCascaderInputInstance>> | null>(
-        null
-      );
+    const reference = ref<ComponentPublicInstance<
+      UnwrapRef<QCascaderInputInstance>
+    > | null>(null);
 
     const state = reactive<QCascaderState>({
       isDropdownShown: false
@@ -180,7 +190,7 @@ export default defineComponent({
 
     const updateValue = (
       value: string | number | (string | number)[] | null,
-      isExist:boolean
+      isExist?: boolean
     ): void => {
       if (!props.multiple || value === null) {
         emitChange(value);
@@ -221,6 +231,7 @@ export default defineComponent({
       multiple: toRef(props, 'multiple'),
       clearable: toRef(props, 'clearable'),
       checkStrictly: toRef(props, 'checkStrictly'),
+      collapseTags: toRef(props, 'collapseTags'),
       placeholder: toRef(props, 'placeholder'),
       uniqueId: randId('q-cascader-'),
       popoverReference: reference,

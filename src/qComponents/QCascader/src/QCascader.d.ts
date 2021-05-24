@@ -24,6 +24,7 @@ export interface QCascaderProps {
   disabled: Nullable<boolean>;
   checkStrictly: Nullable<boolean>;
   allLevelsShown: Nullable<boolean>;
+  collapseTags: Nullable<boolean>;
   placeholder: Nullable<string>;
   teleportTo: QCascaderPropTeleportTo;
 }
@@ -55,11 +56,12 @@ export interface QCascaderProvider {
   multiple: Ref<Nullable<boolean>>;
   clearable: Ref<Nullable<boolean>>;
   checkStrictly: Ref<Nullable<boolean>>;
+  collapseTags: Ref<Nullable<boolean>>;
   placeholder: Ref<Nullable<string>>;
   uniqueId: string;
   popoverReference: Reference;
   updateValue: (
     value: Nullable<number | string | (number | string)[]>,
-    isExist: boolean
+    isExist?: boolean
   ) => void;
 }

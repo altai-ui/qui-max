@@ -1,6 +1,6 @@
 import { ComputedRef } from 'vue';
 
-import type { Option } from './QCascader';
+import type { Option } from '../QCascader';
 
 export type QCascaderRowPropRow = Option;
 

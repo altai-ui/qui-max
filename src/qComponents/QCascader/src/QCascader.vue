@@ -44,7 +44,7 @@ import type { QFormItemProvider } from '@/qComponents/QFormItem';
 
 import QCascaderDropdown from './QCascaderDropdown.vue';
 import QCascaderInput from './QCascaderInput.vue';
-import QCascaderTags from './QCascaderTags.vue';
+import QCascaderTags from './QCascaderTags/QCascaderTags.vue';
 import type { QCascaderInputInstance } from './QCascaderInput';
 
 import type {

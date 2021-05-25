@@ -1,5 +1,8 @@
 <template>
-  <div :class="rootClasses">
+  <div
+    ref="root"
+    :class="rootClasses"
+  >
     <q-scrollbar
       wrap-class="q-cascader-column__scrollbar"
       :scroll-to="scrollTo"
@@ -23,7 +26,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, ref, computed, PropType } from 'vue';
+import {
+  defineComponent,
+  inject,
+  ref,
+  computed,
+  PropType,
+  onMounted
+} from 'vue';
 
 import findAllLeaves from '../helpers/findAllLeaves';
 import QCascaderRow from '../QCascaderRow/QCascaderRow.vue';
@@ -67,6 +77,7 @@ export default defineComponent({
       'qCascaderDropdown',
       {} as QCascaderDropdownProvider
     );
+    const root = ref<HTMLElement | null>(null);
 
     const rootClasses = computed<Record<string, boolean>>(() => {
       const columnList = qCascaderDropdown.columnList.value;
@@ -113,7 +124,18 @@ export default defineComponent({
       scrollTo.value = sibling;
     };
 
+    const focusFirstActiveRow = (): void => {
+      root.value
+        ?.querySelector<HTMLElement>('.q-cascader-row[tabindex="-1"]')
+        ?.focus();
+    };
+
+    onMounted(() => {
+      focusFirstActiveRow();
+    });
+
     return {
+      root,
       rootClasses,
       scrollTo,
       uniqueId: qCascader.uniqueId,

@@ -32,6 +32,7 @@
 <script lang="ts">
 import { defineComponent, inject, computed } from 'vue';
 import { isNumber, isEmpty } from 'lodash-es';
+import { useI18n } from 'vue-i18n';
 
 import findFullPath from '../helpers/findFullPath';
 import type { QCascaderProvider } from '../QCascader';
@@ -68,8 +69,10 @@ export default defineComponent({
         !isEmpty(qCascader.modelValue.value)
     );
 
+    const { t } = useI18n();
+
     const placeholder = computed<string | null>(() => {
-      const text = qCascader.placeholder.value;
+      const text = qCascader.placeholder.value ?? t('QCascader.placeholder');
       if (!qCascader.multiple.value) return text;
       return hasValue.value ? null : text;
     });

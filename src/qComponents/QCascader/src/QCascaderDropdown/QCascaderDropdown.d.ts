@@ -10,7 +10,11 @@ export interface QCascaderDropdownInstance {
   dropdown: Ref<Nullable<HTMLElement>>;
   zIndex: Ref<number>;
   columnList: ComputedRef<MenuBar[][]>;
-  expandRow: (rowIndex: number, columnIndex: number) => void;
+  expandRow: (
+    rowIndex: number,
+    columnIndex: number,
+    hasChildren: boolean
+  ) => void;
   updatePopperJs: () => Promise<void>;
 }
 

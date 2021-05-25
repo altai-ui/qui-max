@@ -58,6 +58,10 @@ export default defineComponent({
       type: [Object] as PropType<QCascaderRowPropRow>,
       required: true
     },
+    rowIndex: {
+      type: Number,
+      required: true
+    },
     expanded: {
       type: Boolean,
       default: false
@@ -115,12 +119,16 @@ export default defineComponent({
       'q-cascader-row_checked': isChecked.value
     }));
 
+    const hasChildren = computed<boolean>(() =>
+      Boolean(props.row.children?.length)
+    );
+
     const isIconShown = computed<boolean>(
-      () => props.row.disabled || Boolean(props.row.children)
+      () => props.row.disabled || hasChildren.value
     );
 
     const iconClasses = computed<Record<string, boolean>>(() => {
-      const isArrowShown = !props.row.disabled && Boolean(props.row.children);
+      const isArrowShown = !props.row.disabled && hasChildren.value;
 
       return {
         'q-cascader-row__icon': true,
@@ -137,20 +145,17 @@ export default defineComponent({
         ctx.emit(CHECK_EVENT, props.row, isChecked.value);
       }
 
-      ctx.emit(EXPAND_EVENT);
+      ctx.emit(EXPAND_EVENT, props.rowIndex, hasChildren.value);
     };
 
     const handleRightKeyUp = (): void => {
-      if (props.row.disabled || !props.row.children) return;
+      if (props.row.disabled) return;
 
-      ctx.emit(EXPAND_EVENT);
+      ctx.emit(EXPAND_EVENT, props.rowIndex, hasChildren.value);
     };
 
     const handleEnterKeyUp = (): void => {
-      if (
-        props.row.disabled ||
-        (!isMultiple.value && Boolean(props.row.children))
-      )
+      if (props.row.disabled || (!isMultiple.value && hasChildren.value))
         return;
 
       ctx.emit(CHECK_EVENT, props.row, isChecked.value);

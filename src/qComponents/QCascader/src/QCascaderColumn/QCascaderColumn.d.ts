@@ -14,7 +14,7 @@ export interface QCascaderColumnInstance {
   scrollTo: Ref<Nullable<HTMLElement>>;
   uniqueId: string;
   checkExpanded: (rowIndex: number) => boolean;
-  handleRowExpand: (rowIndex: number) => void;
+  handleRowExpand: (rowIndex: number, hasChildren: boolean) => void;
   handleRowCheck: (row: Option, isExist: boolean) => void;
   handleArrowUpDownKeyUp: (e: KeyboardEvent) => void;
 }

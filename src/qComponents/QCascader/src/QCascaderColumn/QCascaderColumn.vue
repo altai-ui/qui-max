@@ -11,8 +11,9 @@
         :key="`${uniqueId}-${columnIndex}-${rowIndex}`"
         :unique-id="`${uniqueId}-col-${columnIndex}-row-${rowIndex}`"
         :row="row"
+        :row-index="rowIndex"
         :expanded="checkExpanded(rowIndex)"
-        @expand="handleRowExpand(rowIndex)"
+        @expand="handleRowExpand"
         @check="handleRowCheck"
         @keyup.arrow-up="handleArrowUpDownKeyUp"
         @keyup.arrow-down="handleArrowUpDownKeyUp"
@@ -86,8 +87,8 @@ export default defineComponent({
     const checkExpanded = (rowIndex: number): boolean =>
       qCascaderDropdown.expandedRows.value[props.columnIndex] === rowIndex;
 
-    const handleRowExpand = (rowIndex: number): void => {
-      ctx.emit(EXPAND_EVENT, rowIndex, props.columnIndex);
+    const handleRowExpand = (rowIndex: number, hasChildren: boolean): void => {
+      ctx.emit(EXPAND_EVENT, rowIndex, props.columnIndex, hasChildren);
     };
 
     const handleRowCheck = (row: Option, isExist: boolean): void => {

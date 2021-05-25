@@ -65,9 +65,13 @@ export default defineComponent({
 
     const expandedRows = ref<number[]>([]);
 
-    const expandRow = (rowIndex: number, columnIndex: number): void => {
+    const expandRow = (
+      rowIndex: number,
+      columnIndex: number,
+      hasChildren: boolean
+    ): void => {
       const newExpandedRows = expandedRows.value.slice(0, columnIndex);
-      newExpandedRows.push(rowIndex);
+      if (hasChildren) newExpandedRows.push(rowIndex);
       expandedRows.value = newExpandedRows;
     };
 

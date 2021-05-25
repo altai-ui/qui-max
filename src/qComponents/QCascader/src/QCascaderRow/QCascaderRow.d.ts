@@ -7,6 +7,7 @@ export type QCascaderRowPropRow = Option;
 export interface QCascaderRowProps {
   uniqueId: string;
   row: QCascaderRowPropRow;
+  rowIndex: number;
   expanded: Nullable<boolean>;
 }
 

@@ -13,9 +13,12 @@
     border-top: 1px solid var(--color-tertiary-gray-dark);
   }
 
-  &:not(.q-cascader-row_disabled):hover {
-    color: var(--color-primary-black);
-    background-color: var(--color-tertiary-gray);
+  &:not(.q-cascader-row_disabled) {
+    &:hover,
+    &.focus-visible {
+      color: var(--color-primary-black);
+      background-color: var(--color-tertiary-gray);
+    }
   }
 
   .q-cascader-column:last-child &:first-child {

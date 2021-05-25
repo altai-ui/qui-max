@@ -3,7 +3,7 @@
     :id="uniqueId"
     :class="rootClasses"
     role="menuitem"
-    tabindex="-1"
+    :tabindex="row.disabled ? false : -1"
     @click="handleClick"
     @keyup.right="handleRightKeyUp"
     @keyup.enter="handleEnterKeyUp"
@@ -13,7 +13,7 @@
       class="q-cascader-row__checkbox"
     >
       <q-checkbox
-        input-tab-index="-1"
+        tabindex="-1"
         :model-value="isChecked"
         :indeterminate="isIndeterminate"
         :disabled="row.disabled"

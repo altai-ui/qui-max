@@ -21,9 +21,10 @@ import {
   defineComponent,
   inject,
   provide,
+  ref,
+  computed,
   onMounted,
   onUnmounted,
-  ref,
   nextTick
 } from 'vue';
 import { createPopper, Instance } from '@popperjs/core';

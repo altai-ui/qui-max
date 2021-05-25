@@ -1,6 +1,11 @@
 <template>
   <div :class="rootClasses">
-    <q-scrollbar wrap-class="q-cascader-column__scrollbar">
+    <q-scrollbar
+      wrap-class="q-cascader-column__scrollbar"
+      :scroll-to="scrollTo"
+      @keydown.arrow-down.prevent
+      @keydown.arrow-up.prevent
+    >
       <q-cascader-row
         v-for="(row, rowIndex) in column"
         :key="`${uniqueId}-${columnIndex}-${rowIndex}`"
@@ -9,19 +14,22 @@
         :expanded="checkExpanded(rowIndex)"
         @expand="handleRowExpand(rowIndex)"
         @check="handleRowCheck"
+        @keyup.arrow-up="handleArrowUpDownKeyUp"
+        @keyup.arrow-down="handleArrowUpDownKeyUp"
       />
     </q-scrollbar>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, computed, PropType } from 'vue';
+import { defineComponent, inject, ref, computed, PropType } from 'vue';
 
 import findAllLeaves from '../helpers/findAllLeaves';
 import QCascaderRow from '../QCascaderRow/QCascaderRow.vue';
 import type { QCascaderDropdownProvider } from '../QCascaderDropdown/QCascaderDropdown';
 import type { Option, QCascaderProvider } from '../QCascader';
 
+import { getSibling } from './helpers';
 import type {
   QCascaderColumnPropColumn,
   QCascaderColumnProps,
@@ -92,12 +100,26 @@ export default defineComponent({
       qCascader.updateValue(leaves, isExist);
     };
 
+    const scrollTo = ref<HTMLElement | null>(null);
+
+    const handleArrowUpDownKeyUp = (e: KeyboardEvent): void => {
+      const distance = e.key === 'ArrowUp' ? -1 : 1;
+      const target = e.target as HTMLElement;
+      const sibling = getSibling(target, distance);
+
+      if (!sibling) return;
+      sibling.focus();
+      scrollTo.value = sibling;
+    };
+
     return {
       rootClasses,
+      scrollTo,
       uniqueId: qCascader.uniqueId,
       checkExpanded,
       handleRowExpand,
-      handleRowCheck
+      handleRowCheck,
+      handleArrowUpDownKeyUp
     };
   }
 });

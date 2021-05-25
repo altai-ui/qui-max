@@ -1,6 +1,7 @@
 import type { Ref, ComputedRef, ComponentPublicInstance, UnwrapRef } from 'vue';
 
 import type { QCascaderInputInstance } from './QCascaderInput/QCascaderInput';
+import type { QCascaderDropdownInstance } from './QCascaderDropdown/QCascaderDropdown';
 
 export interface Option {
   value: number | string;
@@ -32,9 +33,13 @@ export interface QCascaderProps {
 type Reference = Ref<
   Nullable<ComponentPublicInstance<UnwrapRef<QCascaderInputInstance>>>
 >;
+type Dropdown = Ref<
+  Nullable<ComponentPublicInstance<UnwrapRef<QCascaderDropdownInstance>>>
+>;
 
 export interface QCascaderInstance {
   reference: Reference;
+  dropdown: Dropdown;
   isDropdownShown: Ref<boolean>;
   isDisabled: ComputedRef<boolean>;
   rootClasses: ComputedRef<Record<string, boolean>>;

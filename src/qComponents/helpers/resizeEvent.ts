@@ -21,7 +21,7 @@ const resizeHandler = function (entries: ResizeObserverEntry[]): void {
 
 /* istanbul ignore next */
 export const addResizeListener = function (
-  element: ResizableElement,
+  element: Nullable<ResizableElement>,
   fn: (...args: unknown[]) => unknown
 ): void {
   if (!element) return;
@@ -37,7 +37,7 @@ export const addResizeListener = function (
 
 /* istanbul ignore next */
 export const removeResizeListener = function (
-  element: ResizableElement,
+  element: Nullable<ResizableElement>,
   fn: (...args: unknown[]) => unknown
 ): void {
   if (!element || !element.__resizeListeners__) return;

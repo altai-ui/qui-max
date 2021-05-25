@@ -14,6 +14,7 @@
     >
       <q-cascader-dropdown
         v-if="isDropdownShown"
+        ref="dropdown"
         @close="handleDropdownClose"
       />
     </teleport>
@@ -31,10 +32,16 @@ import {
   PropType,
   ComponentPublicInstance,
   UnwrapRef,
-  watch
+  watch,
+  onMounted,
+  onBeforeUnmount
 } from 'vue';
 
-import { randId } from '@/qComponents/helpers';
+import {
+  randId,
+  addResizeListener,
+  removeResizeListener
+} from '@/qComponents/helpers';
 import {
   UPDATE_MODEL_VALUE_EVENT,
   CHANGE_EVENT
@@ -46,6 +53,7 @@ import QCascaderDropdown from './QCascaderDropdown/QCascaderDropdown.vue';
 import QCascaderInput from './QCascaderInput/QCascaderInput.vue';
 import QCascaderTags from './QCascaderTags/QCascaderTags.vue';
 import type { QCascaderInputInstance } from './QCascaderInput/QCascaderInput';
+import type { QCascaderDropdownInstance } from './QCascaderDropdown/QCascaderDropdown';
 
 import type {
   QCascaderPropModelValue,
@@ -156,6 +164,9 @@ export default defineComponent({
     const reference = ref<ComponentPublicInstance<
       UnwrapRef<QCascaderInputInstance>
     > | null>(null);
+    const dropdown = ref<ComponentPublicInstance<
+      UnwrapRef<QCascaderDropdownInstance>
+    > | null>(null);
 
     const isDropdownShown = ref<boolean>(false);
 
@@ -241,8 +252,25 @@ export default defineComponent({
       updateValue
     });
 
+    const updatePopperJs = (): void => {
+      dropdown.value?.updatePopperJs();
+    };
+
+    onMounted(() => {
+      if (!reference.value) return;
+
+      addResizeListener(reference.value.$el, updatePopperJs);
+    });
+
+    onBeforeUnmount(() => {
+      if (!reference.value) return;
+
+      removeResizeListener(reference.value.$el, updatePopperJs);
+    });
+
     return {
       reference,
+      dropdown,
       isDropdownShown,
       isDisabled,
       rootClasses,

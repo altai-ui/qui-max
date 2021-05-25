@@ -24,15 +24,10 @@ import {
   onMounted,
   onUnmounted,
   ref,
-  computed
+  nextTick
 } from 'vue';
 import { createPopper, Instance } from '@popperjs/core';
 
-import {
-  ResizableElement,
-  addResizeListener,
-  removeResizeListener
-} from '@/qComponents/helpers';
 import { getConfig } from '@/qComponents/config';
 import { CLOSE_EVENT } from '@/qComponents/constants/events';
 
@@ -115,18 +110,21 @@ export default defineComponent({
       );
     };
 
+    /**
+     * @public
+     */
+    const updatePopperJs = async (): Promise<void> => {
+      if (!popperJS.value) return;
+
+      await nextTick();
+      popperJS.value.update();
+    };
+
     onMounted(() => {
       createPopperJs();
 
       document.addEventListener('keyup', closeDropdown, true);
       document.addEventListener('click', closeDropdown, true);
-
-      if (popperJS.value) {
-        addResizeListener(
-          qCascader.popoverReference.value?.$el as ResizableElement,
-          popperJS.value.update
-        );
-      }
     });
 
     onUnmounted(() => {
@@ -134,13 +132,6 @@ export default defineComponent({
 
       document.removeEventListener('keyup', closeDropdown, true);
       document.removeEventListener('click', closeDropdown, true);
-
-      if (popperJS.value) {
-        removeResizeListener(
-          qCascader.popoverReference.value?.$el as ResizableElement,
-          popperJS.value?.update
-        );
-      }
     });
 
     provide<QCascaderDropdownProvider>('qCascaderDropdown', {
@@ -149,6 +140,7 @@ export default defineComponent({
     });
 
     return {
+      updatePopperJs,
       uniqueId: qCascader.uniqueId,
       dropdown,
       zIndex,

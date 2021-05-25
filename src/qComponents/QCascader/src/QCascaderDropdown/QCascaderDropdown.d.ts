@@ -11,6 +11,7 @@ export interface QCascaderDropdownInstance {
   zIndex: Ref<number>;
   columnList: ComputedRef<MenuBar[][]>;
   expandRow: (rowIndex: number, columnIndex: number) => void;
+  updatePopperJs: () => Promise<void>;
 }
 
 export interface QCascaderDropdownProvider {

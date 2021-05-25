@@ -48,7 +48,9 @@ import {
   ref,
   computed,
   nextTick,
-  provide
+  provide,
+  ComponentPublicInstance,
+  UnwrapRef
 } from 'vue';
 
 import {
@@ -64,7 +66,8 @@ import type {
   QScrollbarPropScrollTo,
   QScrollbarPropTheme,
   QScrollbarPropWrapClass,
-  QScrollbarProvider
+  QScrollbarProvider,
+  QBarInstance
 } from './types';
 
 const OFFSET = -10;
@@ -124,7 +127,9 @@ export default defineComponent({
     const root = ref<HTMLElement | null>(null);
     const wrap = ref<HTMLElement | null>(null);
     const resize = ref<HTMLElement | null>(null);
-    const ybar = ref<typeof QBar | null>(null);
+    const ybar = ref<ComponentPublicInstance<UnwrapRef<QBarInstance>> | null>(
+      null
+    );
     const sizeWidth = ref('0');
     const sizeHeight = ref('0');
     const moveX = ref(0);
@@ -214,6 +219,7 @@ export default defineComponent({
       root,
       wrap,
       resize,
+      ybar,
       sizeWidth,
       sizeHeight,
       isXBarShown,

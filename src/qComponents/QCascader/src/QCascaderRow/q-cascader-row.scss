@@ -40,7 +40,7 @@
   }
 
   &_disabled {
-    color: var(--color-opacity-gray-dark);
+    color: rgba(var(--color-rgb-gray), 0.64);
     cursor: not-allowed;
   }
 

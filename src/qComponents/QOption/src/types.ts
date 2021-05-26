@@ -1,4 +1,4 @@
-import { ComputedRef, Ref } from 'vue';
+import type { Ref, ComputedRef } from 'vue';
 
 export type QOptionPropModelValue = string | number | Record<string, unknown>;
 

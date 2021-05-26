@@ -1,4 +1,4 @@
-import { App } from 'vue';
+import type { App } from 'vue';
 
 import { eventBus, randId } from '@/qComponents/helpers';
 import QNotification from './src/QNotification.vue';

@@ -1,4 +1,4 @@
-import { App } from 'vue';
+import type { App } from 'vue';
 import QOption from './src/QOption.vue';
 
 QOption.install = (app: App): void => {

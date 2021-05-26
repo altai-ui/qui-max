@@ -1,5 +1,5 @@
-import { Ref, ComputedRef } from 'vue';
-import { Composer } from 'vue-i18n';
+import type { Ref, ComputedRef } from 'vue';
+import type { Composer } from 'vue-i18n';
 
 export type QTextareaPropResize = 'vertical' | 'horizontal' | 'both' | 'none';
 export type QTextareaPropAutosize = Nullable<

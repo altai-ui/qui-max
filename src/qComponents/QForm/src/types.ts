@@ -1,7 +1,10 @@
-import { Ref } from 'vue';
-import { FieldErrorList } from 'async-validator';
+import type { Ref } from 'vue';
+import type { FieldErrorList } from 'async-validator';
 
-import { QFormItemContext, QFormItemPropRules } from '@/qComponents/QFormItem';
+import type {
+  QFormItemContext,
+  QFormItemPropRules
+} from '@/qComponents/QFormItem';
 
 export type QFormPropModel = Nullable<Record<string, unknown>>;
 export type QFormPropRules = Nullable<Record<string, QFormItemPropRules>>;

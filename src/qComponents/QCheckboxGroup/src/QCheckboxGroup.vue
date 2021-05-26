@@ -21,7 +21,7 @@ import {
 } from 'vue';
 
 import { validateArray } from '@/qComponents/helpers';
-import { QFormItemProvider } from '@/qComponents/QFormItem';
+import type { QFormItemProvider } from '@/qComponents/QFormItem';
 import { UPDATE_MODEL_VALUE_EVENT } from '@/qComponents/constants/events';
 
 import type {

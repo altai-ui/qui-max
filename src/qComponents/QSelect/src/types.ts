@@ -9,12 +9,12 @@ import type {
 import type { QScrollbarInstance } from '@/qComponents/QScrollbar';
 import type { QInputInstance } from '@/qComponents/QInput';
 
-type QSelectPropModelValue =
+type QSelectPropModelValue = Nullable<
   | string
   | number
   | QOptionPropModelValue
   | (string | number | QOptionPropModelValue)[]
-  | null;
+>;
 
 type NewOption = {
   value: QSelectPropModelValue;
@@ -28,18 +28,18 @@ interface QSelectInstance {
   dropdown: Ref<
     Nullable<ComponentPublicInstance<UnwrapRef<QSelectDropdownInstance>>>
   >;
-  root: Ref<HTMLElement | null>;
+  root: Ref<Nullable<HTMLElement>>;
   state: QSelectState;
   preparedPlaceholder: ComputedRef<Nullable<string>>;
   visibleOptionsCount: ComputedRef<number>;
-  isCanLoadMoreShown: ComputedRef<boolean | null>;
+  isCanLoadMoreShown: ComputedRef<Nullable<boolean>>;
   showEmptyContent: ComputedRef<boolean>;
   isReadonly: ComputedRef<Nullable<boolean>>;
   isDisabled: ComputedRef<boolean>;
-  isClearBtnShown: ComputedRef<boolean | null>;
+  isClearBtnShown: ComputedRef<Nullable<boolean>>;
   iconClass: ComputedRef<string>;
   emptyText: ComputedRef<string>;
-  isNewOptionShown: ComputedRef<boolean | null>;
+  isNewOptionShown: ComputedRef<Nullable<boolean>>;
   popperInit: () => void;
   showPopper: () => void;
   hidePopper: () => void;
@@ -103,28 +103,30 @@ interface QSelectProps {
 
 interface QSelectState {
   options: QOptionModel[];
-  selected: QOptionModel | NewOption | (QOptionModel | NewOption)[] | null;
+  selected: Nullable<QOptionModel | NewOption | (QOptionModel | NewOption)[]>;
   inputWidth: number;
   selectedLabel: string | number;
   hoverIndex: number;
   query: string;
   hover: boolean;
   menuVisibleOnFocus: boolean;
-  popper: PopperInstance | null;
+  popper: Nullable<PopperInstance>;
   isDropdownShown: boolean;
 }
 
 interface QSelectDropdownInstance {
   zIndex: Ref<number>;
-  styles: ComputedRef<Record<string, string | number | null>>;
+  styles: ComputedRef<Record<string, Nullable<string | number>>>;
   isVisibleOptionExist: ComputedRef<boolean>;
   areAllSelected: ComputedRef<boolean>;
   isIndeterminate: ComputedRef<boolean>;
   navigateDropdown: (e: KeyboardEvent) => void;
   handleSelectAllClick: () => void;
-  root: Ref<HTMLDivElement | null>;
+  root: Ref<Nullable<HTMLDivElement>>;
   multiple: Ref<Nullable<boolean>> | boolean;
-  scrollbar: Ref<ComponentPublicInstance<QScrollbarInstance> | null>;
+  scrollbar: Ref<
+    Nullable<ComponentPublicInstance<UnwrapRef<QScrollbarInstance>>>
+  >;
   qSelectState: Partial<Nullable<QSelectState>>;
 }
 

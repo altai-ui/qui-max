@@ -11,7 +11,9 @@ export interface QTableTProvider {
 
 export interface QTableTInstance {
   thead: Ref<Nullable<HTMLElement>>;
-  sticky: Ref<ComponentPublicInstance<UnwrapRef<QTableTStickyInstance>> | null>;
+  sticky: Ref<
+    Nullable<ComponentPublicInstance<UnwrapRef<QTableTStickyInstance>>>
+  >;
   isColgroupShown: ComputedRef<boolean>;
   isTotalShown: ComputedRef<boolean>;
   rootClasses: ComputedRef<Record<string, boolean>>;

@@ -8,7 +8,7 @@ import { StickyConfig } from './sticky.d';
 const BASE_Z_INDEX = 100;
 
 const useSticky = (
-  position: 'left' | 'right' | undefined | null,
+  position: Nullable<'left' | 'right' | undefined>,
   columnIndex: number,
   sticky: StickyGlobalConfig
 ): StickyConfig => {

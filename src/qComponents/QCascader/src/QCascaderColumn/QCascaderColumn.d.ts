@@ -18,4 +18,5 @@ export interface QCascaderColumnInstance {
   handleRowExpand: (rowIndex: number, hasChildren: boolean) => void;
   handleRowCheck: (row: Option, isExist: boolean) => void;
   handleArrowUpDownKeyUp: (e: KeyboardEvent) => void;
+  handleArrowLeftKeyUp: () => void;
 }

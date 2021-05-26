@@ -8,6 +8,7 @@
       :scroll-to="scrollTo"
       @keydown.arrow-down.prevent
       @keydown.arrow-up.prevent
+      @keyup.arrow-left="handleArrowLeftKeyUp"
     >
       <q-cascader-row
         v-for="(row, rowIndex) in column"
@@ -32,7 +33,8 @@ import {
   ref,
   computed,
   PropType,
-  onMounted
+  onMounted,
+  watch
 } from 'vue';
 
 import findAllLeaves from '../helpers/findAllLeaves';
@@ -98,7 +100,10 @@ export default defineComponent({
     const checkExpanded = (rowIndex: number): boolean =>
       qCascaderDropdown.expandedRows.value[props.columnIndex] === rowIndex;
 
+    const expandedRowIndex = ref<number>(0);
+
     const handleRowExpand = (rowIndex: number, hasChildren: boolean): void => {
+      expandedRowIndex.value = rowIndex;
       ctx.emit(EXPAND_EVENT, rowIndex, props.columnIndex, hasChildren);
     };
 
@@ -124,14 +129,31 @@ export default defineComponent({
       scrollTo.value = sibling;
     };
 
-    const focusFirstActiveRow = (): void => {
-      root.value
-        ?.querySelector<HTMLElement>('.q-cascader-row[tabindex="-1"]')
-        ?.focus();
+    const focusRow = (index: number | null = null): void => {
+      const rowList = root.value?.querySelectorAll<HTMLElement>(
+        '.q-cascader-row[tabindex="-1"]'
+      );
+
+      rowList?.[index ?? 0]?.focus();
     };
 
+    const handleArrowLeftKeyUp = (): void => {
+      const rowIndex =
+        qCascaderDropdown.expandedRows.value[props.columnIndex - 1];
+
+      ctx.emit(EXPAND_EVENT, rowIndex, props.columnIndex - 1, false);
+    };
+
+    const isLastColumn = computed<boolean>(
+      () => !qCascaderDropdown.columnList.value[props.columnIndex + 1]?.length
+    );
+
+    watch(isLastColumn, value => {
+      if (value) focusRow(expandedRowIndex.value);
+    });
+
     onMounted(() => {
-      focusFirstActiveRow();
+      focusRow();
     });
 
     return {
@@ -142,7 +164,8 @@ export default defineComponent({
       checkExpanded,
       handleRowExpand,
       handleRowCheck,
-      handleArrowUpDownKeyUp
+      handleArrowUpDownKeyUp,
+      handleArrowLeftKeyUp
     };
   }
 });

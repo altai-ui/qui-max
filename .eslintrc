@@ -33,6 +33,9 @@
     "import/no-unresolved": "off",
 
     "vue/component-name-in-template-casing": ["error", "kebab-case"],
+    "vue/max-attributes-per-line": "warn",
+    "vue/html-closing-bracket-newline": "warn",
+    "vue/html-indent": "warn",
 
     "@typescript-eslint/explicit-function-return-type": "error"
   }

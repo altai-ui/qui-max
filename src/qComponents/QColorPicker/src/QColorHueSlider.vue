@@ -38,7 +38,7 @@ export default defineComponent({
   emits: [UPDATE_HUE_EVENT],
 
   setup(props: QColorHueSliderProps, ctx): QColorHueSliderInstance {
-    const thumbTop = ref(0);
+    const thumbTop = ref<number>(0);
     const thumbStyles = computed<Record<string, string>>(() => ({
       top: `${thumbTop.value}px`
     }));

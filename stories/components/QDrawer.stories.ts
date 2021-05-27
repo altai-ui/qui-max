@@ -19,7 +19,7 @@ const QDrawerStory: Story<QDrawerProps> = args =>
   defineComponent({
     components: { QDrawer },
     setup() {
-      const drawer = ref(false);
+      const drawer = ref<boolean>(false);
 
       return { args, drawer };
     },

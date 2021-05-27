@@ -10,8 +10,13 @@ const QCheckboxGroupStory: Story<QCheckboxGroupProps> = args =>
   defineComponent({
     components: { QCheckboxGroup, QCheckbox },
     setup() {
-      const checkedCities = ref(['Shanghai', 'Beijing']);
-      const cities = ref(['Shanghai', 'Beijing', 'Guangzhou', 'Shenzhen']);
+      const checkedCities = ref<string[]>(['Shanghai', 'Beijing']);
+      const cities = ref<string[]>([
+        'Shanghai',
+        'Beijing',
+        'Guangzhou',
+        'Shenzhen'
+      ]);
 
       return { checkedCities, cities, args };
     },

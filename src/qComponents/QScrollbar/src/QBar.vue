@@ -53,7 +53,7 @@ export default defineComponent({
     const qScrollbar = inject<QScrollbarProvider>('qScrollbar');
     const root = ref<HTMLElement | null>(null);
     const thumb = ref<HTMLElement | null>(null);
-    const cursorDown = ref(false);
+    const cursorDown = ref<boolean>(false);
 
     let axis = 0;
 

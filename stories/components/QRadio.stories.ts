@@ -19,8 +19,8 @@ const QRadioStory: Story<QRadioProps> = args =>
   defineComponent({
     components: { QRadio },
     setup() {
-      const radio1 = ref(1);
-      const radio2 = ref(1);
+      const radio1 = ref<number>(1);
+      const radio2 = ref<number>(1);
 
       return { radio1, radio2, args };
     },

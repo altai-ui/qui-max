@@ -79,6 +79,9 @@ export default defineComponent({
   componentName: 'QDrawer',
 
   props: {
+    /**
+     * width of Drawer
+     */
     width: {
       type: [String, Number],
       default: null
@@ -156,8 +159,8 @@ export default defineComponent({
   ],
 
   setup(props: QDrawerProps, ctx): QDrawerInstance {
-    const zIndex = ref(DEFAULT_Z_INDEX);
-    const isRendered = ref(false);
+    const zIndex = ref<number>(DEFAULT_Z_INDEX);
+    const isRendered = ref<boolean>(false);
     const drawer = ref<HTMLElement | null>(null);
 
     let elementToFocusAfterClosing: HTMLElement | null = null;

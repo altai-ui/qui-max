@@ -17,7 +17,7 @@ const Template: Story<QCheckboxProps> = args =>
   defineComponent({
     components: { QCheckbox },
     setup() {
-      const isChecked = ref(true);
+      const isChecked = ref<boolean>(true);
 
       return {
         isChecked,

@@ -1,13 +1,20 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import type { Meta, Story } from '@storybook/vue3';
-import { defineComponent, reactive, ref } from 'vue';
+import {
+  defineComponent,
+  reactive,
+  ref,
+  ComponentPublicInstance,
+  UnwrapRef
+} from 'vue';
 
 import QForm from '@/qComponents/QForm';
 import QFormItem from '@/qComponents/QFormItem';
 import type {
   QFormProps,
   QFormPropRules,
-  QFormProvider
+  QFormPropModel,
+  QFormInstance
 } from '@/qComponents/QForm';
 
 const storyMetadata: Meta = {
@@ -18,6 +25,11 @@ const storyMetadata: Meta = {
     rules: { control: { type: 'object' } },
     model: { control: { type: 'none' } }
   }
+};
+
+const model: QFormPropModel = {
+  name: '',
+  intro: ''
 };
 
 const INITIAL_RULES: QFormPropRules = {
@@ -36,13 +48,10 @@ const QFormStory: Story<QFormProps> = args =>
   defineComponent({
     components: { QForm, QFormItem },
     setup() {
-      const form = ref<Nullable<QFormProvider>>(null);
+      const form =
+        ref<ComponentPublicInstance<UnwrapRef<QFormInstance>> | null>(null);
 
-      const formModel = reactive({
-        name: '',
-        intro: ''
-      });
-
+      const formModel = reactive(model);
       const rules = reactive(INITIAL_RULES);
 
       const handleSubmitClick = async (): Promise<void> => {

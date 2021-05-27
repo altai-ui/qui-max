@@ -1,7 +1,7 @@
 {
-  "*.{js,ts}": ["prettier --write", "eslint --fix"],
+  "*.{js,ts}": ["eslint --fix", "prettier --write"],
   "*.scss": ["stylelint --fix", "prettier --write"],
-  "*.vue": ["stylelint --fix", "eslint --fix"],
+  "*.vue": ["stylelint --fix", "prettier --write", "eslint --fix"],
   "{*.json,.*rc}": ["prettier --parser json --write"],
   "*.{yaml,yml}": ["prettier --parser yaml --write"]
 }

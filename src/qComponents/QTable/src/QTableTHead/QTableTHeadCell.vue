@@ -11,6 +11,7 @@ import {
 } from 'vue';
 
 import useSticky from '../helpers/sticky';
+import type { StickyConfig } from '../helpers/sticky.d';
 import type { QTableProvider } from '../QTable';
 import type { ExtendedColumn } from '../QTableContainer/QTableContainer';
 import type { QTableTProvider } from '../QTableT/QTableT';
@@ -45,7 +46,7 @@ export default defineComponent({
     const qTableT = inject<QTableTProvider>('qTableT', {} as QTableTProvider);
     const root = ref<HTMLElement | null>(null);
 
-    const stickyConfig = computed(() =>
+    const stickyConfig = computed<StickyConfig>(() =>
       useSticky(
         props.column.sticky?.position,
         props.columnIndex,

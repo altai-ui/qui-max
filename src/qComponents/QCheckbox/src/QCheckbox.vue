@@ -103,7 +103,7 @@ export default defineComponent({
     );
     const checkboxInput = ref<HTMLInputElement | null>(null);
 
-    const focus = ref(false);
+    const focus = ref<boolean>(false);
 
     const isChecked = computed<boolean>(() => {
       if (!qCheckboxGroup) return Boolean(props.modelValue);

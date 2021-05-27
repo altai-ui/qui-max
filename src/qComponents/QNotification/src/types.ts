@@ -23,20 +23,24 @@ export interface QNotificationCloudItem {
   onClose?: QNotificationCloudPropOnClose;
 }
 
-export type QNotificationMethodAddCloud = (
-  cloud?: QNotificationCloudItem
-) => void;
+export interface Cloud extends QNotificationCloudItem {
+  id: string;
+}
+
+export type QNotificationMethodAddCloud = (cloud?: Cloud) => void;
 
 export interface QNotificationInstance {
-  clouds: Ref<QNotificationCloudItem[]>;
+  clouds: Ref<Cloud[]>;
   removeCloud: (cloudId?: Nullable<string>) => void;
 }
 
+export type QNotificationCloudPropMessage = Nullable<string>;
+export type QNotificationCloudPropDangerouslyUseHtmlString = Nullable<boolean>;
 export interface QNotificationCloudProps {
   uniqId: string;
-  message: Nullable<string>;
+  message: QNotificationCloudPropMessage;
   type: QNotificationCloudPropType;
-  dangerouslyUseHtmlString: Nullable<boolean>;
+  dangerouslyUseHtmlString: QNotificationCloudPropDangerouslyUseHtmlString;
   icon: Nullable<string>;
   duration: Nullable<number>;
   onClose: QNotificationCloudPropOnClose;

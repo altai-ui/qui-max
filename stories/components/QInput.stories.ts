@@ -34,7 +34,7 @@ type StoryArgs = QInputProps & {
 const QInputStory: Story<StoryArgs> = args =>
   defineComponent({
     setup() {
-      const data = ref('');
+      const data = ref<string>('');
 
       const handleFocus = (event: Event): void => {
         // eslint-disable-next-line no-console

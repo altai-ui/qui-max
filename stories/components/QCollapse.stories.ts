@@ -19,7 +19,7 @@ const QCollapseStory: Story<QCollapseProps> = args =>
   defineComponent({
     components: { QCollapse, QCollapseItem },
     setup() {
-      const activeNames = ref(['1']);
+      const activeNames = ref<string[]>(['1']);
 
       const handleChange = (value: (string | number)[]): void => {
         // eslint-disable-next-line no-console

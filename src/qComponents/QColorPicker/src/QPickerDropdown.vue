@@ -120,11 +120,11 @@ export default defineComponent({
 
   setup(props: QPickerDropdownProps, ctx): QPickerDropdownInstance {
     const elementToFocusAfterClosing = ref<HTMLElement | null>(null);
-    const tempColor = ref('');
-    const hue = ref(0);
-    const saturation = ref(100);
-    const value = ref(100);
-    const alpha = ref(100);
+    const tempColor = ref<string>('');
+    const hue = ref<number>(0);
+    const saturation = ref<number>(100);
+    const value = ref<number>(100);
+    const alpha = ref<number>(100);
 
     const colorModel = computed<Color>(() =>
       Color({

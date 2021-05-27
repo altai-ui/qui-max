@@ -9,6 +9,7 @@ QForm.install = (app: App): void => {
 
 export type {
   QFormProps,
+  QFormPropModel,
   QFormPropRules,
   QFormProvider,
   QFormInstance

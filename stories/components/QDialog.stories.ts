@@ -18,7 +18,7 @@ const QDialogStory: Story<QDialogProps> = args =>
   defineComponent({
     components: { QDialog },
     setup() {
-      const dialog = ref(false);
+      const dialog = ref<boolean>(false);
 
       return { args, dialog };
     },

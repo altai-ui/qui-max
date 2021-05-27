@@ -11,6 +11,7 @@ import {
 import { CHANGE_EVENT } from '@/qComponents/constants/events';
 
 import useSticky from '../helpers/sticky';
+import type { StickyConfig } from '../helpers/sticky.d';
 import type { QTableProvider } from '../QTable';
 import type { QTableTProvider } from '../QTableT/QTableT';
 
@@ -52,7 +53,7 @@ export default defineComponent({
     const qTable = inject<QTableProvider>('qTable', {} as QTableProvider);
     const qTableT = inject<QTableTProvider>('qTableT', {} as QTableTProvider);
 
-    const stickyConfig = computed(() =>
+    const stickyConfig = computed<StickyConfig>(() =>
       useSticky('left', -1, qTableT.stickyGlobalConfig.value)
     );
 

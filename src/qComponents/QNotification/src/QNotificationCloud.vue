@@ -44,6 +44,8 @@ import {
 import { validateArray } from '@/qComponents/helpers';
 import {
   QNotificationCloudProps,
+  QNotificationCloudPropMessage,
+  QNotificationCloudPropDangerouslyUseHtmlString,
   QNotificationCloudPropType,
   QNotificationCloudPropOnClose,
   QNotificationCloudInstance
@@ -62,7 +64,7 @@ export default defineComponent({
      * description text
      */
     message: {
-      type: String,
+      type: String as PropType<QNotificationCloudPropMessage>,
       default: ''
     },
     /**
@@ -77,8 +79,8 @@ export default defineComponent({
      * whether message is treated as HTML string
      */
     dangerouslyUseHtmlString: {
-      type: Boolean,
-      default: false
+      type: Boolean as PropType<QNotificationCloudPropDangerouslyUseHtmlString>,
+      default: null
     },
     /**
      * icon class

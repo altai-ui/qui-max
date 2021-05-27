@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle, global-require, no-param-reassign */
-import { App } from 'vue';
+import type { App } from 'vue';
 import { isString, kebabCase } from 'lodash-es';
-import { LocaleMessageDictionary, VueMessageType } from 'vue-i18n';
+import type { LocaleMessageDictionary, VueMessageType } from 'vue-i18n';
 
 import { eventBus } from './helpers';
 import { setConfig } from './config';

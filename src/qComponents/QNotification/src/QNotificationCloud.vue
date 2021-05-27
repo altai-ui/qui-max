@@ -16,10 +16,12 @@
           <template v-if="!dangerouslyUseHtmlString">
             {{ message }}
           </template>
+          <!-- eslint-disable vue/no-v-html -->
           <div
             v-else
             v-html="message"
           />
+          <!-- eslint-enable vue/no-v-html -->
         </template>
       </slot>
     </div>
@@ -42,7 +44,7 @@ import {
 } from 'vue';
 
 import { validateArray } from '@/qComponents/helpers';
-import {
+import type {
   QNotificationCloudProps,
   QNotificationCloudPropMessage,
   QNotificationCloudPropDangerouslyUseHtmlString,
@@ -100,7 +102,7 @@ export default defineComponent({
      * callback function when closed
      */
     onClose: {
-      type: Function as unknown as PropType<QNotificationCloudPropOnClose>,
+      type: (Function as unknown) as PropType<QNotificationCloudPropOnClose>,
       default: null
     }
   },

@@ -1,6 +1,6 @@
-import { Ref, ComputedRef, ComponentPublicInstance, UnwrapRef } from 'vue';
-import { Placement, Options } from '@popperjs/core';
-import { Composer } from 'vue-i18n';
+import type { Ref, ComputedRef, ComponentPublicInstance, UnwrapRef } from 'vue';
+import type { Placement, Options } from '@popperjs/core';
+import type { Composer } from 'vue-i18n';
 
 export type ColorFormat = 'hex' | 'rgb';
 

@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { Meta, Story } from '@storybook/vue3';
+import type { Meta, Story } from '@storybook/vue3';
 import { defineComponent } from 'vue';
 
 import QNotification, {
@@ -33,7 +33,7 @@ const QNotificationStory: Story<Args> = args =>
   defineComponent({
     components: { QNotification },
     setup() {
-      let lastCloudId: string | null = null;
+      let lastCloudId: Nullable<string> = null;
 
       const handleClick = (): void => {
         const notifyId = notify(args.notifyArgs);

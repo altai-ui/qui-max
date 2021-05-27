@@ -1,4 +1,4 @@
-import { Ref, ComputedRef } from 'vue';
+import type { Ref, ComputedRef } from 'vue';
 
 export type QNotificationCloudPropType =
   | 'success'
@@ -31,7 +31,7 @@ export type QNotificationMethodAddCloud = (cloud?: Cloud) => void;
 
 export interface QNotificationInstance {
   clouds: Ref<Cloud[]>;
-  removeCloud: (cloudId?: string | null) => void;
+  removeCloud: (cloudId?: Nullable<string>) => void;
 }
 
 export type QNotificationCloudPropMessage = Nullable<string>;

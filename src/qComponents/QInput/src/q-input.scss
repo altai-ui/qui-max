@@ -65,7 +65,7 @@
       height: 0;
     }
 
-    &:focus {
+    &.focus-visible {
       background-color: var(--field-background-color-focus);
       outline: none;
       box-shadow: var(--field-box-shadow-focus);
@@ -96,7 +96,7 @@
 
     .q-form-item_is-error & {
       &,
-      &:focus {
+      &.focus-visible {
         padding-left: 15px;
         border: var(--border-error);
       }
@@ -167,7 +167,7 @@
         font-family: 'qicon';
       }
 
-      &:focus,
+      &.focus-visible,
       &:hover {
         color: var(--field-icon-color-hover);
       }

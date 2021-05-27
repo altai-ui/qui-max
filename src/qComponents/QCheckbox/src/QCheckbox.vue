@@ -135,6 +135,8 @@ export default defineComponent({
     );
 
     const handleCheckboxClick = (): void => {
+      if (isDisabled.value) return;
+
       const value = !isChecked.value;
 
       if (!qCheckboxGroup) {

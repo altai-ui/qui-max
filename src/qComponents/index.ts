@@ -9,6 +9,7 @@ import { installI18n } from './constants/locales';
 
 import QBreadcrumbs from './QBreadcrumbs';
 import QButton from './QButton';
+import QCascader from './QCascader';
 import QCheckbox from './QCheckbox';
 import QCheckboxGroup from './QCheckboxGroup';
 import QCol from './QCol';
@@ -46,6 +47,7 @@ import QUpload from './QUpload';
 const Components = {
   QBreadcrumbs,
   QButton,
+  QCascader,
   QCheckbox,
   QCheckboxGroup,
   QCol,
@@ -143,6 +145,7 @@ export {
   notifyCloseAll,
   QBreadcrumbs,
   QButton,
+  QCascader,
   QCheckbox,
   QCheckboxGroup,
   QCol,

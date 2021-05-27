@@ -159,8 +159,8 @@ export default defineComponent({
     const qForm = inject<QFormProvider | null>('qForm', null);
     const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
 
-    const zIndex = ref(DEFAULT_Z_INDEX);
-    const isPickerShown = ref(false);
+    const zIndex = ref<number>(DEFAULT_Z_INDEX);
+    const isPickerShown = ref<boolean>(false);
     const popperJS = ref<Instance | null>(null);
 
     const isDisabled = computed<boolean>(

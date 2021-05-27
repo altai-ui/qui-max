@@ -66,7 +66,8 @@ import {
   inject,
   ref,
   watch,
-  ComponentPublicInstance
+  ComponentPublicInstance,
+  UnwrapRef
 } from 'vue';
 
 import QScrollbar, { QScrollbarInstance } from '@/qComponents/QScrollbar';
@@ -98,11 +99,11 @@ export default defineComponent({
   setup(props: QSelectDropdownProps, ctx): QSelectDropdownInstance {
     const root = ref<HTMLDivElement | null>(null);
     const scrollbar =
-      ref<ComponentPublicInstance<QScrollbarInstance> | null>(null);
+      ref<ComponentPublicInstance<UnwrapRef<QScrollbarInstance>> | null>(null);
     const qSelect = inject<QSelectProvider | null>('qSelect', null);
     const qSelectState = qSelect?.state ?? null;
     const multiple = qSelect?.multiple ?? ref(false);
-    const zIndex = ref(DEFAULT_Z_INDEX);
+    const zIndex = ref<number>(DEFAULT_Z_INDEX);
 
     const styles = computed<Record<string, string | number | null>>(() => ({
       zIndex: zIndex.value,

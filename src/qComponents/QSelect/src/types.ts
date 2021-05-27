@@ -1,6 +1,6 @@
-import { Ref, ComputedRef, ComponentPublicInstance, UnwrapRef } from 'vue';
-import { Instance as PopperInstance } from '@popperjs/core';
-import { Composer } from 'vue-i18n';
+import type { Ref, ComputedRef, ComponentPublicInstance, UnwrapRef } from 'vue';
+import type { Instance as PopperInstance } from '@popperjs/core';
+import type { Composer } from 'vue-i18n';
 
 import type {
   QOptionModel,
@@ -9,12 +9,12 @@ import type {
 import type { QScrollbarInstance } from '@/qComponents/QScrollbar';
 import type { QInputInstance } from '@/qComponents/QInput';
 
-type QSelectPropModelValue =
+type QSelectPropModelValue = Nullable<
   | string
   | number
   | QOptionPropModelValue
   | (string | number | QOptionPropModelValue)[]
-  | null;
+>;
 
 type NewOption = {
   value: QSelectPropModelValue;
@@ -103,28 +103,30 @@ interface QSelectProps {
 
 interface QSelectState {
   options: QOptionModel[];
-  selected: QOptionModel | NewOption | (QOptionModel | NewOption)[] | null;
+  selected: Nullable<QOptionModel | NewOption | (QOptionModel | NewOption)[]>;
   inputWidth: number;
   selectedLabel: string | number;
   hoverIndex: number;
   query: string;
   hover: boolean;
   menuVisibleOnFocus: boolean;
-  popper: PopperInstance | null;
+  popper: Nullable<PopperInstance>;
   isDropdownShown: boolean;
 }
 
 interface QSelectDropdownInstance {
   zIndex: Ref<number>;
-  styles: ComputedRef<Record<string, string | number | null>>;
+  styles: ComputedRef<Record<string, Nullable<string | number>>>;
   isVisibleOptionExist: ComputedRef<boolean>;
   areAllSelected: ComputedRef<boolean>;
   isIndeterminate: ComputedRef<boolean>;
   navigateDropdown: (e: KeyboardEvent) => void;
   handleSelectAllClick: () => void;
-  root: Ref<HTMLDivElement | null>;
+  root: Ref<Nullable<HTMLDivElement>>;
   multiple: Ref<Nullable<boolean>> | boolean;
-  scrollbar: Ref<ComponentPublicInstance<QScrollbarInstance> | null>;
+  scrollbar: Ref<
+    Nullable<ComponentPublicInstance<UnwrapRef<QScrollbarInstance>>>
+  >;
   qSelectState: Partial<Nullable<QSelectState>>;
 }
 

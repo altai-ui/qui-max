@@ -1,4 +1,4 @@
-import { App } from 'vue';
+import type { App } from 'vue';
 
 import QTable from './src/QTable.vue';
 
@@ -9,6 +9,7 @@ QTable.install = (app: App): void => {
 
 export type {
   QTableProps,
+  QTablePropCheckedRows,
   QTablePropSortBy,
   QTableInstance
 } from './src/QTable';

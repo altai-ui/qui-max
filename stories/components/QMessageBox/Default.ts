@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { Story } from '@storybook/vue3';
+import type { Story } from '@storybook/vue3';
 import { defineComponent, ref } from 'vue';
 
 import type {
@@ -35,7 +35,7 @@ const QMessageBoxStory: Story<QMessageBoxProps> = args =>
         }
       };
 
-      const isVisible = ref(false);
+      const isVisible = ref<boolean>(false);
 
       const handleClick = (): void => {
         isVisible.value = true;

@@ -20,7 +20,7 @@
 import { defineComponent, ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import { QUploadDropZoneProps, QUploadDropZoneInstance } from './types';
+import type { QUploadDropZoneProps, QUploadDropZoneInstance } from './types';
 
 export default defineComponent({
   name: 'QUploadDropZone',
@@ -60,7 +60,7 @@ export default defineComponent({
   emits: ['drop'],
 
   setup(props: QUploadDropZoneProps, ctx): QUploadDropZoneInstance {
-    const isDragover = ref(false);
+    const isDragover = ref<boolean>(false);
 
     const classes = computed<Record<string, boolean>>(() => ({
       'q-upload-drop-zone_is-dragover': Boolean(isDragover.value),

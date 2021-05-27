@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { Story } from '@storybook/vue3';
+import type { Story } from '@storybook/vue3';
 import { defineComponent, ref } from 'vue';
 
 import QCheckboxGroup from '@/qComponents/QCheckboxGroup';
@@ -10,8 +10,13 @@ const QCheckboxGroupStory: Story<QCheckboxGroupProps> = args =>
   defineComponent({
     components: { QCheckboxGroup, QCheckbox },
     setup() {
-      const checkedCities = ref(['Shanghai', 'Beijing']);
-      const cities = ref(['Shanghai', 'Beijing', 'Guangzhou', 'Shenzhen']);
+      const checkedCities = ref<string[]>(['Shanghai', 'Beijing']);
+      const cities = ref<string[]>([
+        'Shanghai',
+        'Beijing',
+        'Guangzhou',
+        'Shenzhen'
+      ]);
 
       return { checkedCities, cities, args };
     },

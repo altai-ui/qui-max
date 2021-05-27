@@ -78,7 +78,7 @@ import { defineComponent, computed, PropType } from 'vue';
 import { isNil } from 'lodash-es';
 import { useI18n } from 'vue-i18n';
 
-import {
+import type {
   QUploadFile,
   QUploadFileMultipleProps,
   QUploadFileMultiplePropValue

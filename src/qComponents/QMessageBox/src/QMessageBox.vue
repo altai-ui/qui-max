@@ -221,11 +221,11 @@ export default defineComponent({
   emits: [UPDATE_IS_VISIBLE_EVENT, CONFIRM_EVENT, CLOSE_EVENT, CANCEL_EVENT],
 
   setup(props: QMessageBoxProps, { emit }): QMessageBoxInstance {
-    const isRendered = ref(false);
-    const wrapZIndex = ref(DEFAULT_Z_INDEX);
+    const isRendered = ref<boolean>(false);
+    const wrapZIndex = ref<number>(DEFAULT_Z_INDEX);
 
-    const isConfirmBtnLoading = ref(false);
-    const isCancelBtnLoading = ref(false);
+    const isConfirmBtnLoading = ref<boolean>(false);
+    const isCancelBtnLoading = ref<boolean>(false);
     const messageBox = ref<HTMLElement | null>(null);
 
     let elementToFocusAfterClosing: HTMLElement | null = null;

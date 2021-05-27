@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { Meta } from '@storybook/vue3';
+import type { Meta } from '@storybook/vue3';
 
 import QMessageBox from '@/qComponents/QMessageBox';
 

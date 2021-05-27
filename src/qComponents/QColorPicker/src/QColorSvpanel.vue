@@ -46,8 +46,8 @@ export default defineComponent({
       backgroundColor: `hsl(${props.hue}, 100%, 50%)`
     }));
 
-    const cursorTop = ref(0);
-    const cursorLeft = ref(0);
+    const cursorTop = ref<number>(0);
+    const cursorLeft = ref<number>(0);
 
     const cursorStyles = computed<Record<string, string>>(() => ({
       top: `${cursorTop.value}px`,

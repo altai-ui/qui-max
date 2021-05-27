@@ -8,11 +8,11 @@ export interface StickyGlobalConfig {
 }
 
 export interface QTableTStickyInstance {
-  root: Ref<HTMLElement | null>;
+  root: Ref<Nullable<HTMLElement>>;
   isSelectable: Nullable<ComputedRef<boolean>>;
   stickyConfig: {
-    columnsLeftNew: Record<string, number | null>;
-    columnsRightNew: Record<string, number | null>;
+    columnsLeftNew: Record<string, Nullable<number>>;
+    columnsRightNew: Record<string, Nullable<number>>;
   };
   columnList: ComputedRef<ExtendedColumn[]>;
   setColRef: (el: HTMLElement, key: number | string) => void;

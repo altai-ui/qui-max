@@ -127,14 +127,13 @@ export default defineComponent({
     const root = ref<HTMLElement | null>(null);
     const wrap = ref<HTMLElement | null>(null);
     const resize = ref<HTMLElement | null>(null);
-    const ybar = ref<ComponentPublicInstance<UnwrapRef<QBarInstance>> | null>(
-      null
-    );
-    const sizeWidth = ref('0');
-    const sizeHeight = ref('0');
-    const moveX = ref(0);
-    const moveXInPx = ref(0);
-    const moveY = ref(0);
+    const ybar =
+      ref<ComponentPublicInstance<UnwrapRef<QBarInstance>> | null>(null);
+    const sizeWidth = ref<string>('0');
+    const sizeHeight = ref<string>('0');
+    const moveX = ref<number>(0);
+    const moveXInPx = ref<number>(0);
+    const moveY = ref<number>(0);
 
     const isXBarShown = computed<boolean>(() => sizeWidth.value !== '');
     const isYBarShown = computed<boolean>(() => sizeHeight.value !== '');

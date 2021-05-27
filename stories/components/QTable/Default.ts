@@ -1,8 +1,12 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { Story } from '@storybook/vue3';
+import type { Story } from '@storybook/vue3';
 import { defineComponent, ref } from 'vue';
 
-import type { QTableProps } from '@/qComponents/QTable';
+import type {
+  QTablePropCheckedRows,
+  QTablePropSortBy,
+  QTableProps
+} from '@/qComponents/QTable';
 
 import {
   groupsOfColumns,
@@ -14,8 +18,8 @@ import {
 const QTableStory: Story<QTableProps> = args =>
   defineComponent({
     setup() {
-      const checkedRows = ref(args.checkedRows ?? []);
-      const sortBy = ref(args.sortBy ?? []);
+      const checkedRows = ref<QTablePropCheckedRows>(args.checkedRows ?? null);
+      const sortBy = ref<QTablePropSortBy>(args.sortBy ?? null);
 
       const handleRowClick = (row: unknown): void => {
         // eslint-disable-next-line no-console

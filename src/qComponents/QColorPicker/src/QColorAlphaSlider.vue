@@ -46,7 +46,7 @@ export default defineComponent({
   emits: [UPDATE_ALPHA_EVENT],
 
   setup(props: QColorAlphaSliderProps, ctx): QColorAlphaSliderInstance {
-    const thumbLeft = ref(0);
+    const thumbLeft = ref<number>(0);
 
     const barStyles = computed<Record<string, string>>(() => ({
       backgroundImage: `linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, ${props.color})`

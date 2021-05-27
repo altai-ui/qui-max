@@ -1,4 +1,4 @@
-import { App } from 'vue';
+import type { App } from 'vue';
 import { createI18n, LocaleMessageDictionary, VueMessageType } from 'vue-i18n';
 import { merge } from 'lodash-es';
 import { getConfig } from '@/qComponents/config';

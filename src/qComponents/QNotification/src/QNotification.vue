@@ -23,8 +23,8 @@ import { defineComponent, ref } from 'vue';
 import { eventBus } from '@/qComponents/helpers';
 import QNotificationCloud from './QNotificationCloud.vue';
 import type {
+  Cloud,
   QNotificationProps,
-  QNotificationCloudItem,
   QNotificationMethodAddCloud,
   QNotificationInstance
 } from './types';
@@ -54,11 +54,10 @@ export default defineComponent({
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   setup(props: QNotificationProps): QNotificationInstance {
-    const clouds = ref<QNotificationCloudItem[]>([]);
+    const clouds = ref<Cloud[]>([]);
 
     const addCloud: QNotificationMethodAddCloud = (cloud): void => {
-      if (!cloud) return;
-      clouds.value.push(cloud);
+      if (cloud) clouds.value.push(cloud);
     };
 
     const removeCloud = (cloudId?: string | null): void => {

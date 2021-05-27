@@ -27,25 +27,16 @@
         "allowTaggedTemplates": false
       }
     ],
-    "prefer-destructuring": [
-      "error",
-      {
-        "array": false
-      }
-    ],
+    "prefer-destructuring": ["error", { "array": false }],
 
     "import/extensions": "off",
     "import/no-unresolved": "off",
 
     "vue/component-name-in-template-casing": ["error", "kebab-case"],
     "vue/max-attributes-per-line": "warn",
-    "vue/no-v-html": 0,
     "vue/html-closing-bracket-newline": "warn",
     "vue/html-indent": "warn",
 
-    "@typescript-eslint/explicit-function-return-type": "error",
-
-    "no-console": 1,
-    "no-debugger": 0
+    "@typescript-eslint/explicit-function-return-type": "error"
   }
 }

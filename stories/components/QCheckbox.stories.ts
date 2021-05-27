@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { Meta, Story } from '@storybook/vue3';
+import type { Meta, Story } from '@storybook/vue3';
 import { defineComponent, ref } from 'vue';
 
 import QCheckbox from '@/qComponents/QCheckbox';
@@ -17,7 +17,7 @@ const Template: Story<QCheckboxProps> = args =>
   defineComponent({
     components: { QCheckbox },
     setup() {
-      const isChecked = ref(true);
+      const isChecked = ref<boolean>(true);
 
       return {
         isChecked,

@@ -3,12 +3,12 @@ import { isNil } from 'lodash-es';
 
 import type { StickyGlobalConfig } from '../QTableTSticky/QTableTSticky';
 
-import { StickyConfig } from './sticky.d';
+import type { StickyConfig } from './sticky.d';
 
 const BASE_Z_INDEX = 100;
 
 const useSticky = (
-  position: 'left' | 'right' | undefined | null,
+  position: Nullable<'left' | 'right' | undefined>,
   columnIndex: number,
   sticky: StickyGlobalConfig
 ): StickyConfig => {

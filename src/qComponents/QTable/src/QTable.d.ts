@@ -1,4 +1,4 @@
-import { Ref, ComputedRef, Slots } from 'vue';
+import type { Ref, ComputedRef, Slots } from 'vue';
 
 interface SelectionColumn {
   enabled?: Nullable<boolean>;

@@ -43,13 +43,13 @@
           </div>
           <year-table
             :year="leftYear"
-            :min-date="minDate"
-            :max-date="maxDate"
+            :min-date="state.minDate"
+            :max-date="state.maxDate"
             :disabled-values="disabledValues"
-            :range-state="rangeState"
+            :range-state="state.rangeState"
             selection-mode="range"
             @pick="handleRangePick"
-            @changerange="handleChangeRange"
+            @range-selecting="handleRangeSelecting"
           />
         </div>
         <div
@@ -77,13 +77,13 @@
           </div>
           <year-table
             :year="rightYear"
-            :min-date="minDate"
-            :max-date="maxDate"
+            :min-date="state.minDate"
+            :max-date="state.maxDate"
             :disabled-values="disabledValues"
             selection-mode="range"
-            :range-state="rangeState"
+            :range-state="state.rangeState"
             @pick="handleRangePick"
-            @changerange="handleChangeRange"
+            @range-selecting="handleRangeSelecting"
           />
         </div>
       </div>
@@ -92,13 +92,15 @@
 </template>
 
 <script lang="ts">
-import { addMonths, addYears, getDecade, isDate, subYears } from 'date-fns';
-import { reactive, computed, watch, inject } from 'vue';
+import { addMonths, addYears, getDecade, isDate, subYears, endOfDay } from 'date-fns';
+import { reactive, computed, watch, inject, PropType } from 'vue';
 import isSameMonth from 'date-fns/isSameMonth';
 import YearTable from '../tables/year-table.vue';
 import focusMixin from './focus-mixin';
-import { leftYearComposable } from './composition';
-import { YearRangeInterface, YearRangeState } from './types';
+import { leftYearComposable, handleShortcutClick, leftLabelComposable, rightLabelComposable, isValidValue } from './composition';
+import { DatePanelPropShortcuts, DatePanelRangePropModelValue, RangePickValue, YearRangeInterface, YearRangeState } from './types';
+import { QDatePickerProvider } from '../types';
+import { RangeState } from '../tables/types';
 
 const YEARS_IN_DECADE = 10;
 
@@ -107,34 +109,42 @@ export default {
   mixins: [focusMixin],
   props: {
     modelValue: {
-      type: Array,
-      default: () => []
+      type: Array as PropType<DatePanelRangePropModelValue>,
+      default: null
     },
     disabledValues: {
       type: Object,
       default: null
-    }
+    },
+    showTime: {
+      type: Boolean,
+      default: false
+    },
+    shortcuts: {
+      type: Array as PropType<DatePanelPropShortcuts>,
+      default: (): [] => []
+    },
   },
 
   emits: ['pick'],
 
   setup(props, ctx): YearRangeInterface {
     const state = reactive<YearRangeState>({
-      minDate: '',
-      maxDate: '',
+      minDate: null,
+      maxDate: null,
       leftDate: new Date(),
       rightDate: addYears(new Date(), YEARS_IN_DECADE),
       rangeState: {
-        endDate: null,
+        hoveredDate: null,
+        pickedDate: null,
         selecting: false
       },
-      shortcuts: null,
       isRanged: true,
       currentView: 'yearrange',
       panelInFocus: null
     });
     
-    const picker = inject('qDatePicker');
+    const picker = inject<QDatePickerProvider>('qDatePicker', {} as QDatePickerProvider);
 
     const rightYear = computed<number>(() => {
       if (isDate(state.rightDate) && isDate(state.leftDate)) {
@@ -145,8 +155,10 @@ export default {
 
       return new Date().getFullYear() + YEARS_IN_DECADE;
     })
-    
-    const leftYear = leftYearComposable(state.leftDate);
+    const leftYear = computed(() => leftYearComposable(state.leftDate));
+    const leftLabel = computed(() => leftLabelComposable(state.leftDate, picker.type.value));
+    const rightLabel = computed(() => rightLabelComposable(state.rightDate, picker.type.value));
+
     const enableYearArrow = computed(() => rightYear.value > leftYear.value + YEARS_IN_DECADE);
     const leftPanelClasses = computed(() => ({
       'q-picker-panel__content': true,
@@ -180,6 +192,39 @@ export default {
       ctx.emit('pick', null);
     }
 
+    const handleRangePick = (val: RangePickValue, close = true): void => {
+      if (state.maxDate === val.maxDate && state.minDate === val.minDate) {
+        return;
+      }
+
+      if (val.maxDate) {
+        // eslint-disable-next-line no-param-reassign
+        val.maxDate = endOfDay(val.maxDate);
+      }
+
+      if (val.rangeState) {
+        state.rangeState = val.rangeState;
+      }
+
+      state.maxDate = val.maxDate;
+      state.minDate = val.minDate;
+      
+      // emit QDatepicker intermediate value
+      picker.emitChange([state.minDate, state.maxDate], true);
+
+      if (!close) return;
+      
+      if (isValidValue([state.minDate, state.maxDate])) {
+        ctx.emit('pick', [state.minDate, state.maxDate], {
+          hidePicker: !props.showTime
+        });
+      }
+    };
+
+    const handleRangeSelecting = (value: RangeState): void => {
+      state.rangeState = value;
+    }
+
     watch(() => props.modelValue, (newVal) => {
       if (!newVal || !newVal?.length) {
         handleClear();
@@ -211,6 +256,8 @@ export default {
       state,
       rightYear,
       leftYear,
+      leftLabel,
+      rightLabel,
       enableYearArrow,
       leftPanelClasses,
       rightPanelClasses,
@@ -218,7 +265,10 @@ export default {
       leftPrevYear,
       rightNextYear,
       rightPrevYear,
-      handleClear
+      handleClear,
+      handleShortcutClick,
+      handleRangePick,
+      handleRangeSelecting
     }
   },
 };

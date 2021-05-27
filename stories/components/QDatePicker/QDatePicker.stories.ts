@@ -152,9 +152,15 @@ const Template: Story = args =>
   });
 
 export const Default: Story = Template.bind({});
-export const DateRange: Story = Template.bind({});
 export const Month: Story = Template.bind({});
+export const Year: Story = Template.bind({});
+export const DateRange: Story = Template.bind({});
 export const MonthRange: Story = Template.bind({});
+export const YearRange: Story = Template.bind({});
+
+YearRange.args = {
+  type: 'yearrange'
+};
 
 MonthRange.args = {
   type: 'monthrange'
@@ -166,6 +172,10 @@ DateRange.args = {
 
 Month.args = {
   type: 'month'
+};
+
+Year.args = {
+  type: 'year'
 };
 
 export default storyMetadata;

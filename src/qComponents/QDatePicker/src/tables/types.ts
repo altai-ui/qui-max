@@ -57,7 +57,6 @@ interface DateTableInterface {
 
 interface YearTableState {
   tableRows: YearCellModel[][];
-  lastHoveredCell: Nullable<number>;
 }
 
 interface YearTableInstance {
@@ -65,14 +64,12 @@ interface YearTableInstance {
   startYear: ComputedRef<Date>;
   rows: ComputedRef<YearCellModel[][]>;
   getCellClasses: (cell: YearCellModel) => string[];
-  handleMouseMove: DebouncedFunc<(cell: DateCellModel) => void>;
-  handleYearTableClick: (event: MouseEvent, { year }: { year: Date }) => void;
+  handleMouseMove: DebouncedFunc<(cell: YearCellModel) => void>;
+  handleYearTableClick: ({ year }: { year: Date }) => void;
 }
 
 interface MonthTableState {
   tableRows: MonthCellModel[][];
-  lastRow: null;
-  lastColumn: null;
 }
 
 interface MonthTableInstance {

@@ -7,7 +7,7 @@
     <q-input
       v-if="!isRanged"
       ref="reference"
-      v-model="displayValue"
+      :model-value="displayValue"
       :class="['q-date-editor', { 'q-input_focus': state.pickerVisible }]"
       :readonly="!editable"
       :disabled="isPickerDisabled"
@@ -394,7 +394,7 @@ export default defineComponent({
       emitChange(val);
     };
 
-    const handleChange = (): void => {
+    const handleChange = (): void => {      
       let value;
       let format;
       const date = state.userInput;
@@ -605,9 +605,7 @@ export default defineComponent({
 
     const { t } = useI18n();
 
-    onBeforeUnmount(() => {
-      destroyPopper();
-    });
+    onBeforeUnmount(() => destroyPopper());
 
     const { type } = toRefs(props);
 

@@ -98,11 +98,9 @@ export default {
   setup(props, ctx): MonthTableInstance {
     const state = reactive<MonthTableState>({
       tableRows: [[], [], []],
-      lastRow: null,
-      lastColumn: null,
     });
 
-    const rows = computed(() => {
+    const rows = computed<MonthCellModel[][]>(() => {
       const tableRows = state.tableRows;
       return tableRows.map((row, i) => {
         const newRow = [];

@@ -52,10 +52,6 @@
   }
 }
 
-.q-form-item_is-error & {
-  border: var(--border-error);
-}
-
 .q-range-editor {
   display: inline-flex;
   align-items: center;
@@ -67,6 +63,10 @@
   border-radius: var(--border-radius-base);
   outline: none;
   box-shadow: var(--box-shadow-primary);
+
+  .q-form-item_is-error & {
+    border: var(--border-error);
+  }
 
   &:hover:not(.q-range-editor_disabled) {
     background-color: var(--color-tertiary-gray);

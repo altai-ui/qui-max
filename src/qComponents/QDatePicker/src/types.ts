@@ -2,6 +2,7 @@ import { Instance } from '@popperjs/core';
 import { Ref } from 'vue';
 
 type QDatePickerPropModelValue = Nullable<string | Date | (string | Date)[]>;
+type IntermediateModelValue = (Date | null)[];
 
 interface QDatePickerState {
   pickerVisible: boolean;
@@ -11,7 +12,10 @@ interface QDatePickerState {
 }
 
 interface QDatePickerProvider {
-  emitChange: (val: QDatePickerPropModelValue, intermediate: boolean) => void;
+  emitChange: (
+    val: QDatePickerPropModelValue | IntermediateModelValue,
+    intermediate: boolean
+  ) => void;
   type: Ref<string>;
 }
 

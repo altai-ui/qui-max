@@ -2,7 +2,10 @@ import { ComputedRef, Ref } from 'vue';
 import { TranslateResult, Path, Locale } from 'vue-i18n';
 import { QDatePickerProvider } from '../types';
 
-type DatePanelPropShortcuts = Record<string, (model: unknown) => void>[];
+type DatePanelPropShortcuts = Record<
+  string,
+  (model: Record<string, Date>) => void
+>[];
 type DatePanelPropModelValue = null | Date;
 
 type DatePanelRangePropModelValue = Date[] | null;
@@ -37,7 +40,6 @@ interface MonthRangeState {
   leftDate: Date;
   rightDate: Date;
   rangeState: RangeState;
-  shortcuts: string;
   isRanged: boolean;
   currentView: string;
   panelInFocus: null;
@@ -52,12 +54,11 @@ interface DateRangeState {
   panelInFocus: null;
 }
 
-interface DateRangeInterface {
+interface DateRangeInstance {
   state: DateRangeState;
   picker: QDatePickerProvider;
   transformedValue: ComputedRef<Date[]>;
   btnDisabled: ComputedRef<boolean>;
-  disabledRightTimeValues: ComputedRef<Record<string, string>>;
   enableMonthArrow: ComputedRef<boolean>;
   isLeftTimeDisabled: ComputedRef<boolean>;
   enableYearArrow: ComputedRef<boolean>;
@@ -69,18 +70,20 @@ interface DateRangeInterface {
   rightLabel: ComputedRef<string>;
   leftMonth: ComputedRef<number>;
   rightMonth: ComputedRef<number>;
-  handleRangePick: (
-    val: {
-      minDate: Date;
-      maxDate: Nullable<Date>;
-    },
-    close?: boolean
+  handleRangePick: (val: RangePickValue, close?: boolean) => void;
+  handleShortcutClick: (
+    shortcut: Record<string, (model: Record<string, Date>) => void>
   ) => void;
   handleClear: () => void;
+  handleLeftPrevYearClick: () => void;
+  handleLeftNextYearClick: () => void;
   handleLeftPrevMonthClick: () => void;
+  handleRightNextYearClick: () => void;
+  handleRightPrevYearClick: () => void;
   handleRightNextMonthClick: () => void;
   handleLeftNextMonthClick: () => void;
   handleRightPrevMonthClick: () => void;
+  handleRangeSelecting: (value: RangeState) => void;
 }
 
 interface MonthRangeInterface {
@@ -89,20 +92,29 @@ interface MonthRangeInterface {
   rightPanelClasses: ComputedRef<Record<string, boolean>>;
   rightYear: ComputedRef<number>;
   leftYear: ComputedRef<number>;
+  leftMonth: ComputedRef<number>;
+  rightMonth: ComputedRef<number>;
   enableYearArrow: ComputedRef<boolean>;
+  handleLeftPrevYearClick: () => void;
+  handleLeftNextYearClick: () => void;
+  handleRightNextYearClick: () => void;
+  handleRightPrevYearClick: () => void;
+  handleRangeSelecting: (value: RangeState) => void;
+  handleRangePick: (val: RangePickValue, close?: boolean) => void;
   handleClear: () => void;
   handleShortcutClick: (
-    shortcut: Record<string, (model: unknown) => void>
+    shortcut: Record<string, (model: Record<string, Date>) => void>
   ) => void;
 }
 
 interface YearRangeState {
-  minDate: Nullable<string>;
-  maxDate: Nullable<string>;
+  minDate: Nullable<Date>;
+  maxDate: Nullable<Date>;
   leftDate: Date;
   rightDate: Date;
   rangeState: RangeState;
   isRanged: boolean;
+  currentView: string;
   panelInFocus: null;
 }
 
@@ -139,7 +151,6 @@ interface DatePanelInterface {
   selectionMode: ComputedRef<string>;
   currentMonth: ComputedRef<string>;
   yearLabel: ComputedRef<string | number>;
-  // handleTimeChange: ({ type, value }: Record<string, string>) => void;
   showMonthPicker: () => void;
   showYearPicker: () => void;
   showDatePicker: () => void;
@@ -149,7 +160,7 @@ interface DatePanelInterface {
   handlePrevYearClick: () => void;
   handleNextYearClick: () => void;
   handleShortcutClick: (
-    shortcut: Record<string, (model: unknown) => void>
+    shortcut: Record<string, (model: Record<string, Date>) => void>
   ) => void;
   handleYearPick: (year: Date) => void;
   handleMonthPick: (month: number, year: number) => void;
@@ -166,7 +177,7 @@ export {
   DatePanelRangePropModelValue,
   MonthRangeState,
   DateRangeState,
-  DateRangeInterface,
+  DateRangeInstance,
   MonthRangeInterface,
   YearRangeState,
   YearRangeInterface,

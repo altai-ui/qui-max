@@ -121,7 +121,7 @@
 </template>
 
 <script lang="ts">
-import { addMonths, isDate, isSameDay, subMonths, getDecade, endOfDay } from 'date-fns';
+import { addMonths, subMonths, getDecade, endOfDay } from 'date-fns';
 import { reactive, computed, inject, watch, PropType } from 'vue';
 import addYears from 'date-fns/fp/addYears';
 import isSameMonth from 'date-fns/esm/isSameMonth/index';
@@ -129,12 +129,19 @@ import {
   leftMonthComposable,
   leftYearComposable,
   isValidValue,
-  rightMonthComposable, leftLabelComposable, rightLabelComposable } from './composition';
+  rightMonthComposable,
+  leftLabelComposable,
+  rightLabelComposable,
+  handleShortcutClick,
+  useLeftPrevYearClick,
+  useRightNextYearClick,
+  useRightPrevYearClick,
+  useLeftNextYearClick
+} from './composition';
 import DateTable from '../tables/date-table.vue';
 import focusMixin from './focus-mixin';
-import { getTimeModel } from '../../../helpers/dateHelpers';
  
-import type { DateRangeState, DateRangeInterface, DatePanelPropShortcuts, DatePanelRangePropModelValue, RangePickValue } from './types';
+import type { DateRangeState, DateRangeInstance, DatePanelPropShortcuts, DatePanelRangePropModelValue, RangePickValue } from './types';
 import { QDatePickerProvider } from '../types';
 import { RangeState } from '../tables/types';
 
@@ -198,7 +205,7 @@ export default {
 
   emits: ['pick'],
 
-  setup(props, ctx): DateRangeInterface {
+  setup(props, ctx): DateRangeInstance {
     const state = reactive<DateRangeState>({
       minDate: null,
       maxDate: null,
@@ -231,35 +238,14 @@ export default {
       );
     });
 
-    const leftLabel = leftLabelComposable(state.leftDate, props.type);
-    const rightLabel = rightLabelComposable(state.rightDate, props.type);
+    const leftLabel = computed(() => leftLabelComposable(state.leftDate, props.type));
+    const rightLabel = computed(() => rightLabelComposable(state.rightDate, props.type));
+    const leftYear = computed(() => leftYearComposable(state.leftDate));
 
-    const leftMonth = leftMonthComposable(state.leftDate);
-    const rightMonth = rightMonthComposable(state.rightDate);
-    const leftYear = leftYearComposable(state.leftDate);
+    const leftMonth = computed(() => leftMonthComposable(state.leftDate));
+    const rightMonth = computed(() => rightMonthComposable(state.rightDate));
 
     const isLeftTimeDisabled = computed(() => !transformedValue.value[0]);
-
-    const parsedLeftTime = computed<Record<string, string> | null>(() => {
-      const value = transformedValue.value[0];
-      return getTimeModel(value);
-    });
-
-    const parsedRightTime = computed<Record<string, string> | null>(() => {
-      const value = transformedValue.value[1];
-      return getTimeModel(value);
-    });
-
-    const disabledRightTimeValues = computed<Record<string, string>>(() => {
-      const values = { ...props.disabledValues.time };
-      if (
-        isSameDay(transformedValue.value[0], transformedValue.value[1]) &&
-        parsedLeftTime.value
-      ) {
-        values.to = Object.values(parsedLeftTime.value).join(':');
-      }
-      return values;
-    });
 
     const rightPanelClasses = computed<Record<string, boolean>>(() => ({
       'q-picker-panel__content': true,
@@ -349,6 +335,22 @@ export default {
       state.rightDate = addMonths(state.rightDate, 1);
     };
 
+    const handleLeftPrevYearClick = (): void => {
+      state.leftDate = useLeftPrevYearClick(state.leftDate);
+    }
+
+    const handleLeftNextYearClick = (): void => {
+      state.leftDate = useLeftNextYearClick(state.leftDate);
+    }
+
+    const handleRightNextYearClick = (): void => {
+      state.rightDate = useRightNextYearClick(state.rightDate);
+    }
+
+    const handleRightPrevYearClick = (): void => {
+      state.rightDate = useRightPrevYearClick(state.rightDate);
+    }
+
     const handleLeftNextMonthClick = (): void => {
       state.leftDate = addMonths(state.leftDate, 1);
     };
@@ -369,7 +371,7 @@ export default {
             case 'yearrange': {
               if (getDecade(state.minDate) === getDecade(state.maxDate)) {
                 state.leftDate = state.minDate;
-                state.rightDate = addYears(state.minDate, 10);
+                state.rightDate = addYears(state.minDate.getTime(), 10);
               }
               break;
             }
@@ -393,11 +395,8 @@ export default {
       picker,
       transformedValue,
       btnDisabled,
-      disabledRightTimeValues,
-      parsedLeftTime,
       enableMonthArrow,
       isLeftTimeDisabled,
-      parsedRightTime,
       enableYearArrow,
       rightPanelClasses,
       leftPanelClasses,
@@ -408,10 +407,15 @@ export default {
       leftMonth,
       rightMonth,
       handleRangePick,
+      handleShortcutClick,
       handleClear,
+      handleLeftNextYearClick,
+      handleLeftPrevYearClick,
+      handleRightNextYearClick,
+      handleRightPrevYearClick,
       handleLeftPrevMonthClick,
-      handleRightNextMonthClick,
       handleLeftNextMonthClick,
+      handleRightNextMonthClick,
       handleRightPrevMonthClick,
       handleRangeSelecting
     };

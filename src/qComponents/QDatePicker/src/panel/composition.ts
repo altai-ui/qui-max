@@ -1,74 +1,60 @@
 import { getConfig } from '@/qComponents/config';
 import { addYears, endOfDecade, startOfDecade, subYears } from 'date-fns';
 import { isDate } from 'lodash-es';
-import { computed, ComputedRef } from 'vue';
 
-const leftYearComposable = (leftDate: Date): ComputedRef<number> =>
-  computed(() => {
-    if (isDate(leftDate)) {
-      return leftDate.getFullYear();
-    }
-    return new Date().getFullYear();
+const leftYearComposable = (leftDate: Date): number => {
+  if (isDate(leftDate)) {
+    return leftDate.getFullYear();
+  }
+  return new Date().getFullYear();
+};
+
+const leftMonthComposable = (leftDate: Date): number => {
+  if (isDate(leftDate)) {
+    return leftDate.getMonth();
+  }
+  return new Date().getMonth();
+};
+
+const rightMonthComposable = (rightDate: Date): number => {
+  if (isDate(rightDate)) {
+    return rightDate.getMonth();
+  }
+  return new Date().getMonth() + 1;
+};
+
+const rightLabelComposable = (rightDate: Date, type: string): string => {
+  if (type === 'yearrange') {
+    return `${startOfDecade(rightDate).getFullYear()} - ${endOfDecade(
+      rightDate
+    ).getFullYear()}`;
+  }
+
+  const formatter = new Intl.DateTimeFormat(getConfig('locale'), {
+    month: 'short'
   });
 
-const leftMonthComposable = (leftDate: Date): ComputedRef<number> =>
-  computed(() => {
-    if (isDate(leftDate)) {
-      return leftDate.getMonth();
-    }
-    return new Date().getMonth();
+  return `${formatter.format(rightDate)} ${rightDate.getFullYear()}`;
+};
+
+const leftLabelComposable = (leftDate: Date, type: string): string => {
+  if (type === 'yearrange') {
+    return `${startOfDecade(leftDate).getFullYear()} - ${endOfDecade(
+      leftDate
+    ).getFullYear()}`;
+  }
+  const formatter = new Intl.DateTimeFormat(getConfig('locale'), {
+    month: 'short'
   });
 
-const rightMonthComposable = (rightDate: Date): ComputedRef<number> =>
-  computed(() => {
-    if (isDate(rightDate)) {
-      return rightDate.getMonth();
-    }
-    return new Date().getMonth() + 1;
-  });
+  return `${formatter.format(leftDate)} ${leftDate.getFullYear()}`;
+};
 
-const rightLabelComposable = (
-  rightDate: Date,
-  type: string
-): ComputedRef<string> =>
-  computed(() => {
-    if (type === 'yearrange') {
-      return `${startOfDecade(rightDate).getFullYear()} - ${endOfDecade(
-        rightDate
-      ).getFullYear()}`;
-    }
-
-    const formatter = new Intl.DateTimeFormat(getConfig('locale'), {
-      month: 'short'
-    });
-
-    return `${formatter.format(rightDate)} ${rightDate.getFullYear()}`;
-  });
-
-const leftLabelComposable = (
-  leftDate: Date,
-  type: string
-): ComputedRef<string> =>
-  computed(() => {
-    if (type === 'yearrange') {
-      return `${startOfDecade(leftDate).getFullYear()} - ${endOfDecade(
-        leftDate
-      ).getFullYear()}`;
-    }
-    const formatter = new Intl.DateTimeFormat(getConfig('locale'), {
-      month: 'short'
-    });
-
-    return `${formatter.format(leftDate)} ${leftDate.getFullYear()}`;
-  });
-
-const handleLeftPrevYearClick = (leftDate: Date): Date => subYears(leftDate, 1);
-const handleRightNextYearClick = (rightDate: Date): Date =>
-  addYears(rightDate, 1);
-const handleLeftNextYearClick = (leftDate: Date): Date => addYears(leftDate, 1);
-const handleRightPrevYearClick = (rightDate: Date): Date =>
-  subYears(rightDate, 1);
-const handleShortcutClick = (
+const useLeftPrevYearClick = (leftDate: Date): Date => subYears(leftDate, 1);
+const useRightNextYearClick = (rightDate: Date): Date => addYears(rightDate, 1);
+const useLeftNextYearClick = (leftDate: Date): Date => addYears(leftDate, 1);
+const useRightPrevYearClick = (rightDate: Date): Date => subYears(rightDate, 1);
+const useShortcutClick = (
   shortcut: Record<string, (model: unknown) => void>
 ): void => {
   if (shortcut.onClick) {
@@ -88,16 +74,25 @@ const isValidValue = (value: Nullable<Date>[]): boolean => {
   );
 };
 
+const handleShortcutClick = (
+  shortcut: Record<string, (model: Record<string, Date>) => void>
+): void => {
+  if (shortcut.onClick) {
+    shortcut.onClick(this);
+  }
+};
+
 export {
   leftYearComposable,
   leftMonthComposable,
   rightMonthComposable,
   rightLabelComposable,
   leftLabelComposable,
-  handleLeftPrevYearClick,
-  handleRightNextYearClick,
-  handleLeftNextYearClick,
-  handleRightPrevYearClick,
-  handleShortcutClick,
-  isValidValue
+  useLeftPrevYearClick,
+  useRightNextYearClick,
+  useLeftNextYearClick,
+  useRightPrevYearClick,
+  useShortcutClick,
+  isValidValue,
+  handleShortcutClick
 };

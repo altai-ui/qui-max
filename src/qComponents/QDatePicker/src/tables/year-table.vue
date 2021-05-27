@@ -12,8 +12,8 @@
         v-for="(cell, index) in row"
         :key="index"
         class="q-year-table__cell-wrapper"
-        @mousemove="event => handleMouseMove(event, cell)"
-        @click="event => handleYearTableClick(event, cell)"
+        @mousemove="event => handleMouseMove(cell)"
+        @click="event => handleYearTableClick(cell)"
       >
         <button
           :class="getCellClasses(cell)"
@@ -37,10 +37,12 @@ import {
   isBefore,
   isAfter
 } from 'date-fns';
-import { reactive, computed } from 'vue';
+import { reactive, computed, PropType } from 'vue';
 
-import type { YearTableState, YearTableInstance } from './types';
+import { throttle } from 'lodash';
+import type { YearTableState, YearTableInstance, RangeState } from './types';
 import { DateRangeStateProp, YearCellModel } from "./types";
+import { isDateInRangeInterval } from './composition';
 
 
 const checkDisabled = (year: number, disabledValues: Record<string, Date>): boolean => {
@@ -81,22 +83,22 @@ export default {
     minDate: { type: Date, default: null },
     maxDate: { type: Date, default: null },
     rangeState: {
-      type: Object,
-      default: (): DateRangeStateProp => {
+      type: Object as PropType<RangeState>,
+      default: (): RangeState => {
         return {
-          endDate: null,
+          hoveredDate: null,
+          pickedDate: null,
           selecting: false
         };
       }
     }
   },
 
-  emits: ['pick'],
+  emits: ['pick', 'rangeSelecting'],
 
   setup(props, ctx): YearTableInstance {
     const state = reactive<YearTableState>({
       tableRows: [[], [], []],
-      lastHoveredCell: null
     });
 
     const startYear = computed<Date>(() => {
@@ -115,9 +117,6 @@ export default {
         for (let j = 0; j < cellCount; j += 1) {
           let maxDateNum = props.maxDate?.getTime();
           let minDateNum = props.minDate?.getTime();
-          if (props.rangeState.selecting) {
-            maxDateNum = props.rangeState.endDate;
-          }
 
           minDateNum = startOfMonth(minDateNum).getTime();
           maxDateNum = maxDateNum ? startOfMonth(maxDateNum).getTime() : minDateNum;
@@ -140,20 +139,17 @@ export default {
       });
     });
 
-    const handleMouseMove = (event: MouseEvent, { year }: { year: Date}): void => {
-      // update data only different cell's hover
-      if (event.target === state.lastHoveredCell) return;
-      state.lastHoveredCell = event.target;
+    const mouseMove = (cell: YearCellModel): void => {
       if (!props.rangeState.selecting) return;
-      ctx.emit('pick', {
-        minDate: props.minDate,
-        maxDate: props.maxDate,
-        rangeState: {
-          selecting: true,
-          endDate: year
-        }
+      if (cell.disabled) return;
+      ctx.emit('rangeSelecting', {
+        selecting: true,
+        hoveredDate: cell.year,
+        pickedDate: props.minDate
       });
     };
+
+    const handleMouseMove = throttle(mouseMove, 200);
 
     const getCellClasses = (cell: YearCellModel): string[] => {
       const classes = ['cell', 'cell_year'];
@@ -165,7 +161,7 @@ export default {
         if (new Date().getFullYear() === cell.year.getFullYear())
           classes.push('cell_today');
       } else {
-        if (cell.inRange) classes.push('cell_in-range');
+        if (cell.inRange || cell.year && isDateInRangeInterval(cell.year, props.rangeState)) classes.push('cell_in-range');
 
         if (isSameYear(cell.year, new Date())) {
           classes.push('cell_today');
@@ -175,25 +171,29 @@ export default {
       return classes;
   };
 
-    const handleYearTableClick = (event: MouseEvent, { year }: { year: Date }): void => {
+    const handleYearTableClick = ({ year }: { year: Date }): void => {
       if (props.selectionMode === 'range') {
         if (!props.rangeState.selecting) {
           ctx.emit('pick', {
             minDate: year,
             maxDate: null,
-            rangeState: { selecting: true, end: null }
+            rangeState: {
+              pickedDate: year,
+              hoveredDate: null,
+              selecting: true
+            }
           });
         } else if (year.getTime() >= props.minDate.getTime()) {
           ctx.emit('pick', {
             minDate: props.minDate,
             maxDate: year,
-            rangeState: { selecting: false, end: null }
+            rangeState: { ...props.rangeState, selecting: false }
           });
         } else {
           ctx.emit('pick', {
             minDate: year,
             maxDate: props.minDate,
-            rangeState: { selecting: false, end: null }
+            rangeState: { ...props.rangeState, selecting: false }
           });
         }
       } else {

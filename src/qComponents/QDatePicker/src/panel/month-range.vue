@@ -93,9 +93,9 @@ import { reactive, computed, watch, inject, PropType } from 'vue';
 import isSameMonth from 'date-fns/isSameMonth';
 import MonthTable from '../tables/month-table.vue';
 import focusMixin from './focus-mixin';
-import { leftYearComposable, handleShortcutClick, leftMonthComposable, rightMonthComposable, isValidValue } from './composition';
+import { leftYearComposable, handleShortcutClick, leftMonthComposable, rightMonthComposable, isValidValue, useLeftPrevYearClick, useLeftNextYearClick, useRightNextYearClick, useRightPrevYearClick } from './composition';
 
-import type { MonthRangeState, MonthRangeInterface, DatePanelRangePropModelValue, RangePickValue } from './types';
+import type { MonthRangeState, MonthRangeInterface, DatePanelRangePropModelValue, RangePickValue, DatePanelPropShortcuts } from './types';
 import { QDatePickerProvider } from '../types';
 import { RangeState } from '../tables/types';
 
@@ -110,7 +110,15 @@ export default {
     disabledValues: {
       type: Object,
       default: null
-    }
+    },
+    showTime: {
+      type: Boolean,
+      default: false
+    },
+    shortcuts: {
+      type: Array as PropType<DatePanelPropShortcuts>,
+      default: (): [] => []
+    },
   },
 
   emits: ['pick'],
@@ -126,7 +134,6 @@ export default {
         pickedDate: null,
         selecting: false
       },
-      shortcuts: '',
       isRanged: true,
       currentView: 'monthrange',
       panelInFocus: null,
@@ -156,9 +163,9 @@ export default {
       return new Date().getFullYear() + 1;
     });
 
-    const leftYear = leftYearComposable(state.leftDate);
-    const leftMonth = leftMonthComposable(state.leftDate);
-    const rightMonth = rightMonthComposable(state.rightDate);
+    const leftYear = computed(() => leftYearComposable(state.leftDate));
+    const leftMonth = computed(() => leftMonthComposable(state.leftDate));
+    const rightMonth = computed(() => rightMonthComposable(state.rightDate));
 
     const enableYearArrow = computed<boolean>(() => rightYear.value > leftYear.value + 1);
 
@@ -182,9 +189,9 @@ export default {
 
       state.maxDate = val.maxDate;
       state.minDate = val.minDate;
-
+      
       // emit QDatepicker intermediate value
-      picker.emitChange(val, true);
+      picker.emitChange([state.minDate, state.maxDate], true);
 
       if (!close) return;
       
@@ -201,6 +208,22 @@ export default {
       state.leftDate = new Date();
       state.rightDate = addYears(new Date(), 1);
       ctx.emit('pick', null);
+    }
+
+    const handleLeftPrevYearClick = (): void => {
+      state.leftDate = useLeftPrevYearClick(state.leftDate);
+    }
+
+    const handleLeftNextYearClick = (): void => {
+      state.leftDate = useLeftNextYearClick(state.leftDate);
+    }
+
+    const handleRightNextYearClick = (): void => {
+      state.rightDate = useRightNextYearClick(state.rightDate);
+    }
+
+    const handleRightPrevYearClick = (): void => {
+      state.rightDate = useRightPrevYearClick(state.rightDate);
     }
 
     watch(() => props.value, (newVal) => {
@@ -242,7 +265,11 @@ export default {
       enableYearArrow,
       handleClear,
       handleShortcutClick,
-      handleRangeSelecting
+      handleRangeSelecting,
+      handleLeftPrevYearClick,
+      handleLeftNextYearClick,
+      handleRightNextYearClick,
+      handleRightPrevYearClick
     }
   },
 };

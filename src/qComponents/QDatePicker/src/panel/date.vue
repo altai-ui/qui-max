@@ -98,19 +98,11 @@
           @pick="handleMonthPick"
         />
       </div>
-      <div
+      <!-- <div
         v-if="showTime && state.currentView === 'date'"
         class="q-picker-panel__timepickers"
       >
-        <!-- <time-panel
-          ref="timePanel"
-          class="time-panel_no-left-borders"
-          :value="parsedTime"
-          :disabled-values="disabledValues"
-          :panel-in-focus="panelInFocus === 'time'"
-          @change="handleTimeChange"
-        /> -->
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -122,28 +114,25 @@ import { useI18n } from 'vue-i18n';
 import { reactive, computed, watch, PropType, onMounted, ref } from 'vue';
 import { getConfig } from '@/qComponents/config';
 import { getTimeModel } from '../../../helpers/dateHelpers';
-// import TimePanel from '../../../QTimePicker/src/components/panel';
 import YearTable from '../tables/year-table.vue';
 import MonthTable from '../tables/month-table.vue';
 import DateTable from '../tables/date-table.vue';
-import focusTimeMixin from './focus-time-mixin';
+import { handleShortcutClick } from './composition';
 
 import type { DatePanelPropShortcuts, DatePanelPropModelValue, DatePanelInterface, DatePanelProps, DatePanelState } from './types';
 import {
-DATE_CELLS_COUNT,
-DATE_CELLS_IN_ROW_COUNT,
-PERIOD_CELLS_IN_ROW_COUNT
+  DATE_CELLS_COUNT,
+  DATE_CELLS_IN_ROW_COUNT,
+  PERIOD_CELLS_IN_ROW_COUNT
 } from './constants';
 
 export default {
   name: 'QDatePickerPanelDate',
   components: {
-    // TimePanel,
     YearTable,
     MonthTable,
     DateTable
   },
-  mixins: [focusTimeMixin],
   props: {
     firstDayOfWeek: {
       type: Number,
@@ -173,6 +162,10 @@ export default {
     modelValue: {
       type: Date as PropType<DatePanelPropModelValue>,
       default: null
+    },
+    visible: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -339,14 +332,6 @@ export default {
         state.year = addYears(new Date(state.year, 1), 10).getFullYear();
       } else {
         state.year = addYears(new Date(state.year, 1), 1).getFullYear();
-      }
-    };
-
-    const handleShortcutClick = (
-      shortcut: Record<string, (model: unknown) => void>
-    ): void => {
-      if (shortcut.onClick) {
-        shortcut.onClick(this);
       }
     };
 
@@ -543,7 +528,6 @@ export default {
       selectionMode,
       currentMonth,
       yearLabel,
-      // handleTimeChange,
       showMonthPicker,
       showYearPicker,
       showDatePicker,

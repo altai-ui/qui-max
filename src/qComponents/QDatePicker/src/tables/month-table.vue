@@ -3,7 +3,6 @@
     cellspacing="4"
     cellpadding="5"
     class="q-month-table"
-    @mousemove="handleMouseMove"
   >
     <tr
       v-for="(row, index) in rows"
@@ -20,6 +19,7 @@
           type="button"
           tabindex="-1"
           @click="handleMonthTableClick(cell)"
+          @mousemove="handleMouseMove(cell)"
         >
           {{ getMonthName(cell.text) }}
         </button>
@@ -30,16 +30,18 @@
 
 <script lang="ts">
 import { startOfMonth, isSameMonth, isBefore, isAfter } from 'date-fns';
-import { reactive, computed } from 'vue';
+import { reactive, computed, PropType } from 'vue';
 import { getConfig } from '@/qComponents/config';
-import { formatLocalDate } from '../helpers';
-import { RangeStateProp } from './types';
+import { throttle } from 'lodash-es';
+import { formatToLocalReadableString } from '../helpers';
+import type { MonthCellModel, MonthTableInstance, MonthTableState, RangeState } from './types';
+import { isDateInRangeInterval } from './composition';
 
-const checkDisabled = ({ date }: { date: Date }, disabledValues): boolean => {
+const checkDisabled = (date: Date, disabledValues: Record<string, Date>): boolean => {
   if (!disabledValues) return false;
   const disabled = [];
   if (Array.isArray(disabledValues.ranges)) {
-    disabledValues.ranges.forEach(range => {
+    disabledValues.ranges.forEach((range: Record<string, Date>) => {
       disabled.push(
         (isSameMonth(date, range.start) || isBefore(range.start, date)) &&
           (isAfter(range.end, date) || isSameMonth(range.end, date))
@@ -64,39 +66,40 @@ export default {
       type: Object,
       default: null
     },
-    value: { type: [Date, String], default: null },
+    value: { type: Date, default: null },
     selectionMode: {
       type: String,
       default: 'month'
     },
-    minDate: { type: [Date, String], default: null },
-    maxDate: { type: [Date, String], default: null },
+    minDate: { type: Date, default: null },
+    maxDate: { type: Date, default: null },
     year: {
-      type: [String, Number],
+      type: Number,
       default: new Date().getFullYear()
     },
     month: {
-      type: [String, Number],
+      type: Number,
       default: new Date().getMonth()
     },
     rangeState: {
-      type: Object,
-      default: (): RangeStateProp => {
+      type: Object as PropType<RangeState>,
+      default: (): RangeState => {
         return {
-          endDate: null,
+          hoveredDate: null,
+          pickedDate: null,
           selecting: false
         };
       }
     }
   },
 
-  emits: ['pick', 'changerange'],
+  emits: ['pick', 'rangeSelecting'],
 
-  setup(props, ctx) {
-    const state = reactive({
+  setup(props, ctx): MonthTableInstance {
+    const state = reactive<MonthTableState>({
       tableRows: [[], [], []],
       lastRow: null,
-      lastColumn: null
+      lastColumn: null,
     });
 
     const rows = computed(() => {
@@ -104,46 +107,35 @@ export default {
       return tableRows.map((row, i) => {
         const newRow = [];
         for (let j = 0; j < 4; j += 1) {
-          const cell = {
+          const index = i * 4 + j;
+          const month = startOfMonth(new Date(props.year, index));
+          const cell: MonthCellModel = {
             row: i,
             column: j,
             type: 'normal',
             inRange: false,
             start: false,
-            end: false
+            end: false,
+            text: index,
+            month,
+            disabled: checkDisabled(month, props.disabledValues),
           };
-          cell.type = 'normal';
 
-          const index = i * 4 + j;
+          let maxDateNum = props.maxDate?.getTime();
+          let minDateNum = props.minDate?.getTime();
 
-          cell.text = index;
-          cell.month = startOfMonth(new Date(props.year, index));
-          cell.disabled = checkDisabled(
-            { date: cell.month },
-            props.disabledValues
-          );
+          minDateNum = startOfMonth(minDateNum).getTime();
+          maxDateNum = maxDateNum ? startOfMonth(maxDateNum).getTime() : minDateNum;
 
-          let maxDate = state.maxDate;
-          let minDate = state.minDate;
+          minDateNum = Math.min(minDateNum, maxDateNum);
+          maxDateNum = Math.max(minDateNum, maxDateNum);
 
-          if (props.rangeState.selecting) {
-            maxDate = props.rangeState.endDate;
-          }
+          cell.inRange = Boolean(
+            minDateNum &&
+            month.getTime() >= minDateNum &&
+            month.getTime() <= maxDateNum);
 
-          minDate = startOfMonth(minDate);
-          maxDate = maxDate ? startOfMonth(maxDate) : minDate;
-
-          [minDate, maxDate] = [
-            Math.min(minDate, maxDate),
-            Math.max(minDate, maxDate)
-          ];
-
-          cell.inRange =
-            minDate &&
-            cell.month.getTime() >= minDate &&
-            cell.month.getTime() <= maxDate;
-
-          if (isSameMonth(cell.month, new Date())) {
+          if (isSameMonth(month, new Date())) {
             cell.type = 'today';
           }
 
@@ -154,85 +146,71 @@ export default {
       });
     })
 
-    const getMonthName = (monthIndex: number): Date => {
-      return formatLocalDate(
+    const getMonthName = (monthIndex: number): string => {
+      return formatToLocalReadableString(
         new Date(props.year, monthIndex, 1),
         'MMM',
         getConfig('locale')
       );
-    },
+    };
 
-    const getCellClasses = (cell) => {
+    const getCellClasses = (cell: MonthCellModel): string[] => {
       const classes = ['cell', 'cell_month'];
-      if (props.modelValue && isSameMonth(props.modelValue, cell.month))
+      if (props.value && cell.month && isSameMonth(props.value, cell.month))
         classes.push('cell_current');
       if (cell.type === 'today') classes.push('cell_today');
 
-      if (cell.inRange) {
+      if (cell.inRange || cell.month && isDateInRangeInterval(cell.month, props.rangeState)) {
         classes.push('cell_in-range');
       }
       return classes;
     };
 
-    const handleMouseMove = (event: MouseEvent): void => {
+    const mouseMove = (cell: MonthCellModel): void => {
       if (!props.rangeState.selecting) return;
-
-      let target = event.target;
-      if (target.tagName === 'BUTTON') {
-        target = target.parentNode;
-      }
-
-      if (target.tagName !== 'TD') return;
-
-      const row = target.parentNode.rowIndex;
-      const column = target.cellIndex;
-      // can not select disabled date
-      if (rows.value[row][column].disabled) return;
-
-      // only update rangeState when mouse moves to a new cell
-      // this avoids frequent Date object creation and improves performance
-      if (row !== state.lastRow || column !== state.lastColumn) {
-        state.lastRow = row;
-        state.lastColumn = column;
-        ctx.emit('pick', {
-          minDate: state.minDate,
-          maxDate: state.maxDate,
-          rangeState: {
-            selecting: true,
-            endDate: new Date(props.year, row * 4 + column, 1)
-          }
-        });
-      }
-    },
-
-    const handleMonthTableClick = (cell) => {
       if (cell.disabled) return;
-      const month = cell.month.getMonth();
+      ctx.emit('rangeSelecting', {
+        selecting: true,
+        hoveredDate: cell.month,
+        pickedDate: props.minDate
+      });
+    };
+
+    const handleMouseMove = throttle(mouseMove, 200)
+
+    const handleMonthTableClick = (cell: MonthCellModel): void => {
+      if (cell.disabled) return;
+      const month = cell.month?.getMonth();
       const newDate = cell.month;
+      if (!newDate) return;
       if (props.selectionMode === 'range') {
         if (!props.rangeState.selecting) {
           ctx.emit('pick', {
             minDate: newDate,
             maxDate: null,
-            rangeState: { ...props.rangeState, selecting: true }
+            rangeState: {
+              pickedDate: newDate,
+              hoveredDate: null,
+              selecting: true
+            }
           });
-        } else if (newDate >= state.minDate) {
+        } else if (newDate >= props.minDate) {
           ctx.emit('pick', {
-            minDate: state.minDate,
+            minDate: props.minDate,
             maxDate: newDate,
             rangeState: { ...props.rangeState, selecting: false }
           });
         } else {
           ctx.emit('pick', {
             minDate: newDate,
-            maxDate: state.minDate,
+            maxDate: props.minDate,
             rangeState: { ...props.rangeState, selecting: false }
           });
         }
       } else {
         ctx.emit('pick', month, props.year);
       }
-    }
+    };
 
     return {
       state,
@@ -242,6 +220,6 @@ export default {
       getCellClasses,
       handleMouseMove
     }
-  },
+  }
 };
 </script>

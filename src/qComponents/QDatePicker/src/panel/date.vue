@@ -42,22 +42,20 @@
             @click="handlePrevMonthClick"
           />
           <div class="q-picker-panel__header-sign">
-            <span
+            <button
               v-show="state.currentView === 'date'"
-              role="button"
               class="q-picker-panel__header-label"
               :class="{ active: state.currentView === 'month' }"
               @click="showMonthPicker"
             >
               {{ currentMonth }}
-            </span>
-            <span
-              role="button"
+            </button>
+            <button
               class="q-picker-panel__header-label"
               @click="showYearPicker"
             >
               {{ yearLabel }}
-            </span>
+            </button>
           </div>
           <button
             v-show="state.currentView === 'date'"
@@ -118,20 +116,19 @@
 </template>
 
 <script lang="ts">
-import { isDate, subMonths, addMonths, subYears, addYears } from 'date-fns';
+import { subMonths, addMonths, subYears, addYears } from 'date-fns';
+import { isNil } from 'lodash-es';
 import { useI18n } from 'vue-i18n';
 import { reactive, computed, watch, PropType, onMounted, ref } from 'vue';
 import { getConfig } from '@/qComponents/config';
-import { clearTime, clearMilliseconds, setTimeToDate } from '../helpers';
-import { addZero } from '../../../helpers/dateHelpers';
+import { getTimeModel } from '../../../helpers/dateHelpers';
 // import TimePanel from '../../../QTimePicker/src/components/panel';
-import YearTable from '../tables/year-table';
-import MonthTable from '../tables/month-table';
-import DateTable from '../tables/date-table';
+import YearTable from '../tables/year-table.vue';
+import MonthTable from '../tables/month-table.vue';
+import DateTable from '../tables/date-table.vue';
 import focusTimeMixin from './focus-time-mixin';
 
-import type { QDatePickerPropModelValue } from '../types';
-import type { DatePanelPropShortcuts, DatePanelInterface } from './types';
+import type { DatePanelPropShortcuts, DatePanelPropModelValue, DatePanelInterface, DatePanelProps, DatePanelState } from './types';
 import {
 DATE_CELLS_COUNT,
 DATE_CELLS_IN_ROW_COUNT,
@@ -160,7 +157,7 @@ export default {
 
     shortcuts: {
       type: Array as PropType<DatePanelPropShortcuts>,
-      default: () => []
+      default: (): [] => []
     },
 
     disabledValues: {
@@ -174,20 +171,15 @@ export default {
     },
 
     modelValue: {
-      type: [Object, Array, Date, String],
+      type: Date as PropType<DatePanelPropModelValue>,
       default: null
     }
   },
 
   emits: ['pick'],
 
-  setup(props, ctx): DatePanelInterface {
-    if (props.modelValue && isDate(props.modelValue)) {
-      state.year = props.modelValue.getFullYear();
-      state.month = props.modelValue.getMonth();
-    }
-
-    const state = reactive({
+  setup(props: DatePanelProps, ctx): DatePanelInterface {
+    const state = reactive<DatePanelState>({
       year: new Date().getFullYear(),
       month: new Date().getMonth(),
       currentView: 'date',
@@ -199,11 +191,17 @@ export default {
       yearCells: null
     });
 
+    if (props.modelValue instanceof Date) {
+      state.year = props.modelValue.getFullYear();
+      state.month = props.modelValue.getMonth();
+    }
+
     const root = ref<HTMLElement | null>(null);
     const datePanel = ref<HTMLElement | null>(null);
     const timePanel = ref<HTMLElement | null>(null);
 
     onMounted(() => {
+      if (!root.value) return;
       state.dateCells = root.value.querySelectorAll('.q-date-table .cell');
       state.monthCells = root.value.querySelectorAll('.q-month-table .cell');
       state.yearCells = root.value.querySelectorAll('.q-year-table .cell');
@@ -212,8 +210,8 @@ export default {
     const setPanelFocus = (): void => {
       if (datePanel.value?.contains(document.activeElement)) {
         state.panelInFocus = 'date';
-      } else if (timePanel.value?.$el.contains(document.activeElement)) {
-        state.panelInFocus = 'time';
+      // } else if (timePanel.value?.$el.contains(document.activeElement)) {
+      //   state.panelInFocus = 'time';
       } else {
         state.panelInFocus = null;
       }
@@ -225,15 +223,10 @@ export default {
       'q-picker-panel__content_focused': state.panelInFocus === 'date'
     }));
 
-    const parsedTime = computed<null | Record<string, Date>>(() => {
-      if (props.modelValue && isDate(props.modelValue)) {
-        return {
-          hours: addZero(props.modelValue.getHours()),
-          minutes: addZero(props.modelValue.getMinutes()),
-          seconds: addZero(props.modelValue.getSeconds())
-        };
+    const parsedTime = computed<null | Record<string, string>>(() => {
+      if (props.modelValue) {
+        return getTimeModel(props.modelValue)
       }
-
       return null;
     });
 
@@ -271,55 +264,46 @@ export default {
       { immediate: true }
     );
 
-    watch(
-      () => props.modelValue,
-      (date: QDatePickerPropModelValue) => {
-        if (date && isDate(date)) {
-          state.year = date.getFullYear();
-          state.month = date.getMonth();
-        } else {
-          state.year = new Date().getFullYear();
-          state.month = new Date().getMonth();
-        }
-      }
-    );
+    // watch(
+    //   () => props.modelValue,
+    //   (date: DatePanelPropModelValue) => {
+    //     console.log(date);
+        
+    //     if (date instanceof Date) {
+    //       state.year = date.getFullYear();
+    //       state.month = date.getMonth();
+    //     } else {
+    //       state.year = new Date().getFullYear();
+    //       state.month = new Date().getMonth();
+    //     }
+    //   }
+    // );
 
-    const emit = (
-      value: QDatePickerPropModelValue,
-      ...args: unknown[]
-    ): void => {
-      if (Array.isArray(value)) {
-        const dates = value.map(date =>
-          props.showTime ? clearMilliseconds(date) : clearTime(date)
-        );
-        ctx.emit('pick', dates, ...args);
-      } else {
-        ctx.emit('pick', value, ...args);
-      }
-    };
+    // const handleTimeChange = ({
+    //   type,
+    //   value
+    // }: Record<string, string>): void => {
+    //   const newDate = setTimeToDate(
+    //     props.modelValue || new Date(),
+    //     type,
+    //     value
+    //   );
 
-    const handleTimeChange = ({
-      type,
-      value
-    }: Record<string, string>): void => {
-      const newDate = setTimeToDate(
-        props.modelValue || new Date(),
-        type,
-        value
-      );
-
-      emit(newDate, { hidePicker: false });
-    };
+    //   emit(newDate, { hidePicker: false });
+    // };
 
     const showMonthPicker = (): void => {
       state.currentView = 'month';
     };
+
     const showYearPicker = (): void => {
       state.currentView = 'year';
     };
+
     const showDatePicker = (): void => {
       state.currentView = 'date';
     };
+
     const handlePrevMonthClick = (): void => {
       const year = state.year;
       if (state.month === 0) {
@@ -368,9 +352,9 @@ export default {
 
     const handleMonthPick = (month: number, year: number): void => {
       if (selectionMode.value === 'month') {
-        emit(new Date(year, month, 1));
-      } else if (isDate(props.modelValue) && !Array.isArray(props.modelValue)) {
-        emit(new Date(year, month, props.modelValue.getDate()));
+        ctx.emit('pick', new Date(year, month, 1));
+      } else if (props.modelValue instanceof Date) {
+        ctx.emit('pick', new Date(year, month, props.modelValue.getDate()));
         showDatePicker();
       } else {
         state.month = month;
@@ -381,9 +365,9 @@ export default {
 
     const handleYearPick = (year: Date): void => {
       if (selectionMode.value === 'year') {
-        emit(year);
-      } else if (isDate(props.modelValue) && !Array.isArray(props.modelValue)) {
-        emit(
+        ctx.emit('pick', year);
+      } else if (props.modelValue instanceof Date) {
+        ctx.emit('pick',
           new Date(
             year.getFullYear(),
             props.modelValue.getMonth(),
@@ -397,33 +381,11 @@ export default {
       }
     };
 
-    const handleDatePick = (value: QDatePickerPropModelValue): void => {
-      emit(value, { hidePicker: !props.showTime }); // set false to keep panel open
+    const handleDatePick = (value: DatePanelPropModelValue): void => {
+      ctx.emit('pick', value, { hidePicker: !props.showTime }); // set false to keep panel open
     };
 
     const { t } = useI18n();
-
-    const navigateDropdown = (e: KeyboardEvent): void => {
-      if (e.key !== 'Tab') {
-        if (e.target.classList.contains('cell_time')) {
-          moveWithinTime(e);
-        } else if (e.target.classList.contains('cell_date')) {
-          moveWithinDates(e);
-        } else if (e.target.classList.contains('cell_month')) {
-          moveWithinPeriod({ period: 'month', e });
-        } else if (e.target.classList.contains('cell_year')) {
-          moveWithinPeriod({ period: 'year', e });
-        } else if (['monthrange', 'month'].includes(state.currentView)) {
-          state.monthCells[0]?.focus();
-        } else if (['yearrange', 'year'].includes(state.currentView)) {
-          state.yearCells[0]?.focus();
-        } else {
-          state.dateCells[0]?.focus();
-        }
-      }
-
-      setPanelFocus();
-    };
 
     const moveWithinPeriod = ({
       period,
@@ -436,6 +398,7 @@ export default {
       let nextNodeIndex;
       const periodCells =
         period === 'month' ? state.monthCells : state.yearCells;
+      if (!periodCells?.length) return;
       Array.from(periodCells).some((element, index) => {
         if (document.activeElement === element) {
           currentNodeIndex = index;
@@ -444,6 +407,10 @@ export default {
 
         return false;
       });
+
+      
+
+      if (!currentNodeIndex) return;
 
       switch (e.key) {
         case 'ArrowUp': {
@@ -466,28 +433,35 @@ export default {
         default:
           break;
       }
+      if (!nextNodeIndex) return;
 
-      const node = periodCells[nextNodeIndex];
+      const node = periodCells[nextNodeIndex] as HTMLElement;
       const newIndex = nextNodeIndex % PERIOD_CELLS_IN_ROW_COUNT;
+      
       if (node) {
         node.focus();
         state.lastFocusedCellIndex = nextNodeIndex;
-      } else if (nextNodeIndex > state.lastFocusedCellIndex) {
-        handleNextYearClick();
-        periodCells[newIndex]?.focus();
-      } else if (nextNodeIndex < state.lastFocusedCellIndex) {
-        handlePrevYearClick();
+      } else if (state.lastFocusedCellIndex) {
+        if (nextNodeIndex > state.lastFocusedCellIndex) {
+          handleNextYearClick();
+          (periodCells?.[newIndex] as HTMLElement)?.focus();
+        } else if (nextNodeIndex < state.lastFocusedCellIndex) {
+          handlePrevYearClick();
+        }
       }
     };
 
-    const moveWithinDates = (e: KeyboardEvent) => {
+    const moveWithinDates = (e: KeyboardEvent): void => {
       let currentNodeIndex;
       let nextNodeIndex;
+      if (!state.dateCells?.length) return;
       Array.from(state.dateCells).some((element, index) => {
         const isItActiveElement = document.activeElement === element;
         if (isItActiveElement) currentNodeIndex = index;
         return isItActiveElement;
       });
+
+      if (isNil(currentNodeIndex)) return;
 
       switch (e.key) {
         case 'ArrowUp': {
@@ -496,15 +470,13 @@ export default {
         }
 
         case 'ArrowRight':
-          if (
-            props.showTime &&
-            (currentNodeIndex + 1) % DATE_CELLS_IN_ROW_COUNT === 0
-          ) {
-            moveWithinTime();
-          } else {
-            nextNodeIndex = currentNodeIndex + 1;
-          }
-
+          // if (
+          //   props.showTime &&
+          //   (currentNodeIndex + 1) % DATE_CELLS_IN_ROW_COUNT === 0
+          // ) {
+          //   moveWithinTime();
+          // } else {
+          nextNodeIndex = currentNodeIndex + 1;
           break;
 
         case 'ArrowLeft':
@@ -519,18 +491,46 @@ export default {
           break;
       }
 
-      const node = state.dateCells[nextNodeIndex];
+      if (isNil(nextNodeIndex)) return;
+
+      const node = state.dateCells[nextNodeIndex] as HTMLElement;
       const newIndex = nextNodeIndex % DATE_CELLS_IN_ROW_COUNT;
       if (node) {
         node.focus();
         state.lastFocusedCellIndex = nextNodeIndex;
-      } else if (nextNodeIndex > state.lastFocusedCellIndex) {
-        handleNextMonthClick();
-        state.dateCells[newIndex]?.focus();
-      } else if (nextNodeIndex < state.lastFocusedCellIndex) {
-        handlePrevMonthClick();
-        state.dateCells[DATE_CELLS_COUNT + newIndex]?.focus();
+      } else if (state.lastFocusedCellIndex) {
+        if (nextNodeIndex > state.lastFocusedCellIndex) {
+          handleNextMonthClick();
+          (state.dateCells?.[newIndex] as HTMLElement)?.focus();
+        } else if (nextNodeIndex < state.lastFocusedCellIndex) {
+          handlePrevMonthClick();
+          (state.dateCells?.[DATE_CELLS_COUNT + newIndex] as HTMLElement)?.focus();
+        }
       }
+    };
+
+    const navigateDropdown = (e: KeyboardEvent): void => {
+      const target = e.target as HTMLElement;
+      if (e.key !== 'Tab') {
+        // if (target.classList.contains('cell_time')) {
+        //   moveWithinTime(e);
+        // } else 
+        if (target.classList.contains('cell_date')) {
+          moveWithinDates(e);
+        } else if (target.classList.contains('cell_month')) {
+          moveWithinPeriod({ period: 'month', e });
+        } else if (target.classList.contains('cell_year')) {
+          moveWithinPeriod({ period: 'year', e });
+        } else if (['monthrange', 'month'].includes(state.currentView)) {
+          (state.monthCells?.[0] as HTMLElement)?.focus();
+        } else if (['yearrange', 'year'].includes(state.currentView)) {
+          (state.yearCells?.[0] as HTMLElement)?.focus();
+        } else {
+          (state.dateCells?.[0] as HTMLElement)?.focus();
+        }
+      }
+
+      setPanelFocus();
     };
 
     return {
@@ -543,7 +543,7 @@ export default {
       selectionMode,
       currentMonth,
       yearLabel,
-      handleTimeChange,
+      // handleTimeChange,
       showMonthPicker,
       showYearPicker,
       showDatePicker,

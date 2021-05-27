@@ -2,7 +2,7 @@
 import { Meta, Story } from '@storybook/vue3';
 import { addMonths, subMonths } from 'date-fns';
 import QDatePicker from '@/qComponents/QDatePicker';
-import { defineComponent, reactive } from 'vue';
+import { defineComponent, reactive, watch } from 'vue';
 // import DateTime from './DateTime';
 // import Month from './Month';
 // import Year from './Year';
@@ -113,6 +113,15 @@ const Template: Story = args =>
         console.log('handleRangePickClick', val);
       };
 
+      watch(
+        () => args.type,
+        type => {
+          if (type === 'daterange') {
+            state.value = null;
+          }
+        }
+      );
+
       return {
         args,
         state,
@@ -143,5 +152,20 @@ const Template: Story = args =>
   });
 
 export const Default: Story = Template.bind({});
+export const DateRange: Story = Template.bind({});
+export const Month: Story = Template.bind({});
+export const MonthRange: Story = Template.bind({});
+
+MonthRange.args = {
+  type: 'monthrange'
+};
+
+DateRange.args = {
+  type: 'daterange'
+};
+
+Month.args = {
+  type: 'month'
+};
 
 export default storyMetadata;

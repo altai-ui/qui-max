@@ -21,14 +21,14 @@
     display: inline-block;
     width: 42%;
     height: 100%;
-    margin: 0;
     padding: 0;
-    font-weight: var(--font-weight-base);
+    margin: 0;
     font-size: inherit;
+    font-weight: var(--font-weight-base);
     line-height: 40px;
     color: var(--color-primary-black);
-    white-space: nowrap;
     text-overflow: ellipsis;
+    white-space: nowrap;
     border: none;
     outline: none;
     appearance: none;
@@ -43,13 +43,17 @@
     display: inline-block;
     width: 5%;
     height: 100%;
-    margin: 0;
     padding: 0 2px;
+    margin: 0;
     font-size: 14px;
     line-height: 32px;
-    text-align: center;
     color: var(--color-primary-black);
+    text-align: center;
   }
+}
+
+.q-form-item_is-error & {
+  border: var(--border-error);
 }
 
 .q-range-editor {
@@ -57,11 +61,12 @@
   align-items: center;
   width: 100%;
   padding-left: 5px;
+  cursor: pointer;
   background-color: var(--color-tertiary-gray-light);
   border: none;
   border-radius: var(--border-radius-base);
+  outline: none;
   box-shadow: var(--box-shadow-primary);
-  cursor: pointer;
 
   &:hover:not(.q-range-editor_disabled) {
     background-color: var(--color-tertiary-gray);
@@ -81,18 +86,14 @@
   }
 
   &_disabled {
+    cursor: not-allowed;
     background-color: var(--color-tertiary-gray);
     box-shadow: var(--box-shadow-pressed);
-    cursor: not-allowed;
 
     .q-range-separator,
     .q-range-input {
       color: var(--field-color-disabled);
       cursor: not-allowed;
     }
-  }
-
-  .q-form-item_is-error & {
-    border: var(--border-error);
   }
 }

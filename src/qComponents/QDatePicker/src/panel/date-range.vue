@@ -56,14 +56,15 @@
           </div>
           <date-table
             selection-mode="range"
-            :min-date="minDate"
-            :max-date="maxDate"
+            :min-date="state.minDate"
+            :max-date="state.maxDate"
             :month="leftMonth"
             :year="leftYear"
-            :range-state="rangeState"
+            :range-state="state.rangeState"
             :disabled-values="disabledValues"
             :first-day-of-week="firstDayOfWeek"
             @pick="handleRangePick"
+            @range-selecting="handleRangeSelecting"
           />
         </div>
         <div
@@ -103,72 +104,39 @@
           </div>
           <date-table
             selection-mode="range"
-            :min-date="minDate"
-            :max-date="maxDate"
+            :min-date="state.minDate"
+            :max-date="state.maxDate"
             :month="rightMonth"
             :year="rightYear"
-            :range-state="rangeState"
+            :range-state="state.rangeState"
             :disabled-values="disabledValues"
             :first-day-of-week="firstDayOfWeek"
             @pick="handleRangePick"
+            @range-selecting="handleRangeSelecting"
           />
         </div>
-        <!-- <div
-          v-show="showTime"
-          class="q-picker-panel__timepickers"
-        >
-          <div class="q-picker-panel__timepicker">
-            <time-panel
-              ref="leftTimePanel"
-              class="time-panel time-panel_no-left-borders time-panel_no-right-borders"
-              :value="parsedLeftTime"
-              :panel-in-focus="panelInFocus === 'timeLeft'"
-              :disabled="isLeftTimeDisabled"
-              :disabled-values="disabledValues.time"
-              :prefix-to-time="$t('QDatePicker.timeFrom')"
-              @change="handleLeftTimeChange"
-            />
-          </div>
-          <div class="q-picker-panel__timepicker">
-            <time-panel
-              ref="rightTimePanel"
-              :panel-in-focus="panelInFocus === 'timeRight'"
-              :disabled="isLeftTimeDisabled"
-              class="time-panel time-panel_no-left-borders"
-              :value="parsedRightTime"
-              :disabled-values="disabledRightTimeValues"
-              :prefix-to-time="$t('QDatePicker.timeTo')"
-              @change="handleRightTimeChange"
-            />
-          </div>
-        </div> -->
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { addMonths, isDate, isSameDay, subMonths } from 'date-fns';
-import { reactive, computed, inject, watch } from 'vue';
-import endOfDay from 'date-fns/esm/endOfDay/index';
-import { getDecade } from 'date-fns/esm/fp';
+import { addMonths, isDate, isSameDay, subMonths, getDecade, endOfDay } from 'date-fns';
+import { reactive, computed, inject, watch, PropType } from 'vue';
 import addYears from 'date-fns/fp/addYears';
 import isSameMonth from 'date-fns/esm/isSameMonth/index';
 import {
   leftMonthComposable,
   leftYearComposable,
   isValidValue,
-  rightMonthComposable,
-  handleShortcutClick
-} from './composition';
-import DateTable from '../tables/date-table';
+  rightMonthComposable, leftLabelComposable, rightLabelComposable } from './composition';
+import DateTable from '../tables/date-table.vue';
 import focusMixin from './focus-mixin';
-import focusTimeMixin from './focus-time-mixin';
-import { setTimeToDate } from '../helpers';
-import { addZero, isTimeValueValid } from '../../../helpers/dateHelpers';
-// import TimePanel from '../../../QTimePicker/src/components/panel';
-
-import type { DateRangeState, DateRangeInterface } from './types';
+import { getTimeModel } from '../../../helpers/dateHelpers';
+ 
+import type { DateRangeState, DateRangeInterface, DatePanelPropShortcuts, DatePanelRangePropModelValue, RangePickValue } from './types';
+import { QDatePickerProvider } from '../types';
+import { RangeState } from '../tables/types';
 
 const MONTHS_COUNT = 12;
 
@@ -178,20 +146,21 @@ export default {
     DateTable
     // TimePanel
   },
-  mixins: [focusMixin, focusTimeMixin],
+  mixins: [focusMixin],
   props: {
     firstDayOfWeek: {
       type: Number,
       default: 1
     },
+
     visible: {
       type: Boolean,
       default: false
     },
 
     modelValue: {
-      type: Array,
-      default: () => []
+      type: Array as PropType<DatePanelRangePropModelValue>,
+      default: null
     },
 
     disabledValues: {
@@ -200,33 +169,50 @@ export default {
     },
 
     shortcuts: {
-      type: Array,
-      default: () => []
+      type: Array as PropType<DatePanelPropShortcuts>,
+      default: (): [] => []
     },
 
     showTime: {
       type: Boolean,
       default: false
-    }
+    },
+
+    type: {
+      type: String,
+      default: 'date',
+      validator: (value: string): boolean =>
+        [
+          'date',
+          'datetime',
+          'week',
+          'month',
+          'year',
+          'daterange',
+          'datetimerange',
+          'monthrange',
+          'yearrange'
+        ].includes(value)
+    },
   },
 
   emits: ['pick'],
 
   setup(props, ctx): DateRangeInterface {
     const state = reactive<DateRangeState>({
-      minDate: '',
-      maxDate: '',
+      minDate: null,
+      maxDate: null,
       leftDate: new Date(),
       rightDate: addMonths(new Date(), 1),
       rangeState: {
-        endDate: null,
+        hoveredDate: null,
+        pickedDate: null,
         selecting: false
       },
-      isRanged: true,
       panelInFocus: null
     });
 
-    const picker = inject('qDatePicker');
+    const picker = inject<QDatePickerProvider>('qDatePicker', {} as QDatePickerProvider);
 
     const transformedValue = computed<Date[]>(() => {
       if (Array.isArray(props.modelValue)) {
@@ -245,24 +231,24 @@ export default {
       );
     });
 
-    const parsedLeftTime = computed<Record<string, string> | string | Date>(
-      () => {
-        const value = transformedValue.value[0];
-        if (isDate(value)) {
-          return {
-            hours: addZero(value.getHours()),
-            minutes: addZero(value.getMinutes()),
-            seconds: addZero(value.getSeconds())
-          };
-        }
-
-        return value;
-      }
-    );
+    const leftLabel = leftLabelComposable(state.leftDate, props.type);
+    const rightLabel = rightLabelComposable(state.rightDate, props.type);
 
     const leftMonth = leftMonthComposable(state.leftDate);
     const rightMonth = rightMonthComposable(state.rightDate);
     const leftYear = leftYearComposable(state.leftDate);
+
+    const isLeftTimeDisabled = computed(() => !transformedValue.value[0]);
+
+    const parsedLeftTime = computed<Record<string, string> | null>(() => {
+      const value = transformedValue.value[0];
+      return getTimeModel(value);
+    });
+
+    const parsedRightTime = computed<Record<string, string> | null>(() => {
+      const value = transformedValue.value[1];
+      return getTimeModel(value);
+    });
 
     const disabledRightTimeValues = computed<Record<string, string>>(() => {
       const values = { ...props.disabledValues.time };
@@ -273,21 +259,6 @@ export default {
         values.to = Object.values(parsedLeftTime.value).join(':');
       }
       return values;
-    });
-
-    const isLeftTimeDisabled = computed(() => !transformedValue.value[0]);
-
-    const parsedRightTime = computed<Record<string, string> | Date>(() => {
-      const value = transformedValue.value[1] ?? null;
-      if (isDate(value)) {
-        return {
-          hours: addZero(value.getHours()),
-          minutes: addZero(value.getMinutes()),
-          seconds: addZero(value.getSeconds())
-        };
-      }
-
-      return value;
     });
 
     const rightPanelClasses = computed<Record<string, boolean>>(() => ({
@@ -325,12 +296,16 @@ export default {
       );
     });
 
-    const handleRangePick = (val, close = true): void => {
+    const handleRangeSelecting = (value: RangeState): void => {
+      state.rangeState = value;
+    }
+
+    const handleRangePick = (val: RangePickValue, close = true): void => {
       if (state.maxDate === val.maxDate && state.minDate === val.minDate) {
         return;
       }
 
-      if (isDate(val.maxDate)) {
+      if (val.maxDate) {
         // eslint-disable-next-line no-param-reassign
         val.maxDate = endOfDay(val.maxDate);
       }
@@ -341,22 +316,12 @@ export default {
 
       state.maxDate = val.maxDate;
       state.minDate = val.minDate;
-      const to = props.disabledValues?.time?.to;
-
-      if (state.maxDate && to && isTimeValueValid(to)) {
-        const [hours, minutes, seconds] = to.split(':');
-        state.minDate.setHours(Number(hours));
-        state.minDate.setMinutes(Number(minutes));
-        state.minDate.setSeconds(Number(seconds));
-        state.maxDate.setHours(Number(hours));
-        state.maxDate.setMinutes(Number(minutes));
-        state.maxDate.setSeconds(Number(seconds));
-      }
 
       // emit QDatepicker intermediate value
-      picker?.emitChange('rangepick', val);
+      picker.emitChange([state.minDate, state.maxDate], true);
 
       if (!close) return;
+      
       if (isValidValue([state.minDate, state.maxDate])) {
         ctx.emit('pick', [state.minDate, state.maxDate], {
           hidePicker: !props.showTime
@@ -364,50 +329,16 @@ export default {
       }
     };
 
-    const handleLeftTimeChange = ({
-      value,
-      type
-    }: {
-      value: string;
-      type: string;
-    }): void => {
-      let rightTime = transformedValue.value[1] || new Date();
-      const newDate = setTimeToDate(
-        transformedValue.value[0] || new Date(),
-        type,
-        value
-      );
-
-      if (newDate.getTime() > rightTime.getTime()) {
-        rightTime = newDate;
-      }
-
-      ctx.emit('pick', [newDate, rightTime], { hidePicker: false });
-    };
-
-    const handleRightTimeChange = ({
-      value,
-      type
-    }: {
-      value: string;
-      type: string;
-    }): void => {
-      const leftTime = transformedValue.value[0] || new Date();
-      const newDate = setTimeToDate(
-        transformedValue.value[1] || new Date(),
-        type,
-        value
-      );
-
-      ctx.emit('pick', [leftTime, newDate], { hidePicker: false });
-    };
-
     const handleClear = (): void => {
       state.minDate = null;
       state.maxDate = null;
       state.leftDate = new Date();
       state.rightDate = addMonths(new Date(), 1);
-      ctx.emit('pick', null);
+      state.rangeState = {
+        hoveredDate: null,
+        pickedDate: null,
+        selecting: false
+      };
     };
 
     const handleLeftPrevMonthClick = (): void => {
@@ -471,16 +402,18 @@ export default {
       rightPanelClasses,
       leftPanelClasses,
       rightYear,
+      leftYear,
+      leftLabel,
+      rightLabel,
       leftMonth,
       rightMonth,
       handleRangePick,
-      handleLeftTimeChange,
-      handleRightTimeChange,
       handleClear,
       handleLeftPrevMonthClick,
       handleRightNextMonthClick,
       handleLeftNextMonthClick,
-      handleRightPrevMonthClick
+      handleRightPrevMonthClick,
+      handleRangeSelecting
     };
   }
 };

@@ -3,7 +3,6 @@
     cellspacing="10"
     cellpadding="2"
     class="q-date-table"
-    @mousemove="handleMouseMove"
   >
     <thead>
       <tr>
@@ -32,6 +31,7 @@
             type="button"
             tabindex="-1"
             @click="handleClick(cell)"
+            @mouseenter="handleMouseMove(cell)"
           >
             {{ cell.text }}
           </button>
@@ -56,16 +56,17 @@ import {
   isDate,
   Locale
 } from 'date-fns';
+import { throttle } from 'lodash-es';
 import { ru, enGB as en } from 'date-fns/locale';
-import { reactive, computed } from 'vue';
+import { reactive, computed, PropType } from 'vue';
 import { getConfig } from '@/qComponents/config';
-
-import type { DateTableInterface, DateTableState, CellModel, RangeStateProp } from './types';
+import { isDateInRangeInterval } from './composition';
+import type { DateCellModel, RangeState, DateTableInterface, DateTableState } from './types';
 
 const locales: Record<string, Locale> = { ru, en };
 
 const checkDisabled = (
-  { date }: { date: null | Date },
+  cellDate: Date,
   disabledValues: Record<string, Date>
 ): boolean => {
   if (!disabledValues) return false;
@@ -73,7 +74,7 @@ const checkDisabled = (
   if (Array.isArray(disabledValues.ranges)) {
     disabledValues.ranges.forEach(({ start, end }) => {
       disabled.push(
-        isWithinInterval(date, {
+        isWithinInterval(cellDate, {
           start,
           end
         })
@@ -82,11 +83,11 @@ const checkDisabled = (
   }
 
   if (isDate(disabledValues.to) && disabledValues.to) {
-    disabled.push(isBefore(date, disabledValues.to));
+    disabled.push(isBefore(cellDate, disabledValues.to));
   }
 
   if (isDate(disabledValues.from) && disabledValues.from) {
-    disabled.push(isAfter(date, disabledValues.from));
+    disabled.push(isAfter(cellDate, disabledValues.from));
   }
 
   return disabled.some(Boolean);
@@ -113,7 +114,7 @@ export default {
       default: new Date().getMonth()
     },
 
-    modelValue: { type: Date, default: null },
+    value: { type: Date, default: null },
 
     selectionMode: {
       type: String,
@@ -125,15 +126,16 @@ export default {
     maxDate: { type: Date, default: null },
 
     rangeState: {
-      type: Object,
-      default: (): RangeStateProp => ({
-        endDate: null,
+      type: Object as PropType<RangeState>,
+      default: (): RangeState => ({
+        hoveredDate: null,
+        pickedDate: null,
         selecting: false
       })
     }
   },
 
-  emits: ['changerange', 'pick'],
+  emits: ['pick', 'rangeSelecting'],
 
   setup(props, ctx): DateTableInterface {
     const state = reactive<DateTableState>({
@@ -164,6 +166,7 @@ export default {
     );
 
     const rows = computed(() => {
+      
       const date = new Date(props.year, props.month, 1);
       const firstDay = startMonthDate.value.getDay();
       const dateCountOfMonth = getDaysInMonth(date);
@@ -175,9 +178,9 @@ export default {
       let count = 1;
 
       return state.tableRows.map((row, i) => {
-        const newRow = [];
+        const newRow: DateCellModel[] = [];
         for (let j = 0; j < 7; j += 1) {
-          const cell: CellModel = {
+          const cell: DateCellModel = {
             row: i,
             column: j,
             type: 'normal',
@@ -219,14 +222,9 @@ export default {
 
           let minDateNum = props.minDate?.getTime() ?? null;
           let maxDateNum = props.maxDate?.getTime() ?? minDateNum;
-          if (props.rangeState.selecting) {
-            maxDateNum = props.rangeState.endDate?.getTime() ?? null;
-          }
 
-          [minDateNum, maxDateNum] = [
-            Math.min(minDateNum, maxDateNum),
-            Math.max(minDateNum, maxDateNum)
-          ];
+          minDateNum = Math.min(minDateNum, maxDateNum);
+          maxDateNum = Math.max(minDateNum, maxDateNum);
 
           cell.inRange = Boolean(
             minDateNum &&
@@ -239,7 +237,7 @@ export default {
             }
           }
 
-          cell.disabled = checkDisabled(cell, props.disabledValues);
+          cell.disabled = cell.date ? checkDisabled(cell.date, props.disabledValues) : false;
           newRow.push(cell);
         }
 
@@ -247,7 +245,7 @@ export default {
       });
     });
 
-    const getCellClasses = (cell: CellModel): string[] => {
+    const getCellClasses = (cell: DateCellModel): string[] => {
       const classes = ['cell', 'cell_date'];
       if (['today', 'prev-month', 'next-month'].includes(cell.type)) {
         classes.push(`cell_${cell.type}`);
@@ -255,21 +253,20 @@ export default {
 
       if (
         ['normal', 'today'].includes(cell.type) &&
-        props.modelValue && cell.date &&
-        isSameDay(cell.date, props.modelValue)
+        props.value && cell.date &&
+        isSameDay(cell.date, props.value)
       ) {
         classes.push('cell_current');
       }
 
       if (
         cell.inRange || (cell.date && (
-        (props.minDate && isSameDay(cell.date, props.minDate)) ||
-        (props.maxDate && isSameDay(cell.date, props.maxDate)) ||
+        isDateInRangeInterval(cell.date, props.rangeState) || 
         (props.selectionMode === 'week' &&
-          props.modelValue &&
+          props.value &&
           isWithinInterval(cell.date, {
-            start: startOfWeek(props.modelValue, { weekStartsOn: 1 }),
-            end: endOfWeek(props.modelValue, { weekStartsOn: 1 })
+            start: startOfWeek(props.value, { weekStartsOn: 1 }),
+            end: endOfWeek(props.value, { weekStartsOn: 1 })
           }))
         ))
       ) {
@@ -283,44 +280,26 @@ export default {
       return classes;
     };
 
-    const handleMouseMove = (event: MouseEvent): void => {
+    const mouseMove = (cell: DateCellModel): void => {
       if (!props.rangeState.selecting) return;
-      let target = event.target as HTMLElement;
-      
-      if (target.tagName === 'BUTTON') {
-        target = target.parentNode;
-      }
-
-      if (target.tagName !== 'TD') return;
-
-      const row = target.parentNode.rowIndex - 1;
-      const column = target.cellIndex;
-      // can not select disabled date
-      if (rows.value[row]?.[column].disabled) return;
-
-      // only update rangeState when mouse moves to a new cell
-      // this avoids frequent Date object creation and improves performance
-      if (row !== state.lastRow || column !== state.lastColumn) {
-        state.lastRow = row;
-        state.lastColumn = column;
-        ctx.emit('changerange', {
-          minDate: props.minDate,
-          maxDate: props.maxDate,
-          rangeState: {
-            selecting: true,
-            endDate: rows.value[row][column].date
-          }
-        });
-      }
+      if (cell.disabled) return;
+      ctx.emit('rangeSelecting', {
+        selecting: true,
+        hoveredDate: cell.date,
+        pickedDate: props.minDate
+      });
     };
 
-    const handleClick = (cell: CellModel): void => {
+    const handleMouseMove = throttle(mouseMove, 200)
+
+    const handleClick = (cell: DateCellModel): void => {
       if (cell.disabled || cell.type === 'week') return;
       const newDate = cell.date;
       if (props.selectionMode === 'range') {
         if (!props.rangeState.selecting) {
           ctx.emit('pick', { minDate: newDate, maxDate: null, rangeState: {
-            ...props.rangeState,
+            pickedDate: newDate,
+            hoveredDate: null,
             selecting: true
           } });
         } else {
@@ -331,8 +310,9 @@ export default {
             dates = { minDate: newDate, maxDate: props.minDate };
           }
           ctx.emit('pick', { ...dates, rangeState: {
-            ...props.rangeState,
-            selecting: true
+            hoveredDate: null,
+            pickedDate: null,
+            selecting: false
           } });
         }
       } else if (props.selectionMode === 'day') {
@@ -342,10 +322,6 @@ export default {
       } else if (props.selectionMode === 'week') {
         const value = newDate ? startOfWeek(newDate, { weekStartsOn: 1 }) : null;
         ctx.emit('pick', value);
-      } else if (props.selectionMode === 'dates') {
-        const value = props.modelValue || [];
-        const newValue = [...value, newDate];
-        ctx.emit('pick', newValue);
       } else {
         ctx.emit('pick', newDate);
       }

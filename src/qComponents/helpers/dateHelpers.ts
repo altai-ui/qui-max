@@ -1,8 +1,10 @@
 import { isDate } from 'date-fns';
 
-const addZero = (value: string): string => {
-  return String(value).padStart(2, '0');
-};
+const getTimeModel = (value: Date): Record<string, string> => ({
+  hours: String(value.getHours()).padStart(2, '0'),
+  minutes: String(value.getMinutes()).padStart(2, '0'),
+  seconds: String(value.getSeconds()).padStart(2, '0')
+});
 
 const isTimeValueValid = (value: string): boolean => {
   let isValid = false;
@@ -27,4 +29,4 @@ const isTimeValueValid = (value: string): boolean => {
   return isValid;
 };
 
-export { addZero, isTimeValueValid };
+export { getTimeModel, isTimeValueValid };

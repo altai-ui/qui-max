@@ -32,7 +32,6 @@
 import {
   isSameYear,
   addYears,
-  isDate,
   startOfMonth,
   startOfDecade,
   isBefore,
@@ -40,8 +39,8 @@ import {
 } from 'date-fns';
 import { reactive, computed } from 'vue';
 
-import type { YearTableState, YearTableInterface } from './types';
-import { RangeStateProp , CellModel, YearRow } from "./types";
+import type { YearTableState, YearTableInstance } from './types';
+import { DateRangeStateProp, YearCellModel } from "./types";
 
 
 const checkDisabled = (year: number, disabledValues: Record<string, Date>): boolean => {
@@ -73,17 +72,17 @@ export default {
       type: Object,
       default: null
     },
-    value: { type: [Date, String], default: null },
+    value: { type: Date, default: null },
     year: { type: Number, default: null },
     selectionMode: {
       type: String,
       default: 'year'
     },
-    minDate: { type: [Date, String], default: null },
-    maxDate: { type: [Date, String], default: null },
+    minDate: { type: Date, default: null },
+    maxDate: { type: Date, default: null },
     rangeState: {
       type: Object,
-      default: (): RangeStateProp => {
+      default: (): DateRangeStateProp => {
         return {
           endDate: null,
           selecting: false
@@ -94,7 +93,7 @@ export default {
 
   emits: ['pick'],
 
-  setup(props, ctx): YearTableInterface {
+  setup(props, ctx): YearTableInstance {
     const state = reactive<YearTableState>({
       tableRows: [[], [], []],
       lastHoveredCell: null
@@ -108,41 +107,40 @@ export default {
       return startOfDecade(new Date());
     });
 
-    const rows = computed<YearRow[]>(() => {
-      let startYearValue = startYear.value;
+    const rows = computed<YearCellModel[][]>(() => {
+      let startYearDate = startYear.value;
       return state.tableRows.map((row, i) => {
-        const newRow = [];
+        const newRow: YearCellModel[] = [];
         const cellCount = i < 2 ? 4 : 2;
         for (let j = 0; j < cellCount; j += 1) {
-          let maxDate = props.maxDate;
-          let minDate = props.minDate;
+          let maxDateNum = props.maxDate?.getTime();
+          let minDateNum = props.minDate?.getTime();
           if (props.rangeState.selecting) {
-            maxDate = props.rangeState.endDate;
+            maxDateNum = props.rangeState.endDate;
           }
 
-          minDate = startOfMonth(minDate);
-          maxDate = maxDate ? startOfMonth(maxDate) : minDate;
-          [minDate, maxDate] = [
-            Math.min(minDate, maxDate),
-            Math.max(minDate, maxDate)
-          ];
+          minDateNum = startOfMonth(minDateNum).getTime();
+          maxDateNum = maxDateNum ? startOfMonth(maxDateNum).getTime() : minDateNum;
+
+          minDateNum = Math.min(minDateNum, maxDateNum);
+          maxDateNum = Math.max(minDateNum, maxDateNum);
           newRow.push({
-            year: startYearValue,
-            disabled: checkDisabled(startYearValue, props.disabledValues),
+            year: startYearDate,
+            disabled: checkDisabled(props.year, props.disabledValues),
             inRange: Boolean(
-              minDate &&
-              startYearValue.getTime() >= minDate &&
-              startYearValue.getTime() <= maxDate)
+              minDateNum &&
+              startYearDate.getTime() >= minDateNum &&
+              startYearDate.getTime() <= maxDateNum)
           });
 
-          startYearValue = addYears(startYearValue, 1);
+          startYearDate = addYears(startYearDate, 1);
         }
 
         return newRow;
       });
     });
 
-    const handleMouseMove = (event, { year }) => {
+    const handleMouseMove = (event: MouseEvent, { year }: { year: Date}): void => {
       // update data only different cell's hover
       if (event.target === state.lastHoveredCell) return;
       state.lastHoveredCell = event.target;
@@ -157,28 +155,27 @@ export default {
       });
     };
 
-    const getCellClasses = (cell: CellModel) => {
-      const style = ['cell', 'cell_year'];
+    const getCellClasses = (cell: YearCellModel): string[] => {
+      const classes = ['cell', 'cell_year'];
       if (props.selectionMode === 'year') {
         if (
-          isDate(props.modelValue) &&
-          props.modelValue.getFullYear() === cell.year.getFullYear()
+          props.value?.getFullYear() === cell.year.getFullYear()
         )
-          style.push('cell_current');
+          classes.push('cell_current');
         if (new Date().getFullYear() === cell.year.getFullYear())
-          style.push('cell_today');
+          classes.push('cell_today');
       } else {
-        if (cell.inRange) style.push('cell_in-range');
+        if (cell.inRange) classes.push('cell_in-range');
 
         if (isSameYear(cell.year, new Date())) {
-          style.push('cell_today');
+          classes.push('cell_today');
         }
       }
 
-      return style;
+      return classes;
   };
 
-    const handleYearTableClick = (event: MouseEvent, { year }: { year: number}): void => {
+    const handleYearTableClick = (event: MouseEvent, { year }: { year: Date }): void => {
       if (props.selectionMode === 'range') {
         if (!props.rangeState.selecting) {
           ctx.emit('pick', {

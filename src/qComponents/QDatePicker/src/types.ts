@@ -1,12 +1,18 @@
 import { Instance } from '@popperjs/core';
+import { Ref } from 'vue';
 
-export type QDatePickerPropModelValue = Nullable<
-  string | Date | (string | Date)[]
->;
+type QDatePickerPropModelValue = Nullable<string | Date | (string | Date)[]>;
 
-export interface QDatePickerState {
+interface QDatePickerState {
   pickerVisible: boolean;
-  showClose: boolean;
+  showCloseIcon: boolean;
   userInput: string | null;
   popper: Instance | null;
 }
+
+interface QDatePickerProvider {
+  emitChange: (val: QDatePickerPropModelValue, intermediate: boolean) => void;
+  type: Ref<string>;
+}
+
+export { QDatePickerPropModelValue, QDatePickerState, QDatePickerProvider };

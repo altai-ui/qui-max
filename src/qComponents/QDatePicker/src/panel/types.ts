@@ -1,20 +1,42 @@
-import { ComputedRef, PropType } from 'vue';
+import { ComputedRef, Ref } from 'vue';
 import { TranslateResult, Path, Locale } from 'vue-i18n';
-import type { QDatePickerPropModelValue } from '../types';
+import { QDatePickerProvider } from '../types';
 
-type DatePanelPropShortcuts = PropType<
-  Record<string, (model: unknown) => void>[]
->;
+type DatePanelPropShortcuts = Record<string, (model: unknown) => void>[];
+type DatePanelPropModelValue = null | Date;
+
+type DatePanelRangePropModelValue = Date[] | null;
+
+type RangeState = {
+  hoveredDate: Nullable<Date>;
+  pickedDate: Nullable<Date>;
+  selecting: boolean;
+};
+
+type RangePickValue = {
+  minDate: Nullable<Date>;
+  maxDate: Nullable<Date>;
+  rangeState: RangeState;
+};
+
+interface DatePanelState {
+  year: number;
+  month: number;
+  currentView: string;
+  isRanged: boolean;
+  panelInFocus: string | null;
+  lastFocusedCellIndex: number | null;
+  dateCells: Nullable<NodeListOf<Element>>;
+  monthCells: Nullable<NodeListOf<Element>>;
+  yearCells: Nullable<NodeListOf<Element>>;
+}
 
 interface MonthRangeState {
-  minDate: Nullable<string>;
-  maxDate: Nullable<string>;
+  minDate: Nullable<Date>;
+  maxDate: Nullable<Date>;
   leftDate: Date;
   rightDate: Date;
-  rangeState: {
-    endDate: null;
-    selecting: boolean;
-  };
+  rangeState: RangeState;
   shortcuts: string;
   isRanged: boolean;
   currentView: string;
@@ -22,49 +44,38 @@ interface MonthRangeState {
 }
 
 interface DateRangeState {
-  minDate: Nullable<string>;
-  maxDate: Nullable<string>;
+  minDate: Nullable<Date>;
+  maxDate: Nullable<Date>;
   leftDate: Date;
   rightDate: Date;
-  rangeState: {
-    endDate: null;
-    selecting: boolean;
-  };
-  isRanged: boolean;
+  rangeState: RangeState;
   panelInFocus: null;
 }
 
 interface DateRangeInterface {
   state: DateRangeState;
-  picker: unknown;
+  picker: QDatePickerProvider;
   transformedValue: ComputedRef<Date[]>;
   btnDisabled: ComputedRef<boolean>;
   disabledRightTimeValues: ComputedRef<Record<string, string>>;
-  parsedLeftTime: ComputedRef<string | Date | Record<string, string>>;
   enableMonthArrow: ComputedRef<boolean>;
   isLeftTimeDisabled: ComputedRef<boolean>;
-  parsedRightTime: ComputedRef<Date | Record<string, string>>;
   enableYearArrow: ComputedRef<boolean>;
   rightPanelClasses: ComputedRef<Record<string, boolean>>;
   leftPanelClasses: ComputedRef<Record<string, boolean>>;
   rightYear: ComputedRef<number>;
+  leftYear: ComputedRef<number>;
+  leftLabel: ComputedRef<string>;
+  rightLabel: ComputedRef<string>;
   leftMonth: ComputedRef<number>;
   rightMonth: ComputedRef<number>;
-  handleRangePick: (val: any, close?: boolean) => void;
-  handleLeftTimeChange: ({
-    value,
-    type
-  }: {
-    value: string;
-    type: string;
-  }) => void;
-  handleRightTimeChange: ({
-    value,
-    type
-  }: {
-    value: string;
-    type: string;
-  }) => void;
+  handleRangePick: (
+    val: {
+      minDate: Date;
+      maxDate: Nullable<Date>;
+    },
+    close?: boolean
+  ) => void;
   handleClear: () => void;
   handleLeftPrevMonthClick: () => void;
   handleRightNextMonthClick: () => void;
@@ -90,10 +101,7 @@ interface YearRangeState {
   maxDate: Nullable<string>;
   leftDate: Date;
   rightDate: Date;
-  rangeState: {
-    endDate: null;
-    selecting: boolean;
-  };
+  rangeState: RangeState;
   isRanged: boolean;
   panelInFocus: null;
 }
@@ -112,17 +120,30 @@ interface YearRangeInterface {
   handleClear: () => void;
 }
 
+interface DatePanelProps {
+  disabledValues: Record<string, Date>;
+  firstDayOfWeek: number;
+  modelValue: DatePanelPropModelValue;
+  type: string;
+  shortcuts: DatePanelPropShortcuts;
+  showTime: boolean;
+}
+
 interface DatePanelInterface {
-  state: Record<string, Nullable<string | number | boolean>>;
+  state: DatePanelState;
+  root: Ref<HTMLElement | null>;
+  datePanel: Ref<HTMLElement | null>;
+  timePanel: Ref<HTMLElement | null>;
   panelContentClasses: ComputedRef<Record<string, boolean>>;
-  parsedTime: ComputedRef<Record<string, Date> | null>;
+  parsedTime: ComputedRef<Record<string, string> | null>;
   selectionMode: ComputedRef<string>;
   currentMonth: ComputedRef<string>;
   yearLabel: ComputedRef<string | number>;
-  handleTimeChange: ({ type, value }: Record<string, string>) => void;
+  // handleTimeChange: ({ type, value }: Record<string, string>) => void;
   showMonthPicker: () => void;
   showYearPicker: () => void;
   showDatePicker: () => void;
+  navigateDropdown: (e: KeyboardEvent) => void;
   handlePrevMonthClick: () => void;
   handleNextMonthClick: () => void;
   handlePrevYearClick: () => void;
@@ -132,17 +153,22 @@ interface DatePanelInterface {
   ) => void;
   handleYearPick: (year: Date) => void;
   handleMonthPick: (month: number, year: number) => void;
-  handleDatePick: (value: QDatePickerPropModelValue) => void;
+  handleDatePick: (value: DatePanelPropModelValue) => void;
   t: (key: Path, locale?: Locale) => TranslateResult;
 }
 
 export {
+  DatePanelState,
   DatePanelInterface,
+  DatePanelProps,
   DatePanelPropShortcuts,
+  DatePanelPropModelValue,
+  DatePanelRangePropModelValue,
   MonthRangeState,
   DateRangeState,
   DateRangeInterface,
   MonthRangeInterface,
   YearRangeState,
-  YearRangeInterface
+  YearRangeInterface,
+  RangePickValue
 };

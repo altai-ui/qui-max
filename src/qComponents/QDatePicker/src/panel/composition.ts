@@ -76,14 +76,14 @@ const handleShortcutClick = (
   }
 };
 
-const isValidValue = (value: Nullable<string>[]): boolean => {
+const isValidValue = (value: Nullable<Date>[]): boolean => {
   return Boolean(
     Array.isArray(value) &&
       value &&
       value[0] &&
       value[1] &&
-      isDate(value[0]) &&
-      isDate(value[1]) &&
+      value[0] instanceof Date &&
+      value[1] instanceof Date &&
       value[0].getTime() <= value[1].getTime()
   );
 };

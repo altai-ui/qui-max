@@ -1,57 +1,44 @@
-import { format, formatISO, isDate, parseISO } from 'date-fns';
+import { format, formatISO, isValid, parseISO } from 'date-fns';
 import { ru, enGB as en } from 'date-fns/locale';
 import { isString } from 'lodash-es';
 import { QDatePickerPropModelValue } from './types';
 
-const locales = { ru, en };
+const locales: Record<string, Locale> = { ru, en };
 
-const formatLocalDate = (
-  value: Date | number,
-  dateFnsFormat: string,
+const formatToLocalReadableString = (
+  value: Date,
+  dateFnsFormat = 'dd MMM yyyy',
   dateFnsLocale = 'ru'
-): Date | number | string => {
-  let parsedValue = value;
-  if (!isDate(parsedValue)) {
-    parsedValue = parseISO(parsedValue);
-  }
-
-  if (isDate(parsedValue)) {
-    return format(parsedValue, dateFnsFormat ?? 'dd MMM yyyy', {
-      locale: locales[dateFnsLocale]
-    });
-  }
-
-  return parsedValue;
+): string => {
+  return format(value, dateFnsFormat, {
+    locale: locales[dateFnsLocale]
+  });
 };
 
 const setTimeToDate = (date: Date, type: string, value: string): Date => {
-  let newDate = date;
-  if (isDate(date)) {
-    newDate = new Date(date);
-    switch (type) {
-      case 'hours':
-        newDate.setHours(Number(value));
-        break;
-      case 'minutes':
-        newDate.setMinutes(Number(value));
-        break;
-      case 'seconds':
-        newDate.setSeconds(Number(value));
-        break;
-      default:
-        break;
-    }
+  switch (type) {
+    case 'hours':
+      date.setHours(Number(value));
+      break;
+    case 'minutes':
+      date.setMinutes(Number(value));
+      break;
+    case 'seconds':
+      date.setSeconds(Number(value));
+      break;
+    default:
+      break;
   }
 
-  return newDate;
+  return date;
 };
 
 const clearTime = function (date: Date): Date {
   return new Date(date.getFullYear(), date.getMonth(), date.getDate());
 };
 
-const clearMilliseconds = function (date: Date): Date {
-  return new Date(
+const clearMilliseconds = (date: Date): Date =>
+  new Date(
     date.getFullYear(),
     date.getMonth(),
     date.getDate(),
@@ -60,7 +47,6 @@ const clearMilliseconds = function (date: Date): Date {
     date.getSeconds(),
     0
   );
-};
 
 const calcInputData = (
   data: string,
@@ -104,18 +90,26 @@ const validator = function (val: string | string[] | null): boolean {
   );
 };
 
-const dateValidator = function (val: QDatePickerPropModelValue): boolean {
+const checkISOIsValid = (isoDate: string): boolean =>
+  isValid(parseISO(isoDate));
+
+const checkArrayValueIsValid = (value: (string | Date)[]): boolean =>
+  Boolean(
+    value.length === 2 &&
+      (value.every(isValid) ||
+        (value.every(isString) && value.every(checkISOIsValid)))
+  );
+
+const modelValueValidator = (val: QDatePickerPropModelValue): boolean => {
+  if (val === null) return true;
   return Boolean(
-    null ||
-      isDate(val) ||
-      isDate(parseISO(val)) ||
-      (Array.isArray(val) &&
-        val.length === 2 &&
-        (val.every(isDate) || val.every(isDate(parseISO))))
+    (isString(val) && checkISOIsValid(val)) ||
+      isValid(val) ||
+      (Array.isArray(val) && checkArrayValueIsValid(val))
   );
 };
 
-const formatToISO = (date: QDatePickerPropModelValue): string | string[] => {
+const formatToISO = (date: Date | Date[]): string | string[] => {
   if (Array.isArray(date)) {
     return [formatISO(date[0]), formatISO(date[1])];
   }
@@ -123,22 +117,14 @@ const formatToISO = (date: QDatePickerPropModelValue): string | string[] => {
   return formatISO(date);
 };
 
-const convertDate = (value: string | Date): string | Date => {
-  if (isString(value) && !isDate(value)) {
-    return parseISO(value);
-  }
-
-  return value;
-};
-
 export {
   clearTime,
   clearMilliseconds,
-  formatLocalDate,
+  formatToLocalReadableString,
   setTimeToDate,
   calcInputData,
   validator,
-  dateValidator,
-  formatToISO,
-  convertDate
+  modelValueValidator,
+  checkArrayValueIsValid,
+  formatToISO
 };

@@ -41,13 +41,14 @@
           </div>
           <month-table
             selection-mode="range"
-            :min-date="minDate"
-            :max-date="maxDate"
+            :min-date="state.minDate"
+            :max-date="state.maxDate"
             :month="leftMonth"
             :year="leftYear"
-            :range-state="rangeState"
+            :range-state="state.rangeState"
             :disabled-values="disabledValues"
             @pick="handleRangePick"
+            @range-selecting="handleRangeSelecting"
           />
         </div>
         <div
@@ -73,11 +74,12 @@
             selection-mode="range"
             :month="rightMonth"
             :year="rightYear"
-            :min-date="minDate"
-            :max-date="maxDate"
-            :range-state="rangeState"
+            :min-date="state.minDate"
+            :max-date="state.maxDate"
+            :range-state="state.rangeState"
             :disabled-values="disabledValues"
             @pick="handleRangePick"
+            @range-selecting="handleRangeSelecting"
           />
         </div>
       </div>
@@ -86,22 +88,24 @@
 </template>
 
 <script lang="ts">
-import { isDate, addYears, getDecade, addMonths } from 'date-fns';
-import { reactive, computed, watch, inject } from 'vue';
+import { endOfDay, isDate, addYears, getDecade, addMonths } from 'date-fns';
+import { reactive, computed, watch, inject, PropType } from 'vue';
 import isSameMonth from 'date-fns/isSameMonth';
-import MonthTable from '../tables/month-table';
+import MonthTable from '../tables/month-table.vue';
 import focusMixin from './focus-mixin';
-import { leftYearComposable, handleShortcutClick } from './composition';
+import { leftYearComposable, handleShortcutClick, leftMonthComposable, rightMonthComposable, isValidValue } from './composition';
 
-import type { MonthRangeState, MonthRangeInterface } from './types';
+import type { MonthRangeState, MonthRangeInterface, DatePanelRangePropModelValue, RangePickValue } from './types';
+import { QDatePickerProvider } from '../types';
+import { RangeState } from '../tables/types';
 
 export default {
   components: { MonthTable },
   mixins: [focusMixin],
   props: {
     value: {
-      type: Array,
-      default: () => []
+      type: Array as PropType<DatePanelRangePropModelValue>,
+      default: null
     },
     disabledValues: {
       type: Object,
@@ -113,12 +117,13 @@ export default {
 
   setup(props, ctx): MonthRangeInterface {
     const state = reactive<MonthRangeState>({
-      minDate: '',
-      maxDate: '',
+      minDate: null,
+      maxDate: null,
       leftDate: new Date(),
       rightDate: addYears(new Date(), 1),
       rangeState: {
-        endDate: null,
+        hoveredDate: null,
+        pickedDate: null,
         selecting: false
       },
       shortcuts: '',
@@ -127,7 +132,7 @@ export default {
       panelInFocus: null,
     });
 
-    const picker = inject('qDatePicker');
+    const picker = inject<QDatePickerProvider>('qDatePicker', {} as QDatePickerProvider);
 
     const leftPanelClasses = computed<Record<string, boolean>>(() => ({
       'q-picker-panel__content': true,
@@ -152,8 +157,43 @@ export default {
     });
 
     const leftYear = leftYearComposable(state.leftDate);
+    const leftMonth = leftMonthComposable(state.leftDate);
+    const rightMonth = rightMonthComposable(state.rightDate);
 
     const enableYearArrow = computed<boolean>(() => rightYear.value > leftYear.value + 1);
+
+    const handleRangeSelecting = (value: RangeState): void => {
+      state.rangeState = value;
+    }
+
+    const handleRangePick = (val: RangePickValue, close = true): void => {
+      if (state.maxDate === val.maxDate && state.minDate === val.minDate) {
+        return;
+      }
+
+      if (val.maxDate) {
+        // eslint-disable-next-line no-param-reassign
+        val.maxDate = endOfDay(val.maxDate);
+      }
+
+      if (val.rangeState) {
+        state.rangeState = val.rangeState;
+      }
+
+      state.maxDate = val.maxDate;
+      state.minDate = val.minDate;
+
+      // emit QDatepicker intermediate value
+      picker.emitChange(val, true);
+
+      if (!close) return;
+      
+      if (isValidValue([state.minDate, state.maxDate])) {
+        ctx.emit('pick', [state.minDate, state.maxDate], {
+          hidePicker: !props.showTime
+        });
+      }
+    };
 
     const handleClear = (): void => {
       state.minDate = null;
@@ -163,7 +203,7 @@ export default {
       ctx.emit('pick', null);
     }
 
-    watch(() => props.modelValue, (newVal) => {
+    watch(() => props.value, (newVal) => {
       if (!newVal || !newVal?.length) {
         handleClear();
       } else {
@@ -194,11 +234,15 @@ export default {
       state,
       leftPanelClasses,
       rightPanelClasses,
+      leftMonth,
+      handleRangePick,
+      rightMonth,
       rightYear,
       leftYear,
       enableYearArrow,
       handleClear,
-      handleShortcutClick
+      handleShortcutClick,
+      handleRangeSelecting
     }
   },
 };

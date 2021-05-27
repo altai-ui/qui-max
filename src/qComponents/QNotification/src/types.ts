@@ -29,7 +29,7 @@ export type QNotificationMethodAddCloud = (
 
 export interface QNotificationInstance {
   clouds: Ref<QNotificationCloudItem[]>;
-  removeCloud: (cloudId?: string | null) => void;
+  removeCloud: (cloudId?: Nullable<string>) => void;
 }
 
 export interface QNotificationCloudProps {

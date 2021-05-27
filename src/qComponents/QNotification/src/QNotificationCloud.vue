@@ -16,10 +16,12 @@
           <template v-if="!dangerouslyUseHtmlString">
             {{ message }}
           </template>
+          <!-- eslint-disable vue/no-v-html -->
           <div
             v-else
             v-html="message"
           />
+          <!-- eslint-enable vue/no-v-html -->
         </template>
       </slot>
     </div>

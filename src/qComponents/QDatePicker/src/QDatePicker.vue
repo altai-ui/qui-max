@@ -71,7 +71,6 @@
       ref="panel"
       v-model="transformedToDate"
       :class="{ 'q-picker-panel_shown': Boolean(state.popper) }"
-      :visible="Boolean(state.popper)"
       :type="type"
       :shortcuts="shortcuts"
       :disabled-values="disabledValues"

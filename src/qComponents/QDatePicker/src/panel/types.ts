@@ -122,6 +122,8 @@ interface YearRangeInterface {
   state: YearRangeState;
   rightYear: ComputedRef<number>;
   leftYear: ComputedRef<number>;
+  leftLabel: ComputedRef<string>;
+  rightLabel: ComputedRef<string>;
   enableYearArrow: ComputedRef<boolean>;
   leftPanelClasses: ComputedRef<Record<string, boolean>>;
   rightPanelClasses: ComputedRef<Record<string, boolean>>;
@@ -130,6 +132,11 @@ interface YearRangeInterface {
   rightNextYear: () => void;
   rightPrevYear: () => void;
   handleClear: () => void;
+  handleShortcutClick: (
+    shortcut: Record<string, (model: Record<string, Date>) => void>
+  ) => void;
+  handleRangePick: (val: RangePickValue, close?: boolean) => void;
+  handleRangeSelecting: (value: RangeState) => void;
 }
 
 interface DatePanelProps {

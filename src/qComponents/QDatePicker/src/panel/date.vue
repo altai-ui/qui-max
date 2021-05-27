@@ -163,10 +163,6 @@ export default {
       type: Date as PropType<DatePanelPropModelValue>,
       default: null
     },
-    visible: {
-      type: Boolean,
-      default: false
-    }
   },
 
   emits: ['pick'],

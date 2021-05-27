@@ -160,11 +160,6 @@ export default {
       default: 1
     },
 
-    visible: {
-      type: Boolean,
-      default: false
-    },
-
     modelValue: {
       type: Array as PropType<DatePanelRangePropModelValue>,
       default: null

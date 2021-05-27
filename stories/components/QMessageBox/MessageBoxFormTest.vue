@@ -44,7 +44,7 @@ export default defineComponent({
   emits: [UPDATE_IS_VISIBLE_EVENT],
 
   setup(_, { emit }) {
-    const isSending = ref(false);
+    const isSending = ref<boolean>(false);
     const formModel = reactive({ name: 'Testname' });
 
     const handleCancelClick = (): void => {

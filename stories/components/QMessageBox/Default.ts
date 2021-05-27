@@ -35,7 +35,7 @@ const QMessageBoxStory: Story<QMessageBoxProps> = args =>
         }
       };
 
-      const isVisible = ref(false);
+      const isVisible = ref<boolean>(false);
 
       const handleClick = (): void => {
         isVisible.value = true;

@@ -51,7 +51,7 @@ type StoryArgs = QTextareaProps & {
 const QTextareaStory: Story<StoryArgs> = args =>
   defineComponent({
     setup() {
-      const model = ref('');
+      const model = ref<string>('');
 
       const handleFocus = (event: Event): void => {
         // eslint-disable-next-line no-console

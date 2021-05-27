@@ -182,8 +182,8 @@ export default defineComponent({
     }
 
     const reference = ref<HTMLElement | null>(null);
-    const isPopoverShown = ref(false);
-    const zIndex = ref(DEFAULT_Z_INDEX);
+    const isPopoverShown = ref<boolean>(false);
+    const zIndex = ref<number>(DEFAULT_Z_INDEX);
     const popover = ref<HTMLElement | null>(null);
 
     const popoverClasses = computed<Record<string, boolean>>(() => ({

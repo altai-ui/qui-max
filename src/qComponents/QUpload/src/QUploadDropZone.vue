@@ -60,7 +60,7 @@ export default defineComponent({
   emits: ['drop'],
 
   setup(props: QUploadDropZoneProps, ctx): QUploadDropZoneInstance {
-    const isDragover = ref(false);
+    const isDragover = ref<boolean>(false);
 
     const classes = computed<Record<string, boolean>>(() => ({
       'q-upload-drop-zone_is-dragover': Boolean(isDragover.value),

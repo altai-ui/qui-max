@@ -101,8 +101,8 @@ export default defineComponent({
   setup(props: QContextMenuProps, ctx): QContextMenuInstance {
     const reference = ref<HTMLElement | null>(null);
     const contextMenu = ref<HTMLElement | null>(null);
-    const isContextMenuShown = ref(false);
-    const zIndex = ref(DEFAULT_Z_INDEX);
+    const isContextMenuShown = ref<boolean>(false);
+    const zIndex = ref<number>(DEFAULT_Z_INDEX);
 
     const placement = computed<Placement>(() =>
       props.position === 'right' ? 'bottom-start' : 'bottom-end'

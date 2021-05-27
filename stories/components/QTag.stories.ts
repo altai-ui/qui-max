@@ -14,7 +14,7 @@ const QTagStory: Story<QTagProps> = args =>
   defineComponent({
     components: { QTag },
     setup() {
-      const tags = ref(['Tag 1', 'Tag 2', 'Tag 3', 'Tag 4', 'Tag 5']);
+      const tags = ref<string[]>(['Tag 1', 'Tag 2', 'Tag 3', 'Tag 4', 'Tag 5']);
 
       const handleCloseClick = (clickedTag: string): void => {
         // eslint-disable-next-line no-console

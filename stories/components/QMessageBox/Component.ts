@@ -12,7 +12,7 @@ const QMessageBoxComponentStory: Story<QMessageBoxProps> = () =>
       )
     },
     setup() {
-      const isVisible = ref(false);
+      const isVisible = ref<boolean>(false);
 
       const handleClick = async (): Promise<void> => {
         isVisible.value = true;

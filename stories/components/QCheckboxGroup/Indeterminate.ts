@@ -10,10 +10,15 @@ const QCheckboxGroupIndeterminateStory: Story<QCheckboxGroupProps> = args =>
   defineComponent({
     components: { QCheckboxGroup, QCheckbox },
     setup() {
-      const areAllChecked = ref(false);
-      const checkedCities = ref(['Option A', 'Option C']);
-      const cities = ref(['Option A', 'Option B', 'Option C', 'Option D']);
-      const isIndeterminate = ref(true);
+      const areAllChecked = ref<boolean>(false);
+      const checkedCities = ref<string[]>(['Option A', 'Option C']);
+      const cities = ref<string[]>([
+        'Option A',
+        'Option B',
+        'Option C',
+        'Option D'
+      ]);
+      const isIndeterminate = ref<boolean>(true);
 
       const handleChange = (value: boolean): void => {
         checkedCities.value = value ? cities.value : [];

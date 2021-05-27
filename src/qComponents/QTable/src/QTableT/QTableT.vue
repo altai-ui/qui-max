@@ -68,9 +68,10 @@ export default defineComponent({
     const isTotalShown = computed<boolean>(() => !isEmpty(qTable.total.value));
 
     const thead = ref<HTMLElement | null>(null);
-    const sticky = ref<ComponentPublicInstance<
-      UnwrapRef<QTableTStickyInstance>
-    > | null>(null);
+    const sticky =
+      ref<ComponentPublicInstance<UnwrapRef<QTableTStickyInstance>> | null>(
+        null
+      );
 
     const rootClasses = computed<Record<string, boolean>>(() => ({
       'q-table-t': true,

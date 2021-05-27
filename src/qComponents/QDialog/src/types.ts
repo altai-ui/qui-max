@@ -4,6 +4,7 @@ export type QDialogPropBeforeClose = Nullable<(hide: () => void) => void>;
 export type QDialogPropTeleportTo = Nullable<string | HTMLElement>;
 
 export interface QDialogProps {
+  width: Nullable<string | number>;
   offsetTop: Nullable<number>;
   title: Nullable<string>;
   visible: Nullable<boolean>;
@@ -20,7 +21,6 @@ export interface QDialogInstance {
   zIndex: Ref<number>;
   isRendered: Ref<boolean>;
   dialogStyle: ComputedRef<Record<string, Nullable<string | number>>>;
-  dialogClass: ComputedRef<string>;
   afterEnter: () => void;
   afterLeave: () => void;
   closeDialog: () => void;

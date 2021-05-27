@@ -19,7 +19,7 @@ const QTabPaneStory: Story<QTabPaneProps> = args =>
   defineComponent({
     components: { QTabs, QTabPane },
     setup() {
-      const activeTab = ref('first_tab');
+      const activeTab = ref<string>('first_tab');
 
       return { args, activeTab };
     },

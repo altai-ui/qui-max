@@ -11,7 +11,12 @@ import {
   UPDATE_MODEL_VALUE_EVENT,
   CHANGE_EVENT
 } from '@/qComponents/constants/events';
-import type { QTabsProps, QTabsProvider, QTabsInstance } from './types';
+import type {
+  QTabPropModelValue,
+  QTabsProps,
+  QTabsProvider,
+  QTabsInstance
+} from './types';
 
 export default defineComponent({
   name: 'QTabs',
@@ -41,7 +46,7 @@ export default defineComponent({
   emits: [UPDATE_MODEL_VALUE_EVENT, CHANGE_EVENT],
 
   setup(props: QTabsProps, { emit }): QTabsInstance {
-    const currentName = ref(props.modelValue);
+    const currentName = ref<QTabPropModelValue>(props.modelValue);
 
     const updateValue = (name: string): void => {
       emit(UPDATE_MODEL_VALUE_EVENT, name);

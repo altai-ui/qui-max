@@ -22,7 +22,7 @@ const QRadioGroupStory: Story<QRadioGroupProps> = args =>
   defineComponent({
     components: { QRadio, QRadioGroup },
     setup() {
-      const value = ref(3);
+      const value = ref<number>(3);
 
       return { value, args };
     },

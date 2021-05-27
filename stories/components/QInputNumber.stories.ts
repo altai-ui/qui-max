@@ -20,7 +20,7 @@ const storyMetadata: Meta = {
 const QInputNumberStory: Story<QInputNumberProps> = args =>
   defineComponent({
     setup() {
-      const numberValue = ref('2');
+      const numberValue = ref<string>('2');
 
       const handleEmit = (value: number, type: string): void => {
         // eslint-disable-next-line no-console

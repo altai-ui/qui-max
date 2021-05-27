@@ -20,7 +20,7 @@ const QColorPickerStory: Story<QColorPickerProps> = args =>
   defineComponent({
     components: { QColorPicker },
     setup() {
-      const color = ref('#f25');
+      const color = ref<string>('#f25');
 
       return { args, color };
     },

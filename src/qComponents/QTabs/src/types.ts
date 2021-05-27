@@ -1,4 +1,4 @@
-import { Ref } from 'vue';
+import type { Ref } from 'vue';
 
 export type QTabPropModelValue = Nullable<string>;
 export type QTabPropTabWidth = Nullable<string | number>;

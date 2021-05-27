@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { Meta, Story } from '@storybook/vue3';
+import type { Meta, Story } from '@storybook/vue3';
 import { defineComponent, ref } from 'vue';
 
 import QDialog from '@/qComponents/QDialog';

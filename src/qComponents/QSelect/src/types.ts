@@ -1,6 +1,6 @@
-import { Ref, ComputedRef, ComponentPublicInstance, UnwrapRef } from 'vue';
-import { Instance as PopperInstance } from '@popperjs/core';
-import { Composer } from 'vue-i18n';
+import type { Ref, ComputedRef, ComponentPublicInstance, UnwrapRef } from 'vue';
+import type { Instance as PopperInstance } from '@popperjs/core';
+import type { Composer } from 'vue-i18n';
 
 import type {
   QOptionModel,

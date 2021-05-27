@@ -28,7 +28,7 @@ import { defineComponent, PropType, computed, inject } from 'vue';
 
 import { validateArray } from '@/qComponents/helpers';
 
-import { QFormProvider } from '@/qComponents/QForm';
+import type { QFormProvider } from '@/qComponents/QForm';
 import type {
   QButtonProps,
   QButtonPropType,

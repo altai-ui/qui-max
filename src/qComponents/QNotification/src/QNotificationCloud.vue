@@ -42,7 +42,7 @@ import {
 } from 'vue';
 
 import { validateArray } from '@/qComponents/helpers';
-import {
+import type {
   QNotificationCloudProps,
   QNotificationCloudPropType,
   QNotificationCloudPropOnClose,
@@ -98,7 +98,7 @@ export default defineComponent({
      * callback function when closed
      */
     onClose: {
-      type: Function as unknown as PropType<QNotificationCloudPropOnClose>,
+      type: (Function as unknown) as PropType<QNotificationCloudPropOnClose>,
       default: null
     }
   },

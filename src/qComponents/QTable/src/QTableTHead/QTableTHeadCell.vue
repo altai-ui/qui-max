@@ -70,6 +70,7 @@ export default defineComponent({
       [`q-table-t-head-cell_align_${props.column.align ?? ''}`]: Boolean(
         props.column.align
       ),
+      'q-table-t-head-cell_dragging': props.draggedColumn !== null,
       'q-table-t-head-cell_sticked': stickyConfig.value.isSticked,
       'q-table-t-head-cell_sticked_first': stickyConfig.value.isFirstSticked,
       'q-table-t-head-cell_sticked_last': stickyConfig.value.isLastSticked,
@@ -181,15 +182,11 @@ export default defineComponent({
       ctx.emit('drop', position, props.column.key);
     };
 
-    const getDropZoneElement = (position: 'left' | 'right'): VNode => {
-      return h('div', {
-        class: `q-table-t-head-cell__drop-zone q-table-t-head-cell__drop-zone_${position}`,
-        onMouseup: () => handleDropZoneElementMouseUp(position)
-      });
-    };
-
     const dropZones = computed<VNode[] | null>(() => {
       if (props.draggedColumn === null) return null;
+
+      const style = { height: `${qTableT.tableHeight.value}px` };
+
       if (
         !props.column.group.draggable ||
         props.column.draggable === false ||
@@ -197,11 +194,32 @@ export default defineComponent({
       )
         return [
           h('div', {
-            class: `q-table-t-head-cell__drop-zone q-table-t-head-cell__drop-zone_full`
+            style,
+            class: {
+              'q-table-t-head-cell__drop-zone': true,
+              'q-table-t-head-cell__drop-zone_full': true
+            }
           })
         ];
 
-      return [getDropZoneElement('left'), getDropZoneElement('right')];
+      return [
+        h('div', {
+          style,
+          class: {
+            'q-table-t-head-cell__drop-zone': true,
+            'q-table-t-head-cell__drop-zone_left': true
+          },
+          onMouseup: () => handleDropZoneElementMouseUp('left')
+        }),
+        h('div', {
+          style,
+          class: {
+            'q-table-t-head-cell__drop-zone': true,
+            'q-table-t-head-cell__drop-zone_right': true
+          },
+          onMouseup: () => handleDropZoneElementMouseUp('right')
+        })
+      ];
     });
 
     return (): VNode =>

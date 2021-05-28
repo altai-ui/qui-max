@@ -130,7 +130,7 @@
     }
 
     .q-table-t-head-cell_sorted &,
-    .q-table-t-head-cell_sortable:hover &,
+    .q-table-t-head-cell_sortable:not(.q-table-t-head-cell_dragging):hover &,
     &.focus-visible {
       opacity: 1;
     }
@@ -153,7 +153,6 @@
     width: calc(50% + 1px);
     height: 100%;
     cursor: grabbing;
-    background-color: rgba(255, 0, 0, 0.1);
 
     &_full {
       right: 0;
@@ -162,10 +161,13 @@
     }
 
     &_left {
-      left: -1px;
+      left: 0;
+
+      .q-table-t_grided & {
+        left: -1px;
+      }
 
       &:hover {
-        background-color: rgba(0, 255, 0, 0.1);
         border-left: 1px solid var(--color-primary-blue);
       }
     }
@@ -174,7 +176,6 @@
       right: -1px;
 
       &:hover {
-        background-color: rgba(0, 255, 0, 0.1);
         border-right: 1px solid var(--color-primary-blue);
       }
     }

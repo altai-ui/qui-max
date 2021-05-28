@@ -259,15 +259,17 @@ export default defineComponent({
     };
 
     onMounted(() => {
-      if (!reference.value) return;
-
-      addResizeListener(reference.value.$el, updatePopperJs);
+      addResizeListener(
+        reference.value?.$el as HTMLElement | undefined,
+        updatePopperJs
+      );
     });
 
     onBeforeUnmount(() => {
-      if (!reference.value) return;
-
-      removeResizeListener(reference.value.$el, updatePopperJs);
+      removeResizeListener(
+        reference.value?.$el as HTMLElement | undefined,
+        updatePopperJs
+      );
     });
 
     return {

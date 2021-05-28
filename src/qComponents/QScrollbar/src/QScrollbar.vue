@@ -55,7 +55,6 @@ import {
 
 import {
   validateArray,
-  ResizableElement,
   addResizeListener,
   removeResizeListener
 } from '@/qComponents/helpers';
@@ -180,16 +179,22 @@ export default defineComponent({
     onMounted(() => {
       nextTick().then(update);
 
-      if (!props.noresize && resize.value && root.value) {
-        addResizeListener(resize.value as ResizableElement, update);
-        addResizeListener(root.value.parentNode as ResizableElement, update);
+      if (!props.noresize) {
+        addResizeListener(resize.value, update);
+        addResizeListener(
+          root.value?.parentNode as HTMLElement | null | undefined,
+          update
+        );
       }
     });
 
     onBeforeUnmount(() => {
-      if (!props.noresize && resize.value && root.value) {
-        removeResizeListener(resize.value as ResizableElement, update);
-        removeResizeListener(root.value.parentNode as ResizableElement, update);
+      if (!props.noresize) {
+        removeResizeListener(resize.value, update);
+        removeResizeListener(
+          root.value?.parentNode as HTMLElement | null | undefined,
+          update
+        );
       }
     });
 

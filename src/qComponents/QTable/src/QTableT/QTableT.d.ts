@@ -6,10 +6,12 @@ import type {
 } from '../QTableTSticky/QTableTSticky';
 
 export interface QTableTProvider {
+  tableHeight: Ref<Nullable<number>>;
   stickyGlobalConfig: ComputedRef<StickyGlobalConfig>;
 }
 
 export interface QTableTInstance {
+  root: Ref<Nullable<HTMLElement>>;
   thead: Ref<Nullable<HTMLElement>>;
   sticky: Ref<
     Nullable<ComponentPublicInstance<UnwrapRef<QTableTStickyInstance>>>

@@ -12,6 +12,7 @@ interface Column {
   value: Nullable<string | number>;
   isHidden?: boolean;
   sortable?: boolean;
+  draggable?: boolean;
   align?: 'left' | 'right';
   slots?: Record<string, string>;
   width?: string;

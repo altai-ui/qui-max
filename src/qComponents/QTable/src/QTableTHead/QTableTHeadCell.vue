@@ -95,17 +95,6 @@ export default defineComponent({
       'q-table-t-head-cell__content_ellipsis': !currentSlot.value
     }));
 
-    const sortArrowClasses = computed<Record<string, boolean>>(() => {
-      const isDirectionAsc = props.sortBy?.direction === 'ascending';
-      const isArrowUpShown = isCurrentSorting.value && isDirectionAsc;
-
-      return {
-        'q-table-t-head-cell__sort-arrow': true,
-        'q-icon-arrow-up': isArrowUpShown,
-        'q-icon-arrow-down': !isArrowUpShown
-      };
-    });
-
     const content = computed<VNode[] | string | number | null>(() => {
       if (!currentSlot.value) return props.column.value;
 
@@ -115,6 +104,17 @@ export default defineComponent({
         index: props.columnIndex,
         value: props.column.value
       });
+    });
+
+    const sortArrowClasses = computed<Record<string, boolean>>(() => {
+      const isDirectionAsc = props.sortBy?.direction === 'ascending';
+      const isArrowUpShown = isCurrentSorting.value && isDirectionAsc;
+
+      return {
+        'q-table-t-head-cell__sort-arrow': true,
+        'q-icon-arrow-up': isArrowUpShown,
+        'q-icon-arrow-down': !isArrowUpShown
+      };
     });
 
     const handleSortArrowClick = (): void => {
@@ -141,6 +141,16 @@ export default defineComponent({
       });
     };
 
+    const sortArrow = computed<VNode | null>(() => {
+      if (!isSortable.value) return null;
+
+      return h('button', {
+        type: 'button',
+        class: sortArrowClasses.value,
+        onClick: handleSortArrowClick
+      });
+    });
+
     return (): VNode =>
       h(
         'th',
@@ -148,12 +158,7 @@ export default defineComponent({
         [
           h('div', { class: 'q-table-t-head-cell__container' }, [
             h('div', { class: contentClasses.value }, [content.value]),
-            isSortable.value &&
-              h('button', {
-                type: 'button',
-                class: sortArrowClasses.value,
-                onClick: handleSortArrowClick
-              })
+            sortArrow.value
           ])
         ]
       );

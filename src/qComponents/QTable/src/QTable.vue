@@ -101,6 +101,7 @@ export default defineComponent({
      * Each column MAY contain:
      *  `isHidden`.
      *  `sortable`.
+     *  `draggable`.
      *  `slots`.
      *  `align` (left/right) - content's align.
      *  `width` (works with `fixedLayout: true`).

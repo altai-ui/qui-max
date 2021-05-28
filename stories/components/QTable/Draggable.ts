@@ -1,9 +1,9 @@
 import Template from './Default';
 import { total, sortBy, rows, loadingRowCount } from './args';
 
-const StickyColumn = Template.bind({});
+const Draggable = Template.bind({});
 
-StickyColumn.args = {
+Draggable.args = {
   total,
   rows,
   sortBy,
@@ -16,6 +16,7 @@ StickyColumn.args = {
   groupsOfColumns: [
     {
       key: 'one',
+      color: '#de4b7a',
       draggable: true,
       columns: [
         {
@@ -25,26 +26,36 @@ StickyColumn.args = {
         },
         {
           key: 'col2',
-          value: 'Column 2'
+          value: 'Column 2',
+          draggable: false
         },
         {
           key: 'col3',
           value: 'Column 3',
-          width: '150px',
           sortable: true
         },
         {
           key: 'col4',
           value: 'Column 4',
           sortable: true
-        },
+        }
+      ]
+    },
+    {
+      key: 'two',
+      color: '#74aff8',
+      draggable: true,
+      columns: [
         {
           key: 'col5',
-          value: 'Column 5'
+          value: 'Column 5',
+          sortable: true,
+          align: 'right'
         },
         {
           key: 'col6',
-          value: 'Column 6'
+          value: 'Column 6',
+          align: 'right'
         },
         {
           key: 'col7',
@@ -54,11 +65,11 @@ StickyColumn.args = {
         {
           key: 'col8',
           value: 'Column 8',
-          width: '1000px'
+          width: '500px'
         }
       ]
     }
   ]
 };
 
-export default StickyColumn;
+export default Draggable;

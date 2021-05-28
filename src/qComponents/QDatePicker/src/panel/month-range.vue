@@ -1,5 +1,8 @@
 <template>
-  <div class="q-picker-panel">
+  <div
+    ref="root"
+    class="q-picker-panel"
+  >
     <div class="q-picker-panel__body-wrapper">
       <div class="q-picker-panel__body">
         <slot
@@ -88,20 +91,20 @@
 </template>
 
 <script lang="ts">
-import { endOfDay, isDate, addYears, getDecade, addMonths } from 'date-fns';
-import { reactive, computed, watch, inject, PropType } from 'vue';
+import { endOfDay, isDate, addYears, addMonths } from 'date-fns';
+import { isNil } from 'lodash-es';
+import { reactive, computed, watch, inject, PropType, onMounted, ref } from 'vue';
 import isSameMonth from 'date-fns/isSameMonth';
 import MonthTable from '../tables/month-table.vue';
-import focusMixin from './focus-mixin';
 import { leftYearComposable, handleShortcutClick, leftMonthComposable, rightMonthComposable, isValidValue, useLeftPrevYearClick, useLeftNextYearClick, useRightNextYearClick, useRightPrevYearClick } from './composition';
 
-import type { MonthRangeState, MonthRangeInterface, DatePanelRangePropModelValue, RangePickValue, DatePanelPropShortcuts } from './types';
+import type { MonthRangeState, MonthRangeInstance, DatePanelRangePropModelValue, RangePickValue, DatePanelPropShortcuts } from './types';
 import { QDatePickerProvider } from '../types';
 import { RangeState } from '../tables/types';
+import { LEFT_MONTH_PANEL_START_INDEX, PERIOD_CELLS_IN_ROW_COUNT, RIGHT_MONTH_PANEL_START_INDEX } from './constants';
 
 export default {
   components: { MonthTable },
-  mixins: [focusMixin],
   props: {
     value: {
       type: Array as PropType<DatePanelRangePropModelValue>,
@@ -123,7 +126,7 @@ export default {
 
   emits: ['pick'],
 
-  setup(props, ctx): MonthRangeInterface {
+  setup(props, ctx): MonthRangeInstance {
     const state = reactive<MonthRangeState>({
       minDate: null,
       maxDate: null,
@@ -137,9 +140,14 @@ export default {
       isRanged: true,
       currentView: 'monthrange',
       panelInFocus: null,
+      monthCells: null,
+      lastFocusedCellIndex: null
     });
 
     const picker = inject<QDatePickerProvider>('qDatePicker', {} as QDatePickerProvider);
+    const root = ref<HTMLElement | null>(null);
+    const leftPanel = ref<HTMLElement | null>(null);
+    const rightPanel = ref<HTMLElement | null>(null);
 
     const leftPanelClasses = computed<Record<string, boolean>>(() => ({
       'q-picker-panel__content': true,
@@ -226,34 +234,126 @@ export default {
       state.rightDate = useRightPrevYearClick(state.rightDate);
     }
 
+    const moveWithinPeriod = (e: KeyboardEvent): void => {
+      let currentNodeIndex;
+      let nextNodeIndex;
+      const periodCells = state.monthCells;
+      const rightPanelStartIndex = RIGHT_MONTH_PANEL_START_INDEX;
+      if (!periodCells?.length) return;
+      Array.from(periodCells).some((element, index) => {
+        if (document.activeElement === element) {
+          currentNodeIndex = index;
+          return true;
+        }
+
+        return false;
+      });
+
+      if (isNil(currentNodeIndex)) return;
+      switch (e.key) {
+        case 'ArrowUp': {
+          nextNodeIndex = currentNodeIndex - PERIOD_CELLS_IN_ROW_COUNT;
+          break;
+        }
+
+        case 'ArrowRight':
+          if (
+            state.panelInFocus === 'left' &&
+            (currentNodeIndex + 1) % PERIOD_CELLS_IN_ROW_COUNT === 0
+          ) {
+            nextNodeIndex = rightPanelStartIndex;
+          } else {
+            nextNodeIndex = currentNodeIndex + 1;
+          }
+          break;
+
+        case 'ArrowLeft':
+          if (
+            state.panelInFocus === 'right' &&
+            currentNodeIndex % PERIOD_CELLS_IN_ROW_COUNT === 0
+          ) {
+            nextNodeIndex = LEFT_MONTH_PANEL_START_INDEX + 3;
+          } else {
+            nextNodeIndex = currentNodeIndex - 1;
+          }
+          break;
+
+        case 'ArrowDown': {
+          nextNodeIndex = currentNodeIndex + PERIOD_CELLS_IN_ROW_COUNT;
+          break;
+        }
+        default:
+          break;
+      }
+      if (isNil(nextNodeIndex)) return;
+
+      const node = periodCells[nextNodeIndex] as HTMLElement;
+      const newIndex = nextNodeIndex % PERIOD_CELLS_IN_ROW_COUNT;
+      
+      if (node) {
+        node.focus();
+        state.lastFocusedCellIndex = nextNodeIndex;
+      } else if (state.lastFocusedCellIndex) {
+        if (nextNodeIndex > state.lastFocusedCellIndex) {
+         handleRightNextYearClick();
+         handleLeftNextYearClick();
+          (periodCells?.[newIndex] as HTMLElement)?.focus();
+        } else if (nextNodeIndex < state.lastFocusedCellIndex) {
+          handleLeftPrevYearClick();
+          handleRightPrevYearClick();
+        }
+      }
+    };
+
+    const setPanelFocus = (): void => {
+      if (leftPanel.value?.contains(document.activeElement)) {
+        state.panelInFocus = 'left';
+      } else if (rightPanel.value?.contains(document.activeElement)) {
+        state.panelInFocus = 'right';
+      } else {
+        state.panelInFocus = 'timeRight';
+      }
+    };
+
+    const navigateDropdown = (e: KeyboardEvent): void => {
+      const target = e.target as HTMLElement;
+      if (e.key !== 'Tab') {
+        if (target.classList.contains('cell_month')) {
+          moveWithinPeriod(e);
+        } else {
+          (state.monthCells?.[0] as HTMLElement)?.focus();
+        }
+      }
+
+      setPanelFocus();
+    };
+
+    onMounted(() => {
+      if (!root.value) return;
+      state.monthCells = root.value.querySelectorAll('.q-month-table .cell'); 
+    });
+
     watch(() => props.value, (newVal) => {
       if (!newVal || !newVal?.length) {
         handleClear();
       } else {
         state.minDate = newVal[0];
         state.maxDate = newVal[1];
-        switch (picker.type.value) {
-          case 'yearrange': {
-            if (getDecade(state.minDate) === getDecade(state.maxDate)) {
-              state.leftDate = state.minDate;
-              state.rightDate = addYears(state.minDate, 10);
-            }
-            break;
-          }
-          default: {
-            if (isSameMonth(state.minDate, state.maxDate)) {
-              state.leftDate = state.minDate;
-              state.rightDate = addMonths(state.minDate, 1);
-            } else {
-              state.leftDate = state.minDate;
-              state.rightDate = state.maxDate;
-            }
-          }
+
+        if (isSameMonth(state.minDate, state.maxDate)) {
+          state.leftDate = state.minDate;
+          state.rightDate = addMonths(state.minDate, 1);
+        } else {
+          state.leftDate = state.minDate;
+          state.rightDate = state.maxDate;
         }
       }
     }, { immediate: true })
 
     return {
+      root,
+      leftPanel,
+      rightPanel,
       state,
       leftPanelClasses,
       rightPanelClasses,
@@ -269,7 +369,8 @@ export default {
       handleLeftPrevYearClick,
       handleLeftNextYearClick,
       handleRightNextYearClick,
-      handleRightPrevYearClick
+      handleRightPrevYearClick,
+      navigateDropdown
     }
   },
 };

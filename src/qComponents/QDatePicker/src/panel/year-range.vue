@@ -1,5 +1,8 @@
 <template>
-  <div class="q-picker-panel">
+  <div
+    ref="root"
+    class="q-picker-panel"
+  >
     <div class="q-picker-panel__body-wrapper">
       <slot
         name="sidebar"
@@ -28,7 +31,7 @@
             <button
               type="button"
               class="q-picker-panel__icon-btn q-icon-double-triangle-left"
-              @click="leftPrevYear"
+              @click="handleLeftPrevYearClick"
             />
             <div class="q-picker-panel__header-sign">{{ leftLabel }}</div>
             <button
@@ -38,7 +41,7 @@
                 'q-picker-panel__icon-btn_disabled': !enableYearArrow
               }"
               class="q-picker-panel__icon-btn q-icon-double-triangle-right"
-              @click="leftNextYear"
+              @click="handleLeftNextYearClick"
             />
           </div>
           <year-table
@@ -64,7 +67,7 @@
                 'q-picker-panel__icon-btn_disabled': !enableYearArrow
               }"
               class="q-picker-panel__icon-btn q-icon-double-triangle-left"
-              @click="rightPrevYear"
+              @click="handleRightPrevYearClick"
             />
             <div class="q-picker-panel__header-sign">
               {{ rightLabel }}
@@ -72,7 +75,7 @@
             <button
               type="button"
               class="q-picker-panel__icon-btn q-icon-double-triangle-right"
-              @click="rightNextYear"
+              @click="handleRightNextYearClick"
             />
           </div>
           <year-table
@@ -92,21 +95,20 @@
 </template>
 
 <script lang="ts">
-import { addMonths, addYears, getDecade, isDate, subYears, endOfDay } from 'date-fns';
-import { reactive, computed, watch, inject, PropType } from 'vue';
-import isSameMonth from 'date-fns/isSameMonth';
+import { addYears, getDecade, isDate, subYears, endOfDay } from 'date-fns';
+import { reactive, computed, watch, inject, PropType, ref, onMounted } from 'vue';
+import { isNil } from 'lodash-es';
 import YearTable from '../tables/year-table.vue';
-import focusMixin from './focus-mixin';
 import { leftYearComposable, handleShortcutClick, leftLabelComposable, rightLabelComposable, isValidValue } from './composition';
 import { DatePanelPropShortcuts, DatePanelRangePropModelValue, RangePickValue, YearRangeInterface, YearRangeState } from './types';
 import { QDatePickerProvider } from '../types';
 import { RangeState } from '../tables/types';
+import { LEFT_MONTH_PANEL_START_INDEX, PERIOD_CELLS_IN_ROW_COUNT, RIGHT_YEAR_PANEL_START_INDEX } from './constants';
 
 const YEARS_IN_DECADE = 10;
 
 export default {
   components: { YearTable },
-  mixins: [focusMixin],
   props: {
     modelValue: {
       type: Array as PropType<DatePanelRangePropModelValue>,
@@ -141,10 +143,15 @@ export default {
       },
       isRanged: true,
       currentView: 'yearrange',
-      panelInFocus: null
+      panelInFocus: null,
+      yearCells: null,
+      lastFocusedCellIndex: null
     });
     
     const picker = inject<QDatePickerProvider>('qDatePicker', {} as QDatePickerProvider);
+    const root = ref<HTMLElement | null>(null);
+    const leftPanel = ref<HTMLElement | null>(null);
+    const rightPanel = ref<HTMLElement | null>(null);
 
     const rightYear = computed<number>(() => {
       if (isDate(state.rightDate) && isDate(state.leftDate)) {
@@ -172,16 +179,16 @@ export default {
       'q-picker-panel__content_focused': state.panelInFocus === 'right'
     }));
 
-    const leftNextYear = (): void => {
+    const handleLeftNextYearClick = (): void => {
       state.leftDate = addYears(state.leftDate, YEARS_IN_DECADE);
     };
-    const leftPrevYear = (): void => {
+    const handleLeftPrevYearClick = (): void => {
       state.leftDate = subYears(state.leftDate, YEARS_IN_DECADE);
     };
-    const rightNextYear = (): void => {
+    const handleRightNextYearClick = (): void => {
       state.rightDate = addYears(state.rightDate, YEARS_IN_DECADE);
     };
-    const rightPrevYear = (): void => {
+    const handleRightPrevYearClick = (): void => {
       state.rightDate = subYears(state.rightDate, YEARS_IN_DECADE);
     };
     const handleClear = (): void => {
@@ -225,34 +232,122 @@ export default {
       state.rangeState = value;
     }
 
+    const moveWithinPeriod = (e: KeyboardEvent): void => {
+      let currentNodeIndex;
+      let nextNodeIndex;
+      const periodCells = state.yearCells;
+      const rightPanelStartIndex = RIGHT_YEAR_PANEL_START_INDEX;
+      if (!periodCells?.length) return;
+      Array.from(periodCells).some((element, index) => {
+        if (document.activeElement === element) {
+          currentNodeIndex = index;
+          return true;
+        }
+
+        return false;
+      });
+
+      if (isNil(currentNodeIndex)) return;
+      switch (e.key) {
+        case 'ArrowUp': {
+          nextNodeIndex = currentNodeIndex - PERIOD_CELLS_IN_ROW_COUNT;
+          break;
+        }
+
+        case 'ArrowRight':
+          if (
+            state.panelInFocus === 'left' &&
+            (currentNodeIndex + 1) % PERIOD_CELLS_IN_ROW_COUNT === 0
+          ) {
+            nextNodeIndex = rightPanelStartIndex;
+          } else {
+            nextNodeIndex = currentNodeIndex + 1;
+          }
+          break;
+
+        case 'ArrowLeft':
+          if (
+            state.panelInFocus === 'right' &&
+            (currentNodeIndex + 2) % PERIOD_CELLS_IN_ROW_COUNT === 0
+          ) {
+            nextNodeIndex = LEFT_MONTH_PANEL_START_INDEX + 3;
+          } else {
+            nextNodeIndex = currentNodeIndex - 1;
+          }
+          break;
+
+        case 'ArrowDown': {
+          nextNodeIndex = currentNodeIndex + PERIOD_CELLS_IN_ROW_COUNT;
+          break;
+        }
+        default:
+          break;
+      }
+      if (isNil(nextNodeIndex)) return;
+
+      const node = periodCells[nextNodeIndex] as HTMLElement;
+      const newIndex = nextNodeIndex % PERIOD_CELLS_IN_ROW_COUNT;
+      
+      if (node) {
+        node.focus();
+        state.lastFocusedCellIndex = nextNodeIndex;
+      } else if (state.lastFocusedCellIndex) {
+        if (nextNodeIndex > state.lastFocusedCellIndex) {
+         handleRightNextYearClick();
+         handleLeftNextYearClick();
+          (periodCells?.[newIndex] as HTMLElement)?.focus();
+        } else if (nextNodeIndex < state.lastFocusedCellIndex) {
+          handleLeftPrevYearClick();
+          handleRightPrevYearClick();
+        }
+      }
+    };
+
+    const setPanelFocus = (): void => {
+      if (leftPanel.value?.contains(document.activeElement)) {
+        state.panelInFocus = 'left';
+      } else if (rightPanel.value?.contains(document.activeElement)) {
+        state.panelInFocus = 'right';
+      } else {
+        state.panelInFocus = 'timeRight';
+      }
+    };
+
+    const navigateDropdown = (e: KeyboardEvent): void => {
+      const target = e.target as HTMLElement;
+      if (e.key !== 'Tab') {
+        if (target.classList.contains('cell_year')) {
+          moveWithinPeriod(e);
+        } else {
+          (state.yearCells?.[0] as HTMLElement)?.focus();
+        }
+      }
+
+      setPanelFocus();
+    };
+
+    onMounted(() => {
+      if (!root.value) return;
+      state.yearCells = root.value.querySelectorAll('.q-year-table .cell'); 
+    });
+
     watch(() => props.modelValue, (newVal) => {
       if (!newVal || !newVal?.length) {
         handleClear();
       } else {
         state.minDate = newVal[0];
         state.maxDate = newVal[1];
-        switch (picker.type.value) {
-          case 'yearrange': {
-            if (getDecade(state.minDate) === getDecade(state.maxDate)) {
-              state.leftDate = state.minDate;
-              state.rightDate = addYears(state.minDate, 10);
-            }
-            break;
-          }
-          default: {
-            if (isSameMonth(state.minDate, state.maxDate)) {
-              state.leftDate = state.minDate;
-              state.rightDate = addMonths(state.minDate, 1);
-            } else {
-              state.leftDate = state.minDate;
-              state.rightDate = state.maxDate;
-            }
-          }
+        if (getDecade(state.minDate) === getDecade(state.maxDate)) {
+          state.leftDate = state.minDate;
+          state.rightDate = addYears(state.minDate, 10);
         }
       }
     },{ immediate: true })
 
     return {
+      root,
+      rightPanel,
+      leftPanel,
       state,
       rightYear,
       leftYear,
@@ -261,14 +356,15 @@ export default {
       enableYearArrow,
       leftPanelClasses,
       rightPanelClasses,
-      leftNextYear,
-      leftPrevYear,
-      rightNextYear,
-      rightPrevYear,
+      handleLeftNextYearClick,
+      handleLeftPrevYearClick,
+      handleRightNextYearClick,
+      handleRightPrevYearClick,
       handleClear,
       handleShortcutClick,
       handleRangePick,
-      handleRangeSelecting
+      handleRangeSelecting,
+      navigateDropdown
     }
   },
 };

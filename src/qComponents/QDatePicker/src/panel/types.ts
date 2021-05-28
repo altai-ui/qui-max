@@ -42,7 +42,9 @@ interface MonthRangeState {
   rangeState: RangeState;
   isRanged: boolean;
   currentView: string;
-  panelInFocus: null;
+  panelInFocus: Nullable<string>;
+  monthCells: Nullable<NodeListOf<Element>>;
+  lastFocusedCellIndex: Nullable<number>;
 }
 
 interface DateRangeState {
@@ -51,12 +53,19 @@ interface DateRangeState {
   leftDate: Date;
   rightDate: Date;
   rangeState: RangeState;
-  panelInFocus: null;
+  panelInFocus: Nullable<string>;
+  dateCells: Nullable<NodeListOf<Element>>;
+  monthCells: Nullable<NodeListOf<Element>>;
+  yearCells: Nullable<NodeListOf<Element>>;
+  lastFocusedCellIndex: Nullable<number>;
 }
 
 interface DateRangeInstance {
   state: DateRangeState;
   picker: QDatePickerProvider;
+  root: Ref<HTMLElement | null>;
+  leftPanel: Ref<HTMLElement | null>;
+  rightPanel: Ref<HTMLElement | null>;
   transformedValue: ComputedRef<Date[]>;
   btnDisabled: ComputedRef<boolean>;
   enableMonthArrow: ComputedRef<boolean>;
@@ -86,7 +95,10 @@ interface DateRangeInstance {
   handleRangeSelecting: (value: RangeState) => void;
 }
 
-interface MonthRangeInterface {
+interface MonthRangeInstance {
+  root: Ref<HTMLElement | null>;
+  leftPanel: Ref<HTMLElement | null>;
+  rightPanel: Ref<HTMLElement | null>;
   state: MonthRangeState;
   leftPanelClasses: ComputedRef<Record<string, boolean>>;
   rightPanelClasses: ComputedRef<Record<string, boolean>>;
@@ -105,6 +117,7 @@ interface MonthRangeInterface {
   handleShortcutClick: (
     shortcut: Record<string, (model: Record<string, Date>) => void>
   ) => void;
+  navigateDropdown: (e: KeyboardEvent) => void;
 }
 
 interface YearRangeState {
@@ -115,10 +128,15 @@ interface YearRangeState {
   rangeState: RangeState;
   isRanged: boolean;
   currentView: string;
-  panelInFocus: null;
+  panelInFocus: Nullable<string>;
+  yearCells: Nullable<NodeListOf<Element>>;
+  lastFocusedCellIndex: Nullable<number>;
 }
 
 interface YearRangeInterface {
+  root: Ref<HTMLElement | null>;
+  leftPanel: Ref<HTMLElement | null>;
+  rightPanel: Ref<HTMLElement | null>;
   state: YearRangeState;
   rightYear: ComputedRef<number>;
   leftYear: ComputedRef<number>;
@@ -127,16 +145,17 @@ interface YearRangeInterface {
   enableYearArrow: ComputedRef<boolean>;
   leftPanelClasses: ComputedRef<Record<string, boolean>>;
   rightPanelClasses: ComputedRef<Record<string, boolean>>;
-  leftNextYear: () => void;
-  leftPrevYear: () => void;
-  rightNextYear: () => void;
-  rightPrevYear: () => void;
+  handleLeftNextYearClick: () => void;
+  handleLeftPrevYearClick: () => void;
+  handleRightNextYearClick: () => void;
+  handleRightPrevYearClick: () => void;
   handleClear: () => void;
   handleShortcutClick: (
     shortcut: Record<string, (model: Record<string, Date>) => void>
   ) => void;
   handleRangePick: (val: RangePickValue, close?: boolean) => void;
   handleRangeSelecting: (value: RangeState) => void;
+  navigateDropdown: (e: KeyboardEvent) => void;
 }
 
 interface DatePanelProps {
@@ -185,7 +204,7 @@ export {
   MonthRangeState,
   DateRangeState,
   DateRangeInstance,
-  MonthRangeInterface,
+  MonthRangeInstance,
   YearRangeState,
   YearRangeInterface,
   RangePickValue

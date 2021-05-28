@@ -38,10 +38,16 @@ export default defineComponent({
     sortBy: {
       type: Object as PropType<QTableTHeadCellPropSortBy>,
       default: null
+    },
+    draggedColumn: {
+      type: Object as PropType<ExtendedColumn>,
+      default: null
     }
   },
 
-  setup(props: QTableTHeadCellProps): QTableTHeadCellInstance {
+  emits: ['drag', 'drop'],
+
+  setup(props: QTableTHeadCellProps, ctx): QTableTHeadCellInstance {
     const qTable = inject<QTableProvider>('qTable', {} as QTableProvider);
     const qTableT = inject<QTableTProvider>('qTableT', {} as QTableTProvider);
     const root = ref<HTMLElement | null>(null);
@@ -151,14 +157,63 @@ export default defineComponent({
       });
     });
 
+    const endDragging = (): void => {
+      ctx.emit('drop');
+      document.removeEventListener('mouseup', endDragging);
+    };
+
+    const handleDragTriggerMouseDown = (): void => {
+      ctx.emit('drag', props.column);
+      document.addEventListener('mouseup', endDragging);
+    };
+
+    const dragTrigger = computed<VNode | null>(() => {
+      if (!props.column.group.draggable || props.column.draggable === false)
+        return null;
+
+      return h('div', {
+        class: 'q-table-t-head-cell__drag-element q-icon-drag-linear',
+        onMousedown: handleDragTriggerMouseDown
+      });
+    });
+
+    const handleDropZoneElementMouseUp = (position: 'left' | 'right'): void => {
+      ctx.emit('drop', position, props.column.key);
+    };
+
+    const getDropZoneElement = (position: 'left' | 'right'): VNode => {
+      return h('div', {
+        class: `q-table-t-head-cell__drop-zone q-table-t-head-cell__drop-zone_${position}`,
+        onMouseup: () => handleDropZoneElementMouseUp(position)
+      });
+    };
+
+    const dropZones = computed<VNode[] | null>(() => {
+      if (props.draggedColumn === null) return null;
+      if (
+        !props.column.group.draggable ||
+        props.column.draggable === false ||
+        props.draggedColumn.group.key !== props.column.group.key
+      )
+        return [
+          h('div', {
+            class: `q-table-t-head-cell__drop-zone q-table-t-head-cell__drop-zone_full`
+          })
+        ];
+
+      return [getDropZoneElement('left'), getDropZoneElement('right')];
+    });
+
     return (): VNode =>
       h(
         'th',
         { ref: root, class: cellClasses.value, style: cellStyles.value },
         [
+          dropZones.value,
           h('div', { class: 'q-table-t-head-cell__container' }, [
             h('div', { class: contentClasses.value }, [content.value]),
-            sortArrow.value
+            sortArrow.value,
+            dragTrigger.value
           ])
         ]
       );

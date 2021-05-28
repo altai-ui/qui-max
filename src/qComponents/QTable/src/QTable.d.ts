@@ -96,6 +96,7 @@ export interface QTableProvider {
   isRowClickable: ComputedRef<boolean>;
   updateCheckedRows: (value: number[]) => void;
   updateSortBy: (value: QTablePropSortBy) => void;
+  updateGroupsOfColumns: (value: QTablePropGroupsOfColumns) => void;
   emitRowClick: (row: Record<string, unknown>, rowIndex: number) => void;
 }
 

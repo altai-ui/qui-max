@@ -158,11 +158,11 @@ export default defineComponent({
       });
     });
 
-    const startCursorPostition = ref<number>(0);
+    const startCursorPosition = ref<number>(0);
     const dummyOffset = ref<number>(0);
 
     const handleMouseMove = (e: MouseEvent): void => {
-      dummyOffset.value = e.clientX - startCursorPostition.value;
+      dummyOffset.value = e.clientX - startCursorPosition.value;
     };
 
     const endDragging = (): void => {
@@ -173,7 +173,7 @@ export default defineComponent({
 
     const handleDragTriggerMouseDown = (e: MouseEvent): void => {
       e.preventDefault();
-      startCursorPostition.value = e.clientX;
+      startCursorPosition.value = e.clientX;
       dummyOffset.value = 0;
 
       ctx.emit('drag', props.column);

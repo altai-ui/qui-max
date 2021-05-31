@@ -33,11 +33,18 @@ import { startOfMonth, isSameMonth, isBefore, isAfter } from 'date-fns';
 import { reactive, computed, PropType } from 'vue';
 import { getConfig } from '@/qComponents/config';
 import { throttle } from 'lodash-es';
-import { formatToLocalReadableString } from '../helpers';
-import type { MonthCellModel, MonthTableInstance, MonthTableState, RangeState } from './types';
-import { isDateInRangeInterval } from './composition';
+import {
+  formatToLocalReadableString,
+  isDateInRangeInterval
+} from '../../helpers';
+import type { RangeState } from '../../Common';
+import type { MonthTableInstance, MonthTableState } from './MonthTable';
+import { MonthCellModel } from '../types';
 
-const checkDisabled = (date: Date, disabledValues: Record<string, Date>): boolean => {
+const checkDisabled = (
+  date: Date,
+  disabledValues: Record<string, Date>
+): boolean => {
   if (!disabledValues) return false;
   const disabled = [];
   if (Array.isArray(disabledValues.ranges)) {
@@ -97,7 +104,7 @@ export default {
 
   setup(props, ctx): MonthTableInstance {
     const state = reactive<MonthTableState>({
-      tableRows: [[], [], []],
+      tableRows: [[], [], []]
     });
 
     const rows = computed<MonthCellModel[][]>(() => {
@@ -116,22 +123,25 @@ export default {
             end: false,
             text: index,
             month,
-            disabled: checkDisabled(month, props.disabledValues),
+            disabled: checkDisabled(month, props.disabledValues)
           };
 
           let maxDateNum = props.maxDate?.getTime();
           let minDateNum = props.minDate?.getTime();
 
           minDateNum = startOfMonth(minDateNum).getTime();
-          maxDateNum = maxDateNum ? startOfMonth(maxDateNum).getTime() : minDateNum;
+          maxDateNum = maxDateNum
+            ? startOfMonth(maxDateNum).getTime()
+            : minDateNum;
 
           minDateNum = Math.min(minDateNum, maxDateNum);
           maxDateNum = Math.max(minDateNum, maxDateNum);
 
           cell.inRange = Boolean(
             minDateNum &&
-            month.getTime() >= minDateNum &&
-            month.getTime() <= maxDateNum);
+              month.getTime() >= minDateNum &&
+              month.getTime() <= maxDateNum
+          );
 
           if (isSameMonth(month, new Date())) {
             cell.type = 'today';
@@ -142,7 +152,7 @@ export default {
 
         return newRow;
       });
-    })
+    });
 
     const getMonthName = (monthIndex: number): string => {
       return formatToLocalReadableString(
@@ -158,7 +168,10 @@ export default {
         classes.push('cell_current');
       if (cell.type === 'today') classes.push('cell_today');
 
-      if (cell.inRange || cell.month && isDateInRangeInterval(cell.month, props.rangeState)) {
+      if (
+        cell.inRange ||
+        (cell.month && isDateInRangeInterval(cell.month, props.rangeState))
+      ) {
         classes.push('cell_in-range');
       }
       return classes;
@@ -174,7 +187,7 @@ export default {
       });
     };
 
-    const handleMouseMove = throttle(mouseMove, 200)
+    const handleMouseMove = throttle(mouseMove, 200);
 
     const handleMonthTableClick = (cell: MonthCellModel): void => {
       if (cell.disabled) return;
@@ -217,7 +230,7 @@ export default {
       handleMonthTableClick,
       getCellClasses,
       handleMouseMove
-    }
+    };
   }
 };
 </script>

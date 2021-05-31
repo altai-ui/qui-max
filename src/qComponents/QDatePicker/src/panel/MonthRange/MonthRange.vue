@@ -1,9 +1,18 @@
 <template>
-  <div ref="root" class="q-picker-panel">
+  <div
+    ref="root"
+    class="q-picker-panel"
+  >
     <div class="q-picker-panel__body-wrapper">
       <div class="q-picker-panel__body">
-        <slot name="sidebar" class="q-picker-panel__sidebar" />
-        <div v-if="shortcuts?.length" class="q-picker-panel__sidebar">
+        <slot
+          name="sidebar"
+          class="q-picker-panel__sidebar"
+        />
+        <div
+          v-if="shortcuts?.length"
+          class="q-picker-panel__sidebar"
+        >
           <button
             v-for="(shortcut, key) in shortcuts"
             :key="key"
@@ -14,7 +23,10 @@
             {{ shortcut.text }}
           </button>
         </div>
-        <div ref="leftPanel" :class="leftPanelClasses">
+        <div
+          ref="leftPanel"
+          :class="leftPanelClasses"
+        >
           <div class="q-picker-panel__header">
             <button
               type="button"
@@ -42,7 +54,10 @@
             @range-selecting="handleRangeSelecting"
           />
         </div>
-        <div ref="rightPanel" :class="rightPanelClasses">
+        <div
+          ref="rightPanel"
+          :class="rightPanelClasses"
+        >
           <div class="q-picker-panel__header">
             <button
               type="button"
@@ -88,7 +103,7 @@ import {
   ref
 } from 'vue';
 import isSameMonth from 'date-fns/isSameMonth';
-import MonthTable from '../tables/month-table.vue';
+import MonthTable from '../../tables/month-table.vue';
 import {
   leftYearComposable,
   leftMonthComposable,
@@ -98,7 +113,7 @@ import {
   useLeftNextYearClick,
   useRightNextYearClick,
   useRightPrevYearClick
-} from './composition';
+} from '../composition';
 
 import type {
   MonthRangeState,
@@ -106,14 +121,14 @@ import type {
   DatePanelRangePropModelValue,
   RangePickValue,
   DatePanelPropShortcuts
-} from './types';
+} from '../types';
 import { QDatePickerProvider } from '../types';
-import { RangeState } from '../tables/types';
+import { RangeState } from '../../tables/types';
 import {
   LEFT_MONTH_PANEL_START_INDEX,
   PERIOD_CELLS_IN_ROW_COUNT,
   RIGHT_MONTH_PANEL_START_INDEX
-} from './constants';
+} from '../constants';
 
 export default {
   components: { MonthTable },

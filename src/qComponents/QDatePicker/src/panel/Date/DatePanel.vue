@@ -1,8 +1,17 @@
 <template>
-  <div ref="root" class="q-picker-panel">
+  <div
+    ref="root"
+    class="q-picker-panel"
+  >
     <div class="q-picker-panel__body">
-      <slot name="sidebar" class="q-picker-panel__sidebar">
-        <div v-if="shortcuts?.length" class="q-picker-panel__sidebar">
+      <slot
+        name="sidebar"
+        class="q-picker-panel__sidebar"
+      >
+        <div
+          v-if="shortcuts?.length"
+          class="q-picker-panel__sidebar"
+        >
           <button
             v-for="(shortcut, key) in shortcuts"
             :key="key"
@@ -14,7 +23,10 @@
           </button>
         </div>
       </slot>
-      <div ref="datePanel" :class="panelContentClasses">
+      <div
+        ref="datePanel"
+        :class="panelContentClasses"
+      >
         <div class="q-picker-panel__header">
           <button
             type="button"
@@ -101,10 +113,10 @@ import { isNil } from 'lodash-es';
 import { useI18n } from 'vue-i18n';
 import { reactive, computed, watch, PropType, onMounted, ref } from 'vue';
 import { getConfig } from '@/qComponents/config';
-import { getTimeModel } from '../../../helpers/dateHelpers';
-import YearTable from '../tables/year-table.vue';
-import MonthTable from '../tables/month-table.vue';
-import DateTable from '../tables/date-table.vue';
+import { getTimeModel } from '../../../../helpers/dateHelpers';
+import YearTable from '../../tables/year-table.vue';
+import MonthTable from '../../tables/month-table.vue';
+import DateTable from '../../tables/date-table.vue';
 
 import type {
   DatePanelPropShortcuts,
@@ -112,13 +124,13 @@ import type {
   DatePanelInterface,
   DatePanelProps,
   DatePanelState
-} from './types';
+} from './DatePanel';
 
 import {
   DATE_CELLS_COUNT,
   DATE_CELLS_IN_ROW_COUNT,
   PERIOD_CELLS_IN_ROW_COUNT
-} from './constants';
+} from '../constants';
 
 export default {
   name: 'QDatePickerPanelDate',

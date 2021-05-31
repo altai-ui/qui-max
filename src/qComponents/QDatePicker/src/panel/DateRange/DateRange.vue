@@ -1,9 +1,18 @@
 <template>
-  <div ref="root" class="q-picker-panel">
+  <div
+    ref="root"
+    class="q-picker-panel"
+  >
     <div class="q-picker-panel__body-wrapper">
       <div class="q-picker-panel__body">
-        <slot name="sidebar" class="q-picker-panel__sidebar">
-          <div v-if="shortcuts?.length" class="q-picker-panel__sidebar">
+        <slot
+          name="sidebar"
+          class="q-picker-panel__sidebar"
+        >
+          <div
+            v-if="shortcuts?.length"
+            class="q-picker-panel__sidebar"
+          >
             <button
               v-for="(shortcut, key) in shortcuts"
               :key="key"
@@ -15,7 +24,10 @@
             </button>
           </div>
         </slot>
-        <div ref="leftPanel" :class="leftPanelClasses">
+        <div
+          ref="leftPanel"
+          :class="leftPanelClasses"
+        >
           <div class="q-picker-panel__header">
             <button
               type="button"
@@ -58,7 +70,10 @@
             @range-selecting="handleRangeSelecting"
           />
         </div>
-        <div ref="rightPanel" :class="rightPanelClasses">
+        <div
+          ref="rightPanel"
+          :class="rightPanelClasses"
+        >
           <div class="q-picker-panel__header">
             <button
               type="button"
@@ -132,19 +147,19 @@ import {
   useRightNextYearClick,
   useRightPrevYearClick,
   useLeftNextYearClick
-} from './composition';
-import DateTable from '../tables/date-table.vue';
+} from '../composition';
+import DateTable from '../../tables/date-table.vue';
 
 import type {
-  DateRangeState,
-  DateRangeInstance,
-  DatePanelPropShortcuts,
   DatePanelRangePropModelValue,
-  RangePickValue
-} from './types';
-import { QDatePickerProvider } from '../types';
-import { RangeState } from '../tables/types';
-import { DATE_CELLS_COUNT, DATE_CELLS_IN_ROW_COUNT } from './constants';
+  DateRangePanelInstance,
+  DateRangePanelState
+} from './DateRange';
+import { QDatePickerProvider } from '../../QDatePicker';
+import { RangeState } from '../../tables/types';
+import { DATE_CELLS_COUNT, DATE_CELLS_IN_ROW_COUNT } from '../constants';
+import { DatePanelPropShortcuts } from '../Date/DatePanel';
+import { RangePickValue } from '../../Common';
 
 const MONTHS_COUNT = 12;
 
@@ -197,8 +212,8 @@ export default {
 
   emits: ['pick'],
 
-  setup(props, ctx): DateRangeInstance {
-    const state = reactive<DateRangeState>({
+  setup(props, ctx): DateRangePanelInstance {
+    const state = reactive<DateRangePanelState>({
       minDate: null,
       maxDate: null,
       leftDate: new Date(),
@@ -310,7 +325,7 @@ export default {
       state.minDate = val.minDate;
 
       // emit QDatepicker intermediate value
-      picker.emitChange([state.minDate, state.maxDate], true);
+      picker.emit('intermediateChange', [state.minDate, state.maxDate]);
 
       if (!close) return;
 

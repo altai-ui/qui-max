@@ -54,13 +54,6 @@ const useLeftPrevYearClick = (leftDate: Date): Date => subYears(leftDate, 1);
 const useRightNextYearClick = (rightDate: Date): Date => addYears(rightDate, 1);
 const useLeftNextYearClick = (leftDate: Date): Date => addYears(leftDate, 1);
 const useRightPrevYearClick = (rightDate: Date): Date => subYears(rightDate, 1);
-const useShortcutClick = (
-  shortcut: Record<string, (model: unknown) => void>
-): void => {
-  if (shortcut.onClick) {
-    shortcut.onClick(this);
-  }
-};
 
 const isValidValue = (value: Nullable<Date>[]): boolean => {
   return Boolean(
@@ -84,6 +77,5 @@ export {
   useRightNextYearClick,
   useLeftNextYearClick,
   useRightPrevYearClick,
-  useShortcutClick,
-  isValidValue,
+  isValidValue
 };

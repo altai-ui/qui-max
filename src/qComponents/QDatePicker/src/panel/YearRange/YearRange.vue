@@ -1,8 +1,17 @@
 <template>
-  <div ref="root" class="q-picker-panel">
+  <div
+    ref="root"
+    class="q-picker-panel"
+  >
     <div class="q-picker-panel__body-wrapper">
-      <slot name="sidebar" class="q-picker-panel__sidebar" />
-      <div v-if="shortcuts?.length" class="q-picker-panel__sidebar">
+      <slot
+        name="sidebar"
+        class="q-picker-panel__sidebar"
+      />
+      <div
+        v-if="shortcuts?.length"
+        class="q-picker-panel__sidebar"
+      >
         <button
           v-for="(shortcut, key) in shortcuts"
           :key="key"
@@ -14,7 +23,10 @@
         </button>
       </div>
       <div class="q-picker-panel__body">
-        <div ref="leftPanel" :class="leftPanelClasses">
+        <div
+          ref="leftPanel"
+          :class="leftPanelClasses"
+        >
           <div class="q-picker-panel__header">
             <button
               type="button"
@@ -43,7 +55,10 @@
             @range-selecting="handleRangeSelecting"
           />
         </div>
-        <div ref="rightPanel" :class="rightPanelClasses">
+        <div
+          ref="rightPanel"
+          :class="rightPanelClasses"
+        >
           <div class="q-picker-panel__header">
             <button
               type="button"
@@ -91,28 +106,23 @@ import {
   onMounted
 } from 'vue';
 import { isNil } from 'lodash-es';
-import YearTable from '../tables/year-table.vue';
+import YearTable from '../../tables/year-table.vue';
 import {
   leftYearComposable,
-  handleShortcutClick,
   leftLabelComposable,
   rightLabelComposable,
   isValidValue
-} from './composition';
-import {
-  DatePanelPropShortcuts,
-  DatePanelRangePropModelValue,
-  RangePickValue,
-  YearRangeInterface,
-  YearRangeState
-} from './types';
-import { QDatePickerProvider } from '../types';
-import { RangeState } from '../tables/types';
+} from '../composition';
+import { RangePickValue, YearRangeInterface, YearRangeState } from '../types';
+import type { DatePanelPropShortcuts } from '../Date/DatePanel';
+import type { QDatePickerProvider } from '../../QDatePicker';
+import type { RangeState } from '../types';
+import type { DatePanelRangePropModelValue } from '../DateRange/DateRange';
 import {
   LEFT_MONTH_PANEL_START_INDEX,
   PERIOD_CELLS_IN_ROW_COUNT,
   RIGHT_YEAR_PANEL_START_INDEX
-} from './constants';
+} from '../constants';
 
 const YEARS_IN_DECADE = 10;
 
@@ -344,6 +354,10 @@ export default {
       setPanelFocus();
     };
 
+    const handleShortcutClick = (shortcut: Date): void => {
+      ctx.emit('pick', shortcut);
+    };
+
     onMounted(() => {
       if (!root.value) return;
       state.yearCells = root.value.querySelectorAll('.q-year-table .cell');
@@ -383,10 +397,10 @@ export default {
       handleRightNextYearClick,
       handleRightPrevYearClick,
       handleClear,
-      handleShortcutClick,
       handleRangePick,
       handleRangeSelecting,
-      navigateDropdown
+      navigateDropdown,
+      handleShortcutClick
     };
   }
 };

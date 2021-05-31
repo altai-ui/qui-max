@@ -1,7 +1,14 @@
-import { format, formatISO, isValid, parseISO } from 'date-fns';
+import {
+  format,
+  formatISO,
+  isValid,
+  isWithinInterval,
+  parseISO
+} from 'date-fns';
 import { ru, enGB as en } from 'date-fns/locale';
 import { isString } from 'lodash-es';
-import { QDatePickerPropModelValue } from './types';
+import { RangeState } from './Common';
+import { QDatePickerPropModelValue } from './QDatePicker';
 
 const locales: Record<string, Locale> = { ru, en };
 
@@ -93,19 +100,17 @@ const validator = function (val: string | string[] | null): boolean {
 const checkISOIsValid = (isoDate: string): boolean =>
   isValid(parseISO(isoDate));
 
-const checkArrayValueIsValid = (value: (string | Date)[]): boolean =>
+const checkArrayValueIsValid = (value: unknown[]): boolean =>
   Boolean(
-    value.length === 2 &&
-    (value.every(isString) && value.every(checkISOIsValid))) ||
-    (value.every(isValid)
-  );
+    value.length === 2 && value.every(isString) && value.every(checkISOIsValid)
+  ) || value.every(isValid);
 
 const modelValueValidator = (val: QDatePickerPropModelValue): boolean => {
   if (val === null) return true;
   return Boolean(
     (isString(val) && checkISOIsValid(val)) ||
-    isValid(val) ||
-    (Array.isArray(val) && checkArrayValueIsValid(val))
+      isValid(val) ||
+      (Array.isArray(val) && checkArrayValueIsValid(val))
   );
 };
 
@@ -117,6 +122,22 @@ const formatToISO = (date: Date | Date[]): string | string[] => {
   return formatISO(date);
 };
 
+const isDateInRangeInterval = (date: Date, rangeState: RangeState): boolean => {
+  if (
+    !rangeState.selecting ||
+    !rangeState.hoveredDate ||
+    !rangeState.pickedDate
+  )
+    return false;
+
+  const hoveredDateNum = rangeState.hoveredDate.getTime();
+  const pickedDateNum = rangeState.pickedDate.getTime();
+  return isWithinInterval(date, {
+    start: Math.min(hoveredDateNum, pickedDateNum),
+    end: Math.max(hoveredDateNum, pickedDateNum)
+  });
+};
+
 export {
   clearTime,
   clearMilliseconds,
@@ -126,5 +147,6 @@ export {
   validator,
   modelValueValidator,
   checkArrayValueIsValid,
-  formatToISO
+  formatToISO,
+  isDateInRangeInterval
 };

@@ -60,9 +60,16 @@
         readonly
         tabindex="-1"
       />
-      <span :class="iconClass" class="q-input__icon" @click="handleIconClick" />
+      <span
+        :class="iconClass"
+        class="q-input__icon"
+        @click="handleIconClick"
+      />
     </div>
-    <teleport :to="teleportTo" :disabled="!teleportTo">
+    <teleport
+      :to="teleportTo"
+      :disabled="!teleportTo"
+    >
       <component
         :is="panelComponent"
         ref="panel"
@@ -75,7 +82,10 @@
         :show-time="timepicker"
         @pick="handlePickClick"
       >
-        <template v-if="$slots.sidebar" #sidebar />
+        <template
+          v-if="$slots.sidebar"
+          #sidebar
+        />
       </component>
     </teleport>
   </div>
@@ -119,17 +129,17 @@ import {
   checkArrayValueIsValid
 } from './helpers';
 
-import DatePanel from './panel/date.vue';
-import DateRangePanel from './panel/date-range.vue';
-import MonthRangePanel from './panel/month-range.vue';
-import YearRangePanel from './panel/year-range.vue';
+import DatePanel from './panel/Date/DatePanel.vue';
+import DateRangePanel from './panel/DateRange/DateRange.vue';
+import MonthRangePanel from './panel/MonthRange/MonthRange.vue';
+import YearRangePanel from './panel/YearRange/YearRange.vue';
 import type {
   QDatePickerPropModelValue,
   QDatePickerProvider,
-  QDatePickerState,
-  IntermediateModelValue
-} from './types';
-import type { DatePanelInterface } from './panel/types';
+  QDatePickerState
+} from './QDatePicker';
+
+import type { DatePanelInterface } from './panel/Date/DatePanel';
 
 export default defineComponent({
   name: 'QDatePicker',
@@ -391,21 +401,18 @@ export default defineComponent({
       return '';
     });
 
-    const emitChange = (
-      val: QDatePickerPropModelValue | IntermediateModelValue,
-      intermediate = false
-    ): void => {
+    const emitChange = (val: QDatePickerPropModelValue): void => {
       let result = val;
-      if (intermediate) {
-        ctx.emit('intermediateChange', val);
-        return;
-      }
 
       if (result && props.outputFormat === 'iso') {
-        if (isRanged.value) {
-          result = [val[0]?.toISOString(), val[1]?.toISOString()];
+        if (result && Array.isArray(result)) {
+          const isoDateOne =
+            result[0] instanceof Date ? result[0].toISOString() : result[0];
+          const isoDateTwo =
+            result[1] instanceof Date ? result[1]?.toISOString() : result[1];
+          result = [isoDateOne, isoDateTwo];
         } else {
-          result = val.toISOString();
+          result = result instanceof Date ? result?.toISOString() : result;
         }
       }
 
@@ -644,6 +651,7 @@ export default defineComponent({
     const { type } = toRefs(props);
 
     provide<QDatePickerProvider>('qDatePicker', {
+      emit: ctx.emit,
       emitChange,
       type
     });

@@ -1,6 +1,13 @@
 <template>
-  <table cellspacing="4" cellpadding="5" class="q-year-table">
-    <tr v-for="(row, key) in rows" :key="key">
+  <table
+    cellspacing="4"
+    cellpadding="5"
+    class="q-year-table"
+  >
+    <tr
+      v-for="(row, key) in rows"
+      :key="key"
+    >
       <td
         v-for="(cell, index) in row"
         :key="index"
@@ -32,10 +39,14 @@ import {
 } from 'date-fns';
 import { reactive, computed, PropType } from 'vue';
 
-import { throttle } from 'lodash';
-import type { YearTableState, YearTableInstance, RangeState } from './types';
-import { DateRangeStateProp, YearCellModel } from './types';
-import { isDateInRangeInterval } from './composition';
+import { throttle } from 'lodash-es';
+import type {
+  YearCellModel,
+  YearTableState,
+  YearTableInstance
+} from './YearTable';
+import { RangeState } from '../../Common';
+import { isDateInRangeInterval } from '../../helpers';
 
 const checkDisabled = (
   year: number,

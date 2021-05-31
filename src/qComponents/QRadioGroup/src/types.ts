@@ -1,4 +1,4 @@
-import { Ref } from 'vue';
+import type { Ref } from 'vue';
 
 export type QRadioGroupPropModelValue = Nullable<string | number | boolean>;
 export type QRadioGroupPropDisabled = Nullable<boolean>;

@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="q-upload-file-single"
-    :title="fileName"
-  >
+  <div class="q-upload-file-single" :title="fileName">
     <div class="q-upload-file-single__icon q-icon-file" />
     <div class="q-upload-file-single__name">{{ fileName }}</div>
 
@@ -21,10 +18,7 @@
       />
 
       <div class="q-upload-file-single__loader">
-        <div
-          class="q-upload-file-single__bar"
-          :style="barStyle"
-        ></div>
+        <div class="q-upload-file-single__bar" :style="barStyle"></div>
       </div>
     </template>
   </div>
@@ -33,7 +27,10 @@
 <script lang="ts">
 import { defineComponent, computed } from 'vue';
 
-import { QUploadFileSingleProps, QUploadFileSingleInstance } from './types';
+import type {
+  QUploadFileSingleProps,
+  QUploadFileSingleInstance
+} from './types';
 
 export default defineComponent({
   name: 'QUploadFileSingle',

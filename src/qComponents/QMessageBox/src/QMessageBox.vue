@@ -1,12 +1,6 @@
 <template>
-  <teleport
-    :to="teleportTo || 'body'"
-    :disabled="!teleportTo"
-  >
-    <transition
-      name="q-msgbox-fade"
-      @after-leave="handleAfterLeave"
-    >
+  <teleport :to="teleportTo || 'body'" :disabled="!teleportTo">
+    <transition name="q-msgbox-fade" @after-leave="handleAfterLeave">
       <div
         v-show="isVisible"
         ref="messageBox"
@@ -199,7 +193,7 @@ export default defineComponent({
      * callback before QMessageBox closes, and it will prevent QMessageBox from closing
      */
     beforeClose: {
-      type: Function as PropType<QMessageBoxPropBeforeClose>,
+      type: Function as unknown as PropType<QMessageBoxPropBeforeClose>,
       default: null
     },
     /**
@@ -221,11 +215,11 @@ export default defineComponent({
   emits: [UPDATE_IS_VISIBLE_EVENT, CONFIRM_EVENT, CLOSE_EVENT, CANCEL_EVENT],
 
   setup(props: QMessageBoxProps, { emit }): QMessageBoxInstance {
-    const isRendered = ref(false);
-    const wrapZIndex = ref(DEFAULT_Z_INDEX);
+    const isRendered = ref<boolean>(false);
+    const wrapZIndex = ref<number>(DEFAULT_Z_INDEX);
 
-    const isConfirmBtnLoading = ref(false);
-    const isCancelBtnLoading = ref(false);
+    const isConfirmBtnLoading = ref<boolean>(false);
+    const isCancelBtnLoading = ref<boolean>(false);
     const messageBox = ref<HTMLElement | null>(null);
 
     let elementToFocusAfterClosing: HTMLElement | null = null;

@@ -3,13 +3,8 @@ import { Meta, Story } from '@storybook/vue3';
 import { addMonths, subMonths } from 'date-fns';
 import QDatePicker from '@/qComponents/QDatePicker';
 import { defineComponent, reactive, watch } from 'vue';
-// import DateTime from './DateTime';
-// import Month from './Month';
-// import Year from './Year';
-// import DateRange from './DateRange';
-// import DateTimeRange from './DateTimeRange';
-// import MonthRange from './MonthRange';
-// import YearRange from './YearRange';
+
+const now = new Date();
 
 const storyMetadata: Meta = {
   title: 'Components/QDatePicker',
@@ -22,9 +17,9 @@ const storyMetadata: Meta = {
         options: [
           null,
           {
-            to: subMonths(new Date(), 2),
+            to: subMonths(now, 2),
             ranges: [
-              { start: new Date(), end: new Date(addMonths(new Date(), 1)) }
+              { start: now, end: new Date(addMonths(now, 1)) }
             ]
           }
         ]
@@ -34,38 +29,6 @@ const storyMetadata: Meta = {
       control: {
         type: 'select',
         options: ['date', 'iso']
-      }
-    },
-    shortcuts: {
-      control: {
-        type: 'select',
-        options: [
-          [],
-          [
-            {
-              text: 'Сегодня',
-              onClick(picker) {
-                picker.emit('pick', new Date());
-              }
-            },
-            {
-              text: 'Вчера',
-              onClick(picker) {
-                const date = new Date();
-                date.setTime(date.getTime() - 3600 * 1000 * 24);
-                picker.emit('pick', date);
-              }
-            },
-            {
-              text: 'Неделю назад',
-              onClick(picker) {
-                const date = new Date();
-                date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
-                picker.emit('pick', date);
-              }
-            }
-          ]
-        ]
       }
     },
     placeholder: {
@@ -80,12 +43,10 @@ const storyMetadata: Meta = {
         type: 'select',
         options: [
           'date',
-          'datetime',
           'week',
           'month',
           'year',
           'daterange',
-          'datetimerange',
           'monthrange',
           'yearrange'
         ]
@@ -106,36 +67,39 @@ const Template: Story = args =>
     setup() {
       const state = reactive({
         value: null,
-        format: 'dd MMMM yyyy'
       });
 
-      const handleRangePickClick = val => {
+      const handleRangePickClick = (val: any): void => {
         console.log('handleRangePickClick', val);
+      };
+
+      const handleChange = (val: any): void => {
+        console.log(val);
       };
 
       watch(
         () => args.type,
-        type => {
-          if (type === 'daterange') {
-            state.value = null;
-          }
+        () => {
+          state.value = null;
         }
       );
 
       return {
         args,
         state,
-        handleRangePickClick
+        handleRangePickClick,
+        handleChange
       };
     },
     template: `
       <q-date-picker
         v-model="state.value"
+        @change="handleChange"
         :clearable="args.clearable"
         :editable="args.editable"
         :placeholder="args.placeholder"
         :type="args.type"
-        :format="state.format"
+        :format="args.format"
         :output-format="args.outputFormat"
         :name="args.name"
         :disabled="args.disabled"
@@ -148,7 +112,8 @@ const Template: Story = args =>
         :validate-event="args.validateEvent"
         @rangepick="handleRangePickClick"
         :append-to-body="args.appendToBody"
-      />`
+      />
+    `
   });
 
 export const Default: Story = Template.bind({});
@@ -157,6 +122,7 @@ export const Year: Story = Template.bind({});
 export const DateRange: Story = Template.bind({});
 export const MonthRange: Story = Template.bind({});
 export const YearRange: Story = Template.bind({});
+export const Shortcuts: Story = Template.bind({});
 
 YearRange.args = {
   type: 'yearrange'
@@ -177,5 +143,22 @@ Month.args = {
 Year.args = {
   type: 'year'
 };
+
+Shortcuts.args = {
+  shortcuts: [
+    {
+      text: 'Сегодня',
+      value: now
+    },
+    {
+      text: 'Вчера',
+      value: new Date(now.setTime(now.getTime() - 3600 * 1000 * 24))
+    },
+    {
+      text: 'Неделю назад',
+      value: new Date(now.setTime(now.getTime() - 3600 * 1000 * 24 * 7))
+    }
+  ]
+}
 
 export default storyMetadata;

@@ -35,7 +35,7 @@
     1px 1px 3px rgba(var(--color-rgb-blue), 0.4),
     4px 4px 8px rgba(var(--color-rgb-blue), 0.4),
     -4px -4px 12px var(--color-tertiary-white);
-  --box-shadow-secondary: -4px -4px 12px #fff,
+  --box-shadow-secondary: -4px -4px 12px var(--color-tertiary-white),
     4px 4px 8px rgba(var(--color-rgb-blue), 0.4),
     1px 1px 3px rgba(var(--color-rgb-blue), 0.4),
     -1px -1px 3px rgba(var(--color-rgb-white), 0.25);

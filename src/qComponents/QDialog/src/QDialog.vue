@@ -1,8 +1,5 @@
 <template>
-  <teleport
-    :to="teleportTo || 'body'"
-    :disabled="!teleportTo"
-  >
+  <teleport :to="teleportTo || 'body'" :disabled="!teleportTo">
     <transition
       name="q-dialog-fade"
       @after-enter="afterEnter"
@@ -20,13 +17,10 @@
           tabindex="-1"
           :style="dialogStyle"
           class="q-dialog__container"
-          :class="[dialogClass, customClass]"
+          :class="customClass"
           @keyup.esc="closeDialog"
         >
-          <q-scrollbar
-            theme="secondary"
-            view-class="q-dialog__view"
-          >
+          <q-scrollbar theme="secondary" view-class="q-dialog__view">
             <div class="q-dialog__inner">
               <div class="q-dialog__title">
                 {{ title }}
@@ -85,6 +79,13 @@ export default defineComponent({
 
   props: {
     /**
+     * width of QDialog
+     */
+    width: {
+      type: [String, Number],
+      default: null
+    },
+    /**
      * offset from top border of parent relative element
      */
     offsetTop: {
@@ -123,7 +124,7 @@ export default defineComponent({
      * callback before close
      */
     beforeClose: {
-      type: Function as PropType<QDialogPropBeforeClose>,
+      type: Function as unknown as PropType<QDialogPropBeforeClose>,
       default: null
     },
     /**
@@ -156,8 +157,8 @@ export default defineComponent({
   ],
 
   setup(props: QDialogProps, ctx): QDialogInstance {
-    const zIndex = ref(DEFAULT_Z_INDEX);
-    const isRendered = ref(false);
+    const zIndex = ref<number>(DEFAULT_Z_INDEX);
+    const isRendered = ref<boolean>(false);
     const dialog = ref<HTMLElement | null>(null);
 
     let elementToFocusAfterClosing: HTMLElement | null = null;
@@ -166,10 +167,6 @@ export default defineComponent({
       () => ({
         width: Number(props.width) ? `${Number(props.width)}px` : props.width
       })
-    );
-
-    const dialogClass = computed<string>(
-      () => `q-dialog-wrapper_${props.position}`
     );
 
     const handleDocumentFocus = (event: FocusEvent): void => {
@@ -249,7 +246,6 @@ export default defineComponent({
       zIndex,
       isRendered,
       dialogStyle,
-      dialogClass,
       afterEnter,
       afterLeave,
       closeDialog,

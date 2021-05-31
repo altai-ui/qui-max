@@ -1,10 +1,10 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { Meta, Story } from '@storybook/vue3';
+import type { Meta, Story } from '@storybook/vue3';
 import { defineComponent, ref } from 'vue';
 
 import QCollapse from '@/qComponents/QCollapse';
-import type { QCollapseProps } from '@/qComponents/QCollapse';
 import QCollapseItem from '@/qComponents/QCollapseItem';
+import type { QCollapseProps } from '@/qComponents/QCollapse';
 
 const storyMetadata: Meta = {
   title: 'Components/QCollapse',
@@ -19,7 +19,7 @@ const QCollapseStory: Story<QCollapseProps> = args =>
   defineComponent({
     components: { QCollapse, QCollapseItem },
     setup() {
-      const activeNames = ref(['1']);
+      const activeNames = ref<string[]>(['1']);
 
       const handleChange = (value: (string | number)[]): void => {
         // eslint-disable-next-line no-console

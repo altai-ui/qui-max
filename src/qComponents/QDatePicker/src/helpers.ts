@@ -96,16 +96,16 @@ const checkISOIsValid = (isoDate: string): boolean =>
 const checkArrayValueIsValid = (value: (string | Date)[]): boolean =>
   Boolean(
     value.length === 2 &&
-      (value.every(isValid) ||
-        (value.every(isString) && value.every(checkISOIsValid)))
+    (value.every(isString) && value.every(checkISOIsValid))) ||
+    (value.every(isValid)
   );
 
 const modelValueValidator = (val: QDatePickerPropModelValue): boolean => {
   if (val === null) return true;
   return Boolean(
     (isString(val) && checkISOIsValid(val)) ||
-      isValid(val) ||
-      (Array.isArray(val) && checkArrayValueIsValid(val))
+    isValid(val) ||
+    (Array.isArray(val) && checkArrayValueIsValid(val))
   );
 };
 

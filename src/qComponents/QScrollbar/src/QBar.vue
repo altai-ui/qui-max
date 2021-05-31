@@ -53,7 +53,7 @@ export default defineComponent({
     const qScrollbar = inject<QScrollbarProvider>('qScrollbar');
     const root = ref<HTMLElement | null>(null);
     const thumb = ref<HTMLElement | null>(null);
-    const cursorDown = ref(false);
+    const cursorDown = ref<boolean>(false);
 
     let axis = 0;
 
@@ -72,7 +72,9 @@ export default defineComponent({
       'q-scrollbar__thumb_secondary': props?.theme === 'secondary'
     }));
 
-    const wrap = qScrollbar?.wrap;
+    const wrap = computed<HTMLElement | null>(
+      () => qScrollbar?.wrap.value ?? null
+    );
 
     const scrollToPx = (px: number): void => {
       const wrapValue = wrap?.value;
@@ -153,6 +155,11 @@ export default defineComponent({
 
     onUnmounted(() => {
       document.removeEventListener('mouseup', mouseUpDocumentHandler, false);
+      document.removeEventListener(
+        'mousemove',
+        mouseMoveDocumentHandler,
+        false
+      );
     });
 
     return {

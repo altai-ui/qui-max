@@ -19,4 +19,4 @@ interface QDatePickerProvider {
   type: Ref<string>;
 }
 
-export { QDatePickerPropModelValue, QDatePickerState, QDatePickerProvider };
+export { QDatePickerPropModelValue, QDatePickerState, QDatePickerProvider, IntermediateModelValue };

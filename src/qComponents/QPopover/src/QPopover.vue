@@ -1,19 +1,10 @@
 <template>
-  <div
-    ref="reference"
-    class="q-popover-trigger"
-  >
+  <div ref="reference" class="q-popover-trigger">
     <slot name="reference" />
   </div>
 
-  <teleport
-    :to="teleportTo || 'body'"
-    :disabled="!teleportTo"
-  >
-    <transition
-      :name="transition"
-      @after-leave="destroyPopper"
-    >
+  <teleport :to="teleportTo || 'body'" :disabled="!teleportTo">
+    <transition :name="transition" @after-leave="destroyPopper">
       <div
         v-show="isPopoverShown"
         ref="popover"
@@ -27,20 +18,11 @@
           :class="icon"
           :style="popoverIconStyles"
         />
-        <q-scrollbar
-          wrap-class="q-popover__inner"
-          view-class="scrollbar__list"
-        >
-          <div
-            v-if="title"
-            class="q-popover__title"
-          >
+        <q-scrollbar wrap-class="q-popover__inner" view-class="scrollbar__list">
+          <div v-if="title" class="q-popover__title">
             {{ title }}
           </div>
-          <div
-            v-if="$slots.default"
-            class="q-popover__content"
-          >
+          <div v-if="$slots.default" class="q-popover__content">
             <slot />
           </div>
         </q-scrollbar>
@@ -182,8 +164,8 @@ export default defineComponent({
     }
 
     const reference = ref<HTMLElement | null>(null);
-    const isPopoverShown = ref(false);
-    const zIndex = ref(DEFAULT_Z_INDEX);
+    const isPopoverShown = ref<boolean>(false);
+    const zIndex = ref<number>(DEFAULT_Z_INDEX);
     const popover = ref<HTMLElement | null>(null);
 
     const popoverClasses = computed<Record<string, boolean>>(() => ({

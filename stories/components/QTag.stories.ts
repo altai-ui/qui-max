@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { Meta, Story } from '@storybook/vue3';
+import type { Meta, Story } from '@storybook/vue3';
 import { defineComponent, ref } from 'vue';
 
 import QTag from '@/qComponents/QTag';
@@ -14,7 +14,7 @@ const QTagStory: Story<QTagProps> = args =>
   defineComponent({
     components: { QTag },
     setup() {
-      const tags = ref(['Tag 1', 'Tag 2', 'Tag 3', 'Tag 4', 'Tag 5']);
+      const tags = ref<string[]>(['Tag 1', 'Tag 2', 'Tag 3', 'Tag 4', 'Tag 5']);
 
       const handleCloseClick = (clickedTag: string): void => {
         // eslint-disable-next-line no-console

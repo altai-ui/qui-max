@@ -1,34 +1,21 @@
 <template>
-  <q-message-box
-    distinguish-cancel-and-close
-    @close="handleCancelClick"
-  >
-    <template
-      #title
-    >Morbi massa libero, vehicula nec consequat sed, porta a sem.</template>
+  <q-message-box distinguish-cancel-and-close @close="handleCancelClick">
+    <template #title
+      >Morbi massa libero, vehicula nec consequat sed, porta a sem.</template
+    >
 
     <template #content>
       <q-form :model="formModel">
-        <q-form-item
-          prop="name"
-          label="Name"
-          required
-        >
+        <q-form-item prop="name" label="Name" required>
           <q-input v-model="formModel.name" />
         </q-form-item>
       </q-form>
     </template>
 
     <template #actions>
-      <q-button
-        :loading="isSending"
-        @click="handleSendClick"
-      > Send </q-button>
+      <q-button :loading="isSending" @click="handleSendClick"> Send </q-button>
 
-      <q-button
-        theme="secondary"
-        @click="handleCancelClick"
-      > Cancel </q-button>
+      <q-button theme="secondary" @click="handleCancelClick"> Cancel </q-button>
     </template>
   </q-message-box>
 </template>
@@ -44,7 +31,7 @@ export default defineComponent({
   emits: [UPDATE_IS_VISIBLE_EVENT],
 
   setup(_, { emit }) {
-    const isSending = ref(false);
+    const isSending = ref<boolean>(false);
     const formModel = reactive({ name: 'Testname' });
 
     const handleCancelClick = (): void => {

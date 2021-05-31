@@ -1,8 +1,5 @@
 <template>
-  <div
-    ref="root"
-    :class="classes"
-  >
+  <div ref="root" :class="classes">
     <div
       ref="wrap"
       class="q-scrollbar__wrap"
@@ -48,7 +45,9 @@ import {
   ref,
   computed,
   nextTick,
-  provide
+  provide,
+  ComponentPublicInstance,
+  UnwrapRef
 } from 'vue';
 
 import {
@@ -64,7 +63,8 @@ import type {
   QScrollbarPropScrollTo,
   QScrollbarPropTheme,
   QScrollbarPropWrapClass,
-  QScrollbarProvider
+  QScrollbarProvider,
+  QBarInstance
 } from './types';
 
 const OFFSET = -10;
@@ -124,11 +124,13 @@ export default defineComponent({
     const root = ref<HTMLElement | null>(null);
     const wrap = ref<HTMLElement | null>(null);
     const resize = ref<HTMLElement | null>(null);
-    const ybar = ref<typeof QBar | null>(null);
-    const sizeWidth = ref('0');
-    const sizeHeight = ref('0');
-    const moveX = ref(0);
-    const moveY = ref(0);
+    const ybar =
+      ref<ComponentPublicInstance<UnwrapRef<QBarInstance>> | null>(null);
+    const sizeWidth = ref<string>('0');
+    const sizeHeight = ref<string>('0');
+    const moveX = ref<number>(0);
+    const moveXInPx = ref<number>(0);
+    const moveY = ref<number>(0);
 
     const isXBarShown = computed<boolean>(() => sizeWidth.value !== '');
     const isYBarShown = computed<boolean>(() => sizeHeight.value !== '');
@@ -153,6 +155,7 @@ export default defineComponent({
 
       moveY.value = (wrapValue.scrollTop * 100) / wrapValue.clientHeight;
       moveX.value = (wrapValue.scrollLeft * 100) / wrapValue.clientWidth;
+      moveXInPx.value = wrapValue.scrollLeft;
     };
 
     /**
@@ -206,10 +209,13 @@ export default defineComponent({
       }
     );
 
-    provide<QScrollbarProvider>('qScrollbar', { wrap });
+    provide<QScrollbarProvider>('qScrollbar', { wrap, sizeWidth, moveXInPx });
 
     return {
+      root,
       wrap,
+      resize,
+      ybar,
       sizeWidth,
       sizeHeight,
       isXBarShown,

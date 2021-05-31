@@ -1,18 +1,7 @@
 <template>
-  <div
-    ref="root"
-    class="q-color-hue-slider"
-  >
-    <div
-      ref="bar"
-      class="q-color-hue-slider__bar"
-      @click="handleBarClick"
-    />
-    <div
-      ref="thumb"
-      class="q-color-hue-slider__thumb"
-      :style="thumbStyles"
-    />
+  <div ref="root" class="q-color-hue-slider">
+    <div ref="bar" class="q-color-hue-slider__bar" @click="handleBarClick" />
+    <div ref="thumb" class="q-color-hue-slider__thumb" :style="thumbStyles" />
   </div>
 </template>
 
@@ -38,7 +27,7 @@ export default defineComponent({
   emits: [UPDATE_HUE_EVENT],
 
   setup(props: QColorHueSliderProps, ctx): QColorHueSliderInstance {
-    const thumbTop = ref(0);
+    const thumbTop = ref<number>(0);
     const thumbStyles = computed<Record<string, string>>(() => ({
       top: `${thumbTop.value}px`
     }));

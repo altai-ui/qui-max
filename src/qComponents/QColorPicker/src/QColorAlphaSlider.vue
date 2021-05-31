@@ -1,19 +1,12 @@
 <template>
-  <div
-    ref="root"
-    class="q-color-alpha-slider"
-  >
+  <div ref="root" class="q-color-alpha-slider">
     <div
       ref="bar"
       class="q-color-alpha-slider__bar"
       :style="barStyles"
       @click="handleBarClick"
     />
-    <div
-      ref="thumb"
-      class="q-color-alpha-slider__thumb"
-      :style="thumbStyles"
-    />
+    <div ref="thumb" class="q-color-alpha-slider__thumb" :style="thumbStyles" />
   </div>
 </template>
 
@@ -46,7 +39,7 @@ export default defineComponent({
   emits: [UPDATE_ALPHA_EVENT],
 
   setup(props: QColorAlphaSliderProps, ctx): QColorAlphaSliderInstance {
-    const thumbLeft = ref(0);
+    const thumbLeft = ref<number>(0);
 
     const barStyles = computed<Record<string, string>>(() => ({
       backgroundImage: `linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, ${props.color})`

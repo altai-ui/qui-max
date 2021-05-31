@@ -32,7 +32,7 @@ export default {
     confirm: 'Применить'
   },
   QTable: {
-    noData: 'Нет данных'
+    noDataText: 'Нет данных'
   },
   QTimePicker: {
     hour: 'час',

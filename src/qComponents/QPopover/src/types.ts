@@ -1,5 +1,5 @@
-import { Ref, ComputedRef } from 'vue';
-import { Placement, Options } from '@popperjs/core';
+import type { Ref, ComputedRef } from 'vue';
+import type { Placement, Options } from '@popperjs/core';
 
 export type QPopoverPropTeleportTo = Nullable<string | HTMLElement>;
 export type QPopoverPropTrigger = 'click' | 'hover';

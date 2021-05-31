@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="q-upload-file-multiple"
-    :class="classes"
-  >
+  <div class="q-upload-file-multiple" :class="classes">
     <div class="q-upload-file-multiple__title">
       {{ title }}
 
@@ -19,10 +16,7 @@
       />
     </div>
 
-    <q-scrollbar
-      visible
-      view-class="q-dialog__view"
-    >
+    <q-scrollbar visible view-class="q-dialog__view">
       <div class="q-upload-file-multiple__inner">
         <div
           v-for="line in fileList"
@@ -40,10 +34,7 @@
           <div class="q-upload-file-multiple__name">
             {{ line.file.name }}
 
-            <div
-              v-if="line.isLoading"
-              class="q-upload-file-multiple__loader"
-            >
+            <div v-if="line.isLoading" class="q-upload-file-multiple__loader">
               <div
                 class="q-upload-file-multiple__bar"
                 :style="line.barStyle"
@@ -78,7 +69,7 @@ import { defineComponent, computed, PropType } from 'vue';
 import { isNil } from 'lodash-es';
 import { useI18n } from 'vue-i18n';
 
-import {
+import type {
   QUploadFile,
   QUploadFileMultipleProps,
   QUploadFileMultiplePropValue

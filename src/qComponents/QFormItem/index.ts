@@ -1,4 +1,4 @@
-import { App } from 'vue';
+import type { App } from 'vue';
 
 import QFormItem from './src/QFormItem.vue';
 

@@ -1,32 +1,20 @@
 <template>
-  <div
-    ref="root"
-    class="q-picker-panel"
-  >
+  <div ref="root" class="q-picker-panel">
     <div class="q-picker-panel__body-wrapper">
       <div class="q-picker-panel__body">
-        <slot
-          name="sidebar"
-          class="q-picker-panel__sidebar"
-        />
-        <div
-          v-if="$slots.sidebar && shortcuts.length"
-          class="q-picker-panel__sidebar"
-        >
+        <slot name="sidebar" class="q-picker-panel__sidebar" />
+        <div v-if="shortcuts?.length" class="q-picker-panel__sidebar">
           <button
             v-for="(shortcut, key) in shortcuts"
             :key="key"
             type="button"
             class="q-picker-panel__shortcut"
-            @click="handleShortcutClick(shortcut)"
+            @click="handleShortcutClick(shortcut.value)"
           >
             {{ shortcut.text }}
           </button>
         </div>
-        <div
-          ref="leftPanel"
-          :class="leftPanelClasses"
-        >
+        <div ref="leftPanel" :class="leftPanelClasses">
           <div class="q-picker-panel__header">
             <button
               type="button"
@@ -54,10 +42,7 @@
             @range-selecting="handleRangeSelecting"
           />
         </div>
-        <div
-          ref="rightPanel"
-          :class="rightPanelClasses"
-        >
+        <div ref="rightPanel" :class="rightPanelClasses">
           <div class="q-picker-panel__header">
             <button
               type="button"
@@ -93,15 +78,42 @@
 <script lang="ts">
 import { endOfDay, isDate, addYears, addMonths } from 'date-fns';
 import { isNil } from 'lodash-es';
-import { reactive, computed, watch, inject, PropType, onMounted, ref } from 'vue';
+import {
+  reactive,
+  computed,
+  watch,
+  inject,
+  PropType,
+  onMounted,
+  ref
+} from 'vue';
 import isSameMonth from 'date-fns/isSameMonth';
 import MonthTable from '../tables/month-table.vue';
-import { leftYearComposable, handleShortcutClick, leftMonthComposable, rightMonthComposable, isValidValue, useLeftPrevYearClick, useLeftNextYearClick, useRightNextYearClick, useRightPrevYearClick } from './composition';
+import {
+  leftYearComposable,
+  leftMonthComposable,
+  rightMonthComposable,
+  isValidValue,
+  useLeftPrevYearClick,
+  useLeftNextYearClick,
+  useRightNextYearClick,
+  useRightPrevYearClick
+} from './composition';
 
-import type { MonthRangeState, MonthRangeInstance, DatePanelRangePropModelValue, RangePickValue, DatePanelPropShortcuts } from './types';
+import type {
+  MonthRangeState,
+  MonthRangeInstance,
+  DatePanelRangePropModelValue,
+  RangePickValue,
+  DatePanelPropShortcuts
+} from './types';
 import { QDatePickerProvider } from '../types';
 import { RangeState } from '../tables/types';
-import { LEFT_MONTH_PANEL_START_INDEX, PERIOD_CELLS_IN_ROW_COUNT, RIGHT_MONTH_PANEL_START_INDEX } from './constants';
+import {
+  LEFT_MONTH_PANEL_START_INDEX,
+  PERIOD_CELLS_IN_ROW_COUNT,
+  RIGHT_MONTH_PANEL_START_INDEX
+} from './constants';
 
 export default {
   components: { MonthTable },
@@ -121,7 +133,7 @@ export default {
     shortcuts: {
       type: Array as PropType<DatePanelPropShortcuts>,
       default: (): [] => []
-    },
+    }
   },
 
   emits: ['pick'],
@@ -144,7 +156,10 @@ export default {
       lastFocusedCellIndex: null
     });
 
-    const picker = inject<QDatePickerProvider>('qDatePicker', {} as QDatePickerProvider);
+    const picker = inject<QDatePickerProvider>(
+      'qDatePicker',
+      {} as QDatePickerProvider
+    );
     const root = ref<HTMLElement | null>(null);
     const leftPanel = ref<HTMLElement | null>(null);
     const rightPanel = ref<HTMLElement | null>(null);
@@ -153,13 +168,13 @@ export default {
       'q-picker-panel__content': true,
       'q-picker-panel__content_no-right-borders': true,
       'q-picker-panel__content_focused': state.panelInFocus === 'left'
-    }))
+    }));
 
     const rightPanelClasses = computed<Record<string, boolean>>(() => ({
       'q-picker-panel__content': true,
       'q-picker-panel__content_no-left-borders': true,
       'q-picker-panel__content_focused': state.panelInFocus === 'right'
-    }))
+    }));
 
     const rightYear = computed(() => {
       if (isDate(state.rightDate) && isDate(state.leftDate)) {
@@ -175,11 +190,13 @@ export default {
     const leftMonth = computed(() => leftMonthComposable(state.leftDate));
     const rightMonth = computed(() => rightMonthComposable(state.rightDate));
 
-    const enableYearArrow = computed<boolean>(() => rightYear.value > leftYear.value + 1);
+    const enableYearArrow = computed<boolean>(
+      () => rightYear.value > leftYear.value + 1
+    );
 
     const handleRangeSelecting = (value: RangeState): void => {
       state.rangeState = value;
-    }
+    };
 
     const handleRangePick = (val: RangePickValue, close = true): void => {
       if (state.maxDate === val.maxDate && state.minDate === val.minDate) {
@@ -197,12 +214,12 @@ export default {
 
       state.maxDate = val.maxDate;
       state.minDate = val.minDate;
-      
+
       // emit QDatepicker intermediate value
       picker.emitChange([state.minDate, state.maxDate], true);
 
       if (!close) return;
-      
+
       if (isValidValue([state.minDate, state.maxDate])) {
         ctx.emit('pick', [state.minDate, state.maxDate], {
           hidePicker: !props.showTime
@@ -216,23 +233,23 @@ export default {
       state.leftDate = new Date();
       state.rightDate = addYears(new Date(), 1);
       ctx.emit('pick', null);
-    }
+    };
 
     const handleLeftPrevYearClick = (): void => {
       state.leftDate = useLeftPrevYearClick(state.leftDate);
-    }
+    };
 
     const handleLeftNextYearClick = (): void => {
       state.leftDate = useLeftNextYearClick(state.leftDate);
-    }
+    };
 
     const handleRightNextYearClick = (): void => {
       state.rightDate = useRightNextYearClick(state.rightDate);
-    }
+    };
 
     const handleRightPrevYearClick = (): void => {
       state.rightDate = useRightPrevYearClick(state.rightDate);
-    }
+    };
 
     const moveWithinPeriod = (e: KeyboardEvent): void => {
       let currentNodeIndex;
@@ -289,14 +306,14 @@ export default {
 
       const node = periodCells[nextNodeIndex] as HTMLElement;
       const newIndex = nextNodeIndex % PERIOD_CELLS_IN_ROW_COUNT;
-      
+
       if (node) {
         node.focus();
         state.lastFocusedCellIndex = nextNodeIndex;
       } else if (state.lastFocusedCellIndex) {
         if (nextNodeIndex > state.lastFocusedCellIndex) {
-         handleRightNextYearClick();
-         handleLeftNextYearClick();
+          handleRightNextYearClick();
+          handleLeftNextYearClick();
           (periodCells?.[newIndex] as HTMLElement)?.focus();
         } else if (nextNodeIndex < state.lastFocusedCellIndex) {
           handleLeftPrevYearClick();
@@ -328,27 +345,35 @@ export default {
       setPanelFocus();
     };
 
+    const handleShortcutClick = (shortcut: Date): void => {
+      ctx.emit('pick', shortcut);
+    };
+
     onMounted(() => {
       if (!root.value) return;
-      state.monthCells = root.value.querySelectorAll('.q-month-table .cell'); 
+      state.monthCells = root.value.querySelectorAll('.q-month-table .cell');
     });
 
-    watch(() => props.value, (newVal) => {
-      if (!newVal || !newVal?.length) {
-        handleClear();
-      } else {
-        state.minDate = newVal[0];
-        state.maxDate = newVal[1];
-
-        if (isSameMonth(state.minDate, state.maxDate)) {
-          state.leftDate = state.minDate;
-          state.rightDate = addMonths(state.minDate, 1);
+    watch(
+      () => props.value,
+      newVal => {
+        if (!newVal || !newVal?.length) {
+          handleClear();
         } else {
-          state.leftDate = state.minDate;
-          state.rightDate = state.maxDate;
+          state.minDate = newVal[0];
+          state.maxDate = newVal[1];
+
+          if (isSameMonth(state.minDate, state.maxDate)) {
+            state.leftDate = state.minDate;
+            state.rightDate = addMonths(state.minDate, 1);
+          } else {
+            state.leftDate = state.minDate;
+            state.rightDate = state.maxDate;
+          }
         }
-      }
-    }, { immediate: true })
+      },
+      { immediate: true }
+    );
 
     return {
       root,
@@ -371,7 +396,7 @@ export default {
       handleRightNextYearClick,
       handleRightPrevYearClick,
       navigateDropdown
-    }
-  },
+    };
+  }
 };
 </script>

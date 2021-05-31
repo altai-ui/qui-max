@@ -1,32 +1,20 @@
 <template>
-  <div
-    ref="root"
-    class="q-picker-panel"
-  >
+  <div ref="root" class="q-picker-panel">
     <div class="q-picker-panel__body">
-      <slot
-        name="sidebar"
-        class="q-picker-panel__sidebar"
-      >
-        <div
-          v-if="shortcuts.length"
-          class="q-picker-panel__sidebar"
-        >
+      <slot name="sidebar" class="q-picker-panel__sidebar">
+        <div v-if="shortcuts?.length" class="q-picker-panel__sidebar">
           <button
             v-for="(shortcut, key) in shortcuts"
             :key="key"
             type="button"
             class="q-picker-panel__shortcut"
-            @click="handleShortcutClick(shortcut)"
+            @click="handleShortcutClick(shortcut.value)"
           >
             {{ shortcut.text }}
           </button>
         </div>
       </slot>
-      <div
-        ref="datePanel"
-        :class="panelContentClasses"
-      >
+      <div ref="datePanel" :class="panelContentClasses">
         <div class="q-picker-panel__header">
           <button
             type="button"
@@ -111,15 +99,21 @@
 import { subMonths, addMonths, subYears, addYears } from 'date-fns';
 import { isNil } from 'lodash-es';
 import { useI18n } from 'vue-i18n';
-import { reactive, computed, watch, PropType, onMounted, ref, nextTick } from 'vue';
+import { reactive, computed, watch, PropType, onMounted, ref } from 'vue';
 import { getConfig } from '@/qComponents/config';
 import { getTimeModel } from '../../../helpers/dateHelpers';
 import YearTable from '../tables/year-table.vue';
 import MonthTable from '../tables/month-table.vue';
 import DateTable from '../tables/date-table.vue';
-import { handleShortcutClick } from './composition';
 
-import type { DatePanelPropShortcuts, DatePanelPropModelValue, DatePanelInterface, DatePanelProps, DatePanelState } from './types';
+import type {
+  DatePanelPropShortcuts,
+  DatePanelPropModelValue,
+  DatePanelInterface,
+  DatePanelProps,
+  DatePanelState
+} from './types';
+
 import {
   DATE_CELLS_COUNT,
   DATE_CELLS_IN_ROW_COUNT,
@@ -146,7 +140,7 @@ export default {
 
     shortcuts: {
       type: Array as PropType<DatePanelPropShortcuts>,
-      default: (): [] => []
+      default: null
     },
 
     disabledValues: {
@@ -162,7 +156,7 @@ export default {
     modelValue: {
       type: Date as PropType<DatePanelPropModelValue>,
       default: null
-    },
+    }
   },
 
   emits: ['pick'],
@@ -212,7 +206,7 @@ export default {
 
     const parsedTime = computed<null | Record<string, string>>(() => {
       if (props.modelValue) {
-        return getTimeModel(props.modelValue)
+        return getTimeModel(props.modelValue);
       }
       return null;
     });
@@ -318,7 +312,8 @@ export default {
       if (selectionMode.value === 'year') {
         ctx.emit('pick', year);
       } else if (props.modelValue instanceof Date) {
-        ctx.emit('pick',
+        ctx.emit(
+          'pick',
           new Date(
             year.getFullYear(),
             props.modelValue.getMonth(),
@@ -385,7 +380,7 @@ export default {
 
       const node = periodCells[nextNodeIndex] as HTMLElement;
       const newIndex = nextNodeIndex % PERIOD_CELLS_IN_ROW_COUNT;
-      
+
       if (node) {
         node.focus();
         state.lastFocusedCellIndex = nextNodeIndex;
@@ -446,13 +441,19 @@ export default {
           (state.dateCells?.[newIndex] as HTMLElement)?.focus();
         } else if (nextNodeIndex < state.lastFocusedCellIndex) {
           handlePrevMonthClick();
-          (state.dateCells?.[DATE_CELLS_COUNT + newIndex] as HTMLElement)?.focus();
+          (
+            state.dateCells?.[DATE_CELLS_COUNT + newIndex] as HTMLElement
+          )?.focus();
         }
       }
     };
 
+    const handleShortcutClick = (shortcut: Date): void => {
+      ctx.emit('pick', shortcut);
+    };
+
     const navigateDropdown = (e: KeyboardEvent): void => {
-      const target = e.target as HTMLElement;      
+      const target = e.target as HTMLElement;
       if (e.key !== 'Tab') {
         if (target.classList.contains('cell_date')) {
           moveWithinDates(e);
@@ -460,9 +461,9 @@ export default {
           moveWithinPeriod({ period: 'month', e });
         } else if (target.classList.contains('cell_year')) {
           moveWithinPeriod({ period: 'year', e });
-        } else if (['monthrange', 'month'].includes(state.currentView)) {
+        } else if (state.currentView === 'month') {
           (state.monthCells?.[0] as HTMLElement)?.focus();
-        } else if (['yearrange', 'year'].includes(state.currentView)) {
+        } else if (state.currentView === 'year') {
           (state.yearCells?.[0] as HTMLElement)?.focus();
         } else {
           (state.dateCells?.[0] as HTMLElement)?.focus();
@@ -490,10 +491,10 @@ export default {
       handleNextMonthClick,
       handlePrevYearClick,
       handleNextYearClick,
-      handleShortcutClick,
       navigateDropdown,
       handleMonthPick,
       handleDatePick,
+      handleShortcutClick,
       t
     };
   }

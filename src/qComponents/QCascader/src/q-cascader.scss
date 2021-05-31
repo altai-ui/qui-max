@@ -1,0 +1,13 @@
+@import './QCascaderInput/q-cascader-input';
+@import './QCascaderDropdown/q-cascader-dropdown';
+@import './QCascaderColumn/q-cascader-column';
+@import './QCascaderRow/q-cascader-row';
+@import './QCascaderTags/q-cascader-tags';
+
+.q-cascader {
+  position: relative;
+  display: inline-flex;
+  width: 100%;
+  min-height: 40px;
+  vertical-align: middle;
+}

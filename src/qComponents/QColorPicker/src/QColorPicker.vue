@@ -10,10 +10,7 @@
       @click="handleTriggerClick"
     >
       <!-- @slot _Optional_. HTML element that triggers dropdown -->
-      <slot
-        v-if="$slots.trigger"
-        name="trigger"
-      />
+      <slot v-if="$slots.trigger" name="trigger" />
       <button
         v-else
         :disabled="isDisabled"
@@ -29,10 +26,7 @@
       </button>
     </div>
 
-    <teleport
-      :to="teleportTo || 'body'"
-      :disabled="!teleportTo"
-    >
+    <teleport :to="teleportTo || 'body'" :disabled="!teleportTo">
       <q-picker-dropdown
         ref="dropdown"
         :is-shown="isPickerShown"
@@ -67,14 +61,14 @@ import { placements } from '@popperjs/core/lib/enums';
 import Color from 'color';
 
 import { validateArray } from '@/qComponents/helpers';
-import type { QFormProvider } from '@/qComponents/QForm';
-import type { QFormItemProvider } from '@/qComponents/QFormItem';
 import { getConfig } from '@/qComponents/config';
 import {
   UPDATE_MODEL_VALUE_EVENT,
   CLICK_EVENT,
   CHANGE_EVENT
 } from '@/qComponents/constants/events';
+import type { QFormProvider } from '@/qComponents/QForm';
+import type { QFormItemProvider } from '@/qComponents/QFormItem';
 import QPickerDropdown from './QPickerDropdown.vue';
 import type {
   QColorPickerProps,
@@ -159,8 +153,8 @@ export default defineComponent({
     const qForm = inject<QFormProvider | null>('qForm', null);
     const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
 
-    const zIndex = ref(DEFAULT_Z_INDEX);
-    const isPickerShown = ref(false);
+    const zIndex = ref<number>(DEFAULT_Z_INDEX);
+    const isPickerShown = ref<boolean>(false);
     const popperJS = ref<Instance | null>(null);
 
     const isDisabled = computed<boolean>(
@@ -224,9 +218,10 @@ export default defineComponent({
     };
 
     const trigger = ref<HTMLElement | null>(null);
-    const dropdown = ref<ComponentPublicInstance<
-      UnwrapRef<QPickerDropdownInstance>
-    > | null>(null);
+    const dropdown =
+      ref<ComponentPublicInstance<UnwrapRef<QPickerDropdownInstance>> | null>(
+        null
+      );
 
     const createPopperJs = (): void => {
       if (popperJS.value?.destroy) {

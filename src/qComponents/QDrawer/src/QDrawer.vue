@@ -1,8 +1,5 @@
 <template>
-  <teleport
-    :to="teleportTo || 'body'"
-    :disabled="!teleportTo"
-  >
+  <teleport :to="teleportTo || 'body'" :disabled="!teleportTo">
     <transition
       name="q-drawer-fade"
       @after-enter="afterEnter"
@@ -24,10 +21,7 @@
           @keyup.esc="closeDrawer"
         >
           <div class="q-drawer__header">
-            <div
-              v-if="title"
-              class="q-drawer__title"
-            >{{ title }}</div>
+            <div v-if="title" class="q-drawer__title">{{ title }}</div>
             <button
               type="button"
               class="q-drawer__close q-icon-close"
@@ -79,6 +73,9 @@ export default defineComponent({
   componentName: 'QDrawer',
 
   props: {
+    /**
+     * width of Drawer
+     */
     width: {
       type: [String, Number],
       default: null
@@ -115,7 +112,7 @@ export default defineComponent({
      * callback before close
      */
     beforeClose: {
-      type: Function as PropType<QDrawerPropBeforeClose>,
+      type: Function as unknown as PropType<QDrawerPropBeforeClose>,
       default: null
     },
     /**
@@ -156,8 +153,8 @@ export default defineComponent({
   ],
 
   setup(props: QDrawerProps, ctx): QDrawerInstance {
-    const zIndex = ref(DEFAULT_Z_INDEX);
-    const isRendered = ref(false);
+    const zIndex = ref<number>(DEFAULT_Z_INDEX);
+    const isRendered = ref<boolean>(false);
     const drawer = ref<HTMLElement | null>(null);
 
     let elementToFocusAfterClosing: HTMLElement | null = null;

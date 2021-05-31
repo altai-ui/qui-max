@@ -1,13 +1,6 @@
 <template>
-  <table
-    cellspacing="4"
-    cellpadding="5"
-    class="q-year-table"
-  >
-    <tr
-      v-for="(row, key) in rows"
-      :key="key"
-    >
+  <table cellspacing="4" cellpadding="5" class="q-year-table">
+    <tr v-for="(row, key) in rows" :key="key">
       <td
         v-for="(cell, index) in row"
         :key="index"
@@ -41,11 +34,13 @@ import { reactive, computed, PropType } from 'vue';
 
 import { throttle } from 'lodash';
 import type { YearTableState, YearTableInstance, RangeState } from './types';
-import { DateRangeStateProp, YearCellModel } from "./types";
+import { DateRangeStateProp, YearCellModel } from './types';
 import { isDateInRangeInterval } from './composition';
 
-
-const checkDisabled = (year: number, disabledValues: Record<string, Date>): boolean => {
+const checkDisabled = (
+  year: number,
+  disabledValues: Record<string, Date>
+): boolean => {
   if (!disabledValues) return false;
   const disabled = [];
   if (Array.isArray(disabledValues.ranges)) {
@@ -98,7 +93,7 @@ export default {
 
   setup(props, ctx): YearTableInstance {
     const state = reactive<YearTableState>({
-      tableRows: [[], [], []],
+      tableRows: [[], [], []]
     });
 
     const startYear = computed<Date>(() => {
@@ -119,7 +114,9 @@ export default {
           let minDateNum = props.minDate?.getTime();
 
           minDateNum = startOfMonth(minDateNum).getTime();
-          maxDateNum = maxDateNum ? startOfMonth(maxDateNum).getTime() : minDateNum;
+          maxDateNum = maxDateNum
+            ? startOfMonth(maxDateNum).getTime()
+            : minDateNum;
 
           minDateNum = Math.min(minDateNum, maxDateNum);
           maxDateNum = Math.max(minDateNum, maxDateNum);
@@ -128,8 +125,9 @@ export default {
             disabled: checkDisabled(props.year, props.disabledValues),
             inRange: Boolean(
               minDateNum &&
-              startYearDate.getTime() >= minDateNum &&
-              startYearDate.getTime() <= maxDateNum)
+                startYearDate.getTime() >= minDateNum &&
+                startYearDate.getTime() <= maxDateNum
+            )
           });
 
           startYearDate = addYears(startYearDate, 1);
@@ -155,13 +153,18 @@ export default {
       const classes = ['cell', 'cell_year'];
       if (props.selectionMode === 'year') {
         if (
+          props.value instanceof Date &&
           props.value?.getFullYear() === cell.year.getFullYear()
         )
           classes.push('cell_current');
         if (new Date().getFullYear() === cell.year.getFullYear())
           classes.push('cell_today');
       } else {
-        if (cell.inRange || cell.year && isDateInRangeInterval(cell.year, props.rangeState)) classes.push('cell_in-range');
+        if (
+          cell.inRange ||
+          (cell.year && isDateInRangeInterval(cell.year, props.rangeState))
+        )
+          classes.push('cell_in-range');
 
         if (isSameYear(cell.year, new Date())) {
           classes.push('cell_today');
@@ -169,7 +172,7 @@ export default {
       }
 
       return classes;
-  };
+    };
 
     const handleYearTableClick = ({ year }: { year: Date }): void => {
       if (props.selectionMode === 'range') {
@@ -199,7 +202,7 @@ export default {
       } else {
         ctx.emit('pick', year);
       }
-    }
+    };
 
     return {
       state,
@@ -208,7 +211,7 @@ export default {
       getCellClasses,
       handleMouseMove,
       handleYearTableClick
-    }
-  },
+    };
+  }
 };
 </script>

@@ -8,10 +8,7 @@
     }"
     :style="styles"
   >
-    <q-scrollbar
-      ref="scrollbar"
-      wrap-class="q-select-dropdown__wrap"
-    >
+    <q-scrollbar ref="scrollbar" wrap-class="q-select-dropdown__wrap">
       <div
         v-if="selectAllShown && isVisibleOptionExist && multiple"
         tabindex="-1"
@@ -39,20 +36,11 @@
     </q-scrollbar>
 
     <template v-if="showEmptyContent">
-      <slot
-        v-if="$slots.empty"
-        name="empty"
-      />
-      <div
-        v-else
-        class="q-select-dropdown__empty"
-      >{{ emptyText }}</div>
+      <slot v-if="$slots.empty" name="empty" />
+      <div v-else class="q-select-dropdown__empty">{{ emptyText }}</div>
     </template>
 
-    <div
-      v-else-if="isCanLoadMoreShown"
-      class="q-select-dropdown__empty"
-    >
+    <div v-else-if="isCanLoadMoreShown" class="q-select-dropdown__empty">
       {{ loadMoreText }}
     </div>
   </div>
@@ -66,7 +54,8 @@ import {
   inject,
   ref,
   watch,
-  ComponentPublicInstance
+  ComponentPublicInstance,
+  UnwrapRef
 } from 'vue';
 
 import QScrollbar, { QScrollbarInstance } from '@/qComponents/QScrollbar';
@@ -97,13 +86,12 @@ export default defineComponent({
 
   setup(props: QSelectDropdownProps, ctx): QSelectDropdownInstance {
     const root = ref<HTMLDivElement | null>(null);
-    const scrollbar = ref<ComponentPublicInstance<QScrollbarInstance> | null>(
-      null
-    );
+    const scrollbar =
+      ref<ComponentPublicInstance<UnwrapRef<QScrollbarInstance>> | null>(null);
     const qSelect = inject<QSelectProvider | null>('qSelect', null);
     const qSelectState = qSelect?.state ?? null;
     const multiple = qSelect?.multiple ?? ref(false);
-    const zIndex = ref(DEFAULT_Z_INDEX);
+    const zIndex = ref<number>(DEFAULT_Z_INDEX);
 
     const styles = computed<Record<string, string | number | null>>(() => ({
       zIndex: zIndex.value,

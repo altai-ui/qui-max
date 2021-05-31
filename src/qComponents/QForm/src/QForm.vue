@@ -14,7 +14,7 @@ import {
   watch,
   toRef
 } from 'vue';
-import { FieldErrorList } from 'async-validator';
+import type { FieldErrorList } from 'async-validator';
 import { concat } from 'lodash-es';
 
 import type { QFormItemContext } from '@/qComponents/QFormItem';

@@ -1,4 +1,4 @@
-import { App } from 'vue';
+import type { App } from 'vue';
 
 import QForm from './src/QForm.vue';
 
@@ -9,6 +9,7 @@ QForm.install = (app: App): void => {
 
 export type {
   QFormProps,
+  QFormPropModel,
   QFormPropRules,
   QFormProvider,
   QFormInstance

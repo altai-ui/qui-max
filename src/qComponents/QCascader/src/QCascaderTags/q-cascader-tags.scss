@@ -1,0 +1,17 @@
+.q-cascader-tags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  width: calc(100% - 40px);
+  padding: 8px 0 8px 8px;
+  white-space: normal;
+  pointer-events: none;
+
+  &_collapse-tags {
+    flex-wrap: nowrap;
+
+    .q-tag + .q-tag {
+      flex-shrink: 0;
+    }
+  }
+}

@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { Meta, Story } from '@storybook/vue3';
+import type { Meta, Story } from '@storybook/vue3';
 import { defineComponent, ref } from 'vue';
 
 import QTextarea from '@/qComponents/QTextarea';
@@ -51,7 +51,7 @@ type StoryArgs = QTextareaProps & {
 const QTextareaStory: Story<StoryArgs> = args =>
   defineComponent({
     setup() {
-      const model = ref('');
+      const model = ref<string>('');
 
       const handleFocus = (event: Event): void => {
         // eslint-disable-next-line no-console

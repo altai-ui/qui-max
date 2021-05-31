@@ -4,7 +4,7 @@ import { QDatePickerProvider } from '../types';
 
 type DatePanelPropShortcuts = Record<
   string,
-  (model: Record<string, Date>) => void
+  Date
 >[];
 type DatePanelPropModelValue = null | Date;
 
@@ -81,7 +81,7 @@ interface DateRangeInstance {
   rightMonth: ComputedRef<number>;
   handleRangePick: (val: RangePickValue, close?: boolean) => void;
   handleShortcutClick: (
-    shortcut: Record<string, (model: Record<string, Date>) => void>
+    shortcut: Date
   ) => void;
   handleClear: () => void;
   handleLeftPrevYearClick: () => void;
@@ -93,6 +93,7 @@ interface DateRangeInstance {
   handleLeftNextMonthClick: () => void;
   handleRightPrevMonthClick: () => void;
   handleRangeSelecting: (value: RangeState) => void;
+  navigateDropdown: (e: KeyboardEvent) => void
 }
 
 interface MonthRangeInstance {
@@ -115,7 +116,7 @@ interface MonthRangeInstance {
   handleRangePick: (val: RangePickValue, close?: boolean) => void;
   handleClear: () => void;
   handleShortcutClick: (
-    shortcut: Record<string, (model: Record<string, Date>) => void>
+    shortcut: Date
   ) => void;
   navigateDropdown: (e: KeyboardEvent) => void;
 }
@@ -151,7 +152,7 @@ interface YearRangeInterface {
   handleRightPrevYearClick: () => void;
   handleClear: () => void;
   handleShortcutClick: (
-    shortcut: Record<string, (model: Record<string, Date>) => void>
+    shortcut: Date
   ) => void;
   handleRangePick: (val: RangePickValue, close?: boolean) => void;
   handleRangeSelecting: (value: RangeState) => void;
@@ -186,7 +187,7 @@ interface DatePanelInterface {
   handlePrevYearClick: () => void;
   handleNextYearClick: () => void;
   handleShortcutClick: (
-    shortcut: Record<string, (model: Record<string, Date>) => void>
+    shortcut: Date
   ) => void;
   handleYearPick: (year: Date) => void;
   handleMonthPick: (month: number, year: number) => void;

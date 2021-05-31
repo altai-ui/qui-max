@@ -74,14 +74,6 @@ const isValidValue = (value: Nullable<Date>[]): boolean => {
   );
 };
 
-const handleShortcutClick = (
-  shortcut: Record<string, (model: Record<string, Date>) => void>
-): void => {
-  if (shortcut.onClick) {
-    shortcut.onClick(this);
-  }
-};
-
 export {
   leftYearComposable,
   leftMonthComposable,
@@ -94,5 +86,4 @@ export {
   useRightPrevYearClick,
   useShortcutClick,
   isValidValue,
-  handleShortcutClick
 };

@@ -18,5 +18,6 @@
     },
     "plugins": [{ "name": "@vuedx/typescript-plugin-vue" }]
   },
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
+  "include": ["src/**/*", "stories/**/*", "vite.config.ts"]
 }

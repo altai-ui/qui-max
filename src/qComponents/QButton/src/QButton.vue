@@ -6,18 +6,9 @@
     :type="nativeType"
     :class="classList"
   >
-    <span
-      v-if="loading"
-      class="q-icon-reverse"
-    />
-    <span
-      v-if="icon && !loading"
-      :class="icon"
-    />
-    <span
-      v-if="$slots.default"
-      class="q-button__inner"
-    >
+    <span v-if="loading" class="q-icon-reverse" />
+    <span v-if="icon && !loading" :class="icon" />
+    <span v-if="$slots.default" class="q-button__inner">
       <slot />
     </span>
   </button>
@@ -28,7 +19,7 @@ import { defineComponent, PropType, computed, inject } from 'vue';
 
 import { validateArray } from '@/qComponents/helpers';
 
-import { QFormProvider } from '@/qComponents/QForm';
+import type { QFormProvider } from '@/qComponents/QForm';
 import type {
   QButtonProps,
   QButtonPropType,

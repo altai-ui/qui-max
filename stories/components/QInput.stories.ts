@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { Meta, Story } from '@storybook/vue3';
+import type { Meta, Story } from '@storybook/vue3';
 import { defineComponent, ref } from 'vue';
 
 import QInput from '@/qComponents/QInput';
@@ -34,7 +34,7 @@ type StoryArgs = QInputProps & {
 const QInputStory: Story<StoryArgs> = args =>
   defineComponent({
     setup() {
-      const data = ref('');
+      const data = ref<string>('');
 
       const handleFocus = (event: Event): void => {
         // eslint-disable-next-line no-console

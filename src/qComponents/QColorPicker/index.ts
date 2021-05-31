@@ -1,4 +1,4 @@
-import { App } from 'vue';
+import type { App } from 'vue';
 
 import QColorPicker from './src/QColorPicker.vue';
 

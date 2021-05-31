@@ -83,11 +83,12 @@
     }
   }
 
-  &_visible,
-  &:hover,
-  &:active,
-  &:focus {
-    > .q-scrollbar__bar {
+  &_visible >,
+  &:hover >,
+  &:active >,
+  &:focus >,
+  &__wrap.focus-visible ~ {
+    & .q-scrollbar__bar {
       opacity: 1;
       transition: opacity 340ms ease-out;
     }

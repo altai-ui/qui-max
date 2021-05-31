@@ -8,10 +8,7 @@
     @dragover.prevent="handleDragover"
     @dragleave.prevent="handleDragleave"
   >
-    <span
-      class="q-upload-drop-zone__icon"
-      :class="icon"
-    />
+    <span class="q-upload-drop-zone__icon" :class="icon" />
     <div class="q-upload-drop-zone__text">{{ text }}</div>
   </div>
 </template>
@@ -20,7 +17,7 @@
 import { defineComponent, ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import { QUploadDropZoneProps, QUploadDropZoneInstance } from './types';
+import type { QUploadDropZoneProps, QUploadDropZoneInstance } from './types';
 
 export default defineComponent({
   name: 'QUploadDropZone',
@@ -60,7 +57,7 @@ export default defineComponent({
   emits: ['drop'],
 
   setup(props: QUploadDropZoneProps, ctx): QUploadDropZoneInstance {
-    const isDragover = ref(false);
+    const isDragover = ref<boolean>(false);
 
     const classes = computed<Record<string, boolean>>(() => ({
       'q-upload-drop-zone_is-dragover': Boolean(isDragover.value),
@@ -76,7 +73,7 @@ export default defineComponent({
 
     const { t } = useI18n();
 
-    const text = computed(() => {
+    const text = computed<string>(() => {
       if (props.isLoading) return props.textLoadingFile ?? t('QUpload.loading');
 
       const textUploadFile = props.textUploadFile ?? t('QUpload.uploadFile');

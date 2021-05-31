@@ -180,4 +180,14 @@
       }
     }
   }
+
+  &__dummy {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 100;
+    pointer-events: none;
+    background-color: rgba(var(--color-rgb-gray), 0.16);
+  }
 }

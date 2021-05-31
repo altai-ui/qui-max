@@ -113,7 +113,7 @@ export default defineComponent({
       });
     });
 
-    const sortArrowClasses = computed<Record<string, boolean>>(() => {
+    const sortArrowElClasses = computed<Record<string, boolean>>(() => {
       const isDirectionAsc = props.sortBy?.direction === 'ascending';
       const isArrowUpShown = isCurrentSorting.value && isDirectionAsc;
 
@@ -148,27 +148,39 @@ export default defineComponent({
       });
     };
 
-    const sortArrow = computed<VNode | null>(() => {
+    const sortArrowEl = computed<VNode | null>(() => {
       if (!isSortable.value) return null;
 
       return h('button', {
         type: 'button',
-        class: sortArrowClasses.value,
+        class: sortArrowElClasses.value,
         onClick: handleSortArrowClick
       });
     });
 
+    const startCursorPostition = ref<number>(0);
+    const dummyOffset = ref<number>(0);
+
+    const handleMouseMove = (e: MouseEvent): void => {
+      dummyOffset.value = e.clientX - startCursorPostition.value;
+    };
+
     const endDragging = (): void => {
       ctx.emit('drop');
       document.removeEventListener('mouseup', endDragging);
+      document.removeEventListener('mousemove', handleMouseMove);
     };
 
-    const handleDragTriggerMouseDown = (): void => {
+    const handleDragTriggerMouseDown = (e: MouseEvent): void => {
+      startCursorPostition.value = e.clientX;
+      dummyOffset.value = 0;
+
       ctx.emit('drag', props.column);
       document.addEventListener('mouseup', endDragging);
+      document.addEventListener('mousemove', handleMouseMove);
     };
 
-    const dragTrigger = computed<VNode | null>(() => {
+    const dragTriggerEl = computed<VNode | null>(() => {
       if (!props.column.group.draggable || props.column.draggable === false)
         return null;
 
@@ -178,11 +190,25 @@ export default defineComponent({
       });
     });
 
+    const dummyEl = computed<VNode | null>(() => {
+      if (props.draggedColumn?.key !== props.column.key) return null;
+
+      const style = {
+        height: `${qTableT.tableHeight.value}px`,
+        transform: `translateX(${dummyOffset.value}px)`
+      };
+
+      return h('div', {
+        style,
+        class: 'q-table-t-head-cell__dummy'
+      });
+    });
+
     const handleDropZoneElementMouseUp = (position: 'left' | 'right'): void => {
       ctx.emit('drop', position, props.column.key);
     };
 
-    const dropZones = computed<VNode[] | null>(() => {
+    const dropZoneEls = computed<VNode[] | null>(() => {
       if (props.draggedColumn === null) return null;
 
       const style = { height: `${qTableT.tableHeight.value}px` };
@@ -227,11 +253,12 @@ export default defineComponent({
         'th',
         { ref: root, class: cellClasses.value, style: cellStyles.value },
         [
-          dropZones.value,
+          dummyEl.value,
+          dropZoneEls.value,
           h('div', { class: 'q-table-t-head-cell__container' }, [
             h('div', { class: contentClasses.value }, [content.value]),
-            sortArrow.value,
-            dragTrigger.value
+            sortArrowEl.value,
+            dragTriggerEl.value
           ])
         ]
       );

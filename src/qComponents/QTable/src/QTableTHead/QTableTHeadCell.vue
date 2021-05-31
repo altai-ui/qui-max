@@ -172,6 +172,7 @@ export default defineComponent({
     };
 
     const handleDragTriggerMouseDown = (e: MouseEvent): void => {
+      e.preventDefault();
       startCursorPostition.value = e.clientX;
       dummyOffset.value = 0;
 

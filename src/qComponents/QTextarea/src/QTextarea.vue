@@ -143,7 +143,7 @@ export default defineComponent({
       const mainClass = 'q-textarea';
 
       return {
-        mainClass: true,
+        [mainClass]: true,
         [`${mainClass}_disabled`]: isDisabled.value
       };
     });

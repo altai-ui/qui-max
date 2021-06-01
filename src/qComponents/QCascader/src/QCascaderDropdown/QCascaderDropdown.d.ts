@@ -15,7 +15,6 @@ export interface QCascaderDropdownInstance {
     columnIndex: number,
     hasChildren: boolean
   ) => void;
-  updatePopperJs: () => Promise<void>;
 }
 
 export interface QCascaderDropdownProvider {

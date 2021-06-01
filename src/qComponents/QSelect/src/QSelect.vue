@@ -55,28 +55,33 @@
       :to="teleportTo"
       :disabled="!teleportTo"
     >
-      <q-select-dropdown
-        ref="dropdown"
-        :shown="state.isDropdownShown"
-        :width="state.inputWidth"
-        :select-all-shown="selectAllShown"
-        :select-all-text="selectAllText || t('QSelect.selectAll')"
-        :show-empty-content="showEmptyContent"
-        :empty-text="emptyText"
-        :is-can-load-more-shown="isCanLoadMoreShown"
-        :load-more-text="loadMoreText || t('QSelect.more')"
-        :is-new-option-shown="isNewOptionShown"
-        @select-all="emitValueUpdate"
+      <transition
+        name="q-select__dropdown_animation"
+        @after-leave="afterLeave"
       >
-        <slot v-if="!state.loading" />
-
-        <template
-          v-if="$slots.empty"
-          #empty
+        <q-select-dropdown
+          ref="dropdown"
+          :shown="state.isDropdownShown"
+          :width="state.inputWidth"
+          :select-all-shown="selectAllShown"
+          :select-all-text="selectAllText || t('QSelect.selectAll')"
+          :show-empty-content="showEmptyContent"
+          :empty-text="emptyText"
+          :is-can-load-more-shown="isCanLoadMoreShown"
+          :load-more-text="loadMoreText || t('QSelect.more')"
+          :is-new-option-shown="isNewOptionShown"
+          @select-all="emitValueUpdate"
         >
-          <slot name="empty" />
-        </template>
-      </q-select-dropdown>
+          <slot v-if="!state.loading" />
+
+          <template
+            v-if="$slots.empty"
+            #empty
+          >
+            <slot name="empty" />
+          </template>
+        </q-select-dropdown>
+      </transition>
     </teleport>
   </div>
 </template>
@@ -514,10 +519,13 @@ export default defineComponent({
 
       if (!state.popper) return;
 
-      state.popper.destroy();
-      state.popper = null;
       document.removeEventListener('keyup', handleKeyUp, true);
       document.removeEventListener('click', handleDocumentClick, true);
+    };
+
+    const afterLeave = (): void => {
+      state.popper?.destroy();
+      state.popper = null;
     };
 
     watch(
@@ -793,6 +801,7 @@ export default defineComponent({
       handleEnterKeyUp,
       onInputChange,
       deleteTag,
+      afterLeave,
       t
     };
   }

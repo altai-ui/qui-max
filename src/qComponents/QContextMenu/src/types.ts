@@ -24,4 +24,5 @@ export interface QContextMenuInstance {
   handleTriggerClick: () => void;
   handleItemClick: (actionName: string) => void;
   setItemRef: (el: HTMLElement) => void;
+  afterLeave: () => void;
 }

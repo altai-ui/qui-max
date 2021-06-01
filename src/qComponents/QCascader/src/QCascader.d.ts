@@ -1,7 +1,7 @@
 import type { Ref, ComputedRef, ComponentPublicInstance, UnwrapRef } from 'vue';
+import type { Instance } from '@popperjs/core';
 
 import type { QCascaderInputInstance } from './QCascaderInput/QCascaderInput';
-import type { QCascaderDropdownInstance } from './QCascaderDropdown/QCascaderDropdown';
 
 export interface Option {
   value: number | string;
@@ -33,18 +33,15 @@ export interface QCascaderProps {
 type Reference = Ref<
   Nullable<ComponentPublicInstance<UnwrapRef<QCascaderInputInstance>>>
 >;
-type Dropdown = Ref<
-  Nullable<ComponentPublicInstance<UnwrapRef<QCascaderDropdownInstance>>>
->;
 
 export interface QCascaderInstance {
   reference: Reference;
-  dropdown: Dropdown;
   isDropdownShown: Ref<boolean>;
   isDisabled: ComputedRef<boolean>;
   rootClasses: ComputedRef<Record<string, boolean>>;
   handleReferenceTrigger: () => void;
   handleDropdownClose: () => void;
+  afterLeave: () => void;
 }
 
 export interface QCascaderProvider {
@@ -60,6 +57,7 @@ export interface QCascaderProvider {
   collapseTags: Ref<Nullable<boolean>>;
   placeholder: Ref<Nullable<string>>;
   uniqueId: string;
+  popperJS: Ref<Nullable<Instance>>;
   popoverReference: Reference;
   updateValue: (
     value: Nullable<number | string | (number | string)[]>,

@@ -1,59 +1,61 @@
 <template>
   <div
+    v-show="shown"
     ref="root"
     class="q-select-dropdown"
     :class="{
-      'q-select-dropdown_multiple': multiple,
-      'q-select-dropdown_shown': shown
+      'q-select-dropdown_multiple': multiple
     }"
     :style="styles"
   >
-    <q-scrollbar
-      ref="scrollbar"
-      wrap-class="q-select-dropdown__wrap"
-    >
-      <div
-        v-if="selectAllShown && isVisibleOptionExist && multiple"
-        tabindex="-1"
-        class="q-option q-option_with-checkbox q-option_all"
-        @click.stop="handleSelectAllClick"
+    <div class="q-select-dropdown__wrapper">
+      <q-scrollbar
+        ref="scrollbar"
+        wrap-class="q-select-dropdown__wrap"
       >
-        <q-checkbox
-          v-model="areAllSelected"
-          root-tag="div"
-          input-tab-index="-1"
-          :indeterminate="isIndeterminate"
+        <div
+          v-if="selectAllShown && isVisibleOptionExist && multiple"
+          tabindex="-1"
+          class="q-option q-option_with-checkbox q-option_all"
+          @click.stop="handleSelectAllClick"
+        >
+          <q-checkbox
+            v-model="areAllSelected"
+            root-tag="div"
+            input-tab-index="-1"
+            :indeterminate="isIndeterminate"
+          />
+
+          <div class="q-option__label">{{ selectAllText }}</div>
+        </div>
+
+        <q-option
+          v-if="isNewOptionShown"
+          :model-value="qSelectState.query"
+          :label="qSelectState.query"
+          created
         />
 
-        <div class="q-option__label">{{ selectAllText }}</div>
-      </div>
+        <slot />
+      </q-scrollbar>
 
-      <q-option
-        v-if="isNewOptionShown"
-        :model-value="qSelectState.query"
-        :label="qSelectState.query"
-        created
-      />
+      <template v-if="showEmptyContent">
+        <slot
+          v-if="$slots.empty"
+          name="empty"
+        />
+        <div
+          v-else
+          class="q-select-dropdown__empty"
+        >{{ emptyText }}</div>
+      </template>
 
-      <slot />
-    </q-scrollbar>
-
-    <template v-if="showEmptyContent">
-      <slot
-        v-if="$slots.empty"
-        name="empty"
-      />
       <div
-        v-else
+        v-else-if="isCanLoadMoreShown"
         class="q-select-dropdown__empty"
-      >{{ emptyText }}</div>
-    </template>
-
-    <div
-      v-else-if="isCanLoadMoreShown"
-      class="q-select-dropdown__empty"
-    >
-      {{ loadMoreText }}
+      >
+        {{ loadMoreText }}
+      </div>
     </div>
   </div>
 </template>

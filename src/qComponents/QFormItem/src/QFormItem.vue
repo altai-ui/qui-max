@@ -26,7 +26,7 @@
     <div class="q-form-item__body">
       <slot />
 
-      <transition name="q-fade-in">
+      <transition name="q-fade">
         <slot
           v-if="isErrorSlotShown"
           name="error"

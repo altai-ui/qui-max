@@ -11,7 +11,8 @@
   &_multiple {
     width: var(--q-upload-size);
     height: var(--q-upload-size);
-    transition: width ease 0.5s, height ease 0.5s;
+    transition: width var(--transition-spline-base) 0.5s,
+      height var(--transition-spline-base) 0.5s;
 
     &_open {
       &-right {

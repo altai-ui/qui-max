@@ -33,19 +33,21 @@
       :to="teleportTo || 'body'"
       :disabled="!teleportTo"
     >
-      <q-picker-dropdown
-        ref="dropdown"
-        :is-shown="isPickerShown"
-        :is-clear-btn-shown="clearable"
-        :color="modelValue"
-        :color-format="colorFormat"
-        :alpha-shown="alphaShown"
-        :style="{ zIndex }"
-        @click.stop
-        @close="handleClose"
-        @clear="handleClear"
-        @pick="handlePick"
-      />
+      <transition name="q-fade">
+        <q-picker-dropdown
+          ref="dropdown"
+          :is-shown="isPickerShown"
+          :is-clear-btn-shown="clearable"
+          :color="modelValue"
+          :color-format="colorFormat"
+          :alpha-shown="alphaShown"
+          :style="{ zIndex }"
+          @click.stop
+          @close="handleClose"
+          @clear="handleClear"
+          @pick="handlePick"
+        />
+      </transition>
     </teleport>
   </div>
 </template>

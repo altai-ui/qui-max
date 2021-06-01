@@ -19,11 +19,11 @@
 
   &-enter-from {
     opacity: 0;
-    transform: translate3d(0, -16px, 0);
+    transform: translateY(-8px);
   }
 
   &-leave-to {
     opacity: 0;
-    transform: translate3d(0, -16px, 0);
+    transform: translateY(-8px);
   }
 }

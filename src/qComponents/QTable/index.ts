@@ -9,6 +9,7 @@ QTable.install = (app: App): void => {
 
 export type {
   QTableProps,
+  QTablePropGroupsOfColumns,
   QTablePropCheckedRows,
   QTablePropSortBy,
   QTableInstance

@@ -28,11 +28,7 @@ import {
 } from 'vue';
 import { isEmpty } from 'lodash-es';
 
-import {
-  ResizableElement,
-  addResizeListener,
-  removeResizeListener
-} from '@/qComponents/helpers';
+import { addResizeListener, removeResizeListener } from '@/qComponents/helpers';
 import type { QScrollbarProvider } from '@/qComponents/QScrollbar';
 
 import { SELECTABLE_COLUMN_STICKY_INDEX } from '../config';
@@ -126,11 +122,11 @@ export default defineComponent({
     });
 
     onMounted(() => {
-      addResizeListener(root.value as ResizableElement, getSizes);
+      addResizeListener(root.value, getSizes);
     });
 
     onBeforeUnmount(() => {
-      removeResizeListener(root.value as ResizableElement, getSizes);
+      removeResizeListener(root.value, getSizes);
     });
 
     const checkSticky = (value: number = qScrollbar.moveXInPx.value): void => {

@@ -113,7 +113,6 @@ import { createPopper } from '@popperjs/core';
 import { useI18n } from 'vue-i18n';
 
 import {
-  ResizableElement,
   addResizeListener,
   removeResizeListener
 } from '@/qComponents/helpers/resizeEvent';
@@ -594,15 +593,14 @@ export default defineComponent({
     };
 
     onMounted(() => {
-      if (root?.value) {
-        addResizeListener(root.value as ResizableElement, handleResize);
+      if (root.value) {
+        addResizeListener(root.value, handleResize);
         state.inputWidth = root.value.getBoundingClientRect().width;
       }
     });
 
     onBeforeUnmount(() => {
-      if (root.value)
-        removeResizeListener(root.value as ResizableElement, handleResize);
+      removeResizeListener(root.value, handleResize);
 
       document.removeEventListener('keyup', handleKeyUp, true);
       document.removeEventListener('click', handleDocumentClick, true);

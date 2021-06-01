@@ -11,6 +11,7 @@ export interface QTableTHeadCellProps {
   column: ExtendedColumn;
   columnIndex: number;
   sortBy: Nullable<QTableTHeadCellPropSortBy>;
+  draggedColumn: Nullable<ExtendedColumn>;
 }
 
 export type QTableTHeadCellInstance = () => VNode;

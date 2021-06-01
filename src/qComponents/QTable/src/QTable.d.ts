@@ -12,6 +12,7 @@ interface Column {
   value: Nullable<string | number>;
   isHidden?: boolean;
   sortable?: boolean;
+  draggable?: boolean;
   align?: 'left' | 'right';
   slots?: Record<string, string>;
   width?: string;
@@ -95,6 +96,7 @@ export interface QTableProvider {
   isRowClickable: ComputedRef<boolean>;
   updateCheckedRows: (value: number[]) => void;
   updateSortBy: (value: QTablePropSortBy) => void;
+  updateGroupsOfColumns: (value: QTablePropGroupsOfColumns) => void;
   emitRowClick: (row: Record<string, unknown>, rowIndex: number) => void;
 }
 

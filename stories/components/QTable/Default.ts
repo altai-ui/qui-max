@@ -5,6 +5,7 @@ import { defineComponent, ref } from 'vue';
 import type {
   QTablePropCheckedRows,
   QTablePropSortBy,
+  QTablePropGroupsOfColumns,
   QTableProps
 } from '@/qComponents/QTable';
 
@@ -20,6 +21,9 @@ const QTableStory: Story<QTableProps> = args =>
     setup() {
       const checkedRows = ref<QTablePropCheckedRows>(args.checkedRows ?? null);
       const sortBy = ref<QTablePropSortBy>(args.sortBy ?? null);
+      const groupsOfCols = ref<QTablePropGroupsOfColumns>(
+        args.groupsOfColumns ?? null
+      );
 
       const handleRowClick = (row: unknown): void => {
         // eslint-disable-next-line no-console
@@ -32,6 +36,7 @@ const QTableStory: Story<QTableProps> = args =>
 
       return {
         args,
+        groupsOfCols,
         checkedRows,
         sortBy,
         handleRowClick,
@@ -42,11 +47,11 @@ const QTableStory: Story<QTableProps> = args =>
       <q-table
         v-model:checked-rows="checkedRows"
         v-model:sort-by="sortBy"
+        v-model:groups-of-columns="groupsOfCols"
         :fixed-layout="args.fixedLayout"
         :is-loading="args.isLoading"
         :loading-row-count="args.loadingRowCount"
         :grid="args.grid"
-        :groups-of-columns="args.groupsOfColumns"
         :rows="args.rows"
         :total="args.total"
         :custom-row-class="args.customRowClass"

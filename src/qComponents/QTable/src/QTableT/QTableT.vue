@@ -1,5 +1,6 @@
 <template>
   <table
+    ref="root"
     :class="rootClasses"
     cellspacing="0"
     cellpadding="0"
@@ -29,10 +30,14 @@ import {
   ref,
   computed,
   provide,
+  onMounted,
+  onBeforeUnmount,
   ComponentPublicInstance,
   UnwrapRef
 } from 'vue';
 import { isEmpty } from 'lodash-es';
+
+import { addResizeListener, removeResizeListener } from '@/qComponents/helpers';
 
 import QTableTBody from '../QTableTBody/QTableTBody.vue';
 import QTableTColgroup from '../QTableTColgroup/QTableTColgroup.vue';
@@ -67,6 +72,7 @@ export default defineComponent({
     );
     const isTotalShown = computed<boolean>(() => !isEmpty(qTable.total.value));
 
+    const root = ref<HTMLElement | null>(null);
     const thead = ref<HTMLElement | null>(null);
     const sticky =
       ref<ComponentPublicInstance<UnwrapRef<QTableTStickyInstance>> | null>(
@@ -87,9 +93,34 @@ export default defineComponent({
         }
     );
 
-    provide<QTableTProvider>('qTableT', { stickyGlobalConfig });
+    const tableHeight = ref<number | null>(null);
+
+    provide<QTableTProvider>('qTableT', {
+      stickyGlobalConfig,
+      tableHeight
+    });
+
+    const setTableHeight = (): void => {
+      const el = root.value;
+      if (!el) return;
+
+      const computedStyle = getComputedStyle(el);
+      tableHeight.value =
+        el.clientHeight -
+        parseFloat(computedStyle.paddingTop) -
+        parseFloat(computedStyle.paddingBottom);
+    };
+
+    onMounted(() => {
+      addResizeListener(root.value, setTableHeight);
+    });
+
+    onBeforeUnmount(() => {
+      removeResizeListener(root.value, setTableHeight);
+    });
 
     return {
+      root,
       thead,
       sticky,
       isColgroupShown,

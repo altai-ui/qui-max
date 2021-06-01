@@ -10,6 +10,7 @@ import Total from './Total';
 import StickyColumn from './StickyColumn';
 import CustomRows from './CustomRows';
 import Groups from './Groups';
+import Draggable from './Draggable';
 
 const storyMetadata: Meta = {
   title: 'Components/QTable',
@@ -29,6 +30,7 @@ export {
   Total,
   StickyColumn,
   CustomRows,
-  Groups
+  Groups,
+  Draggable
 };
 export default storyMetadata;

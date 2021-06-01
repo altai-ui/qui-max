@@ -6,7 +6,8 @@
     &_animation {
       &-enter-active,
       &-leave-active {
-        transition: opacity 0.25s ease, transform 0.25s ease;
+        transition: opacity 0.25s var(--transition-spline-base),
+          transform 0.25s var(--transition-spline-base);
       }
 
       &-enter-from,

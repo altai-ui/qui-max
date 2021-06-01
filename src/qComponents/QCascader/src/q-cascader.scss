@@ -14,10 +14,10 @@
   &__dropdown_animation {
     &-enter-active,
     &-leave-active {
-      transition: opacity ease 0.25s;
+      transition: opacity var(--transition-spline-base) 0.25s;
 
       .q-cascader-column {
-        transition: margin-top ease 0.25s;
+        transition: margin-top var(--transition-spline-base) 0.25s;
       }
     }
 

@@ -56,6 +56,7 @@ interface QSelectInstance {
   handleEnterKeyUp: () => void;
   onInputChange: () => void;
   deleteTag: (tag: QOptionModel) => void;
+  afterLeave: () => void;
   t: Composer['t'];
 }
 

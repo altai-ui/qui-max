@@ -129,10 +129,10 @@ import {
   checkArrayValueIsValid
 } from './helpers';
 
-import DatePanel from './panel/Date/DatePanel.vue';
-import DateRangePanel from './panel/DateRange/DateRange.vue';
-import MonthRangePanel from './panel/MonthRange/MonthRange.vue';
-import YearRangePanel from './panel/YearRange/YearRange.vue';
+import DatePanel from './panel/Date/DatePanel';
+import DateRangePanel from './panel/DateRange/DateRange';
+import MonthRangePanel from './panel/MonthRange/MonthRange';
+import YearRangePanel from './panel/YearRange/YearRange';
 import type {
   QDatePickerPropModelValue,
   QDatePickerProvider,

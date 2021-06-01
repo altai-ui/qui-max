@@ -106,18 +106,19 @@ import {
   onMounted
 } from 'vue';
 import { isNil } from 'lodash-es';
-import YearTable from '../../tables/year-table.vue';
+import YearTable from '../../tables/YearTable/YearTable';
 import {
   leftYearComposable,
   leftLabelComposable,
   rightLabelComposable,
   isValidValue
 } from '../composition';
-import { RangePickValue, YearRangeInterface, YearRangeState } from '../types';
+import type { YearRangeInterface, YearRangeState } from './YearRange';
 import type { DatePanelPropShortcuts } from '../Date/DatePanel';
 import type { QDatePickerProvider } from '../../QDatePicker';
-import type { RangeState } from '../types';
 import type { DatePanelRangePropModelValue } from '../DateRange/DateRange';
+import type { RangePickValue, RangeState } from '../../Common';
+
 import {
   LEFT_MONTH_PANEL_START_INDEX,
   PERIOD_CELLS_IN_ROW_COUNT,
@@ -245,7 +246,7 @@ export default {
       state.minDate = val.minDate;
 
       // emit QDatepicker intermediate value
-      picker.emitChange([state.minDate, state.maxDate], true);
+      picker.emit('intermediateChange', [state.minDate, state.maxDate]);
 
       if (!close) return;
 

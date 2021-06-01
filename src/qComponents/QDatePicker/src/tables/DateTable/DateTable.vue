@@ -60,10 +60,9 @@ import { throttle } from 'lodash-es';
 import { ru, enGB as en } from 'date-fns/locale';
 import { reactive, computed, PropType } from 'vue';
 import { getConfig } from '@/qComponents/config';
+import { isDateInRangeInterval } from '../../helpers';
 import type { DateTableInterface, DateTableState } from './DateTable';
-import { RangeState } from '../../Common';
-import { DateCellModel } from '../types';
-import isDateInRangeInterval from '../composition';
+import type { DateCellModel, RangeState } from '../../Common';
 
 const locales: Record<string, Locale> = { ru, en };
 

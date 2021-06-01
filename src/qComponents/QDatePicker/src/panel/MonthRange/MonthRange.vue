@@ -103,7 +103,7 @@ import {
   ref
 } from 'vue';
 import isSameMonth from 'date-fns/isSameMonth';
-import MonthTable from '../../tables/month-table.vue';
+import MonthTable from '../../tables/MonthTable/MonthTable';
 import {
   leftYearComposable,
   leftMonthComposable,
@@ -115,20 +115,16 @@ import {
   useRightPrevYearClick
 } from '../composition';
 
-import type {
-  MonthRangeState,
-  MonthRangeInstance,
-  DatePanelRangePropModelValue,
-  RangePickValue,
-  DatePanelPropShortcuts
-} from '../types';
-import { QDatePickerProvider } from '../types';
-import { RangeState } from '../../tables/types';
 import {
   LEFT_MONTH_PANEL_START_INDEX,
   PERIOD_CELLS_IN_ROW_COUNT,
   RIGHT_MONTH_PANEL_START_INDEX
 } from '../constants';
+import type { DatePanelRangePropModelValue } from '../DateRange/DateRange';
+import type { DatePanelPropShortcuts } from '../Date/DatePanel';
+import type { MonthRangeInstance, MonthRangeState } from './MonthRange';
+import type { QDatePickerProvider } from '../../QDatePicker';
+import type { RangePickValue, RangeState } from '../../Common';
 
 export default {
   components: { MonthTable },
@@ -231,7 +227,7 @@ export default {
       state.minDate = val.minDate;
 
       // emit QDatepicker intermediate value
-      picker.emitChange([state.minDate, state.maxDate], true);
+      picker.emit('intermediateChange', [state.minDate, state.maxDate]);
 
       if (!close) return;
 

@@ -148,7 +148,7 @@ import {
   useRightPrevYearClick,
   useLeftNextYearClick
 } from '../composition';
-import DateTable from '../../tables/date-table.vue';
+import DateTable from '../../tables/DateTable/DateTable';
 
 import type {
   DatePanelRangePropModelValue,
@@ -156,10 +156,9 @@ import type {
   DateRangePanelState
 } from './DateRange';
 import { QDatePickerProvider } from '../../QDatePicker';
-import { RangeState } from '../../tables/types';
 import { DATE_CELLS_COUNT, DATE_CELLS_IN_ROW_COUNT } from '../constants';
 import { DatePanelPropShortcuts } from '../Date/DatePanel';
-import { RangePickValue } from '../../Common';
+import { RangePickValue, RangeState } from '../../Common';
 
 const MONTHS_COUNT = 12;
 
@@ -278,7 +277,7 @@ export default {
     const leftPanelClasses = computed(() => ({
       'q-picker-panel__content': true,
       'q-picker-panel__content_no-left-borders': Boolean(
-        ctx.slots.sidebar || props.shortcuts.length
+        ctx.slots.sidebar || props.shortcuts?.length
       ),
       'q-picker-panel__content_no-right-borders': true,
       'q-picker-panel__content_focused': state.panelInFocus === 'left'

@@ -114,9 +114,9 @@ import { useI18n } from 'vue-i18n';
 import { reactive, computed, watch, PropType, onMounted, ref } from 'vue';
 import { getConfig } from '@/qComponents/config';
 import { getTimeModel } from '../../../../helpers/dateHelpers';
-import YearTable from '../../tables/year-table.vue';
-import MonthTable from '../../tables/month-table.vue';
-import DateTable from '../../tables/date-table.vue';
+import YearTable from '../../tables/YearTable/YearTable';
+import MonthTable from '../../tables/MonthTable/MonthTable';
+import DateTable from '../../tables/DateTable/DateTable';
 
 import type {
   DatePanelPropShortcuts,

@@ -75,18 +75,15 @@
         <date-table
           v-show="state.currentView === 'date'"
           :selection-mode="selectionMode"
-          :first-day-of-week="firstDayOfWeek"
           :value="modelValue"
           :year="state.year"
           :month="state.month"
-          :disabled-values="disabledValues"
           @pick="handleDatePick"
         />
         <year-table
           v-show="state.currentView === 'year'"
           :value="modelValue"
           :year="state.year"
-          :disabled-values="disabledValues"
           @pick="handleYearPick"
         />
         <month-table
@@ -94,7 +91,6 @@
           :value="modelValue"
           :month="state.month"
           :year="state.year"
-          :disabled-values="disabledValues"
           @pick="handleMonthPick"
         />
       </div>
@@ -106,7 +102,7 @@
 import { subMonths, addMonths, subYears, addYears } from 'date-fns';
 import { isNil } from 'lodash-es';
 import { useI18n } from 'vue-i18n';
-import { reactive, computed, watch, PropType, onMounted, ref } from 'vue';
+import { reactive, computed, PropType, onMounted, ref, inject } from 'vue';
 import { getConfig } from '@/qComponents/config';
 import { getTimeModel } from '../../../../helpers/dateHelpers';
 import YearTable from '../../tables/YearTable/YearTable';
@@ -114,7 +110,6 @@ import MonthTable from '../../tables/MonthTable/MonthTable';
 import DateTable from '../../tables/DateTable/DateTable';
 
 import type {
-  DatePanelPropShortcuts,
   DatePanelPropModelValue,
   DatePanelInstance,
   DatePanelProps,
@@ -126,6 +121,7 @@ import {
   DATE_CELLS_IN_ROW_COUNT,
   PERIOD_CELLS_IN_ROW_COUNT
 } from '../constants';
+import { QDatePickerProvider } from '../../QDatePicker';
 
 export default {
   name: 'QDatePickerPanelDate',
@@ -135,31 +131,6 @@ export default {
     DateTable
   },
   props: {
-    firstDayOfWeek: {
-      type: Number,
-      default: 1
-    },
-
-    type: {
-      type: String,
-      default: 'date'
-    },
-
-    shortcuts: {
-      type: Array as PropType<DatePanelPropShortcuts>,
-      default: null
-    },
-
-    disabledValues: {
-      type: Object,
-      default: null
-    },
-
-    showTime: {
-      type: Boolean,
-      default: false
-    },
-
     modelValue: {
       type: Date as PropType<DatePanelPropModelValue>,
       default: null
@@ -180,6 +151,11 @@ export default {
       monthCells: null,
       yearCells: null
     });
+
+    const picker = inject<QDatePickerProvider>(
+      'qDatePicker',
+      {} as QDatePickerProvider
+    );
 
     if (props.modelValue instanceof Date) {
       state.year = props.modelValue.getFullYear();
@@ -207,7 +183,6 @@ export default {
 
     const panelContentClasses = computed<Record<string, boolean>>(() => ({
       'q-picker-panel__content': true,
-      'q-picker-panel__content_no-right-borders': props.showTime,
       'q-picker-panel__content_focused': state.panelInFocus === 'date'
     }));
 
@@ -218,7 +193,7 @@ export default {
       return null;
     });
 
-    const selectionMode = computed<string>(() => props.type ?? 'day');
+    const selectionMode = computed<string>(() => picker.type.value ?? 'day');
     const currentMonth = computed<string>(() => {
       const formatter = new Intl.DateTimeFormat(getConfig('locale'), {
         month: 'short'
@@ -233,24 +208,6 @@ export default {
       }
       return state.year;
     });
-
-    watch(
-      () => props.type,
-      value => {
-        let currentView;
-        switch (value) {
-          case 'week':
-          case 'date':
-          case 'datetime':
-            currentView = 'date';
-            break;
-          default:
-            currentView = value;
-        }
-        state.currentView = currentView;
-      },
-      { immediate: true }
-    );
 
     const showMonthPicker = (): void => {
       state.currentView = 'month';
@@ -335,7 +292,7 @@ export default {
     };
 
     const handleDatePick = (value: DatePanelPropModelValue): void => {
-      ctx.emit('pick', value, { hidePicker: !props.showTime }); // set false to keep panel open
+      ctx.emit('pick', value);
     };
 
     const { t } = useI18n();
@@ -483,6 +440,7 @@ export default {
     return {
       state,
       root,
+      shortcuts: picker.shortcuts,
       datePanel,
       timePanel,
       panelContentClasses,

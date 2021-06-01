@@ -30,23 +30,31 @@
 
 <script lang="ts">
 import { startOfMonth, isSameMonth, isBefore, isAfter } from 'date-fns';
-import { reactive, computed, PropType } from 'vue';
+import { reactive, computed, PropType, inject } from 'vue';
 import { getConfig } from '@/qComponents/config';
 import { throttle } from 'lodash-es';
 import {
   formatToLocalReadableString,
   isDateInRangeInterval
 } from '../../helpers';
-import type { RangeState } from '../../Common';
+import type {
+  RangeState,
+  TableProps,
+  TablePropSelectionMode
+} from '../../Common';
 import type {
   MonthCellModel,
   MonthTableInstance,
   MonthTableState
 } from './MonthTable';
+import {
+  QDatePickerPropDisabledValues,
+  QDatePickerProvider
+} from '../../QDatePicker';
 
 const checkDisabled = (
   date: Date,
-  disabledValues: Record<string, Date>
+  disabledValues: QDatePickerPropDisabledValues
 ): boolean => {
   if (!disabledValues) return false;
   const disabled = [];
@@ -72,13 +80,9 @@ const checkDisabled = (
 
 export default {
   props: {
-    disabledValues: {
-      type: Object,
-      default: null
-    },
     value: { type: Date, default: null },
     selectionMode: {
-      type: String,
+      type: String as PropType<TablePropSelectionMode>,
       default: 'month'
     },
     minDate: { type: Date, default: null },
@@ -105,10 +109,15 @@ export default {
 
   emits: ['pick', 'rangeSelecting'],
 
-  setup(props, ctx): MonthTableInstance {
+  setup(props: TableProps, ctx): MonthTableInstance {
     const state = reactive<MonthTableState>({
       tableRows: [[], [], []]
     });
+
+    const picker = inject<QDatePickerProvider>(
+      'qDatePicker',
+      {} as QDatePickerProvider
+    );
 
     const rows = computed<MonthCellModel[][]>(() => {
       const tableRows = state.tableRows;
@@ -126,25 +135,27 @@ export default {
             end: false,
             text: index,
             month,
-            disabled: checkDisabled(month, props.disabledValues)
+            disabled: checkDisabled(month, picker.disabledValues.value)
           };
 
-          let maxDateNum = props.maxDate?.getTime();
-          let minDateNum = props.minDate?.getTime();
+          if (props.minDate) {
+            let minDateNum = props.minDate.getTime();
+            let maxDateNum = props.maxDate?.getTime();
 
-          minDateNum = startOfMonth(minDateNum).getTime();
-          maxDateNum = maxDateNum
-            ? startOfMonth(maxDateNum).getTime()
-            : minDateNum;
+            minDateNum = startOfMonth(minDateNum).getTime();
+            maxDateNum = maxDateNum
+              ? startOfMonth(maxDateNum).getTime()
+              : minDateNum;
 
-          minDateNum = Math.min(minDateNum, maxDateNum);
-          maxDateNum = Math.max(minDateNum, maxDateNum);
+            minDateNum = Math.min(minDateNum, maxDateNum);
+            maxDateNum = Math.max(minDateNum, maxDateNum);
 
-          cell.inRange = Boolean(
-            minDateNum &&
-              month.getTime() >= minDateNum &&
-              month.getTime() <= maxDateNum
-          );
+            cell.inRange = Boolean(
+              minDateNum &&
+                month.getTime() >= minDateNum &&
+                month.getTime() <= maxDateNum
+            );
+          }
 
           if (isSameMonth(month, new Date())) {
             cell.type = 'today';
@@ -208,7 +219,7 @@ export default {
               selecting: true
             }
           });
-        } else if (newDate >= props.minDate) {
+        } else if (props.minDate && newDate >= props.minDate) {
           ctx.emit('pick', {
             minDate: props.minDate,
             maxDate: newDate,

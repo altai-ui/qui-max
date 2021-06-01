@@ -22,4 +22,22 @@ interface DateCellModel {
   disabled: boolean;
 }
 
-export { RangePickValue, RangeState, DateCellModel };
+type TablePropSelectionMode = 'day' | 'week' | 'month' | 'year' | 'range';
+
+interface TableProps {
+  year: number;
+  month: number;
+  value: Date;
+  minDate: Nullable<Date>;
+  maxDate: Nullable<Date>;
+  selectionMode: TablePropSelectionMode;
+  rangeState: RangeState;
+}
+
+export {
+  RangePickValue,
+  RangeState,
+  DateCellModel,
+  TableProps,
+  TablePropSelectionMode
+};

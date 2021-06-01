@@ -1,10 +1,20 @@
 import { DebouncedFunc } from 'lodash-es';
 import { ComputedRef } from 'vue';
+import { RangeState, TablePropSelectionMode } from '../../Common';
 
 interface YearCellModel {
   year: Date;
   disabled: boolean;
   inRange: boolean;
+}
+
+interface YearTableProps {
+  year: number;
+  value: Date;
+  minDate: Nullable<Date>;
+  maxDate: Nullable<Date>;
+  selectionMode: TablePropSelectionMode;
+  rangeState: RangeState;
 }
 
 interface YearTableState {
@@ -20,4 +30,4 @@ interface YearTableInstance {
   handleYearTableClick: ({ year }: { year: Date }) => void;
 }
 
-export { YearCellModel, YearTableInstance, YearTableState };
+export { YearCellModel, YearTableInstance, YearTableState, YearTableProps };

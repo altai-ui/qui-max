@@ -64,8 +64,6 @@
             :month="leftMonth"
             :year="leftYear"
             :range-state="state.rangeState"
-            :disabled-values="disabledValues"
-            :first-day-of-week="firstDayOfWeek"
             @pick="handleRangePick"
             @range-selecting="handleRangeSelecting"
           />
@@ -112,8 +110,6 @@
             :month="rightMonth"
             :year="rightYear"
             :range-state="state.rangeState"
-            :disabled-values="disabledValues"
-            :first-day-of-week="firstDayOfWeek"
             @pick="handleRangePick"
             @range-selecting="handleRangeSelecting"
           />
@@ -153,11 +149,11 @@ import DateTable from '../../tables/DateTable/DateTable';
 import type {
   DatePanelRangePropModelValue,
   DateRangePanelInstance,
+  DateRangePanelProps,
   DateRangePanelState
 } from './DateRange';
 import { QDatePickerProvider } from '../../QDatePicker';
 import { DATE_CELLS_COUNT, DATE_CELLS_IN_ROW_COUNT } from '../constants';
-import { DatePanelPropShortcuts } from '../Date/DatePanel';
 import { RangePickValue, RangeState } from '../../Common';
 
 const MONTHS_COUNT = 12;
@@ -168,50 +164,15 @@ export default {
     DateTable
   },
   props: {
-    firstDayOfWeek: {
-      type: Number,
-      default: 1
-    },
-
     modelValue: {
       type: Array as PropType<DatePanelRangePropModelValue>,
       default: null
-    },
-
-    disabledValues: {
-      type: Object,
-      default: null
-    },
-
-    shortcuts: {
-      type: Array as PropType<DatePanelPropShortcuts>,
-      default: (): [] => []
-    },
-
-    showTime: {
-      type: Boolean,
-      default: false
-    },
-
-    type: {
-      type: String,
-      default: 'date',
-      validator: (value: string): boolean =>
-        [
-          'date',
-          'week',
-          'month',
-          'year',
-          'daterange',
-          'monthrange',
-          'yearrange'
-        ].includes(value)
     }
   },
 
   emits: ['pick'],
 
-  setup(props, ctx): DateRangePanelInstance {
+  setup(props: DateRangePanelProps, ctx): DateRangePanelInstance {
     const state = reactive<DateRangePanelState>({
       minDate: null,
       maxDate: null,
@@ -255,10 +216,10 @@ export default {
     });
 
     const leftLabel = computed(() =>
-      leftLabelComposable(state.leftDate, props.type)
+      leftLabelComposable(state.leftDate, picker.type.value)
     );
     const rightLabel = computed(() =>
-      rightLabelComposable(state.rightDate, props.type)
+      rightLabelComposable(state.rightDate, picker.type.value)
     );
     const leftYear = computed(() => leftYearComposable(state.leftDate));
 
@@ -270,14 +231,14 @@ export default {
     const rightPanelClasses = computed<Record<string, boolean>>(() => ({
       'q-picker-panel__content': true,
       'q-picker-panel__content_no-left-borders': true,
-      'q-picker-panel__content_no-right-borders': props.showTime,
+      // 'q-picker-panel__content_no-right-borders': props.showTime,
       'q-picker-panel__content_focused': state.panelInFocus === 'right'
     }));
 
     const leftPanelClasses = computed(() => ({
       'q-picker-panel__content': true,
       'q-picker-panel__content_no-left-borders': Boolean(
-        ctx.slots.sidebar || props.shortcuts?.length
+        ctx.slots.sidebar || picker.shortcuts.value?.length
       ),
       'q-picker-panel__content_no-right-borders': true,
       'q-picker-panel__content_focused': state.panelInFocus === 'left'
@@ -329,9 +290,7 @@ export default {
       if (!close) return;
 
       if (isValidValue([state.minDate, state.maxDate])) {
-        ctx.emit('pick', [state.minDate, state.maxDate], {
-          hidePicker: !props.showTime
-        });
+        ctx.emit('pick', [state.minDate, state.maxDate]);
       }
     };
 
@@ -487,7 +446,11 @@ export default {
         } else {
           state.minDate = newVal[0];
           state.maxDate = newVal[1];
-          if (isSameMonth(state.minDate, state.maxDate)) {
+          if (
+            state.minDate &&
+            state.maxDate &&
+            isSameMonth(state.minDate, state.maxDate)
+          ) {
             state.leftDate = state.minDate;
             state.rightDate = addMonths(state.minDate, 1);
           } else {
@@ -506,7 +469,6 @@ export default {
 
     return {
       state,
-      picker,
       root,
       leftPanel,
       rightPanel,
@@ -535,7 +497,8 @@ export default {
       handleRightNextMonthClick,
       handleRightPrevMonthClick,
       handleRangeSelecting,
-      navigateDropdown
+      navigateDropdown,
+      shortcuts: picker.shortcuts
     };
   }
 };

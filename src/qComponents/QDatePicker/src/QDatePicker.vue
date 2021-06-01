@@ -76,11 +76,6 @@
         ref="panel"
         v-model="transformedToDate"
         :class="{ 'q-picker-panel_shown': Boolean(state.popper) }"
-        :type="type"
-        :shortcuts="shortcuts"
-        :disabled-values="disabledValues"
-        :first-day-of-week="calcFirstDayOfWeek"
-        :show-time="timepicker"
         @pick="handlePickClick"
       >
         <template
@@ -115,7 +110,8 @@ import {
   onBeforeUnmount,
   provide,
   toRefs,
-  ComponentPublicInstance
+  ComponentPublicInstance,
+  toRef
 } from 'vue';
 import { getConfig } from '@/qComponents/config';
 import { QFormProvider } from '@/qComponents/QForm';
@@ -135,8 +131,11 @@ import DateRangePanel from './panel/DateRange/DateRange';
 import MonthRangePanel from './panel/MonthRange/MonthRange';
 import YearRangePanel from './panel/YearRange/YearRange';
 import type {
+  QDatePickerPropDisabledValues,
   QDatePickerPropModelValue,
   QDatePickerProps,
+  QDatePickerPropShortcuts,
+  QDatePickerPropType,
   QDatePickerProvider,
   QDatePickerState
 } from './QDatePicker';
@@ -152,7 +151,7 @@ export default defineComponent({
      * one of sugested types
      */
     type: {
-      type: String,
+      type: String as PropType<QDatePickerPropType>,
       default: 'date',
       validator: (value: string) =>
         [
@@ -238,9 +237,12 @@ export default defineComponent({
       default: '-'
     },
     /**
-     * type of each Object is { text: 'example', onClick(picker) }
+     * array of { text: 'string', value: 'Date' }
      */
-    shortcuts: { type: Array, default: null },
+    shortcuts: {
+      type: Array as PropType<QDatePickerPropShortcuts>,
+      default: null
+    },
     /**
      * any field is optional:
      * `to` - disable all before this date,
@@ -248,8 +250,8 @@ export default defineComponent({
      * `ranges` - array of dateranges, each daterange is object and must has `start` and `end` field
      */
     disabledValues: {
-      type: Object,
-      default: () => ({})
+      type: Object as PropType<QDatePickerPropDisabledValues>,
+      default: null
     },
     /**
      * whether to trigger form validation
@@ -344,7 +346,6 @@ export default defineComponent({
     const panelComponent = computed(() => {
       switch (props.type) {
         case 'daterange':
-        case 'datetimerange':
           return DateRangePanel;
         case 'monthrange':
           return MonthRangePanel;
@@ -654,8 +655,11 @@ export default defineComponent({
 
     provide<QDatePickerProvider>('qDatePicker', {
       emit: ctx.emit,
+      firstDayOfWeek: calcFirstDayOfWeek,
       emitChange,
-      type
+      type,
+      disabledValues: toRef(props, 'disabledValues'),
+      shortcuts: toRef(props, 'shortcuts')
     });
 
     return {

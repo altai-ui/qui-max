@@ -1,5 +1,11 @@
 import { ComputedRef, Ref } from 'vue';
 import { RangePickValue, RangeState } from '../../Common';
+import { QDatePickerPropShortcuts } from '../../QDatePicker';
+import { DatePanelRangePropModelValue } from '../DateRange/DateRange';
+
+interface MonthRangePanelProps {
+  modelValue: DatePanelRangePropModelValue;
+}
 
 interface MonthRangeState {
   minDate: Nullable<Date>;
@@ -18,6 +24,7 @@ interface MonthRangePanelInstance {
   root: Ref<HTMLElement | null>;
   leftPanel: Ref<HTMLElement | null>;
   rightPanel: Ref<HTMLElement | null>;
+  shortcuts: Ref<QDatePickerPropShortcuts>;
   state: MonthRangeState;
   leftPanelClasses: ComputedRef<Record<string, boolean>>;
   rightPanelClasses: ComputedRef<Record<string, boolean>>;
@@ -37,4 +44,4 @@ interface MonthRangePanelInstance {
   navigateDropdown: (e: KeyboardEvent) => void;
 }
 
-export { MonthRangePanelInstance, MonthRangeState };
+export { MonthRangePanelInstance, MonthRangeState, MonthRangePanelProps };

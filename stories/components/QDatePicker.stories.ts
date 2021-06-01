@@ -1,6 +1,6 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { Meta, Story } from '@storybook/vue3';
-import { addMonths, subMonths } from 'date-fns';
+import { addMonths, startOfYesterday, subMonths, subWeeks } from 'date-fns';
 import QDatePicker from '@/qComponents/QDatePicker';
 import { defineComponent, reactive, watch } from 'vue';
 
@@ -18,9 +18,7 @@ const storyMetadata: Meta = {
           null,
           {
             to: subMonths(now, 2),
-            ranges: [
-              { start: now, end: new Date(addMonths(now, 1)) }
-            ]
+            ranges: [{ start: now, end: new Date(addMonths(now, 1)) }]
           }
         ]
       }
@@ -66,7 +64,7 @@ const Template: Story = args =>
   defineComponent({
     setup() {
       const state = reactive({
-        value: null,
+        value: null
       });
 
       const handleRangePickClick = (val: any): void => {
@@ -152,13 +150,13 @@ Shortcuts.args = {
     },
     {
       text: 'Вчера',
-      value: new Date(now.setTime(now.getTime() - 3600 * 1000 * 24))
+      value: startOfYesterday()
     },
     {
       text: 'Неделю назад',
-      value: new Date(now.setTime(now.getTime() - 3600 * 1000 * 24 * 7))
+      value: subWeeks(now, 1)
     }
   ]
-}
+};
 
 export default storyMetadata;

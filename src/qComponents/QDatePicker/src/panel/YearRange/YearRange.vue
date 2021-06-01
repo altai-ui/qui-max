@@ -48,7 +48,6 @@
             :year="leftYear"
             :min-date="state.minDate"
             :max-date="state.maxDate"
-            :disabled-values="disabledValues"
             :range-state="state.rangeState"
             selection-mode="range"
             @pick="handleRangePick"
@@ -82,7 +81,6 @@
             :year="rightYear"
             :min-date="state.minDate"
             :max-date="state.maxDate"
-            :disabled-values="disabledValues"
             selection-mode="range"
             :range-state="state.rangeState"
             @pick="handleRangePick"
@@ -113,8 +111,11 @@ import {
   rightLabelComposable,
   isValidValue
 } from '../composition';
-import type { YearRangePanelInstance, YearRangeState } from './YearRange';
-import type { DatePanelPropShortcuts } from '../Date/DatePanel';
+import type {
+  YearRangePanelInstance,
+  YearRangePanelProps,
+  YearRangeState
+} from './YearRange';
 import type { QDatePickerProvider } from '../../QDatePicker';
 import type { DatePanelRangePropModelValue } from '../DateRange/DateRange';
 import type { RangePickValue, RangeState } from '../../Common';
@@ -133,24 +134,12 @@ export default {
     modelValue: {
       type: Array as PropType<DatePanelRangePropModelValue>,
       default: null
-    },
-    disabledValues: {
-      type: Object,
-      default: null
-    },
-    showTime: {
-      type: Boolean,
-      default: false
-    },
-    shortcuts: {
-      type: Array as PropType<DatePanelPropShortcuts>,
-      default: (): [] => []
     }
   },
 
   emits: ['pick'],
 
-  setup(props, ctx): YearRangePanelInstance {
+  setup(props: YearRangePanelProps, ctx): YearRangePanelInstance {
     const state = reactive<YearRangeState>({
       minDate: null,
       maxDate: null,
@@ -251,9 +240,7 @@ export default {
       if (!close) return;
 
       if (isValidValue([state.minDate, state.maxDate])) {
-        ctx.emit('pick', [state.minDate, state.maxDate], {
-          hidePicker: !props.showTime
-        });
+        ctx.emit('pick', [state.minDate, state.maxDate]);
       }
     };
 
@@ -401,7 +388,8 @@ export default {
       handleRangePick,
       handleRangeSelecting,
       navigateDropdown,
-      handleShortcutClick
+      handleShortcutClick,
+      shortcuts: picker.shortcuts
     };
   }
 };

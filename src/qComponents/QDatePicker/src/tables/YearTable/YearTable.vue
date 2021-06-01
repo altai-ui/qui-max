@@ -37,20 +37,25 @@ import {
   isBefore,
   isAfter
 } from 'date-fns';
-import { reactive, computed, PropType } from 'vue';
+import { reactive, computed, PropType, inject } from 'vue';
 
 import { throttle } from 'lodash-es';
 import type {
   YearCellModel,
   YearTableState,
-  YearTableInstance
+  YearTableInstance,
+  YearTableProps
 } from './YearTable';
-import { RangeState } from '../../Common';
+import { RangeState, TablePropSelectionMode } from '../../Common';
 import { isDateInRangeInterval } from '../../helpers';
+import {
+  QDatePickerPropDisabledValues,
+  QDatePickerProvider
+} from '../../QDatePicker';
 
 const checkDisabled = (
   year: number,
-  disabledValues: Record<string, Date>
+  disabledValues: QDatePickerPropDisabledValues
 ): boolean => {
   if (!disabledValues) return false;
   const disabled = [];
@@ -76,14 +81,10 @@ const checkDisabled = (
 
 export default {
   props: {
-    disabledValues: {
-      type: Object,
-      default: null
-    },
     value: { type: Date, default: null },
     year: { type: Number, default: null },
     selectionMode: {
-      type: String,
+      type: String as PropType<TablePropSelectionMode>,
       default: 'year'
     },
     minDate: { type: Date, default: null },
@@ -102,10 +103,15 @@ export default {
 
   emits: ['pick', 'rangeSelecting'],
 
-  setup(props, ctx): YearTableInstance {
+  setup(props: YearTableProps, ctx): YearTableInstance {
     const state = reactive<YearTableState>({
       tableRows: [[], [], []]
     });
+
+    const picker = inject<QDatePickerProvider>(
+      'qDatePicker',
+      {} as QDatePickerProvider
+    );
 
     const startYear = computed<Date>(() => {
       if (props.year) {
@@ -120,25 +126,31 @@ export default {
       return state.tableRows.map((row, i) => {
         const newRow: YearCellModel[] = [];
         const cellCount = i < 2 ? 4 : 2;
+        let inRange = false;
         for (let j = 0; j < cellCount; j += 1) {
-          let maxDateNum = props.maxDate?.getTime();
-          let minDateNum = props.minDate?.getTime();
+          if (props.minDate) {
+            let minDateNum = props.minDate.getTime();
+            let maxDateNum = props.maxDate?.getTime();
 
-          minDateNum = startOfMonth(minDateNum).getTime();
-          maxDateNum = maxDateNum
-            ? startOfMonth(maxDateNum).getTime()
-            : minDateNum;
+            minDateNum = startOfMonth(minDateNum).getTime();
+            maxDateNum = maxDateNum
+              ? startOfMonth(maxDateNum).getTime()
+              : minDateNum;
 
-          minDateNum = Math.min(minDateNum, maxDateNum);
-          maxDateNum = Math.max(minDateNum, maxDateNum);
-          newRow.push({
-            year: startYearDate,
-            disabled: checkDisabled(props.year, props.disabledValues),
-            inRange: Boolean(
+            minDateNum = Math.min(minDateNum, maxDateNum);
+            maxDateNum = Math.max(minDateNum, maxDateNum);
+
+            inRange = Boolean(
               minDateNum &&
                 startYearDate.getTime() >= minDateNum &&
                 startYearDate.getTime() <= maxDateNum
-            )
+            );
+          }
+
+          newRow.push({
+            year: startYearDate,
+            disabled: checkDisabled(props.year, picker.disabledValues.value),
+            inRange
           });
 
           startYearDate = addYears(startYearDate, 1);
@@ -197,7 +209,7 @@ export default {
               selecting: true
             }
           });
-        } else if (year.getTime() >= props.minDate.getTime()) {
+        } else if (props.minDate && year.getTime() >= props.minDate.getTime()) {
           ctx.emit('pick', {
             minDate: props.minDate,
             maxDate: year,

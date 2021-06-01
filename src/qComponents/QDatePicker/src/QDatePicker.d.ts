@@ -1,10 +1,30 @@
 import { Instance } from '@popperjs/core';
-import { Ref } from 'vue';
+import { ComputedRef, Ref } from 'vue';
 
 type QDatePickerPropModelValue = Nullable<string | Date | string[] | Date[]>;
+type QDatePickerPropType =
+  | 'date'
+  | 'week'
+  | 'month'
+  | 'year'
+  | 'daterange'
+  | 'monthrange'
+  | 'yearrange';
+type QDatePickerPropShortcuts = {
+  text: 'string';
+  value: Date;
+}[];
+type QDatePickerPropDisabledValues = Nullable<{
+  to?: Date;
+  from?: Date;
+  ranges?: {
+    start: Date;
+    end: Date;
+  }[];
+}>;
 
 interface QDatePickerProps {
-  type: string;
+  type: QDatePickerPropType;
   format: string;
   outputFormat: string;
   placeholder: string;
@@ -16,6 +36,8 @@ interface QDatePickerProps {
   clearable: boolean;
   modelValue: QDatePickerPropModelValue;
   validateEvent: boolean;
+  disabledValues: QDatePickerPropDisabledValues;
+  shortcuts: QDatePickerPropShortcuts;
 }
 
 interface QDatePickerState {
@@ -35,6 +57,9 @@ interface QDatePickerProvider {
       | 'intermediateChange',
     ...args: unknown[]
   ) => void;
+  firstDayOfWeek: ComputedRef<number>;
+  disabledValues: Ref<QDatePickerPropDisabledValues>;
+  shortcuts: Ref<QDatePickerPropShortcuts>;
   emitChange: (val: QDatePickerPropModelValue, intermediate: boolean) => void;
   type: Ref<string>;
 }
@@ -42,6 +67,9 @@ interface QDatePickerProvider {
 export {
   QDatePickerProps,
   QDatePickerPropModelValue,
+  QDatePickerPropShortcuts,
+  QDatePickerPropType,
+  QDatePickerPropDisabledValues,
   QDatePickerState,
   QDatePickerProvider
 };

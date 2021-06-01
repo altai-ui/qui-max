@@ -49,7 +49,6 @@
             :month="leftMonth"
             :year="leftYear"
             :range-state="state.rangeState"
-            :disabled-values="disabledValues"
             @pick="handleRangePick"
             @range-selecting="handleRangeSelecting"
           />
@@ -80,7 +79,6 @@
             :min-date="state.minDate"
             :max-date="state.maxDate"
             :range-state="state.rangeState"
-            :disabled-values="disabledValues"
             @pick="handleRangePick"
             @range-selecting="handleRangeSelecting"
           />
@@ -121,35 +119,26 @@ import {
   RIGHT_MONTH_PANEL_START_INDEX
 } from '../constants';
 import type { DatePanelRangePropModelValue } from '../DateRange/DateRange';
-import type { DatePanelPropShortcuts } from '../Date/DatePanel';
-import type { MonthRangePanelInstance, MonthRangeState } from './MonthRange';
+import type {
+  MonthRangePanelInstance,
+  MonthRangePanelProps,
+  MonthRangeState
+} from './MonthRange';
 import type { QDatePickerProvider } from '../../QDatePicker';
 import type { RangePickValue, RangeState } from '../../Common';
 
 export default {
   components: { MonthTable },
   props: {
-    value: {
+    modelValue: {
       type: Array as PropType<DatePanelRangePropModelValue>,
       default: null
-    },
-    disabledValues: {
-      type: Object,
-      default: null
-    },
-    showTime: {
-      type: Boolean,
-      default: false
-    },
-    shortcuts: {
-      type: Array as PropType<DatePanelPropShortcuts>,
-      default: (): [] => []
     }
   },
 
   emits: ['pick'],
 
-  setup(props, ctx): MonthRangePanelInstance {
+  setup(props: MonthRangePanelProps, ctx): MonthRangePanelInstance {
     const state = reactive<MonthRangeState>({
       minDate: null,
       maxDate: null,
@@ -232,9 +221,7 @@ export default {
       if (!close) return;
 
       if (isValidValue([state.minDate, state.maxDate])) {
-        ctx.emit('pick', [state.minDate, state.maxDate], {
-          hidePicker: !props.showTime
-        });
+        ctx.emit('pick', [state.minDate, state.maxDate]);
       }
     };
 
@@ -366,7 +353,7 @@ export default {
     });
 
     watch(
-      () => props.value,
+      () => props.modelValue,
       newVal => {
         if (!newVal || !newVal?.length) {
           handleClear();
@@ -406,7 +393,8 @@ export default {
       handleLeftNextYearClick,
       handleRightNextYearClick,
       handleRightPrevYearClick,
-      navigateDropdown
+      navigateDropdown,
+      shortcuts: picker.shortcuts
     };
   }
 };

@@ -1,5 +1,6 @@
 import { ComputedRef, Ref } from 'vue';
 import { TranslateResult, Path, Locale } from 'vue-i18n';
+import { QDatePickerPropShortcuts } from '../../QDatePicker';
 
 type DatePanelPropShortcuts = Record<string, Date>[];
 type DatePanelPropModelValue = null | Date;
@@ -7,7 +8,7 @@ type DatePanelPropModelValue = null | Date;
 interface DatePanelState {
   year: number;
   month: number;
-  currentView: string;
+  currentView: 'date' | 'week' | 'month' | 'year';
   isRanged: boolean;
   panelInFocus: string | null;
   lastFocusedCellIndex: number | null;
@@ -17,17 +18,13 @@ interface DatePanelState {
 }
 
 interface DatePanelProps {
-  disabledValues: Record<string, Date>;
-  firstDayOfWeek: number;
   modelValue: DatePanelPropModelValue;
-  type: string;
-  shortcuts: DatePanelPropShortcuts;
-  showTime: boolean;
 }
 
 interface DatePanelInstance {
   state: DatePanelState;
   root: Ref<HTMLElement | null>;
+  shortcuts: Ref<QDatePickerPropShortcuts>;
   datePanel: Ref<HTMLElement | null>;
   timePanel: Ref<HTMLElement | null>;
   panelContentClasses: ComputedRef<Record<string, boolean>>;

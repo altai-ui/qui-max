@@ -1,5 +1,11 @@
 import { ComputedRef, Ref } from 'vue';
 import { RangePickValue, RangeState } from '../../Common';
+import { QDatePickerPropShortcuts } from '../../QDatePicker';
+import { DatePanelRangePropModelValue } from '../DateRange/DateRange';
+
+interface YearRangePanelProps {
+  modelValue: DatePanelRangePropModelValue;
+}
 
 interface YearRangeState {
   minDate: Nullable<Date>;
@@ -26,6 +32,7 @@ interface YearRangePanelInstance {
   enableYearArrow: ComputedRef<boolean>;
   leftPanelClasses: ComputedRef<Record<string, boolean>>;
   rightPanelClasses: ComputedRef<Record<string, boolean>>;
+  shortcuts: Ref<QDatePickerPropShortcuts>;
   handleLeftNextYearClick: () => void;
   handleLeftPrevYearClick: () => void;
   handleRightNextYearClick: () => void;
@@ -37,4 +44,4 @@ interface YearRangePanelInstance {
   navigateDropdown: (e: KeyboardEvent) => void;
 }
 
-export { YearRangePanelInstance, YearRangeState };
+export { YearRangePanelInstance, YearRangeState, YearRangePanelProps };

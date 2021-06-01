@@ -58,17 +58,26 @@ import {
 } from 'date-fns';
 import { throttle } from 'lodash-es';
 import { ru, enGB as en } from 'date-fns/locale';
-import { reactive, computed, PropType } from 'vue';
+import { reactive, computed, PropType, inject } from 'vue';
 import { getConfig } from '@/qComponents/config';
 import { isDateInRangeInterval } from '../../helpers';
 import type { DateTableInterface, DateTableState } from './DateTable';
-import type { DateCellModel, RangeState } from '../../Common';
+import type {
+  DateCellModel,
+  RangeState,
+  TableProps,
+  TablePropSelectionMode
+} from '../../Common';
+import {
+  QDatePickerPropDisabledValues,
+  QDatePickerProvider
+} from '../../QDatePicker';
 
 const locales: Record<string, Locale> = { ru, en };
 
 const checkDisabled = (
   cellDate: Date,
-  disabledValues: Record<string, Date>
+  disabledValues: QDatePickerPropDisabledValues
 ): boolean => {
   if (!disabledValues) return false;
   const disabled = [];
@@ -96,16 +105,6 @@ const checkDisabled = (
 
 export default {
   props: {
-    firstDayOfWeek: {
-      default: 1,
-      type: Number
-    },
-
-    disabledValues: {
-      type: Object,
-      default: null
-    },
-
     year: {
       type: Number,
       default: new Date().getFullYear()
@@ -118,8 +117,8 @@ export default {
     value: { type: Date, default: null },
 
     selectionMode: {
-      type: String,
-      default: 'date'
+      type: String as PropType<TablePropSelectionMode>,
+      default: 'day'
     },
 
     minDate: { type: Date, default: null },
@@ -138,15 +137,20 @@ export default {
 
   emits: ['pick', 'rangeSelecting'],
 
-  setup(props, ctx): DateTableInterface {
+  setup(props: TableProps, ctx): DateTableInterface {
     const state = reactive<DateTableState>({
       lastRow: null,
       lastColumn: null,
       tableRows: [[], [], [], [], [], []]
     });
 
+    const picker = inject<QDatePickerProvider>(
+      'qDatePicker',
+      {} as QDatePickerProvider
+    );
+
     const offsetDay = computed(() => {
-      const week = props.firstDayOfWeek;
+      const week = picker.firstDayOfWeek.value;
       return week > 3 ? 7 - week : -week;
     });
 
@@ -157,7 +161,7 @@ export default {
         });
       });
 
-      const day = props.firstDayOfWeek;
+      const day = picker.firstDayOfWeek.value;
       return [...DAYS_OF_WEEK, ...DAYS_OF_WEEK].slice(day, day + 7);
     });
 
@@ -222,17 +226,19 @@ export default {
             cell.date = new Date(props.year, props.month + 1, cell.text);
           }
 
-          let minDateNum = props.minDate?.getTime() ?? null;
-          let maxDateNum = props.maxDate?.getTime() ?? minDateNum;
+          if (props.minDate) {
+            let minDateNum = props.minDate.getTime();
+            let maxDateNum = props.maxDate?.getTime() ?? minDateNum;
 
-          minDateNum = Math.min(minDateNum, maxDateNum);
-          maxDateNum = Math.max(minDateNum, maxDateNum);
+            minDateNum = Math.min(minDateNum, maxDateNum);
+            maxDateNum = Math.max(minDateNum, maxDateNum);
 
-          cell.inRange = Boolean(
-            minDateNum &&
-              cell.date.getTime() >= minDateNum &&
-              cell.date.getTime() <= maxDateNum
-          );
+            cell.inRange = Boolean(
+              minDateNum &&
+                cell.date.getTime() >= minDateNum &&
+                cell.date.getTime() <= maxDateNum
+            );
+          }
 
           if (isToday(cell.date)) {
             if (!['prev-month', 'next-month'].includes(cell.type)) {
@@ -241,7 +247,7 @@ export default {
           }
 
           cell.disabled = cell.date
-            ? checkDisabled(cell.date, props.disabledValues)
+            ? checkDisabled(cell.date, picker.disabledValues.value)
             : false;
           newRow.push(cell);
         }
@@ -314,7 +320,7 @@ export default {
           });
         } else {
           let dates;
-          if (newDate && newDate >= props.minDate) {
+          if (newDate && props.minDate && newDate >= props.minDate) {
             dates = { minDate: props.minDate, maxDate: newDate };
           } else {
             dates = { minDate: newDate, maxDate: props.minDate };
@@ -330,8 +336,6 @@ export default {
         }
       } else if (props.selectionMode === 'day') {
         ctx.emit('pick', newDate);
-      } else if (props.selectionMode === 'datetime') {
-        ctx.emit('pick', newDate, { hidePicker: false });
       } else if (props.selectionMode === 'week') {
         const value = newDate
           ? startOfWeek(newDate, { weekStartsOn: 1 })

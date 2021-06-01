@@ -25,7 +25,7 @@ interface DatePanelProps {
   showTime: boolean;
 }
 
-interface DatePanelInterface {
+interface DatePanelInstance {
   state: DatePanelState;
   root: Ref<HTMLElement | null>;
   datePanel: Ref<HTMLElement | null>;
@@ -51,7 +51,7 @@ interface DatePanelInterface {
 }
 
 export {
-  DatePanelInterface,
+  DatePanelInstance,
   DatePanelState,
   DatePanelProps,
   DatePanelPropShortcuts,

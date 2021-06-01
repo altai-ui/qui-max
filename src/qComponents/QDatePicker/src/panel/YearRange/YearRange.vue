@@ -113,7 +113,7 @@ import {
   rightLabelComposable,
   isValidValue
 } from '../composition';
-import type { YearRangeInterface, YearRangeState } from './YearRange';
+import type { YearRangePanelInstance, YearRangeState } from './YearRange';
 import type { DatePanelPropShortcuts } from '../Date/DatePanel';
 import type { QDatePickerProvider } from '../../QDatePicker';
 import type { DatePanelRangePropModelValue } from '../DateRange/DateRange';
@@ -150,7 +150,7 @@ export default {
 
   emits: ['pick'],
 
-  setup(props, ctx): YearRangeInterface {
+  setup(props, ctx): YearRangePanelInstance {
     const state = reactive<YearRangeState>({
       minDate: null,
       maxDate: null,

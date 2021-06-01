@@ -3,6 +3,21 @@ import { Ref } from 'vue';
 
 type QDatePickerPropModelValue = Nullable<string | Date | string[] | Date[]>;
 
+interface QDatePickerProps {
+  type: string;
+  format: string;
+  outputFormat: string;
+  placeholder: string;
+  startPlaceholder: string;
+  endPlaceholder: string;
+  firstDayOfWeek: number;
+  name: string;
+  disabled: boolean;
+  clearable: boolean;
+  modelValue: QDatePickerPropModelValue;
+  validateEvent: boolean;
+}
+
 interface QDatePickerState {
   pickerVisible: boolean;
   showCloseIcon: boolean;
@@ -24,4 +39,9 @@ interface QDatePickerProvider {
   type: Ref<string>;
 }
 
-export { QDatePickerPropModelValue, QDatePickerState, QDatePickerProvider };
+export {
+  QDatePickerProps,
+  QDatePickerPropModelValue,
+  QDatePickerState,
+  QDatePickerProvider
+};

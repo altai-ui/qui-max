@@ -14,7 +14,7 @@ interface MonthRangeState {
   lastFocusedCellIndex: Nullable<number>;
 }
 
-interface MonthRangeInstance {
+interface MonthRangePanelInstance {
   root: Ref<HTMLElement | null>;
   leftPanel: Ref<HTMLElement | null>;
   rightPanel: Ref<HTMLElement | null>;
@@ -37,4 +37,4 @@ interface MonthRangeInstance {
   navigateDropdown: (e: KeyboardEvent) => void;
 }
 
-export { MonthRangeInstance, MonthRangeState };
+export { MonthRangePanelInstance, MonthRangeState };

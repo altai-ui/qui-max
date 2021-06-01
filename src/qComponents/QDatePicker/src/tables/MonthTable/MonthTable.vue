@@ -38,8 +38,11 @@ import {
   isDateInRangeInterval
 } from '../../helpers';
 import type { RangeState } from '../../Common';
-import type { MonthTableInstance, MonthTableState } from './MonthTable';
-import { MonthCellModel } from '../types';
+import type {
+  MonthCellModel,
+  MonthTableInstance,
+  MonthTableState
+} from './MonthTable';
 
 const checkDisabled = (
   date: Date,

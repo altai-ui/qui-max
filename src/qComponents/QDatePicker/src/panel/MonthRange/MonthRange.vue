@@ -122,7 +122,7 @@ import {
 } from '../constants';
 import type { DatePanelRangePropModelValue } from '../DateRange/DateRange';
 import type { DatePanelPropShortcuts } from '../Date/DatePanel';
-import type { MonthRangeInstance, MonthRangeState } from './MonthRange';
+import type { MonthRangePanelInstance, MonthRangeState } from './MonthRange';
 import type { QDatePickerProvider } from '../../QDatePicker';
 import type { RangePickValue, RangeState } from '../../Common';
 
@@ -149,7 +149,7 @@ export default {
 
   emits: ['pick'],
 
-  setup(props, ctx): MonthRangeInstance {
+  setup(props, ctx): MonthRangePanelInstance {
     const state = reactive<MonthRangeState>({
       minDate: null,
       maxDate: null,

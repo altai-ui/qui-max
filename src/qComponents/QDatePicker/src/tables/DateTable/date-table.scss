@@ -1,7 +1,7 @@
 .q-date-table {
   width: 100%;
-  table-layout: fixed;
   font-size: 10px;
+  table-layout: fixed;
   user-select: none;
 
   &_days {
@@ -21,8 +21,8 @@
       box-sizing: border-box;
       width: 20px;
       height: 20px;
-      margin: 0 auto;
       padding: 0;
+      margin: 0 auto;
       font-weight: var(--font-weight-base);
       color: var(--color-primary-blue);
       background-color: var(--color-tertiary-gray-light);
@@ -42,15 +42,15 @@
           color: var(--color-tertiary-white);
           background-color: var(--color-primary-blue);
           box-shadow: var(--box-shadow-pressed);
-          transform: scale(1.2);
           transition: transform 0.2s;
+          transform: scale(1.2);
         }
       }
 
       &_disabled {
         color: rgba(var(--color-primary-black), 0.64);
-        background-color: var(--color-tertiary-gray);
         cursor: not-allowed;
+        background-color: var(--color-tertiary-gray);
         opacity: 1;
       }
 
@@ -60,21 +60,26 @@
         box-shadow: var(--box-shadow-primary);
       }
 
-      &_today:not(.cell_disabled) {
-        color: var(--color-primary);
-      }
-
       &_today {
         &::before {
-          content: '';
           position: absolute;
           top: -4px;
           left: 9px;
           display: block;
           width: 2px;
           height: 2px;
+          content: '';
           background-color: var(--color-primary);
           border-radius: 50%;
+        }
+
+        &:not(.cell_disabled) {
+          color: var(--color-primary);
+        }
+        &.cell_current,
+        &.cell_in-range:not(.cell_prev-month),
+        &.cell_in-range:not(.cell_next-month) {
+          color: #fff;
         }
       }
 
@@ -84,7 +89,6 @@
         background-color: var(--color-primary-blue);
 
         &::after {
-          content: '';
           position: absolute;
           top: 0;
           right: 0;
@@ -93,19 +97,12 @@
           width: 20px;
           height: 20px;
           margin: auto;
+          content: '';
           border-radius: 4px;
           box-shadow: var(--box-shadow-primary);
         }
 
         &:hover {
-          color: #fff;
-        }
-      }
-
-      &_today {
-        &.cell_current,
-        &.cell_in-range:not(.cell_prev-month),
-        &.cell_in-range:not(.cell_next-month) {
           color: #fff;
         }
       }

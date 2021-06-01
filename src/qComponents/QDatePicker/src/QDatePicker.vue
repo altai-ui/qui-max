@@ -1,6 +1,7 @@
 <template>
   <div
     ref="root"
+    class="q-date-picker"
     @mouseenter="handleMouseEnter"
     @mouseleave="state.showCloseIcon = false"
   >
@@ -135,11 +136,12 @@ import MonthRangePanel from './panel/MonthRange/MonthRange';
 import YearRangePanel from './panel/YearRange/YearRange';
 import type {
   QDatePickerPropModelValue,
+  QDatePickerProps,
   QDatePickerProvider,
   QDatePickerState
 } from './QDatePicker';
 
-import type { DatePanelInterface } from './panel/Date/DatePanel';
+import type { DatePanelInstance } from './panel/Date/DatePanel';
 
 export default defineComponent({
   name: 'QDatePicker',
@@ -271,9 +273,9 @@ export default defineComponent({
     'intermediateChange'
   ],
 
-  setup(props, ctx) {
+  setup(props: QDatePickerProps, ctx) {
     const root = ref<null | HTMLElement>(null);
-    const panel = ref<ComponentPublicInstance<DatePanelInterface> | null>(null);
+    const panel = ref<ComponentPublicInstance<DatePanelInstance> | null>(null);
     const qForm = inject<QFormProvider | null>('qForm', null);
     const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
     const reference =

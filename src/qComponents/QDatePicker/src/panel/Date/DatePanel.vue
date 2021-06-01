@@ -98,11 +98,6 @@
           @pick="handleMonthPick"
         />
       </div>
-      <!-- <div
-        v-if="showTime && state.currentView === 'date'"
-        class="q-picker-panel__timepickers"
-      >...
-      </div> -->
     </div>
   </div>
 </template>
@@ -121,7 +116,7 @@ import DateTable from '../../tables/DateTable/DateTable';
 import type {
   DatePanelPropShortcuts,
   DatePanelPropModelValue,
-  DatePanelInterface,
+  DatePanelInstance,
   DatePanelProps,
   DatePanelState
 } from './DatePanel';
@@ -173,7 +168,7 @@ export default {
 
   emits: ['pick'],
 
-  setup(props: DatePanelProps, ctx): DatePanelInterface {
+  setup(props: DatePanelProps, ctx): DatePanelInstance {
     const state = reactive<DatePanelState>({
       year: new Date().getFullYear(),
       month: new Date().getMonth(),

@@ -1,8 +1,8 @@
 .q-month-table {
   width: 100%;
   padding: 10px 0 20px;
-  table-layout: fixed;
   font-size: 12px;
+  table-layout: fixed;
 
   &__cell-wrapper {
     text-align: center;
@@ -29,8 +29,8 @@
           color: var(--color-tertiary-white);
           background-color: var(--color-primary-blue);
           box-shadow: var(--box-shadow-pressed);
-          transform: scale(1.1);
           transition: transform 0.2s;
+          transform: scale(1.1);
         }
       }
 
@@ -42,13 +42,13 @@
         }
 
         &::before {
-          content: '';
           position: absolute;
           top: -5px;
           left: 19px;
           display: block;
           width: 2px;
           height: 2px;
+          content: '';
           background-color: var(--color-primary);
           border-radius: 50%;
         }
@@ -56,8 +56,8 @@
 
       &[disabled] {
         color: var(--color-tertiary-gray-ultra-dark);
-        background-color: var(--color-tertiary-gray-lighter);
         cursor: not-allowed;
+        background-color: var(--color-tertiary-gray-lighter);
 
         &:hover {
           color: var(--color-tertiary-gray-ultra-dark);

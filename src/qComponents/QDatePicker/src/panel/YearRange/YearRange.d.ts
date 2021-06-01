@@ -14,7 +14,7 @@ interface YearRangeState {
   lastFocusedCellIndex: Nullable<number>;
 }
 
-interface YearRangeInterface {
+interface YearRangePanelInstance {
   root: Ref<HTMLElement | null>;
   leftPanel: Ref<HTMLElement | null>;
   rightPanel: Ref<HTMLElement | null>;
@@ -37,4 +37,4 @@ interface YearRangeInterface {
   navigateDropdown: (e: KeyboardEvent) => void;
 }
 
-export { YearRangeInterface, YearRangeState };
+export { YearRangePanelInstance, YearRangeState };

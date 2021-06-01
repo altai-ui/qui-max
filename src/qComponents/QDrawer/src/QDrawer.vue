@@ -1,5 +1,8 @@
 <template>
-  <teleport :to="teleportTo || 'body'" :disabled="!teleportTo">
+  <teleport
+    :to="teleportTo || 'body'"
+    :disabled="!teleportTo"
+  >
     <transition
       name="q-drawer-fade"
       @after-enter="afterEnter"
@@ -21,7 +24,10 @@
           @keyup.esc="closeDrawer"
         >
           <div class="q-drawer__header">
-            <div v-if="title" class="q-drawer__title">{{ title }}</div>
+            <div
+              v-if="title"
+              class="q-drawer__title"
+            >{{ title }}</div>
             <button
               type="button"
               class="q-drawer__close q-icon-close"

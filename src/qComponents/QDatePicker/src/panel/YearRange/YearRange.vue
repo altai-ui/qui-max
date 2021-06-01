@@ -101,7 +101,8 @@ import {
   inject,
   PropType,
   ref,
-  onMounted
+  onMounted,
+  defineComponent
 } from 'vue';
 import { isNil } from 'lodash-es';
 import YearTable from '../../tables/YearTable/YearTable';
@@ -128,7 +129,7 @@ import {
 
 const YEARS_IN_DECADE = 10;
 
-export default {
+export default defineComponent({
   components: { YearTable },
   props: {
     modelValue: {
@@ -392,5 +393,5 @@ export default {
       shortcuts: picker.shortcuts
     };
   }
-};
+});
 </script>

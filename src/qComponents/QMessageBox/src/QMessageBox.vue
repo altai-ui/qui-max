@@ -1,6 +1,12 @@
 <template>
-  <teleport :to="teleportTo || 'body'" :disabled="!teleportTo">
-    <transition name="q-msgbox-fade" @after-leave="handleAfterLeave">
+  <teleport
+    :to="teleportTo || 'body'"
+    :disabled="!teleportTo"
+  >
+    <transition
+      name="q-msgbox-fade"
+      @after-leave="handleAfterLeave"
+    >
       <div
         v-show="isVisible"
         ref="messageBox"

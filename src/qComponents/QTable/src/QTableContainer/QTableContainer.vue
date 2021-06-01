@@ -1,6 +1,9 @@
 <template>
   <div class="q-table-container">
-    <q-scrollbar ref="scrollbar" theme="secondary">
+    <q-scrollbar
+      ref="scrollbar"
+      theme="secondary"
+    >
       <q-table-t />
     </q-scrollbar>
   </div>

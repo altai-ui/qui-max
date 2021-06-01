@@ -8,7 +8,10 @@
     }"
     :style="styles"
   >
-    <q-scrollbar ref="scrollbar" wrap-class="q-select-dropdown__wrap">
+    <q-scrollbar
+      ref="scrollbar"
+      wrap-class="q-select-dropdown__wrap"
+    >
       <div
         v-if="selectAllShown && isVisibleOptionExist && multiple"
         tabindex="-1"
@@ -36,11 +39,20 @@
     </q-scrollbar>
 
     <template v-if="showEmptyContent">
-      <slot v-if="$slots.empty" name="empty" />
-      <div v-else class="q-select-dropdown__empty">{{ emptyText }}</div>
+      <slot
+        v-if="$slots.empty"
+        name="empty"
+      />
+      <div
+        v-else
+        class="q-select-dropdown__empty"
+      >{{ emptyText }}</div>
     </template>
 
-    <div v-else-if="isCanLoadMoreShown" class="q-select-dropdown__empty">
+    <div
+      v-else-if="isCanLoadMoreShown"
+      class="q-select-dropdown__empty"
+    >
       {{ loadMoreText }}
     </div>
   </div>

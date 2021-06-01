@@ -1,6 +1,12 @@
 <template>
-  <div ref="root" :class="rootClasses">
-    <q-table-empty v-if="isTableEmpty" :empty-text="emptyText">
+  <div
+    ref="root"
+    :class="rootClasses"
+  >
+    <q-table-empty
+      v-if="isTableEmpty"
+      :empty-text="emptyText"
+    >
       <slot name="empty" />
     </q-table-empty>
 

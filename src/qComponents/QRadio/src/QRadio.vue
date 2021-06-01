@@ -22,7 +22,10 @@
         @change="handleChange"
       />
     </span>
-    <span class="q-radio__label" @keydown.stop>
+    <span
+      class="q-radio__label"
+      @keydown.stop
+    >
       <slot>{{ label }}</slot>
     </span>
   </label>

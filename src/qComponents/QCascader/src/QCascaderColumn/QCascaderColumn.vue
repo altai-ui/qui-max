@@ -1,5 +1,8 @@
 <template>
-  <div ref="root" :class="rootClasses">
+  <div
+    ref="root"
+    :class="rootClasses"
+  >
     <q-scrollbar
       wrap-class="q-cascader-column__scrollbar"
       :scroll-to="scrollTo"

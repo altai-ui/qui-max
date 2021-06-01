@@ -58,7 +58,7 @@ import {
 } from 'date-fns';
 import { throttle } from 'lodash-es';
 import { ru, enGB as en } from 'date-fns/locale';
-import { reactive, computed, PropType, inject } from 'vue';
+import { reactive, computed, PropType, inject, defineComponent } from 'vue';
 import { getConfig } from '@/qComponents/config';
 import { isDateInRangeInterval } from '../../helpers';
 import type { DateTableInterface, DateTableState } from './DateTable';
@@ -103,7 +103,7 @@ const checkDisabled = (
   return disabled.some(Boolean);
 };
 
-export default {
+export default defineComponent({
   props: {
     year: {
       type: Number,
@@ -358,5 +358,5 @@ export default {
       handleClick
     };
   }
-};
+});
 </script>

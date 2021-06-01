@@ -1,11 +1,21 @@
 <template>
-  <table :class="rootClasses" cellspacing="0" cellpadding="0">
+  <table
+    :class="rootClasses"
+    cellspacing="0"
+    cellpadding="0"
+  >
     <q-table-t-colgroup v-if="isColgroupShown" />
 
-    <thead ref="thead" class="q-table-t__thead">
+    <thead
+      ref="thead"
+      class="q-table-t__thead"
+    >
       <q-table-t-sticky ref="sticky" />
       <q-table-t-head class="q-table-t__head" />
-      <q-table-t-total v-if="isTotalShown" class="q-table-t__total" />
+      <q-table-t-total
+        v-if="isTotalShown"
+        class="q-table-t__total"
+      />
     </thead>
 
     <q-table-t-body class="q-table-t__tbody" />

@@ -37,7 +37,7 @@ import {
   isBefore,
   isAfter
 } from 'date-fns';
-import { reactive, computed, PropType, inject } from 'vue';
+import { reactive, computed, PropType, inject, defineComponent } from 'vue';
 
 import { throttle } from 'lodash-es';
 import type {
@@ -79,7 +79,7 @@ const checkDisabled = (
   return disabled.some(Boolean);
 };
 
-export default {
+export default defineComponent({
   props: {
     value: { type: Date, default: null },
     year: { type: Number, default: null },
@@ -236,5 +236,5 @@ export default {
       handleYearTableClick
     };
   }
-};
+});
 </script>

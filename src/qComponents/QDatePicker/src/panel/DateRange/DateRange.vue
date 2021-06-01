@@ -129,7 +129,8 @@ import {
   watch,
   PropType,
   ref,
-  onMounted
+  onMounted,
+  defineComponent
 } from 'vue';
 import isSameMonth from 'date-fns/esm/isSameMonth/index';
 import {
@@ -158,7 +159,7 @@ import { RangePickValue, RangeState } from '../../Common';
 
 const MONTHS_COUNT = 12;
 
-export default {
+export default defineComponent({
   name: 'QDatePickerPanelDateRange',
   components: {
     DateTable
@@ -501,5 +502,5 @@ export default {
       shortcuts: picker.shortcuts
     };
   }
-};
+});
 </script>

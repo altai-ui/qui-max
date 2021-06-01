@@ -1,6 +1,9 @@
 <template>
   <tr ref="root">
-    <th v-if="isSelectable" :ref="el => setColRef(el, 'selectableColumn')" />
+    <th
+      v-if="isSelectable"
+      :ref="el => setColRef(el, 'selectableColumn')"
+    />
     <th
       v-for="(column, index) in columnList"
       :key="index"

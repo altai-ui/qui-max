@@ -1,5 +1,9 @@
 <template>
-  <div ref="dropdown" class="q-cascader-dropdown" :style="{ zIndex }">
+  <div
+    ref="dropdown"
+    class="q-cascader-dropdown"
+    :style="{ zIndex }"
+  >
     <q-cascader-column
       v-for="(column, columnIndex) in columnList"
       :key="`${uniqueId}-col-${columnIndex}`"

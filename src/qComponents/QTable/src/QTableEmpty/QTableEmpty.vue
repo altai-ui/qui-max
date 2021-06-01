@@ -2,7 +2,11 @@
   <div class="q-table-empty">
     <slot>
       <div class="q-table-empty__image">
-        <img :src="image" class="q-table-empty__img" :alt="noDataText" />
+        <img
+          :src="image"
+          class="q-table-empty__img"
+          :alt="noDataText"
+        />
       </div>
 
       <div class="q-table-empty__text">

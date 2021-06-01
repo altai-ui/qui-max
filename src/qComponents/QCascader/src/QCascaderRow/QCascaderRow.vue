@@ -8,7 +8,10 @@
     @keyup.right="handleRightKeyUp"
     @keyup.enter="handleEnterKeyUp"
   >
-    <div v-if="isMultiple" class="q-cascader-row__checkbox">
+    <div
+      v-if="isMultiple"
+      class="q-cascader-row__checkbox"
+    >
       <q-checkbox
         tabindex="-1"
         :model-value="isChecked"
@@ -20,7 +23,10 @@
 
     <span class="q-cascader-row__label">{{ row.label }}</span>
 
-    <span v-if="isIconShown" :class="iconClasses" />
+    <span
+      v-if="isIconShown"
+      :class="iconClasses"
+    />
   </div>
 </template>
 

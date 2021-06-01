@@ -40,7 +40,10 @@
         @blur="focus = false"
       />
     </span>
-    <span v-if="$slots.default || label" class="q-checkbox__label">
+    <span
+      v-if="$slots.default || label"
+      class="q-checkbox__label"
+    >
       <slot>{{ label }}</slot>
     </span>
   </component>

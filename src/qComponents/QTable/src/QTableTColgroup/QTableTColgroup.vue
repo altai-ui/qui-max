@@ -1,6 +1,9 @@
 <template>
   <colgroup>
-    <col v-if="isSelectable" :style="{ width: `${checkboxColWidth}px` }" />
+    <col
+      v-if="isSelectable"
+      :style="{ width: `${checkboxColWidth}px` }"
+    />
     <col
       v-for="(column, index) in columnList"
       :key="index"

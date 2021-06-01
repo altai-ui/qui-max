@@ -1,7 +1,9 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { Meta, Story } from '@storybook/vue3';
 import { addMonths, startOfYesterday, subMonths, subWeeks } from 'date-fns';
-import QDatePicker from '@/qComponents/QDatePicker';
+import QDatePicker, {
+  QDatePickerPropModelValue
+} from '@/qComponents/QDatePicker';
 import { defineComponent, reactive, watch } from 'vue';
 
 const now = new Date();
@@ -67,12 +69,14 @@ const Template: Story = args =>
         value: null
       });
 
-      const handleRangePickClick = (val: any): void => {
+      const handleRangePickClick = (val: QDatePickerPropModelValue): void => {
+        // eslint-disable-next-line no-console
         console.log('handleRangePickClick', val);
       };
 
-      const handleChange = (val: any): void => {
-        console.log(val);
+      const handleChange = (val: QDatePickerPropModelValue): void => {
+        // eslint-disable-next-line no-console
+        console.log('handleChange', val);
       };
 
       watch(
@@ -92,7 +96,6 @@ const Template: Story = args =>
     template: `
       <q-date-picker
         v-model="state.value"
-        @change="handleChange"
         :clearable="args.clearable"
         :editable="args.editable"
         :placeholder="args.placeholder"
@@ -108,8 +111,9 @@ const Template: Story = args =>
         :first-day-of-week="args.firstDayOfWeek"
         :range-separator="args.rangeSeparator"
         :validate-event="args.validateEvent"
+        :teleport-to="args.teleportTo"
         @rangepick="handleRangePickClick"
-        :append-to-body="args.appendToBody"
+        @change="handleChange"
       />
     `
   });

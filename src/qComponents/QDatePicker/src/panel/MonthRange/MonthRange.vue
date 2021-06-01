@@ -98,7 +98,8 @@ import {
   inject,
   PropType,
   onMounted,
-  ref
+  ref,
+  defineComponent
 } from 'vue';
 import isSameMonth from 'date-fns/isSameMonth';
 import MonthTable from '../../tables/MonthTable/MonthTable';
@@ -127,7 +128,7 @@ import type {
 import type { QDatePickerProvider } from '../../QDatePicker';
 import type { RangePickValue, RangeState } from '../../Common';
 
-export default {
+export default defineComponent({
   components: { MonthTable },
   props: {
     modelValue: {
@@ -397,5 +398,5 @@ export default {
       shortcuts: picker.shortcuts
     };
   }
-};
+});
 </script>

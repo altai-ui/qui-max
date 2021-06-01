@@ -1,6 +1,10 @@
 <template>
   <div class="q-context-wrapper">
-    <div ref="reference" class="q-context-trigger" @click="handleTriggerClick">
+    <div
+      ref="reference"
+      class="q-context-trigger"
+      @click="handleTriggerClick"
+    >
       <slot v-if="$slots.default" />
       <button
         v-else
@@ -9,7 +13,10 @@
       />
     </div>
 
-    <teleport :to="teleportTo || 'body'" :disabled="!teleportTo">
+    <teleport
+      :to="teleportTo || 'body'"
+      :disabled="!teleportTo"
+    >
       <div
         v-show="isContextMenuShown"
         ref="contextMenu"

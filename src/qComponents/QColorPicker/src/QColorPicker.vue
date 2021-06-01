@@ -10,7 +10,10 @@
       @click="handleTriggerClick"
     >
       <!-- @slot _Optional_. HTML element that triggers dropdown -->
-      <slot v-if="$slots.trigger" name="trigger" />
+      <slot
+        v-if="$slots.trigger"
+        name="trigger"
+      />
       <button
         v-else
         :disabled="isDisabled"
@@ -26,7 +29,10 @@
       </button>
     </div>
 
-    <teleport :to="teleportTo || 'body'" :disabled="!teleportTo">
+    <teleport
+      :to="teleportTo || 'body'"
+      :disabled="!teleportTo"
+    >
       <q-picker-dropdown
         ref="dropdown"
         :is-shown="isPickerShown"

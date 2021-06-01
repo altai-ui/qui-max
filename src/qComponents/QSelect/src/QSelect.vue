@@ -51,7 +51,10 @@
       @exit="state.isDropdownShown = false"
     />
 
-    <teleport :to="teleportTo" :disabled="!teleportTo">
+    <teleport
+      :to="teleportTo"
+      :disabled="!teleportTo"
+    >
       <q-select-dropdown
         ref="dropdown"
         :shown="state.isDropdownShown"
@@ -67,7 +70,10 @@
       >
         <slot v-if="!state.loading" />
 
-        <template v-if="$slots.empty" #empty>
+        <template
+          v-if="$slots.empty"
+          #empty
+        >
           <slot name="empty" />
         </template>
       </q-select-dropdown>

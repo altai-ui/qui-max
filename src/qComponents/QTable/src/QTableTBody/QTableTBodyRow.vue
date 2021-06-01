@@ -1,5 +1,9 @@
 <template>
-  <tr :class="rootClasses" :style="rootStyles" @click="handleRowClick">
+  <tr
+    :class="rootClasses"
+    :style="rootStyles"
+    @click="handleRowClick"
+  >
     <q-table-cell-checkbox
       v-if="isSelectable"
       base-tag="td"

@@ -1,10 +1,19 @@
 <template>
-  <div ref="reference" class="q-popover-trigger">
+  <div
+    ref="reference"
+    class="q-popover-trigger"
+  >
     <slot name="reference" />
   </div>
 
-  <teleport :to="teleportTo || 'body'" :disabled="!teleportTo">
-    <transition :name="transition" @after-leave="destroyPopper">
+  <teleport
+    :to="teleportTo || 'body'"
+    :disabled="!teleportTo"
+  >
+    <transition
+      :name="transition"
+      @after-leave="destroyPopper"
+    >
       <div
         v-show="isPopoverShown"
         ref="popover"
@@ -18,11 +27,20 @@
           :class="icon"
           :style="popoverIconStyles"
         />
-        <q-scrollbar wrap-class="q-popover__inner" view-class="scrollbar__list">
-          <div v-if="title" class="q-popover__title">
+        <q-scrollbar
+          wrap-class="q-popover__inner"
+          view-class="scrollbar__list"
+        >
+          <div
+            v-if="title"
+            class="q-popover__title"
+          >
             {{ title }}
           </div>
-          <div v-if="$slots.default" class="q-popover__content">
+          <div
+            v-if="$slots.default"
+            class="q-popover__content"
+          >
             <slot />
           </div>
         </q-scrollbar>

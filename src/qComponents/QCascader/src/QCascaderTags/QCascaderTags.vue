@@ -1,10 +1,16 @@
 <template>
   <div :class="rootClasses">
     <template v-if="collapseTags && tagList.length">
-      <q-tag :closable="!isDisabled" @close="handleTagClose(tagList[0].value)">
+      <q-tag
+        :closable="!isDisabled"
+        @close="handleTagClose(tagList[0].value)"
+      >
         {{ tagList[0].label }}
       </q-tag>
-      <q-tag v-if="tagList.length > 1" :closable="false">
+      <q-tag
+        v-if="tagList.length > 1"
+        :closable="false"
+      >
         + {{ tagList.length - 1 }}
       </q-tag>
     </template>

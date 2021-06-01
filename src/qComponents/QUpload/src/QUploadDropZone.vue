@@ -8,7 +8,10 @@
     @dragover.prevent="handleDragover"
     @dragleave.prevent="handleDragleave"
   >
-    <span class="q-upload-drop-zone__icon" :class="icon" />
+    <span
+      class="q-upload-drop-zone__icon"
+      :class="icon"
+    />
     <div class="q-upload-drop-zone__text">{{ text }}</div>
   </div>
 </template>

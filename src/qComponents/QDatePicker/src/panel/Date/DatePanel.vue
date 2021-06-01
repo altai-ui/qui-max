@@ -102,7 +102,15 @@
 import { subMonths, addMonths, subYears, addYears } from 'date-fns';
 import { isNil } from 'lodash-es';
 import { useI18n } from 'vue-i18n';
-import { reactive, computed, PropType, onMounted, ref, inject } from 'vue';
+import {
+  reactive,
+  computed,
+  PropType,
+  onMounted,
+  ref,
+  inject,
+  defineComponent
+} from 'vue';
 import { getConfig } from '@/qComponents/config';
 import { getTimeModel } from '../../../../helpers/dateHelpers';
 import YearTable from '../../tables/YearTable/YearTable';
@@ -123,7 +131,7 @@ import {
 } from '../constants';
 import { QDatePickerProvider } from '../../QDatePicker';
 
-export default {
+export default defineComponent({
   name: 'QDatePickerPanelDate',
   components: {
     YearTable,
@@ -463,5 +471,5 @@ export default {
       t
     };
   }
-};
+});
 </script>

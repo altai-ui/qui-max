@@ -5,7 +5,10 @@
     @mouseenter="clearTimer"
     @mouseleave="startTimer"
   >
-    <div class="q-notification-cloud__icon" :class="iconClass" />
+    <div
+      class="q-notification-cloud__icon"
+      :class="iconClass"
+    />
 
     <div class="q-notification-cloud__content">
       <slot>
@@ -14,7 +17,10 @@
             {{ message }}
           </template>
           <!-- eslint-disable vue/no-v-html -->
-          <div v-else v-html="message" />
+          <div
+            v-else
+            v-html="message"
+          />
           <!-- eslint-enable vue/no-v-html -->
         </template>
       </slot>

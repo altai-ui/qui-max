@@ -1,5 +1,8 @@
 <template>
-  <div class="q-input-number" :class="withControlsClass">
+  <div
+    class="q-input-number"
+    :class="withControlsClass"
+  >
     <button
       v-if="areControlsEnabled"
       class="

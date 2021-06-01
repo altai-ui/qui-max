@@ -30,7 +30,7 @@
 
 <script lang="ts">
 import { startOfMonth, isSameMonth, isBefore, isAfter } from 'date-fns';
-import { reactive, computed, PropType, inject } from 'vue';
+import { reactive, computed, PropType, inject, defineComponent } from 'vue';
 import { getConfig } from '@/qComponents/config';
 import { throttle } from 'lodash-es';
 import {
@@ -78,7 +78,7 @@ const checkDisabled = (
   return disabled.some(Boolean);
 };
 
-export default {
+export default defineComponent({
   props: {
     value: { type: Date, default: null },
     selectionMode: {
@@ -246,5 +246,5 @@ export default {
       handleMouseMove
     };
   }
-};
+});
 </script>

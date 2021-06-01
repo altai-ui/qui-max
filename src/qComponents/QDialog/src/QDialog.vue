@@ -1,5 +1,8 @@
 <template>
-  <teleport :to="teleportTo || 'body'" :disabled="!teleportTo">
+  <teleport
+    :to="teleportTo || 'body'"
+    :disabled="!teleportTo"
+  >
     <transition
       name="q-dialog-fade"
       @after-enter="afterEnter"
@@ -20,7 +23,10 @@
           :class="customClass"
           @keyup.esc="closeDialog"
         >
-          <q-scrollbar theme="secondary" view-class="q-dialog__view">
+          <q-scrollbar
+            theme="secondary"
+            view-class="q-dialog__view"
+          >
             <div class="q-dialog__inner">
               <div class="q-dialog__title">
                 {{ title }}

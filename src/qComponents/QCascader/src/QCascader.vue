@@ -8,7 +8,10 @@
 
     <q-cascader-tags />
 
-    <teleport :to="teleportTo" :disabled="!teleportTo">
+    <teleport
+      :to="teleportTo"
+      :disabled="!teleportTo"
+    >
       <q-cascader-dropdown
         v-if="isDropdownShown"
         ref="dropdown"

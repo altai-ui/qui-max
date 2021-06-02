@@ -1,11 +1,11 @@
 import { DebouncedFunc } from 'lodash-es';
-import { ComputedRef } from 'vue';
-import { DateCellModel } from '../../Common';
+import type { ComputedRef } from 'vue';
+import type { DateCellModel } from '../../Common';
 
 interface DateTableState {
   lastRow: Nullable<number>;
   lastColumn: Nullable<number>;
-  tableRows: [][];
+  tableRows: DateCellModel[][];
 }
 
 interface DateTableInterface {

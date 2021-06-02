@@ -1,5 +1,5 @@
-import { DebouncedFunc } from 'lodash-es';
-import { ComputedRef } from 'vue';
+import type { DebouncedFunc } from 'lodash-es';
+import type { ComputedRef } from 'vue';
 
 interface MonthCellModel {
   row: number;
@@ -10,7 +10,7 @@ interface MonthCellModel {
   end: boolean;
   text: number;
   disabled: boolean;
-  month: null | Date;
+  month: Nullable<Date>;
 }
 
 interface MonthTableState {

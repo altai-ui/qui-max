@@ -1,14 +1,45 @@
 import {
   format,
-  formatISO,
   isValid,
   isWithinInterval,
-  parseISO
+  parseISO,
+  isAfter,
+  isBefore
 } from 'date-fns';
 import { ru, enGB as en } from 'date-fns/locale';
 import { isString } from 'lodash-es';
-import { RangeState } from './Common';
-import { QDatePickerPropModelValue } from './QDatePicker';
+import type { RangeState } from './Common';
+import type {
+  QDatePickerPropDisabledValues,
+  QDatePickerPropModelValue
+} from './QDatePicker';
+
+const checkDisabled = (
+  date: Date,
+  disabledValues: QDatePickerPropDisabledValues,
+  isSameFn: (dateLeft: number | Date, dateRight: number | Date) => boolean
+): boolean => {
+  if (!disabledValues) return false;
+  const disabled = [];
+  if (Array.isArray(disabledValues.ranges)) {
+    disabledValues.ranges.forEach((range: Record<string, Date>) => {
+      disabled.push(
+        (isSameFn(date, range.start) || isBefore(range.start, date)) &&
+          (isAfter(range.end, date) || isSameFn(range.end, date))
+      );
+    });
+  }
+
+  if (disabledValues.to) {
+    disabled.push(isBefore(date, disabledValues.to));
+  }
+
+  if (disabledValues.from) {
+    disabled.push(isAfter(date, disabledValues.from));
+  }
+
+  return disabled.some(Boolean);
+};
 
 const locales: Record<string, Locale> = { ru, en };
 
@@ -21,39 +52,6 @@ const formatToLocalReadableString = (
     locale: locales[dateFnsLocale]
   });
 };
-
-const setTimeToDate = (date: Date, type: string, value: string): Date => {
-  switch (type) {
-    case 'hours':
-      date.setHours(Number(value));
-      break;
-    case 'minutes':
-      date.setMinutes(Number(value));
-      break;
-    case 'seconds':
-      date.setSeconds(Number(value));
-      break;
-    default:
-      break;
-  }
-
-  return date;
-};
-
-const clearTime = function (date: Date): Date {
-  return new Date(date.getFullYear(), date.getMonth(), date.getDate());
-};
-
-const clearMilliseconds = (date: Date): Date =>
-  new Date(
-    date.getFullYear(),
-    date.getMonth(),
-    date.getDate(),
-    date.getHours(),
-    date.getMinutes(),
-    date.getSeconds(),
-    0
-  );
 
 const calcInputData = (
   data: string,
@@ -100,6 +98,13 @@ const validator = function (val: string | string[] | null): boolean {
 const checkISOIsValid = (isoDate: string): boolean =>
   isValid(parseISO(isoDate));
 
+const convertISOToDate = (value: string | Date): Date => {
+  if (isString(value)) {
+    return parseISO(value);
+  }
+  return value;
+};
+
 const checkArrayValueIsValid = (value: unknown[]): boolean =>
   Boolean(
     value.length === 2 && value.every(isString) && value.every(checkISOIsValid)
@@ -112,14 +117,6 @@ const modelValueValidator = (val: QDatePickerPropModelValue): boolean => {
       isValid(val) ||
       (Array.isArray(val) && checkArrayValueIsValid(val))
   );
-};
-
-const formatToISO = (date: Date | Date[]): string | string[] => {
-  if (Array.isArray(date)) {
-    return [formatISO(date[0]), formatISO(date[1])];
-  }
-
-  return formatISO(date);
 };
 
 const isDateInRangeInterval = (date: Date, rangeState: RangeState): boolean => {
@@ -139,14 +136,12 @@ const isDateInRangeInterval = (date: Date, rangeState: RangeState): boolean => {
 };
 
 export {
-  clearTime,
-  clearMilliseconds,
   formatToLocalReadableString,
-  setTimeToDate,
   calcInputData,
   validator,
   modelValueValidator,
   checkArrayValueIsValid,
-  formatToISO,
-  isDateInRangeInterval
+  convertISOToDate,
+  isDateInRangeInterval,
+  checkDisabled
 };

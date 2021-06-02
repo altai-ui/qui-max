@@ -2,7 +2,7 @@
   <table
     cellspacing="4"
     cellpadding="5"
-    class="q-month-table"
+    class="q-period-table"
   >
     <tr
       v-for="(row, index) in rows"
@@ -11,7 +11,7 @@
       <td
         v-for="(cell, key) in row"
         :key="key"
-        class="q-month-table__cell-wrapper"
+        class="q-period-table__cell-wrapper"
       >
         <button
           :class="getCellClasses(cell)"
@@ -29,62 +29,26 @@
 </template>
 
 <script lang="ts">
-import { startOfMonth, isSameMonth, isBefore, isAfter } from 'date-fns';
+import { startOfMonth, isSameMonth } from 'date-fns';
 import { reactive, computed, PropType, inject, defineComponent } from 'vue';
 import { getConfig } from '@/qComponents/config';
 import { throttle } from 'lodash-es';
 import {
   formatToLocalReadableString,
-  isDateInRangeInterval
+  isDateInRangeInterval,
+  checkDisabled
 } from '../../helpers';
-import type {
-  RangeState,
-  TableProps,
-  TablePropSelectionMode
-} from '../../Common';
+import type { RangeState, TableProps } from '../../Common';
 import type {
   MonthCellModel,
   MonthTableInstance,
   MonthTableState
 } from './MonthTable';
-import {
-  QDatePickerPropDisabledValues,
-  QDatePickerProvider
-} from '../../QDatePicker';
-
-const checkDisabled = (
-  date: Date,
-  disabledValues: QDatePickerPropDisabledValues
-): boolean => {
-  if (!disabledValues) return false;
-  const disabled = [];
-  if (Array.isArray(disabledValues.ranges)) {
-    disabledValues.ranges.forEach((range: Record<string, Date>) => {
-      disabled.push(
-        (isSameMonth(date, range.start) || isBefore(range.start, date)) &&
-          (isAfter(range.end, date) || isSameMonth(range.end, date))
-      );
-    });
-  }
-
-  if (disabledValues.to) {
-    disabled.push(isBefore(date, disabledValues.to));
-  }
-
-  if (disabledValues.from) {
-    disabled.push(isAfter(date, disabledValues.from));
-  }
-
-  return disabled.some(Boolean);
-};
+import { QDatePickerProvider } from '../../QDatePicker';
 
 export default defineComponent({
   props: {
     value: { type: Date, default: null },
-    selectionMode: {
-      type: String as PropType<TablePropSelectionMode>,
-      default: 'month'
-    },
     minDate: { type: Date, default: null },
     maxDate: { type: Date, default: null },
     year: {
@@ -135,7 +99,11 @@ export default defineComponent({
             end: false,
             text: index,
             month,
-            disabled: checkDisabled(month, picker.disabledValues.value)
+            disabled: checkDisabled(
+              month,
+              picker.disabledValues.value,
+              isSameMonth
+            )
           };
 
           if (props.minDate) {
@@ -177,7 +145,7 @@ export default defineComponent({
     };
 
     const getCellClasses = (cell: MonthCellModel): string[] => {
-      const classes = ['cell', 'cell_month'];
+      const classes = ['cell', 'cell_period'];
       if (props.value && cell.month && isSameMonth(props.value, cell.month))
         classes.push('cell_current');
       if (cell.type === 'today') classes.push('cell_today');
@@ -205,10 +173,10 @@ export default defineComponent({
 
     const handleMonthTableClick = (cell: MonthCellModel): void => {
       if (cell.disabled) return;
-      const month = cell.month?.getMonth();
       const newDate = cell.month;
       if (!newDate) return;
-      if (props.selectionMode === 'range') {
+      const month = cell.month?.getMonth();
+      if (picker.type.value === 'monthrange') {
         if (!props.rangeState.selecting) {
           ctx.emit('pick', {
             minDate: newDate,

@@ -3,7 +3,7 @@ import { TranslateResult, Path, Locale } from 'vue-i18n';
 import { QDatePickerPropShortcuts } from '../../QDatePicker';
 
 type DatePanelPropShortcuts = Record<string, Date>[];
-type DatePanelPropModelValue = null | Date;
+type DatePanelPropModelValue = Nullable<Date>;
 
 interface DatePanelState {
   year: number;
@@ -12,9 +12,8 @@ interface DatePanelState {
   isRanged: boolean;
   panelInFocus: string | null;
   lastFocusedCellIndex: number | null;
-  dateCells: Nullable<NodeListOf<Element>>;
-  monthCells: Nullable<NodeListOf<Element>>;
-  yearCells: Nullable<NodeListOf<Element>>;
+  dateCells: Nullable<NodeListOf<HTMLElement>>;
+  periodCells: Nullable<NodeListOf<HTMLElement>>;
 }
 
 interface DatePanelProps {
@@ -24,12 +23,11 @@ interface DatePanelProps {
 interface DatePanelInstance {
   state: DatePanelState;
   root: Ref<HTMLElement | null>;
-  shortcuts: Ref<QDatePickerPropShortcuts>;
+  shortcuts: Ref<Nullable<QDatePickerPropShortcuts>>;
   datePanel: Ref<HTMLElement | null>;
   timePanel: Ref<HTMLElement | null>;
   panelContentClasses: ComputedRef<Record<string, boolean>>;
   parsedTime: ComputedRef<Record<string, string> | null>;
-  selectionMode: ComputedRef<string>;
   currentMonth: ComputedRef<string>;
   yearLabel: ComputedRef<string | number>;
   showMonthPicker: () => void;

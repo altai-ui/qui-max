@@ -2,7 +2,7 @@
   <table
     cellspacing="4"
     cellpadding="5"
-    class="q-year-table"
+    class="q-period-table"
   >
     <tr
       v-for="(row, key) in rows"
@@ -11,15 +11,15 @@
       <td
         v-for="(cell, index) in row"
         :key="index"
-        class="q-year-table__cell-wrapper"
-        @mousemove="event => handleMouseMove(cell)"
-        @click="event => handleYearTableClick(cell)"
+        class="q-period-table__cell-wrapper"
       >
         <button
           :class="getCellClasses(cell)"
           :disabled="cell.disabled"
           type="button"
           tabindex="-1"
+          @click="handleYearTableClick(cell)"
+          @mousemove="handleMouseMove(cell)"
         >
           {{ cell.year.getFullYear() }}
         </button>
@@ -29,14 +29,7 @@
 </template>
 
 <script lang="ts">
-import {
-  isSameYear,
-  addYears,
-  startOfMonth,
-  startOfDecade,
-  isBefore,
-  isAfter
-} from 'date-fns';
+import { isSameYear, addYears, startOfMonth, startOfDecade } from 'date-fns';
 import { reactive, computed, PropType, inject, defineComponent } from 'vue';
 
 import { throttle } from 'lodash-es';
@@ -46,47 +39,14 @@ import type {
   YearTableInstance,
   YearTableProps
 } from './YearTable';
-import { RangeState, TablePropSelectionMode } from '../../Common';
-import { isDateInRangeInterval } from '../../helpers';
-import {
-  QDatePickerPropDisabledValues,
-  QDatePickerProvider
-} from '../../QDatePicker';
-
-const checkDisabled = (
-  year: number,
-  disabledValues: QDatePickerPropDisabledValues
-): boolean => {
-  if (!disabledValues) return false;
-  const disabled = [];
-  if (Array.isArray(disabledValues.ranges)) {
-    disabledValues.ranges.forEach(range => {
-      disabled.push(
-        (isSameYear(year, range.start) || isBefore(range.start, year)) &&
-          (isAfter(range.end, year) || isSameYear(range.end, year))
-      );
-    });
-  }
-
-  if (disabledValues.to) {
-    disabled.push(isBefore(year, disabledValues.to));
-  }
-
-  if (disabledValues.from) {
-    disabled.push(isAfter(year, disabledValues.from));
-  }
-
-  return disabled.some(Boolean);
-};
+import type { RangeState } from '../../Common';
+import { checkDisabled, isDateInRangeInterval } from '../../helpers';
+import { QDatePickerProvider } from '../../QDatePicker';
 
 export default defineComponent({
   props: {
     value: { type: Date, default: null },
     year: { type: Number, default: null },
-    selectionMode: {
-      type: String as PropType<TablePropSelectionMode>,
-      default: 'year'
-    },
     minDate: { type: Date, default: null },
     maxDate: { type: Date, default: null },
     rangeState: {
@@ -149,7 +109,11 @@ export default defineComponent({
 
           newRow.push({
             year: startYearDate,
-            disabled: checkDisabled(props.year, picker.disabledValues.value),
+            disabled: checkDisabled(
+              startYearDate,
+              picker.disabledValues.value,
+              isSameYear
+            ),
             inRange
           });
 
@@ -173,8 +137,8 @@ export default defineComponent({
     const handleMouseMove = throttle(mouseMove, 200);
 
     const getCellClasses = (cell: YearCellModel): string[] => {
-      const classes = ['cell', 'cell_year'];
-      if (props.selectionMode === 'year') {
+      const classes = ['cell', 'cell_period'];
+      if (picker.type.value === 'year') {
         if (
           props.value instanceof Date &&
           props.value?.getFullYear() === cell.year.getFullYear()
@@ -198,7 +162,7 @@ export default defineComponent({
     };
 
     const handleYearTableClick = ({ year }: { year: Date }): void => {
-      if (props.selectionMode === 'range') {
+      if (picker.type.value === 'yearrange') {
         if (!props.rangeState.selecting) {
           ctx.emit('pick', {
             minDate: year,

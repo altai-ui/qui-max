@@ -1,6 +1,17 @@
 import { getConfig } from '@/qComponents/config';
-import { addYears, endOfDecade, startOfDecade, subYears } from 'date-fns';
+import {
+  addYears,
+  endOfDay,
+  endOfDecade,
+  startOfDecade,
+  subYears
+} from 'date-fns';
 import { isDate } from 'lodash-es';
+import { RangePickValue, RangeState } from '../Common';
+import {
+  LEFT_PERIOD_PANEL_START_INDEX,
+  PERIOD_CELLS_IN_ROW_COUNT
+} from './constants';
 
 const leftYearComposable = (leftDate: Date): number => {
   if (isDate(leftDate)) {
@@ -67,6 +78,91 @@ const isValidValue = (value: Nullable<Date>[]): boolean => {
   );
 };
 
+const getPeriodNextNodeIndex = (
+  keyName: string,
+  cells: NodeListOf<HTMLElement>,
+  panelInFocus: string
+): Nullable<number> => {
+  let currentNodeIndex: Nullable<number> = null;
+  let nextNodeIndex: Nullable<number> = null;
+  const cellsCountEachTable = cells.length / 2;
+  const cellsGap = cellsCountEachTable === 20 ? 2 : 0;
+  Array.from(cells).some((element, index) => {
+    if (document.activeElement === element) {
+      currentNodeIndex = index;
+      return true;
+    }
+
+    return false;
+  });
+
+  if (currentNodeIndex === null) return null;
+  switch (keyName) {
+    case 'ArrowUp': {
+      nextNodeIndex = currentNodeIndex - PERIOD_CELLS_IN_ROW_COUNT;
+      break;
+    }
+
+    case 'ArrowRight':
+      if (
+        panelInFocus === 'left' &&
+        (currentNodeIndex + 1) % PERIOD_CELLS_IN_ROW_COUNT === 0
+      ) {
+        nextNodeIndex = cellsCountEachTable;
+      } else {
+        nextNodeIndex = currentNodeIndex + 1;
+      }
+      break;
+
+    case 'ArrowLeft':
+      if (
+        panelInFocus === 'right' &&
+        (currentNodeIndex + cellsGap - cellsCountEachTable) %
+          PERIOD_CELLS_IN_ROW_COUNT ===
+          0
+      ) {
+        nextNodeIndex = LEFT_PERIOD_PANEL_START_INDEX + 3;
+      } else {
+        nextNodeIndex = currentNodeIndex - 1;
+      }
+      break;
+
+    case 'ArrowDown': {
+      nextNodeIndex = currentNodeIndex + PERIOD_CELLS_IN_ROW_COUNT;
+      break;
+    }
+    default:
+      break;
+  }
+
+  return nextNodeIndex;
+};
+
+const getRangeChangedState = (
+  newValue: RangePickValue,
+  currentRangeState: RangeState
+): {
+  maxDate: Nullable<Date>;
+  minDate: Nullable<Date>;
+  rangeState: RangeState;
+} => {
+  const newState = {
+    maxDate: newValue.maxDate,
+    minDate: newValue.minDate,
+    rangeState: currentRangeState
+  };
+
+  if (newValue.maxDate) {
+    newState.maxDate = endOfDay(newValue.maxDate);
+  }
+
+  if (newValue.rangeState) {
+    newState.rangeState = newValue.rangeState;
+  }
+
+  return newState;
+};
+
 export {
   leftYearComposable,
   leftMonthComposable,
@@ -77,5 +173,7 @@ export {
   useRightNextYearClick,
   useLeftNextYearClick,
   useRightPrevYearClick,
+  getRangeChangedState,
+  getPeriodNextNodeIndex,
   isValidValue
 };

@@ -16,7 +16,7 @@ interface MonthRangeState {
   isRanged: boolean;
   currentView: string;
   panelInFocus: Nullable<string>;
-  monthCells: Nullable<NodeListOf<Element>>;
+  monthCells: Nullable<NodeListOf<HTMLElement>>;
   lastFocusedCellIndex: Nullable<number>;
 }
 
@@ -24,7 +24,7 @@ interface MonthRangePanelInstance {
   root: Ref<HTMLElement | null>;
   leftPanel: Ref<HTMLElement | null>;
   rightPanel: Ref<HTMLElement | null>;
-  shortcuts: Ref<QDatePickerPropShortcuts>;
+  shortcuts: Ref<Nullable<QDatePickerPropShortcuts>>;
   state: MonthRangeState;
   leftPanelClasses: ComputedRef<Record<string, boolean>>;
   rightPanelClasses: ComputedRef<Record<string, boolean>>;

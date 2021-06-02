@@ -62,16 +62,12 @@ import { reactive, computed, PropType, inject, defineComponent } from 'vue';
 import { getConfig } from '@/qComponents/config';
 import { isDateInRangeInterval } from '../../helpers';
 import type { DateTableInterface, DateTableState } from './DateTable';
-import type {
-  DateCellModel,
-  RangeState,
-  TableProps,
-  TablePropSelectionMode
-} from '../../Common';
+import type { DateCellModel, RangeState, TableProps } from '../../Common';
 import {
   QDatePickerPropDisabledValues,
   QDatePickerProvider
 } from '../../QDatePicker';
+import { DAYS_IN_WEEK } from '../../panel/constants';
 
 const locales: Record<string, Locale> = { ru, en };
 
@@ -116,11 +112,6 @@ export default defineComponent({
 
     value: { type: Date, default: null },
 
-    selectionMode: {
-      type: String as PropType<TablePropSelectionMode>,
-      default: 'day'
-    },
-
     minDate: { type: Date, default: null },
 
     maxDate: { type: Date, default: null },
@@ -151,18 +142,16 @@ export default defineComponent({
 
     const offsetDay = computed(() => {
       const week = picker.firstDayOfWeek.value;
-      return week > 3 ? 7 - week : -week;
+      return week > 3 ? DAYS_IN_WEEK - week : -week;
     });
 
     const days = computed<string[]>(() => {
-      const DAYS_OF_WEEK = [...Array(7).keys()].map(i => {
-        return locales[getConfig('locale')]?.localize?.day(i, {
-          width: 'short'
-        });
-      });
+      const DAYS_OF_WEEK = [...Array(DAYS_IN_WEEK).keys()].map(i =>
+        locales[getConfig('locale')]?.localize?.day(i, { width: 'short' })
+      );
 
       const day = picker.firstDayOfWeek.value;
-      return [...DAYS_OF_WEEK, ...DAYS_OF_WEEK].slice(day, day + 7);
+      return [...DAYS_OF_WEEK, ...DAYS_OF_WEEK].slice(day, day + DAYS_IN_WEEK);
     });
 
     const startMonthDate = computed(() =>
@@ -185,7 +174,7 @@ export default defineComponent({
 
       return state.tableRows.map((_, i) => {
         const newRow: DateCellModel[] = [];
-        for (let j = 0; j < 7; j += 1) {
+        for (let j = 0; j < DAYS_IN_WEEK; j += 1) {
           const cell: DateCellModel = {
             row: i,
             column: j,
@@ -200,18 +189,20 @@ export default defineComponent({
 
           if (i === 0 || i === 1) {
             const numberOfDaysFromPreviousMonth =
-              firstDay + offset < 0 ? 7 + firstDay + offset : firstDay + offset;
+              firstDay + offset < 0
+                ? DAYS_IN_WEEK + firstDay + offset
+                : firstDay + offset;
 
-            if (j + i * 7 >= numberOfDaysFromPreviousMonth) {
+            if (j + i * DAYS_IN_WEEK >= numberOfDaysFromPreviousMonth) {
               cell.text = count;
               count += 1;
               cell.date = new Date(props.year, props.month, cell.text);
             } else {
               cell.text =
                 dateCountOfLastMonth -
-                (numberOfDaysFromPreviousMonth - (j % 7)) +
+                (numberOfDaysFromPreviousMonth - (j % DAYS_IN_WEEK)) +
                 1 +
-                i * 7;
+                i * DAYS_IN_WEEK;
               cell.type = 'prev-month';
               cell.date = new Date(props.year, props.month - 1, cell.text);
             }
@@ -275,7 +266,7 @@ export default defineComponent({
         cell.inRange ||
         (cell.date &&
           (isDateInRangeInterval(cell.date, props.rangeState) ||
-            (props.selectionMode === 'week' &&
+            (picker.type.value === 'week' &&
               props.value &&
               isWithinInterval(cell.date, {
                 start: startOfWeek(props.value, { weekStartsOn: 1 }),
@@ -307,7 +298,7 @@ export default defineComponent({
     const handleClick = (cell: DateCellModel): void => {
       if (cell.disabled || cell.type === 'week') return;
       const newDate = cell.date;
-      if (props.selectionMode === 'range') {
+      if (picker.type.value === 'daterange') {
         if (!props.rangeState.selecting) {
           ctx.emit('pick', {
             minDate: newDate,
@@ -334,9 +325,9 @@ export default defineComponent({
             }
           });
         }
-      } else if (props.selectionMode === 'day') {
+      } else if (picker.type.value === 'date') {
         ctx.emit('pick', newDate);
-      } else if (props.selectionMode === 'week') {
+      } else if (picker.type.value === 'week') {
         const value = newDate
           ? startOfWeek(newDate, { weekStartsOn: 1 })
           : null;

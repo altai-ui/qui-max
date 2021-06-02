@@ -1,5 +1,5 @@
-import { Instance } from '@popperjs/core';
-import { ComputedRef, Ref } from 'vue';
+import type { Instance } from '@popperjs/core';
+import type { ComputedRef, Ref } from 'vue';
 
 type QDatePickerPropModelValue = Nullable<string | Date | string[] | Date[]>;
 type QDatePickerPropType =
@@ -11,7 +11,7 @@ type QDatePickerPropType =
   | 'monthrange'
   | 'yearrange';
 type QDatePickerPropShortcuts = {
-  text: 'string';
+  text: string;
   value: Date;
 }[];
 type QDatePickerPropDisabledValues = Nullable<{
@@ -27,24 +27,27 @@ interface QDatePickerProps {
   type: QDatePickerPropType;
   format: string;
   outputFormat: string;
-  placeholder: string;
-  startPlaceholder: string;
-  endPlaceholder: string;
-  firstDayOfWeek: number;
+  placeholder: Nullable<string>;
+  startPlaceholder: Nullable<string>;
+  endPlaceholder: Nullable<string>;
+  firstDayOfWeek: Nullable<number>;
   name: string;
   disabled: boolean;
   clearable: boolean;
-  modelValue: QDatePickerPropModelValue;
+  editable: boolean;
+  modelValue: Nullable<QDatePickerPropModelValue>;
+  rangeSeparator: string;
   validateEvent: boolean;
   disabledValues: QDatePickerPropDisabledValues;
-  shortcuts: QDatePickerPropShortcuts;
+  shortcuts: Nullable<QDatePickerPropShortcuts>;
+  teleportTo: Nullable<string | HTMLElement>;
 }
 
 interface QDatePickerState {
   pickerVisible: boolean;
   showCloseIcon: boolean;
-  userInput: string | null;
-  popper: Instance | null;
+  userInput: Nullable<string>;
+  popper: Nullable<Instance>;
 }
 
 interface QDatePickerProvider {
@@ -57,11 +60,19 @@ interface QDatePickerProvider {
       | 'intermediateChange',
     ...args: unknown[]
   ) => void;
+  handlePickClick: (
+    val: QDatePickerPropModelValue,
+    {
+      hidePicker
+    }?: {
+      hidePicker?: boolean | undefined;
+    }
+  ) => void;
   firstDayOfWeek: ComputedRef<number>;
   disabledValues: Ref<QDatePickerPropDisabledValues>;
-  shortcuts: Ref<QDatePickerPropShortcuts>;
+  shortcuts: Ref<Nullable<QDatePickerPropShortcuts>>;
   emitChange: (val: QDatePickerPropModelValue, intermediate: boolean) => void;
-  type: Ref<string>;
+  type: Ref<QDatePickerPropType>;
 }
 
 export {

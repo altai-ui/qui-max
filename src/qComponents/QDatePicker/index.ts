@@ -8,4 +8,3 @@ QDatePicker.install = (app: App): void => {
 };
 
 export default QDatePicker;
-export { QDatePickerPropModelValue, QDatePickerState } from './src/QDatePicker';

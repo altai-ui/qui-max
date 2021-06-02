@@ -1,4 +1,4 @@
-.q-year-table {
+.q-period-table {
   width: 100%;
   padding: 10px 0 20px;
   font-size: 12px;
@@ -6,22 +6,19 @@
 
   &__cell-wrapper {
     text-align: center;
-    cursor: pointer;
 
     .cell {
       position: relative;
       display: block;
       width: 40px;
       height: 40px;
-      margin: 0 auto;
-      font-weight: 500;
-      line-height: 40px;
+      font-weight: var(--font-weight-base);
       color: var(--color-primary-blue);
       border: none;
       border-radius: var(--border-radius-base);
       box-shadow: var(--box-shadow-secondary);
 
-      &:hover:not([disabled]):hover:not(.cell_in-range):not(.cell_current) {
+      &:hover:not([disabled]):not(.cell_in-range):not(.cell_current) {
         color: var(--color-primary-black);
         background-color: var(--color-tertiary-gray);
       }
@@ -44,6 +41,10 @@
 
       &_today {
         color: var(--color-primary);
+
+        &.cell_current {
+          color: var(--color-tertiary-white);
+        }
 
         &::before {
           position: absolute;
@@ -70,6 +71,12 @@
 
       &_in-range {
         color: var(--color-tertiary-white);
+        background-color: var(--color-primary-blue);
+        box-shadow: var(--box-shadow-pressed);
+      }
+
+      &_current:not(.disabled) {
+        color: #fff;
         background-color: var(--color-primary-blue);
         box-shadow: var(--box-shadow-pressed);
       }

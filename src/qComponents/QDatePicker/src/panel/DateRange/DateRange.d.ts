@@ -1,8 +1,8 @@
-import { ComputedRef, Ref } from 'vue';
-import { QDatePickerPropShortcuts } from '../../QDatePicker';
+import type { ComputedRef, Ref } from 'vue';
+import type { QDatePickerPropShortcuts } from '../../QDatePicker';
 import type { RangeState, RangePickValue } from '../../Common';
 
-type DatePanelRangePropModelValue = Date[] | null;
+type DatePanelRangePropModelValue = Nullable<Date[]>;
 
 interface DateRangePanelProps {
   modelValue: DatePanelRangePropModelValue;
@@ -15,9 +15,9 @@ interface DateRangePanelState {
   rightDate: Date;
   rangeState: RangeState;
   panelInFocus: Nullable<string>;
-  dateCells: Nullable<NodeListOf<Element>>;
-  monthCells: Nullable<NodeListOf<Element>>;
-  yearCells: Nullable<NodeListOf<Element>>;
+  dateCells: Nullable<NodeListOf<HTMLElement>>;
+  monthCells: Nullable<NodeListOf<HTMLElement>>;
+  yearCells: Nullable<NodeListOf<HTMLElement>>;
   lastFocusedCellIndex: Nullable<number>;
 }
 
@@ -39,7 +39,7 @@ interface DateRangePanelInstance {
   rightLabel: ComputedRef<string>;
   leftMonth: ComputedRef<number>;
   rightMonth: ComputedRef<number>;
-  shortcuts: Ref<QDatePickerPropShortcuts>;
+  shortcuts: Ref<Nullable<QDatePickerPropShortcuts>>;
   handleRangePick: (val: RangePickValue, close?: boolean) => void;
   handleShortcutClick: (shortcut: Date) => void;
   handleClear: () => void;

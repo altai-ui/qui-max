@@ -13,11 +13,11 @@
       :readonly="!editable"
       :disabled="isPickerDisabled"
       :name="name"
-      :placeholder="placeholder || t('QDatePicker.placeholder')"
+      :placeholder="placeholder ?? t('QDatePicker.placeholder')"
       @focus="handleFocus"
       @keyup="handleKeyUp"
       @input="handleInput"
-      @change="handleChange"
+      @change="handleInputDateChange"
     >
       <template #suffix>
         <span
@@ -73,30 +73,26 @@
     >
       <component
         :is="panelComponent"
+        v-show="Boolean(state.popper)"
         ref="panel"
         v-model="transformedToDate"
-        :class="{ 'q-picker-panel_shown': Boolean(state.popper) }"
         @pick="handlePickClick"
-      >
-        <template
-          v-if="$slots.sidebar"
-          #sidebar
-        />
-      </component>
+      />
     </teleport>
   </div>
 </template>
 
 <script lang="ts">
 import { createPopper } from '@popperjs/core';
-import { isString } from 'lodash-es';
+import { isNumber, isString } from 'lodash-es';
 import {
   isDate,
   isValid,
   parse,
   startOfMonth,
   startOfWeek,
-  startOfYear
+  startOfYear,
+  parseISO
 } from 'date-fns';
 import {
   computed,
@@ -109,23 +105,23 @@ import {
   UnwrapRef,
   onBeforeUnmount,
   provide,
-  toRefs,
   ComponentPublicInstance,
   toRef
 } from 'vue';
-import { getConfig } from '@/qComponents/config';
-import { QFormProvider } from '@/qComponents/QForm';
-import { QInputInstance } from '@/qComponents/QInput';
-import { QFormItemProvider } from '@/qComponents/QFormItem';
 import { useI18n } from 'vue-i18n';
-import parseISO from 'date-fns/parseISO';
+
+import { getConfig } from '@/qComponents/config';
+import { validateArray } from '@/qComponents/helpers';
+import type { QFormProvider } from '@/qComponents/QForm';
+import type { QInputInstance } from '@/qComponents/QInput';
+import type { QFormItemProvider } from '@/qComponents/QFormItem';
 import {
   calcInputData,
   formatToLocalReadableString,
   modelValueValidator,
-  checkArrayValueIsValid
+  checkArrayValueIsValid,
+  convertISOToDate
 } from './helpers';
-
 import DatePanel from './panel/Date/DatePanel';
 import DateRangePanel from './panel/DateRange/DateRange';
 import MonthRangePanel from './panel/MonthRange/MonthRange';
@@ -139,7 +135,6 @@ import type {
   QDatePickerProvider,
   QDatePickerState
 } from './QDatePicker';
-
 import type { DatePanelInstance } from './panel/Date/DatePanel';
 
 export default defineComponent({
@@ -153,16 +148,15 @@ export default defineComponent({
     type: {
       type: String as PropType<QDatePickerPropType>,
       default: 'date',
-      validator: (value: string) =>
-        [
-          'date',
-          'week',
-          'month',
-          'year',
-          'daterange',
-          'monthrange',
-          'yearrange'
-        ].includes(value)
+      validator: validateArray<QDatePickerPropType>([
+        'date',
+        'week',
+        'month',
+        'year',
+        'daterange',
+        'monthrange',
+        'yearrange'
+      ])
     },
     /**
      * any format from date-fns https://date-fns.org/v2.16.1/docs/format
@@ -264,7 +258,10 @@ export default defineComponent({
      * Specifies a target element where QDatePicker will be moved.
      * (has to be a valid query selector, or an HTMLElement)
      */
-    teleportTo: { type: [String, HTMLElement], default: null }
+    teleportTo: {
+      type: [String, HTMLElement] as PropType<null | string | HTMLElement>,
+      default: null
+    }
   },
 
   emits: [
@@ -277,7 +274,8 @@ export default defineComponent({
 
   setup(props: QDatePickerProps, ctx) {
     const root = ref<null | HTMLElement>(null);
-    const panel = ref<ComponentPublicInstance<DatePanelInstance> | null>(null);
+    const panel =
+      ref<UnwrapRef<ComponentPublicInstance<DatePanelInstance>> | null>(null);
     const qForm = inject<QFormProvider | null>('qForm', null);
     const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
     const reference =
@@ -293,7 +291,7 @@ export default defineComponent({
     });
 
     const calcFirstDayOfWeek = computed<number>(() => {
-      if (!Number.isNaN(props.firstDayOfWeek)) return props.firstDayOfWeek;
+      if (isNumber(props.firstDayOfWeek)) return props.firstDayOfWeek;
       return getConfig('locale') === 'ru' ? 1 : 0;
     });
 
@@ -302,12 +300,8 @@ export default defineComponent({
       if (Array.isArray(props.modelValue)) {
         if (checkArrayValueIsValid(props.modelValue)) {
           return [
-            isString(props.modelValue[0])
-              ? parseISO(props.modelValue[0])
-              : props.modelValue[0],
-            isString(props.modelValue[1])
-              ? parseISO(props.modelValue[1])
-              : props.modelValue[1]
+            convertISOToDate(props.modelValue[0]),
+            convertISOToDate(props.modelValue[1])
           ];
         }
 
@@ -321,7 +315,7 @@ export default defineComponent({
     });
 
     const isPickerDisabled = computed<boolean>(() =>
-      Boolean(props.disabled || qForm?.disabled)
+      Boolean(props.disabled || qForm?.disabled.value)
     );
 
     const rangeClasses = computed<Record<string, boolean>>(() => ({
@@ -335,15 +329,14 @@ export default defineComponent({
 
     const timepicker = computed<boolean>(() => props.type.includes('time'));
 
-    const iconClass = computed(() => {
+    const iconClass = computed<string>(() => {
       if (isPickerDisabled.value) return 'q-icon-lock';
-      const calendarIcon = timepicker.value
-        ? 'q-icon-calendar-clock'
-        : 'q-icon-calendar';
-      return state.showCloseIcon ? 'q-icon-close' : calendarIcon;
+      return state.showCloseIcon ? 'q-icon-close' : 'q-icon-calendar';
     });
 
-    const panelComponent = computed(() => {
+    const panelComponent = computed<
+      typeof DateRangePanel | typeof MonthRangePanel | typeof YearRangePanel
+    >(() => {
       switch (props.type) {
         case 'daterange':
           return DateRangePanel;
@@ -436,7 +429,7 @@ export default defineComponent({
       emitChange(val);
     };
 
-    const handleChange = (): void => {
+    const handleInputDateChange = (): void => {
       let value;
       let format;
       const date = state.userInput;
@@ -497,7 +490,7 @@ export default defineComponent({
           }
 
           if (!isRanged.value) {
-            handleChange();
+            handleInputDateChange();
           }
 
           state.pickerVisible = false;
@@ -588,6 +581,7 @@ export default defineComponent({
       if (isPickerDisabled.value) return;
       if (state.showCloseIcon) {
         emitChange(null);
+        state.userInput = null;
         state.showCloseIcon = false;
       } else {
         state.pickerVisible = !state.pickerVisible;
@@ -651,13 +645,12 @@ export default defineComponent({
 
     onBeforeUnmount(() => destroyPopper());
 
-    const { type } = toRefs(props);
-
     provide<QDatePickerProvider>('qDatePicker', {
       emit: ctx.emit,
       firstDayOfWeek: calcFirstDayOfWeek,
       emitChange,
-      type,
+      handlePickClick,
+      type: toRef(props, 'type'),
       disabledValues: toRef(props, 'disabledValues'),
       shortcuts: toRef(props, 'shortcuts')
     });
@@ -674,7 +667,7 @@ export default defineComponent({
       transformedToDate,
       rangeClasses,
       panelComponent,
-      handleChange,
+      handleInputDateChange,
       handleKeyUp,
       isValueEmpty,
       displayValue,

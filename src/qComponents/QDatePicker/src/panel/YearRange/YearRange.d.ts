@@ -16,7 +16,7 @@ interface YearRangeState {
   isRanged: boolean;
   currentView: string;
   panelInFocus: Nullable<string>;
-  yearCells: Nullable<NodeListOf<Element>>;
+  yearCells: Nullable<NodeListOf<HTMLElement>>;
   lastFocusedCellIndex: Nullable<number>;
 }
 
@@ -32,7 +32,7 @@ interface YearRangePanelInstance {
   enableYearArrow: ComputedRef<boolean>;
   leftPanelClasses: ComputedRef<Record<string, boolean>>;
   rightPanelClasses: ComputedRef<Record<string, boolean>>;
-  shortcuts: Ref<QDatePickerPropShortcuts>;
+  shortcuts: Ref<Nullable<QDatePickerPropShortcuts>>;
   handleLeftNextYearClick: () => void;
   handleLeftPrevYearClick: () => void;
   handleRightNextYearClick: () => void;

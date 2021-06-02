@@ -5,25 +5,21 @@
   >
     <div class="q-picker-panel__body-wrapper">
       <div class="q-picker-panel__body">
-        <slot
-          name="sidebar"
+        <div
+          v-if="shortcuts?.length"
           class="q-picker-panel__sidebar"
         >
-          <div
-            v-if="shortcuts?.length"
-            class="q-picker-panel__sidebar"
+          <button
+            v-for="(shortcut, key) in shortcuts"
+            :key="key"
+            type="button"
+            class="q-picker-panel__shortcut"
+            @click="handleShortcutClick(shortcut.value)"
           >
-            <button
-              v-for="(shortcut, key) in shortcuts"
-              :key="key"
-              type="button"
-              class="q-picker-panel__shortcut"
-              @click="handleShortcutClick(shortcut.value)"
-            >
-              {{ shortcut.text }}
-            </button>
-          </div>
-        </slot>
+            {{ shortcut.text }}
+          </button>
+        </div>
+
         <div
           ref="leftPanel"
           :class="leftPanelClasses"
@@ -120,7 +116,7 @@
 </template>
 
 <script lang="ts">
-import { addMonths, subMonths, endOfDay } from 'date-fns';
+import { addMonths, subMonths, isSameMonth } from 'date-fns';
 import { isNil } from 'lodash-es';
 import {
   reactive,
@@ -132,7 +128,6 @@ import {
   onMounted,
   defineComponent
 } from 'vue';
-import isSameMonth from 'date-fns/esm/isSameMonth/index';
 import {
   leftMonthComposable,
   leftYearComposable,
@@ -143,7 +138,8 @@ import {
   useLeftPrevYearClick,
   useRightNextYearClick,
   useRightPrevYearClick,
-  useLeftNextYearClick
+  useLeftNextYearClick,
+  getRangeChangedState
 } from '../composition';
 import DateTable from '../../tables/DateTable/DateTable';
 
@@ -188,7 +184,7 @@ export default defineComponent({
       dateCells: null,
       monthCells: null,
       yearCells: null,
-      lastFocusedCellIndex: null
+      lastFocusedCellIndex: 0
     });
 
     const picker = inject<QDatePickerProvider>(
@@ -199,13 +195,9 @@ export default defineComponent({
     const leftPanel = ref<HTMLElement | null>(null);
     const rightPanel = ref<HTMLElement | null>(null);
 
-    const transformedValue = computed<Date[]>(() => {
-      if (Array.isArray(props.modelValue)) {
-        return props.modelValue;
-      }
-
-      return [];
-    });
+    const transformedValue = computed<Date[]>(() =>
+      Array.isArray(props.modelValue) ? props.modelValue : []
+    );
 
     const btnDisabled = computed<boolean>(() => {
       return !(
@@ -216,27 +208,32 @@ export default defineComponent({
       );
     });
 
-    const leftLabel = computed(() =>
+    const leftLabel = computed<string>(() =>
       leftLabelComposable(state.leftDate, picker.type.value)
     );
-    const rightLabel = computed(() =>
+    const rightLabel = computed<string>(() =>
       rightLabelComposable(state.rightDate, picker.type.value)
     );
-    const leftYear = computed(() => leftYearComposable(state.leftDate));
+    const leftYear = computed<number>(() => leftYearComposable(state.leftDate));
 
-    const leftMonth = computed(() => leftMonthComposable(state.leftDate));
-    const rightMonth = computed(() => rightMonthComposable(state.rightDate));
+    const leftMonth = computed<number>(() =>
+      leftMonthComposable(state.leftDate)
+    );
+    const rightMonth = computed<number>(() =>
+      rightMonthComposable(state.rightDate)
+    );
 
-    const isLeftTimeDisabled = computed(() => !transformedValue.value[0]);
+    const isLeftTimeDisabled = computed<boolean>(
+      () => !transformedValue.value[0]
+    );
 
     const rightPanelClasses = computed<Record<string, boolean>>(() => ({
       'q-picker-panel__content': true,
       'q-picker-panel__content_no-left-borders': true,
-      // 'q-picker-panel__content_no-right-borders': props.showTime,
       'q-picker-panel__content_focused': state.panelInFocus === 'right'
     }));
 
-    const leftPanelClasses = computed(() => ({
+    const leftPanelClasses = computed<Record<string, boolean>>(() => ({
       'q-picker-panel__content': true,
       'q-picker-panel__content_no-left-borders': Boolean(
         ctx.slots.sidebar || picker.shortcuts.value?.length
@@ -245,8 +242,8 @@ export default defineComponent({
       'q-picker-panel__content_focused': state.panelInFocus === 'left'
     }));
 
-    const rightYear = computed(() => state.rightDate.getFullYear());
-    const enableMonthArrow = computed(() => {
+    const rightYear = computed<number>(() => state.rightDate.getFullYear());
+    const enableMonthArrow = computed<boolean>(() => {
       const nextMonth = (leftMonth.value + 1) % 12;
       const yearOffset = leftMonth.value + 1 >= 12 ? 1 : 0;
       return (
@@ -255,7 +252,7 @@ export default defineComponent({
       );
     });
 
-    const enableYearArrow = computed(() => {
+    const enableYearArrow = computed<boolean>(() => {
       return Boolean(
         rightYear.value * MONTHS_COUNT +
           rightMonth.value -
@@ -269,28 +266,20 @@ export default defineComponent({
     };
 
     const handleRangePick = (val: RangePickValue, close = true): void => {
-      if (state.maxDate === val.maxDate && state.minDate === val.minDate) {
-        return;
-      }
-
-      if (val.maxDate) {
-        // eslint-disable-next-line no-param-reassign
-        val.maxDate = endOfDay(val.maxDate);
-      }
-
-      if (val.rangeState) {
-        state.rangeState = val.rangeState;
-      }
-
-      state.maxDate = val.maxDate;
-      state.minDate = val.minDate;
+      const { maxDate, minDate, rangeState } = getRangeChangedState(
+        val,
+        state.rangeState
+      );
+      state.maxDate = maxDate;
+      state.minDate = minDate;
+      state.rangeState = rangeState;
 
       // emit QDatepicker intermediate value
-      picker.emit('intermediateChange', [state.minDate, state.maxDate]);
+      picker.emit('intermediateChange', [minDate, maxDate]);
 
       if (!close) return;
 
-      if (isValidValue([state.minDate, state.maxDate])) {
+      if (isValidValue([minDate, maxDate])) {
         ctx.emit('pick', [state.minDate, state.maxDate]);
       }
     };
@@ -360,10 +349,9 @@ export default defineComponent({
       if (isNil(currentNodeIndex)) return;
 
       switch (e.key) {
-        case 'ArrowUp': {
+        case 'ArrowUp':
           nextNodeIndex = currentNodeIndex - DATE_CELLS_IN_ROW_COUNT;
           break;
-        }
 
         case 'ArrowRight':
           if (
@@ -392,43 +380,40 @@ export default defineComponent({
 
           break;
 
-        case 'ArrowDown': {
+        case 'ArrowDown':
           nextNodeIndex = currentNodeIndex + DATE_CELLS_IN_ROW_COUNT;
           break;
-        }
         default:
           break;
       }
 
       if (isNil(nextNodeIndex)) return;
 
-      const node = state.dateCells[nextNodeIndex] as HTMLElement;
+      const node = state.dateCells[nextNodeIndex];
       const newIndex = nextNodeIndex % DATE_CELLS_IN_ROW_COUNT;
       if (node) {
         node.focus();
         state.lastFocusedCellIndex = nextNodeIndex;
-      } else if (state.lastFocusedCellIndex) {
+      } else if (!isNil(state.lastFocusedCellIndex)) {
         if (nextNodeIndex > state.lastFocusedCellIndex) {
           handleRightNextMonthClick();
           handleLeftNextMonthClick();
-          (state.dateCells?.[newIndex] as HTMLElement)?.focus();
+          state.dateCells[newIndex]?.focus();
         } else if (nextNodeIndex < state.lastFocusedCellIndex) {
           handleLeftPrevMonthClick();
           handleRightPrevMonthClick();
-          (
-            state.dateCells?.[DATE_CELLS_COUNT + newIndex] as HTMLElement
-          )?.focus();
+          state.dateCells?.[DATE_CELLS_COUNT + newIndex]?.focus();
         }
       }
     };
 
     const navigateDropdown = (e: KeyboardEvent): void => {
-      const target = e.target as HTMLElement;
       if (e.key !== 'Tab') {
+        const target = e.target as HTMLElement;
         if (target.classList.contains('cell_date')) {
           moveWithinDates(e);
         } else {
-          (state.dateCells?.[0] as HTMLElement)?.focus();
+          state.dateCells?.[0]?.focus();
         }
       }
 
@@ -442,7 +427,7 @@ export default defineComponent({
     watch(
       () => props.modelValue,
       newVal => {
-        if (!newVal || !newVal?.length) {
+        if (!newVal || !newVal.length) {
           handleClear();
         } else {
           state.minDate = newVal[0];

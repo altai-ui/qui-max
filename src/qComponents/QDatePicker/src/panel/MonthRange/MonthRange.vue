@@ -5,10 +5,6 @@
   >
     <div class="q-picker-panel__body-wrapper">
       <div class="q-picker-panel__body">
-        <slot
-          name="sidebar"
-          class="q-picker-panel__sidebar"
-        />
         <div
           v-if="shortcuts?.length"
           class="q-picker-panel__sidebar"
@@ -89,7 +85,7 @@
 </template>
 
 <script lang="ts">
-import { endOfDay, isDate, addYears, addMonths } from 'date-fns';
+import { isDate, addYears, addMonths, isSameMonth } from 'date-fns';
 import { isNil } from 'lodash-es';
 import {
   reactive,
@@ -101,7 +97,6 @@ import {
   ref,
   defineComponent
 } from 'vue';
-import isSameMonth from 'date-fns/isSameMonth';
 import MonthTable from '../../tables/MonthTable/MonthTable';
 import {
   leftYearComposable,
@@ -111,14 +106,12 @@ import {
   useLeftPrevYearClick,
   useLeftNextYearClick,
   useRightNextYearClick,
-  useRightPrevYearClick
+  useRightPrevYearClick,
+  getRangeChangedState,
+  getPeriodNextNodeIndex
 } from '../composition';
 
-import {
-  LEFT_MONTH_PANEL_START_INDEX,
-  PERIOD_CELLS_IN_ROW_COUNT,
-  RIGHT_MONTH_PANEL_START_INDEX
-} from '../constants';
+import { PERIOD_CELLS_IN_ROW_COUNT } from '../constants';
 import type { DatePanelRangePropModelValue } from '../DateRange/DateRange';
 import type {
   MonthRangePanelInstance,
@@ -154,7 +147,7 @@ export default defineComponent({
       currentView: 'monthrange',
       panelInFocus: null,
       monthCells: null,
-      lastFocusedCellIndex: null
+      lastFocusedCellIndex: 0
     });
 
     const picker = inject<QDatePickerProvider>(
@@ -200,28 +193,20 @@ export default defineComponent({
     };
 
     const handleRangePick = (val: RangePickValue, close = true): void => {
-      if (state.maxDate === val.maxDate && state.minDate === val.minDate) {
-        return;
-      }
-
-      if (val.maxDate) {
-        // eslint-disable-next-line no-param-reassign
-        val.maxDate = endOfDay(val.maxDate);
-      }
-
-      if (val.rangeState) {
-        state.rangeState = val.rangeState;
-      }
-
-      state.maxDate = val.maxDate;
-      state.minDate = val.minDate;
+      const { maxDate, minDate, rangeState } = getRangeChangedState(
+        val,
+        state.rangeState
+      );
+      state.maxDate = maxDate;
+      state.minDate = minDate;
+      state.rangeState = rangeState;
 
       // emit QDatepicker intermediate value
-      picker.emit('intermediateChange', [state.minDate, state.maxDate]);
+      picker.emit('intermediateChange', [minDate, maxDate]);
 
       if (!close) return;
 
-      if (isValidValue([state.minDate, state.maxDate])) {
+      if (isValidValue([minDate, maxDate])) {
         ctx.emit('pick', [state.minDate, state.maxDate]);
       }
     };
@@ -251,69 +236,25 @@ export default defineComponent({
     };
 
     const moveWithinPeriod = (e: KeyboardEvent): void => {
-      let currentNodeIndex;
-      let nextNodeIndex;
-      const periodCells = state.monthCells;
-      const rightPanelStartIndex = RIGHT_MONTH_PANEL_START_INDEX;
-      if (!periodCells?.length) return;
-      Array.from(periodCells).some((element, index) => {
-        if (document.activeElement === element) {
-          currentNodeIndex = index;
-          return true;
-        }
+      if (!state?.monthCells?.length || !state.panelInFocus) return;
+      const nextNodeIndex = getPeriodNextNodeIndex(
+        e.key,
+        state.monthCells,
+        state.panelInFocus
+      );
 
-        return false;
-      });
-
-      if (isNil(currentNodeIndex)) return;
-      switch (e.key) {
-        case 'ArrowUp': {
-          nextNodeIndex = currentNodeIndex - PERIOD_CELLS_IN_ROW_COUNT;
-          break;
-        }
-
-        case 'ArrowRight':
-          if (
-            state.panelInFocus === 'left' &&
-            (currentNodeIndex + 1) % PERIOD_CELLS_IN_ROW_COUNT === 0
-          ) {
-            nextNodeIndex = rightPanelStartIndex;
-          } else {
-            nextNodeIndex = currentNodeIndex + 1;
-          }
-          break;
-
-        case 'ArrowLeft':
-          if (
-            state.panelInFocus === 'right' &&
-            currentNodeIndex % PERIOD_CELLS_IN_ROW_COUNT === 0
-          ) {
-            nextNodeIndex = LEFT_MONTH_PANEL_START_INDEX + 3;
-          } else {
-            nextNodeIndex = currentNodeIndex - 1;
-          }
-          break;
-
-        case 'ArrowDown': {
-          nextNodeIndex = currentNodeIndex + PERIOD_CELLS_IN_ROW_COUNT;
-          break;
-        }
-        default:
-          break;
-      }
       if (isNil(nextNodeIndex)) return;
-
-      const node = periodCells[nextNodeIndex] as HTMLElement;
+      const node = state.monthCells[nextNodeIndex];
       const newIndex = nextNodeIndex % PERIOD_CELLS_IN_ROW_COUNT;
 
       if (node) {
         node.focus();
         state.lastFocusedCellIndex = nextNodeIndex;
-      } else if (state.lastFocusedCellIndex) {
+      } else if (!isNil(state.lastFocusedCellIndex)) {
         if (nextNodeIndex > state.lastFocusedCellIndex) {
           handleRightNextYearClick();
           handleLeftNextYearClick();
-          (periodCells?.[newIndex] as HTMLElement)?.focus();
+          state.monthCells?.[newIndex]?.focus();
         } else if (nextNodeIndex < state.lastFocusedCellIndex) {
           handleLeftPrevYearClick();
           handleRightPrevYearClick();
@@ -326,18 +267,16 @@ export default defineComponent({
         state.panelInFocus = 'left';
       } else if (rightPanel.value?.contains(document.activeElement)) {
         state.panelInFocus = 'right';
-      } else {
-        state.panelInFocus = 'timeRight';
       }
     };
 
     const navigateDropdown = (e: KeyboardEvent): void => {
-      const target = e.target as HTMLElement;
       if (e.key !== 'Tab') {
-        if (target.classList.contains('cell_month')) {
+        const target = e.target as HTMLElement;
+        if (target.classList.contains('cell_period')) {
           moveWithinPeriod(e);
         } else {
-          (state.monthCells?.[0] as HTMLElement)?.focus();
+          state.monthCells?.[0]?.focus();
         }
       }
 
@@ -350,13 +289,13 @@ export default defineComponent({
 
     onMounted(() => {
       if (!root.value) return;
-      state.monthCells = root.value.querySelectorAll('.q-month-table .cell');
+      state.monthCells = root.value.querySelectorAll('.q-period-table .cell');
     });
 
     watch(
       () => props.modelValue,
       newVal => {
-        if (!newVal || !newVal?.length) {
+        if (!newVal || !newVal.length) {
           handleClear();
         } else {
           state.minDate = newVal[0];

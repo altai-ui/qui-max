@@ -1,6 +1,6 @@
-import { DebouncedFunc } from 'lodash-es';
-import { ComputedRef } from 'vue';
-import { RangeState, TablePropSelectionMode } from '../../Common';
+import type { DebouncedFunc } from 'lodash-es';
+import type { ComputedRef } from 'vue';
+import type { RangeState } from '../../Common';
 
 interface YearCellModel {
   year: Date;
@@ -13,7 +13,6 @@ interface YearTableProps {
   value: Date;
   minDate: Nullable<Date>;
   maxDate: Nullable<Date>;
-  selectionMode: TablePropSelectionMode;
   rangeState: RangeState;
 }
 

@@ -1,10 +1,11 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { Meta, Story } from '@storybook/vue3';
 import { addMonths, startOfYesterday, subMonths, subWeeks } from 'date-fns';
-import QDatePicker, {
-  QDatePickerPropModelValue
-} from '@/qComponents/QDatePicker';
+import QDatePicker from '@/qComponents/QDatePicker';
 import { defineComponent, reactive, watch } from 'vue';
+import type { Meta, Story } from '@storybook/vue3';
+import type {
+  QDatePickerPropModelValue,
+  QDatePickerProps
+} from '@/qComponents/QDatePicker/src/QDatePicker';
 
 const now = new Date();
 
@@ -62,7 +63,7 @@ const storyMetadata: Meta = {
   }
 };
 
-const Template: Story = args =>
+const Template: Story<QDatePickerProps> = args =>
   defineComponent({
     setup() {
       const state = reactive({
@@ -118,13 +119,13 @@ const Template: Story = args =>
     `
   });
 
-export const Default: Story = Template.bind({});
-export const Month: Story = Template.bind({});
-export const Year: Story = Template.bind({});
-export const DateRange: Story = Template.bind({});
-export const MonthRange: Story = Template.bind({});
-export const YearRange: Story = Template.bind({});
-export const Shortcuts: Story = Template.bind({});
+export const Default: Story<QDatePickerProps> = Template.bind({});
+export const Month: Story<QDatePickerProps> = Template.bind({});
+export const Year: Story<QDatePickerProps> = Template.bind({});
+export const DateRange: Story<QDatePickerProps> = Template.bind({});
+export const MonthRange: Story<QDatePickerProps> = Template.bind({});
+export const YearRange: Story<QDatePickerProps> = Template.bind({});
+export const Shortcuts: Story<QDatePickerProps> = Template.bind({});
 
 YearRange.args = {
   type: 'yearrange'

@@ -1,6 +1,5 @@
 @import './tables/DateTable/date-table.scss';
-@import './tables/MonthTable/month-table.scss';
-@import './tables/YearTable/year-table.scss';
+@import './tables/period-table.scss';
 
 .q-date-picker {
   .q-date-editor {
@@ -105,12 +104,7 @@
 
   .q-picker-panel {
     z-index: 1;
-    display: none;
     border-radius: 4px;
-
-    &_shown {
-      display: block;
-    }
 
     &__content {
       position: relative;

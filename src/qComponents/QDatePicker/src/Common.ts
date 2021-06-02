@@ -30,7 +30,6 @@ interface TableProps {
   value: Date;
   minDate: Nullable<Date>;
   maxDate: Nullable<Date>;
-  selectionMode: TablePropSelectionMode;
   rangeState: RangeState;
 }
 

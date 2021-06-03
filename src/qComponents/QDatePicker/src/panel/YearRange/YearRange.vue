@@ -40,7 +40,7 @@
               @click="handleLeftNextYearClick"
             />
           </div>
-          <year-table
+          <period-table
             :year="leftYear"
             :min-date="state.minDate"
             :max-date="state.maxDate"
@@ -73,7 +73,7 @@
               @click="handleRightNextYearClick"
             />
           </div>
-          <year-table
+          <period-table
             :year="rightYear"
             :min-date="state.minDate"
             :max-date="state.maxDate"
@@ -101,7 +101,7 @@ import {
   defineComponent
 } from 'vue';
 import { isNil } from 'lodash-es';
-import YearTable from '../../tables/YearTable/YearTable';
+import PeriodTable from '../../tables/PeriodTable/PeriodTable';
 import {
   leftYearComposable,
   leftLabelComposable,
@@ -123,7 +123,7 @@ import { PERIOD_CELLS_IN_ROW_COUNT } from '../constants';
 const YEARS_IN_DECADE = 10;
 
 export default defineComponent({
-  components: { YearTable },
+  components: { PeriodTable },
   props: {
     modelValue: {
       type: Array as PropType<DatePanelRangePropModelValue>,

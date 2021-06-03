@@ -18,10 +18,12 @@
           :disabled="cell.disabled"
           type="button"
           tabindex="-1"
-          @click="handleMonthTableClick(cell)"
+          @click="handleTableClick(cell)"
           @mousemove="handleMouseMove(cell)"
         >
-          {{ getMonthName(cell.text) }}
+          {{
+            isMonthTable ? getMonthName(cell.text) : cell.date?.getFullYear()
+          }}
         </button>
       </td>
     </tr>
@@ -29,7 +31,13 @@
 </template>
 
 <script lang="ts">
-import { startOfMonth, isSameMonth } from 'date-fns';
+import {
+  addYears,
+  startOfMonth,
+  isSameMonth,
+  isSameYear,
+  startOfDecade
+} from 'date-fns';
 import { reactive, computed, PropType, inject, defineComponent } from 'vue';
 import { getConfig } from '@/qComponents/config';
 import { throttle } from 'lodash-es';
@@ -40,10 +48,10 @@ import {
 } from '../../helpers';
 import type { RangeState, TableProps } from '../../Common';
 import type {
-  MonthCellModel,
-  MonthTableInstance,
-  MonthTableState
-} from './MonthTable';
+  PeriodCellModel,
+  PeriodTableInstance,
+  PeriodTableState
+} from './PeriodTable';
 import { QDatePickerProvider } from '../../QDatePicker';
 
 export default defineComponent({
@@ -51,6 +59,7 @@ export default defineComponent({
     value: { type: Date, default: null },
     minDate: { type: Date, default: null },
     maxDate: { type: Date, default: null },
+    type: { type: String, default: 'month' },
     year: {
       type: Number,
       default: new Date().getFullYear()
@@ -73,8 +82,8 @@ export default defineComponent({
 
   emits: ['pick', 'rangeSelecting'],
 
-  setup(props: TableProps, ctx): MonthTableInstance {
-    const state = reactive<MonthTableState>({
+  setup(props: TableProps, ctx): PeriodTableInstance {
+    const state = reactive<PeriodTableState>({
       tableRows: [[], [], []]
     });
 
@@ -83,26 +92,40 @@ export default defineComponent({
       {} as QDatePickerProvider
     );
 
-    const rows = computed<MonthCellModel[][]>(() => {
+    const startYear = computed<Date>(() => {
+      if (props.year) {
+        return startOfDecade(new Date(props.year, 0, 1));
+      }
+
+      return startOfDecade(new Date());
+    });
+
+    const isMonthTable = computed(() => props.type === 'month');
+    const isSameFn = computed(() =>
+      props.type === 'month' ? isSameMonth : isSameYear
+    );
+
+    const rows = computed<PeriodCellModel[][]>(() => {
       const tableRows = state.tableRows;
+      let startYearDate = startYear.value;
       return tableRows.map((row, i) => {
         const newRow = [];
-        for (let j = 0; j < 4; j += 1) {
+        const cellCount = 4;
+        for (let j = 0; j < cellCount; j += 1) {
           const index = i * 4 + j;
-          const month = startOfMonth(new Date(props.year, index));
-          const cell: MonthCellModel = {
-            row: i,
-            column: j,
+          const date =
+            props.type === 'month'
+              ? startOfMonth(new Date(props.year, index))
+              : startYearDate;
+          const cell: PeriodCellModel = {
             type: 'normal',
             inRange: false,
-            start: false,
-            end: false,
             text: index,
-            month,
+            date,
             disabled: checkDisabled(
-              month,
+              date,
               picker.disabledValues.value,
-              isSameMonth
+              isSameFn.value
             )
           };
 
@@ -120,16 +143,17 @@ export default defineComponent({
 
             cell.inRange = Boolean(
               minDateNum &&
-                month.getTime() >= minDateNum &&
-                month.getTime() <= maxDateNum
+                date.getTime() >= minDateNum &&
+                date.getTime() <= maxDateNum
             );
           }
 
-          if (isSameMonth(month, new Date())) {
+          if (isSameFn.value(date, new Date())) {
             cell.type = 'today';
           }
 
           newRow.push(cell);
+          startYearDate = addYears(startYearDate, 1);
         }
 
         return newRow;
@@ -144,39 +168,43 @@ export default defineComponent({
       );
     };
 
-    const getCellClasses = (cell: MonthCellModel): string[] => {
+    const getCellClasses = (cell: PeriodCellModel): string[] => {
       const classes = ['cell', 'cell_period'];
-      if (props.value && cell.month && isSameMonth(props.value, cell.month))
+      if (props.value && cell.date && isSameFn.value(props.value, cell.date))
         classes.push('cell_current');
       if (cell.type === 'today') classes.push('cell_today');
 
       if (
         cell.inRange ||
-        (cell.month && isDateInRangeInterval(cell.month, props.rangeState))
+        (cell.date && isDateInRangeInterval(cell.date, props.rangeState))
       ) {
         classes.push('cell_in-range');
       }
       return classes;
     };
 
-    const mouseMove = (cell: MonthCellModel): void => {
+    const mouseMove = (cell: PeriodCellModel): void => {
       if (!props.rangeState.selecting) return;
       if (cell.disabled) return;
       ctx.emit('rangeSelecting', {
         selecting: true,
-        hoveredDate: cell.month,
+        hoveredDate: cell.date,
         pickedDate: props.minDate
       });
     };
 
     const handleMouseMove = throttle(mouseMove, 200);
 
-    const handleMonthTableClick = (cell: MonthCellModel): void => {
+    const handleTableClick = (cell: PeriodCellModel): void => {
       if (cell.disabled) return;
-      const newDate = cell.month;
+      const newDate = cell.date;
       if (!newDate) return;
-      const month = cell.month?.getMonth();
-      if (picker.type.value === 'monthrange') {
+      const month = newDate.getMonth();
+      const year = newDate.getFullYear();
+      if (
+        picker.type.value === 'monthrange' ||
+        picker.type.value === 'yearrange'
+      ) {
         if (!props.rangeState.selecting) {
           ctx.emit('pick', {
             minDate: newDate,
@@ -201,7 +229,7 @@ export default defineComponent({
           });
         }
       } else {
-        ctx.emit('pick', month, props.year);
+        ctx.emit('pick', month, year, props.type);
       }
     };
 
@@ -209,9 +237,10 @@ export default defineComponent({
       state,
       rows,
       getMonthName,
-      handleMonthTableClick,
+      handleTableClick,
       getCellClasses,
-      handleMouseMove
+      handleMouseMove,
+      isMonthTable
     };
   }
 });

@@ -38,7 +38,7 @@
               @click="handleLeftNextYearClick"
             />
           </div>
-          <month-table
+          <period-table
             selection-mode="range"
             :min-date="state.minDate"
             :max-date="state.maxDate"
@@ -68,7 +68,7 @@
               @click="handleRightNextYearClick"
             />
           </div>
-          <month-table
+          <period-table
             selection-mode="range"
             :month="rightMonth"
             :year="rightYear"
@@ -97,7 +97,7 @@ import {
   ref,
   defineComponent
 } from 'vue';
-import MonthTable from '../../tables/MonthTable/MonthTable';
+import PeriodTable from '../../tables/PeriodTable/PeriodTable';
 import {
   leftYearComposable,
   leftMonthComposable,
@@ -122,7 +122,7 @@ import type { QDatePickerProvider } from '../../QDatePicker';
 import type { RangePickValue, RangeState } from '../../Common';
 
 export default defineComponent({
-  components: { MonthTable },
+  components: { PeriodTable },
   props: {
     modelValue: {
       type: Array as PropType<DatePanelRangePropModelValue>,

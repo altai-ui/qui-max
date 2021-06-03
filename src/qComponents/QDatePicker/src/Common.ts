@@ -28,6 +28,7 @@ interface TableProps {
   year: number;
   month: number;
   value: Date;
+  type: string;
   minDate: Nullable<Date>;
   maxDate: Nullable<Date>;
   rangeState: RangeState;

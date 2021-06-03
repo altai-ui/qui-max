@@ -75,14 +75,9 @@
           :month="state.month"
           @pick="handleDatePick"
         />
-        <year-table
-          v-if="state.currentView === 'year'"
-          :value="modelValue"
-          :year="state.year"
-          @pick="handleYearPick"
-        />
-        <month-table
-          v-if="state.currentView === 'month'"
+        <period-table
+          v-if="isPeriodTableShown"
+          :type="state.currentView"
           :value="modelValue"
           :month="state.month"
           :year="state.year"
@@ -110,8 +105,7 @@ import {
 } from 'vue';
 import { getConfig } from '@/qComponents/config';
 import { getTimeModel } from '../../../../helpers/dateHelpers';
-import YearTable from '../../tables/YearTable/YearTable';
-import MonthTable from '../../tables/MonthTable/MonthTable';
+import PeriodTable from '../../tables/PeriodTable/PeriodTable';
 import DateTable from '../../tables/DateTable/DateTable';
 
 import type {
@@ -135,8 +129,7 @@ import { getPeriodNextNodeIndex } from '../composition';
 export default defineComponent({
   name: 'QDatePickerPanelDate',
   components: {
-    YearTable,
-    MonthTable,
+    PeriodTable,
     DateTable
   },
   props: {
@@ -216,6 +209,10 @@ export default defineComponent({
         }
       }
     );
+
+    const isPeriodTableShown = computed(() => {
+      return ['month', 'year'].includes(state.currentView);
+    });
 
     const setPanelFocus = (): void => {
       if (datePanel.value?.contains(document.activeElement)) {
@@ -306,16 +303,31 @@ export default defineComponent({
       }
     };
 
-    const handleMonthPick = (month: number, year: number): void => {
-      if (picker.type.value === 'month') {
-        ctx.emit('pick', new Date(year, month, 1));
+    const handleMonthPick = (
+      month: number,
+      year: number,
+      type: string
+    ): void => {
+      if (picker.type.value === 'year') {
+        ctx.emit('pick', new Date(year, 0, 1));
+      } else if (picker.type.value === 'month') {
+        if (type === 'month') {
+          ctx.emit('pick', new Date(year, month, 1));
+        } else {
+          showMonthPicker();
+          state.year = year;
+        }
       } else if (props.modelValue instanceof Date) {
         ctx.emit('pick', new Date(year, month, props.modelValue.getDate()));
         showDatePicker();
       } else {
         state.month = month;
         state.year = year;
-        showDatePicker();
+        if (type === 'year') {
+          showMonthPicker();
+        } else {
+          showDatePicker();
+        }
       }
     };
 
@@ -452,6 +464,7 @@ export default defineComponent({
       parsedTime,
       currentMonth,
       yearLabel,
+      isPeriodTableShown,
       showMonthPicker,
       showYearPicker,
       showDatePicker,

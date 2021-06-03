@@ -2,6 +2,7 @@ import type { Instance } from '@popperjs/core';
 import type { ComputedRef, Ref } from 'vue';
 
 type QDatePickerPropModelValue = Nullable<string | Date | string[] | Date[]>;
+type QDatePickerPropOutputFormat = 'date' | 'iso';
 type QDatePickerPropType =
   | 'date'
   | 'week'
@@ -26,7 +27,7 @@ type QDatePickerPropDisabledValues = Nullable<{
 interface QDatePickerProps {
   type: QDatePickerPropType;
   format: string;
-  outputFormat: string;
+  outputFormat: QDatePickerPropOutputFormat;
   placeholder: Nullable<string>;
   startPlaceholder: Nullable<string>;
   endPlaceholder: Nullable<string>;
@@ -80,6 +81,7 @@ export {
   QDatePickerPropModelValue,
   QDatePickerPropShortcuts,
   QDatePickerPropType,
+  QDatePickerPropOutputFormat,
   QDatePickerPropDisabledValues,
   QDatePickerState,
   QDatePickerProvider

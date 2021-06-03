@@ -69,13 +69,18 @@
       :to="teleportTo"
       :disabled="!teleportTo"
     >
-      <component
-        :is="panelComponent"
-        v-show="Boolean(state.popper)"
-        ref="panel"
-        v-model="transformedToDate"
-        @pick="handlePickClick"
-      />
+      <transition
+        name="q-cascader__dropdown_animation"
+        @after-leave="destroyPopper"
+      >
+        <component
+          :is="panelComponent"
+          v-show="Boolean(state.popper)"
+          ref="panel"
+          v-model="transformedToDate"
+          @pick="handlePickClick"
+        />
+      </transition>
     </teleport>
   </div>
 </template>
@@ -109,7 +114,7 @@ import {
 import { useI18n } from 'vue-i18n';
 
 import { getConfig } from '@/qComponents/config';
-import { validateArray } from '@/qComponents/helpers';
+import { notNull, validateArray } from '@/qComponents/helpers';
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QInputInstance } from '@/qComponents/QInput';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
@@ -127,6 +132,7 @@ import YearRangePanel from './panel/YearRange/YearRange';
 import type {
   QDatePickerPropDisabledValues,
   QDatePickerPropModelValue,
+  QDatePickerPropOutputFormat,
   QDatePickerProps,
   QDatePickerPropShortcuts,
   QDatePickerPropType,
@@ -159,14 +165,18 @@ export default defineComponent({
     /**
      * any format from date-fns https://date-fns.org/v2.16.1/docs/format
      */
-    format: { type: String, default: 'dd MMMM yyyy' },
+    format: {
+      type: String,
+      default: 'dd MMMM yyyy',
+      validator: notNull
+    },
     /**
      * two options of returned value: 'date' - type Date format, 'iso' - ISO string format
      */
     outputFormat: {
-      type: String,
+      type: String as PropType<QDatePickerPropOutputFormat>,
       default: 'date',
-      validator: (val: string) => ['date', 'iso'].includes(val)
+      validator: validateArray<QDatePickerPropOutputFormat>(['date', 'iso'])
     },
     placeholder: { type: String, default: null },
     /**
@@ -670,6 +680,7 @@ export default defineComponent({
       isValueEmpty,
       displayValue,
       iconClass,
+      destroyPopper,
       handlePickClick,
       handleFocus,
       handleInput,

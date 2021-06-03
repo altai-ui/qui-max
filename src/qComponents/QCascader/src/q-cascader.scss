@@ -10,4 +10,24 @@
   width: 100%;
   min-height: 40px;
   vertical-align: middle;
+
+  &__dropdown_animation {
+    &-enter-active,
+    &-leave-active {
+      transition: opacity var(--transition-spline-base) 0.25s;
+
+      .q-cascader-column {
+        transition: margin-top var(--transition-spline-base) 0.25s;
+      }
+    }
+
+    &-enter-from,
+    &-leave-to {
+      opacity: 0;
+
+      .q-cascader-column {
+        margin-top: -8px;
+      }
+    }
+  }
 }

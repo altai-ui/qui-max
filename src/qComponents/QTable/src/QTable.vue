@@ -37,6 +37,7 @@ import type {
 
 const UPDATE_CHECKED_ROWS_EVENT = 'update:checkedRows';
 const UPDATE_SORT_BY_EVENT = 'update:sortBy';
+const UPDATE_GROUPS_OF_COLUMNS = 'update:groupsOfColumns';
 const ROW_CLICK_EVENT = 'row-click';
 
 export default defineComponent({
@@ -101,6 +102,7 @@ export default defineComponent({
      * Each column MAY contain:
      *  `isHidden`.
      *  `sortable`.
+     *  `draggable`.
      *  `slots`.
      *  `align` (left/right) - content's align.
      *  `width` (works with `fixedLayout: true`).
@@ -163,7 +165,12 @@ export default defineComponent({
     }
   },
 
-  emits: [UPDATE_CHECKED_ROWS_EVENT, UPDATE_SORT_BY_EVENT, ROW_CLICK_EVENT],
+  emits: [
+    UPDATE_CHECKED_ROWS_EVENT,
+    UPDATE_SORT_BY_EVENT,
+    ROW_CLICK_EVENT,
+    UPDATE_GROUPS_OF_COLUMNS
+  ],
 
   setup(props: QTableProps, ctx): QTableInstance {
     const isTableEmpty = computed<boolean>(() => {
@@ -197,6 +204,11 @@ export default defineComponent({
     const updateSortBy = (value: QTablePropSortBy): void => {
       ctx.emit(UPDATE_SORT_BY_EVENT, value);
     };
+
+    const updateGroupsOfColumns = (value: QTablePropGroupsOfColumns): void => {
+      ctx.emit(UPDATE_GROUPS_OF_COLUMNS, value);
+    };
+
     const emitRowClick = (
       row: Record<string, unknown>,
       rowIndex: number
@@ -222,6 +234,7 @@ export default defineComponent({
       isRowClickable,
       updateCheckedRows,
       updateSortBy,
+      updateGroupsOfColumns,
       emitRowClick
     });
 

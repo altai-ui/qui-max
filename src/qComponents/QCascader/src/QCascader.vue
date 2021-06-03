@@ -12,11 +12,15 @@
       :to="teleportTo"
       :disabled="!teleportTo"
     >
-      <q-cascader-dropdown
-        v-if="isDropdownShown"
-        ref="dropdown"
-        @close="handleDropdownClose"
-      />
+      <transition
+        name="q-cascader__dropdown_animation"
+        @after-leave="afterLeave"
+      >
+        <q-cascader-dropdown
+          v-if="isDropdownShown"
+          @close="handleDropdownClose"
+        />
+      </transition>
     </teleport>
   </div>
 </template>
@@ -34,8 +38,10 @@ import {
   UnwrapRef,
   watch,
   onMounted,
-  onBeforeUnmount
+  onBeforeUnmount,
+  nextTick
 } from 'vue';
+import type { Instance } from '@popperjs/core';
 
 import {
   randId,
@@ -53,7 +59,6 @@ import QCascaderDropdown from './QCascaderDropdown/QCascaderDropdown.vue';
 import QCascaderInput from './QCascaderInput/QCascaderInput.vue';
 import QCascaderTags from './QCascaderTags/QCascaderTags.vue';
 import type { QCascaderInputInstance } from './QCascaderInput/QCascaderInput';
-import type { QCascaderDropdownInstance } from './QCascaderDropdown/QCascaderDropdown';
 
 import type {
   QCascaderPropModelValue,
@@ -165,11 +170,8 @@ export default defineComponent({
       ref<ComponentPublicInstance<UnwrapRef<QCascaderInputInstance>> | null>(
         null
       );
-    const dropdown =
-      ref<ComponentPublicInstance<UnwrapRef<QCascaderDropdownInstance>> | null>(
-        null
-      );
 
+    const popperJS = ref<Instance | null>(null);
     const isDropdownShown = ref<boolean>(false);
 
     const isDisabled = computed<boolean>(
@@ -251,33 +253,43 @@ export default defineComponent({
       placeholder: toRef(props, 'placeholder'),
       uniqueId: randId('q-cascader-'),
       popoverReference: reference,
+      popperJS,
       updateValue
     });
 
-    const updatePopperJs = (): void => {
-      dropdown.value?.updatePopperJs();
+    const updatePopperJs = async (): Promise<void> => {
+      if (!popperJS.value) return;
+
+      await nextTick();
+      popperJS.value.update();
+    };
+
+    const afterLeave = (): void => {
+      popperJS.value?.destroy();
     };
 
     onMounted(() => {
-      if (!reference.value) return;
-
-      addResizeListener(reference.value.$el, updatePopperJs);
+      addResizeListener(
+        reference.value?.$el as HTMLElement | undefined,
+        updatePopperJs
+      );
     });
 
     onBeforeUnmount(() => {
-      if (!reference.value) return;
-
-      removeResizeListener(reference.value.$el, updatePopperJs);
+      removeResizeListener(
+        reference.value?.$el as HTMLElement | undefined,
+        updatePopperJs
+      );
     });
 
     return {
       reference,
-      dropdown,
       isDropdownShown,
       isDisabled,
       rootClasses,
       handleReferenceTrigger,
-      handleDropdownClose
+      handleDropdownClose,
+      afterLeave
     };
   }
 });

@@ -38,10 +38,16 @@ export default defineComponent({
     sortBy: {
       type: Object as PropType<QTableTHeadCellPropSortBy>,
       default: null
+    },
+    draggedColumn: {
+      type: Object as PropType<ExtendedColumn>,
+      default: null
     }
   },
 
-  setup(props: QTableTHeadCellProps): QTableTHeadCellInstance {
+  emits: ['drag', 'drop'],
+
+  setup(props: QTableTHeadCellProps, ctx): QTableTHeadCellInstance {
     const qTable = inject<QTableProvider>('qTable', {} as QTableProvider);
     const qTableT = inject<QTableTProvider>('qTableT', {} as QTableTProvider);
     const root = ref<HTMLElement | null>(null);
@@ -64,6 +70,7 @@ export default defineComponent({
       [`q-table-t-head-cell_align_${props.column.align ?? ''}`]: Boolean(
         props.column.align
       ),
+      'q-table-t-head-cell_dragging': props.draggedColumn !== null,
       'q-table-t-head-cell_sticked': stickyConfig.value.isSticked,
       'q-table-t-head-cell_sticked_first': stickyConfig.value.isFirstSticked,
       'q-table-t-head-cell_sticked_last': stickyConfig.value.isLastSticked,
@@ -95,17 +102,6 @@ export default defineComponent({
       'q-table-t-head-cell__content_ellipsis': !currentSlot.value
     }));
 
-    const sortArrowClasses = computed<Record<string, boolean>>(() => {
-      const isDirectionAsc = props.sortBy?.direction === 'ascending';
-      const isArrowUpShown = isCurrentSorting.value && isDirectionAsc;
-
-      return {
-        'q-table-t-head-cell__sort-arrow': true,
-        'q-icon-arrow-up': isArrowUpShown,
-        'q-icon-arrow-down': !isArrowUpShown
-      };
-    });
-
     const content = computed<VNode[] | string | number | null>(() => {
       if (!currentSlot.value) return props.column.value;
 
@@ -115,6 +111,17 @@ export default defineComponent({
         index: props.columnIndex,
         value: props.column.value
       });
+    });
+
+    const sortArrowElClasses = computed<Record<string, boolean>>(() => {
+      const isDirectionAsc = props.sortBy?.direction === 'ascending';
+      const isArrowUpShown = isCurrentSorting.value && isDirectionAsc;
+
+      return {
+        'q-table-t-head-cell__sort-arrow': true,
+        'q-icon-arrow-up': isArrowUpShown,
+        'q-icon-arrow-down': !isArrowUpShown
+      };
     });
 
     const handleSortArrowClick = (): void => {
@@ -141,19 +148,118 @@ export default defineComponent({
       });
     };
 
+    const sortArrowEl = computed<VNode | null>(() => {
+      if (!isSortable.value) return null;
+
+      return h('button', {
+        type: 'button',
+        class: sortArrowElClasses.value,
+        onClick: handleSortArrowClick
+      });
+    });
+
+    const startCursorPosition = ref<number>(0);
+    const dummyOffset = ref<number>(0);
+
+    const handleMouseMove = (e: MouseEvent): void => {
+      dummyOffset.value = e.clientX - startCursorPosition.value;
+    };
+
+    const endDragging = (): void => {
+      ctx.emit('drop');
+      document.removeEventListener('mouseup', endDragging);
+      document.removeEventListener('mousemove', handleMouseMove);
+    };
+
+    const handleDragTriggerMouseDown = (e: MouseEvent): void => {
+      e.preventDefault();
+      startCursorPosition.value = e.clientX;
+      dummyOffset.value = 0;
+
+      ctx.emit('drag', props.column);
+      document.addEventListener('mouseup', endDragging);
+      document.addEventListener('mousemove', handleMouseMove);
+    };
+
+    const dragTriggerEl = computed<VNode | null>(() => {
+      if (!props.column.group.draggable || props.column.draggable === false)
+        return null;
+
+      return h('div', {
+        class: 'q-table-t-head-cell__drag-element q-icon-drag-linear',
+        onMousedown: handleDragTriggerMouseDown
+      });
+    });
+
+    const dummyEl = computed<VNode | null>(() => {
+      if (props.draggedColumn?.key !== props.column.key) return null;
+
+      const style = {
+        height: `${qTableT.tableHeight.value}px`,
+        transform: `translateX(${dummyOffset.value}px)`
+      };
+
+      return h('div', {
+        style,
+        class: 'q-table-t-head-cell__dummy'
+      });
+    });
+
+    const handleDropZoneElementMouseUp = (position: 'left' | 'right'): void => {
+      ctx.emit('drop', position, props.column.key);
+    };
+
+    const dropZoneEls = computed<VNode[] | null>(() => {
+      if (props.draggedColumn === null) return null;
+
+      const style = { height: `${qTableT.tableHeight.value}px` };
+
+      if (
+        !props.column.group.draggable ||
+        props.column.draggable === false ||
+        props.draggedColumn.group.key !== props.column.group.key
+      )
+        return [
+          h('div', {
+            style,
+            class: {
+              'q-table-t-head-cell__drop-zone': true,
+              'q-table-t-head-cell__drop-zone_full': true
+            }
+          })
+        ];
+
+      return [
+        h('div', {
+          style,
+          class: {
+            'q-table-t-head-cell__drop-zone': true,
+            'q-table-t-head-cell__drop-zone_left': true
+          },
+          onMouseup: () => handleDropZoneElementMouseUp('left')
+        }),
+        h('div', {
+          style,
+          class: {
+            'q-table-t-head-cell__drop-zone': true,
+            'q-table-t-head-cell__drop-zone_right': true
+          },
+          onMouseup: () => handleDropZoneElementMouseUp('right')
+        })
+      ];
+    });
+
     return (): VNode =>
       h(
         'th',
         { ref: root, class: cellClasses.value, style: cellStyles.value },
         [
+          dummyEl.value,
+          dropZoneEls.value,
           h('div', { class: 'q-table-t-head-cell__container' }, [
             h('div', { class: contentClasses.value }, [content.value]),
-            isSortable.value &&
-              h('button', {
-                type: 'button',
-                class: sortArrowClasses.value,
-                onClick: handleSortArrowClick
-              })
+            sortArrowEl.value,
+            dragTriggerEl.value
           ])
         ]
       );

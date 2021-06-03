@@ -21,31 +21,32 @@ const resizeHandler = function (entries: ResizeObserverEntry[]): void {
 
 /* istanbul ignore next */
 export const addResizeListener = function (
-  element: Nullable<ResizableElement>,
+  element: Nullable<HTMLElement | undefined>,
   fn: (...args: unknown[]) => unknown
 ): void {
-  if (!element) return;
-  if (!element.__resizeListeners__) {
+  const el = element as Nullable<ResizableElement | undefined>;
+
+  if (!el) return;
+  if (!el.__resizeListeners__) {
     // eslint-disable-next-line no-param-reassign
-    element.__resizeListeners__ = [];
+    el.__resizeListeners__ = [];
     // eslint-disable-next-line no-param-reassign
-    element.__ro__ = new ResizeObserver(resizeHandler);
-    element.__ro__.observe(element);
+    el.__ro__ = new ResizeObserver(resizeHandler);
+    el.__ro__.observe(el);
   }
-  element.__resizeListeners__.push(fn);
+  el.__resizeListeners__.push(fn);
 };
 
 /* istanbul ignore next */
 export const removeResizeListener = function (
-  element: Nullable<ResizableElement>,
+  element: Nullable<HTMLElement | undefined>,
   fn: (...args: unknown[]) => unknown
 ): void {
-  if (!element || !element.__resizeListeners__) return;
-  element.__resizeListeners__.splice(
-    element.__resizeListeners__.indexOf(fn),
-    1
-  );
-  if (!element.__resizeListeners__.length) {
-    element.__ro__.disconnect();
+  const el = element as Nullable<ResizableElement | undefined>;
+
+  if (!el || !el.__resizeListeners__) return;
+  el.__resizeListeners__.splice(el.__resizeListeners__.indexOf(fn), 1);
+  if (!el.__resizeListeners__.length) {
+    el.__ro__.disconnect();
   }
 };

@@ -16,13 +16,16 @@
       :column="column"
       :column-index="index"
       :sort-by="sortBy"
+      :dragged-column="draggedColumn"
+      @drag="handleColumnDrag"
+      @drop="handleColumnDrop"
     />
   </tr>
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, inject } from 'vue';
-import { isEmpty } from 'lodash-es';
+import { defineComponent, ref, computed, inject } from 'vue';
+import { isEmpty, cloneDeep } from 'lodash-es';
 
 import { TOTAL_CHECKED_INDEX } from '../config';
 import QTableTHeadCell from './QTableTHeadCell.vue';
@@ -95,14 +98,71 @@ export default defineComponent({
       qTable.updateCheckedRows(checkedRows);
     };
 
+    const draggedColumn = ref<ExtendedColumn | null>(null);
+
+    const handleColumnDrag = (column: ExtendedColumn): void => {
+      draggedColumn.value = column;
+    };
+
+    const handleColumnDrop = (
+      position?: 'left' | 'right',
+      targetColumnKey?: string
+    ): void => {
+      if (!position || !targetColumnKey) {
+        draggedColumn.value = null;
+        return;
+      }
+
+      const groupKey = draggedColumn.value?.group.key;
+      const columnKey = draggedColumn.value?.key;
+
+      const groups = cloneDeep(qTable.groupsOfColumns.value);
+      const currentGroup = groups.find(({ key }) => key === groupKey);
+
+      if (!currentGroup) {
+        draggedColumn.value = null;
+        return;
+      }
+
+      const oldPositionIndex = currentGroup.columns.findIndex(
+        ({ key }) => key === columnKey
+      );
+      const newPositionIndex = currentGroup.columns.findIndex(
+        ({ key }) => key === targetColumnKey
+      );
+
+      if (
+        oldPositionIndex === newPositionIndex ||
+        (position === 'left' && oldPositionIndex + 1 === newPositionIndex) ||
+        (position === 'right' && oldPositionIndex - 1 === newPositionIndex)
+      ) {
+        draggedColumn.value = null;
+        return;
+      }
+
+      if (currentGroup?.columns) {
+        currentGroup.columns.splice(
+          newPositionIndex,
+          0,
+          currentGroup.columns.splice(oldPositionIndex, 1)[0]
+        );
+      }
+
+      qTable.updateGroupsOfColumns(groups);
+      draggedColumn.value = null;
+    };
+
     return {
-      isSelectable: qTableContainer.isSelectable ?? null,
+      isSelectable: qTableContainer.isSelectable,
       isCheckable,
       isChecked,
       isIndeterminate,
       sortBy,
       columnList,
-      handleCheckboxChange
+      draggedColumn,
+      handleCheckboxChange,
+      handleColumnDrag,
+      handleColumnDrop
     };
   }
 });

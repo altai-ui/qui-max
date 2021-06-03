@@ -4,7 +4,7 @@
     :disabled="!teleportTo"
   >
     <transition
-      name="q-drawer-fade"
+      name="q-fade"
       @after-enter="afterEnter"
       @after-leave="afterLeave"
     >
@@ -18,7 +18,7 @@
         <div
           ref="drawer"
           tabindex="-1"
-          class="q-drawer-wrapper"
+          class="q-drawer__wrapper"
           :style="drawerStyle"
           :class="[drawerClass, customClass]"
           @keyup.esc="closeDrawer"
@@ -172,7 +172,7 @@ export default defineComponent({
     );
 
     const drawerClass = computed<string>(
-      () => `q-drawer-wrapper_${props.position}`
+      () => `q-drawer__wrapper_${props.position}`
     );
 
     const handleDocumentFocus = (event: FocusEvent): void => {

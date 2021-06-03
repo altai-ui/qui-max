@@ -17,30 +17,35 @@
       :to="teleportTo || 'body'"
       :disabled="!teleportTo"
     >
-      <div
-        v-show="isContextMenuShown"
-        ref="contextMenu"
-        class="q-context-menu"
-        :style="{ zIndex }"
+      <transition
+        name="q-fade"
+        @after-leave="afterLeave"
       >
-        <button
-          v-for="(item, index) in menuItems"
-          :key="index"
-          :ref="setItemRef"
-          type="button"
-          tabindex="-1"
-          class="q-context-menu__item"
-          :class="{ 'q-context-menu__item_with-icon': item.icon }"
-          @click="handleItemClick(item.action)"
+        <div
+          v-show="isContextMenuShown"
+          ref="contextMenu"
+          class="q-context-menu"
+          :style="{ zIndex }"
         >
-          <span
-            v-if="item.icon"
-            class="q-context-menu__icon"
-            :class="item.icon"
-          />
-          {{ item.name }}
-        </button>
-      </div>
+          <button
+            v-for="(item, index) in menuItems"
+            :key="index"
+            :ref="setItemRef"
+            type="button"
+            tabindex="-1"
+            class="q-context-menu__item"
+            :class="{ 'q-context-menu__item_with-icon': item.icon }"
+            @click="handleItemClick(item.action)"
+          >
+            <span
+              v-if="item.icon"
+              class="q-context-menu__icon"
+              :class="item.icon"
+            />
+            {{ item.name }}
+          </button>
+        </div>
+      </transition>
     </teleport>
   </div>
 </template>
@@ -57,6 +62,7 @@ import {
 } from 'vue';
 import {
   createPopper as createPopperJs,
+  Instance,
   Options,
   Placement
 } from '@popperjs/core';
@@ -103,6 +109,7 @@ export default defineComponent({
     const contextMenu = ref<HTMLElement | null>(null);
     const isContextMenuShown = ref<boolean>(false);
     const zIndex = ref<number>(DEFAULT_Z_INDEX);
+    const popperJS = ref<Instance | null>(null);
 
     const placement = computed<Placement>(() =>
       props.position === 'right' ? 'bottom-start' : 'bottom-end'
@@ -131,7 +138,11 @@ export default defineComponent({
         ]
       };
 
-      createPopperJs(reference.value, contextMenu.value, options);
+      popperJS.value = createPopperJs(
+        reference.value,
+        contextMenu.value,
+        options
+      );
 
       zIndex.value = getConfig('nextZIndex') ?? DEFAULT_Z_INDEX;
     };
@@ -139,6 +150,11 @@ export default defineComponent({
     const closePopper = (): void => {
       isContextMenuShown.value = false;
       menuItemElements = [];
+    };
+
+    const afterLeave = (): void => {
+      popperJS.value?.destroy();
+      popperJS.value = null;
     };
 
     const handleTriggerClick = (): void => {
@@ -236,7 +252,8 @@ export default defineComponent({
       isContextMenuShown,
       handleTriggerClick,
       handleItemClick,
-      setItemRef
+      setItemRef,
+      afterLeave
     };
   }
 });

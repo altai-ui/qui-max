@@ -124,7 +124,7 @@ export default defineComponent({
      */
     transition: {
       type: String,
-      default: 'fade-in-linear'
+      default: 'q-fade'
     },
     /**
      * delay before appearing, in milliseconds

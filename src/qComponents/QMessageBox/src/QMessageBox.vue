@@ -4,7 +4,7 @@
     :disabled="!teleportTo"
   >
     <transition
-      name="q-msgbox-fade"
+      name="q-fade-up"
       @after-leave="handleAfterLeave"
     >
       <div

@@ -4,15 +4,15 @@
   position: fixed;
   top: 0;
   right: 16px;
-  transition: all 0.8s ease;
-}
+  transition: all 0.8s var(--transition-spline-base);
 
-.q-notification-box-enter-from,
-.q-notification-box-leave-to {
-  opacity: 0;
-  transform: translateX(100%);
-}
+  &-enter-from,
+  &-leave-to {
+    opacity: 0;
+    transform: translateX(100%);
+  }
 
-.q-notification-box-leave-active {
-  position: absolute;
+  &-leave-active {
+    position: absolute;
+  }
 }

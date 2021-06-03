@@ -4,7 +4,7 @@
     :disabled="!teleportTo"
   >
     <transition
-      name="q-dialog-fade"
+      name="q-fade-up"
       @after-enter="afterEnter"
       @after-leave="afterLeave"
     >

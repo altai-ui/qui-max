@@ -1,56 +1,54 @@
 <template>
-  <transition name="fade">
-    <div
-      v-show="isShown"
-      ref="dropdown"
-      class="q-picker-dropdown"
-      tabindex="-1"
-    >
-      <div class="q-picker-dropdown__base">
-        <q-color-svpanel
-          ref="refSv"
-          v-model:saturation="saturation"
-          v-model:value="value"
-          :hue="hue"
-        />
-
-        <q-color-hue-slider
-          ref="refHue"
-          v-model:hue="hue"
-        />
-      </div>
-
-      <q-color-alpha-slider
-        v-if="alphaShown"
-        ref="refAlpha"
-        v-model:alpha="alpha"
-        :color="rgbString"
+  <div
+    v-show="isShown"
+    ref="dropdown"
+    class="q-picker-dropdown"
+    tabindex="-1"
+  >
+    <div class="q-picker-dropdown__base">
+      <q-color-svpanel
+        ref="refSv"
+        v-model:saturation="saturation"
+        v-model:value="value"
+        :hue="hue"
       />
 
-      <div class="q-picker-dropdown__footer">
-        <div class="q-picker-dropdown__input">
-          <q-input
-            v-model="tempColor"
-            :validate-event="false"
-            @keyup.enter="updateHSVA(tempColor)"
-            @blur="updateHSVA(tempColor)"
-          />
-        </div>
-
-        <q-button
-          v-if="isClearBtnShown"
-          theme="link"
-          @click="handleClearBtnClick"
-        >
-          {{ t('QColorPicker.clear') }}
-        </q-button>
-
-        <q-button @click="handleConfirmBtnClick">
-          {{ t('QColorPicker.confirm') }}
-        </q-button>
-      </div>
+      <q-color-hue-slider
+        ref="refHue"
+        v-model:hue="hue"
+      />
     </div>
-  </transition>
+
+    <q-color-alpha-slider
+      v-if="alphaShown"
+      ref="refAlpha"
+      v-model:alpha="alpha"
+      :color="rgbString"
+    />
+
+    <div class="q-picker-dropdown__footer">
+      <div class="q-picker-dropdown__input">
+        <q-input
+          v-model="tempColor"
+          :validate-event="false"
+          @keyup.enter="updateHSVA(tempColor)"
+          @blur="updateHSVA(tempColor)"
+        />
+      </div>
+
+      <q-button
+        v-if="isClearBtnShown"
+        theme="link"
+        @click="handleClearBtnClick"
+      >
+        {{ t('QColorPicker.clear') }}
+      </q-button>
+
+      <q-button @click="handleConfirmBtnClick">
+        {{ t('QColorPicker.confirm') }}
+      </q-button>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">

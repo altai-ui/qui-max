@@ -4,15 +4,23 @@
     class="q-cascader-dropdown"
     :style="{ zIndex }"
   >
-    <q-cascader-column
-      v-for="(column, columnIndex) in columnList"
-      :key="`${uniqueId}-col-${columnIndex}`"
-      role="menu"
-      :aria-labelledby="uniqueId"
-      :column-index="columnIndex"
-      :column="column"
-      @expand="expandRow"
-    />
+    <transition-group
+      ref="dropdown"
+      class="q-cascader-dropdown__wrapper"
+      :style="{ zIndex }"
+      name="q-cascader-dropdown__wrapper_animation"
+      tag="div"
+    >
+      <q-cascader-column
+        v-for="(column, columnIndex) in columnList"
+        :key="`${uniqueId}-col-${columnIndex}`"
+        role="menu"
+        :aria-labelledby="uniqueId"
+        :column-index="columnIndex"
+        :column="column"
+        @expand="expandRow"
+      />
+    </transition-group>
   </div>
 </template>
 
@@ -24,10 +32,9 @@ import {
   ref,
   computed,
   onMounted,
-  onUnmounted,
-  nextTick
+  onUnmounted
 } from 'vue';
-import { createPopper, Instance } from '@popperjs/core';
+import { createPopper } from '@popperjs/core';
 
 import { getConfig } from '@/qComponents/config';
 import { CLOSE_EVENT } from '@/qComponents/constants/events';
@@ -61,7 +68,6 @@ export default defineComponent({
 
     const zIndex = ref<number>(getConfig('nextZIndex') ?? DEFAULT_Z_INDEX);
     const dropdown = ref<HTMLElement | null>(null);
-    const popperJS = ref<Instance | null>(null);
 
     const expandedRows = ref<number[]>([]);
 
@@ -105,7 +111,7 @@ export default defineComponent({
     const createPopperJs = (): void => {
       if (!qCascader.popoverReference.value || !dropdown.value) return;
 
-      popperJS.value = createPopper(
+      qCascader.popperJS.value = createPopper(
         qCascader.popoverReference.value.$el,
         dropdown.value,
         {
@@ -113,16 +119,6 @@ export default defineComponent({
           modifiers: [{ name: 'offset', options: { offset: [0, 8] } }]
         }
       );
-    };
-
-    /**
-     * @public
-     */
-    const updatePopperJs = async (): Promise<void> => {
-      if (!popperJS.value) return;
-
-      await nextTick();
-      popperJS.value.update();
     };
 
     onMounted(() => {
@@ -133,8 +129,6 @@ export default defineComponent({
     });
 
     onUnmounted(() => {
-      popperJS.value?.destroy();
-
       document.removeEventListener('keyup', closeDropdown, true);
       document.removeEventListener('click', closeDropdown, true);
     });
@@ -145,7 +139,6 @@ export default defineComponent({
     });
 
     return {
-      updatePopperJs,
       uniqueId: qCascader.uniqueId,
       dropdown,
       zIndex,

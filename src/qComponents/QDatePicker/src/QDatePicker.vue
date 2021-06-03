@@ -44,7 +44,6 @@
         :placeholder="startPlaceholder || t('QDatePicker.startPlaceholder')"
         :value="displayValue && displayValue[0]"
         :disabled="isPickerDisabled"
-        :name="name && name[0]"
         readonly
         tabindex="-1"
       />
@@ -56,7 +55,6 @@
         :placeholder="endPlaceholder || t('QDatePicker.endPlaceholder')"
         :value="displayValue && displayValue[1]"
         :disabled="isPickerDisabled"
-        :name="name && name[1]"
         class="q-range-input"
         readonly
         tabindex="-1"

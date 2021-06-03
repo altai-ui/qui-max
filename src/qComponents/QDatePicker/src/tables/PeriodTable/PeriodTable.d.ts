@@ -1,5 +1,6 @@
 import type { DebouncedFunc } from 'lodash-es';
 import type { ComputedRef } from 'vue';
+import type { TableProps } from '../../Common';
 
 interface PeriodCellModel {
   type: string;
@@ -13,6 +14,10 @@ interface PeriodTableState {
   tableRows: PeriodCellModel[][];
 }
 
+interface PeriodTableProps extends TableProps {
+  type?: string;
+}
+
 interface PeriodTableInstance {
   state: PeriodTableState;
   isMonthTable: ComputedRef<boolean>;
@@ -23,4 +28,9 @@ interface PeriodTableInstance {
   handleMouseMove: DebouncedFunc<(cell: PeriodCellModel) => void>;
 }
 
-export { PeriodCellModel, PeriodTableInstance, PeriodTableState };
+export {
+  PeriodCellModel,
+  PeriodTableInstance,
+  PeriodTableState,
+  PeriodTableProps
+};

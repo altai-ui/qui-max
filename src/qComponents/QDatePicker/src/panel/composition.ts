@@ -1,4 +1,3 @@
-import { getConfig } from '@/qComponents/config';
 import {
   addYears,
   endOfDay,
@@ -6,9 +5,11 @@ import {
   startOfDecade,
   subYears
 } from 'date-fns';
+import { getConfig } from '@/qComponents/config';
 import { isDate } from 'lodash-es';
 import { RangePickValue, RangeState } from '../Common';
 import {
+  CELLS_COUNT_IN_YEAR_RANGE,
   LEFT_PERIOD_PANEL_START_INDEX,
   PERIOD_CELLS_IN_ROW_COUNT
 } from './constants';
@@ -20,24 +21,17 @@ const leftYearComposable = (leftDate: Date): number => {
   return new Date().getFullYear();
 };
 
-const leftMonthComposable = (leftDate: Date): number => {
-  if (isDate(leftDate)) {
-    return leftDate.getMonth();
-  }
-  return new Date().getMonth();
-};
-
-const rightMonthComposable = (rightDate: Date): number => {
+const getActualMonth = (rightDate: Date, correction?: number): number => {
   if (isDate(rightDate)) {
     return rightDate.getMonth();
   }
-  return new Date().getMonth() + 1;
+  return new Date().getMonth() + (correction ?? 0);
 };
 
-const rightLabelComposable = (rightDate: Date, type: string): string => {
+const getLabelFromDate = (date: Date, type: string): string => {
   if (type === 'yearrange') {
-    return `${startOfDecade(rightDate).getFullYear()} - ${endOfDecade(
-      rightDate
+    return `${startOfDecade(date).getFullYear()} - ${endOfDecade(
+      date
     ).getFullYear()}`;
   }
 
@@ -45,20 +39,7 @@ const rightLabelComposable = (rightDate: Date, type: string): string => {
     month: 'short'
   });
 
-  return `${formatter.format(rightDate)} ${rightDate.getFullYear()}`;
-};
-
-const leftLabelComposable = (leftDate: Date, type: string): string => {
-  if (type === 'yearrange') {
-    return `${startOfDecade(leftDate).getFullYear()} - ${endOfDecade(
-      leftDate
-    ).getFullYear()}`;
-  }
-  const formatter = new Intl.DateTimeFormat(getConfig('locale'), {
-    month: 'short'
-  });
-
-  return `${formatter.format(leftDate)} ${leftDate.getFullYear()}`;
+  return `${formatter.format(date)} ${date.getFullYear()}`;
 };
 
 const useLeftPrevYearClick = (leftDate: Date): Date => subYears(leftDate, 1);
@@ -70,8 +51,6 @@ const isValidValue = (value: Nullable<Date>[]): boolean => {
   return Boolean(
     Array.isArray(value) &&
       value &&
-      value[0] &&
-      value[1] &&
       value[0] instanceof Date &&
       value[1] instanceof Date &&
       value[0].getTime() <= value[1].getTime()
@@ -86,7 +65,7 @@ const getPeriodNextNodeIndex = (
   let currentNodeIndex: Nullable<number> = null;
   let nextNodeIndex: Nullable<number> = null;
   const cellsCountEachTable = cells.length / 2;
-  const cellsGap = cellsCountEachTable === 20 ? 2 : 0;
+  const cellsGap = cellsCountEachTable === CELLS_COUNT_IN_YEAR_RANGE ? 2 : 0;
   Array.from(cells).some((element, index) => {
     if (document.activeElement === element) {
       currentNodeIndex = index;
@@ -146,29 +125,17 @@ const getRangeChangedState = (
   minDate: Nullable<Date>;
   rangeState: RangeState;
 } => {
-  const newState = {
-    maxDate: newValue.maxDate,
+  return {
+    maxDate: newValue.maxDate ? endOfDay(newValue.maxDate) : newValue.maxDate,
     minDate: newValue.minDate,
-    rangeState: currentRangeState
+    rangeState: newValue.rangeState ? newValue.rangeState : currentRangeState
   };
-
-  if (newValue.maxDate) {
-    newState.maxDate = endOfDay(newValue.maxDate);
-  }
-
-  if (newValue.rangeState) {
-    newState.rangeState = newValue.rangeState;
-  }
-
-  return newState;
 };
 
 export {
   leftYearComposable,
-  leftMonthComposable,
-  rightMonthComposable,
-  rightLabelComposable,
-  leftLabelComposable,
+  getActualMonth,
+  getLabelFromDate,
   useLeftPrevYearClick,
   useRightNextYearClick,
   useLeftNextYearClick,

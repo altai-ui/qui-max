@@ -101,14 +101,13 @@ import {
   defineComponent
 } from 'vue';
 import { isNil } from 'lodash-es';
-import PeriodTable from '../../tables/PeriodTable/PeriodTable';
+import PeriodTable from '../../tables/PeriodTable/PeriodTable.vue';
 import {
   leftYearComposable,
-  leftLabelComposable,
-  rightLabelComposable,
   isValidValue,
   getRangeChangedState,
-  getPeriodNextNodeIndex
+  getPeriodNextNodeIndex,
+  getLabelFromDate
 } from '../composition';
 import type {
   YearRangePanelInstance,
@@ -118,11 +117,10 @@ import type {
 import type { QDatePickerProvider } from '../../QDatePicker';
 import type { DatePanelRangePropModelValue } from '../DateRange/DateRange';
 import type { RangePickValue, RangeState } from '../../Common';
-import { PERIOD_CELLS_IN_ROW_COUNT } from '../constants';
-
-const YEARS_IN_DECADE = 10;
+import { PERIOD_CELLS_IN_ROW_COUNT, YEARS_IN_DECADE } from '../constants';
 
 export default defineComponent({
+  name: 'QDatePickerYearRange',
   components: { PeriodTable },
   props: {
     modelValue: {
@@ -170,10 +168,10 @@ export default defineComponent({
     });
     const leftYear = computed(() => leftYearComposable(state.leftDate));
     const leftLabel = computed(() =>
-      leftLabelComposable(state.leftDate, picker.type.value)
+      getLabelFromDate(state.leftDate, picker.type.value)
     );
     const rightLabel = computed(() =>
-      rightLabelComposable(state.rightDate, picker.type.value)
+      getLabelFromDate(state.rightDate, picker.type.value)
     );
 
     const enableYearArrow = computed(
@@ -294,7 +292,7 @@ export default defineComponent({
     watch(
       () => props.modelValue,
       newVal => {
-        if (!newVal || !newVal.length) {
+        if (!newVal?.length) {
           handleClear();
         } else {
           state.minDate = newVal[0];

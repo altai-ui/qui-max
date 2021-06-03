@@ -1,7 +1,7 @@
-import { ComputedRef, Ref } from 'vue';
-import { RangePickValue, RangeState } from '../../Common';
-import { QDatePickerPropShortcuts } from '../../QDatePicker';
-import { DatePanelRangePropModelValue } from '../DateRange/DateRange';
+import type { ComputedRef, Ref } from 'vue';
+import type { RangePickValue, RangeState } from '../../Common';
+import type { QDatePickerPropShortcuts } from '../../QDatePicker';
+import type { DatePanelRangePropModelValue } from '../DateRange/DateRange';
 
 interface YearRangePanelProps {
   modelValue: DatePanelRangePropModelValue;
@@ -21,9 +21,9 @@ interface YearRangeState {
 }
 
 interface YearRangePanelInstance {
-  root: Ref<HTMLElement | null>;
-  leftPanel: Ref<HTMLElement | null>;
-  rightPanel: Ref<HTMLElement | null>;
+  root: Ref<Nullable<HTMLElement>>;
+  leftPanel: Ref<Nullable<HTMLElement>>;
+  rightPanel: Ref<Nullable<HTMLElement>>;
   state: YearRangeState;
   rightYear: ComputedRef<number>;
   leftYear: ComputedRef<number>;

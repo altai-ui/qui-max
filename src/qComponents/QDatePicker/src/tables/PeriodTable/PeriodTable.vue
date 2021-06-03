@@ -39,34 +39,43 @@ import {
   startOfDecade
 } from 'date-fns';
 import { reactive, computed, PropType, inject, defineComponent } from 'vue';
-import { getConfig } from '@/qComponents/config';
 import { throttle } from 'lodash-es';
+import { getConfig } from '@/qComponents/config';
+import { notNull } from '@/qComponents/helpers';
 import {
   formatToLocalReadableString,
   isDateInRangeInterval,
   checkDisabled
 } from '../../helpers';
-import type { RangeState, TableProps } from '../../Common';
+import type { RangeState } from '../../Common';
 import type {
   PeriodCellModel,
   PeriodTableInstance,
+  PeriodTableProps,
   PeriodTableState
 } from './PeriodTable';
-import { QDatePickerProvider } from '../../QDatePicker';
+import type { QDatePickerProvider } from '../../QDatePicker';
 
 export default defineComponent({
+  name: 'QDatePickerPeriodTable',
   props: {
     value: { type: Date, default: null },
     minDate: { type: Date, default: null },
     maxDate: { type: Date, default: null },
-    type: { type: String, default: 'month' },
+    type: {
+      type: String,
+      default: 'month',
+      validator: notNull
+    },
     year: {
       type: Number,
-      default: new Date().getFullYear()
+      default: new Date().getFullYear(),
+      validator: notNull
     },
     month: {
       type: Number,
-      default: new Date().getMonth()
+      default: new Date().getMonth(),
+      validator: notNull
     },
     rangeState: {
       type: Object as PropType<RangeState>,
@@ -76,13 +85,14 @@ export default defineComponent({
           pickedDate: null,
           selecting: false
         };
-      }
+      },
+      validator: notNull
     }
   },
 
   emits: ['pick', 'rangeSelecting'],
 
-  setup(props: TableProps, ctx): PeriodTableInstance {
+  setup(props: PeriodTableProps, ctx): PeriodTableInstance {
     const state = reactive<PeriodTableState>({
       tableRows: [[], [], []]
     });
@@ -92,13 +102,9 @@ export default defineComponent({
       {} as QDatePickerProvider
     );
 
-    const startYear = computed<Date>(() => {
-      if (props.year) {
-        return startOfDecade(new Date(props.year, 0, 1));
-      }
-
-      return startOfDecade(new Date());
-    });
+    const startYear = computed<Date>(() =>
+      startOfDecade(props.year ? new Date(props.year, 0, 1) : new Date())
+    );
 
     const isMonthTable = computed(() => props.type === 'month');
     const isSameFn = computed(() =>

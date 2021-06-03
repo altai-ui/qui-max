@@ -9,7 +9,7 @@
         <th
           v-for="day in days"
           :key="day"
-          class="q-date-table_days"
+          class="q-date-table__days"
         >
           {{ day }}
         </th>
@@ -47,13 +47,10 @@ import {
   startOfMonth,
   endOfMonth,
   isSameDay,
-  isBefore,
-  isAfter,
   isWithinInterval,
   startOfWeek,
   endOfWeek,
   isToday,
-  isDate,
   Locale
 } from 'date-fns';
 import { throttle } from 'lodash-es';
@@ -63,43 +60,18 @@ import { getConfig } from '@/qComponents/config';
 import { isDateInRangeInterval } from '../../helpers';
 import type { DateTableInterface, DateTableState } from './DateTable';
 import type { DateCellModel, RangeState, TableProps } from '../../Common';
+import type { QDatePickerProvider } from '../../QDatePicker';
+import checkDisabled from './checkDisabled';
 import {
-  QDatePickerPropDisabledValues,
-  QDatePickerProvider
-} from '../../QDatePicker';
-import { DAYS_IN_WEEK } from '../../panel/constants';
+  DAYS_IN_WEEK,
+  LAST_MONTH_IN_YEAR_INDEX,
+  WEEK_FRONTIER
+} from '../../panel/constants';
 
 const locales: Record<string, Locale> = { ru, en };
 
-const checkDisabled = (
-  cellDate: Date,
-  disabledValues: QDatePickerPropDisabledValues
-): boolean => {
-  if (!disabledValues) return false;
-  const disabled = [];
-  if (Array.isArray(disabledValues.ranges)) {
-    disabledValues.ranges.forEach(({ start, end }) => {
-      disabled.push(
-        isWithinInterval(cellDate, {
-          start,
-          end
-        })
-      );
-    });
-  }
-
-  if (isDate(disabledValues.to) && disabledValues.to) {
-    disabled.push(isBefore(cellDate, disabledValues.to));
-  }
-
-  if (isDate(disabledValues.from) && disabledValues.from) {
-    disabled.push(isAfter(cellDate, disabledValues.from));
-  }
-
-  return disabled.some(Boolean);
-};
-
 export default defineComponent({
+  name: 'QDatePickerDateTable',
   props: {
     year: {
       type: Number,
@@ -140,9 +112,11 @@ export default defineComponent({
       {} as QDatePickerProvider
     );
 
-    const offsetDay = computed(() => {
-      const week = picker.firstDayOfWeek.value;
-      return week > 3 ? DAYS_IN_WEEK - week : -week;
+    const offsetDay = computed<number>(() => {
+      const firstDayOfWeek = picker.firstDayOfWeek.value;
+      return firstDayOfWeek > WEEK_FRONTIER
+        ? DAYS_IN_WEEK - firstDayOfWeek
+        : -firstDayOfWeek;
     });
 
     const days = computed<string[]>(() => {
@@ -154,19 +128,22 @@ export default defineComponent({
       return [...DAYS_OF_WEEK, ...DAYS_OF_WEEK].slice(day, day + DAYS_IN_WEEK);
     });
 
-    const startMonthDate = computed(() =>
+    const startMonthDate = computed<Date>(() =>
       startOfMonth(new Date(props.year, props.month, 1))
     );
-    const endMonthDate = computed(() =>
+    const endMonthDate = computed<Date>(() =>
       endOfMonth(new Date(props.year, props.month, 1))
     );
 
-    const rows = computed(() => {
+    const rows = computed<DateCellModel[][]>(() => {
       const date = new Date(props.year, props.month, 1);
       const firstDay = startMonthDate.value.getDay();
       const dateCountOfMonth = getDaysInMonth(date);
       const dateCountOfLastMonth = getDaysInMonth(
-        new Date(props.year, props.month === 0 ? 11 : props.month - 1)
+        new Date(
+          props.year,
+          props.month === 0 ? LAST_MONTH_IN_YEAR_INDEX : props.month - 1
+        )
       );
 
       const offset = offsetDay.value;
@@ -284,8 +261,7 @@ export default defineComponent({
     };
 
     const mouseMove = (cell: DateCellModel): void => {
-      if (!props.rangeState.selecting) return;
-      if (cell.disabled) return;
+      if (!props.rangeState.selecting || cell.disabled) return;
       ctx.emit('rangeSelecting', {
         selecting: true,
         hoveredDate: cell.date,

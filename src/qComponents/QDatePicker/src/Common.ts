@@ -27,8 +27,7 @@ type TablePropSelectionMode = 'day' | 'week' | 'month' | 'year' | 'range';
 interface TableProps {
   year: number;
   month: number;
-  value: Date;
-  type: string;
+  value: Nullable<Date>;
   minDate: Nullable<Date>;
   maxDate: Nullable<Date>;
   rangeState: RangeState;

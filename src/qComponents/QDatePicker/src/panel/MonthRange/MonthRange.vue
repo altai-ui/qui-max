@@ -97,18 +97,17 @@ import {
   ref,
   defineComponent
 } from 'vue';
-import PeriodTable from '../../tables/PeriodTable/PeriodTable';
+import PeriodTable from '../../tables/PeriodTable/PeriodTable.vue';
 import {
   leftYearComposable,
-  leftMonthComposable,
-  rightMonthComposable,
   isValidValue,
   useLeftPrevYearClick,
   useLeftNextYearClick,
   useRightNextYearClick,
   useRightPrevYearClick,
   getRangeChangedState,
-  getPeriodNextNodeIndex
+  getPeriodNextNodeIndex,
+  getActualMonth
 } from '../composition';
 
 import { PERIOD_CELLS_IN_ROW_COUNT } from '../constants';
@@ -122,6 +121,7 @@ import type { QDatePickerProvider } from '../../QDatePicker';
 import type { RangePickValue, RangeState } from '../../Common';
 
 export default defineComponent({
+  name: 'QDatePickerMonthRange',
   components: { PeriodTable },
   props: {
     modelValue: {
@@ -181,8 +181,8 @@ export default defineComponent({
     });
 
     const leftYear = computed(() => leftYearComposable(state.leftDate));
-    const leftMonth = computed(() => leftMonthComposable(state.leftDate));
-    const rightMonth = computed(() => rightMonthComposable(state.rightDate));
+    const leftMonth = computed(() => getActualMonth(state.leftDate));
+    const rightMonth = computed(() => getActualMonth(state.rightDate), 1);
 
     const enableYearArrow = computed<boolean>(
       () => rightYear.value > leftYear.value + 1

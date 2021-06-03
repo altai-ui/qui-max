@@ -70,12 +70,13 @@
       :disabled="!teleportTo"
     >
       <transition
-        name="q-cascader__dropdown_animation"
+        name="q-fade"
         @after-leave="destroyPopper"
+        @before-enter="popperInit"
       >
         <component
           :is="panelComponent"
-          v-show="Boolean(state.popper)"
+          v-show="state.pickerVisible"
           ref="panel"
           v-model="transformedToDate"
           @pick="handlePickClick"
@@ -125,10 +126,10 @@ import {
   checkArrayValueIsValid,
   convertISOToDate
 } from './helpers';
-import DatePanel from './panel/Date/DatePanel';
-import DateRangePanel from './panel/DateRange/DateRange';
-import MonthRangePanel from './panel/MonthRange/MonthRange';
-import YearRangePanel from './panel/YearRange/YearRange';
+import DatePanel from './panel/Date/DatePanel.vue';
+import DateRangePanel from './panel/DateRange/DateRange.vue';
+import MonthRangePanel from './panel/MonthRange/MonthRange.vue';
+import YearRangePanel from './panel/YearRange/YearRange.vue';
 import type {
   QDatePickerPropDisabledValues,
   QDatePickerPropModelValue,
@@ -319,7 +320,8 @@ export default defineComponent({
       if (isString(props.modelValue)) return parseISO(props.modelValue);
       if (isValid(props.modelValue)) return props.modelValue;
 
-      return null; // not valid Date in model
+      // not valid Date in model
+      return null;
     });
 
     const isPickerDisabled = computed<boolean>(() =>
@@ -413,10 +415,10 @@ export default defineComponent({
           const isoDateOne =
             result[0] instanceof Date ? result[0].toISOString() : result[0];
           const isoDateTwo =
-            result[1] instanceof Date ? result[1]?.toISOString() : result[1];
+            result[1] instanceof Date ? result[1].toISOString() : result[1];
           result = [isoDateOne, isoDateTwo];
         } else {
-          result = result instanceof Date ? result?.toISOString() : result;
+          result = result instanceof Date ? result.toISOString() : result;
         }
       }
 
@@ -543,6 +545,12 @@ export default defineComponent({
             options: {
               fallbackPlacements: ['top', 'bottom']
             }
+          },
+          {
+            name: 'computeStyles',
+            options: {
+              adaptive: false // true by default
+            }
           }
         ]
       });
@@ -566,7 +574,7 @@ export default defineComponent({
       if (isPickerDisabled.value) return;
 
       state.pickerVisible = true;
-      ctx.emit('focus'); // this was second arg
+      ctx.emit('focus');
       if (!transformedToDate.value || Array.isArray(transformedToDate.value))
         return;
       const format = timepicker.value ? 'dd.MM.yyyy, HH:mm:ss' : 'dd.MM.yy';
@@ -631,10 +639,7 @@ export default defineComponent({
     watch(
       () => state.pickerVisible,
       val => {
-        if (val) {
-          popperInit();
-        } else {
-          destroyPopper();
+        if (!val) {
           state.userInput = null;
         }
       }
@@ -681,6 +686,7 @@ export default defineComponent({
       displayValue,
       iconClass,
       destroyPopper,
+      popperInit,
       handlePickClick,
       handleFocus,
       handleInput,

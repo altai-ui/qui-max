@@ -81,7 +81,7 @@
           :value="modelValue"
           :month="state.month"
           :year="state.year"
-          @pick="handleMonthPick"
+          @pick="handlePeriodPick"
         />
       </div>
     </div>
@@ -104,9 +104,8 @@ import {
   nextTick
 } from 'vue';
 import { getConfig } from '@/qComponents/config';
-import { getTimeModel } from '../../../../helpers/dateHelpers';
-import PeriodTable from '../../tables/PeriodTable/PeriodTable';
-import DateTable from '../../tables/DateTable/DateTable';
+import PeriodTable from '../../tables/PeriodTable/PeriodTable.vue';
+import DateTable from '../../tables/DateTable/DateTable.vue';
 
 import type {
   DatePanelPropModelValue,
@@ -123,7 +122,7 @@ import {
   PERIOD_CELLS_IN_ROW_COUNT,
   YEARS_IN_DECADE
 } from '../constants';
-import { QDatePickerProvider } from '../../QDatePicker';
+import type { QDatePickerProvider } from '../../QDatePicker';
 import { getPeriodNextNodeIndex } from '../composition';
 
 export default defineComponent({
@@ -176,7 +175,6 @@ export default defineComponent({
 
     const root = ref<HTMLElement | null>(null);
     const datePanel = ref<HTMLElement | null>(null);
-    const timePanel = ref<HTMLElement | null>(null);
 
     onMounted(() => {
       if (!root.value) return;
@@ -226,13 +224,6 @@ export default defineComponent({
       'q-picker-panel__content': true,
       'q-picker-panel__content_focused': state.panelInFocus === 'date'
     }));
-
-    const parsedTime = computed<null | Record<string, string>>(() => {
-      if (props.modelValue) {
-        return getTimeModel(props.modelValue);
-      }
-      return null;
-    });
 
     const currentMonth = computed<string>(() => {
       const formatter = new Intl.DateTimeFormat(getConfig('locale'), {
@@ -303,7 +294,7 @@ export default defineComponent({
       }
     };
 
-    const handleMonthPick = (
+    const handlePeriodPick = (
       month: number,
       year: number,
       type: string
@@ -328,25 +319,6 @@ export default defineComponent({
         } else {
           showDatePicker();
         }
-      }
-    };
-
-    const handleYearPick = (year: Date): void => {
-      if (picker.type.value === 'year') {
-        ctx.emit('pick', year);
-      } else if (props.modelValue instanceof Date) {
-        ctx.emit(
-          'pick',
-          new Date(
-            year.getFullYear(),
-            props.modelValue.getMonth(),
-            props.modelValue.getDate()
-          )
-        );
-        showDatePicker();
-      } else {
-        state.year = year.getFullYear();
-        showMonthPicker();
       }
     };
 
@@ -459,22 +431,19 @@ export default defineComponent({
       root,
       shortcuts: picker.shortcuts,
       datePanel,
-      timePanel,
       panelContentClasses,
-      parsedTime,
       currentMonth,
       yearLabel,
       isPeriodTableShown,
       showMonthPicker,
       showYearPicker,
       showDatePicker,
-      handleYearPick,
       handlePrevMonthClick,
       handleNextMonthClick,
       handlePrevYearClick,
       handleNextYearClick,
       navigateDropdown,
-      handleMonthPick,
+      handlePeriodPick,
       handleDatePick,
       handleShortcutClick,
       t

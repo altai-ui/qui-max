@@ -22,12 +22,11 @@ interface DatePanelProps {
 
 interface DatePanelInstance {
   state: DatePanelState;
-  root: Ref<HTMLElement | null>;
+  root: Ref<Nullable<HTMLElement>>;
   shortcuts: Ref<Nullable<QDatePickerPropShortcuts>>;
-  datePanel: Ref<HTMLElement | null>;
-  timePanel: Ref<HTMLElement | null>;
+  datePanel: Ref<Nullable<HTMLElement>>;
   panelContentClasses: ComputedRef<Record<string, boolean>>;
-  parsedTime: ComputedRef<Record<string, string> | null>;
+  isPeriodTableShown: ComputedRef<boolean>;
   currentMonth: ComputedRef<string>;
   yearLabel: ComputedRef<string | number>;
   showMonthPicker: () => void;
@@ -39,8 +38,7 @@ interface DatePanelInstance {
   handlePrevYearClick: () => void;
   handleNextYearClick: () => void;
   handleShortcutClick: (shortcut: Date) => void;
-  handleYearPick: (year: Date) => void;
-  handleMonthPick: (month: number, year: number) => void;
+  handlePeriodPick: (month: number, year: number, type: string) => void;
   handleDatePick: (value: DatePanelPropModelValue) => void;
   t: (key: Path, locale?: Locale) => TranslateResult;
 }

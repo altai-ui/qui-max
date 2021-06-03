@@ -10,7 +10,7 @@ export interface QCascaderColumnProps {
 }
 
 export interface QCascaderColumnInstance {
-  root: Ref<HTMLElement | null>;
+  root: Ref<Nullable<HTMLElement>>;
   rootClasses: ComputedRef<Record<string, boolean>>;
   scrollTo: Ref<Nullable<HTMLElement>>;
   uniqueId: string;

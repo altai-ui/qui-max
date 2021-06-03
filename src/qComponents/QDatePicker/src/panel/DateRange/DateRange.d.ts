@@ -23,9 +23,9 @@ interface DateRangePanelState {
 
 interface DateRangePanelInstance {
   state: DateRangePanelState;
-  root: Ref<HTMLElement | null>;
-  leftPanel: Ref<HTMLElement | null>;
-  rightPanel: Ref<HTMLElement | null>;
+  root: Ref<Nullable<HTMLElement>>;
+  leftPanel: Ref<Nullable<HTMLElement>>;
+  rightPanel: Ref<Nullable<HTMLElement>>;
   transformedValue: ComputedRef<Date[]>;
   btnDisabled: ComputedRef<boolean>;
   enableMonthArrow: ComputedRef<boolean>;

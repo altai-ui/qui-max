@@ -129,19 +129,17 @@ import {
   defineComponent
 } from 'vue';
 import {
-  leftMonthComposable,
+  getActualMonth,
   leftYearComposable,
   isValidValue,
-  rightMonthComposable,
-  leftLabelComposable,
-  rightLabelComposable,
   useLeftPrevYearClick,
   useRightNextYearClick,
   useRightPrevYearClick,
   useLeftNextYearClick,
-  getRangeChangedState
+  getRangeChangedState,
+  getLabelFromDate
 } from '../composition';
-import DateTable from '../../tables/DateTable/DateTable';
+import DateTable from '../../tables/DateTable/DateTable.vue';
 
 import type {
   DatePanelRangePropModelValue,
@@ -149,11 +147,13 @@ import type {
   DateRangePanelProps,
   DateRangePanelState
 } from './DateRange';
-import { QDatePickerProvider } from '../../QDatePicker';
-import { DATE_CELLS_COUNT, DATE_CELLS_IN_ROW_COUNT } from '../constants';
-import { RangePickValue, RangeState } from '../../Common';
-
-const MONTHS_COUNT = 12;
+import type { QDatePickerProvider } from '../../QDatePicker';
+import {
+  DATE_CELLS_COUNT,
+  DATE_CELLS_IN_ROW_COUNT,
+  MONTHS_COUNT
+} from '../constants';
+import type { RangePickValue, RangeState } from '../../Common';
 
 export default defineComponent({
   name: 'QDatePickerPanelDateRange',
@@ -209,18 +209,16 @@ export default defineComponent({
     });
 
     const leftLabel = computed<string>(() =>
-      leftLabelComposable(state.leftDate, picker.type.value)
+      getLabelFromDate(state.leftDate, picker.type.value)
     );
     const rightLabel = computed<string>(() =>
-      rightLabelComposable(state.rightDate, picker.type.value)
+      getLabelFromDate(state.rightDate, picker.type.value)
     );
     const leftYear = computed<number>(() => leftYearComposable(state.leftDate));
 
-    const leftMonth = computed<number>(() =>
-      leftMonthComposable(state.leftDate)
-    );
+    const leftMonth = computed<number>(() => getActualMonth(state.leftDate));
     const rightMonth = computed<number>(() =>
-      rightMonthComposable(state.rightDate)
+      getActualMonth(state.rightDate, 1)
     );
 
     const isLeftTimeDisabled = computed<boolean>(

@@ -12,4 +12,4 @@ export type {
   QScrollbarInstance,
   QScrollbarProvider
 } from './src/types';
-export default QScrollbar;
+export default QScrollbar as SFCWithInstall<App, typeof QScrollbar>;

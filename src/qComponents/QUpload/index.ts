@@ -8,4 +8,4 @@ QUpload.install = (app: App): void => {
 };
 
 export type { QUploadProps, QUploadFile, QUploadInstance } from './src/types';
-export default QUpload;
+export default QUpload as SFCWithInstall<App, typeof QUpload>;

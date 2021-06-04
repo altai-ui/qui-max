@@ -8,4 +8,4 @@ QPagination.install = (app: App): void => {
 };
 
 export type { QPaginationProps, QPaginationInstance } from './src/types';
-export default QPagination;
+export default QPagination as SFCWithInstall<App, typeof QPagination>;

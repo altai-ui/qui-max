@@ -8,4 +8,4 @@ QInput.install = (app: App): void => {
 };
 
 export type { QInputProps, QInputInstance } from './src/types';
-export default QInput;
+export default QInput as SFCWithInstall<App, typeof QInput>;

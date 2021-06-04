@@ -14,4 +14,4 @@ export type {
   QTablePropSortBy,
   QTableInstance
 } from './src/QTable';
-export default QTable;
+export default QTable as SFCWithInstall<App, typeof QTable>;

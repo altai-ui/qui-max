@@ -8,4 +8,4 @@ QDialog.install = (app: App): void => {
 };
 
 export type { QDialogProps, QDialogInstance } from './src/types';
-export default QDialog;
+export default QDialog as SFCWithInstall<App, typeof QDialog>;

@@ -8,4 +8,4 @@ QCol.install = (app: App): void => {
 };
 
 export type { QColProps, QColInstance } from './src/types';
-export default QCol;
+export default QCol as SFCWithInstall<App, typeof QCol>;

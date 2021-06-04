@@ -8,4 +8,4 @@ QPopover.install = (app: App): void => {
 };
 
 export type { QPopoverProps, QPopoveInstance } from './src/types';
-export default QPopover;
+export default QPopover as SFCWithInstall<App, typeof QPopover>;

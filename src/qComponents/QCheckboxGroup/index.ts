@@ -12,4 +12,4 @@ export type {
   QCheckboxGroupProvider,
   QCheckboxGroupInstance
 } from './src/types';
-export default QCheckboxGroup;
+export default QCheckboxGroup as SFCWithInstall<App, typeof QCheckboxGroup>;

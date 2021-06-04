@@ -8,4 +8,4 @@ QContextMenu.install = (app: App): void => {
 };
 
 export type { QContextMenuProps, QContextMenuInstance } from './src/types';
-export default QContextMenu;
+export default QContextMenu as SFCWithInstall<App, typeof QContextMenu>;

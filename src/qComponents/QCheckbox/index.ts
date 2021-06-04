@@ -8,4 +8,4 @@ QCheckbox.install = (app: App): void => {
 };
 
 export type { QCheckboxProps, QCheckboxInstance } from './src/types';
-export default QCheckbox;
+export default QCheckbox as SFCWithInstall<App, typeof QCheckbox>;

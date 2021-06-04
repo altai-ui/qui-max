@@ -8,4 +8,4 @@ QDrawer.install = (app: App): void => {
 };
 
 export type { QDrawerProps, QDrawerInstance } from './src/types';
-export default QDrawer;
+export default QDrawer as SFCWithInstall<App, typeof QDrawer>;

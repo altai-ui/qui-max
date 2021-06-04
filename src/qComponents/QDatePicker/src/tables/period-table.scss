@@ -1,0 +1,92 @@
+.q-period-table {
+  width: 100%;
+  padding: 10px 0 20px;
+  font-size: 12px;
+  table-layout: fixed;
+
+  &__cell-wrapper {
+    text-align: center;
+  }
+
+  &__cell {
+    position: relative;
+    display: block;
+    width: 40px;
+    height: 40px;
+    font-weight: var(--font-weight-base);
+    color: var(--color-primary-blue);
+    border: none;
+    border-radius: var(--border-radius-base);
+    box-shadow: var(--box-shadow-secondary);
+
+    &:hover:not([disabled]):not(.q-period-table__cell_in-range):not(.q-period-table__cell_current) {
+      color: var(--color-primary-black);
+      background-color: var(--color-tertiary-gray);
+    }
+
+    &[data-focus-visible-added] {
+      &:not(.q-period-table__cell_disabled) {
+        color: var(--color-tertiary-white);
+        background-color: var(--color-primary-blue);
+        box-shadow: var(--box-shadow-pressed);
+        transition: transform 0.2s;
+        transform: scale(1.1);
+      }
+    }
+
+    &_current:not(.q-period-table__cell_disabled) {
+      color: var(--color-tertiary-white);
+      background-color: var(--color-primary-blue);
+      box-shadow: var(--box-shadow-pressed);
+    }
+
+    &_today {
+      color: var(--color-primary);
+
+      &.q-period-table__cell_current {
+        color: var(--color-tertiary-white);
+      }
+
+      &::before {
+        position: absolute;
+        top: -5px;
+        left: 19px;
+        display: block;
+        width: 2px;
+        height: 2px;
+        content: '';
+        background-color: var(--color-primary);
+        border-radius: 50%;
+      }
+    }
+
+    &[disabled] {
+      color: rgba(var(--color-primary-black), 0.64);
+      cursor: not-allowed;
+      background-color: var(--color-tertiary-gray);
+      box-shadow: var(--box-shadow-pressed);
+      opacity: 1;
+    }
+
+    &_next-decade {
+      color: rgba(var(--color-rgb-gray), 0.32);
+
+      &.q-period-table__cell_in-range {
+        color: var(--color-primary-black);
+        background-color: var(--color-tertiary-gray);
+      }
+    }
+
+    &_in-range {
+      color: var(--color-tertiary-white);
+      background-color: var(--color-primary-blue);
+      box-shadow: var(--box-shadow-pressed);
+    }
+
+    &_current:not(.disabled) {
+      color: #fff;
+      background-color: var(--color-primary-blue);
+      box-shadow: var(--box-shadow-pressed);
+    }
+  }
+}

@@ -174,19 +174,22 @@ export default defineComponent({
       );
     };
 
-    const getCellClasses = (cell: PeriodCellModel): string[] => {
-      const classes = ['cell', 'cell_period'];
-      if (props.value && cell.date && isSameFn.value(props.value, cell.date))
-        classes.push('cell_current');
-      if (cell.type === 'today') classes.push('cell_today');
-
-      if (
+    const getCellClasses = (cell: PeriodCellModel): Record<string, boolean> => {
+      const isCurrent = Boolean(
+        props.value && cell.date && isSameFn.value(props.value, cell.date)
+      );
+      const isInRange = Boolean(
         cell.inRange ||
-        (cell.date && isDateInRangeInterval(cell.date, props.rangeState))
-      ) {
-        classes.push('cell_in-range');
-      }
-      return classes;
+          (cell.date && isDateInRangeInterval(cell.date, props.rangeState))
+      );
+
+      return {
+        'q-period-table__cell': true,
+        'q-period-table__cell_period': true,
+        'q-period-table__cell_today': cell.type === 'today',
+        'q-period-table__cell_current': isCurrent,
+        'q-period-table__cell_in-range': isInRange
+      };
     };
 
     const mouseMove = (cell: PeriodCellModel): void => {

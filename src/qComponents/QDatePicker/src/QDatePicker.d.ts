@@ -24,6 +24,8 @@ type QDatePickerPropDisabledValues = Nullable<{
   }[];
 }>;
 
+type HandlePickClickSecondArg = { hidePicker?: boolean | undefined };
+
 interface QDatePickerProps {
   type: QDatePickerPropType;
   format: string;
@@ -63,11 +65,7 @@ interface QDatePickerProvider {
   ) => void;
   handlePickClick: (
     val: QDatePickerPropModelValue,
-    {
-      hidePicker
-    }?: {
-      hidePicker?: boolean | undefined;
-    }
+    { hidePicker }?: HandlePickClickSecondArg
   ) => void;
   firstDayOfWeek: ComputedRef<number>;
   disabledValues: Ref<QDatePickerPropDisabledValues>;

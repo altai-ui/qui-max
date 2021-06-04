@@ -24,7 +24,7 @@ interface PeriodTableInstance {
   rows: ComputedRef<PeriodCellModel[][]>;
   getMonthName: (monthIndex: number) => string;
   handleTableClick: (cell: PeriodCellModel) => void;
-  getCellClasses: (cell: PeriodCellModel) => string[];
+  getCellClasses: (cell: PeriodCellModel) => Record<string, boolean>;
   handleMouseMove: DebouncedFunc<(cell: PeriodCellModel) => void>;
 }
 

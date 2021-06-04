@@ -57,6 +57,7 @@ import { throttle } from 'lodash-es';
 import { ru, enGB as en } from 'date-fns/locale';
 import { reactive, computed, PropType, inject, defineComponent } from 'vue';
 import { getConfig } from '@/qComponents/config';
+import { notNull } from '@/qComponents/helpers';
 import { isDateInRangeInterval } from '../../helpers';
 import type { DateTableInterface, DateTableState } from './DateTable';
 import type { DateCellModel, RangeState, TableProps } from '../../Common';
@@ -75,11 +76,13 @@ export default defineComponent({
   props: {
     year: {
       type: Number,
-      default: new Date().getFullYear()
+      default: new Date().getFullYear(),
+      validator: notNull
     },
     month: {
       type: Number,
-      default: new Date().getMonth()
+      default: new Date().getMonth(),
+      validator: notNull
     },
 
     value: { type: Date, default: null },

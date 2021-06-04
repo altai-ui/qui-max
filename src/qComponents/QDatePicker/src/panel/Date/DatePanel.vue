@@ -179,7 +179,7 @@ export default defineComponent({
     onMounted(() => {
       if (!root.value) return;
       state.dateCells = root.value.querySelectorAll('.q-date-table .cell');
-      state.periodCells = root.value.querySelectorAll('.q-period-table .cell');
+      state.periodCells = root.value.querySelectorAll('.q-period-table__cell');
     });
 
     watch(
@@ -189,7 +189,7 @@ export default defineComponent({
         await nextTick();
         if (currentView === 'month' || currentView === 'year') {
           state.periodCells = root.value.querySelectorAll(
-            '.q-period-table .cell'
+            '.q-period-table .q-period-table__cell'
           );
         }
       }
@@ -414,7 +414,7 @@ export default defineComponent({
         const target = e.target as HTMLElement;
         if (target.classList.contains('cell_date')) {
           moveWithinDates(e);
-        } else if (target.classList.contains('cell_period')) {
+        } else if (target.classList.contains('q-period-table__cell_period')) {
           moveWithinPeriod(e);
         } else if (state.currentView !== 'date') {
           state.periodCells?.[0].focus();

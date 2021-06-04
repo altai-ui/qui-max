@@ -45,7 +45,7 @@
             :min-date="state.minDate"
             :max-date="state.maxDate"
             :range-state="state.rangeState"
-            selection-mode="range"
+            type="year"
             @pick="handleRangePick"
             @range-selecting="handleRangeSelecting"
           />
@@ -77,7 +77,7 @@
             :year="rightYear"
             :min-date="state.minDate"
             :max-date="state.maxDate"
-            selection-mode="range"
+            type="year"
             :range-state="state.rangeState"
             @pick="handleRangePick"
             @range-selecting="handleRangeSelecting"
@@ -270,7 +270,7 @@ export default defineComponent({
     const navigateDropdown = (e: KeyboardEvent): void => {
       if (e.key !== 'Tab') {
         const target = e.target as HTMLElement;
-        if (target.classList.contains('cell_period')) {
+        if (target.classList.contains('q-period-table__cell_period')) {
           moveWithinPeriod(e);
         } else {
           state.yearCells?.[0]?.focus();
@@ -286,7 +286,7 @@ export default defineComponent({
 
     onMounted(() => {
       if (!root.value) return;
-      state.yearCells = root.value.querySelectorAll('.q-period-table .cell');
+      state.yearCells = root.value.querySelectorAll('.q-period-table__cell');
     });
 
     watch(

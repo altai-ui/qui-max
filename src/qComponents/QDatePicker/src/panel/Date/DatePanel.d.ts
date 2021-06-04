@@ -1,6 +1,6 @@
-import { ComputedRef, Ref } from 'vue';
-import { TranslateResult, Path, Locale } from 'vue-i18n';
-import { QDatePickerPropShortcuts } from '../../QDatePicker';
+import type { ComputedRef, Ref } from 'vue';
+import type { TranslateResult, Path, Locale } from 'vue-i18n';
+import type { QDatePickerPropShortcuts } from '../../QDatePicker';
 
 type DatePanelPropShortcuts = Record<string, Date>[];
 type DatePanelPropModelValue = Nullable<Date>;
@@ -10,8 +10,8 @@ interface DatePanelState {
   month: number;
   currentView: 'date' | 'week' | 'month' | 'year';
   isRanged: boolean;
-  panelInFocus: string | null;
-  lastFocusedCellIndex: number | null;
+  panelInFocus: Nullable<string>;
+  lastFocusedCellIndex: Nullable<number>;
   dateCells: Nullable<NodeListOf<HTMLElement>>;
   periodCells: Nullable<NodeListOf<HTMLElement>>;
 }

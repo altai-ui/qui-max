@@ -61,12 +61,19 @@
     }
 
     &[disabled] {
-      color: var(--color-tertiary-gray-ultra-dark);
+      color: rgba(var(--color-primary-black), 0.64);
       cursor: not-allowed;
-      background-color: var(--color-tertiary-gray-lighter);
+      background-color: var(--color-tertiary-gray);
+      box-shadow: var(--box-shadow-pressed);
+      opacity: 1;
+    }
 
-      &:hover {
-        color: var(--color-tertiary-gray-ultra-dark);
+    &_next-decade {
+      color: rgba(var(--color-rgb-gray), 0.32);
+
+      &.q-period-table__cell_in-range {
+        color: var(--color-primary-black);
+        background-color: var(--color-tertiary-gray);
       }
     }
 

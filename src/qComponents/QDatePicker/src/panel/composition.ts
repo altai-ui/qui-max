@@ -12,7 +12,7 @@ import {
   CELLS_COUNT_IN_YEAR_RANGE,
   LEFT_PERIOD_PANEL_START_INDEX,
   PERIOD_CELLS_IN_ROW_COUNT
-} from './constants';
+} from '../constants';
 
 const leftYearComposable = (leftDate: Date): number => {
   if (isDate(leftDate)) {

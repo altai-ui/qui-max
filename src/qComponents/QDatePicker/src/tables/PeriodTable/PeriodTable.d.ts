@@ -25,6 +25,7 @@ interface PeriodTableInstance {
   getMonthName: (monthIndex: number) => string;
   handleTableClick: (cell: PeriodCellModel) => void;
   getCellClasses: (cell: PeriodCellModel) => Record<string, boolean>;
+  getCellContent: (cell: PeriodCellModel) => string;
   handleMouseMove: DebouncedFunc<(cell: PeriodCellModel) => void>;
 }
 

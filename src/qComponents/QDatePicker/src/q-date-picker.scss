@@ -83,6 +83,10 @@
       background: none;
     }
 
+    .q-input__icon {
+      margin-left: auto;
+    }
+
     &_focused {
       background-color: var(--color-tertiary-gray-ultra-light);
       outline: none;
@@ -208,7 +212,7 @@
       }
 
       &[data-focus-visible-added],
-      &:hover {
+      &:hover:not(.q-picker-panel__header-label_hoverless) {
         color: var(--color-primary-blue);
       }
     }

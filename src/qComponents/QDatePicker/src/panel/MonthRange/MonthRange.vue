@@ -106,11 +106,11 @@ import {
   useRightNextYearClick,
   useRightPrevYearClick,
   getRangeChangedState,
-  getPeriodNextNodeIndex,
-  getActualMonth
+  getActualMonth,
+  getPeriodNextNodeIndex
 } from '../composition';
 
-import { PERIOD_CELLS_IN_ROW_COUNT } from '../constants';
+import { PERIOD_CELLS_IN_ROW_COUNT } from '../../constants';
 import type { DatePanelRangePropModelValue } from '../DateRange/DateRange';
 import type {
   MonthRangePanelInstance,
@@ -180,9 +180,11 @@ export default defineComponent({
       return new Date().getFullYear() + 1;
     });
 
-    const leftYear = computed(() => leftYearComposable(state.leftDate));
-    const leftMonth = computed(() => getActualMonth(state.leftDate));
-    const rightMonth = computed(() => getActualMonth(state.rightDate), 1);
+    const leftYear = computed<number>(() => leftYearComposable(state.leftDate));
+    const leftMonth = computed<number>(() => getActualMonth(state.leftDate));
+    const rightMonth = computed<number>(() =>
+      getActualMonth(state.rightDate, 1)
+    );
 
     const enableYearArrow = computed<boolean>(
       () => rightYear.value > leftYear.value + 1

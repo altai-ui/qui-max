@@ -2,31 +2,35 @@
   <div
     ref="root"
     class="q-date-picker"
-    @mouseenter="handleMouseEnter"
-    @mouseleave="state.showCloseIcon = false"
   >
-    <q-input
+    <div
       v-if="!isRanged"
-      ref="reference"
-      :model-value="displayValue"
-      :class="['q-date-editor', { 'q-input_focus': state.pickerVisible }]"
-      :readonly="!editable"
-      :disabled="isPickerDisabled"
-      :name="name"
-      :placeholder="placeholder ?? t('QDatePicker.placeholder')"
-      @focus="handleFocus"
-      @keyup="handleKeyUp"
-      @input="handleInput"
-      @change="handleInputDateChange"
+      @mouseenter="handleMouseEnter"
+      @mouseleave="state.showCloseIcon = false"
     >
-      <template #suffix>
-        <span
-          class="q-input__icon"
-          :class="iconClass"
-          @click="handleIconClick"
-        />
-      </template>
-    </q-input>
+      <q-input
+        ref="reference"
+        :model-value="displayValue"
+        :class="['q-date-editor', { 'q-input_focus': state.pickerVisible }]"
+        :readonly="!editable"
+        :disabled="isPickerDisabled"
+        :name="name"
+        :placeholder="placeholder ?? t('QDatePicker.placeholder')"
+        :maxlength="10"
+        @focus="handleFocus"
+        @keyup="handleKeyUp"
+        @input="handleInput"
+        @change="handleInputDateChange"
+      >
+        <template #suffix>
+          <span
+            class="q-input__icon"
+            :class="iconClass"
+            @click="handleIconClick"
+          />
+        </template>
+      </q-input>
+    </div>
     <div
       v-else
       ref="reference"
@@ -337,8 +341,6 @@ export default defineComponent({
 
     const isRanged = computed<boolean>(() => props.type.includes('range'));
 
-    const timepicker = computed<boolean>(() => props.type.includes('time'));
-
     const iconClass = computed<string>(() => {
       if (isPickerDisabled.value) return 'q-icon-lock';
       return state.showCloseIcon ? 'q-icon-close' : 'q-icon-calendar';
@@ -445,9 +447,6 @@ export default defineComponent({
       const date = state.userInput;
       if (date) {
         format = date.length === 10 ? 'dd.MM.yyyy' : 'dd.MM.yy';
-        if (timepicker.value && date.length > 10) {
-          format = "dd.MM.yyyy', 'HH:mm:ss";
-        }
         value = parse(date, format, new Date());
 
         if (!Number.isNaN(Number(value))) {
@@ -577,7 +576,7 @@ export default defineComponent({
       ctx.emit('focus');
       if (!transformedToDate.value || Array.isArray(transformedToDate.value))
         return;
-      const format = timepicker.value ? 'dd.MM.yyyy, HH:mm:ss' : 'dd.MM.yy';
+      const format = 'dd.MM.yy';
       state.userInput = formatToLocalReadableString(
         transformedToDate.value,
         format,
@@ -624,14 +623,12 @@ export default defineComponent({
     }): void => {
       const data = target.value;
 
-      const timeLength = timepicker.value ? 6 : 0;
-
       if (inputType === 'deleteContentBackward' && !state.userInput) {
         state.userInput = '';
         return;
       }
 
-      const parsedInputValue = calcInputData(data, inputType, timeLength);
+      const parsedInputValue = calcInputData(data, inputType);
       state.userInput = parsedInputValue;
       ctx.emit('input', parsedInputValue);
     };
@@ -675,7 +672,6 @@ export default defineComponent({
       reference,
       isRanged,
       isPickerDisabled,
-      timepicker,
       calcFirstDayOfWeek,
       transformedToDate,
       rangeClasses,

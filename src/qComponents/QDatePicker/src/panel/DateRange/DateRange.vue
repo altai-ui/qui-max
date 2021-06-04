@@ -148,12 +148,12 @@ import type {
   DateRangePanelState
 } from './DateRange';
 import type { QDatePickerProvider } from '../../QDatePicker';
+import type { RangePickValue, RangeState } from '../../Common';
 import {
   DATE_CELLS_COUNT,
   DATE_CELLS_IN_ROW_COUNT,
   MONTHS_COUNT
-} from '../constants';
-import type { RangePickValue, RangeState } from '../../Common';
+} from '../../constants';
 
 export default defineComponent({
   name: 'QDatePickerPanelDateRange',

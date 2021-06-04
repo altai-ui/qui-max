@@ -62,12 +62,12 @@ import { isDateInRangeInterval } from '../../helpers';
 import type { DateTableInterface, DateTableState } from './DateTable';
 import type { DateCellModel, RangeState, TableProps } from '../../Common';
 import type { QDatePickerProvider } from '../../QDatePicker';
-import checkDisabled from './checkDisabled';
 import {
   DAYS_IN_WEEK,
   LAST_MONTH_IN_YEAR_INDEX,
   WEEK_FRONTIER
-} from '../../panel/constants';
+} from '../../constants';
+import checkDisabled from './checkDisabled';
 
 const locales: Record<string, Locale> = { ru, en };
 

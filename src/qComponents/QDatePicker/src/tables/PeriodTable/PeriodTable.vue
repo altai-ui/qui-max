@@ -21,9 +21,7 @@
           @click="handleTableClick(cell)"
           @mousemove="handleMouseMove(cell)"
         >
-          {{
-            isMonthTable ? getMonthName(cell.text) : cell.date?.getFullYear()
-          }}
+          {{ getCellContent(cell) }}
         </button>
       </td>
     </tr>
@@ -39,7 +37,7 @@ import {
   startOfDecade
 } from 'date-fns';
 import { reactive, computed, PropType, inject, defineComponent } from 'vue';
-import { throttle } from 'lodash-es';
+import { debounce } from 'lodash-es';
 import { getConfig } from '@/qComponents/config';
 import { notNull } from '@/qComponents/helpers';
 import {
@@ -55,6 +53,7 @@ import type {
   PeriodTableState
 } from './PeriodTable';
 import type { QDatePickerProvider } from '../../QDatePicker';
+import { PERIOD_CELLS_IN_ROW_COUNT } from '../../constants';
 
 export default defineComponent({
   name: 'QDatePickerPeriodTable',
@@ -116,9 +115,8 @@ export default defineComponent({
       let startYearDate = startYear.value;
       return tableRows.map((row, i) => {
         const newRow = [];
-        const cellCount = 4;
-        for (let j = 0; j < cellCount; j += 1) {
-          const index = i * 4 + j;
+        for (let j = 0; j < PERIOD_CELLS_IN_ROW_COUNT; j += 1) {
+          const index = i * PERIOD_CELLS_IN_ROW_COUNT + j;
           const date =
             props.type === 'month'
               ? startOfMonth(new Date(props.year, index))
@@ -183,14 +181,24 @@ export default defineComponent({
           (cell.date && isDateInRangeInterval(cell.date, props.rangeState))
       );
 
+      const isNextDecade = !isMonthTable.value && Boolean(cell.text > 9);
+
       return {
         'q-period-table__cell': true,
         'q-period-table__cell_period': true,
         'q-period-table__cell_today': cell.type === 'today',
         'q-period-table__cell_current': isCurrent,
-        'q-period-table__cell_in-range': isInRange
+        'q-period-table__cell_in-range': isInRange,
+        'q-period-table__cell_next-decade': isNextDecade
       };
     };
+
+    const getCellContent = (cell: PeriodCellModel): string =>
+      String(
+        isMonthTable.value
+          ? getMonthName(cell.text)
+          : cell.date?.getFullYear() ?? ''
+      );
 
     const mouseMove = (cell: PeriodCellModel): void => {
       if (!props.rangeState.selecting) return;
@@ -202,7 +210,7 @@ export default defineComponent({
       });
     };
 
-    const handleMouseMove = throttle(mouseMove, 200);
+    const handleMouseMove = debounce(mouseMove, 10);
 
     const handleTableClick = (cell: PeriodCellModel): void => {
       if (cell.disabled) return;
@@ -249,7 +257,8 @@ export default defineComponent({
       handleTableClick,
       getCellClasses,
       handleMouseMove,
-      isMonthTable
+      isMonthTable,
+      getCellContent
     };
   }
 });

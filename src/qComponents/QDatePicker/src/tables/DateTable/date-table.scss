@@ -54,6 +54,7 @@
       color: rgba(var(--color-primary-black), 0.64);
       cursor: not-allowed;
       background-color: var(--color-tertiary-gray);
+      box-shadow: var(--box-shadow-pressed);
       opacity: 1;
     }
 
@@ -86,8 +87,8 @@
       }
     }
 
-    &_current,
-    &_in-range {
+    &_current:not(.cell_disabled),
+    &_in-range:not(.cell_disabled) {
       color: var(--color-tertiary-white);
       background-color: var(--color-primary-blue);
 
@@ -110,8 +111,8 @@
       }
     }
 
-    &_next-month,
-    &_prev-month {
+    &_next-month:not(.cell_disabled),
+    &_prev-month:not(.cell_disabled) {
       color: rgba(var(--color-rgb-gray), 0.32);
 
       &.cell_in-range {

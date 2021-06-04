@@ -9,6 +9,7 @@ import {
 import { ru, enGB as en } from 'date-fns/locale';
 import { isString } from 'lodash-es';
 import type { RangeState } from './Common';
+import { MAX_DATE_INPUT_LENGTH } from './constants';
 import type {
   QDatePickerPropDisabledValues,
   QDatePickerPropModelValue
@@ -53,14 +54,10 @@ const formatToLocalReadableString = (
   });
 };
 
-const calcInputData = (
-  data: string,
-  inputType: string,
-  timeLength: number
-): string => {
+const calcInputData = (data: string, inputType: string): string => {
   const clearVal = data.replace(/ |,|:|\./g, '');
   const array = clearVal.split('');
-  const options = { separator: '.', maxLength: 10 + timeLength };
+  const options = { separator: '.', maxLength: MAX_DATE_INPUT_LENGTH };
 
   if (inputType === 'insertText' && !array[array.length - 1]?.match(/[0-9]+/))
     return data;
@@ -69,12 +66,6 @@ const calcInputData = (
   if (array.length > 3 && array.length !== 4)
     array.splice(5, 0, options.separator);
   if (array.length > options.maxLength) return data;
-
-  if (timeLength) {
-    if (array.length > 10) array.splice(10, 0, ', ');
-    if (array.length > 13) array.splice(13, 0, ':');
-    if (array.length > 15) array.splice(16, 0, ':');
-  }
 
   if (
     inputType === 'deleteContentBackward' &&

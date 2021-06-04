@@ -41,13 +41,16 @@
             <button
               v-show="state.currentView === 'date'"
               class="q-picker-panel__header-label"
-              :class="{ active: state.currentView === 'month' }"
               @click="showMonthPicker"
             >
               {{ currentMonth }}
             </button>
             <button
               class="q-picker-panel__header-label"
+              :class="{
+                'q-picker-panel__header-label_hoverless':
+                  state.currentView === 'year'
+              }"
               @click="showYearPicker"
             >
               {{ yearLabel }}
@@ -121,7 +124,7 @@ import {
   LAST_YEAR_IN_DECADES_RANGE,
   PERIOD_CELLS_IN_ROW_COUNT,
   YEARS_IN_DECADE
-} from '../constants';
+} from '../../constants';
 import type { QDatePickerProvider } from '../../QDatePicker';
 import { getPeriodNextNodeIndex } from '../composition';
 

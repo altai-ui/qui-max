@@ -11,5 +11,19 @@ export default defineConfig({
       '@/': path.resolve(__dirname, '/src')
     }
   },
-  plugins: [vue()]
+  plugins: [vue()],
+  build: {
+    lib: {
+      entry: path.resolve(__dirname, 'src/qComponents/index.ts'),
+      name: 'qui-max'
+    },
+    rollupOptions: {
+      external: ['vue'],
+      output: {
+        globals: {
+          vue: 'Vue'
+        }
+      }
+    }
+  }
 });

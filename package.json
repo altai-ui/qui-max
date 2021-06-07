@@ -64,5 +64,14 @@
     "typescript": "^4.2.4",
     "vite": "^2.1.5",
     "vue-loader": "^16.2.0"
+  },
+  "files": ["dist"],
+  "main": "./dist/qui-max.umd.js",
+  "module": "./dist/qui-max.es.js",
+  "exports": {
+    ".": {
+      "import": "./dist/qui-max.es.js",
+      "require": "./dist/qui-max.umd.js"
+    }
   }
 }

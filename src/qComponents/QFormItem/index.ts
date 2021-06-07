@@ -14,4 +14,4 @@ export type {
   QFormItemProvider,
   QFormItemInstance
 } from './src/types';
-export default QFormItem;
+export default QFormItem as SFCWithInstall<App, typeof QFormItem>;

@@ -7,4 +7,4 @@ QDatePicker.install = (app: App): void => {
   app.component(QDatePicker.name, QDatePicker);
 };
 
-export default QDatePicker;
+export default QDatePicker as SFCWithInstall<App, typeof QDatePicker>;

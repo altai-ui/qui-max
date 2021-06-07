@@ -8,4 +8,4 @@ QCollapseItem.install = (app: App): void => {
 };
 
 export type { QCollapseItemProps, QCollapseItemInstance } from './src/types';
-export default QCollapseItem;
+export default QCollapseItem as SFCWithInstall<App, typeof QCollapseItem>;

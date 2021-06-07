@@ -8,4 +8,4 @@ QTag.install = (app: App): void => {
 };
 
 export type { QTagProps, QTagInstance } from './src/types';
-export default QTag;
+export default QTag as SFCWithInstall<App, typeof QTag>;

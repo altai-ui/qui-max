@@ -6,7 +6,6 @@ QSelect.install = (app: App): void => {
   app.component(QSelect.name, QSelect);
 };
 
-export default QSelect;
 export type {
   QSelectPropModelValue,
   NewOption,
@@ -14,3 +13,4 @@ export type {
   QSelectState,
   QSelectProps
 } from './src/types';
+export default QSelect as SFCWithInstall<App, typeof QSelect>;

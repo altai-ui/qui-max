@@ -8,4 +8,4 @@ QTabPane.install = (app: App): void => {
 };
 
 export type { QTabPaneProps, QTabPaneInstance } from './src/types';
-export default QTabPane;
+export default QTabPane as SFCWithInstall<App, typeof QTabPane>;

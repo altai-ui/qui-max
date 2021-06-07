@@ -40,7 +40,7 @@
     "@storybook/vue3": "^6.2.8",
     "@types/color": "^3.0.1",
     "@types/lodash-es": "^4.17.4",
-    "@typescript-eslint/eslint-plugin": "^4.22.0",
+    "@typescript-eslint/eslint-plugin": "^4.26.0",
     "@typescript-eslint/parser": "^4.22.0",
     "@vitejs/plugin-vue": "^1.2.3",
     "@vue/compiler-sfc": "^3.0.11",

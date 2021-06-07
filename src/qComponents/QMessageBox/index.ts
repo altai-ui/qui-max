@@ -12,4 +12,4 @@ export type {
   QMessageBoxPropBeforeClose,
   QMessageBoxInstance
 } from './src/types';
-export default QMessageBox;
+export default QMessageBox as SFCWithInstall<App, typeof QMessageBox>;

@@ -8,4 +8,4 @@ QTextarea.install = (app: App): void => {
 };
 
 export type { QTextareaProps, QTextareaInstance } from './src/types';
-export default QTextarea;
+export default QTextarea as SFCWithInstall<App, typeof QTextarea>;

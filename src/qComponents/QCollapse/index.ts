@@ -12,4 +12,4 @@ export type {
   QCollapseProvider,
   QCollapseInstance
 } from './src/types';
-export default QCollapse;
+export default QCollapse as SFCWithInstall<App, typeof QCollapse>;

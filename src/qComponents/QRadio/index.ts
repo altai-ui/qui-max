@@ -8,4 +8,4 @@ QRadio.install = (app: App): void => {
 };
 
 export type { QRadioProps, QRadioInstance } from './src/types';
-export default QRadio;
+export default QRadio as SFCWithInstall<App, typeof QRadio>;

@@ -12,4 +12,4 @@ export type {
   QBreadcrumbsPropRoute,
   QBreadcrumbsInstance
 } from './src/types';
-export default QBreadcrumbs;
+export default QBreadcrumbs as SFCWithInstall<App, typeof QBreadcrumbs>;

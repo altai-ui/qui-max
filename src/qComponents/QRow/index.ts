@@ -8,4 +8,4 @@ QRow.install = (app: App): void => {
 };
 
 export type { QRowProps, QRowInstance } from './src/types';
-export default QRow;
+export default QRow as SFCWithInstall<App, typeof QRow>;

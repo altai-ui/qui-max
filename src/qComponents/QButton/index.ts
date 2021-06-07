@@ -8,4 +8,4 @@ QButton.install = (app: App): void => {
 };
 
 export type { QButtonProps, QButtonInstance } from './src/types';
-export default QButton;
+export default QButton as SFCWithInstall<App, typeof QButton>;

@@ -12,4 +12,4 @@ export type {
   QRadioGroupProvider,
   QRadioGroupInstance
 } from './src/types';
-export default QRadioGroup;
+export default QRadioGroup as SFCWithInstall<App, typeof QRadioGroup>;

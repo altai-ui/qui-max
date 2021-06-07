@@ -8,4 +8,4 @@ QColorPicker.install = (app: App): void => {
 };
 
 export type { QColorPickerProps, QColorPickerInstance } from './src/types';
-export default QColorPicker;
+export default QColorPicker as SFCWithInstall<App, typeof QColorPicker>;

@@ -29,4 +29,4 @@ export type {
   QNotificationInstance
 } from './src/types';
 export { notify, notifyClose, notifyCloseAll };
-export default QNotification;
+export default QNotification as SFCWithInstall<App, typeof QNotification>;

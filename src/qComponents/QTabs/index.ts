@@ -8,4 +8,4 @@ QTabs.install = (app: App): void => {
 };
 
 export type { QTabsProps, QTabsProvider, QTabsInstance } from './src/types';
-export default QTabs;
+export default QTabs as SFCWithInstall<App, typeof QTabs>;

@@ -1,6 +1,5 @@
 /* eslint-disable no-underscore-dangle, global-require, no-param-reassign */
 import type { App } from 'vue';
-import { isString, kebabCase } from 'lodash-es';
 import type { LocaleMessageDictionary, VueMessageType } from 'vue-i18n';
 
 import { eventBus } from './helpers';
@@ -45,63 +44,6 @@ import QTag from './QTag';
 import QTextarea from './QTextarea';
 import QUpload from './QUpload';
 
-const Components = {
-  QBreadcrumbs,
-  QButton,
-  QCascader,
-  QCheckbox,
-  QCheckboxGroup,
-  QCol,
-  QCollapse,
-  QCollapseItem,
-  QColorPicker,
-  QContextMenu,
-  QDatePicker,
-  QDialog,
-  QDrawer,
-  QForm,
-  QFormItem,
-  QInput,
-  QInputNumber,
-  QMessageBox,
-  QNotification,
-  QOption,
-  QPagination,
-  QPopover,
-  QRadio,
-  QRadioGroup,
-  QRow,
-  QScrollbar,
-  QSelect,
-  QTable,
-  QTabPane,
-  QTabs,
-  QTag,
-  QTextarea,
-  QUpload
-};
-
-const allComponents = Object.keys(Components);
-const allComponentsExceptModals = allComponents.filter(
-  name => !['QNotification', 'QDialog'].includes(name)
-);
-
-// import styles
-require('../fonts/index.scss');
-require('../icons/index.scss');
-require('../main.scss');
-
-allComponents.forEach(component => {
-  const kebabCaseComponent = kebabCase(component);
-  try {
-    // eslint-disable-next-line import/no-dynamic-require
-    require(`../qComponents/${component}/src/${kebabCaseComponent}.scss`);
-  } catch (err) {
-    // eslint-disable-next-line no-console
-    console.warn(err);
-  }
-});
-
 interface Localization {
   locale?: string;
   customI18nMessages?: Record<string, LocaleMessageDictionary<VueMessageType>>;
@@ -110,7 +52,6 @@ interface Localization {
 interface ConfigOptions {
   localization?: Localization;
   zIndexCounter?: number;
-  prefix?: string;
 }
 
 // install
@@ -118,8 +59,7 @@ const install = (
   app: App,
   {
     localization: { locale, customI18nMessages = {} } = {},
-    zIndexCounter,
-    prefix = ''
+    zIndexCounter
   }: ConfigOptions = {}
 ): void => {
   setConfig({
@@ -132,11 +72,6 @@ const install = (
 
   // setup emitter
   app.config.globalProperties.$eventHub = eventBus;
-  allComponentsExceptModals.forEach(name => {
-    const newName =
-      prefix && isString(prefix) ? name.replace(/^Q/, prefix) : name;
-    app.component(newName, Components[name]);
-  });
 };
 
 export default { install };
@@ -155,6 +90,7 @@ export {
   QCollapseItem,
   QColorPicker,
   QContextMenu,
+  QDatePicker,
   QDialog,
   QDrawer,
   QForm,

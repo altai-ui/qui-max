@@ -68,6 +68,7 @@
   "files": ["dist"],
   "main": "./dist/qui-max.umd.js",
   "module": "./dist/qui-max.es.js",
+  "style": "./dist/index.css",
   "exports": {
     ".": {
       "import": "./dist/qui-max.es.js",

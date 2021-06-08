@@ -120,6 +120,7 @@ import { useI18n } from 'vue-i18n';
 
 import { getConfig } from '@/qComponents/config';
 import { notNull, validateArray } from '@/qComponents/helpers';
+import QInput from '@/qComponents/QInput';
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QInputInstance } from '@/qComponents/QInput';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
@@ -149,7 +150,7 @@ import type { DatePanelInstance } from './panel/Date/DatePanel';
 export default defineComponent({
   name: 'QDatePicker',
   componentName: 'QDatePicker',
-
+  components: { QInput },
   props: {
     /**
      * one of sugested types

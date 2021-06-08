@@ -31,6 +31,7 @@
 <script lang="ts">
 import { defineComponent, inject, computed } from 'vue';
 
+import QTag from '@/qComponents/QTag/src/QTag.vue';
 import findFullPath from '../helpers/findFullPath';
 import type { QCascaderProvider } from '../QCascader';
 
@@ -38,6 +39,7 @@ import type { TagItem, QCascaderTagsInstance } from './QCascaderTags';
 
 export default defineComponent({
   name: 'QCascaderTags',
+  components: { QTag },
   componentName: 'QCascaderTags',
 
   setup(): QCascaderTagsInstance {

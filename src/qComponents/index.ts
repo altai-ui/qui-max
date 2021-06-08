@@ -44,6 +44,10 @@ import QTag from './QTag';
 import QTextarea from './QTextarea';
 import QUpload from './QUpload';
 
+import '../fonts/index.scss';
+import '../icons/index.scss';
+import '../main.scss';
+
 interface Localization {
   locale?: string;
   customI18nMessages?: Record<string, LocaleMessageDictionary<VueMessageType>>;

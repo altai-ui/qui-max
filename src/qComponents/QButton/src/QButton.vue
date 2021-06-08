@@ -24,6 +24,7 @@
 </template>
 
 <script lang="ts">
+import './q-button.scss';
 import { defineComponent, PropType, computed, inject } from 'vue';
 
 import { validateArray } from '@/qComponents/helpers';

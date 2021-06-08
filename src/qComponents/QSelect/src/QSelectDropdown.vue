@@ -73,9 +73,10 @@ import {
 } from 'vue';
 
 import QScrollbar, { QScrollbarInstance } from '@/qComponents/QScrollbar';
+import QOption from '@/qComponents/QOption';
 import { getConfig } from '@/qComponents/config';
 import type { QSelectProvider } from '@/qComponents/QSelect';
-import type { QOptionPropModelValue } from '@/qComponents/QOption';
+import type { QOptionPropModelValue } from '@/qComponents/QSelect/QOption';
 import type { QSelectDropdownInstance, QSelectDropdownProps } from './types';
 
 const DEFAULT_Z_INDEX = 2000;
@@ -83,7 +84,7 @@ const DEFAULT_Z_INDEX = 2000;
 export default defineComponent({
   name: 'QSelectDropdown',
   componentName: 'QSelectDropdown',
-  components: { QScrollbar },
+  components: { QScrollbar, QOption },
   props: {
     shown: { type: Boolean, required: true },
     selectAllShown: { type: Boolean, required: true },

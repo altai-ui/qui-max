@@ -108,6 +108,9 @@ import {
 
 import { getConfig } from '@/qComponents/config';
 
+import QButton from '@/qComponents/QButton';
+import QScrollbar from '@/qComponents/QScrollbar';
+
 import { CLOSE_EVENT } from '@/qComponents/constants/events';
 import type {
   QMessageBoxProps,
@@ -125,7 +128,7 @@ const CANCEL_EVENT = 'cancel';
 export default defineComponent({
   name: 'QMessageBox',
   componentName: 'QMessageBox',
-
+  components: { QScrollbar, QButton },
   props: {
     isVisible: {
       type: Boolean,

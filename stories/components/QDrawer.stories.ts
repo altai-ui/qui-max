@@ -17,7 +17,6 @@ const storyMetadata: Meta = {
 
 const QDrawerStory: Story<QDrawerProps> = args =>
   defineComponent({
-    components: { QDrawer },
     setup() {
       const drawer = ref<boolean>(false);
 

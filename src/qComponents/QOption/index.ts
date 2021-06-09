@@ -7,7 +7,7 @@ QOption.install = (app: App): void => {
 
 export type {
   QOptionInstance,
-  QOptionPropModelValue,
+  QOptionPropValue,
   QOptionModel,
   QOptionProps
 } from './src/types';

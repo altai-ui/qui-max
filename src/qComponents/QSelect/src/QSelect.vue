@@ -120,14 +120,11 @@ import { useI18n } from 'vue-i18n';
 import {
   addResizeListener,
   removeResizeListener
-} from '@/qComponents/helpers/resizeEvent';
-import type { QInputInstance } from '@/qComponents/QInput';
-import type { QFormProvider } from '@/qComponents/QForm';
-import type { QFormItemProvider } from '@/qComponents/QFormItem';
-import type {
-  QOptionModel,
-  QOptionPropModelValue
-} from '@/qComponents/QOption';
+} from '../../helpers/resizeEvent';
+import type { QInputInstance } from '../../QInput';
+import type { QFormProvider } from '../../QForm';
+import type { QFormItemProvider } from '../../QFormItem';
+import type { QOptionModel, QOptionPropValue } from '../../QOption';
 import type {
   QSelectPropModelValue,
   NewOption,
@@ -254,14 +251,15 @@ export default defineComponent({
   ],
 
   setup(props: QSelectProps, ctx): QSelectInstance {
-    const input =
-      ref<ComponentPublicInstance<UnwrapRef<QInputInstance>> | null>(null);
-    const dropdown =
-      ref<ComponentPublicInstance<UnwrapRef<QSelectDropdownInstance>> | null>(
-        null
-      );
-    const tags =
-      ref<ComponentPublicInstance<UnwrapRef<QSelectTagsInstance>> | null>(null);
+    const input = ref<ComponentPublicInstance<
+      UnwrapRef<QInputInstance>
+    > | null>(null);
+    const dropdown = ref<ComponentPublicInstance<
+      UnwrapRef<QSelectDropdownInstance>
+    > | null>(null);
+    const tags = ref<ComponentPublicInstance<
+      UnwrapRef<QSelectTagsInstance>
+    > | null>(null);
     const root = ref<HTMLElement | null>(null);
     const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
     const qForm = inject<QFormProvider | null>('qForm', null);
@@ -644,8 +642,8 @@ export default defineComponent({
     };
 
     const getValueIndex = (
-      arr = [] as QOptionPropModelValue[],
-      optionValue: QOptionPropModelValue
+      arr = [] as QOptionPropValue[],
+      optionValue: QOptionPropValue
     ): number => {
       if (isString(optionValue)) return arr.indexOf(optionValue);
       const valueKey = props.valueKey;
@@ -659,17 +657,17 @@ export default defineComponent({
      * @public
      */
     const toggleOptionSelection = (option: QOptionModel): void => {
-      if (!option.modelValue) return;
+      if (!option.value) return;
       if (props.multiple && Array.isArray(props.modelValue)) {
         const value = [...props.modelValue];
 
-        const optionIndex = getValueIndex(value, option.modelValue);
+        const optionIndex = getValueIndex(value, option.value);
         const limit = props.multipleLimit ?? 0;
 
         if (optionIndex > -1) {
           value.splice(optionIndex, 1);
         } else if (limit <= 0 || value.length < limit) {
-          value.push(option.modelValue);
+          value.push(option.value);
         }
 
         emitValueUpdate(value);
@@ -682,7 +680,7 @@ export default defineComponent({
           inputElInsideTags?.focus();
         }
       } else {
-        emitValueUpdate(option.modelValue);
+        emitValueUpdate(option.value);
         state.isDropdownShown = false;
       }
     };
@@ -714,7 +712,7 @@ export default defineComponent({
       value.splice(index, 1);
 
       emitValueUpdate(value);
-      ctx.emit('remove-tag', tag.modelValue);
+      ctx.emit('remove-tag', tag.value);
     };
 
     const onInputChange = (): void => {

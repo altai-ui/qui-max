@@ -95,6 +95,7 @@ export default defineComponent({
       if (!currentSlot) return String(value ?? '');
 
       return currentSlot({
+        row: props.row,
         rowIndex: props.rowIndex,
         column: props.column,
         columnKey: props.column.key,

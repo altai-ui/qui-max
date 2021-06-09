@@ -45,9 +45,9 @@ import {
   onMounted
 } from 'vue';
 
-import type { QSelectProvider } from '@/qComponents/QSelect';
+import type { QSelectProvider } from '../../QSelect';
 import type {
-  QOptionPropModelValue,
+  QOptionPropValue,
   QOptionInstance,
   QOptionProps,
   QOptionModel
@@ -58,8 +58,8 @@ export default defineComponent({
   componentName: 'QOption',
 
   props: {
-    modelValue: {
-      type: [Object, String, Number] as PropType<QOptionPropModelValue>,
+    value: {
+      type: [Object, String, Number] as PropType<QOptionPropValue>,
       required: true
     },
     label: {
@@ -87,9 +87,9 @@ export default defineComponent({
 
     const key = computed<string>(() =>
       String(
-        isPlainObject(props.modelValue) && qSelect
-          ? get(props.modelValue, valueKey)
-          : props.modelValue
+        isPlainObject(props.value) && qSelect
+          ? get(props.value, valueKey)
+          : props.value
       )
     );
 
@@ -110,13 +110,12 @@ export default defineComponent({
     const isSelected = computed<boolean>(() => {
       if (!qSelect || !modelValue?.value) return false;
       if (!multiple) {
-        if (!isPlainObject(props.modelValue))
-          return modelValue.value === key.value;
+        if (!isPlainObject(props.value)) return modelValue.value === key.value;
 
         return isEqual(get(modelValue.value, valueKey), key.value);
       }
 
-      const prepareValue = (val: QOptionPropModelValue): string =>
+      const prepareValue = (val: QOptionPropValue): string =>
         isPlainObject(val) ? get(val, valueKey) : val;
 
       if (Array.isArray(modelValue.value)) {

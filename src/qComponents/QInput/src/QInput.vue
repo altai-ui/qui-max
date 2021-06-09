@@ -67,9 +67,9 @@ import {
   BLUR_EVENT,
   CLEAR_EVENT,
   INPUT_EVENT
-} from '@/qComponents/constants/events';
-import type { QFormProvider } from '@/qComponents/QForm';
-import type { QFormItemProvider } from '@/qComponents/QFormItem';
+} from '../../constants/events';
+import type { QFormProvider } from '../../QForm';
+import type { QFormItemProvider } from '../../QFormItem';
 import type {
   QInputInstance,
   QInputProps,
@@ -151,7 +151,7 @@ export default defineComponent({
 
   setup(props: QInputProps, ctx): QInputInstance {
     const root = ref<HTMLElement | null>(null);
-    const input = ref<HTMLElement | null>(null);
+    const input = ref<HTMLInputElement | null>(null);
     const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
     const qForm = inject<QFormProvider | null>('qForm', null);
 

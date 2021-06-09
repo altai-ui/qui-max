@@ -120,11 +120,11 @@ import { useI18n } from 'vue-i18n';
 import {
   addResizeListener,
   removeResizeListener
-} from '../../helpers/resizeEvent';
-import type { QInputInstance } from '../../QInput';
-import type { QFormProvider } from '../../QForm';
-import type { QFormItemProvider } from '../../QFormItem';
-import type { QOptionModel, QOptionPropValue } from '../../QOption';
+} from '@/qComponents/helpers/resizeEvent';
+import type { QInputInstance } from '@/qComponents/QInput';
+import type { QFormProvider } from '@/qComponents/QForm';
+import type { QFormItemProvider } from '@/qComponents/QFormItem';
+import type { QOptionModel, QOptionPropValue } from '@/qComponents/QOption';
 import type {
   QSelectPropModelValue,
   NewOption,

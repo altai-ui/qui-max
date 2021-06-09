@@ -2,9 +2,9 @@ import type { Ref, ComputedRef, ComponentPublicInstance, UnwrapRef } from 'vue';
 import type { Instance as PopperInstance } from '@popperjs/core';
 import type { Composer } from 'vue-i18n';
 
-import type { QOptionModel, QOptionPropValue } from '../../QOption';
-import type { QScrollbarInstance } from '../../QScrollbar';
-import type { QInputInstance } from '../../QInput';
+import type { QOptionModel, QOptionPropValue } from '@/qComponents/QOption';
+import type { QScrollbarInstance } from '@/qComponents/QScrollbar';
+import type { QInputInstance } from '@/qComponents/QInput';
 
 type QSelectPropModelValue = Nullable<
   string | number | QOptionPropValue | (string | number | QOptionPropValue)[]

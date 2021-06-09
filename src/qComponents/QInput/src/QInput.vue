@@ -67,9 +67,9 @@ import {
   BLUR_EVENT,
   CLEAR_EVENT,
   INPUT_EVENT
-} from '../../constants/events';
-import type { QFormProvider } from '../../QForm';
-import type { QFormItemProvider } from '../../QFormItem';
+} from '@/qComponents/constants/events';
+import type { QFormProvider } from '@/qComponents/QForm';
+import type { QFormItemProvider } from '@/qComponents/QFormItem';
 import type {
   QInputInstance,
   QInputProps,

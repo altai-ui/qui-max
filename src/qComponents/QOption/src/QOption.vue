@@ -45,7 +45,7 @@ import {
   onMounted
 } from 'vue';
 
-import type { QSelectProvider } from '../../QSelect';
+import type { QSelectProvider } from '@/qComponents/QSelect';
 import type {
   QOptionPropValue,
   QOptionInstance,

@@ -1,34 +1,22 @@
 <template>
   <div
-    class="q-notification-cloud"
+    class="q-notification-toast"
     :class="notificationClasses"
     @mouseenter="clearTimer"
     @mouseleave="startTimer"
   >
     <div
-      class="q-notification-cloud__icon"
+      class="q-notification-toast__icon"
       :class="iconClass"
     />
 
-    <div class="q-notification-cloud__content">
-      <slot>
-        <template v-if="message">
-          <template v-if="!dangerouslyUseHtmlString">
-            {{ message }}
-          </template>
-          <!-- eslint-disable vue/no-v-html -->
-          <div
-            v-else
-            v-html="message"
-          />
-          <!-- eslint-enable vue/no-v-html -->
-        </template>
-      </slot>
+    <div class="q-notification-toast__content">
+      {{ content }}
     </div>
 
     <button
       type="button"
-      class="q-notification-cloud__close q-icon-close"
+      class="q-notification-toast__close q-icon-close"
       @click="close"
     />
   </div>
@@ -44,18 +32,18 @@ import {
 } from 'vue';
 
 import { validateArray } from '@/qComponents/helpers';
+import { NotifyType } from '../constants';
 import type {
-  QNotificationCloudProps,
-  QNotificationCloudPropMessage,
-  QNotificationCloudPropDangerouslyUseHtmlString,
-  QNotificationCloudPropType,
-  QNotificationCloudPropOnClose,
-  QNotificationCloudInstance
+  QNotificationToastProps,
+  QNotificationToastPropContent,
+  QNotificationToastPropType,
+  QNotificationToastPropOnClose,
+  QNotificationToastInstance
 } from './types';
 
 export default defineComponent({
-  name: 'QNotificationCloud',
-  componentName: 'QNotificationCloud',
+  name: 'QNotificationToast',
+  componentName: 'QNotificationToast',
 
   props: {
     uniqId: {
@@ -65,24 +53,17 @@ export default defineComponent({
     /**
      * description text
      */
-    message: {
-      type: String as PropType<QNotificationCloudPropMessage>,
-      default: ''
+    content: {
+      type: String as PropType<QNotificationToastPropContent>,
+      required: true
     },
     /**
      * notification type
      */
     type: {
-      type: String as PropType<QNotificationCloudPropType>,
+      type: String as PropType<QNotificationToastPropType>,
       default: null,
-      validator: validateArray(['success', 'warning', 'info', 'error'])
-    },
-    /**
-     * whether message is treated as HTML string
-     */
-    dangerouslyUseHtmlString: {
-      type: Boolean as PropType<QNotificationCloudPropDangerouslyUseHtmlString>,
-      default: null
+      validator: validateArray(Object.values(NotifyType))
     },
     /**
      * icon class
@@ -102,16 +83,16 @@ export default defineComponent({
      * callback function when closed
      */
     onClose: {
-      type: Function as unknown as PropType<QNotificationCloudPropOnClose>,
+      type: Function as unknown as PropType<QNotificationToastPropOnClose>,
       default: null
     }
   },
 
   emits: ['remove'],
 
-  setup(props: QNotificationCloudProps, ctx): QNotificationCloudInstance {
+  setup(props: QNotificationToastProps, ctx): QNotificationToastInstance {
     const notificationClasses = computed<Record<string, boolean>>(() => ({
-      [`q-notification-cloud_type_${props.type}`]: Boolean(props.type)
+      [`q-notification-toast_type_${props.type}`]: Boolean(props.type)
     }));
 
     const iconClass = computed<string>(() => {

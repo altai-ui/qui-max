@@ -10,6 +10,11 @@ app.use(Qui, {
   }
 });
 
+import '../src/fonts/index.scss';
+import '../src/icons/index.scss';
+import '../src/main.scss';
+import '../src/components.scss';
+
 export const parameters = {
   layout: 'centered',
   controls: { expanded: true },

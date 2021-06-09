@@ -24,11 +24,7 @@ import QFormItem from './QFormItem';
 import QInput from './QInput';
 import QInputNumber from './QInputNumber';
 import QMessageBox from './QMessageBox';
-import QNotification, {
-  notify,
-  notifyClose,
-  notifyCloseAll
-} from './QNotification';
+import QNotification, { provideNotify } from './QNotification';
 import QOption from './QOption';
 import QPagination from './QPagination';
 import QPopover from './QPopover';
@@ -77,9 +73,6 @@ const install = (
 export default { install };
 export {
   eventBus,
-  notify,
-  notifyClose,
-  notifyCloseAll,
   QBreadcrumbs,
   QButton,
   QCascader,

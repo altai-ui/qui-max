@@ -1,4 +1,4 @@
-.q-notification-cloud {
+.q-notification-toast {
   position: relative;
   display: flex;
   align-items: center;
@@ -19,19 +19,19 @@
     left: 24px;
     font-size: 32px;
 
-    .q-notification-cloud_type_success & {
+    .q-notification-toast_type_success & {
       color: var(--color-secondary-green);
     }
 
-    .q-notification-cloud_type_warning & {
+    .q-notification-toast_type_warning & {
       color: var(--color-secondary-yellow);
     }
 
-    .q-notification-cloud_type_info & {
+    .q-notification-toast_type_info & {
       color: rgba(var(--color-rgb-gray), 32);
     }
 
-    .q-notification-cloud_type_error & {
+    .q-notification-toast_type_error & {
       color: var(--color-secondary-orange);
     }
   }

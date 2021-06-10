@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle, global-require, no-param-reassign */
 import type { App } from 'vue';
 import type { LocaleMessageDictionary, VueMessageType } from 'vue-i18n';
-
+import 'focus-visible';
 import { eventBus } from './helpers';
 import { setConfig } from './config';
 import { installI18n } from './constants/locales';
@@ -47,6 +47,7 @@ import QUpload from './QUpload';
 import '../fonts/index.scss';
 import '../icons/index.scss';
 import '../main.scss';
+import '../components.scss';
 
 interface Localization {
   locale?: string;
@@ -72,7 +73,6 @@ const install = (
   });
 
   installI18n({ app, customI18nMessages });
-  require('focus-visible');
 
   // setup emitter
   app.config.globalProperties.$eventHub = eventBus;

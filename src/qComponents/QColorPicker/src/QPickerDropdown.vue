@@ -67,6 +67,7 @@ import Color from 'color';
 import { validateArray } from '@/qComponents/helpers';
 import { CLEAR_EVENT, CLOSE_EVENT } from '@/qComponents/constants/events';
 import QButton from '@/qComponents/QButton';
+import QInput from '@/qComponents/QInput';
 import QColorSvpanel from './QColorSvpanel.vue';
 import QColorAlphaSlider from './QColorAlphaSlider.vue';
 import QColorHueSlider from './QColorHueSlider.vue';
@@ -85,6 +86,7 @@ export default defineComponent({
 
   components: {
     QButton,
+    QInput,
     QColorSvpanel,
     QColorHueSlider,
     QColorAlphaSlider

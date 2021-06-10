@@ -17,7 +17,6 @@ const storyMetadata: Meta = {
 
 const QCollapseStory: Story<QCollapseProps> = args =>
   defineComponent({
-    components: { QCollapse, QCollapseItem },
     setup() {
       const activeNames = ref<string[]>(['1']);
 

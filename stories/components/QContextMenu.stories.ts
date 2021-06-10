@@ -15,7 +15,6 @@ const storyMetadata: Meta = {
 
 const QContextMenuStory: Story<QContextMenuProps> = args =>
   defineComponent({
-    components: { QContextMenu },
     setup() {
       const handleAction = (action: string): void => {
         // eslint-disable-next-line no-console

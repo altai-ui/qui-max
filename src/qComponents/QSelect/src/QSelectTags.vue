@@ -51,7 +51,7 @@
 <script lang="ts">
 import { defineComponent, inject, ref, toRefs } from 'vue';
 
-import type { QOptionModel } from '@/qComponents/QSelect/QOption';
+import type { QOptionModel } from '@/qComponents/QOption';
 import type { QSelectProvider } from '@/qComponents/QSelect';
 import type { QSelectTagsInstance } from './types';
 

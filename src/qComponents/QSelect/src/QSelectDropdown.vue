@@ -76,7 +76,7 @@ import QScrollbar, { QScrollbarInstance } from '@/qComponents/QScrollbar';
 import QOption from '@/qComponents/QOption';
 import { getConfig } from '@/qComponents/config';
 import type { QSelectProvider } from '@/qComponents/QSelect';
-import type { QOptionPropModelValue } from '@/qComponents/QSelect/QOption';
+import type { QOptionPropModelValue } from '@/qComponents/QOption';
 import type { QSelectDropdownInstance, QSelectDropdownProps } from './types';
 
 const DEFAULT_Z_INDEX = 2000;

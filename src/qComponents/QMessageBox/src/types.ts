@@ -1,11 +1,37 @@
 import type { Ref } from 'vue';
 
-type QMessageBoxAction = 'confirm' | 'cancel' | 'close';
+import type { QMessageBoxAction } from './constants';
+
+export interface QMessageBoxContent {
+  title: string;
+}
+
+type Classes = Record<string, boolean>;
+type Styles = Record<string, string | number>;
+
+export type QMessageBoxOptionWrapClass = Nullable<string | Classes | Classes[]>;
+export type QMessageBoxOptionWrapStyle = Nullable<string | Styles | Styles[]>;
+
+export interface QMessageBoxOptions {
+  closeOnClickShadow: Nullable<boolean>;
+  distinguishCancelAndClose: Nullable<boolean>;
+  wrapClass: QMessageBoxOptionWrapClass;
+  wrapStyle: QMessageBoxOptionWrapStyle;
+}
 
 export interface QMessageBoxEvent {
   action: QMessageBoxAction;
   payload?: unknown;
 }
+
+export interface MessageBoxPromise {
+  resolve: (event: QMessageBoxEvent) => void;
+  reject: (event: QMessageBoxEvent) => void;
+}
+
+//
+//
+//
 
 export interface QMessageBoxFnBeforeCloseArg extends QMessageBoxEvent {
   ctx: {
@@ -18,8 +44,6 @@ export type QMessageBoxPropTeleportTo = Nullable<string | HTMLElement>;
 export type QMessageBoxPropBeforeClose = Nullable<
   (arg0: QMessageBoxFnBeforeCloseArg) => Promise<boolean>
 >;
-type Classes = Record<string, boolean>;
-type Styles = Record<string, string | number>;
 
 export interface QMessageBoxProps {
   isVisible: Nullable<boolean>;

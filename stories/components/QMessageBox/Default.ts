@@ -2,43 +2,54 @@
 import type { Story } from '@storybook/vue3';
 import { defineComponent, ref } from 'vue';
 
-import type {
-  QMessageBoxProps,
-  QMessageBoxPropBeforeClose
-} from '@/qComponents/QMessageBox';
+import { useMessageBox } from '@/qComponents/QMessageBox';
+// import type {
+//   // QMessageBoxProps,
+//   // QMessageBoxPropBeforeClose
+// } from '@/qComponents/QMessageBox';
 
-const QMessageBoxStory: Story<QMessageBoxProps> = args =>
+const QMessageBoxStory: Story<any> = args =>
   defineComponent({
     setup() {
-      const beforeClose: QMessageBoxPropBeforeClose = async ({
-        action,
-        ctx
-      }) => {
-        if (action !== 'confirm') return true;
+      // const beforeClose: QMessageBoxPropBeforeClose = async ({
+      //   action,
+      //   ctx
+      // }) => {
+      //   if (action !== 'confirm') return true;
 
-        ctx.isConfirmBtnLoading.value = true;
+      //   ctx.isConfirmBtnLoading.value = true;
 
-        const promise = (): Promise<string> =>
-          new Promise(resolve => {
-            setTimeout(() => resolve('готово!'), 1000);
-          });
+      //   const promise = (): Promise<string> =>
+      //     new Promise(resolve => {
+      //       setTimeout(() => resolve('готово!'), 1000);
+      //     });
 
-        try {
-          await promise();
-          ctx.isConfirmBtnLoading.value = false;
+      //   try {
+      //     await promise();
+      //     ctx.isConfirmBtnLoading.value = false;
 
-          return true;
-        } catch {
-          ctx.isConfirmBtnLoading.value = false;
+      //     return true;
+      //   } catch {
+      //     ctx.isConfirmBtnLoading.value = false;
 
-          return false;
-        }
-      };
+      //     return false;
+      //   }
+      // };
 
       const isVisible = ref<boolean>(false);
 
-      const handleClick = (): void => {
+      const handleClick = async (): Promise<void> => {
         isVisible.value = true;
+
+        try {
+          const result = await useMessageBox({ title: args.title }, {});
+
+          // eslint-disable-next-line no-console
+          console.log('resolve', result);
+        } catch (err) {
+          // eslint-disable-next-line no-console
+          console.log('reject', err);
+        }
       };
 
       const handleConfirm = (): void => {
@@ -57,7 +68,7 @@ const QMessageBoxStory: Story<QMessageBoxProps> = args =>
       return {
         isVisible,
         args,
-        beforeClose,
+        // beforeClose,
         handleClick,
         handleConfirm,
         handleClose,
@@ -67,24 +78,6 @@ const QMessageBoxStory: Story<QMessageBoxProps> = args =>
     template: `
       <q-button @click="handleClick">Click to open</q-button>
 
-      <q-message-box
-        v-model:isVisible="isVisible"
-        :z-index="args.zIndex"
-        :teleport-to="args.teleportTo"
-        :title="args.title"
-        :message="args.message"
-        :submessage="args.submessage"
-        :confirm-button-text="args.confirmButtonText"
-        :cancel-button-text="args.cancelButtonText"
-        :close-on-click-shadow="args.closeOnClickShadow"
-        :distinguish-cancel-and-close="args.distinguishCancelAndClose"
-        :before-close="args.beforeClose"
-        :wrap-class="args.wrapClass"
-        :wrap-style="args.wrapStyle"
-        @confirm="handleConfirm"
-        @close="handleClose"
-        @cancel="handleCancel"
-      />
     `
   });
 

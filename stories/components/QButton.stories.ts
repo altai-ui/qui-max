@@ -6,7 +6,7 @@ import QButton from '@/qComponents/QButton';
 import type { QButtonProps } from '@/qComponents/QButton';
 
 const storyMetadata: Meta = {
-  title: 'Components/Button',
+  title: 'Components/QButton',
   component: QButton,
   argTypes: {
     type: { control: { type: 'select', options: ['default', 'icon'] } },

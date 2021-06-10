@@ -288,14 +288,14 @@ export default defineComponent({
 
   setup(props: QDatePickerProps, ctx) {
     const root = ref<null | HTMLElement>(null);
-    const panel =
-      ref<UnwrapRef<ComponentPublicInstance<DatePanelInstance>> | null>(null);
+    const panel = ref<UnwrapRef<
+      ComponentPublicInstance<DatePanelInstance>
+    > | null>(null);
     const qForm = inject<QFormProvider | null>('qForm', null);
     const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
-    const reference =
-      ref<
-        ComponentPublicInstance<UnwrapRef<QInputInstance>> | HTMLElement | null
-      >(null);
+    const reference = ref<
+      ComponentPublicInstance<UnwrapRef<QInputInstance>> | HTMLElement | null
+    >(null);
 
     const state = reactive<QDatePickerState>({
       pickerVisible: false,

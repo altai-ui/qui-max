@@ -1,8 +1,9 @@
 /* eslint-disable no-underscore-dangle, global-require, no-param-reassign */
 import type { App } from 'vue';
 import type { LocaleMessageDictionary, VueMessageType } from 'vue-i18n';
+
 import 'focus-visible';
-import { eventBus } from './helpers';
+
 import { setConfig } from './config';
 import { installI18n } from './constants/locales';
 
@@ -24,11 +25,7 @@ import QFormItem from './QFormItem';
 import QInput from './QInput';
 import QInputNumber from './QInputNumber';
 import QMessageBox from './QMessageBox';
-import QNotification, {
-  notify,
-  notifyClose,
-  notifyCloseAll
-} from './QNotification';
+import QNotification, { useNotify, provideNotify } from './QNotification';
 import QOption from './QOption';
 import QPagination from './QPagination';
 import QPopover from './QPopover';
@@ -73,17 +70,12 @@ const install = (
   });
 
   installI18n({ app, customI18nMessages });
-
-  // setup emitter
-  app.config.globalProperties.$eventHub = eventBus;
 };
 
 export default { install };
 export {
-  eventBus,
-  notify,
-  notifyClose,
-  notifyCloseAll,
+  useNotify,
+  provideNotify,
   QBreadcrumbs,
   QButton,
   QCascader,

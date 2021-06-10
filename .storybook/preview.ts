@@ -37,11 +37,6 @@ import Qui, {
 } from '../src/qComponents';
 import messages from './locales';
 
-import '../src/fonts/index.scss';
-import '../src/icons/index.scss';
-import '../src/main.scss';
-import '../src/components.scss';
-
 app.use(Qui, {
   localization: {
     locale: 'en',

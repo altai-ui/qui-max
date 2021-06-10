@@ -23,7 +23,7 @@ const useNotify = (options?: QNotificationOptions): QNotify => {
     ? inject<QNotify>(NOTIFICATION_INJECTION_KEY)
     : null;
 
-  return notify ?? createNotification(options);
+  return notify ?? createNotification(options, false);
 };
 
 export type { QNotifyId } from './src/types';

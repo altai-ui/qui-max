@@ -1,6 +1,6 @@
 import { createApp, ref, nextTick } from 'vue';
 
-import { randId } from '@/qComponents/helpers';
+import { randId } from '../../helpers';
 
 import QNotificationContainer from './QNotificationContainer';
 import { NotifyType } from './constants';
@@ -15,7 +15,10 @@ import type {
 
 let notifyList = ref<QNotifyItem[]>([]);
 
-export const createNotification = (config?: QNotificationOptions): QNotify => {
+export const createNotification = (
+  config?: QNotificationOptions,
+  mountContainer = true
+): QNotify => {
   if (config?.list) notifyList = config.list;
 
   const clostNotify = (id: QNotifyId): void => {
@@ -26,16 +29,18 @@ export const createNotification = (config?: QNotificationOptions): QNotify => {
     if (index >= 0) notifyList.value.splice(index, 1);
   };
 
-  nextTick(() => {
-    const app = createApp(QNotificationContainer, {
-      ...config,
-      list: notifyList,
-      onRemove: clostNotify
-    });
-    const component = app.mount(document.createElement('div'));
+  if (mountContainer) {
+    nextTick(() => {
+      const app = createApp(QNotificationContainer, {
+        ...config,
+        list: notifyList,
+        onRemove: clostNotify
+      });
+      const component = app.mount(document.createElement('div'));
 
-    config?.onMounted?.(component, app);
-  });
+      config?.onMounted?.(component, app);
+    });
+  }
 
   const notify = (
     content: QNotifyContent,

@@ -18,7 +18,6 @@ const storyMetadata: Meta = {
 
 const QColorPickerStory: Story<QColorPickerProps> = args =>
   defineComponent({
-    components: { QColorPicker },
     setup() {
       const color = ref<string>('#f25');
 

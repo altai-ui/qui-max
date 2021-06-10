@@ -21,7 +21,6 @@ type StoryArgs = QButtonProps & Record<'label', string>;
 
 const Template: Story<StoryArgs> = args =>
   defineComponent({
-    components: { QButton },
     setup() {
       const handleClick = (event: MouseEvent): void => {
         // eslint-disable-next-line no-console

@@ -15,7 +15,6 @@ const storyMetadata: Meta = {
 
 const Template: Story<QCheckboxProps> = args =>
   defineComponent({
-    components: { QCheckbox },
     setup() {
       const isChecked = ref<boolean>(true);
 

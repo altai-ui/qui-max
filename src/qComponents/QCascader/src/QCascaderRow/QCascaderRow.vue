@@ -33,6 +33,7 @@
 <script lang="ts">
 import { defineComponent, inject, computed, PropType } from 'vue';
 
+import QCheckbox from '@/qComponents/QCheckbox';
 import getChildStatuses from '../helpers/getChildStatuses';
 import type { QCascaderProvider } from '../QCascader';
 
@@ -47,6 +48,7 @@ const CHECK_EVENT = 'check';
 
 export default defineComponent({
   name: 'QCascaderRow',
+  components: { QCheckbox },
   componentName: 'QCascaderRow',
 
   props: {

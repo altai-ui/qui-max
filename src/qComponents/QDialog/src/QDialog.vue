@@ -66,6 +66,8 @@ import {
 
 import { CLOSE_EVENT } from '@/qComponents/constants/events';
 import { getConfig } from '@/qComponents/config';
+import QButton from '@/qComponents/QButton';
+import QScrollbar from '@/qComponents/QScrollbar';
 import type {
   QDialogProps,
   QDialogPropBeforeClose,
@@ -82,7 +84,7 @@ const DEFAULT_Z_INDEX = 2000;
 export default defineComponent({
   name: 'QDialog',
   componentName: 'QDialog',
-
+  components: { QButton, QScrollbar },
   props: {
     /**
      * width of QDialog

@@ -15,7 +15,6 @@ const storyMetadata: Meta = {
 
 const Template: Story<QCascaderProps> = args =>
   defineComponent({
-    components: { QCascader },
     setup() {
       const modelValue = ref(null);
 

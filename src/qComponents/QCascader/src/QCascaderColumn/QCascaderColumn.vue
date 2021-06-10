@@ -37,6 +37,7 @@ import {
   watch
 } from 'vue';
 
+import QScrollbar from '@/qComponents/QScrollbar';
 import findAllLeaves from '../helpers/findAllLeaves';
 import QCascaderRow from '../QCascaderRow/QCascaderRow.vue';
 import type { QCascaderDropdownProvider } from '../QCascaderDropdown/QCascaderDropdown';
@@ -56,7 +57,8 @@ export default defineComponent({
   componentName: 'QCascaderColumn',
 
   components: {
-    QCascaderRow
+    QCascaderRow,
+    QScrollbar
   },
 
   props: {

@@ -2,6 +2,8 @@
 import type { App } from 'vue';
 import type { LocaleMessageDictionary, VueMessageType } from 'vue-i18n';
 
+import 'focus-visible';
+
 import { setConfig } from './config';
 import { installI18n } from './constants/locales';
 
@@ -39,6 +41,11 @@ import QTag from './QTag';
 import QTextarea from './QTextarea';
 import QUpload from './QUpload';
 
+import '../fonts/index.scss';
+import '../icons/index.scss';
+import '../main.scss';
+import '../components.scss';
+
 interface Localization {
   locale?: string;
   customI18nMessages?: Record<string, LocaleMessageDictionary<VueMessageType>>;
@@ -63,7 +70,6 @@ const install = (
   });
 
   installI18n({ app, customI18nMessages });
-  require('focus-visible');
 };
 
 export default { install };

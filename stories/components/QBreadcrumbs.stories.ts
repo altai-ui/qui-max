@@ -28,9 +28,6 @@ app.component('RouterLink', {
 const QBreadcrumbsStory: Story<QBreadcrumbsProps> = args =>
   // eslint-disable-next-line vue/one-component-per-file
   defineComponent({
-    components: {
-      QBreadcrumbs
-    },
     setup() {
       const { t } = useI18n();
 

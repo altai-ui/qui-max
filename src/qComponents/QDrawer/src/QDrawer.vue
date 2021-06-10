@@ -57,6 +57,7 @@ import {
   onUnmounted
 } from 'vue';
 
+import QScrollbar from '@/qComponents/QScrollbar';
 import { validateArray } from '@/qComponents/helpers';
 import { CLOSE_EVENT } from '@/qComponents/constants/events';
 import { getConfig } from '@/qComponents/config';
@@ -77,7 +78,7 @@ const DEFAULT_Z_INDEX = 2000;
 export default defineComponent({
   name: 'QDrawer',
   componentName: 'QDrawer',
-
+  components: { QScrollbar },
   props: {
     /**
      * width of Drawer

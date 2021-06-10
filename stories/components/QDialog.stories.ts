@@ -16,7 +16,6 @@ const storyMetadata: Meta = {
 
 const QDialogStory: Story<QDialogProps> = args =>
   defineComponent({
-    components: { QDialog },
     setup() {
       const dialog = ref<boolean>(false);
 

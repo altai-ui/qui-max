@@ -1,5 +1,6 @@
 import type { InjectionKey } from 'vue';
 
+export const DEFAULT_DURATION = 3000;
 export enum NotifyType {
   SUCCESS = 'success',
   ERROR = 'error',

@@ -21,7 +21,7 @@ export const createNotification = (
 ): QNotify => {
   if (config?.list) notifyList = config.list;
 
-  const clostNotify = (id: QNotifyId): void => {
+  const closeNotify = (id: QNotifyId): void => {
     if (!id) return;
 
     const index = notifyList.value.findIndex(({ id: itemId }) => itemId === id);
@@ -34,7 +34,7 @@ export const createNotification = (
       const app = createApp(QNotificationContainer, {
         ...config,
         list: notifyList,
-        onRemove: clostNotify
+        onRemove: closeNotify
       });
       const component = app.mount(document.createElement('div'));
 
@@ -58,7 +58,7 @@ export const createNotification = (
     return toast.id;
   };
 
-  notify.close = clostNotify;
+  notify.close = closeNotify;
   notify.closeAll = (): void => {
     notifyList.value = [];
   };

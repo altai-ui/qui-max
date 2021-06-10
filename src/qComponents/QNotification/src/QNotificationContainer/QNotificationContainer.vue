@@ -21,6 +21,7 @@ import { defineComponent, getCurrentInstance, onMounted, computed } from 'vue';
 import type { PropType, Ref } from 'vue';
 
 import QNotificationToast from '../QNotificationToast';
+import { DEFAULT_DURATION } from '../constants';
 import type { QNotifyItem, QNotifyId } from '../types';
 
 import type {
@@ -56,7 +57,7 @@ export default defineComponent({
      */
     duration: {
       type: Number,
-      default: 3000
+      default: DEFAULT_DURATION
     }
   },
 
@@ -68,21 +69,21 @@ export default defineComponent({
   ): QNotificationContainerInstance {
     const instance = getCurrentInstance();
 
-    const setup = (): void => {
-      if (!instance?.vnode?.el) return;
-
-      instance.vnode.el.remove();
-      document.body.appendChild(instance.vnode.el as Node);
-    };
-
     const notifyList = computed<QNotifyItem[]>(() => props.list.value);
 
     const handleRemove = (id: QNotifyId): void => {
       ctx.emit(REMOVE_EVENT, id);
     };
 
+    const mountInstance = (): void => {
+      if (!instance?.vnode?.el) return;
+
+      instance.vnode.el.remove();
+      document.body.appendChild(instance.vnode.el as Node);
+    };
+
     onMounted(() => {
-      setup();
+      mountInstance();
     });
 
     return {

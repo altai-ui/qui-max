@@ -32,7 +32,7 @@ import {
 } from 'vue';
 
 import { validateArray } from '@/qComponents/helpers';
-import { NotifyType } from '../constants';
+import { DEFAULT_DURATION, NotifyType } from '../constants';
 import type {
   QNotificationToastProps,
   QNotificationToastPropContent,
@@ -77,7 +77,7 @@ export default defineComponent({
      */
     duration: {
       type: Number,
-      default: 3000
+      default: DEFAULT_DURATION
     },
     /**
      * callback function when closed

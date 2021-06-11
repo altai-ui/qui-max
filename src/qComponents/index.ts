@@ -24,7 +24,7 @@ import QForm from './QForm';
 import QFormItem from './QFormItem';
 import QInput from './QInput';
 import QInputNumber from './QInputNumber';
-import { useMessageBox } from './QMessageBox';
+import { useMessageBox, QMessageBoxContent } from './QMessageBox';
 import QNotification, { useNotify, provideNotify } from './QNotification';
 import QOption from './QOption';
 import QPagination from './QPagination';
@@ -94,6 +94,7 @@ export {
   QFormItem,
   QInput,
   QInputNumber,
+  QMessageBoxContent,
   QNotification,
   QOption,
   QPagination,

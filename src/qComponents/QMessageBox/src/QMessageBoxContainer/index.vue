@@ -6,30 +6,30 @@
     <div
       v-show="isShown"
       ref="messageBox"
-      class="q-message-box"
+      class="q-message-box-container"
       :class="wrapClass"
       :style="[wrapStyle, { zIndex }]"
       tabindex="-1"
       @keyup.esc="emitCloseEvent"
     >
-      <div class="q-message-box__shadow" />
+      <div class="q-message-box-container__shadow" />
 
       <q-scrollbar
         theme="secondary"
-        class="q-message-box__scrollbar"
-        view-class="q-message-box__view"
+        class="q-message-box-container__scrollbar"
+        view-class="q-message-box-container__view"
         visible
       >
         <div
           v-if="closeOnClickShadow"
-          class="q-message-box__clickable-shadow"
+          class="q-message-box-container__clickable-shadow"
           @click="emitCloseEvent"
         />
 
-        <div class="q-message-box__container">
+        <div class="q-message-box-container__container">
           <button
             type="button"
-            class="q-message-box__close q-icon-close"
+            class="q-message-box-container__close q-icon-close"
             @click="emitCloseEvent"
           />
 
@@ -82,7 +82,6 @@ export default defineComponent({
 
   components: {
     QScrollbar
-    // QMessageBoxContent
   },
 
   props: {

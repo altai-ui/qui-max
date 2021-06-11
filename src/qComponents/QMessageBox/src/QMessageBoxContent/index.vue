@@ -1,53 +1,55 @@
 <template>
-  <div class="q-message-box__title">
-    <slot name="title">{{ title }}</slot>
+  <div class="q-message-box-content">
+    <div class="q-message-box-content__title">
+      <slot name="title">{{ title }}</slot>
+    </div>
+
+    <slot>
+      <div class="q-message-box-content__content">
+        <slot name="content">
+          <div
+            v-if="message || $slots.message"
+            class="q-message-box-content__message"
+          >
+            <slot name="message">{{ message }}</slot>
+          </div>
+
+          <div
+            v-if="submessage || $slots.submessage"
+            class="q-message-box-content__submessage"
+          >
+            <slot name="submessage">{{ submessage }}</slot>
+          </div>
+        </slot>
+      </div>
+
+      <div
+        v-if="isActionsSectionShown || $slots.actions"
+        class="q-message-box-content__actions"
+      >
+        <slot name="actions">
+          <q-button
+            v-if="confirmButtonText"
+            :loading="isConfirmBtnLoading"
+            :disabled="isCancelBtnLoading"
+            @click="handleConfirmBtnClick"
+          >
+            {{ confirmButtonText }}
+          </q-button>
+
+          <q-button
+            v-if="cancelButtonText"
+            theme="secondary"
+            :loading="isCancelBtnLoading"
+            :disabled="isConfirmBtnLoading"
+            @click="handleCancelBtnClick"
+          >
+            {{ cancelButtonText }}
+          </q-button>
+        </slot>
+      </div>
+    </slot>
   </div>
-
-  <slot>
-    <div class="q-message-box__content">
-      <slot name="content">
-        <div
-          v-if="message || $slots.message"
-          class="q-message-box__message"
-        >
-          <slot name="message">{{ message }}</slot>
-        </div>
-
-        <div
-          v-if="submessage || $slots.submessage"
-          class="q-message-box__submessage"
-        >
-          <slot name="submessage">{{ submessage }}</slot>
-        </div>
-      </slot>
-    </div>
-
-    <div
-      v-if="isActionsSectionShown || $slots.actions"
-      class="q-message-box__actions"
-    >
-      <slot name="actions">
-        <q-button
-          v-if="confirmButtonText"
-          :loading="isConfirmBtnLoading"
-          :disabled="isCancelBtnLoading"
-          @click="handleConfirmBtnClick"
-        >
-          {{ confirmButtonText }}
-        </q-button>
-
-        <q-button
-          v-if="cancelButtonText"
-          theme="secondary"
-          :loading="isCancelBtnLoading"
-          :disabled="isConfirmBtnLoading"
-          @click="handleCancelBtnClick"
-        >
-          {{ cancelButtonText }}
-        </q-button>
-      </slot>
-    </div>
-  </slot>
 </template>
 
 <script lang="ts">

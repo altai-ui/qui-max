@@ -3,12 +3,13 @@ import type { Story } from '@storybook/vue3';
 import { defineComponent, ref } from 'vue';
 
 import { useMessageBox } from '@/qComponents/QMessageBox';
-// import type {
-//   // QMessageBoxProps,
-//   // QMessageBoxPropBeforeClose
-// } from '@/qComponents/QMessageBox';
+import type {
+  QMessageBoxContentProps
 
-const QMessageBoxStory: Story<any> = args =>
+  // QMessageBoxContent
+} from '@/qComponents/QMessageBox/src/QMessageBoxContent';
+
+const QMessageBoxStory: Story<QMessageBoxContentProps> = args =>
   defineComponent({
     setup() {
       // const beforeClose: QMessageBoxPropBeforeClose = async ({

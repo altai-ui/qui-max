@@ -24,9 +24,7 @@ const QMessageBoxComponentExtendedStory: Story<never> = () =>
                 }
               }
             },
-            {
-              distinguishCancelAndClose: true
-            }
+            { distinguishCancelAndClose: true }
           );
 
           // eslint-disable-next-line no-console

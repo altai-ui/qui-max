@@ -63,6 +63,7 @@ import { getConfig } from '@/qComponents/config';
 import { QMessageBoxContent } from '../QMessageBoxContent';
 import { QMessageBoxAction } from '../constants';
 import type { QMessageBoxEvent } from '../types';
+
 import { isExternalComponent, isInternalComponent } from './utils';
 import type {
   QMessageBoxComponent,

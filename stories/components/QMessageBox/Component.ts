@@ -10,8 +10,8 @@ const QMessageBoxComponentStory: Story<never> = () =>
       const handleClick = async (): Promise<void> => {
         try {
           const result = await useMessageBox(
-            defineAsyncComponent(() => import('./MessageBoxFormTest.vue'))
-            // { distinguishCancelAndClose: true }
+            defineAsyncComponent(() => import('./MessageBoxFormTest.vue')),
+            { distinguishCancelAndClose: true }
           );
 
           // eslint-disable-next-line no-console

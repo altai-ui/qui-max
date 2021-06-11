@@ -1,4 +1,5 @@
-import type { Ref } from 'vue';
+import type { App, ComponentPublicInstance, UnwrapRef, Ref } from 'vue';
+import type { QMessageBoxContainerInstance } from './QMessageBoxContainer';
 
 import type { QMessageBoxAction } from './constants';
 
@@ -13,10 +14,15 @@ export type QMessageBoxOptionWrapClass = Nullable<string | Classes | Classes[]>;
 export type QMessageBoxOptionWrapStyle = Nullable<string | Styles | Styles[]>;
 
 export interface QMessageBoxOptions {
-  closeOnClickShadow: Nullable<boolean>;
-  distinguishCancelAndClose: Nullable<boolean>;
-  wrapClass: QMessageBoxOptionWrapClass;
-  wrapStyle: QMessageBoxOptionWrapStyle;
+  closeOnClickShadow?: Nullable<boolean>;
+  distinguishCancelAndClose?: Nullable<boolean>;
+  wrapClass?: QMessageBoxOptionWrapClass;
+  wrapStyle?: QMessageBoxOptionWrapStyle;
+  onMounted?: (
+    app: App<Element>,
+    container: ComponentPublicInstance<UnwrapRef<QMessageBoxContainerInstance>>
+  ) => void;
+  onUnmounted?: (app: App<Element>) => void;
 }
 
 export interface QMessageBoxEvent {

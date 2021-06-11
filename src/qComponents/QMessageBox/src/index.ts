@@ -1,7 +1,8 @@
 import { createApp, nextTick } from 'vue';
-import type { App } from 'vue';
+import type { App, ComponentPublicInstance, UnwrapRef } from 'vue';
 
 import { QMessageBoxContainer } from './QMessageBoxContainer';
+import type { QMessageBoxContainerInstance } from './QMessageBoxContainer';
 import { QMessageBoxAction } from './constants';
 import type {
   QMessageBoxContent,
@@ -17,7 +18,7 @@ export const createMessageBox = (
   let messageBoxPromise: MessageBoxPromise;
   let app: App<Element> | undefined;
 
-  const defaultCallback = ({ action, payload }: QMessageBoxEvent): void => {
+  const handleDone = ({ action, payload }: QMessageBoxEvent): void => {
     if (action === QMessageBoxAction.confirm) {
       messageBoxPromise.resolve({ action, payload });
     } else if (
@@ -28,17 +29,28 @@ export const createMessageBox = (
     }
   };
 
+  const handleRemove = (): void => {
+    if (!app) return;
+
+    app.unmount();
+    options?.onUnmounted?.(app);
+  };
+
   nextTick(() => {
     app = createApp(QMessageBoxContainer, {
       ...(options ?? {}),
       content,
-      onDone: defaultCallback,
-      onRemove: () => {
-        app?.unmount();
-      }
+      onDone: handleDone,
+      onRemove: handleRemove
     });
 
-    app.mount(document.createElement('div'));
+    const container = app.mount(document.createElement('div'));
+    options?.onMounted?.(
+      app,
+      container as ComponentPublicInstance<
+        UnwrapRef<QMessageBoxContainerInstance>
+      >
+    );
   });
 
   return new Promise((resolve, reject) => {

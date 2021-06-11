@@ -63,7 +63,8 @@ import type {
   QMessageBoxContainerPropContent,
   QMessageBoxContainerPropWrapClass,
   QMessageBoxContainerPropWrapStyle,
-  QMessageBoxContainerProps
+  QMessageBoxContainerProps,
+  QMessageBoxContainerInstance
 } from './types';
 
 const REMOVE_EVENT = 'remove';
@@ -129,7 +130,7 @@ export default defineComponent({
 
   emits: [DONE_EVENT, REMOVE_EVENT],
 
-  setup(props: QMessageBoxContainerProps, ctx) {
+  setup(props: QMessageBoxContainerProps, ctx): QMessageBoxContainerInstance {
     const instance = getCurrentInstance();
 
     const isShown = ref<boolean>(false);

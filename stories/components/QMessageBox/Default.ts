@@ -42,7 +42,19 @@ const QMessageBoxStory: Story<any> = args =>
         isVisible.value = true;
 
         try {
-          const result = await useMessageBox({ title: args.title }, {});
+          const result = await useMessageBox(
+            { title: args.title },
+            {
+              onMounted: (app, container) => {
+                // eslint-disable-next-line no-console
+                console.log('onMounted', app, container);
+              },
+              onUnmounted: app => {
+                // eslint-disable-next-line no-console
+                console.log('onUnmounted', app);
+              }
+            }
+          );
 
           // eslint-disable-next-line no-console
           console.log('resolve', result);

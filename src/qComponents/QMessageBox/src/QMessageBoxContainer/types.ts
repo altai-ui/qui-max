@@ -1,4 +1,4 @@
-import type { Component } from 'vue';
+import type { Component, Ref } from 'vue';
 
 import type {
   QMessageBoxOptionWrapClass,
@@ -27,4 +27,12 @@ export type QMessageBoxContainerPropWrapStyle = QMessageBoxOptionWrapStyle;
 
 export interface QMessageBoxContainerProps extends QMessageBoxOptions {
   content: QMessageBoxContainerPropContent;
+}
+
+export interface QMessageBoxContainerInstance {
+  messageBox: Ref<Nullable<HTMLElement>>;
+  zIndex: number;
+  isShown: Ref<boolean>;
+  emitCloseEvent: () => void;
+  handleAfterLeave: () => void;
 }

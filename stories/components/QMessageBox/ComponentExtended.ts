@@ -40,6 +40,6 @@ const QMessageBoxComponentExtendedStory: Story<never> = () =>
     template: '<q-button @click="handleClick">Click to open</q-button>'
   });
 
-QMessageBoxComponentExtendedStory.storyName = 'Component Extended';
+QMessageBoxComponentExtendedStory.storyName = 'Extended Component';
 
 export default QMessageBoxComponentExtendedStory;

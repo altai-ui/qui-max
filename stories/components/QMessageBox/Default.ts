@@ -1,41 +1,32 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import type { Story } from '@storybook/vue3';
-import { defineComponent, ref } from 'vue';
+import { defineComponent } from 'vue';
 
 import { useMessageBox } from '@/qComponents/QMessageBox';
 import type {
+  QMessageBoxContentPropBeforeClose,
   QMessageBoxContentProps
-
-  // QMessageBoxContent
 } from '@/qComponents/QMessageBox/src/QMessageBoxContent';
 
 const QMessageBoxStory: Story<QMessageBoxContentProps> = args =>
   defineComponent({
     setup() {
-      // const beforeClose: QMessageBoxPropBeforeClose = async ({
-      //   action,
-      //   ctx
-      // }) => {
-      //   if (action !== 'confirm') return true;
+      const beforeClose: QMessageBoxContentPropBeforeClose = async action => {
+        if (action !== 'confirm') return true;
 
-      //   ctx.isConfirmBtnLoading.value = true;
+        const promise = (): Promise<string> =>
+          new Promise(resolve => {
+            setTimeout(() => resolve('готово!'), 1000);
+          });
 
-      //   const promise = (): Promise<string> =>
-      //     new Promise(resolve => {
-      //       setTimeout(() => resolve('готово!'), 1000);
-      //     });
+        try {
+          await promise();
 
-      //   try {
-      //     await promise();
-      //     ctx.isConfirmBtnLoading.value = false;
-
-      //     return true;
-      //   } catch {
-      //     ctx.isConfirmBtnLoading.value = false;
-
-      //     return false;
-      //   }
-      // };
+          return true;
+        } catch {
+          return false;
+        }
+      };
 
       const handleClick = async (): Promise<void> => {
         try {
@@ -45,7 +36,8 @@ const QMessageBoxStory: Story<QMessageBoxContentProps> = args =>
               message: args.message,
               submessage: args.submessage,
               confirmButtonText: args.confirmButtonText,
-              cancelButtonText: args.cancelButtonText
+              cancelButtonText: args.cancelButtonText,
+              beforeClose
             },
             {
               onMounted: (app, container) => {

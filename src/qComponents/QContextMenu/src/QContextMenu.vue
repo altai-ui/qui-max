@@ -95,7 +95,7 @@ export default defineComponent({
       validator: validateArray<QContextMenuPropPosition>(['left', 'right'])
     },
     /**
-     * Specifies a target element where QMessageBox will be moved.
+     * Specifies a target element where QContextMenu will be moved.
      * (has to be a valid query selector, or an HTMLElement)
      */
     teleportTo: {

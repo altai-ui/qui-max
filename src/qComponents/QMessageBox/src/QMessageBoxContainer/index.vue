@@ -176,20 +176,6 @@ export default defineComponent({
       action,
       payload = null
     }: QMessageBoxEvent): Promise<void> => {
-      // let isReadyToClose = true;
-
-      // if (typeof props.beforeClose === 'function') {
-      //   isReadyToClose = await props.beforeClose({
-      //     action,
-      //     payload,
-      //     ctx: {
-      //       isConfirmBtnLoading,
-      //       isCancelBtnLoading
-      //     }
-      //   });
-      // }
-
-      // if (isReadyToClose) {
       ctx.emit(DONE_EVENT, { action, payload });
 
       isShown.value = false;
@@ -198,7 +184,6 @@ export default defineComponent({
 
       document.removeEventListener('focus', handleDocumentFocus, true);
       elementToFocusAfterClosing?.focus();
-      // }
     };
 
     const emitCloseEvent = (): void => {

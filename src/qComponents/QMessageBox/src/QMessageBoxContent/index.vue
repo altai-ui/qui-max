@@ -54,12 +54,14 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed } from 'vue';
+import type { PropType } from 'vue';
 
 import QButton from '@/qComponents/QButton';
 
 import { QMessageBoxAction } from '../constants';
 
 import type {
+  QMessageBoxContentPropBeforeClose,
   QMessageBoxContentProps,
   QMessageBoxContentInstance
 } from './types';
@@ -106,6 +108,13 @@ export default defineComponent({
     cancelButtonText: {
       type: String,
       default: null
+    },
+    /**
+     * callback before QMessageBox closes, and it will prevent QMessageBox from closing
+     */
+    beforeClose: {
+      type: Function as unknown as PropType<QMessageBoxContentPropBeforeClose>,
+      default: null
     }
   },
 
@@ -119,12 +128,34 @@ export default defineComponent({
       () => Boolean(props.confirmButtonText) || Boolean(props.cancelButtonText)
     );
 
-    const handleConfirmBtnClick = (): void => {
-      ctx.emit(DONE_EVENT, { action: QMessageBoxAction.confirm });
+    const commitBeforeClose = async (
+      action: QMessageBoxAction
+    ): Promise<boolean> => {
+      let isReadyToClose = true;
+
+      if (typeof props.beforeClose === 'function') {
+        isReadyToClose = await props.beforeClose(action);
+      }
+
+      return isReadyToClose;
     };
 
-    const handleCancelBtnClick = (): void => {
-      ctx.emit(DONE_EVENT, { action: QMessageBoxAction.cancel });
+    const handleConfirmBtnClick = async (): Promise<void> => {
+      const action = QMessageBoxAction.confirm;
+      isConfirmBtnLoading.value = true;
+      const isDone = await commitBeforeClose(action);
+      isConfirmBtnLoading.value = false;
+
+      if (isDone) ctx.emit(DONE_EVENT, { action });
+    };
+
+    const handleCancelBtnClick = async (): Promise<void> => {
+      const action = QMessageBoxAction.cancel;
+      isCancelBtnLoading.value = true;
+      const isDone = await commitBeforeClose(action);
+      isCancelBtnLoading.value = false;
+
+      if (isDone) ctx.emit(DONE_EVENT, { action });
     };
 
     return {

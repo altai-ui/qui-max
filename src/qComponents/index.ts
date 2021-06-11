@@ -24,7 +24,7 @@ import QForm from './QForm';
 import QFormItem from './QFormItem';
 import QInput from './QInput';
 import QInputNumber from './QInputNumber';
-import QMessageBox from './QMessageBox';
+import { useMessageBox } from './QMessageBox';
 import QNotification, { useNotify, provideNotify } from './QNotification';
 import QOption from './QOption';
 import QPagination from './QPagination';
@@ -74,6 +74,7 @@ const install = (
 
 export default { install };
 export {
+  useMessageBox,
   useNotify,
   provideNotify,
   QBreadcrumbs,
@@ -93,7 +94,6 @@ export {
   QFormItem,
   QInput,
   QInputNumber,
-  QMessageBox,
   QNotification,
   QOption,
   QPagination,

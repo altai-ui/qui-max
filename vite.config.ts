@@ -20,14 +20,17 @@ export default defineConfig({
       entry: resolve(__dirname, 'src/qComponents/index.ts'),
       name: 'qui-max'
     },
-    cssCodeSplit: true,
     rollupOptions: {
+      // make sure to externalize deps that shouldn't be bundled
+      // into your library
       external: ['vue'],
       output: {
+        // Provide global variables to use in the UMD build
+        // for externalized deps
+        exports: 'named',
         globals: {
           vue: 'Vue'
-        },
-        exports: 'named'
+        }
       }
     }
   }

@@ -5,6 +5,7 @@ import QMessageBox from '@/qComponents/QMessageBox';
 
 import Default from './Default';
 import Component from './Component';
+import ComponentExtended from './ComponentExtended';
 
 const storyMetadata: Meta = {
   title: 'Components/QMessageBox',
@@ -14,5 +15,5 @@ const storyMetadata: Meta = {
   }
 };
 
-export { Default, Component };
+export { Default, Component, ComponentExtended };
 export default storyMetadata;

@@ -1,5 +1,8 @@
 import QMessageBoxContainer from './index.vue';
 
-export type { QMessageBoxContainerInstance } from './types';
+export type {
+  QMessageBoxContainerPropContent,
+  QMessageBoxContainerProps,
+  QMessageBoxContainerInstance
+} from './types';
 export { QMessageBoxContainer };
-export default QMessageBoxContainer;

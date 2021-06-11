@@ -1,30 +1,30 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import type { Story } from '@storybook/vue3';
-import { defineComponent, defineAsyncComponent, ref } from 'vue';
+import { defineComponent, defineAsyncComponent } from 'vue';
 
-import type { QMessageBoxProps } from '@/qComponents/QMessageBox';
+import { useMessageBox } from '@/qComponents/QMessageBox';
 
-const QMessageBoxComponentStory: Story<QMessageBoxProps> = () =>
+const QMessageBoxComponentStory: Story<never> = () =>
   defineComponent({
-    components: {
-      MessageBoxFormTest: defineAsyncComponent(
-        () => import('./MessageBoxFormTest.vue')
-      )
-    },
     setup() {
-      const isVisible = ref<boolean>(false);
-
       const handleClick = async (): Promise<void> => {
-        isVisible.value = true;
+        try {
+          const result = await useMessageBox(
+            defineAsyncComponent(() => import('./MessageBoxFormTest.vue'))
+            // { distinguishCancelAndClose: true }
+          );
+
+          // eslint-disable-next-line no-console
+          console.log('resolve', result);
+        } catch (err) {
+          // eslint-disable-next-line no-console
+          console.log('reject', err);
+        }
       };
 
-      return { isVisible, handleClick };
+      return { handleClick };
     },
-    template: `
-      <q-button @click="handleClick">Click to open</q-button>
-
-      <message-box-form-test v-model:isVisible="isVisible"/>
-    `
+    template: '<q-button @click="handleClick">Click to open</q-button>'
   });
 
 QMessageBoxComponentStory.storyName = 'Component';

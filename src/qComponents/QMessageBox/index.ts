@@ -9,6 +9,8 @@ const QMessageBox = (): void => {};
 
 // export type { QMessageBoxId } from './src/types';
 export { useMessageBox };
+export { QMessageBoxContent } from './src/QMessageBoxContent';
+export { QMessageBoxAction } from './src/constants';
 export default QMessageBox;
 
 // import type { App } from 'vue';

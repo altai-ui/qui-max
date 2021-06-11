@@ -1,11 +1,12 @@
 import type { App, ComponentPublicInstance, UnwrapRef, Ref } from 'vue';
-import type { QMessageBoxContainerInstance } from './QMessageBoxContainer';
+import type {
+  QMessageBoxContainerPropContent,
+  QMessageBoxContainerInstance
+} from './QMessageBoxContainer';
 
 import type { QMessageBoxAction } from './constants';
 
-export interface QMessageBoxContent {
-  title: string;
-}
+export type QMessageBoxContent = QMessageBoxContainerPropContent;
 
 type Classes = Record<string, boolean>;
 type Styles = Record<string, string | number>;

@@ -36,14 +36,16 @@ const QMessageBoxStory: Story<any> = args =>
       //   }
       // };
 
-      const isVisible = ref<boolean>(false);
-
       const handleClick = async (): Promise<void> => {
-        isVisible.value = true;
-
         try {
           const result = await useMessageBox(
-            { title: args.title },
+            {
+              title: args.title,
+              message: args.message,
+              submessage: args.submessage,
+              confirmButtonText: args.confirmButtonText,
+              cancelButtonText: args.cancelButtonText
+            },
             {
               onMounted: (app, container) => {
                 // eslint-disable-next-line no-console
@@ -64,33 +66,9 @@ const QMessageBoxStory: Story<any> = args =>
         }
       };
 
-      const handleConfirm = (): void => {
-        // eslint-disable-next-line no-console
-        console.log('Confirm');
-      };
-      const handleClose = (): void => {
-        // eslint-disable-next-line no-console
-        console.log('Close');
-      };
-      const handleCancel = (): void => {
-        // eslint-disable-next-line no-console
-        console.log('Cancel');
-      };
-
-      return {
-        isVisible,
-        args,
-        // beforeClose,
-        handleClick,
-        handleConfirm,
-        handleClose,
-        handleCancel
-      };
+      return { handleClick };
     },
-    template: `
-      <q-button @click="handleClick">Click to open</q-button>
-
-    `
+    template: '<q-button @click="handleClick">Click to open</q-button>'
   });
 
 QMessageBoxStory.storyName = 'Default';

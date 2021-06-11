@@ -33,11 +33,12 @@
             @click="emitCloseEvent"
           />
 
-          <div class="q-message-box__title">
-            {{ title }}
-          </div>
-
-          content
+          <component
+            :is="preparedContent.component"
+            v-bind="preparedContent.props"
+            v-on="preparedContent.listeners"
+            @done="closeBox"
+          />
         </div>
       </q-scrollbar>
     </div>
@@ -49,17 +50,22 @@ import {
   defineComponent,
   getCurrentInstance,
   ref,
+  computed,
   onMounted,
-  nextTick
+  nextTick,
+  onBeforeUnmount
 } from 'vue';
 import type { PropType } from 'vue';
 
 import QScrollbar from '@/qComponents/QScrollbar';
 import { getConfig } from '@/qComponents/config';
 
+import { QMessageBoxContent } from '../QMessageBoxContent';
 import { QMessageBoxAction } from '../constants';
 import type { QMessageBoxEvent } from '../types';
+import { isExternalComponent, isInternalComponent } from './utils';
 import type {
+  QMessageBoxComponent,
   QMessageBoxContainerPropContent,
   QMessageBoxContainerPropWrapClass,
   QMessageBoxContainerPropWrapStyle,
@@ -76,19 +82,13 @@ export default defineComponent({
 
   components: {
     QScrollbar
+    // QMessageBoxContent
   },
 
   props: {
     content: {
       type: [Object, Function] as PropType<QMessageBoxContainerPropContent>,
       required: true
-    },
-    /**
-     * title of the QMessageBox
-     */
-    title: {
-      type: String,
-      default: null
     },
     /**
      * whether QMessageBox can be closed by clicking the mask
@@ -136,6 +136,24 @@ export default defineComponent({
     const isShown = ref<boolean>(false);
     const messageBox = ref<HTMLElement | null>(null);
     const zIndex = getConfig('nextZIndex');
+
+    const preparedContent = computed<QMessageBoxComponent>(() => {
+      if (isExternalComponent(props.content)) return props.content;
+
+      if (isInternalComponent(props.content)) {
+        return {
+          component: QMessageBoxContent,
+          props: props.content,
+          listeners: {}
+        };
+      }
+
+      return {
+        component: props.content,
+        props: {},
+        listeners: {}
+      };
+    });
 
     const elementToFocusAfterClosing: HTMLElement | null =
       document.activeElement as HTMLElement | null;
@@ -193,6 +211,8 @@ export default defineComponent({
 
     onMounted(async () => {
       document.body.appendChild(instance?.vnode.el as Node);
+      document.documentElement.style.overflow = 'hidden';
+      document.addEventListener('focus', handleDocumentFocus, true);
 
       await nextTick();
       isShown.value = true;
@@ -200,10 +220,16 @@ export default defineComponent({
       messageBox.value?.focus();
     });
 
+    onBeforeUnmount(() => {
+      document.documentElement.style.overflow = '';
+    });
+
     return {
       messageBox,
       zIndex,
       isShown,
+      preparedContent,
+      closeBox,
       emitCloseEvent,
       handleAfterLeave
     };

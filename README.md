@@ -104,39 +104,6 @@ Please refer to each component's [Stories](https://qvant-lab.github.io/qui-max/)
 ## Not quick setup
 ...
 
-## Optional
-
-- if you use VueI18n, you need to merge messages:
-
-```js
-import VueI18n from 'vue-i18n';
-import { en, ru } from '@qvant/qui/src/qComponents/constants/locales';
-
-Vue.use(VueI18n);
-
-const messages = {
-  en: {
-    message: {
-      hello: 'hello world'
-    },
-    ...en
-  },
-  ru: {
-    message: {
-      hello: 'привет, мир'
-    },
-    ...ru
-  }
-};
-
-const i18n = new VueI18n({
-  locale: 'en',
-  messages
-});
-
-new Vue({
-  i18n
-}).$mount('#your-app');
 ```
 
 ## Supported languages

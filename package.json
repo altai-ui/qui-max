@@ -4,7 +4,6 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "rollup": "rollup -c",
     "serve": "vite preview",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
@@ -74,7 +73,7 @@
     "vue-loader": "^16.2.0"
   },
   "files": ["dist"],
-  "main": "./dist/qui-max.es.js",
+  "main": "./dist/qui-max.umd.js",
   "module": "./dist/qui-max.es.js",
   "style": "./dist/style.css",
   "exports": {

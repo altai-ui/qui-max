@@ -22,7 +22,7 @@
     "focus-visible": "^5.2.0",
     "lodash-es": "^4.17.21",
     "resize-observer-polyfill": "^1.5.1",
-    "vue": "^3.0.5",
+    "vue": "^3.1.1",
     "vue-i18n": "^9.0.0"
   },
   "devDependencies": {
@@ -42,7 +42,7 @@
     "@typescript-eslint/eslint-plugin": "^4.26.0",
     "@typescript-eslint/parser": "^4.26.0",
     "@vitejs/plugin-vue": "^1.2.3",
-    "@vue/compiler-sfc": "^3.0.11",
+    "@vue/compiler-sfc": "^3.1.1",
     "@vue/eslint-config-typescript": "^7.0.0",
     "@vuedx/typescript-plugin-vue": "^0.6.3",
     "babel-loader": "^8.2.2",

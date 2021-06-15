@@ -26,6 +26,9 @@
     "vue": "^3.0.5",
     "vue-i18n": "^9.0.0"
   },
+  "peerDependencies": {
+    "vue": "^3.0.5"
+  },
   "devDependencies": {
     "@babel/core": "^7.13.15",
     "@qvant/prettier-config": "^0.0.1",
@@ -60,9 +63,7 @@
     "postcss": "^8.3.2",
     "prettier": "^2.2.1",
     "rollup": "^2.51.2",
-    "rollup-plugin-collect-sass": "^1.0.9",
     "rollup-plugin-copy": "^3.4.0",
-    "rollup-plugin-copy-assets": "^2.0.3",
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "rollup-plugin-sass": "^1.2.2",
     "rollup-plugin-typescript2": "^0.30.0",
@@ -75,8 +76,8 @@
     "vite": "^2.3.6",
     "vue-loader": "^16.2.0"
   },
-  "files": ["dist", "dist/css/*.css"],
-  "main": "./dist/qui-max.umd.js",
+  "files": ["dist"],
+  "main": "./dist/qui-max.es.js",
   "module": "./dist/qui-max.es.js",
   "style": "./dist/style.css",
   "exports": {
@@ -86,7 +87,7 @@
     },
     "./styles": "./dist/style.css",
     "./css/*": "./dist/css/*.css",
-    "./fonts/*": "./dist/fonts/*.css",
-    "./icons/*": "./dist/icons/*.css"
+    "./fonts": "./dist/fonts/fonts.css",
+    "./icons": "./dist/icons/icons.css"
   }
 }

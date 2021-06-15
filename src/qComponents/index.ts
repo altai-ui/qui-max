@@ -1,3 +1,9 @@
+import { App } from 'vue';
+import { LocaleMessageDictionary, VueMessageType } from 'vue-i18n';
+import { setConfig } from './config';
+import { installI18n } from './constants/locales';
+import 'focus-visible';
+
 /* eslint-disable no-underscore-dangle, global-require, no-param-reassign */
 import QBreadcrumbs from './QBreadcrumbs';
 import QButton from './QButton';
@@ -32,8 +38,6 @@ import QTabs from './QTabs';
 import QTag from './QTag';
 import QTextarea from './QTextarea';
 import QUpload from './QUpload';
-
-import Qui from './install';
 
 import '../fonts/fonts.scss';
 import '../icons/icons.scss';
@@ -71,7 +75,71 @@ import './QTag/src/q-tag.scss';
 import './QTextarea/src/q-textarea.scss';
 import './QUpload/src/q-upload.scss';
 
-export default Qui;
+interface Localization {
+  locale?: string;
+  customI18nMessages?: Record<string, LocaleMessageDictionary<VueMessageType>>;
+}
+
+interface ConfigOptions {
+  localization?: Localization;
+  zIndexCounter?: number;
+  useAllComponents?: boolean;
+}
+
+// install
+const install = (
+  app: App,
+  {
+    localization: { locale, customI18nMessages = {} } = {},
+    zIndexCounter,
+    useAllComponents = false
+  }: ConfigOptions = {}
+): void => {
+  if (useAllComponents) {
+    app.use(QBreadcrumbs);
+    app.use(QButton);
+    app.use(QCascader);
+    app.use(QCheckbox);
+    app.use(QCheckboxGroup);
+    app.use(QCol);
+    app.use(QCollapse);
+    app.use(QCollapseItem);
+    app.use(QColorPicker);
+    app.use(QContextMenu);
+    app.use(QDatePicker);
+    app.use(QDialog);
+    app.use(QDrawer);
+    app.use(QForm);
+    app.use(QFormItem);
+    app.use(QInput);
+    app.use(QInputNumber);
+    app.use(QMessageBox);
+    app.use(QNotification);
+    app.use(QOption);
+    app.use(QPagination);
+    app.use(QPopover);
+    app.use(QRadio);
+    app.use(QRadioGroup);
+    app.use(QRow);
+    app.use(QScrollbar);
+    app.use(QSelect);
+    app.use(QTable);
+    app.use(QTabPane);
+    app.use(QTabs);
+    app.use(QTag);
+    app.use(QTextarea);
+    app.use(QUpload);
+  }
+
+  setConfig({
+    locale,
+    zIndex: zIndexCounter
+  });
+
+  installI18n({ app, customI18nMessages });
+};
+
+export default { install };
 export {
   useNotify,
   provideNotify,

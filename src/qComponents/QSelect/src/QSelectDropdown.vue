@@ -31,8 +31,8 @@
 
         <q-option
           v-if="isNewOptionShown"
-          :model-value="qSelectState.query"
-          :label="qSelectState.query"
+          :model-value="qSelectState?.query"
+          :label="qSelectState?.query"
           created
         />
 
@@ -76,7 +76,7 @@ import QScrollbar, { QScrollbarInstance } from '@/qComponents/QScrollbar';
 import QOption from '@/qComponents/QOption';
 import { getConfig } from '@/qComponents/config';
 import type { QSelectProvider } from '@/qComponents/QSelect';
-import type { QOptionPropModelValue } from '@/qComponents/QOption';
+import type { QOptionPropValue } from '@/qComponents/QOption';
 import type { QSelectDropdownInstance, QSelectDropdownProps } from './types';
 
 const DEFAULT_Z_INDEX = 2000;
@@ -104,9 +104,9 @@ export default defineComponent({
     const scrollbar = ref<ComponentPublicInstance<
       UnwrapRef<QScrollbarInstance>
     > | null>(null);
-    const qSelect = inject<QSelectProvider | null>('qSelect', null);
-    const qSelectState = qSelect?.state ?? null;
-    const multiple = qSelect?.multiple ?? ref(false);
+    const qSelect = inject<QSelectProvider>('qSelect', {} as QSelectProvider);
+    const qSelectState = qSelect.state ?? null;
+    const multiple = qSelect.multiple ?? ref(false);
     const zIndex = ref<number>(DEFAULT_Z_INDEX);
 
     const styles = computed<Record<string, string | number | null>>(() => ({
@@ -207,8 +207,8 @@ export default defineComponent({
     };
 
     const handleSelectAllClick = (): void => {
-      const modelValue = qSelect?.modelValue.value;
-      const valueKey = qSelect?.valueKey.value ?? 'value';
+      const modelValue = qSelect.modelValue.value;
+      const valueKey = qSelect.valueKey.value ?? 'value';
 
       if (!Array.isArray(modelValue) || !qSelectState?.options) return;
       if (areAllSelected.value) {
@@ -217,7 +217,7 @@ export default defineComponent({
             .filter(({ isVisible, disabled }) => !disabled && isVisible)
             .map(({ key }) => key) ?? [];
 
-        const getKey = (value: QOptionPropModelValue): string | number => {
+        const getKey = (value: QOptionPropValue): string | number => {
           return isPlainObject(value) ? get(value, valueKey) : value;
         };
 
@@ -231,9 +231,9 @@ export default defineComponent({
       let newValue =
         qSelectState?.options
           .filter(({ isSelected, disabled }) => !disabled && !isSelected)
-          .map(option => option.modelValue) ?? [];
+          .map(option => option.value) ?? [];
 
-      const multipleLimit = qSelect?.multipleLimit ?? null;
+      const multipleLimit = qSelect.multipleLimit ?? null;
 
       if (multipleLimit?.value) {
         const availableQuantity = multipleLimit.value - modelValue?.length;

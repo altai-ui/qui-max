@@ -21,8 +21,7 @@ export default defineConfig({
   build: {
     lib: {
       entry: resolve(__dirname, 'src/qComponents/index.ts'),
-      name: 'qui-max',
-      formats: ['es']
+      name: 'qui-max'
     },
     rollupOptions: {
       // make sure to externalize deps that shouldn't be bundled
@@ -40,16 +39,18 @@ export default defineConfig({
       plugins: [
         sassPlugin({
           runtime: sass,
-          output(_, styleNodes: [{ id: string; content: string }]) {
+          output(_: string, styleNodes: [{ id: string; content: string }]) {
             styleNodes.forEach(styleNode => {
               const splittedPath = styleNode.id.split('/');
               const fileName = splittedPath[splittedPath.length - 1].replace(
                 '.scss',
                 '.css'
               );
+
               if (!existsSync('dist/css')) mkdirSync('dist/css');
               if (!existsSync('dist/icons')) mkdirSync('dist/icons');
               if (!existsSync('dist/fonts')) mkdirSync('dist/fonts');
+
               if ('icons.css'.includes(fileName)) {
                 writeFileSync(`dist/icons/${fileName}`, styleNode.content);
               } else if ('fonts.css'.includes(fileName)) {
@@ -74,6 +75,10 @@ export default defineConfig({
             {
               src: 'src/icons/qicon.woff',
               dest: 'dist/icons'
+            },
+            {
+              src: 'src/assets',
+              dest: 'dist/assets'
             }
           ],
           verbose: true,

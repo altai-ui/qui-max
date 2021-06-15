@@ -1,26 +1,171 @@
-# Vue 3 + Typescript + Vite
+<p align="center">
+  <img src="/.readme-assets/qui-logo.svg?raw=true" />
+</p>
 
-This template should help get you started developing with Vue 3 and Typescript in Vite.
+<p align="center" class="unchanged rich-diff-level-one">
 
-## Recommended IDE Setup
+# A Vue 3 Design System for Web.
 
-[VSCode](https://code.visualstudio.com/) + [Vetur](https://marketplace.visualstudio.com/items?itemName=octref.vetur). Make sure to enable `vetur.experimental.templateInterpolationService` in settings!
+A component's library helping us build great products for our customers.
 
-### If Using `<script setup>`
+What is it?
 
-[`<script setup>`](https://github.com/vuejs/rfcs/pull/227) is a feature that is currently in RFC stage. To get proper IDE support for the syntax, use [Volar](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.volar) instead of Vetur (and disable Vetur).
+- 🔩 30+ Vue 3 components
+- 🔥 Fully written with Composition API
+- 🔑 Typescript
+- 📦 icons pack
+- 🏳️‍🌈 colors & grid
+- 🥷 neumorphism styles
+- 📚 storybook sandbox
 
-## Type Support For `.vue` Imports in TS
+## Install
 
-Since TypeScript cannot handle type information for `.vue` imports, they are shimmed to be a generic Vue component type by default. In most cases this is fine if you don't really care about component prop types outside of templates. However, if you wish to get actual prop types in `.vue` imports (for example to get props validation when using manual `h(...)` calls), you can use the following:
+```bash
+npm install @qvant/qui-max -S
+yarn add @qvant/qui-max
+```
 
-### If Using Volar
+You can import Qui entirely, or just import what you need. Let's start with fully import.
 
-Run `Volar: Switch TS Plugin on/off` from VSCode command palette.
+## Quick setup
 
-### If Using Vetur
+In main.js:
 
-1. Install and add `@vuedx/typescript-plugin-vue` to the [plugins section](https://www.typescriptlang.org/tsconfig#plugins) in `tsconfig.json`
-2. Delete `src/shims-vue.d.ts` as it is no longer needed to provide module info to Typescript
-3. Open `src/main.ts` in VSCode
-4. Open the VSCode command palette 5. Search and run "Select TypeScript version" -> "Use workspace version"
+```js
+import { createApp } from 'vue'
+import Qui from '@qvant/qui-max';
+import '@qvant/qui-max/styles';
+
+// Setup all components
+const app = createApp(App)
+app.use(Qui, { useAllComponents: true })
+// that's it! All components will be imported with styles
+```
+
+in YourComponent.vue: (Example)
+
+```vue
+<template>
+  <q-input v-model="value" />
+</template>
+<script>
+import { ref } from 'vue';
+
+export default {
+  setup() {
+    const value = ref('');
+    return { value }
+  }
+};
+</script>
+```
+Configure setup:
+ - import styles separately to avoid unused css
+ - set customI18nMessages to support any language for components
+ - change zIndex of appeared components (e.g Dialogs, Notifications, Dropdowns etc.)
+ - control setup of components
+
+In main.js:
+
+```js
+import { createApp } from 'vue'
+import Qui, { QButton } from '@qvant/qui-max';
+
+// import required styles
+import 'qui-max/css/main'
+import 'qui-max/fonts'
+import 'qui-max/icons'
+
+// import the only styles of component you gonna use
+import 'qui-max/css/q-button'
+
+app.use(Qui, {
+  useAllComponents: false,
+  localization: {
+    locale: 'en', // Russian language by default, you can set `en` for English
+    customI18nMessages: {
+      // rewrite default texts, see the source: src/qComponents/constants/locales
+      en: {
+        QDatepicker: {
+          placeholder: 'Pick your birthday!'
+        }
+      }
+    },
+    zIndexCounter: 3000, // zIndexCounter is being used by some components, (e.g QPopover, QSelect, QDialog ...etc), 2000 by default
+  }
+});
+
+app.use(QButton)
+```
+
+Now you have implemented Vue and Qui Max to your project, and it's time to write your code.
+Please refer to each component's [Stories](https://qvant-lab.github.io/qui-max/) to learn how to use them.
+
+## Not quick setup
+...
+
+## Optional
+
+- if you use VueI18n, you need to merge messages:
+
+```js
+import VueI18n from 'vue-i18n';
+import { en, ru } from '@qvant/qui/src/qComponents/constants/locales';
+
+Vue.use(VueI18n);
+
+const messages = {
+  en: {
+    message: {
+      hello: 'hello world'
+    },
+    ...en
+  },
+  ru: {
+    message: {
+      hello: 'привет, мир'
+    },
+    ...ru
+  }
+};
+
+const i18n = new VueI18n({
+  locale: 'en',
+  messages
+});
+
+new Vue({
+  i18n
+}).$mount('#your-app');
+```
+
+## Supported languages
+
+- Russian ✅
+- English ✅
+- Also you can use any language by setting texts for components via 'customI18nMessages' property in the Qui instance. See the example above.
+
+## Browser Support
+
+Modern browsers are recomended
+
+- safari: >11
+- chrome: >=61
+- firefox: >=58
+- opera: >=62
+- edge: >=16
+- yandex: >=18
+- ie: ? (we don't know :) and will not support it)
+
+## Development
+
+Clone repository and run storybook
+
+```bash
+yarn storybook
+npm run storybook
+```
+
+## LICENSE
+
+MIT

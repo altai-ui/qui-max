@@ -1,11 +1,4 @@
 /* eslint-disable no-underscore-dangle, global-require, no-param-reassign */
-import type { App } from 'vue';
-import type { LocaleMessageDictionary, VueMessageType } from 'vue-i18n';
-import 'focus-visible';
-import { eventBus } from './helpers';
-import { setConfig } from './config';
-import { installI18n } from './constants/locales';
-
 import QBreadcrumbs from './QBreadcrumbs';
 import QButton from './QButton';
 import QCascader from './QCascader';
@@ -24,11 +17,7 @@ import QFormItem from './QFormItem';
 import QInput from './QInput';
 import QInputNumber from './QInputNumber';
 import QMessageBox from './QMessageBox';
-import QNotification, {
-  notify,
-  notifyClose,
-  notifyCloseAll
-} from './QNotification';
+import QNotification, { useNotify, provideNotify } from './QNotification';
 import QOption from './QOption';
 import QPagination from './QPagination';
 import QPopover from './QPopover';
@@ -44,46 +33,48 @@ import QTag from './QTag';
 import QTextarea from './QTextarea';
 import QUpload from './QUpload';
 
-import '../fonts/index.scss';
-import '../icons/index.scss';
+import Qui from './install';
+
+import '../fonts/fonts.scss';
+import '../icons/icons.scss';
 import '../main.scss';
-import '../components.scss';
 
-interface Localization {
-  locale?: string;
-  customI18nMessages?: Record<string, LocaleMessageDictionary<VueMessageType>>;
-}
+import './QBreadcrumbs/src/q-breadcrumbs.scss';
+import './QButton/src/q-button.scss';
+import './QCascader/src/q-cascader.scss';
+import './QCheckbox/src/q-checkbox.scss';
+import './QCheckboxGroup/src/q-checkbox-group.scss';
+import './QCol/src/q-col.scss';
+import './QCollapseItem/src/q-collapse-item.scss';
+import './QColorPicker/src/q-color-picker.scss';
+import './QContextMenu/src/q-context-menu.scss';
+import './QDatePicker/src/q-date-picker.scss';
+import './QDialog/src/q-dialog.scss';
+import './QDrawer/src/q-drawer.scss';
+import './QFormItem/src/q-form-item.scss';
+import './QInput/src/q-input.scss';
+import './QInputNumber/src/q-input-number.scss';
+import './QMessageBox/src/q-message-box.scss';
+import './QNotification/src/q-notification.scss';
+import './QOption/src/q-option.scss';
+import './QPagination/src/q-pagination.scss';
+import './QPopover/src/q-popover.scss';
+import './QRadio/src/q-radio.scss';
+import './QRadioGroup/src/q-radio-group.scss';
+import './QRow/src/q-row.scss';
+import './QScrollbar/src/q-scrollbar.scss';
+import './QSelect/src/q-select.scss';
+import './QTable/src/q-table.scss';
+import './QTabPane/src/q-tab-pane.scss';
+import './QTabs/src/q-tabs.scss';
+import './QTag/src/q-tag.scss';
+import './QTextarea/src/q-textarea.scss';
+import './QUpload/src/q-upload.scss';
 
-interface ConfigOptions {
-  localization?: Localization;
-  zIndexCounter?: number;
-}
-
-// install
-const install = (
-  app: App,
-  {
-    localization: { locale, customI18nMessages = {} } = {},
-    zIndexCounter
-  }: ConfigOptions = {}
-): void => {
-  setConfig({
-    locale,
-    zIndex: zIndexCounter
-  });
-
-  installI18n({ app, customI18nMessages });
-
-  // setup emitter
-  app.config.globalProperties.$eventHub = eventBus;
-};
-
-export default { install };
+export default Qui;
 export {
-  eventBus,
-  notify,
-  notifyClose,
-  notifyCloseAll,
+  useNotify,
+  provideNotify,
   QBreadcrumbs,
   QButton,
   QCascader,

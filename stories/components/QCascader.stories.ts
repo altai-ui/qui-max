@@ -6,7 +6,7 @@ import QCascader from '@/qComponents/QCascader';
 import type { QCascaderProps } from '@/qComponents/QCascader';
 
 const storyMetadata: Meta = {
-  title: 'Components/Cascader',
+  title: 'Components/QCascader',
   component: QCascader,
   argTypes: {
     modelValue: { control: { type: 'none' } }

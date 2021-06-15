@@ -1,18 +1,2 @@
-@import './q-notification-cloud.scss';
-
-.q-notification-box {
-  position: fixed;
-  top: 0;
-  right: 16px;
-  transition: all 0.8s var(--transition-spline-base);
-
-  &-enter-from,
-  &-leave-to {
-    opacity: 0;
-    transform: translateX(100%);
-  }
-
-  &-leave-active {
-    position: absolute;
-  }
-}
+@import './QNotificationToast/q-notification-toast.scss';
+@import './QNotificationContainer/q-notification-container.scss';

@@ -35,7 +35,7 @@ import type {
   QButtonPropTheme,
   QButtonPropSize,
   QButtonInstance
-} from './types';
+} from './QButton';
 
 export default defineComponent({
   name: 'QButton',

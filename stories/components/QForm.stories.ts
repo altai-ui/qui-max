@@ -47,8 +47,9 @@ const INITIAL_RULES: QFormPropRules = {
 const QFormStory: Story<QFormProps> = args =>
   defineComponent({
     setup() {
-      const form =
-        ref<ComponentPublicInstance<UnwrapRef<QFormInstance>> | null>(null);
+      const form = ref<ComponentPublicInstance<
+        UnwrapRef<QFormInstance>
+      > | null>(null);
 
       const formModel = reactive(model);
       const rules = reactive(INITIAL_RULES);

@@ -32,7 +32,7 @@ export interface QInputInstance {
   textLength: Ref<number>;
   inputType: Ref<string>;
   // refs
-  input: Ref<Nullable<HTMLElement>>;
+  input: Ref<Nullable<HTMLInputElement>>;
   root: Ref<Nullable<HTMLElement>>;
   // methods
   handleBlur: (event: FocusEvent) => void;

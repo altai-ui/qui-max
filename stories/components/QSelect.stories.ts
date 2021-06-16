@@ -22,7 +22,7 @@ const options = [
     label: 'Option 1'
   },
   {
-    value: 'value2',
+    value: 2,
     label: 'Option 2'
   },
   {
@@ -124,7 +124,7 @@ const Template: Story<QSelectProps> = args =>
             v-for="item in state.options"
             :key="item.value"
             :label="item.label"
-            :model-value="item.value"
+            :value="item.value"
             :disabled="item.disabled"
           />
         </q-select>

@@ -74,9 +74,10 @@ import {
 
 import QScrollbar, { QScrollbarInstance } from '@/qComponents/QScrollbar';
 import QOption from '@/qComponents/QOption';
+import QCheckbox from '@/qComponents/QCheckbox';
 import { getConfig } from '@/qComponents/config';
 import type { QSelectProvider } from '@/qComponents/QSelect';
-import type { QOptionPropModelValue } from '@/qComponents/QOption';
+import type { QOptionPropValue } from '@/qComponents/QOption';
 import type { QSelectDropdownInstance, QSelectDropdownProps } from './types';
 
 const DEFAULT_Z_INDEX = 2000;
@@ -84,7 +85,13 @@ const DEFAULT_Z_INDEX = 2000;
 export default defineComponent({
   name: 'QSelectDropdown',
   componentName: 'QSelectDropdown',
-  components: { QScrollbar, QOption },
+
+  components: {
+    QScrollbar,
+    QOption,
+    QCheckbox
+  },
+
   props: {
     shown: { type: Boolean, required: true },
     selectAllShown: { type: Boolean, required: true },
@@ -217,7 +224,7 @@ export default defineComponent({
             .filter(({ isVisible, disabled }) => !disabled && isVisible)
             .map(({ key }) => key) ?? [];
 
-        const getKey = (value: QOptionPropModelValue): string | number => {
+        const getKey = (value: QOptionPropValue): string | number => {
           return isPlainObject(value) ? get(value, valueKey) : value;
         };
 
@@ -231,7 +238,7 @@ export default defineComponent({
       let newValue =
         qSelectState?.options
           .filter(({ isSelected, disabled }) => !disabled && !isSelected)
-          .map(option => option.modelValue) ?? [];
+          .map(option => option.value) ?? [];
 
       const multipleLimit = qSelect?.multipleLimit ?? null;
 

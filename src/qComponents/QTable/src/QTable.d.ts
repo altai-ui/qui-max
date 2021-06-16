@@ -100,7 +100,7 @@ export interface QTableProvider {
   updateCheckedRows: (value: number[]) => void;
   updateSortBy: (value: QTablePropSortBy) => void;
   updateGroupsOfColumns: (value: QTablePropGroupsOfColumns) => void;
-  emitRowClick: (row: Record<string, unknown>, rowIndex: number) => void;
+  emitRowClick: (row: Row, rowIndex: number) => void;
 }
 
 export interface QTableInstance {

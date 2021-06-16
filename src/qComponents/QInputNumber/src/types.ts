@@ -6,12 +6,13 @@ export interface QInputNumberProps {
   noControls: Nullable<boolean>;
   modelValue: Nullable<string | number>;
   validateEvent: Nullable<boolean>;
+  prefix: Nullable<string>;
+  suffix: Nullable<string>;
+  localization: Nullable<string>;
+  useGrouping: Nullable<boolean>;
 }
 
 export interface QInputNumberState {
-  number: Nullable<number>;
-  userNumber: Nullable<number | string>;
-  prevValue: Nullable<number>;
   minValue: number;
   maxValue: number;
   step: number;
@@ -20,16 +21,17 @@ export interface QInputNumberState {
 export interface QInputNumberInstance {
   state: QInputNumberState;
   isDisabled: ComputedRef<boolean>;
-  withControlsClass: ComputedRef<Record<string, boolean>>;
+  inputNumberClass: ComputedRef<Record<string, boolean>>;
+  areControlsEnabled: ComputedRef<boolean>;
   isIncreaseDisabled: ComputedRef<boolean>;
   isDecreaseDisabled: ComputedRef<boolean>;
-  currentValue: ComputedRef<string>;
-  areControlsEnabled: ComputedRef<boolean>;
-  handleIncreaseClick: () => void;
-  handleDecreaseClick: () => void;
+  formattedValue: ComputedRef<string>;
   handleBlur: (event: FocusEvent) => void;
   handleFocus: (event: FocusEvent) => void;
-  handleChangeInput: (event: Event, type: string) => void;
-  processUserValue: (value: number, type: string) => Promise<void>;
-  changesEmmiter: (value: Nullable<number>, type: string) => void;
+  handleKeydown: (event: KeyboardEvent) => void;
+  onInputKeyPress: (event: KeyboardEvent) => void;
+  handleChangeNumberButtonClick: (event: boolean) => void;
+  inputRef: Ref;
+  handlePaste: (event: ClipboardEvent) => void;
+  handleClick: (event: MouseEvent) => void;
 }

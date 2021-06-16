@@ -20,21 +20,26 @@ const storyMetadata: Meta = {
 const QInputNumberStory: Story<QInputNumberProps> = args =>
   defineComponent({
     setup() {
-      const numberValue = ref<string>('2');
+      const numberValue = ref<string>('1124');
+      const useGrouping = ref<boolean>(true);
+      const precision = ref<number>(2);
 
       const handleEmit = (value: number, type: string): void => {
         // eslint-disable-next-line no-console
         console.log(value, type);
       };
 
-      return { args, numberValue, handleEmit };
+      return { args, numberValue, useGrouping, precision, handleEmit };
     },
 
     template: `
       <q-input-number
         v-model="numberValue"
-        :precision="args.precision"
+        :precision="precision"
         :disabled="args.disabled"
+        :use-grouping="useGrouping"
+        prefix=">"
+        suffix="<"
         :no-controls="args.noControls"
         :validate-event="args.validateEvent"
         @input="handleEmit($event, 'input')"

@@ -117,10 +117,7 @@ import {
 import { createPopper } from '@popperjs/core';
 import { useI18n } from 'vue-i18n';
 
-import {
-  addResizeListener,
-  removeResizeListener
-} from '@/qComponents/helpers/resizeEvent';
+import { useResizeListener } from '@/qComponents/hooks';
 import type { QInputInstance } from '@/qComponents/QInput';
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
@@ -589,25 +586,28 @@ export default defineComponent({
       }
     );
 
-    const handleResize = async (): Promise<void> => {
-      if (!root.value) return;
-      state.inputWidth = root.value.getBoundingClientRect().width;
+    const handleResize = async (el: HTMLElement): Promise<void> => {
+      state.inputWidth = el.getBoundingClientRect().width;
 
       if (!props.multiple || (props.collapseTags && !props.filterable)) return;
       await nextTick();
       state.popper?.update();
     };
 
+    const rootResize = useResizeListener(root);
+
+    watch(rootResize.observedEntry, value => {
+      const el = value?.target as HTMLElement | undefined;
+      if (el) handleResize(el);
+    });
+
     onMounted(() => {
       if (root.value) {
-        addResizeListener(root.value, handleResize);
         state.inputWidth = root.value.getBoundingClientRect().width;
       }
     });
 
     onBeforeUnmount(() => {
-      removeResizeListener(root.value, handleResize);
-
       document.removeEventListener('keyup', handleKeyUp, true);
       document.removeEventListener('click', handleDocumentClick, true);
     });

@@ -22,13 +22,11 @@ import {
   reactive,
   watch,
   onBeforeUpdate,
-  onUpdated,
-  onMounted,
-  onBeforeUnmount
+  onUpdated
 } from 'vue';
 import { isEmpty } from 'lodash-es';
 
-import { addResizeListener, removeResizeListener } from '@/qComponents/helpers';
+import { useResizeListener } from '@/qComponents/hooks';
 import type { QScrollbarProvider } from '@/qComponents/QScrollbar';
 
 import { SELECTABLE_COLUMN_STICKY_INDEX } from '../config';
@@ -54,6 +52,8 @@ export default defineComponent({
     );
 
     const root = ref<HTMLElement | null>(null);
+
+    const rootResize = useResizeListener(root);
 
     const colRefs = ref<Record<string, HTMLElement>>({});
     const colSizes = ref<Record<string, { width: number; offsetLeft: number }>>(
@@ -111,8 +111,6 @@ export default defineComponent({
       columnsRightNew: {}
     });
 
-    getSizes();
-
     onBeforeUpdate(() => {
       colRefs.value = {};
     });
@@ -121,12 +119,8 @@ export default defineComponent({
       getSizes();
     });
 
-    onMounted(() => {
-      addResizeListener(root.value, getSizes);
-    });
-
-    onBeforeUnmount(() => {
-      removeResizeListener(root.value, getSizes);
+    watch(rootResize.observedEntry, () => {
+      getSizes();
     });
 
     const checkSticky = (value: number = qScrollbar.moveXInPx.value): void => {

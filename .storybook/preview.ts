@@ -18,7 +18,6 @@ import Qui, {
   QFormItem,
   QInput,
   QInputNumber,
-  QMessageBox,
   QNotification,
   QOption,
   QPagination,
@@ -61,7 +60,6 @@ app.use(QForm);
 app.use(QFormItem);
 app.use(QInput);
 app.use(QInputNumber);
-app.use(QMessageBox);
 app.use(QNotification);
 app.use(QOption);
 app.use(QPagination);

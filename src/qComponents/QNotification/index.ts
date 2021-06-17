@@ -26,6 +26,6 @@ const useNotify = (options?: QNotificationOptions): QNotify => {
   return notify ?? createNotification(options, false);
 };
 
-export type { QNotifyId } from './src/types';
+export type { QNotify, QNotifyId } from './src/types';
 export { NotifyType, provideNotify, useNotify };
 export default QNotification;

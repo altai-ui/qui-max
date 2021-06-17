@@ -1,22 +1,18 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import type { Story } from '@storybook/vue3';
-import { defineComponent, ref } from 'vue';
+import { defineComponent } from 'vue';
 
+import { useMessageBox } from '@/qComponents/QMessageBox';
 import type {
-  QMessageBoxProps,
-  QMessageBoxPropBeforeClose
-} from '@/qComponents/QMessageBox';
+  QMessageBoxContentPropBeforeClose,
+  QMessageBoxContentProps
+} from '@/qComponents/QMessageBox/src/QMessageBoxContent';
 
-const QMessageBoxStory: Story<QMessageBoxProps> = args =>
+const QMessageBoxStory: Story<QMessageBoxContentProps> = args =>
   defineComponent({
     setup() {
-      const beforeClose: QMessageBoxPropBeforeClose = async ({
-        action,
-        ctx
-      }) => {
+      const beforeClose: QMessageBoxContentPropBeforeClose = async action => {
         if (action !== 'confirm') return true;
-
-        ctx.isConfirmBtnLoading.value = true;
 
         const promise = (): Promise<string> =>
           new Promise(resolve => {
@@ -25,67 +21,47 @@ const QMessageBoxStory: Story<QMessageBoxProps> = args =>
 
         try {
           await promise();
-          ctx.isConfirmBtnLoading.value = false;
 
           return true;
         } catch {
-          ctx.isConfirmBtnLoading.value = false;
-
           return false;
         }
       };
 
-      const isVisible = ref<boolean>(false);
+      const handleClick = async (): Promise<void> => {
+        try {
+          const result = await useMessageBox(
+            {
+              title: args.title,
+              message: args.message,
+              submessage: args.submessage,
+              confirmButtonText: args.confirmButtonText,
+              cancelButtonText: args.cancelButtonText,
+              beforeClose
+            },
+            {
+              onMounted: (app, container) => {
+                // eslint-disable-next-line no-console
+                console.log('onMounted', app, container);
+              },
+              onUnmounted: app => {
+                // eslint-disable-next-line no-console
+                console.log('onUnmounted', app);
+              }
+            }
+          );
 
-      const handleClick = (): void => {
-        isVisible.value = true;
+          // eslint-disable-next-line no-console
+          console.log('resolve', result);
+        } catch (err) {
+          // eslint-disable-next-line no-console
+          console.log('reject', err);
+        }
       };
 
-      const handleConfirm = (): void => {
-        // eslint-disable-next-line no-console
-        console.log('Confirm');
-      };
-      const handleClose = (): void => {
-        // eslint-disable-next-line no-console
-        console.log('Close');
-      };
-      const handleCancel = (): void => {
-        // eslint-disable-next-line no-console
-        console.log('Cancel');
-      };
-
-      return {
-        isVisible,
-        args,
-        beforeClose,
-        handleClick,
-        handleConfirm,
-        handleClose,
-        handleCancel
-      };
+      return { handleClick };
     },
-    template: `
-      <q-button @click="handleClick">Click to open</q-button>
-
-      <q-message-box
-        v-model:isVisible="isVisible"
-        :z-index="args.zIndex"
-        :teleport-to="args.teleportTo"
-        :title="args.title"
-        :message="args.message"
-        :submessage="args.submessage"
-        :confirm-button-text="args.confirmButtonText"
-        :cancel-button-text="args.cancelButtonText"
-        :close-on-click-shadow="args.closeOnClickShadow"
-        :distinguish-cancel-and-close="args.distinguishCancelAndClose"
-        :before-close="args.beforeClose"
-        :wrap-class="args.wrapClass"
-        :wrap-style="args.wrapStyle"
-        @confirm="handleConfirm"
-        @close="handleClose"
-        @cancel="handleCancel"
-      />
-    `
+    template: '<q-button @click="handleClick">Click to open</q-button>'
   });
 
 QMessageBoxStory.storyName = 'Default';

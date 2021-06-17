@@ -66,7 +66,7 @@ import {
 } from 'vue';
 import { createPopper, Instance, Options } from '@popperjs/core';
 import { placements } from '@popperjs/core/lib/enums';
-import Color from 'color';
+import { colord } from 'colord';
 
 import { validateArray } from '@/qComponents/helpers';
 import { getConfig } from '@/qComponents/config';
@@ -170,7 +170,7 @@ export default defineComponent({
     );
 
     const isColorDark = computed<boolean>(() =>
-      props.modelValue ? Color(props.modelValue).isDark() : false
+      props.modelValue ? colord(props.modelValue).isDark() : false
     );
 
     const iconClasses = computed<Record<string, boolean>>(() => ({

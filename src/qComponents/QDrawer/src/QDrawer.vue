@@ -138,7 +138,7 @@ export default defineComponent({
       default: null
     },
     /**
-     * Specifies a target element where Drawer will be moved.
+     * Specifies a target element where QDrawer will be moved.
      * (has to be a valid query selector, or an HTMLElement)
      */
     teleportTo: {

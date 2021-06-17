@@ -152,7 +152,7 @@ export default defineComponent({
       default: null
     },
     /**
-     * Specifies a target element where Drawer will be moved.
+     * Specifies a target element where QCascader will be moved.
      * (has to be a valid query selector, or an HTMLElement)
      */
     teleportTo: {
@@ -166,10 +166,9 @@ export default defineComponent({
   setup(props: QCascaderProps, ctx): QCascaderInstance {
     const qForm = inject<QFormProvider | null>('qForm', null);
     const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
-    const reference =
-      ref<ComponentPublicInstance<UnwrapRef<QCascaderInputInstance>> | null>(
-        null
-      );
+    const reference = ref<ComponentPublicInstance<
+      UnwrapRef<QCascaderInputInstance>
+    > | null>(null);
 
     const popperJS = ref<Instance | null>(null);
     const isDropdownShown = ref<boolean>(false);

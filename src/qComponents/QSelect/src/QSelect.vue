@@ -232,7 +232,7 @@ export default defineComponent({
      */
     collapseTags: { type: Boolean, default: false },
     /**
-     * Specifies a target element where QMessageBox will be moved.
+     * Specifies a target element where QSelect will be moved.
      * (has to be a valid query selector, or an HTMLElement)
      */
     teleportTo: { type: [String, HTMLElement], default: null }

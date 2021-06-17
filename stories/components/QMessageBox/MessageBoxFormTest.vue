@@ -1,20 +1,22 @@
 <template>
-  <q-message-box
-    distinguish-cancel-and-close
-    @close="handleCancelClick"
-  >
+  <q-message-box-content>
     <template
       #title
     >Morbi massa libero, vehicula nec consequat sed, porta a sem.</template>
 
     <template #content>
+      {{ someExternalProp }}
+
       <q-form :model="formModel">
         <q-form-item
           prop="name"
           label="Name"
           required
         >
-          <q-input v-model="formModel.name" />
+          <q-input
+            v-model="formModel.name"
+            @input="handleNameInput"
+          />
         </q-form-item>
       </q-form>
     </template>
@@ -23,32 +25,58 @@
       <q-button
         :loading="isSending"
         @click="handleSendClick"
-      > Send </q-button>
+      >Send</q-button>
 
       <q-button
         theme="secondary"
         @click="handleCancelClick"
-      > Cancel </q-button>
+      >Cancel</q-button>
     </template>
-  </q-message-box>
+  </q-message-box-content>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref, reactive } from 'vue';
 
-const UPDATE_IS_VISIBLE_EVENT = 'update:isVisible';
+import { QForm, QFormItem, QInput, QButton } from '@/qComponents';
+import {
+  QMessageBoxContent,
+  QMessageBoxAction
+} from '@/qComponents/QMessageBox';
+
+const DONE_EVENT = 'done';
+const NAME_INPUT_EVENT = 'name-input';
 
 export default defineComponent({
   name: 'MessageBoxFormTest',
 
-  emits: [UPDATE_IS_VISIBLE_EVENT],
+  components: {
+    QForm,
+    QFormItem,
+    QInput,
+    QButton,
+    QMessageBoxContent
+  },
 
-  setup(_, { emit }) {
+  props: {
+    someExternalProp: {
+      type: String,
+      default: null
+    }
+  },
+
+  emits: [NAME_INPUT_EVENT, DONE_EVENT],
+
+  setup(_, ctx) {
     const isSending = ref<boolean>(false);
     const formModel = reactive({ name: 'Testname' });
 
+    const handleNameInput = (e: InputEvent): void => {
+      ctx.emit(NAME_INPUT_EVENT, (e.target as HTMLInputElement).value);
+    };
+
     const handleCancelClick = (): void => {
-      emit(UPDATE_IS_VISIBLE_EVENT, false);
+      ctx.emit(DONE_EVENT, { action: QMessageBoxAction.cancel });
     };
 
     const handleSendClick = async (): Promise<void> => {
@@ -61,7 +89,10 @@ export default defineComponent({
 
       await promise();
 
-      emit(UPDATE_IS_VISIBLE_EVENT, false);
+      ctx.emit(DONE_EVENT, {
+        action: QMessageBoxAction.confirm,
+        payload: { test: true }
+      });
 
       isSending.value = false;
     };
@@ -69,6 +100,7 @@ export default defineComponent({
     return {
       formModel,
       isSending,
+      handleNameInput,
       handleSendClick,
       handleCancelClick
     };

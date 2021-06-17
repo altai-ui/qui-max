@@ -62,7 +62,8 @@ import {
   inject
 } from 'vue';
 import { useI18n } from 'vue-i18n';
-import Color from 'color';
+import { colord } from 'colord';
+import type { Colord } from 'colord';
 
 import { validateArray } from '@/qComponents/helpers';
 import { CLEAR_EVENT, CLOSE_EVENT } from '@/qComponents/constants/events';
@@ -126,24 +127,21 @@ export default defineComponent({
     const value = ref<number>(100);
     const alpha = ref<number>(100);
 
-    const colorModel = computed<Color>(() =>
-      Color({
+    const colorModel = computed<Colord>(() =>
+      colord({
         h: hue.value,
         s: saturation.value,
         v: value.value
       })
     );
 
-    const rgbString = computed<string>(() => colorModel.value.rgb().string());
+    const rgbString = computed<string>(() => colorModel.value.toRgbString());
 
     const colorString = computed<string>(() => {
       if (props.alphaShown || props.colorFormat === 'rgb') {
-        return colorModel.value
-          .alpha(alpha.value / 100)
-          .rgb()
-          .string();
+        return colorModel.value.alpha(alpha.value / 100).toRgbString();
       }
-      return colorModel.value.hex();
+      return colorModel.value.toHex();
     });
 
     const dropdown = ref<HTMLElement | null>(null);
@@ -158,12 +156,12 @@ export default defineComponent({
 
     const updateHSVA = (newValue: string): void => {
       try {
-        const color = Color(newValue);
+        const color = colord(newValue).toHsv();
 
-        hue.value = color.hue();
-        saturation.value = color.saturationv();
-        value.value = color.value();
-        alpha.value = color.alpha() * 100;
+        hue.value = color.h;
+        saturation.value = color.s;
+        value.value = color.v;
+        alpha.value = color.a * 100;
       } catch {
         // do nothing
       }

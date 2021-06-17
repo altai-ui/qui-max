@@ -1,18 +1,16 @@
-import type { Selections, AddittionsMatch, InsertedTextParts } from './Common';
+import type { Selections, AddittionsMatch, InsertedTextParts } from './types';
 
 const checkStringAdditions = (
   value: string,
   additions: AddittionsMatch,
   addition: string
 ): boolean => {
-  if (!additions[addition] || additions[addition] === null) return false;
+  if (!additions[addition]) return false;
 
-  const position = String(value).indexOf(additions[addition]);
+  const position = value.indexOf(additions[addition]);
 
   const expectedPosition =
-    addition === 'suffix'
-      ? String(value).length - additions[addition].length
-      : 0;
+    addition === 'suffix' ? value.length - additions[addition].length : 0;
 
   return position === expectedPosition;
 };
@@ -103,29 +101,29 @@ const updateValue = (
   insertedValue: string,
   key: string,
   additions: AddittionsMatch,
-  minMax
+  minMax: { min: number; max: number }
 ): InsertedTextParts => {
   const { value } = target;
 
-  const valueSeparatedParts = [
-    value.substring(additions.prefix.length, selectionStart),
-    value.substring(selectionEnd, value.length - additions.suffix.length)
-  ];
+  const valueSeparatedParts = {
+    prev: value.substring(additions.prefix.length, selectionStart),
+    next: value.substring(selectionEnd, value.length - additions.suffix.length)
+  };
 
   if (
-    !valueSeparatedParts[0] &&
-    valueSeparatedParts[1].substring(1, -1) === getLocaleSeparator('decimal')
+    !valueSeparatedParts.prev &&
+    valueSeparatedParts.next.substring(1, -1) === getLocaleSeparator('decimal')
   ) {
     return {
       target,
       newValue: null,
       selectionEnd,
-      isMinusSign: false
+      hasMinusChar: false
     };
   }
 
   const newValue = parseLocaleNumber(
-    `${valueSeparatedParts[0]}${insertedValue}${valueSeparatedParts[1]}`
+    `${valueSeparatedParts.prev}${insertedValue}${valueSeparatedParts.next}`
   );
 
   if (newValue > minMax.max || newValue < minMax.min) return null;
@@ -134,7 +132,7 @@ const updateValue = (
     target,
     newValue,
     selectionEnd,
-    isMinusSign: newValue < 0 || key === '-'
+    hasMinusChar: newValue < 0 || key === '-'
   };
 };
 
@@ -143,7 +141,7 @@ const insertText = (
   key: string,
   formattedValue: string,
   additions: AddittionsMatch,
-  inputRef: Ref,
+  inputRef: HTMLElement | null,
   localizationTag: string,
   minMax: { min: number; max: number }
 ): InsertedTextParts => {
@@ -177,7 +175,7 @@ const insertText = (
         target,
         newValue: null,
         selectionEnd: movedSelectionEnd,
-        isMinusSign: false
+        hasMinusChar: false
       };
     }
 
@@ -215,12 +213,12 @@ const insertText = (
       break;
   }
 
-  if (insertedValue && !formattedValue) {
+  if (insertedValue && value === '-') {
     return {
       target,
-      newValue: Number(Number(key) * -1),
+      newValue: Number(key) * -1,
       selectionEnd: movedSelectionEnd,
-      isMinusSign: false
+      hasMinusChar: false
     };
   }
 
@@ -263,7 +261,7 @@ const insertPasteText = (
     target,
     newValue,
     selectionEnd: selectionEnd ?? 0,
-    isMinusSign: false
+    hasMinusChar: false
   };
 };
 

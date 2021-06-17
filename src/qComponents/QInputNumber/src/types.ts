@@ -18,6 +18,23 @@ export interface QInputNumberState {
   step: number;
 }
 
+export type Selections = {
+  selectionNewStart: number;
+  selectionNewEnd: number;
+  value: string;
+};
+
+export interface AddittionsMatch {
+  [index: string]: Nullable<string>;
+}
+
+export interface InsertedTextParts {
+  target: HTMLInputElement;
+  newValue: Nullable<number>;
+  selectionEnd: number;
+  hasMinusChar: boolean;
+}
+
 export interface QInputNumberInstance {
   state: QInputNumberState;
   isDisabled: ComputedRef<boolean>;
@@ -28,10 +45,10 @@ export interface QInputNumberInstance {
   formattedValue: ComputedRef<string>;
   handleBlur: (event: FocusEvent) => void;
   handleFocus: (event: FocusEvent) => void;
-  handleKeydown: (event: KeyboardEvent) => void;
-  onInputKeyPress: (event: KeyboardEvent) => void;
-  handleChangeNumberButtonClick: (event: MouseEvent) => void;
-  inputRef: Ref;
+  handleKeyDown: (event: KeyboardEvent) => void;
+  handleKeyPress: (event: KeyboardEvent) => void;
+  handleChangeNumberButtonClick: (isIncrease: boolean) => void;
+  inputRef: HTMLElement | null;
   handlePaste: (event: ClipboardEvent) => void;
   handleClick: (event: MouseEvent) => void;
 }

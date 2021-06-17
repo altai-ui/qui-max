@@ -24,8 +24,8 @@
       :validate-event="false"
       @blur="handleBlur"
       @focus="handleFocus"
-      @keypress.prevent="onInputKeyPress"
-      @keydown="handleKeydown"
+      @keypress.prevent="handleKeyPress"
+      @keydown="handleKeyDown"
       @paste.prevent="handlePaste"
       @click="handleClick"
     />
@@ -59,9 +59,10 @@ import type { QFormItemProvider } from '@/qComponents/QFormItem';
 import type {
   QInputNumberProps,
   QInputNumberState,
-  QInputNumberInstance
+  QInputNumberInstance,
+  AddittionsMatch,
+  InsertedTextParts
 } from './types';
-import type { AddittionsMatch, InsertedTextParts } from './Common';
 
 import {
   parseLocaleNumber,
@@ -136,6 +137,9 @@ export default defineComponent({
       type: String,
       default: null
     },
+    /**
+     * Whether to use thousand separators
+     */
     useGrouping: {
       type: Boolean,
       default: false
@@ -154,7 +158,7 @@ export default defineComponent({
     const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
     const qForm = inject<QFormProvider | null>('qForm', null);
 
-    const inputRef = ref(null);
+    const inputRef = ref<HTMLElement | null>(null);
 
     const state = reactive<QInputNumberState>({
       minValue: ctx.attrs.min ? Number(ctx.attrs.min) : Number.MIN_SAFE_INTEGER,
@@ -162,16 +166,14 @@ export default defineComponent({
       step: ctx.attrs.step ? Number(ctx.attrs.step) : 1
     });
 
-    const localizationTag = computed<string>(() => {
-      return props.localization ?? getConfig('locale') ?? 'en';
-    });
+    const localizationTag = computed<string>(
+      () => props.localization ?? getConfig('locale') ?? 'en'
+    );
 
-    const additions = computed<AddittionsMatch>(() => {
-      return {
-        prefix: props.prefix,
-        suffix: props.suffix
-      };
-    });
+    const additions = computed<AddittionsMatch>(() => ({
+      prefix: props.prefix,
+      suffix: props.suffix
+    }));
 
     const formattedValue = computed<string>(() => {
       const prefix = props.prefix ?? '';
@@ -185,12 +187,14 @@ export default defineComponent({
       return props.modelValue !== null ? `${prefix}${value}${suffix}` : '';
     });
 
+    const parsedValue = getValueWithoutAdditions(
+      formattedValue.value,
+      additions.value
+    );
+
     const parsedNumber = computed<number>(() => {
       return formattedValue.value
-        ? parseLocaleNumber(
-            getValueWithoutAdditions(formattedValue.value, additions.value),
-            localizationTag.value
-          )
+        ? parseLocaleNumber(parsedValue, localizationTag.value)
         : 0;
     });
 
@@ -225,31 +229,26 @@ export default defineComponent({
       );
     });
 
-    const prefixLength = computed<number>(() => {
-      return props.prefix?.length ?? 0;
-    });
+    const prefixLength = computed<number>(() => props.prefix?.length ?? 0);
 
-    const suffixLength = computed<number>(() => {
-      return props.suffix?.length ?? 0;
-    });
+    const suffixLength = computed<number>(() => props.suffix?.length ?? 0);
 
     const insertTextFn = (
       target: HTMLInputElement,
       key: string
-    ): InsertedTextParts => {
-      return insertText(
+    ): InsertedTextParts =>
+      insertText(
         target,
         key,
         formattedValue.value,
         additions.value,
-        inputRef,
+        inputRef.value,
         localizationTag.value,
         {
           min: state.minValue,
           max: state.maxValue
         }
       );
-    };
 
     const changesEmmiter = (value: number | null, type: string): void => {
       ctx.emit(UPDATE_MODEL_VALUE_EVENT, value);
@@ -268,7 +267,7 @@ export default defineComponent({
     const handleChangeNumberButtonClick = (isIncrease: boolean): void => {
       const step = isIncrease ? state.step : -state.step;
 
-      const updatedNumber = Math.round((parsedNumber.value + step) * 100) / 100;
+      const updatedNumber = getIncreasedValue(parsedNumber.value, step);
 
       if (
         (isIncrease && updatedNumber > state.maxValue) ||
@@ -290,7 +289,7 @@ export default defineComponent({
       target,
       newValue,
       selectionEnd,
-      isMinusSign
+      hasMinusChar
     }: InsertedTextParts): void => {
       if (newValue === null) {
         changesEmmiter(null, INPUT_EVENT);
@@ -299,7 +298,7 @@ export default defineComponent({
 
       const fixedNewValue = newValue.toFixed(props.precision ?? 0);
 
-      const minusZero = Number(fixedNewValue) === 0 && isMinusSign;
+      const minusZero = Number(fixedNewValue) === 0 && hasMinusChar;
 
       const prefix = props.prefix ?? '';
       const suffix = props.suffix ?? '';
@@ -355,7 +354,7 @@ export default defineComponent({
       ctx.emit(FOCUS_EVENT, event);
     };
 
-    const onInputKeyPress = (event: KeyboardEvent): void => {
+    const handleKeyPress = (event: KeyboardEvent): void => {
       const target = event.target as HTMLInputElement;
 
       if (
@@ -387,7 +386,7 @@ export default defineComponent({
       updateInput(insertTextFn(target, event.key));
     };
 
-    const handleKeydown = (event: KeyboardEvent): void => {
+    const handleKeyDown = (event: KeyboardEvent): void => {
       const target = event.target as HTMLInputElement;
 
       const { value, selectionStart, selectionEnd } = target;
@@ -459,9 +458,9 @@ export default defineComponent({
       isDecreaseDisabled,
       handleBlur,
       handleFocus,
-      inputRef,
-      handleKeydown,
-      onInputKeyPress,
+      inputRef: inputRef.value,
+      handleKeyDown,
+      handleKeyPress,
       formattedValue,
       handleChangeNumberButtonClick,
       handlePaste,

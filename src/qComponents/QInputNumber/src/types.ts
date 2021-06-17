@@ -30,7 +30,7 @@ export interface QInputNumberInstance {
   handleFocus: (event: FocusEvent) => void;
   handleKeydown: (event: KeyboardEvent) => void;
   onInputKeyPress: (event: KeyboardEvent) => void;
-  handleChangeNumberButtonClick: (event: boolean) => void;
+  handleChangeNumberButtonClick: (event: MouseEvent) => void;
   inputRef: Ref;
   handlePaste: (event: ClipboardEvent) => void;
   handleClick: (event: MouseEvent) => void;

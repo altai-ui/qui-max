@@ -44,6 +44,8 @@
 <script lang="ts">
 import { inject, computed, reactive, ref, defineComponent } from 'vue';
 
+import { getConfig } from '@/qComponents/config';
+
 import {
   CHANGE_EVENT,
   FOCUS_EVENT,
@@ -59,9 +61,17 @@ import type {
   QInputNumberState,
   QInputNumberInstance
 } from './types';
-import type { Selections } from './Common';
+import type { AddittionsMatch, InsertedTextParts } from './Common';
 
-import helpers from './helpers';
+import {
+  parseLocaleNumber,
+  getValueWithoutAdditions,
+  getIncreasedValue,
+  getDecreasedValue,
+  getCleanSelections,
+  insertText,
+  insertPasteText
+} from './helpers';
 
 export default defineComponent({
   name: 'QInputNumber',
@@ -144,16 +154,6 @@ export default defineComponent({
     const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
     const qForm = inject<QFormProvider | null>('qForm', null);
 
-    const {
-      localizationTag,
-      parseLocaleNumber,
-      getLocaleSeparator,
-      getValueWithoutAdditions,
-      isCharReadonly,
-      getIncreasedValue,
-      getDecreasedValue
-    } = helpers(props);
-
     const inputRef = ref(null);
 
     const state = reactive<QInputNumberState>({
@@ -162,11 +162,22 @@ export default defineComponent({
       step: ctx.attrs.step ? Number(ctx.attrs.step) : 1
     });
 
+    const localizationTag = computed<string>(() => {
+      return props.localization ?? getConfig('locale') ?? 'en';
+    });
+
+    const additions = computed<AddittionsMatch>(() => {
+      return {
+        prefix: props.prefix,
+        suffix: props.suffix
+      };
+    });
+
     const formattedValue = computed<string>(() => {
       const prefix = props.prefix ?? '';
       const suffix = props.suffix ?? '';
 
-      const value = Intl.NumberFormat(localizationTag, {
+      const value = Intl.NumberFormat(localizationTag.value, {
         useGrouping: props.useGrouping ?? undefined,
         minimumFractionDigits: props.precision ?? undefined
       }).format(Number(props.modelValue));
@@ -176,7 +187,10 @@ export default defineComponent({
 
     const parsedNumber = computed<number>(() => {
       return formattedValue.value
-        ? parseLocaleNumber(getValueWithoutAdditions(formattedValue.value))
+        ? parseLocaleNumber(
+            getValueWithoutAdditions(formattedValue.value, additions.value),
+            localizationTag.value
+          )
         : 0;
     });
 
@@ -219,6 +233,24 @@ export default defineComponent({
       return props.suffix?.length ?? 0;
     });
 
+    const insertTextFn = (
+      target: HTMLInputElement,
+      key: string
+    ): InsertedTextParts => {
+      return insertText(
+        target,
+        key,
+        formattedValue.value,
+        additions.value,
+        inputRef,
+        localizationTag.value,
+        {
+          min: state.minValue,
+          max: state.maxValue
+        }
+      );
+    };
+
     const changesEmmiter = (value: number | null, type: string): void => {
       ctx.emit(UPDATE_MODEL_VALUE_EVENT, value);
 
@@ -234,10 +266,9 @@ export default defineComponent({
     };
 
     const handleChangeNumberButtonClick = (isIncrease: boolean): void => {
-      let updatedNumber = parsedNumber.value;
       const step = isIncrease ? state.step : -state.step;
 
-      updatedNumber = Math.round((updatedNumber + step) * 100) / 100;
+      const updatedNumber = Math.round((parsedNumber.value + step) * 100) / 100;
 
       if (
         (isIncrease && updatedNumber > state.maxValue) ||
@@ -249,57 +280,33 @@ export default defineComponent({
     };
 
     const setCursorPosition = (
-      target: HTMLTextAreaElement,
+      target: HTMLInputElement,
       position: number
     ): void => {
       target.setSelectionRange(position, position);
     };
 
-    const getCleanSelections = ({
-      value,
-      selectionStart,
-      selectionEnd
-    }: {
-      value: string;
-      selectionStart: number;
-      selectionEnd: number;
-    }): Selections => {
-      const selectionNewStart =
-        selectionStart <= prefixLength.value
-          ? prefixLength.value
-          : selectionStart;
-
-      const selectionNewEnd =
-        selectionEnd >= value.length - suffixLength.value
-          ? value.length - suffixLength.value
-          : selectionEnd;
-
-      return {
-        selectionNewStart,
-        selectionNewEnd,
-        value: getValueWithoutAdditions(value)
-      };
-    };
-
-    const updateInput = (
-      target: HTMLTextAreaElement,
-      newValue: string | null,
-      selectionEnd: number,
-      isMinusSign: boolean
-    ): void => {
+    const updateInput = ({
+      target,
+      newValue,
+      selectionEnd,
+      isMinusSign
+    }: InsertedTextParts): void => {
       if (newValue === null) {
         changesEmmiter(null, INPUT_EVENT);
         return;
       }
 
-      const minusZero = Number(newValue) === 0 && isMinusSign;
+      const fixedNewValue = newValue.toFixed(props.precision ?? 0);
+
+      const minusZero = Number(fixedNewValue) === 0 && isMinusSign;
 
       const prefix = props.prefix ?? '';
       const suffix = props.suffix ?? '';
-      const value = Intl.NumberFormat(localizationTag, {
+      const value = Intl.NumberFormat(localizationTag.value, {
         useGrouping: props.useGrouping ?? undefined,
         minimumFractionDigits: props.precision ?? undefined
-      }).format(Number(minusZero ? -0 : newValue));
+      }).format(Number(minusZero ? -0 : fixedNewValue));
 
       const newFormattedValue = `${prefix}${value}${suffix}`;
 
@@ -311,7 +318,7 @@ export default defineComponent({
 
       inputRef.value.$refs.input.value = newFormattedValue;
 
-      changesEmmiter(Number(minusZero ? -0 : newValue), INPUT_EVENT);
+      changesEmmiter(Number(minusZero ? -0 : fixedNewValue), INPUT_EVENT);
 
       let movedCaret = newCaretPosition;
 
@@ -327,130 +334,18 @@ export default defineComponent({
       setCursorPosition(target, movedCaret);
     };
 
-    const updateValue = (
-      target: HTMLTextAreaElement,
-      selectionStart: number,
-      selectionEnd: number,
-      insertedValue: string,
-      key: string
-    ): void => {
-      const { value } = target;
-
-      const valueSeparatedParts = [
-        value.substring(prefixLength.value, selectionStart),
-        value.substring(selectionEnd, value.length - suffixLength.value)
-      ];
-
-      if (
-        !valueSeparatedParts[0] &&
-        valueSeparatedParts[1].substring(1, -1) ===
-          getLocaleSeparator('decimal')
-      ) {
-        updateInput(target, null, selectionEnd, false);
-        return;
-      }
-
-      const newValue = parseLocaleNumber(
-        `${valueSeparatedParts[0]}${insertedValue}${valueSeparatedParts[1]}`
-      );
-
-      if (newValue > state.maxValue || newValue < state.minValue) return;
-
-      updateInput(
-        target,
-        newValue.toFixed(props.precision ?? 0),
-        selectionEnd,
-        newValue < 0 || key === '-'
-      );
-    };
-
-    const insertText = (target: HTMLTextAreaElement, key: string): void => {
-      const { selectionStart } = target;
-
-      const { value, selectionNewStart, selectionNewEnd } =
-        getCleanSelections(target);
-
-      let movedSelectionEnd = selectionNewEnd;
-
-      let moveSelection = 0;
-      let insertedValue = '';
-
-      const previousPart = getValueWithoutAdditions(
-        formattedValue.value.substring(0, selectionNewStart)
-      );
-      const lastPart = getValueWithoutAdditions(
-        formattedValue.value.substring(movedSelectionEnd)
-      );
-
-      if (
-        (key === 'Backspace' && !previousPart.length) ||
-        (key === 'Delete' && !lastPart.length)
-      ) {
-        if (movedSelectionEnd - selectionNewStart === value.length) {
-          updateInput(target, null, movedSelectionEnd, false);
-        }
-
-        if (value === '-') {
-          inputRef.value.$refs.input.value = '';
-        }
-
-        return;
-      }
-
-      const prevChar = previousPart.substring(previousPart.length - 1);
-      const nextChar = lastPart.substring(1, -1);
-
-      if (key === getLocaleSeparator('decimal')) {
-        if (nextChar === getLocaleSeparator('decimal'))
-          setCursorPosition(target, selectionStart + 1);
-
-        return;
-      }
-
-      if (key === '-' && nextChar === key) return;
-
-      switch (key) {
-        case 'Backspace':
-          moveSelection = isCharReadonly(prevChar) ? -2 : -1;
-          movedSelectionEnd -= isCharReadonly(prevChar) ? 1 : 0;
-          break;
-        case 'Delete':
-          moveSelection = isCharReadonly(nextChar) ? 1 : 0;
-          movedSelectionEnd += isCharReadonly(nextChar) ? 2 : 1;
-          break;
-        default:
-          insertedValue = key;
-          break;
-      }
-
-      if (insertedValue && !formattedValue.value) {
-        updateInput(
-          target,
-          Number(Number(key) * -1).toFixed(props.precision ?? 0),
-          movedSelectionEnd,
-          false
-        );
-        return;
-      }
-
-      updateValue(
-        target,
-        selectionNewStart + moveSelection,
-        movedSelectionEnd,
-        insertedValue,
-        key
-      );
-    };
-
     const handleBlur = (event: FocusEvent): void => {
       ctx.emit(BLUR_EVENT, event);
 
-      const target = event.target as HTMLTextAreaElement;
+      const target = event.target as HTMLInputElement;
 
       const emittedValue =
         !target.value || target.value === '-'
           ? null
-          : parseLocaleNumber(getValueWithoutAdditions(target.value));
+          : parseLocaleNumber(
+              getValueWithoutAdditions(target.value, additions.value),
+              localizationTag.value
+            );
 
       changesEmmiter(emittedValue, 'change');
 
@@ -461,7 +356,7 @@ export default defineComponent({
     };
 
     const onInputKeyPress = (event: KeyboardEvent): void => {
-      const target = event.target as HTMLTextAreaElement;
+      const target = event.target as HTMLInputElement;
 
       if (
         Number.isNaN(Number(event.key)) &&
@@ -471,8 +366,10 @@ export default defineComponent({
       )
         return;
 
-      const { value, selectionNewStart, selectionNewEnd } =
-        getCleanSelections(target);
+      const { value, selectionNewStart, selectionNewEnd } = getCleanSelections(
+        target,
+        additions.value
+      );
 
       if (event.key === '-') {
         if (
@@ -481,17 +378,17 @@ export default defineComponent({
         ) {
           inputRef.value.$refs.input.value = '-';
         } else if (selectionNewStart === 1) {
-          insertText(target, event.key);
+          updateInput(insertTextFn(target, event.key));
         }
 
         return;
       }
 
-      insertText(target, event.key);
+      updateInput(insertTextFn(target, event.key));
     };
 
     const handleKeydown = (event: KeyboardEvent): void => {
-      const target = event.target as HTMLTextAreaElement;
+      const target = event.target as HTMLInputElement;
 
       const { value, selectionStart, selectionEnd } = target;
 
@@ -499,15 +396,15 @@ export default defineComponent({
         case 'Backspace':
         case 'Delete':
           event.preventDefault();
-          insertText(target, event.key);
+          insertTextFn(target, event.key);
           break;
         case 'ArrowLeft':
         case 'ArrowRight':
           if (
             (event.key === 'ArrowLeft' &&
-              selectionStart < prefixLength.value + 1) ||
+              (selectionStart ?? 0) < prefixLength.value + 1) ||
             (event.key === 'ArrowRight' &&
-              selectionEnd > value.length - suffixLength.value - 1)
+              (selectionEnd ?? 0) > value.length - suffixLength.value - 1)
           ) {
             event.preventDefault();
           }
@@ -525,43 +422,17 @@ export default defineComponent({
       }
     };
 
-    const insertPasteText = (
-      target: HTMLTextAreaElement,
-      text: string
-    ): void => {
-      const parsedText = parseLocaleNumber(getValueWithoutAdditions(text));
-      if (Number.isNaN(Number(parsedText))) return;
-
-      const { selectionStart, selectionEnd } = target;
-
-      const previousPart = getValueWithoutAdditions(
-        formattedValue.value.substring(0, selectionStart)
-      );
-      const lastPart = getValueWithoutAdditions(
-        formattedValue.value.substring(selectionEnd)
-      );
-
-      const newValue = parseLocaleNumber(
-        `${previousPart}${parsedText}${lastPart}`
-      );
-
-      updateInput(
-        target,
-        newValue.toFixed(props.precision ?? 0),
-        selectionEnd,
-        false
-      );
-    };
-
     const handlePaste = (event: ClipboardEvent): void => {
-      const target = event.target as HTMLTextAreaElement;
+      const target = event.target as HTMLInputElement;
       const text = event?.clipboardData?.getData('Text') ?? '';
 
-      insertPasteText(target, text);
+      updateInput(
+        insertPasteText(target, text, formattedValue.value, additions.value)
+      );
     };
 
     const handleClick = (event: MouseEvent): void => {
-      const target = event.target as HTMLTextAreaElement;
+      const target = event.target as HTMLInputElement;
       const { value, selectionStart, selectionEnd } = target;
 
       if (selectionStart !== selectionEnd) {
@@ -569,9 +440,12 @@ export default defineComponent({
         return;
       }
 
-      if (selectionStart < prefixLength.value + 1) {
+      if ((selectionStart ?? 0) < prefixLength.value + 1) {
         setCursorPosition(target, prefixLength.value);
-      } else if (selectionStart > value.length - suffixLength.value - 1) {
+      } else if (
+        (selectionStart ?? 0) >
+        value.length - suffixLength.value - 1
+      ) {
         setCursorPosition(target, value.length - suffixLength.value);
       }
     };

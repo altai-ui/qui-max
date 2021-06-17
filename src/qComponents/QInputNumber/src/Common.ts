@@ -8,14 +8,11 @@ interface AddittionsMatch {
   [index: string]: string | null;
 }
 
-export interface Helpers {
-  parseLocaleNumber: (string) => number;
-  localizationTag: string;
-  getLocaleSeparator: (string) => string;
-  getValueWithoutAdditions: (string) => string;
-  isCharReadonly: (string) => boolean;
-  getIncreasedValue: (number: number, step: number) => number;
-  getDecreasedValue: (number: number, step: number) => number;
+interface InsertedTextParts {
+  target: HTMLInputElement;
+  newValue: number | null;
+  selectionEnd: number;
+  isMinusSign: boolean;
 }
 
-export { Selections, AddittionsMatch, Helpers };
+export { Selections, AddittionsMatch, InsertedTextParts };

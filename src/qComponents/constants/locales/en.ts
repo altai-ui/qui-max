@@ -34,11 +34,6 @@ export default {
   QTable: {
     noDataText: 'No data'
   },
-  QTimePicker: {
-    hour: 'hour',
-    minute: 'min',
-    second: 'sec'
-  },
   QUpload: {
     uploadFile: 'upload file',
     replaceFile: 'replace file',

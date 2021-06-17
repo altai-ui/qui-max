@@ -72,7 +72,7 @@
           :is-new-option-shown="isNewOptionShown"
           @select-all="emitValueUpdate"
         >
-          <slot v-if="!state.loading" />
+          <slot v-if="!loading" />
 
           <template
             v-if="$slots.empty"

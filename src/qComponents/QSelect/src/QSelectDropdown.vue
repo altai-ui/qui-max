@@ -31,8 +31,8 @@
 
         <q-option
           v-if="isNewOptionShown"
-          :model-value="qSelectState.query"
-          :label="qSelectState.query"
+          :model-value="qSelectState?.query"
+          :label="qSelectState?.query"
           created
         />
 
@@ -111,9 +111,9 @@ export default defineComponent({
     const scrollbar = ref<ComponentPublicInstance<
       UnwrapRef<QScrollbarInstance>
     > | null>(null);
-    const qSelect = inject<QSelectProvider | null>('qSelect', null);
-    const qSelectState = qSelect?.state ?? null;
-    const multiple = qSelect?.multiple ?? ref(false);
+    const qSelect = inject<QSelectProvider>('qSelect', {} as QSelectProvider);
+    const qSelectState = qSelect.state ?? null;
+    const multiple = qSelect.multiple ?? ref(false);
     const zIndex = ref<number>(DEFAULT_Z_INDEX);
 
     const styles = computed<Record<string, string | number | null>>(() => ({
@@ -214,8 +214,8 @@ export default defineComponent({
     };
 
     const handleSelectAllClick = (): void => {
-      const modelValue = qSelect?.modelValue.value;
-      const valueKey = qSelect?.valueKey.value ?? 'value';
+      const modelValue = qSelect.modelValue.value;
+      const valueKey = qSelect.valueKey.value ?? 'value';
 
       if (!Array.isArray(modelValue) || !qSelectState?.options) return;
       if (areAllSelected.value) {
@@ -240,7 +240,7 @@ export default defineComponent({
           .filter(({ isSelected, disabled }) => !disabled && !isSelected)
           .map(option => option.value) ?? [];
 
-      const multipleLimit = qSelect?.multipleLimit ?? null;
+      const multipleLimit = qSelect.multipleLimit ?? null;
 
       if (multipleLimit?.value) {
         const availableQuantity = multipleLimit.value - modelValue?.length;

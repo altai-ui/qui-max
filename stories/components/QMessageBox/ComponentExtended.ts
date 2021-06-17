@@ -4,13 +4,26 @@ import { defineComponent, defineAsyncComponent } from 'vue';
 
 import { useMessageBox } from '@/qComponents/QMessageBox';
 
-const QMessageBoxComponentStory: Story<never> = () =>
+const QMessageBoxComponentExtendedStory: Story<never> = () =>
   defineComponent({
     setup() {
       const handleClick = async (): Promise<void> => {
         try {
           const result = await useMessageBox(
-            defineAsyncComponent(() => import('./MessageBoxFormTest.vue')),
+            {
+              component: defineAsyncComponent(
+                () => import('./MessageBoxFormTest.vue')
+              ),
+              props: {
+                someExternalProp: 'some external prop here'
+              },
+              listeners: {
+                nameInput: (value: string) => {
+                  // eslint-disable-next-line no-console
+                  console.log('listeners - nameInput:', value);
+                }
+              }
+            },
             { distinguishCancelAndClose: true }
           );
 
@@ -27,6 +40,6 @@ const QMessageBoxComponentStory: Story<never> = () =>
     template: '<q-button @click="handleClick">Click to open</q-button>'
   });
 
-QMessageBoxComponentStory.storyName = 'Component';
+QMessageBoxComponentExtendedStory.storyName = 'Extended Component';
 
-export default QMessageBoxComponentStory;
+export default QMessageBoxComponentExtendedStory;

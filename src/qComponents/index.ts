@@ -112,7 +112,6 @@ const install = (
     app.use(QFormItem);
     app.use(QInput);
     app.use(QInputNumber);
-    app.use(QMessageBox);
     app.use(QNotification);
     app.use(QOption);
     app.use(QPagination);

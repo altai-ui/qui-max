@@ -1,10 +1,14 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import { writeFileSync, mkdirSync, existsSync } from 'fs';
 import { resolve } from 'path';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { defineConfig } from 'vite';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import sass from 'sass';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import sassPlugin from 'rollup-plugin-sass';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import copy from 'rollup-plugin-copy';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import vue from '@vitejs/plugin-vue';
 
 // https://vitejs.dev/config/
@@ -51,13 +55,14 @@ export default defineConfig({
               if (!existsSync('dist/icons')) mkdirSync('dist/icons');
               if (!existsSync('dist/fonts')) mkdirSync('dist/fonts');
 
+              let fileDir = 'css';
               if ('icons.css'.includes(fileName)) {
-                writeFileSync(`dist/icons/${fileName}`, styleNode.content);
+                fileDir = 'icons';
               } else if ('fonts.css'.includes(fileName)) {
-                writeFileSync(`dist/fonts/${fileName}`, styleNode.content);
-              } else {
-                writeFileSync(`dist/css/${fileName}`, styleNode.content);
+                fileDir = 'fonts';
               }
+
+              writeFileSync(`dist/${fileDir}/${fileName}`, styleNode.content);
             });
           }
         }),

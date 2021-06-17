@@ -1,10 +1,9 @@
-import { App } from 'vue';
-import { LocaleMessageDictionary, VueMessageType } from 'vue-i18n';
+import type { App } from 'vue';
+import type { LocaleMessageDictionary, VueMessageType } from 'vue-i18n';
 import { setConfig } from './config';
 import { installI18n } from './constants/locales';
 import 'focus-visible';
 
-/* eslint-disable no-underscore-dangle, global-require, no-param-reassign */
 import QBreadcrumbs from './QBreadcrumbs';
 import QButton from './QButton';
 import QCascader from './QCascader';

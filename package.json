@@ -22,8 +22,10 @@
     "focus-visible": "^5.2.0",
     "lodash-es": "^4.17.21",
     "resize-observer-polyfill": "^1.5.1",
-    "vue": "^3.1.1",
     "vue-i18n": "^9.0.0"
+  },
+  "peerDependencies": {
+    "vue": "^3.1.1"
   },
   "devDependencies": {
     "@babel/core": "^7.14.6",
@@ -55,6 +57,11 @@
     "husky": "^6.0.0",
     "lint-staged": "^11.0.0",
     "prettier": "^2.3.1",
+    "rollup-plugin-copy": "^3.4.0",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "rollup-plugin-sass": "^1.2.2",
+    "rollup-plugin-typescript2": "^0.30.0",
+    "rollup-plugin-vue": "^6.0.0",
     "sass": "^1.35.0",
     "sass-loader": "^12.1.0",
     "style-loader": "^2.0.0",
@@ -63,8 +70,18 @@
     "vite": "^2.3.7",
     "vue-loader": "^16.2.0"
   },
-  "files": ["src", "dist"],
+  "files": ["dist"],
   "main": "./dist/qui-max.umd.js",
   "module": "./dist/qui-max.es.js",
-  "style": "./dist/index.css"
+  "style": "./dist/style.css",
+  "exports": {
+    ".": {
+      "import": "./dist/qui-max.es.js",
+      "require": "./dist/qui-max.umd.js"
+    },
+    "./styles": "./dist/style.css",
+    "./css/*": "./dist/css/*.css",
+    "./fonts": "./dist/fonts/fonts.css",
+    "./icons": "./dist/icons/icons.css"
+  }
 }

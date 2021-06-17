@@ -1,6 +1,6 @@
 import { isDate } from 'date-fns';
 
-const isTimeValueValid = (value: string): boolean => {
+export const isTimeValueValid = (value: string): boolean => {
   let isValid = false;
   if (typeof value === 'string') {
     const array = value.split(':');
@@ -22,6 +22,3 @@ const isTimeValueValid = (value: string): boolean => {
 
   return isValid;
 };
-
-// eslint-disable-next-line import/prefer-default-export
-export { isTimeValueValid };

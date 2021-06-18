@@ -1,5 +1,7 @@
 import type { Ref, ComputedRef } from 'vue';
 
+import type { Nullable } from '#/helpers';
+
 export type QOptionPropValue = string | number | Record<string, unknown>;
 
 export interface QOptionInstance {

@@ -1,5 +1,7 @@
 import type { ComputedRef } from 'vue';
 
+import type { Nullable } from '#/helpers';
+
 import type { QNotifyContent } from '../types';
 import type { NotifyType } from '../constants';
 

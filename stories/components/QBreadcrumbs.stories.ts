@@ -1,5 +1,6 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { app, Meta, Story } from '@storybook/vue3';
+import { app } from '@storybook/vue3';
+import type { Meta, Story } from '@storybook/vue3';
 import { defineComponent, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 

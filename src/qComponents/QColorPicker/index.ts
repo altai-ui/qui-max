@@ -1,5 +1,7 @@
 import type { App } from 'vue';
 
+import type { SFCWithInstall } from '#/helpers';
+
 import QColorPicker from './src/QColorPicker.vue';
 
 /* istanbul ignore next */

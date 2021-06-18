@@ -1,5 +1,7 @@
 import type { ComputedRef } from 'vue';
 
+import type { Nullable } from '#/helpers';
+
 export interface QRadioProps {
   label: Nullable<string>;
   value: Nullable<string | number | boolean>;

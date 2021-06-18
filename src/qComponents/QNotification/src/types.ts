@@ -1,5 +1,7 @@
 import type { App, Ref, ComponentPublicInstance } from 'vue';
 
+import type { Nullable } from '#/helpers';
+
 import type { NotifyType } from './constants';
 
 export type QNotifyId = string | number;

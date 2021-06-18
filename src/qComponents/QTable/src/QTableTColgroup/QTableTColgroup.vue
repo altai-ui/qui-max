@@ -16,13 +16,13 @@
 import { defineComponent, computed, inject } from 'vue';
 
 import { CHECKBOX_COL_WIDTH } from '../config';
-import type { QTableProvider } from '../QTable';
+import type { QTableProvider } from '../types';
 import type {
   ExtendedColumn,
   QTableContainerProvider
-} from '../QTableContainer/QTableContainer';
+} from '../QTableContainer/types';
 
-import type { QTableTColgroupInstance } from './QTableTColgroup';
+import type { QTableTColgroupInstance } from './types';
 
 export default defineComponent({
   name: 'QTableTColgroup',

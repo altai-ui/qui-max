@@ -10,15 +10,15 @@ import {
 
 import { CHANGE_EVENT } from '@/qComponents/constants/events';
 
-import useSticky from '../helpers/sticky';
-import type { StickyConfig } from '../helpers/sticky.d';
-import type { QTableProvider } from '../QTable';
-import type { QTableTProvider } from '../QTableT/QTableT';
+import { useSticky } from '../hooks/sticky';
+import type { StickyConfig } from '../hooks/sticky';
+import type { QTableProvider } from '../types';
+import type { QTableTProvider } from '../QTableT/types';
 
 import type {
   QTableCellCheckboxProps,
   QTableCellCheckboxInstance
-} from './QTableCellCheckbox';
+} from './types';
 
 export default defineComponent({
   name: 'QTableCellCheckbox',

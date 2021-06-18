@@ -1,5 +1,7 @@
 import type { App } from 'vue';
 
+import type { SFCWithInstall } from '#/helpers';
+
 import QPagination from './src/QPagination.vue';
 
 /* istanbul ignore next */

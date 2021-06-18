@@ -3,6 +3,7 @@ import type { Story } from '@storybook/vue3';
 import { defineComponent, reactive } from 'vue';
 
 import type { QUploadProps, QUploadFile } from '@/qComponents/QUpload';
+import type { Nullable } from '#/helpers';
 
 interface FormModelFile extends QUploadFile {
   sourceFile: File;

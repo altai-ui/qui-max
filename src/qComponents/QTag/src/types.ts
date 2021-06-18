@@ -1,3 +1,5 @@
+import type { Nullable } from '#/helpers';
+
 export interface QTagProps {
   closable: Nullable<boolean>;
 }

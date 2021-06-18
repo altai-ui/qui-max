@@ -43,13 +43,13 @@ import QTableTColgroup from '../QTableTColgroup/QTableTColgroup.vue';
 import QTableTHead from '../QTableTHead/QTableTHead.vue';
 import QTableTSticky from '../QTableTSticky/QTableTSticky.vue';
 import QTableTTotal from '../QTableTTotal/QTableTTotal.vue';
-import type { QTableProvider } from '../QTable';
+import type { QTableProvider } from '../types';
 import type {
   StickyGlobalConfig,
   QTableTStickyInstance
-} from '../QTableTSticky/QTableTSticky';
+} from '../QTableTSticky/types';
 
-import type { QTableTProvider, QTableTInstance } from './QTableT';
+import type { QTableTProvider, QTableTInstance } from './types';
 
 export default defineComponent({
   name: 'QTableT',

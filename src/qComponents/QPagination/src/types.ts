@@ -1,5 +1,7 @@
 import type { ComputedRef } from 'vue';
 
+import type { Nullable } from '#/helpers';
+
 export interface QPaginationProps {
   pageCount: Nullable<number>;
   total: Nullable<number>;

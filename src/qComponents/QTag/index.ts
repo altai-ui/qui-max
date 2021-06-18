@@ -1,5 +1,7 @@
 import type { App } from 'vue';
 
+import type { SFCWithInstall } from '#/helpers';
+
 import QTag from './src/QTag.vue';
 
 /* istanbul ignore next */

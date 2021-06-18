@@ -1,6 +1,8 @@
 import type { Ref, ComputedRef } from 'vue';
 import type { Composer } from 'vue-i18n';
 
+import type { Nullable } from '#/helpers';
+
 type Classes = Record<string, boolean>;
 export type QInputClass = Nullable<string | Classes | Classes[]>;
 

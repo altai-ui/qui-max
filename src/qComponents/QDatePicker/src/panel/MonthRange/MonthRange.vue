@@ -111,18 +111,20 @@ import {
 } from '../composition';
 
 import { PERIOD_CELLS_IN_ROW_COUNT } from '../../constants';
-import type { DatePanelRangePropModelValue } from '../DateRange/DateRange';
+import type { DatePanelRangePropModelValue } from '../DateRange/types';
 import type {
   MonthRangePanelInstance,
   MonthRangePanelProps,
   MonthRangeState
-} from './MonthRange';
-import type { QDatePickerProvider } from '../../QDatePicker';
-import type { RangePickValue, RangeState } from '../../Common';
+} from './types';
+import type { QDatePickerProvider } from '../../types';
+import type { RangePickValue, RangeState } from '../../commonTypes';
 
 export default defineComponent({
   name: 'QDatePickerMonthRange',
+
   components: { PeriodTable },
+
   props: {
     modelValue: {
       type: Array as PropType<DatePanelRangePropModelValue>,

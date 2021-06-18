@@ -5,6 +5,7 @@ import type {
   QFormItemContext,
   QFormItemPropRules
 } from '@/qComponents/QFormItem';
+import type { Nullable } from '#/helpers';
 
 export type QFormPropModel = Nullable<Record<string, unknown>>;
 export type QFormPropRules = Nullable<Record<string, QFormItemPropRules>>;

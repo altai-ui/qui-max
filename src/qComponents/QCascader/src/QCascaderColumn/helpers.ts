@@ -1,3 +1,5 @@
+import type { Nullable } from '#/helpers';
+
 export const getSibling = (
   el: HTMLElement,
   distance: number

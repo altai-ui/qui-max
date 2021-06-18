@@ -1,5 +1,7 @@
 import type { Component, Ref, ComputedRef } from 'vue';
 
+import type { Nullable } from '#/helpers';
+
 import type {
   QMessageBoxEvent,
   QMessageBoxOptionWrapClass,

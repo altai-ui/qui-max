@@ -1,5 +1,7 @@
 import type { ComputedRef } from 'vue';
 
+import type { Nullable } from '#/helpers';
+
 export interface QColProps {
   tag: Nullable<string>;
   cols: Nullable<string | number>;

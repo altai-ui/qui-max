@@ -1,5 +1,7 @@
 import type { Ref, ComputedRef, ComponentPublicInstance, UnwrapRef } from 'vue';
 
+import type { Nullable } from '#/helpers';
+
 export interface QScrollbarProvider {
   wrap: Ref<Nullable<HTMLElement>>;
   sizeWidth: Ref<string>;

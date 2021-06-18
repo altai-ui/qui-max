@@ -53,7 +53,7 @@ import type { QFormItemProvider } from '@/qComponents/QFormItem';
 import QCascaderDropdown from './QCascaderDropdown/QCascaderDropdown.vue';
 import QCascaderInput from './QCascaderInput/QCascaderInput.vue';
 import QCascaderTags from './QCascaderTags/QCascaderTags.vue';
-import type { QCascaderInputInstance } from './QCascaderInput/QCascaderInput';
+import type { QCascaderInputInstance } from './QCascaderInput/types';
 
 import type {
   QCascaderPropModelValue,
@@ -62,7 +62,7 @@ import type {
   QCascaderProps,
   QCascaderInstance,
   QCascaderProvider
-} from './QCascader';
+} from './types';
 
 export default defineComponent({
   name: 'QCascader',

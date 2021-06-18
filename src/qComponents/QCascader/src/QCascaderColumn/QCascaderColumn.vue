@@ -40,15 +40,15 @@ import {
 import QScrollbar from '@/qComponents/QScrollbar';
 import findAllLeaves from '../helpers/findAllLeaves';
 import QCascaderRow from '../QCascaderRow/QCascaderRow.vue';
-import type { QCascaderDropdownProvider } from '../QCascaderDropdown/QCascaderDropdown';
-import type { Option, QCascaderProvider } from '../QCascader';
+import type { QCascaderDropdownProvider } from '../QCascaderDropdown/types';
+import type { Option, QCascaderProvider } from '../types';
 
 import { getSibling } from './helpers';
 import type {
   QCascaderColumnPropColumn,
   QCascaderColumnProps,
   QCascaderColumnInstance
-} from './QCascaderColumn';
+} from './types';
 
 const EXPAND_EVENT = 'expand';
 

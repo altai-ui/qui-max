@@ -1,5 +1,7 @@
 import type { Ref, ComputedRef } from 'vue';
 
+import type { Nullable } from '#/helpers';
+
 import type { QMessageBoxAction } from '../constants';
 
 export type QMessageBoxContentPropBeforeClose = Nullable<

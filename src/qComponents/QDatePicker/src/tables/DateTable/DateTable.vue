@@ -59,9 +59,9 @@ import { reactive, computed, PropType, inject, defineComponent } from 'vue';
 import { getConfig } from '@/qComponents/config';
 import { notNull } from '@/qComponents/helpers';
 import { isDateInRangeInterval } from '../../helpers';
-import type { DateTableInterface, DateTableState } from './DateTable';
-import type { DateCellModel, RangeState, TableProps } from '../../Common';
-import type { QDatePickerProvider } from '../../QDatePicker';
+import type { DateTableInterface, DateTableState } from './types';
+import type { DateCellModel, RangeState, TableProps } from '../../commonTypes';
+import type { QDatePickerProvider } from '../../types';
 import {
   DAYS_IN_WEEK,
   LAST_MONTH_IN_YEAR_INDEX,

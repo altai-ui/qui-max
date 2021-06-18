@@ -3,7 +3,7 @@ import type { TranslateResult, Path, Locale } from 'vue-i18n';
 
 import type { Nullable } from '#/helpers';
 
-import type { QDatePickerPropShortcuts } from '../../QDatePicker';
+import type { QDatePickerPropShortcuts } from '../../types';
 
 type DatePanelPropShortcuts = Record<string, Date>[];
 type DatePanelPropModelValue = Nullable<Date>;

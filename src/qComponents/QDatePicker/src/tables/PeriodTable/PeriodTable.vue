@@ -52,7 +52,7 @@ import type {
   PeriodTableProps,
   PeriodTableState
 } from './types';
-import type { QDatePickerProvider } from '../../QDatePicker';
+import type { QDatePickerProvider } from '../../types';
 import { PERIOD_CELLS_IN_ROW_COUNT } from '../../constants';
 
 export default defineComponent({

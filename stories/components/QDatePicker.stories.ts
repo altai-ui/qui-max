@@ -1,11 +1,12 @@
-import { addMonths, startOfYesterday, subMonths, subWeeks } from 'date-fns';
-import QDatePicker from '@/qComponents/QDatePicker';
 import { defineComponent, reactive, watch } from 'vue';
 import type { Meta, Story } from '@storybook/vue3';
+import { addMonths, startOfYesterday, subMonths, subWeeks } from 'date-fns';
+
+import QDatePicker from '@/qComponents/QDatePicker';
 import type {
   QDatePickerPropModelValue,
   QDatePickerProps
-} from '@/qComponents/QDatePicker/src/QDatePicker';
+} from '@/qComponents/QDatePicker';
 
 const now = new Date();
 

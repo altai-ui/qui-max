@@ -61,7 +61,7 @@ import { notNull } from '@/qComponents/helpers';
 import { isDateInRangeInterval } from '../../helpers';
 import type { DateTableInterface, DateTableState } from './types';
 import type { DateCellModel, RangeState, TableProps } from '../../Common';
-import type { QDatePickerProvider } from '../../QDatePicker';
+import type { QDatePickerProvider } from '../../types';
 import {
   DAYS_IN_WEEK,
   LAST_MONTH_IN_YEAR_INDEX,

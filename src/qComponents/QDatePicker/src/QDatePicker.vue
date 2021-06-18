@@ -144,7 +144,7 @@ import type {
   QDatePickerPropType,
   QDatePickerProvider,
   QDatePickerState
-} from './QDatePicker';
+} from './types';
 import type { DatePanelInstance } from './panel/Date/types';
 
 export default defineComponent({

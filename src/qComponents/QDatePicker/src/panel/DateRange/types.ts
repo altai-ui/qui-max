@@ -2,7 +2,7 @@ import type { ComputedRef, Ref } from 'vue';
 
 import type { Nullable } from '#/helpers';
 
-import type { QDatePickerPropShortcuts } from '../../QDatePicker';
+import type { QDatePickerPropShortcuts } from '../../types';
 import type { RangeState, RangePickValue } from '../../Common';
 
 type DatePanelRangePropModelValue = Nullable<Date[]>;

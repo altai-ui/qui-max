@@ -13,7 +13,7 @@ import { MAX_DATE_INPUT_LENGTH } from './constants';
 import type {
   QDatePickerPropDisabledValues,
   QDatePickerPropModelValue
-} from './QDatePicker';
+} from './types';
 
 const checkDisabled = (
   date: Date,

@@ -114,7 +114,7 @@ import type {
   YearRangePanelProps,
   YearRangeState
 } from './types';
-import type { QDatePickerProvider } from '../../QDatePicker';
+import type { QDatePickerProvider } from '../../types';
 import type { DatePanelRangePropModelValue } from '../DateRange/types';
 import { PERIOD_CELLS_IN_ROW_COUNT, YEARS_IN_DECADE } from '../../constants';
 import { RangePickValue, RangeState } from '../../Common';

@@ -125,7 +125,7 @@ import {
   PERIOD_CELLS_IN_ROW_COUNT,
   YEARS_IN_DECADE
 } from '../../constants';
-import type { QDatePickerProvider } from '../../QDatePicker';
+import type { QDatePickerProvider } from '../../types';
 import { getPeriodNextNodeIndex } from '../composition';
 
 export default defineComponent({

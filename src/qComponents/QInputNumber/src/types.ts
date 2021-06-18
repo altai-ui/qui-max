@@ -16,7 +16,7 @@ export interface QInputNumberState {
   minValue: number;
   maxValue: number;
   step: number;
-  prevValue: Nullable<number>;
+  prevValue: Nullable<number | string>;
 }
 
 export type Selections = {

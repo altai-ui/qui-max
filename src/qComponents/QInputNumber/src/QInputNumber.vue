@@ -318,7 +318,8 @@ export default defineComponent({
           ? selectionEnd + (newLength - target.value.length || 1)
           : target.value.length + prefixLength.value + 1;
 
-      inputRef.value.input.value = newFormattedValue;
+      if (inputRef?.value?.input)
+        inputRef.value.input.value = newFormattedValue;
 
       changesEmmiter(Number(minusZero ? -0 : fixedNewValue), INPUT_EVENT);
 
@@ -339,7 +340,7 @@ export default defineComponent({
     };
 
     const handleBlur = (event: FocusEvent): void => {
-      if (state.prevValue === inputRef.value.input.value) return;
+      if (state.prevValue === inputRef?.value?.input?.value) return;
 
       ctx.emit(BLUR_EVENT, event);
 
@@ -358,7 +359,7 @@ export default defineComponent({
       if (props.validateEvent) qFormItem?.validateField(BLUR_EVENT);
     };
     const handleFocus = (event: FocusEvent): void => {
-      state.prevValue = inputRef.value.input.value;
+      state.prevValue = inputRef?.value?.input?.value ?? null;
       ctx.emit(FOCUS_EVENT, event);
     };
 
@@ -383,7 +384,7 @@ export default defineComponent({
           !formattedValue.value ||
           selectionNewEnd - selectionNewStart === value.length
         ) {
-          inputRef.value.input.value = '-';
+          if (inputRef?.value?.input) inputRef.value.input.value = '-';
         } else if (selectionNewStart === 1) {
           updateInput(insertTextFn(target, event.key));
         }

@@ -51,7 +51,7 @@ import type {
   PeriodTableInstance,
   PeriodTableProps,
   PeriodTableState
-} from './PeriodTable';
+} from './types';
 import type { QDatePickerProvider } from '../../QDatePicker';
 import { PERIOD_CELLS_IN_ROW_COUNT } from '../../constants';
 

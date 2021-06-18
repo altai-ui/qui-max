@@ -60,7 +60,7 @@ import { getConfig } from '@/qComponents/config';
 import { notNull } from '@/qComponents/helpers';
 import { isDateInRangeInterval } from '../../helpers';
 import type { DateTableInterface, DateTableState } from './types';
-import type { DateCellModel, RangeState, TableProps } from '../../Common';
+import type { DateCellModel, RangeState, TableProps } from '../../commonTypes';
 import type { QDatePickerProvider } from '../../types';
 import {
   DAYS_IN_WEEK,

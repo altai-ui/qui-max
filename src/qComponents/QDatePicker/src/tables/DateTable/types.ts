@@ -3,7 +3,7 @@ import type { DebouncedFunc } from 'lodash-es';
 
 import type { Nullable } from '#/helpers';
 
-import type { DateCellModel } from '../../Common';
+import type { DateCellModel } from '../../commonTypes';
 
 interface DateTableState {
   lastRow: Nullable<number>;

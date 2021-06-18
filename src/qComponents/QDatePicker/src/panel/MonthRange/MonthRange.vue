@@ -118,7 +118,7 @@ import type {
   MonthRangeState
 } from './types';
 import type { QDatePickerProvider } from '../../types';
-import type { RangePickValue, RangeState } from '../../Common';
+import type { RangePickValue, RangeState } from '../../commonTypes';
 
 export default defineComponent({
   name: 'QDatePickerMonthRange',

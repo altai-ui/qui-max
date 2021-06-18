@@ -148,7 +148,7 @@ import type {
   DateRangePanelState
 } from './types';
 import type { QDatePickerProvider } from '../../types';
-import type { RangePickValue, RangeState } from '../../Common';
+import type { RangePickValue, RangeState } from '../../commonTypes';
 import {
   DATE_CELLS_COUNT,
   DATE_CELLS_IN_ROW_COUNT,

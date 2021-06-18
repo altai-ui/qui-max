@@ -117,7 +117,7 @@ import type {
 import type { QDatePickerProvider } from '../../types';
 import type { DatePanelRangePropModelValue } from '../DateRange/types';
 import { PERIOD_CELLS_IN_ROW_COUNT, YEARS_IN_DECADE } from '../../constants';
-import { RangePickValue, RangeState } from '../../Common';
+import { RangePickValue, RangeState } from '../../commonTypes';
 
 export default defineComponent({
   name: 'QDatePickerYearRange',

@@ -45,7 +45,7 @@ import {
   isDateInRangeInterval,
   checkDisabled
 } from '../../helpers';
-import type { RangeState } from '../../Common';
+import type { RangeState } from '../../commonTypes';
 import type {
   PeriodCellModel,
   PeriodTableInstance,

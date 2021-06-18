@@ -3,7 +3,7 @@ import type { DebouncedFunc } from 'lodash-es';
 
 import type { Nullable } from '#/helpers';
 
-import type { TableProps } from '../../Common';
+import type { TableProps } from '../../commonTypes';
 
 interface PeriodCellModel {
   type: string;

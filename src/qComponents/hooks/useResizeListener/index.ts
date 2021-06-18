@@ -2,6 +2,8 @@ import { ref, onMounted, onUnmounted } from 'vue';
 import type { Ref } from 'vue';
 // import ResizeObserver from 'resize-observer-polyfill';
 
+import type { Nullable } from '#/helpers';
+
 import type { UseResizeListenerResult } from './types';
 
 export const useResizeListener = (

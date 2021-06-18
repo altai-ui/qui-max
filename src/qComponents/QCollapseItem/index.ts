@@ -1,5 +1,7 @@
 import type { App } from 'vue';
 
+import type { SFCWithInstall } from '#/helpers';
+
 import QCollapseItem from './src/QCollapseItem.vue';
 
 /* istanbul ignore next */

@@ -1,9 +1,11 @@
 import type { App, ComponentPublicInstance, UnwrapRef } from 'vue';
+
+import type { Nullable } from '#/helpers';
+
 import type {
   QMessageBoxContainerPropContent,
   QMessageBoxContainerInstance
 } from './QMessageBoxContainer';
-
 import type { QMessageBoxAction } from './constants';
 
 export type QMessageBoxContent = QMessageBoxContainerPropContent;

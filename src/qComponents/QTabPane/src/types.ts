@@ -1,5 +1,7 @@
 import type { ComputedRef } from 'vue';
 
+import type { Nullable } from '#/helpers';
+
 export interface QTabPaneProps {
   name: string;
   title: string;

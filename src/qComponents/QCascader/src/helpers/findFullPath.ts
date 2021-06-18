@@ -1,4 +1,4 @@
-import type { Option } from '../QCascader';
+import type { Option } from '../types';
 
 const findFullPath = (
   branches: Option[] | null,

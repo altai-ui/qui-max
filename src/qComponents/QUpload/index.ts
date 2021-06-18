@@ -1,5 +1,7 @@
 import type { App } from 'vue';
 
+import type { SFCWithInstall } from '#/helpers';
+
 import QUpload from './src/QUpload.vue';
 
 /* istanbul ignore next */

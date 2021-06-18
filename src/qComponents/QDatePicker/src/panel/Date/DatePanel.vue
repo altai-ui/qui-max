@@ -115,7 +115,7 @@ import type {
   DatePanelInstance,
   DatePanelProps,
   DatePanelState
-} from './DatePanel';
+} from './types';
 
 import {
   DATE_CELLS_COUNT,
@@ -125,15 +125,17 @@ import {
   PERIOD_CELLS_IN_ROW_COUNT,
   YEARS_IN_DECADE
 } from '../../constants';
-import type { QDatePickerProvider } from '../../QDatePicker';
+import type { QDatePickerProvider } from '../../types';
 import { getPeriodNextNodeIndex } from '../composition';
 
 export default defineComponent({
   name: 'QDatePickerPanelDate',
+
   components: {
     PeriodTable,
     DateTable
   },
+
   props: {
     modelValue: {
       type: Date as PropType<DatePanelPropModelValue>,

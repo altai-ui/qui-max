@@ -605,6 +605,7 @@ export default defineComponent({
       if (root.value) {
         state.inputWidth = root.value.getBoundingClientRect().width;
       }
+      setSelected();
     });
 
     onBeforeUnmount(() => {

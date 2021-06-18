@@ -113,15 +113,17 @@ import type {
   YearRangePanelInstance,
   YearRangePanelProps,
   YearRangeState
-} from './YearRange';
-import type { QDatePickerProvider } from '../../QDatePicker';
-import type { DatePanelRangePropModelValue } from '../DateRange/DateRange';
+} from './types';
+import type { QDatePickerProvider } from '../../types';
+import type { DatePanelRangePropModelValue } from '../DateRange/types';
 import { PERIOD_CELLS_IN_ROW_COUNT, YEARS_IN_DECADE } from '../../constants';
-import { RangePickValue, RangeState } from '../../Common';
+import { RangePickValue, RangeState } from '../../commonTypes';
 
 export default defineComponent({
   name: 'QDatePickerYearRange',
+
   components: { PeriodTable },
+
   props: {
     modelValue: {
       type: Array as PropType<DatePanelRangePropModelValue>,

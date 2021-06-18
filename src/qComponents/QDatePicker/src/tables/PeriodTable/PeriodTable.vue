@@ -45,14 +45,14 @@ import {
   isDateInRangeInterval,
   checkDisabled
 } from '../../helpers';
-import type { RangeState } from '../../Common';
+import type { RangeState } from '../../commonTypes';
 import type {
   PeriodCellModel,
   PeriodTableInstance,
   PeriodTableProps,
   PeriodTableState
-} from './PeriodTable';
-import type { QDatePickerProvider } from '../../QDatePicker';
+} from './types';
+import type { QDatePickerProvider } from '../../types';
 import { PERIOD_CELLS_IN_ROW_COUNT } from '../../constants';
 
 export default defineComponent({

@@ -5,6 +5,7 @@ import type { Composer } from 'vue-i18n';
 import type { QOptionModel, QOptionPropValue } from '@/qComponents/QOption';
 import type { QScrollbarInstance } from '@/qComponents/QScrollbar';
 import type { QInputInstance } from '@/qComponents/QInput';
+import type { Nullable } from '#/helpers';
 
 type QSelectPropModelValue = Nullable<
   string | number | QOptionPropValue | (string | number | QOptionPropValue)[]

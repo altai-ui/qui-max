@@ -1,5 +1,7 @@
 import type { ComputedRef } from 'vue';
 
+import type { Nullable } from '#/helpers';
+
 export type QButtonPropType = 'default' | 'icon';
 export type QButtonPropTheme = 'primary' | 'secondary' | 'link';
 export type QButtonPropSize = 'small' | 'medium';

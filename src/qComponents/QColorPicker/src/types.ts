@@ -2,6 +2,8 @@ import type { Ref, ComputedRef, ComponentPublicInstance, UnwrapRef } from 'vue';
 import type { Placement, Options } from '@popperjs/core';
 import type { Composer } from 'vue-i18n';
 
+import type { Nullable } from '#/helpers';
+
 export type ColorFormat = 'hex' | 'rgb';
 
 export interface QColorAlphaSliderProps {

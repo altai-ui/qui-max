@@ -30,12 +30,9 @@ import { useResizeListener } from '@/qComponents/hooks';
 import type { QScrollbarProvider } from '@/qComponents/QScrollbar';
 
 import { SELECTABLE_COLUMN_STICKY_INDEX } from '../config';
-import type { QTableContainerProvider } from '../QTableContainer/QTableContainer';
+import type { QTableContainerProvider } from '../QTableContainer/types';
 
-import type {
-  StickyGlobalConfig,
-  QTableTStickyInstance
-} from './QTableTSticky';
+import type { StickyGlobalConfig, QTableTStickyInstance } from './types';
 
 export default defineComponent({
   name: 'QTableTSticky',

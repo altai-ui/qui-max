@@ -1,6 +1,6 @@
 import { isAfter, isBefore, isWithinInterval } from 'date-fns';
 import { isDate } from 'lodash-es';
-import { QDatePickerPropDisabledValues } from '../../QDatePicker';
+import type { QDatePickerPropDisabledValues } from '../../types';
 
 const checkDisabled = (
   cellDate: Date,

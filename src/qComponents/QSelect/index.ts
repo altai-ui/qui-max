@@ -1,5 +1,7 @@
 import type { App } from 'vue';
 
+import type { SFCWithInstall } from '#/helpers';
+
 import QSelect from './src/QSelect.vue';
 
 QSelect.install = (app: App): void => {

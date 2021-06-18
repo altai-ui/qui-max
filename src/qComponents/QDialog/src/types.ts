@@ -1,5 +1,7 @@
 import type { Ref, ComputedRef } from 'vue';
 
+import type { Nullable } from '#/helpers';
+
 export type QDialogPropBeforeClose = Nullable<(hide: () => void) => void>;
 export type QDialogPropTeleportTo = Nullable<string | HTMLElement>;
 

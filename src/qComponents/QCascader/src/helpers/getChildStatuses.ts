@@ -1,4 +1,4 @@
-import type { Option, QCascaderPropModelValue } from '../QCascader';
+import type { Option, QCascaderPropModelValue } from '../types';
 
 const getChildStatuses = (
   option: Option,

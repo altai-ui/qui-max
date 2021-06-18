@@ -146,9 +146,9 @@ import type {
   DateRangePanelInstance,
   DateRangePanelProps,
   DateRangePanelState
-} from './DateRange';
-import type { QDatePickerProvider } from '../../QDatePicker';
-import type { RangePickValue, RangeState } from '../../Common';
+} from './types';
+import type { QDatePickerProvider } from '../../types';
+import type { RangePickValue, RangeState } from '../../commonTypes';
 import {
   DATE_CELLS_COUNT,
   DATE_CELLS_IN_ROW_COUNT,
@@ -157,9 +157,11 @@ import {
 
 export default defineComponent({
   name: 'QDatePickerPanelDateRange',
+
   components: {
     DateTable
   },
+
   props: {
     modelValue: {
       type: Array as PropType<DatePanelRangePropModelValue>,

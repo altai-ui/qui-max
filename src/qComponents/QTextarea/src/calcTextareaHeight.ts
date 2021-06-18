@@ -1,3 +1,5 @@
+import type { Nullable } from '#/helpers';
+
 let hiddenTextarea: Nullable<HTMLTextAreaElement>;
 
 const HIDDEN_STYLE = `

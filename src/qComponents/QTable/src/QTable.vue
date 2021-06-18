@@ -34,7 +34,7 @@ import type {
   QTablePropCustomRowStyle,
   QTableProvider,
   QTableInstance
-} from './QTable';
+} from './types';
 
 const UPDATE_CHECKED_ROWS_EVENT = 'update:checkedRows';
 const UPDATE_SORT_BY_EVENT = 'update:sortBy';

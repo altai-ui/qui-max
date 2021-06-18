@@ -35,13 +35,13 @@ import { defineComponent, inject, computed, PropType } from 'vue';
 
 import QCheckbox from '@/qComponents/QCheckbox';
 import getChildStatuses from '../helpers/getChildStatuses';
-import type { QCascaderProvider } from '../QCascader';
+import type { QCascaderProvider } from '../types';
 
 import type {
   QCascaderRowPropRow,
   QCascaderRowProps,
   QCascaderRowInstance
-} from './QCascaderRow';
+} from './types';
 
 const EXPAND_EVENT = 'expand';
 const CHECK_EVENT = 'check';

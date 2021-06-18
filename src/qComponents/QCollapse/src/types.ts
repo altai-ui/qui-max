@@ -1,5 +1,7 @@
 import type { Ref } from 'vue';
 
+import type { Nullable } from '#/helpers';
+
 export type QCollapsePropModelValue = Nullable<
   string | number | (string | number)[]
 >;

@@ -1,5 +1,7 @@
 import type { App } from 'vue';
 
+import type { SFCWithInstall } from '#/helpers';
+
 import QTextarea from './src/QTextarea.vue';
 
 /* istanbul ignore next */

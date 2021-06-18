@@ -1,5 +1,7 @@
 import type { Ref } from 'vue';
 
+import type { Nullable } from '#/helpers';
+
 export type QRadioGroupPropModelValue = Nullable<string | number | boolean>;
 export type QRadioGroupPropDisabled = Nullable<boolean>;
 export type QRadioGroupPropDirection = Nullable<'vertical' | 'horizontal'>;

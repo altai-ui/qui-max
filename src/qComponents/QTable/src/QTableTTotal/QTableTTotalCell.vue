@@ -1,8 +1,8 @@
 <script lang="ts">
 import { h, defineComponent, computed, PropType, inject, VNode } from 'vue';
 
-import { useSticky } from '../helpers/sticky';
-import type { StickyConfig } from '../helpers/sticky';
+import { useSticky } from '../hooks/sticky';
+import type { StickyConfig } from '../hooks/sticky';
 import type { QTableProvider } from '../QTable';
 import type { QTableTProvider } from '../QTableT/QTableT';
 import type { ExtendedColumn } from '../QTableContainer/QTableContainer';

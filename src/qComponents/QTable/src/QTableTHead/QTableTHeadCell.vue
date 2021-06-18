@@ -10,8 +10,8 @@ import {
   Slot
 } from 'vue';
 
-import { useSticky } from '../helpers/sticky';
-import type { StickyConfig } from '../helpers/sticky';
+import { useSticky } from '../hooks/sticky';
+import type { StickyConfig } from '../hooks/sticky';
 import type { QTableProvider } from '../QTable';
 import type { ExtendedColumn } from '../QTableContainer/QTableContainer';
 import type { QTableTProvider } from '../QTableT/QTableT';

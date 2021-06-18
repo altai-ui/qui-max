@@ -2,7 +2,7 @@ import type { VNode } from 'vue';
 
 import type { Nullable } from '#/helpers';
 
-import type { ExtendedColumn } from '../QTableContainer/QTableContainer';
+import type { ExtendedColumn } from '../QTableContainer/types';
 
 export type QTableTBodyCellPropRow = Record<string, unknown>;
 export type QTableTBodyCellPropValue = Nullable<unknown>;

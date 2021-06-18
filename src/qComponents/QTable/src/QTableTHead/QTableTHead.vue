@@ -34,7 +34,7 @@ import type { QTablePropSortBy, QTableProvider } from '../QTable';
 import type {
   ExtendedColumn,
   QTableContainerProvider
-} from '../QTableContainer/QTableContainer';
+} from '../QTableContainer/types';
 import type { QTableTHeadInstance } from './QTableTHead';
 
 export default defineComponent({

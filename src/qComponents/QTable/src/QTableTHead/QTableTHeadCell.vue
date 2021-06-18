@@ -13,7 +13,7 @@ import {
 import { useSticky } from '../hooks/sticky';
 import type { StickyConfig } from '../hooks/sticky';
 import type { QTableProvider } from '../QTable';
-import type { ExtendedColumn } from '../QTableContainer/QTableContainer';
+import type { ExtendedColumn } from '../QTableContainer/types';
 import type { QTableTProvider } from '../QTableT/QTableT';
 
 import type {

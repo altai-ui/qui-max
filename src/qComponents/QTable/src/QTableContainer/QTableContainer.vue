@@ -19,7 +19,7 @@ import type {
   QTableContainerProvider,
   QTableContainerInstance,
   ExtendedColumn
-} from './QTableContainer';
+} from './types';
 
 export default defineComponent({
   name: 'QTableContainer',

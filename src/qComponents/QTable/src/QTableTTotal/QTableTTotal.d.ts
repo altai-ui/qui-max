@@ -2,7 +2,7 @@ import type { ComputedRef } from 'vue';
 
 import type { Nullable } from '#/helpers';
 
-import type { ExtendedColumn } from '../QTableContainer/QTableContainer';
+import type { ExtendedColumn } from '../QTableContainer/types';
 
 export interface QTableTTotalInstance {
   isSelectable: Nullable<ComputedRef<boolean>>;

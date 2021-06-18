@@ -34,7 +34,7 @@ import type { QTableProvider } from '../QTable';
 import type {
   ExtendedColumn,
   QTableContainerProvider
-} from '../QTableContainer/QTableContainer';
+} from '../QTableContainer/types';
 import type {
   QTableTBodyRowProps,
   QTableTBodyRowPropRow,

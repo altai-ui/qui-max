@@ -231,8 +231,12 @@ const insertText = (
       }
       break;
     case 'Delete':
-      moveSelection = isCharReadonly(nextChar) ? 1 : 0;
-      movedSelectionEnd += isCharReadonly(nextChar) ? 2 : 1;
+      if (movedSelectionEnd > selectionNewStart) {
+        moveSelection = 0;
+      } else {
+        moveSelection = isCharReadonly(nextChar) ? 1 : 0;
+        movedSelectionEnd += isCharReadonly(nextChar) ? 2 : 1;
+      }
       break;
     default:
       insertedValue = key;

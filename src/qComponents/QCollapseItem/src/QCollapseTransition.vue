@@ -11,6 +11,8 @@ import { defineComponent } from 'vue';
 const on = {
   beforeEnter(el: HTMLElement): void {
     el.classList.add('collapse-transition');
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     if (!el.dataset) el.dataset = {};
     el.dataset.oldPaddingTop = el.style.paddingTop;
     el.dataset.oldPaddingBottom = el.style.paddingBottom;
@@ -38,6 +40,8 @@ const on = {
     el.style.overflow = el.dataset.oldOverflow ?? '';
   },
   beforeLeave(el: HTMLElement): void {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     if (!el.dataset) el.dataset = {};
     el.dataset.oldPaddingTop = el.style.paddingTop;
     el.dataset.oldPaddingBottom = el.style.paddingBottom;

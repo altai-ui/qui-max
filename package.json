@@ -40,6 +40,8 @@
     "@storybook/storybook-deployer": "^2.8.8",
     "@storybook/vue3": "^6.2.9",
     "@types/lodash-es": "^4.17.4",
+    "@types/node": "^15.12.3",
+    "@types/sass": "^1.16.0",
     "@typescript-eslint/eslint-plugin": "^4.27.0",
     "@typescript-eslint/parser": "^4.27.0",
     "@vitejs/plugin-vue": "^1.2.3",

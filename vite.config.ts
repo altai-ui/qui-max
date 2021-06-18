@@ -17,15 +17,26 @@ import dts from 'vite-plugin-dts';
 export default defineConfig({
   resolve: {
     alias: [
+      // #/xxxx => src/xxxx
       {
-        find: /^@\//,
-        replacement: `${resolve(__dirname, '/src')}/`
+        find: /^@\/(.+)/,
+        replacement: `${resolve(__dirname, 'src')}/$1`
+      },
+      // #/xxxx => types/xxxx
+      {
+        find: /^#\/(.+)/,
+        replacement: `${resolve(__dirname, 'types')}/$1`
       }
     ]
   },
   plugins: [
     dts({
-      include: ['src/**/*.ts', 'src/**/*.d.ts'],
+      include: [
+        'src/**/*.ts',
+        'src/**/*.vue',
+        'src/**/*.d.ts',
+        'types/**/*.ts'
+      ],
       exclude: ['node_module/**'],
       staticImport: true,
       insertTypesEntry: true

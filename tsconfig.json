@@ -11,7 +11,7 @@
     "esModuleInterop": true,
     "strictNullChecks": true,
     "lib": ["ESNext", "DOM"],
-    "types": ["vite/client"],
+    "types": ["vite/client", "node"],
     "baseUrl": "./",
     "paths": {
       "@/*": ["src/*"]

@@ -126,7 +126,7 @@ const updateValue = (
     `${valueSeparatedParts.prev}${insertedValue}${valueSeparatedParts.next}`
   );
 
-  if (newValue > minMax.max || newValue < minMax.min) return null;
+  if (newValue > minMax.max || newValue < minMax.min) return {};
 
   return {
     target,
@@ -145,7 +145,7 @@ const insertText = (
   localizationTag: string,
   minMax: { min: number; max: number }
 ): InsertedTextParts => {
-  const { selectionStart } = target;
+  const { selectionStart, selectionEnd } = target;
 
   const { value, selectionNewStart, selectionNewEnd } = getCleanSelections(
     target,
@@ -184,7 +184,15 @@ const insertText = (
       inputRef.value.$refs.input.value = '';
     }
 
-    return null;
+    return {};
+  }
+
+  if (
+    key !== 'Backspace' &&
+    !lastPart.length &&
+    selectionStart === selectionEnd
+  ) {
+    return {};
   }
 
   const prevChar = previousPart.substring(previousPart.length - 1);
@@ -194,10 +202,10 @@ const insertText = (
     if (nextChar === getLocaleSeparator('decimal', localizationTag))
       setCursorPosition(target, (selectionStart ?? 0) + 1);
 
-    return null;
+    return {};
   }
 
-  if (key === '-' && nextChar === key) return null;
+  if (key === '-' && nextChar === key) return {};
 
   switch (key) {
     case 'Backspace':
@@ -222,6 +230,15 @@ const insertText = (
     };
   }
 
+  if (movedSelectionEnd - selectionNewStart === value.length) {
+    return {
+      target,
+      newValue: Number(key),
+      selectionEnd: selectionNewStart + key.length,
+      hasMinusChar: false
+    };
+  }
+
   return updateValue(
     target,
     selectionNewStart + moveSelection,
@@ -242,7 +259,7 @@ const insertPasteText = (
   const parsedText = parseLocaleNumber(
     getValueWithoutAdditions(text, additions)
   );
-  if (Number.isNaN(Number(parsedText))) return null;
+  if (Number.isNaN(Number(parsedText))) return {};
 
   const { selectionStart, selectionEnd } = target;
 

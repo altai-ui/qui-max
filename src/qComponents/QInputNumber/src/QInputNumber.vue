@@ -163,7 +163,8 @@ export default defineComponent({
     const state = reactive<QInputNumberState>({
       minValue: ctx.attrs.min ? Number(ctx.attrs.min) : Number.MIN_SAFE_INTEGER,
       maxValue: ctx.attrs.max ? Number(ctx.attrs.max) : Number.MAX_SAFE_INTEGER,
-      step: ctx.attrs.step ? Number(ctx.attrs.step) : 1
+      step: ctx.attrs.step ? Number(ctx.attrs.step) : 1,
+      prevValue: null
     });
 
     const localizationTag = computed<string>(
@@ -291,6 +292,7 @@ export default defineComponent({
       selectionEnd,
       hasMinusChar
     }: InsertedTextParts): void => {
+      if (!target) return;
       if (newValue === null) {
         changesEmmiter(null, INPUT_EVENT);
         return;
@@ -321,7 +323,9 @@ export default defineComponent({
 
       let movedCaret = newCaretPosition;
 
-      if (newCaretPosition < prefixLength.value) {
+      if (newCaretPosition < 0) {
+        movedCaret = selectionEnd;
+      } else if (newCaretPosition < prefixLength.value) {
         movedCaret = prefixLength.value;
       } else if (
         newCaretPosition >
@@ -334,6 +338,8 @@ export default defineComponent({
     };
 
     const handleBlur = (event: FocusEvent): void => {
+      if (state.prevValue === inputRef.value.$refs.input.value) return;
+
       ctx.emit(BLUR_EVENT, event);
 
       const target = event.target as HTMLInputElement;
@@ -351,6 +357,7 @@ export default defineComponent({
       if (props.validateEvent) qFormItem?.validateField(BLUR_EVENT);
     };
     const handleFocus = (event: FocusEvent): void => {
+      state.prevValue = inputRef.value.$refs.input.value;
       ctx.emit(FOCUS_EVENT, event);
     };
 
@@ -395,7 +402,7 @@ export default defineComponent({
         case 'Backspace':
         case 'Delete':
           event.preventDefault();
-          insertTextFn(target, event.key);
+          updateInput(insertTextFn(target, event.key));
           break;
         case 'ArrowLeft':
         case 'ArrowRight':
@@ -458,7 +465,7 @@ export default defineComponent({
       isDecreaseDisabled,
       handleBlur,
       handleFocus,
-      inputRef: inputRef.value,
+      inputRef,
       handleKeyDown,
       handleKeyPress,
       formattedValue,

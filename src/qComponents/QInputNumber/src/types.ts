@@ -16,6 +16,7 @@ export interface QInputNumberState {
   minValue: number;
   maxValue: number;
   step: number;
+  prevValue: Nullable<number>;
 }
 
 export type Selections = {
@@ -48,7 +49,7 @@ export interface QInputNumberInstance {
   handleKeyDown: (event: KeyboardEvent) => void;
   handleKeyPress: (event: KeyboardEvent) => void;
   handleChangeNumberButtonClick: (isIncrease: boolean) => void;
-  inputRef: HTMLElement | null;
+  inputRef: Ref<Nullable<HTMLElement>>;
   handlePaste: (event: ClipboardEvent) => void;
   handleClick: (event: MouseEvent) => void;
 }

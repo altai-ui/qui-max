@@ -1,17 +1,18 @@
 <script lang="ts">
 import { h, defineComponent, computed, PropType, inject, VNode } from 'vue';
 
-import { useSticky } from '../hooks/sticky';
-import type { StickyConfig } from '../hooks/sticky';
-import type { QTableProvider } from '../types';
-import type { QTableTProvider } from '../QTableT/types';
-import type { ExtendedColumn } from '../QTableContainer/types';
+import { useSticky } from '../../hooks/sticky';
+import type { StickyConfig } from '../../hooks/sticky';
+import type { QTableProvider } from '../../types';
+import type { QTableTProvider } from '../../QTableT/types';
+import type { ExtendedColumn } from '../../QTableContainer/types';
+
 import type {
   QTableTBodyCellProps,
   QTableTBodyCellPropRow,
   QTableTBodyCellPropValue,
   QTableTBodyCellInstance
-} from './QTableTBodyCell';
+} from './types';
 
 export default defineComponent({
   name: 'QTableTBodyCell',

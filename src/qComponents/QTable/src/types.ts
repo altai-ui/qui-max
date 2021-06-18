@@ -9,7 +9,7 @@ interface SelectionColumn {
   sticky?: Nullable<boolean>;
 }
 
-interface Column {
+export interface Column {
   key: string;
   value: Nullable<string | number>;
   isHidden?: boolean;

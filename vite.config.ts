@@ -23,7 +23,15 @@ export default defineConfig({
       }
     ]
   },
-  plugins: [vue(), dts()],
+  plugins: [
+    dts({
+      include: ['src/**/*.ts', 'src/**/*.d.ts'],
+      exclude: ['node_module/**'],
+      staticImport: true,
+      insertTypesEntry: true
+    }),
+    vue()
+  ],
   build: {
     lib: {
       entry: resolve(__dirname, 'src/qComponents/index.ts'),

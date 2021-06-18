@@ -77,6 +77,7 @@
   "main": "./dist/qui-max.umd.js",
   "module": "./dist/qui-max.es.js",
   "style": "./dist/style.css",
+  "types": "./dist/src/qComponents/index.d.ts",
   "exports": {
     ".": {
       "import": "./dist/qui-max.es.js",
@@ -85,6 +86,7 @@
     "./styles": "./dist/style.css",
     "./css/*": "./dist/css/*.css",
     "./fonts": "./dist/fonts/fonts.css",
-    "./icons": "./dist/icons/icons.css"
+    "./icons": "./dist/icons/icons.css",
+    "./types/*": "./dist/src/qComponents/*/index.d.ts"
   }
 }

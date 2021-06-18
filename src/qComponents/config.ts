@@ -5,7 +5,7 @@ export interface InstallOptions {
   locale: string;
 }
 
-let $Q: InstallOptions = {
+let $Q: any = {
   zIndex: 2000,
   locale: 'ru'
 };
@@ -17,7 +17,7 @@ const setConfig = (option: Partial<InstallOptions>): void => {
 export type GetConfigKey = keyof InstallOptions | 'nextZIndex';
 export type GetConfigResult = InstallOptions & { nextZIndex: number };
 
-const getConfig = <T extends GetConfigKey>(key: T): GetConfigResult[T] => {
+const getConfig = (key: any): any => {
   if (key === 'nextZIndex') {
     $Q.zIndex += 1;
     return $Q.zIndex;

@@ -1,9 +1,9 @@
 import { computed, reactive } from 'vue';
 import { isNil } from 'lodash-es';
 
-import type { StickyGlobalConfig } from '../QTableTSticky/QTableTSticky';
+import type { StickyGlobalConfig } from '../../QTableTSticky/QTableTSticky';
 
-import type { StickyConfig } from './sticky.d';
+import type { StickyConfig } from './types';
 
 const BASE_Z_INDEX = 100;
 

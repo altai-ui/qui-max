@@ -115,7 +115,7 @@ import type {
   DatePanelInstance,
   DatePanelProps,
   DatePanelState
-} from './DatePanel';
+} from './types';
 
 import {
   DATE_CELLS_COUNT,

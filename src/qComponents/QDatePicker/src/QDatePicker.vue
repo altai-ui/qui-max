@@ -145,7 +145,7 @@ import type {
   QDatePickerProvider,
   QDatePickerState
 } from './QDatePicker';
-import type { DatePanelInstance } from './panel/Date/DatePanel';
+import type { DatePanelInstance } from './panel/Date/types';
 
 export default defineComponent({
   name: 'QDatePicker',
@@ -348,7 +348,10 @@ export default defineComponent({
     });
 
     const panelComponent = computed<
-      typeof DateRangePanel | typeof MonthRangePanel | typeof YearRangePanel
+      | typeof DateRangePanel
+      | typeof MonthRangePanel
+      | typeof YearRangePanel
+      | typeof DatePanel
     >(() => {
       switch (props.type) {
         case 'daterange':

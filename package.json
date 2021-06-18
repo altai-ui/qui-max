@@ -88,7 +88,6 @@
     "./styles": "./dist/style.css",
     "./css/*": "./dist/css/*.css",
     "./fonts": "./dist/fonts/fonts.css",
-    "./icons": "./dist/icons/icons.css",
-    "./types/*": "./dist/src/qComponents/*/index.d.ts"
+    "./icons": "./dist/icons/icons.css"
   }
 }

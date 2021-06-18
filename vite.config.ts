@@ -14,7 +14,7 @@ import dts from 'vite-plugin-dts';
 export default defineConfig({
   resolve: {
     alias: [
-      // #/xxxx => src/xxxx
+      // @/xxxx => src/xxxx
       {
         find: /^@\/(.+)/,
         replacement: `${resolve(__dirname, 'src')}/$1`

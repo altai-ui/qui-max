@@ -9,5 +9,5 @@ QCascader.install = (app: App): void => {
   app.component(QCascader.name, QCascader);
 };
 
-export type { QCascaderProps, QCascaderInstance } from './src/QCascader';
+export type { QCascaderProps, QCascaderInstance } from './src/types';
 export default QCascader as SFCWithInstall<App, typeof QCascader>;

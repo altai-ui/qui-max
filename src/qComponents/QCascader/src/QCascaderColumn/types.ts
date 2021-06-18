@@ -2,7 +2,7 @@ import type { Ref, ComputedRef } from 'vue';
 
 import type { Nullable } from '#/helpers';
 
-import type { Option } from '../QCascader';
+import type { Option } from '../types';
 
 export type QCascaderColumnPropColumn = Option[];
 

@@ -36,9 +36,9 @@ import { useI18n } from 'vue-i18n';
 
 import QInput from '@/qComponents/QInput';
 import findFullPath from '../helpers/findFullPath';
-import type { QCascaderProvider } from '../QCascader';
+import type { QCascaderProvider } from '../types';
 
-import type { QCascaderInputInstance } from './QCascaderInput';
+import type { QCascaderInputInstance } from './types';
 
 export default defineComponent({
   name: 'QCascaderInput',

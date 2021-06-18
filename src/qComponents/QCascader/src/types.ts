@@ -3,7 +3,7 @@ import type { Instance } from '@popperjs/core';
 
 import type { Nullable } from '#/helpers';
 
-import type { QCascaderInputInstance } from './QCascaderInput/QCascaderInput';
+import type { QCascaderInputInstance } from './QCascaderInput/types';
 
 export interface Option {
   value: number | string;

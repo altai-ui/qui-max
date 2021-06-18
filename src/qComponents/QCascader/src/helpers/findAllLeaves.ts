@@ -1,4 +1,4 @@
-import type { Option } from '../QCascader';
+import type { Option } from '../types';
 
 const findAllLeaves = (row: Option): (string | number)[] => {
   if (!row.children) return [row.value];

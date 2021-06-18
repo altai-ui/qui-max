@@ -35,7 +35,7 @@ import type {
   ExtendedColumn,
   QTableContainerProvider
 } from '../QTableContainer/types';
-import type { QTableTHeadInstance } from './QTableTHead';
+import type { QTableTHeadInstance } from './types';
 
 export default defineComponent({
   name: 'QTableTHead',

@@ -29,7 +29,7 @@ import type {
   QTableContainerProvider
 } from '../QTableContainer/types';
 
-import QTableTTotalCell from './QTableTTotalCell.vue';
+import QTableTTotalCell from './QTableTTotalCell/QTableTTotalCell.vue';
 import type { QTableTTotalInstance } from './QTableTTotal';
 
 export default defineComponent({

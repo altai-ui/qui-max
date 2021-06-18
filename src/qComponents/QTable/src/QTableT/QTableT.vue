@@ -30,14 +30,13 @@ import {
   ref,
   computed,
   provide,
-  onMounted,
-  onBeforeUnmount,
   ComponentPublicInstance,
-  UnwrapRef
+  UnwrapRef,
+  watch
 } from 'vue';
 import { isEmpty } from 'lodash-es';
 
-import { addResizeListener, removeResizeListener } from '@/qComponents/helpers';
+import { useResizeListener } from '@/qComponents/hooks';
 
 import QTableTBody from '../QTableTBody/QTableTBody.vue';
 import QTableTColgroup from '../QTableTColgroup/QTableTColgroup.vue';
@@ -74,10 +73,11 @@ export default defineComponent({
 
     const root = ref<HTMLElement | null>(null);
     const thead = ref<HTMLElement | null>(null);
-    const sticky =
-      ref<ComponentPublicInstance<UnwrapRef<QTableTStickyInstance>> | null>(
-        null
-      );
+    const sticky = ref<ComponentPublicInstance<
+      UnwrapRef<QTableTStickyInstance>
+    > | null>(null);
+
+    const rootResize = useResizeListener(root);
 
     const rootClasses = computed<Record<string, boolean>>(() => ({
       'q-table-t': true,
@@ -100,10 +100,7 @@ export default defineComponent({
       tableHeight
     });
 
-    const setTableHeight = (): void => {
-      const el = root.value;
-      if (!el) return;
-
+    const setTableHeight = (el: HTMLElement): void => {
       const computedStyle = getComputedStyle(el);
       tableHeight.value =
         el.clientHeight -
@@ -111,12 +108,9 @@ export default defineComponent({
         parseFloat(computedStyle.paddingBottom);
     };
 
-    onMounted(() => {
-      addResizeListener(root.value, setTableHeight);
-    });
-
-    onBeforeUnmount(() => {
-      removeResizeListener(root.value, setTableHeight);
+    watch(rootResize.observedEntry, value => {
+      const el = value?.target as HTMLElement | undefined;
+      if (el) setTableHeight(el);
     });
 
     return {

@@ -1,6 +1,8 @@
 import type { App } from 'vue';
-import { createI18n, LocaleMessageDictionary, VueMessageType } from 'vue-i18n';
+import { createI18n } from 'vue-i18n';
+import type { LocaleMessageDictionary, VueMessageType } from 'vue-i18n';
 import { merge } from 'lodash-es';
+
 import { getConfig } from '@/qComponents/config';
 
 import ru from './ru';

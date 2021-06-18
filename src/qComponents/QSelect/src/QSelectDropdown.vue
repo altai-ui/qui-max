@@ -74,6 +74,7 @@ import {
 
 import QScrollbar, { QScrollbarInstance } from '@/qComponents/QScrollbar';
 import QOption from '@/qComponents/QOption';
+import QCheckbox from '@/qComponents/QCheckbox';
 import { getConfig } from '@/qComponents/config';
 import type { QSelectProvider } from '@/qComponents/QSelect';
 import type { QOptionPropValue } from '@/qComponents/QOption';
@@ -84,7 +85,13 @@ const DEFAULT_Z_INDEX = 2000;
 export default defineComponent({
   name: 'QSelectDropdown',
   componentName: 'QSelectDropdown',
-  components: { QScrollbar, QOption },
+
+  components: {
+    QScrollbar,
+    QOption,
+    QCheckbox
+  },
+
   props: {
     shown: { type: Boolean, required: true },
     selectAllShown: { type: Boolean, required: true },

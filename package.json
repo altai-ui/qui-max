@@ -1,5 +1,5 @@
 {
-  "name": "qui-max",
+  "name": "@qvant/qui-max",
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",

@@ -11,7 +11,7 @@
     >
       <component
         :is="viewTag || 'div'"
-        ref="resize"
+        ref="view"
         class="q-scrollbar__view"
         :class="viewClass"
         :style="viewStyle"
@@ -43,7 +43,6 @@ import {
   defineComponent,
   PropType,
   onMounted,
-  onBeforeUnmount,
   watch,
   ref,
   computed,
@@ -53,11 +52,9 @@ import {
   UnwrapRef
 } from 'vue';
 
-import {
-  validateArray,
-  addResizeListener,
-  removeResizeListener
-} from '@/qComponents/helpers';
+import { validateArray } from '@/qComponents/helpers';
+import { useResizeListener } from '@/qComponents/hooks';
+
 import QBar from './QBar.vue';
 import type {
   QScrollbarInstance,
@@ -125,9 +122,10 @@ export default defineComponent({
   setup(props: QScrollbarProps): QScrollbarInstance {
     const root = ref<HTMLElement | null>(null);
     const wrap = ref<HTMLElement | null>(null);
-    const resize = ref<HTMLElement | null>(null);
-    const ybar =
-      ref<ComponentPublicInstance<UnwrapRef<QBarInstance>> | null>(null);
+    const view = ref<HTMLElement | null>(null);
+    const ybar = ref<ComponentPublicInstance<UnwrapRef<QBarInstance>> | null>(
+      null
+    );
     const sizeWidth = ref<string>('0');
     const sizeHeight = ref<string>('0');
     const moveX = ref<number>(0);
@@ -176,25 +174,23 @@ export default defineComponent({
       sizeWidth.value = widthPercentage < 100 ? `${widthPercentage}%` : '';
     };
 
+    const rootParent = computed<HTMLElement | null>(
+      () => (root.value?.parentNode as HTMLElement | undefined) ?? null
+    );
+
+    const viewResize = useResizeListener(view, false);
+    const rootParentResize = useResizeListener(rootParent, false);
+
+    watch([viewResize.observedEntry, rootParentResize.observedEntry], () => {
+      update();
+    });
+
     onMounted(() => {
       nextTick().then(update);
 
       if (!props.noresize) {
-        addResizeListener(resize.value, update);
-        addResizeListener(
-          root.value?.parentNode as HTMLElement | null | undefined,
-          update
-        );
-      }
-    });
-
-    onBeforeUnmount(() => {
-      if (!props.noresize) {
-        removeResizeListener(resize.value, update);
-        removeResizeListener(
-          root.value?.parentNode as HTMLElement | null | undefined,
-          update
-        );
+        viewResize.start();
+        rootParentResize.start();
       }
     });
 
@@ -222,7 +218,7 @@ export default defineComponent({
     return {
       root,
       wrap,
-      resize,
+      view,
       ybar,
       sizeWidth,
       sizeHeight,

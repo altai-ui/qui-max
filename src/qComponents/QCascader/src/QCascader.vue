@@ -37,17 +37,12 @@ import {
   ComponentPublicInstance,
   UnwrapRef,
   watch,
-  onMounted,
-  onBeforeUnmount,
   nextTick
 } from 'vue';
 import type { Instance } from '@popperjs/core';
 
-import {
-  randId,
-  addResizeListener,
-  removeResizeListener
-} from '@/qComponents/helpers';
+import { randId } from '@/qComponents/helpers';
+import { useResizeListener } from '@/qComponents/hooks';
 import {
   UPDATE_MODEL_VALUE_EVENT,
   CHANGE_EVENT
@@ -267,18 +262,14 @@ export default defineComponent({
       popperJS.value?.destroy();
     };
 
-    onMounted(() => {
-      addResizeListener(
-        reference.value?.$el as HTMLElement | undefined,
-        updatePopperJs
-      );
-    });
+    const referenceEl = computed<HTMLElement | null>(
+      () => reference.value?.$el ?? null
+    );
 
-    onBeforeUnmount(() => {
-      removeResizeListener(
-        reference.value?.$el as HTMLElement | undefined,
-        updatePopperJs
-      );
+    const referenceElResize = useResizeListener(referenceEl);
+
+    watch(referenceElResize.observedEntry, () => {
+      updatePopperJs();
     });
 
     return {

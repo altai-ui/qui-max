@@ -22,7 +22,7 @@ import type {
   QTableContainerProvider
 } from '../QTableContainer/types';
 
-import type { QTableTColgroupInstance } from './QTableTColgroup';
+import type { QTableTColgroupInstance } from './types';
 
 export default defineComponent({
   name: 'QTableTColgroup',

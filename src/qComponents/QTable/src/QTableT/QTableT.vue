@@ -47,7 +47,7 @@ import type { QTableProvider } from '../QTable';
 import type {
   StickyGlobalConfig,
   QTableTStickyInstance
-} from '../QTableTSticky/QTableTSticky';
+} from '../QTableTSticky/types';
 
 import type { QTableTProvider, QTableTInstance } from './types';
 

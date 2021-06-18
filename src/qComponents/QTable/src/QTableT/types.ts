@@ -5,7 +5,7 @@ import type { Nullable } from '#/helpers';
 import type {
   StickyGlobalConfig,
   QTableTStickyInstance
-} from '../QTableTSticky/QTableTSticky';
+} from '../QTableTSticky/types';
 
 export interface QTableTProvider {
   tableHeight: Ref<Nullable<number>>;

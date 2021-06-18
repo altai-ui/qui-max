@@ -3,7 +3,7 @@ import { isNil } from 'lodash-es';
 
 import type { Nullable } from '#/helpers';
 
-import type { StickyGlobalConfig } from '../../QTableTSticky/QTableTSticky';
+import type { StickyGlobalConfig } from '../../QTableTSticky/types';
 
 import type { StickyConfig } from './types';
 

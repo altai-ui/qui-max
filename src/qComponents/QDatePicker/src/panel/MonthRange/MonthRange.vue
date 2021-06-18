@@ -116,7 +116,7 @@ import type {
   MonthRangePanelInstance,
   MonthRangePanelProps,
   MonthRangeState
-} from './MonthRange';
+} from './types';
 import type { QDatePickerProvider } from '../../QDatePicker';
 import type { RangePickValue, RangeState } from '../../Common';
 

@@ -4,7 +4,7 @@ import { h, defineComponent, computed, PropType, inject, VNode } from 'vue';
 import { useSticky } from '../hooks/sticky';
 import type { StickyConfig } from '../hooks/sticky';
 import type { QTableProvider } from '../QTable';
-import type { QTableTProvider } from '../QTableT/QTableT';
+import type { QTableTProvider } from '../QTableT/types';
 import type { ExtendedColumn } from '../QTableContainer/types';
 import type {
   QTableTBodyCellProps,

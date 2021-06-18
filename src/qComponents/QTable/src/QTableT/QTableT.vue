@@ -49,7 +49,7 @@ import type {
   QTableTStickyInstance
 } from '../QTableTSticky/QTableTSticky';
 
-import type { QTableTProvider, QTableTInstance } from './QTableT';
+import type { QTableTProvider, QTableTInstance } from './types';
 
 export default defineComponent({
   name: 'QTableT',

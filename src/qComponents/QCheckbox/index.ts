@@ -1,5 +1,7 @@
 import type { App } from 'vue';
 
+import type { SFCWithInstall } from '#/helpers';
+
 import QCheckbox from './src/QCheckbox.vue';
 
 /* istanbul ignore next */

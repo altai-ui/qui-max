@@ -1,5 +1,7 @@
 import type { App } from 'vue';
 
+import type { SFCWithInstall } from '#/helpers';
+
 import QScrollbar from './src/QScrollbar.vue';
 
 /* istanbul ignore next */

@@ -1,4 +1,6 @@
-import { App } from 'vue';
+import type { App } from 'vue';
+
+import type { SFCWithInstall } from '#/helpers';
 
 import QDatePicker from './src/QDatePicker.vue';
 

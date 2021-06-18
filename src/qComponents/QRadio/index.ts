@@ -1,5 +1,7 @@
 import type { App } from 'vue';
 
+import type { SFCWithInstall } from '#/helpers';
+
 import QRadio from './src/QRadio.vue';
 
 /* istanbul ignore next */

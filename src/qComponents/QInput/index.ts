@@ -1,5 +1,7 @@
 import type { App } from 'vue';
 
+import type { SFCWithInstall } from '#/helpers';
+
 import QInput from './src/QInput.vue';
 
 /* istanbul ignore next */

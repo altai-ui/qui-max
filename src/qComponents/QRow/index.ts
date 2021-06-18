@@ -1,5 +1,7 @@
 import type { App } from 'vue';
 
+import type { SFCWithInstall } from '#/helpers';
+
 import QRow from './src/QRow.vue';
 
 /* istanbul ignore next */

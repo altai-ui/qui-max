@@ -1,5 +1,7 @@
 import type { App } from 'vue';
 
+import type { SFCWithInstall } from '#/helpers';
+
 import QButton from './src/QButton.vue';
 
 /* istanbul ignore next */

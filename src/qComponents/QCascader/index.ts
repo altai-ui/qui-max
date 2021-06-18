@@ -1,5 +1,7 @@
 import type { App } from 'vue';
 
+import type { SFCWithInstall } from '#/helpers';
+
 import QCascader from './src/QCascader.vue';
 
 /* istanbul ignore next */

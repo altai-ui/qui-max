@@ -1,5 +1,7 @@
 import type { App } from 'vue';
 
+import type { SFCWithInstall } from '#/helpers';
+
 import QTable from './src/QTable.vue';
 
 /* istanbul ignore next */

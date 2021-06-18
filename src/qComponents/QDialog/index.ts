@@ -1,5 +1,7 @@
 import type { App } from 'vue';
 
+import type { SFCWithInstall } from '#/helpers';
+
 import QDialog from './src/QDialog.vue';
 
 /* istanbul ignore next */

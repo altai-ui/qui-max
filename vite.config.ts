@@ -11,7 +11,7 @@ import copy from 'rollup-plugin-copy';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import vue from '@vitejs/plugin-vue';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import dts from 'rollup-plugin-dts';
+import dts from 'vite-plugin-dts';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -23,7 +23,7 @@ export default defineConfig({
       }
     ]
   },
-  plugins: [vue()],
+  plugins: [vue(), dts()],
   build: {
     lib: {
       entry: resolve(__dirname, 'src/qComponents/index.ts'),
@@ -43,7 +43,6 @@ export default defineConfig({
         }
       },
       plugins: [
-        dts(),
         sassPlugin({
           runtime: sass,
           output(_: string, styleNodes: [{ id: string; content: string }]) {

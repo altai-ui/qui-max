@@ -10,8 +10,8 @@ import {
 
 import { CHANGE_EVENT } from '@/qComponents/constants/events';
 
-import useSticky from '../helpers/sticky';
-import type { StickyConfig } from '../helpers/sticky.d';
+import { useSticky } from '../helpers/sticky';
+import type { StickyConfig } from '../helpers/sticky';
 import type { QTableProvider } from '../QTable';
 import type { QTableTProvider } from '../QTableT/QTableT';
 

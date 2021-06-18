@@ -3,13 +3,13 @@ import { isNil } from 'lodash-es';
 
 import type { Nullable } from '#/helpers';
 
-import type { StickyGlobalConfig } from '../QTableTSticky/QTableTSticky';
+import type { StickyGlobalConfig } from '../../QTableTSticky/QTableTSticky';
 
-import type { StickyConfig } from './sticky.d';
+import type { StickyConfig } from './types';
 
 const BASE_Z_INDEX = 100;
 
-const useSticky = (
+export const useSticky = (
   position: Nullable<'left' | 'right' | undefined>,
   columnIndex: number,
   sticky: StickyGlobalConfig
@@ -68,4 +68,4 @@ const useSticky = (
   });
 };
 
-export default useSticky;
+export type { StickyConfig };

@@ -16,7 +16,7 @@ import { randId } from '@/qComponents/helpers';
 
 import type { QTableProvider } from '../types';
 
-import QTableTBodyRow from './QTableTBodyRow.vue';
+import QTableTBodyRow from './QTableTBodyRow/QTableTBodyRow.vue';
 import type { QTableTBodyInstance } from './QTableTBody';
 
 export default defineComponent({

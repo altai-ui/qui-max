@@ -28,20 +28,20 @@
 import { defineComponent, PropType, computed, inject } from 'vue';
 
 import { randId } from '@/qComponents/helpers';
-import QTableTBodyCell from './QTableTBodyCell/QTableTBodyCell.vue';
-import QTableCellCheckbox from '../QTableCellCheckbox/QTableCellCheckbox.vue';
-import type { QTableProvider } from '../types';
+import QTableTBodyCell from '../QTableTBodyCell/QTableTBodyCell.vue';
+import QTableCellCheckbox from '../../QTableCellCheckbox/QTableCellCheckbox.vue';
+import type { QTableProvider } from '../../types';
 import type {
   ExtendedColumn,
   QTableContainerProvider
-} from '../QTableContainer/types';
+} from '../../QTableContainer/types';
 import type {
   QTableTBodyRowProps,
   QTableTBodyRowPropRow,
   QTableTBodyRowInstance,
   RootClasses,
   RootStyles
-} from './QTableTBodyRow';
+} from './types';
 
 export default defineComponent({
   name: 'QTableTBodyRow',

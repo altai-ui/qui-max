@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/prefer-default-export
 export const randId = (prefix?: string): string =>
   Math.random()
     .toString(36)

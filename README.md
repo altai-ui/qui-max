@@ -4,7 +4,7 @@
 
 <p align="center" class="unchanged rich-diff-level-one">
 
-# A Vue 3 Design System for Web.
+# A Vue 3 Design System for Web
 
 A component's library helping us build great products for our customers.
 
@@ -32,13 +32,13 @@ You can import Qui entirely, or just import what you need. Let's start with full
 In main.js:
 
 ```js
-import { createApp } from 'vue'
+import { createApp } from 'vue';
 import Qui from '@qvant/qui-max';
 import '@qvant/qui-max/styles';
 
+const app = createApp(App);
 // Setup all components
-const app = createApp(App)
-app.use(Qui, { useAllComponents: true })
+app.use(Qui, { useAllComponents: true });
 // that's it! All components will be imported with styles
 ```
 
@@ -54,30 +54,32 @@ import { ref } from 'vue';
 export default {
   setup() {
     const value = ref('');
-    return { value }
+    return { value };
   }
 };
 </script>
 ```
+
 Configure setup:
- - import styles separately to avoid unused css
- - set customI18nMessages to support any language for components
- - change zIndex of appeared components (e.g Dialogs, Notifications, Dropdowns etc.)
- - control setup of components
+
+- import styles separately to avoid unused css
+- set customI18nMessages to support any language for components
+- change zIndex of appeared components (e.g Dialogs, Notifications, Dropdowns etc.)
+- control setup of components
 
 In main.js:
 
 ```js
-import { createApp } from 'vue'
+import { createApp } from 'vue';
 import Qui, { QButton } from '@qvant/qui-max';
 
 // import required styles
-import 'qui-max/css/main'
-import 'qui-max/fonts'
-import 'qui-max/icons'
+import '@qvant/qui-max/css/main';
+import '@qvant/qui-max/fonts';
+import '@qvant/qui-max/icons';
 
 // import the only styles of component you gonna use
-import 'qui-max/css/q-button'
+import '@qvant/qui-max/css/q-button';
 
 app.use(Qui, {
   useAllComponents: false,
@@ -91,20 +93,19 @@ app.use(Qui, {
         }
       }
     },
-    zIndexCounter: 3000, // zIndexCounter is being used by some components, (e.g QPopover, QSelect, QDialog ...etc), 2000 by default
+    zIndexCounter: 3000 // zIndexCounter is being used by some components, (e.g QPopover, QSelect, QDialog ...etc), 2000 by default
   }
 });
 
-app.use(QButton)
+app.use(QButton);
 ```
 
 Now you have implemented Vue and Qui Max to your project, and it's time to write your code.
 Please refer to each component's [Stories](https://qvant-lab.github.io/qui-max/) to learn how to use them.
 
 ## Not quick setup
-...
 
-```
+...
 
 ## Supported languages
 

@@ -32,7 +32,7 @@
 </template>
 
 <script lang="ts">
-import { isPlainObject, isEqual, get } from 'lodash-es';
+import { isPlainObject, isEqual, get, isNil } from 'lodash-es';
 import {
   computed,
   defineComponent,
@@ -45,6 +45,7 @@ import {
   onMounted
 } from 'vue';
 
+import QCheckbox from '@/qComponents/QCheckbox';
 import type { QSelectProvider } from '@/qComponents/QSelect';
 import type {
   QOptionPropValue,
@@ -57,6 +58,8 @@ export default defineComponent({
   name: 'QOption',
   componentName: 'QOption',
 
+  components: { QCheckbox },
+
   props: {
     value: {
       type: [Object, String, Number] as PropType<QOptionPropValue>,
@@ -64,7 +67,7 @@ export default defineComponent({
     },
     label: {
       type: [String, Number],
-      default: ''
+      default: null
     },
     created: {
       type: Boolean,
@@ -85,12 +88,10 @@ export default defineComponent({
     const modelValue = qSelect?.modelValue;
     const valueKey = qSelect?.valueKey.value ?? '';
 
-    const key = computed<string>(() =>
-      String(
-        isPlainObject(props.value) && qSelect
-          ? get(props.value, valueKey)
-          : props.value
-      )
+    const key = computed<string | number>(() =>
+      isPlainObject(props.value) && qSelect
+        ? get(props.value, valueKey)
+        : props.value
     );
 
     const preparedLabel = computed<string>(() =>
@@ -108,7 +109,7 @@ export default defineComponent({
     });
 
     const isSelected = computed<boolean>(() => {
-      if (!qSelect || !modelValue?.value) return false;
+      if (!qSelect || !modelValue || isNil(modelValue.value)) return false;
       if (!multiple) {
         if (!isPlainObject(props.value)) return modelValue.value === key.value;
 

@@ -22,23 +22,26 @@ interface Column {
     position?: 'left' | 'right';
   };
   formatter?: (
-    value: unknown,
+    // TODO: TS generic?
+    value: any,
     row: Record<string, unknown>,
     column: Column
-  ) => string;
+  ) => unknown;
 }
+
 export interface GroupOfColumns {
   key: string;
   columns: Column[];
   color?: string;
   draggable?: boolean;
 }
+
 export interface SortBy {
   key: Nullable<string>;
   direction: Nullable<'ascending' | 'descending'>;
 }
 
-type Row = Record<string, unknown>;
+export type Row = Record<string, unknown>;
 type Classes = Record<string, boolean>;
 type Styles = Record<string, string | number>;
 
@@ -97,7 +100,7 @@ export interface QTableProvider {
   updateCheckedRows: (value: number[]) => void;
   updateSortBy: (value: QTablePropSortBy) => void;
   updateGroupsOfColumns: (value: QTablePropGroupsOfColumns) => void;
-  emitRowClick: (row: Record<string, unknown>, rowIndex: number) => void;
+  emitRowClick: (row: Row, rowIndex: number) => void;
 }
 
 export interface QTableInstance {

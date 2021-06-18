@@ -25,13 +25,9 @@ const QTableStory: Story<QTableProps> = args =>
         args.groupsOfColumns ?? null
       );
 
-      const handleRowClick = (row: unknown): void => {
+      const handleRowClick = (row: unknown, rowIndex: number): void => {
         // eslint-disable-next-line no-console
-        console.log(row);
-      };
-      const changeOrder = (order: unknown): void => {
-        // eslint-disable-next-line no-console
-        console.log(order);
+        console.log(rowIndex, row);
       };
 
       return {
@@ -39,8 +35,7 @@ const QTableStory: Story<QTableProps> = args =>
         groupsOfCols,
         checkedRows,
         sortBy,
-        handleRowClick,
-        changeOrder
+        handleRowClick
       };
     },
     template: `
@@ -57,7 +52,6 @@ const QTableStory: Story<QTableProps> = args =>
         :custom-row-class="args.customRowClass"
         :custom-row-style="args.customRowStyle"
         :selection-column="args.selectionColumn"
-        @change-order="changeOrder"
         @row-click="handleRowClick"
       >
         <template #customHeader="{ value }">

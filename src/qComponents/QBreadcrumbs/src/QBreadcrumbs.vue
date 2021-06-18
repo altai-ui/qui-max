@@ -82,9 +82,10 @@ export default defineComponent({
       name,
       path
     }: {
-      name: string;
-      path: string;
-    }): string | Record<'name', string> => (name ? { name } : path);
+      name?: string | symbol;
+      path?: string;
+    }): string | Record<'name', string | symbol> | undefined =>
+      name ? { name } : path;
 
     return {
       pushTo,

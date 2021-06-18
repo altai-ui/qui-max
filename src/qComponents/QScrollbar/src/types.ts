@@ -59,7 +59,7 @@ export interface QScrollbarProps {
 export interface QScrollbarInstance {
   root: Ref<Nullable<HTMLElement>>;
   wrap: Ref<Nullable<HTMLElement>>;
-  resize: Ref<Nullable<HTMLElement>>;
+  view: Ref<Nullable<HTMLElement>>;
   ybar: Ref<Nullable<ComponentPublicInstance<UnwrapRef<QBarInstance>>>>;
   sizeWidth: Ref<string>;
   sizeHeight: Ref<string>;

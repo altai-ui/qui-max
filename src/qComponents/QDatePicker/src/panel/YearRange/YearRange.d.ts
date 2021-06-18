@@ -4,7 +4,7 @@ import type { Nullable } from '#/helpers';
 
 import type { RangePickValue, RangeState } from '../../Common';
 import type { QDatePickerPropShortcuts } from '../../QDatePicker';
-import type { DatePanelRangePropModelValue } from '../DateRange/DateRange';
+import type { DatePanelRangePropModelValue } from '../DateRange/types';
 
 interface YearRangePanelProps {
   modelValue: DatePanelRangePropModelValue;

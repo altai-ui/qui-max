@@ -130,10 +130,12 @@ import { getPeriodNextNodeIndex } from '../composition';
 
 export default defineComponent({
   name: 'QDatePickerPanelDate',
+
   components: {
     PeriodTable,
     DateTable
   },
+
   props: {
     modelValue: {
       type: Date as PropType<DatePanelPropModelValue>,

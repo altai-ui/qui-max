@@ -110,6 +110,8 @@ const updateValue = (
     next: value.substring(selectionEnd, value.length - additions.suffix.length)
   };
 
+  console.log(valueSeparatedParts);
+
   if (
     !valueSeparatedParts.prev &&
     valueSeparatedParts.next.substring(1, -1) === getLocaleSeparator('decimal')
@@ -179,6 +181,18 @@ const insertText = (
       };
     }
 
+    if (movedSelectionEnd > selectionNewStart) {
+      return updateValue(
+        target,
+        selectionNewStart,
+        movedSelectionEnd,
+        insertedValue,
+        key,
+        additions,
+        minMax
+      );
+    }
+
     if (value === '-') {
       // eslint-disable-next-line no-param-reassign
       inputRef.value.$refs.input.value = '';
@@ -209,8 +223,12 @@ const insertText = (
 
   switch (key) {
     case 'Backspace':
-      moveSelection = isCharReadonly(prevChar) ? -2 : -1;
-      movedSelectionEnd -= isCharReadonly(prevChar) ? 1 : 0;
+      if (movedSelectionEnd > selectionNewStart) {
+        moveSelection = isCharReadonly(prevChar) ? -1 : 0;
+      } else {
+        moveSelection = isCharReadonly(prevChar) ? -2 : -1;
+        movedSelectionEnd -= isCharReadonly(prevChar) ? 1 : 0;
+      }
       break;
     case 'Delete':
       moveSelection = isCharReadonly(nextChar) ? 1 : 0;

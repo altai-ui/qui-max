@@ -13,7 +13,7 @@
 import { defineComponent, computed, provide, inject } from 'vue';
 
 import QTableT from '../QTableT/QTableT.vue';
-import type { QTableProvider } from '../QTable';
+import type { QTableProvider } from '../types';
 
 import type {
   QTableContainerProvider,

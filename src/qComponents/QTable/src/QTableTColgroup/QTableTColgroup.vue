@@ -16,7 +16,7 @@
 import { defineComponent, computed, inject } from 'vue';
 
 import { CHECKBOX_COL_WIDTH } from '../config';
-import type { QTableProvider } from '../QTable';
+import type { QTableProvider } from '../types';
 import type {
   ExtendedColumn,
   QTableContainerProvider

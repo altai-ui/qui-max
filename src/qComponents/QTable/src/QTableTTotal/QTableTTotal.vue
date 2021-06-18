@@ -23,7 +23,7 @@ import { defineComponent, computed, inject } from 'vue';
 
 import { TOTAL_CHECKED_INDEX } from '../config';
 import QTableCellCheckbox from '../QTableCellCheckbox/QTableCellCheckbox.vue';
-import type { QTableProvider } from '../QTable';
+import type { QTableProvider } from '../types';
 import type {
   ExtendedColumn,
   QTableContainerProvider

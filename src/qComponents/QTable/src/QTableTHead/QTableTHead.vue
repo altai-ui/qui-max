@@ -30,7 +30,7 @@ import { isEmpty, cloneDeep } from 'lodash-es';
 import { TOTAL_CHECKED_INDEX } from '../config';
 import QTableTHeadCell from './QTableTHeadCell.vue';
 import QTableCellCheckbox from '../QTableCellCheckbox/QTableCellCheckbox.vue';
-import type { QTablePropSortBy, QTableProvider } from '../QTable';
+import type { QTablePropSortBy, QTableProvider } from '../types';
 import type {
   ExtendedColumn,
   QTableContainerProvider

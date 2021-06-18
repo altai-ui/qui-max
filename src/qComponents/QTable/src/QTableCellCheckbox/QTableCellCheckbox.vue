@@ -12,7 +12,7 @@ import { CHANGE_EVENT } from '@/qComponents/constants/events';
 
 import { useSticky } from '../hooks/sticky';
 import type { StickyConfig } from '../hooks/sticky';
-import type { QTableProvider } from '../QTable';
+import type { QTableProvider } from '../types';
 import type { QTableTProvider } from '../QTableT/types';
 
 import type {

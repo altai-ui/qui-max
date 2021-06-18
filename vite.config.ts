@@ -28,15 +28,9 @@ export default defineConfig({
   },
   plugins: [
     dts({
-      include: [
-        'src/**/*.ts',
-        'src/**/*.vue',
-        'src/**/*.d.ts',
-        'types/**/*.ts'
-      ],
-      exclude: ['node_module/**'],
       staticImport: true,
-      insertTypesEntry: true
+      insertTypesEntry: true,
+      include: ['src/**/*.ts', 'src/**/*.vue', 'src/**/*.d.ts', 'types/**/*.ts']
     }),
     vue()
   ],

@@ -138,6 +138,7 @@ const install = (
 };
 
 export default { install };
+// TODO: add types export
 export {
   useMessageBox,
   useNotify,

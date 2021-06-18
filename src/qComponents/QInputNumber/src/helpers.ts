@@ -203,7 +203,8 @@ const insertText = (
   if (
     key !== 'Backspace' &&
     !lastPart.length &&
-    selectionStart === selectionEnd
+    selectionStart === selectionEnd &&
+    selectionStart !== 0
   ) {
     return {};
   }

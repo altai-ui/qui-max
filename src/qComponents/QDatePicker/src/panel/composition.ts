@@ -5,8 +5,11 @@ import {
   startOfDecade,
   subYears
 } from 'date-fns';
-import { getConfig } from '@/qComponents/config';
 import { isDate } from 'lodash-es';
+
+import { getConfig } from '@/qComponents/config';
+import type { Nullable } from '#/helpers';
+
 import { RangePickValue, RangeState } from '../Common';
 import {
   CELLS_COUNT_IN_YEAR_RANGE,

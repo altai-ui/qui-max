@@ -1,5 +1,7 @@
 import type { ComputedRef } from 'vue';
 
+import type { Nullable } from '#/helpers';
+
 import type { Option } from '../QCascader';
 
 export type QCascaderRowPropRow = Option;

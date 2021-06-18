@@ -1,4 +1,7 @@
 import type { ComputedRef, Ref } from 'vue';
+
+import type { Nullable } from '#/helpers';
+
 import type { QDatePickerPropShortcuts } from '../../QDatePicker';
 import type { RangeState, RangePickValue } from '../../Common';
 

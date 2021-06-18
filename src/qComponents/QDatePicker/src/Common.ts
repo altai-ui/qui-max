@@ -1,3 +1,5 @@
+import type { Nullable } from '#/helpers';
+
 type RangeState = {
   hoveredDate: Nullable<Date>;
   pickedDate: Nullable<Date>;

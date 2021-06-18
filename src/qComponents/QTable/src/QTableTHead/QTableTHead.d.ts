@@ -1,5 +1,7 @@
 import type { Ref, ComputedRef } from 'vue';
 
+import type { Nullable } from '#/helpers';
+
 import type { QTablePropSortBy } from '../QTable';
 import type { ExtendedColumn } from '../QTableContainer/QTableContainer';
 

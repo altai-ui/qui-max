@@ -1,6 +1,8 @@
 import type { Ref, ComputedRef, ComponentPublicInstance, UnwrapRef } from 'vue';
 import type { Instance } from '@popperjs/core';
 
+import type { Nullable } from '#/helpers';
+
 import type { QCascaderInputInstance } from './QCascaderInput/QCascaderInput';
 
 export interface Option {

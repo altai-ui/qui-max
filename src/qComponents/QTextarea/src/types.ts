@@ -1,6 +1,8 @@
 import type { Ref, ComputedRef } from 'vue';
 import type { Composer } from 'vue-i18n';
 
+import type { Nullable } from '#/helpers';
+
 export type QTextareaPropResize = 'vertical' | 'horizontal' | 'both' | 'none';
 export type QTextareaPropAutosize = Nullable<
   boolean | { minRows: number; maxRows: number }

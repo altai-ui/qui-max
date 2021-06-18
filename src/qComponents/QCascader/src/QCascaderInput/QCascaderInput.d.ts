@@ -1,5 +1,7 @@
 import type { Ref, ComputedRef } from 'vue';
 
+import type { Nullable } from '#/helpers';
+
 export interface QCascaderInputInstance {
   value: ComputedRef<Nullable<string | number>>;
   multiple: Ref<Nullable<boolean>>;

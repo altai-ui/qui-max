@@ -1,23 +1,27 @@
 import { writeFileSync, mkdirSync, existsSync } from 'fs';
 import { resolve } from 'path';
-// eslint-disable-next-line import/no-extraneous-dependencies
+
+/* eslint-disable import/no-extraneous-dependencies */
 import { defineConfig } from 'vite';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import sass from 'sass';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import sassPlugin from 'rollup-plugin-sass';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import copy from 'rollup-plugin-copy';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import vue from '@vitejs/plugin-vue';
+/* eslint-enable import/no-extraneous-dependencies */
 
 // https://vitejs.dev/config/
 export default defineConfig({
   resolve: {
     alias: [
+      // @/xxxx => src/xxxx
       {
         find: /^@\//,
-        replacement: `${resolve(__dirname, '/src')}/`
+        replacement: `${resolve(__dirname, 'src')}/`
+      },
+      // #/xxxx => types/xxxx
+      {
+        find: /^#\//,
+        replacement: `${resolve(__dirname, 'types')}/`
       }
     ]
   },

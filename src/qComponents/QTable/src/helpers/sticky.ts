@@ -1,6 +1,8 @@
 import { computed, reactive } from 'vue';
 import { isNil } from 'lodash-es';
 
+import type { Nullable } from '#/helpers';
+
 import type { StickyGlobalConfig } from '../QTableTSticky/QTableTSticky';
 
 import type { StickyConfig } from './sticky.d';

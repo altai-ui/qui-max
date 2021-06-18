@@ -1,6 +1,8 @@
 import type { Instance } from '@popperjs/core';
 import type { ComputedRef, Ref } from 'vue';
 
+import type { Nullable } from '#/helpers';
+
 type QDatePickerPropModelValue = Nullable<string | Date | string[] | Date[]>;
 type QDatePickerPropOutputFormat = 'date' | 'iso';
 type QDatePickerPropType =

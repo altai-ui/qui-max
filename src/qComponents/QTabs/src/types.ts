@@ -1,5 +1,7 @@
 import type { Ref } from 'vue';
 
+import type { Nullable } from '#/helpers';
+
 export type QTabPropModelValue = Nullable<string>;
 export type QTabPropTabWidth = Nullable<string | number>;
 export type QTabPropDisabled = Nullable<boolean>;

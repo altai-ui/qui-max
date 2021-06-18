@@ -1,5 +1,7 @@
 import type { Ref, ComputedRef, Slots } from 'vue';
 
+import type { Nullable } from '#/helpers';
+
 interface SelectionColumn {
   enabled?: Nullable<boolean>;
   selectAllShown?: Nullable<boolean>;

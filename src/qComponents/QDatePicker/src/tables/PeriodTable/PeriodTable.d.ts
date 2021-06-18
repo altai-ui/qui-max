@@ -1,5 +1,8 @@
-import type { DebouncedFunc } from 'lodash-es';
 import type { ComputedRef } from 'vue';
+import type { DebouncedFunc } from 'lodash-es';
+
+import type { Nullable } from '#/helpers';
+
 import type { TableProps } from '../../Common';
 
 interface PeriodCellModel {

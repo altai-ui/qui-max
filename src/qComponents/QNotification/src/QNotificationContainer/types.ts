@@ -1,5 +1,7 @@
 import type { Ref, ComputedRef } from 'vue';
 
+import type { Nullable } from '#/helpers';
+
 import type { QNotifyItem, QNotifyId } from '../types';
 
 export interface QNotificationContainerProps {

@@ -1,5 +1,8 @@
 import type { ComputedRef, Ref } from 'vue';
 import type { TranslateResult, Path, Locale } from 'vue-i18n';
+
+import type { Nullable } from '#/helpers';
+
 import type { QDatePickerPropShortcuts } from '../../QDatePicker';
 
 type DatePanelPropShortcuts = Record<string, Date>[];

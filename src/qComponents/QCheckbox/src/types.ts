@@ -1,5 +1,7 @@
 import type { Ref, ComputedRef } from 'vue';
 
+import type { Nullable } from '#/helpers';
+
 export interface QCheckboxProps {
   modelValue: Nullable<boolean>;
   label: Nullable<string>;

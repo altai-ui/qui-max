@@ -1,5 +1,7 @@
 import type { Ref, ComputedRef, ComponentPublicInstance, UnwrapRef } from 'vue';
 
+import type { Nullable } from '#/helpers';
+
 import type {
   StickyGlobalConfig,
   QTableTStickyInstance

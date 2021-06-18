@@ -1,3 +1,4 @@
+import type { QInputInstance } from '@/qComponents/QInput/src/types';
 import type { Selections, AddittionsMatch, InsertedTextParts } from './types';
 
 const checkStringAdditions = (
@@ -110,8 +111,6 @@ const updateValue = (
     next: value.substring(selectionEnd, value.length - additions.suffix.length)
   };
 
-  console.log(valueSeparatedParts);
-
   if (
     !valueSeparatedParts.prev &&
     valueSeparatedParts.next.substring(1, -1) === getLocaleSeparator('decimal')
@@ -143,7 +142,7 @@ const insertText = (
   key: string,
   formattedValue: string,
   additions: AddittionsMatch,
-  inputRef: HTMLElement | null,
+  inputRef: Ref<QInputInstance | null>,
   localizationTag: string,
   minMax: { min: number; max: number }
 ): InsertedTextParts => {
@@ -195,7 +194,7 @@ const insertText = (
 
     if (value === '-') {
       // eslint-disable-next-line no-param-reassign
-      inputRef.value.$refs.input.value = '';
+      inputRef.value.input.value = '';
     }
 
     return {};

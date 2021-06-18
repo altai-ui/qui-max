@@ -56,6 +56,8 @@ import {
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
 
+import type { QInputInstance } from '@/qComponents/QInput/src/types';
+
 import type {
   QInputNumberProps,
   QInputNumberState,
@@ -158,7 +160,7 @@ export default defineComponent({
     const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
     const qForm = inject<QFormProvider | null>('qForm', null);
 
-    const inputRef = ref<HTMLElement | null>(null);
+    const inputRef = ref<QInputInstance | null>(null);
 
     const state = reactive<QInputNumberState>({
       minValue: ctx.attrs.min ? Number(ctx.attrs.min) : Number.MIN_SAFE_INTEGER,
@@ -188,14 +190,13 @@ export default defineComponent({
       return props.modelValue !== null ? `${prefix}${value}${suffix}` : '';
     });
 
-    const parsedValue = getValueWithoutAdditions(
-      formattedValue.value,
-      additions.value
-    );
+    const parsedValue = computed<string>(() => {
+      return getValueWithoutAdditions(formattedValue.value, additions.value);
+    });
 
     const parsedNumber = computed<number>(() => {
       return formattedValue.value
-        ? parseLocaleNumber(parsedValue, localizationTag.value)
+        ? parseLocaleNumber(parsedValue.value, localizationTag.value)
         : 0;
     });
 
@@ -243,7 +244,7 @@ export default defineComponent({
         key,
         formattedValue.value,
         additions.value,
-        inputRef.value,
+        inputRef,
         localizationTag.value,
         {
           min: state.minValue,
@@ -317,7 +318,7 @@ export default defineComponent({
           ? selectionEnd + (newLength - target.value.length || 1)
           : target.value.length + prefixLength.value + 1;
 
-      inputRef.value.$refs.input.value = newFormattedValue;
+      inputRef.value.input.value = newFormattedValue;
 
       changesEmmiter(Number(minusZero ? -0 : fixedNewValue), INPUT_EVENT);
 
@@ -338,7 +339,7 @@ export default defineComponent({
     };
 
     const handleBlur = (event: FocusEvent): void => {
-      if (state.prevValue === inputRef.value.$refs.input.value) return;
+      if (state.prevValue === inputRef.value.input.value) return;
 
       ctx.emit(BLUR_EVENT, event);
 
@@ -357,7 +358,7 @@ export default defineComponent({
       if (props.validateEvent) qFormItem?.validateField(BLUR_EVENT);
     };
     const handleFocus = (event: FocusEvent): void => {
-      state.prevValue = inputRef.value.$refs.input.value;
+      state.prevValue = inputRef.value.input.value;
       ctx.emit(FOCUS_EVENT, event);
     };
 
@@ -382,7 +383,7 @@ export default defineComponent({
           !formattedValue.value ||
           selectionNewEnd - selectionNewStart === value.length
         ) {
-          inputRef.value.$refs.input.value = '-';
+          inputRef.value.input.value = '-';
         } else if (selectionNewStart === 1) {
           updateInput(insertTextFn(target, event.key));
         }

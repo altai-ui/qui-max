@@ -83,7 +83,7 @@ const calcInputData = (data: string, inputType: string): string => {
   return array.join('');
 };
 
-const validator = function (val: string | string[] | null): boolean {
+const validator = function (val: Nullable<string | string[]>): boolean {
   return Boolean(
     val === null ||
       val === undefined ||

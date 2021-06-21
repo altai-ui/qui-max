@@ -171,7 +171,7 @@ export default defineComponent({
     const isRendered = ref<boolean>(false);
     const dialog = ref<Nullable<HTMLElement>>(null);
 
-    let elementToFocusAfterClosing: HTMLElement | null = null;
+    let elementToFocusAfterClosing: Nullable<HTMLElement> = null;
 
     const dialogStyle = computed<Record<string, Nullable<string | number>>>(
       () => ({

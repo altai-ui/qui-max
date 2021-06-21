@@ -371,7 +371,7 @@ export default defineComponent({
 
     const getOption = (
       value: QSelectPropModelValue
-    ): QOptionModel | NewOption | null => {
+    ): Nullable<QOptionModel | NewOption> => {
       if (isNil(value)) return null;
       const keyByValueKey = getKey(value);
       const option =
@@ -404,7 +404,7 @@ export default defineComponent({
 
             const keyByValueKey = getKey(value);
             if (Array.isArray(state.selected)) {
-              const cachedOption: QOptionModel | NewOption | null =
+              const cachedOption: Nullable<QOptionModel | NewOption> =
                 state.selected?.find(({ key }) => key === keyByValueKey) ??
                 null;
               if (cachedOption) result.push(cachedOption);

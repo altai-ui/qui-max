@@ -180,8 +180,8 @@ export default defineComponent({
       ctx.emit(FOCUS_EVENT, event);
     };
 
-    const changesEmmiter = (value: number | null, type: string): void => {
-      let passedData: number | null = null;
+    const changesEmmiter = (value: Nullable<number>, type: string): void => {
+      let passedData: Nullable<number> = null;
 
       if (value !== null) {
         state.number = Number(value.toFixed(props.precision ?? 0));

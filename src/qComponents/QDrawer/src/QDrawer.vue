@@ -166,7 +166,7 @@ export default defineComponent({
     const isRendered = ref<boolean>(false);
     const drawer = ref<Nullable<HTMLElement>>(null);
 
-    let elementToFocusAfterClosing: HTMLElement | null = null;
+    let elementToFocusAfterClosing: Nullable<HTMLElement> = null;
 
     const drawerStyle = computed<Record<string, Nullable<string | number>>>(
       () => ({

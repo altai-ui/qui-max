@@ -79,7 +79,7 @@ export default defineComponent({
       }
     };
 
-    const handleTagClose = (option: QOptionModel[] | null): void => {
+    const handleTagClose = (option: Nullable<QOptionModel[]>): void => {
       ctx.emit('remove-tag', option);
     };
 

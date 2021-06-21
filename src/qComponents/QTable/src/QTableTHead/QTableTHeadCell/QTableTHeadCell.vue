@@ -129,7 +129,7 @@ export default defineComponent({
     const handleSortArrowClick = (): void => {
       const oldDirection = props.sortBy?.direction ?? null;
 
-      let direction: 'ascending' | 'descending' | null = null;
+      let direction: Nullable<'ascending' | 'descending'> = null;
 
       switch (oldDirection) {
         case null:

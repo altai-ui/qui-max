@@ -222,7 +222,7 @@ export default defineComponent({
       };
     });
 
-    let popperJS: Instance | null = null;
+    let popperJS: Nullable<Instance> = null;
     const createPopper = async (): Promise<void> => {
       if (!reference.value?.firstElementChild || !popover.value) return;
 
@@ -259,7 +259,7 @@ export default defineComponent({
       }
     };
 
-    let timer: ReturnType<typeof setTimeout> | null = null;
+    let timer: Nullable<ReturnType<typeof setTimeout>> = null;
 
     const handleMouseOver = (): void => {
       if (timer) clearTimeout(timer);

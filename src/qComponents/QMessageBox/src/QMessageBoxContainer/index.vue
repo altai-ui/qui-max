@@ -156,8 +156,8 @@ export default defineComponent({
       };
     });
 
-    const elementToFocusAfterClosing: HTMLElement | null =
-      document.activeElement as HTMLElement | null;
+    const elementToFocusAfterClosing: Nullable<HTMLElement> =
+      document.activeElement as Nullable<HTMLElement>;
 
     const handleAfterLeave = (): void => {
       ctx.emit(REMOVE_EVENT);

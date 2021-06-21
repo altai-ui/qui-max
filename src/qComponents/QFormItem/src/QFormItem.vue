@@ -162,8 +162,8 @@ export default defineComponent({
     }));
 
     const getFilteredRules = (
-      trigger: string | null
-    ): FilteredRuleItem[] | null => {
+      trigger: Nullable<string>
+    ): Nullable<FilteredRuleItem[]> => {
       if (!propRules.value) return null;
 
       if (!trigger) {
@@ -181,11 +181,13 @@ export default defineComponent({
     };
 
     const validateField = (
-      trigger: string | null = null
-    ): Promise<{
-      errors?: ErrorList;
-      fields?: FieldErrorList;
-    }> | null => {
+      trigger: Nullable<string> = null
+    ): Nullable<
+      Promise<{
+        errors?: ErrorList;
+        fields?: FieldErrorList;
+      }>
+    > => {
       const triggeredRules = getFilteredRules(trigger);
 
       if (!props.prop || !triggeredRules?.length) return null;

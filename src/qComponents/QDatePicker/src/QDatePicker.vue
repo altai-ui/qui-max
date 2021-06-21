@@ -203,7 +203,8 @@ export default defineComponent({
     firstDayOfWeek: {
       default: null,
       type: Number,
-      validator: (val: number | null) => val === null || (val >= 0 && val <= 6)
+      validator: (val: Nullable<number>) =>
+        val === null || (val >= 0 && val <= 6)
     },
     /**
      * as native name for input
@@ -274,7 +275,7 @@ export default defineComponent({
      * (has to be a valid query selector, or an HTMLElement)
      */
     teleportTo: {
-      type: [String, HTMLElement] as PropType<null | string | HTMLElement>,
+      type: [String, HTMLElement] as PropType<Nullable<string | HTMLElement>>,
       default: null
     }
   },
@@ -288,16 +289,19 @@ export default defineComponent({
   ],
 
   setup(props: QDatePickerProps, ctx): QDatePickerInstance {
-    const root = ref<null | HTMLElement>(null);
+    const root = ref<Nullable<HTMLElement>>(null);
     const panel =
       ref<Nullable<UnwrapRef<ComponentPublicInstance<DatePanelInstance>>>>(
         null
       );
     const qForm = inject<Nullable<QFormProvider>>('qForm', null);
     const qFormItem = inject<Nullable<QFormItemProvider>>('qFormItem', null);
-    const reference = ref<
-      ComponentPublicInstance<UnwrapRef<QInputInstance>> | HTMLElement | null
-    >(null);
+    const reference =
+      ref<
+        Nullable<
+          ComponentPublicInstance<UnwrapRef<QInputInstance>> | HTMLElement
+        >
+      >(null);
 
     const state = reactive<QDatePickerState>({
       pickerVisible: false,
@@ -312,7 +316,7 @@ export default defineComponent({
     });
 
     // transform to plain Date to handle it easily
-    const transformedToDate = computed<null | Date | Date[]>(() => {
+    const transformedToDate = computed<Nullable<Date | Date[]>>(() => {
       if (Array.isArray(props.modelValue)) {
         if (checkArrayValueIsValid(props.modelValue)) {
           return [

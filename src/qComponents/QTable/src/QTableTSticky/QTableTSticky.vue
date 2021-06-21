@@ -28,7 +28,7 @@ import { isEmpty } from 'lodash-es';
 
 import { useResizeListener } from '@/qComponents/hooks';
 import type { QScrollbarProvider } from '@/qComponents/QScrollbar';
-import type { Nullable } from '#/helpers';
+import type { Nullable, Nillable } from '#/helpers';
 
 import { SELECTABLE_COLUMN_STICKY_INDEX } from '../config';
 import type { QTableContainerProvider } from '../QTableContainer/types';
@@ -150,14 +150,8 @@ export default defineComponent({
         }
 
         if (column.sticky?.position === 'right') {
-          const parent = root.value?.offsetParent as
-            | HTMLElement
-            | null
-            | undefined;
-          const grandParent = parent?.offsetParent as
-            | HTMLElement
-            | null
-            | undefined;
+          const parent = root.value?.offsetParent as Nillable<HTMLElement>;
+          const grandParent = parent?.offsetParent as Nillable<HTMLElement>;
           const grandParentWidth = grandParent?.offsetWidth ?? 0;
 
           if (

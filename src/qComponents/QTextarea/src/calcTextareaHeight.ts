@@ -65,7 +65,7 @@ interface TextareaHeight {
 export default function calcTextareaHeight(
   targetElement: Nullable<HTMLTextAreaElement>,
   minRows = 1,
-  maxRows: null | number = null
+  maxRows: Nullable<number> = null
 ): TextareaHeight {
   const result: TextareaHeight = {
     height: '',

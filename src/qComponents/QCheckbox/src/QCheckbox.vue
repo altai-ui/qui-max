@@ -169,7 +169,7 @@ export default defineComponent({
      * @public
      */
     const nativeClick = (): void => {
-      const checkboxEl: HTMLInputElement | null = checkboxInput.value;
+      const checkboxEl: Nullable<HTMLInputElement> = checkboxInput.value;
       checkboxEl?.click();
     };
 

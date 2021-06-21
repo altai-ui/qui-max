@@ -83,13 +83,11 @@ export default defineComponent({
     },
     rangeState: {
       type: Object as PropType<RangeState>,
-      default: (): RangeState => {
-        return {
-          hoveredDate: null,
-          pickedDate: null,
-          selecting: false
-        };
-      },
+      default: (): RangeState => ({
+        hoveredDate: null,
+        pickedDate: null,
+        selecting: false
+      }),
       validator: notNull
     }
   },

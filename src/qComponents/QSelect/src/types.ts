@@ -5,7 +5,7 @@ import type { Composer } from 'vue-i18n';
 import type { QOptionModel, QOptionPropValue } from '@/qComponents/QOption';
 import type { QScrollbarInstance } from '@/qComponents/QScrollbar';
 import type { QInputInstance } from '@/qComponents/QInput';
-import type { Nullable } from '#/helpers';
+import type { Nullable, Optional } from '#/helpers';
 
 type QSelectPropModelValue = Nullable<
   string | number | QOptionPropValue | (string | number | QOptionPropValue)[]
@@ -42,7 +42,7 @@ interface QSelectInstance {
   handleBlur: (event: MouseEvent) => void;
   clearSelected: () => void;
   getValueIndex: (
-    arr: (string | number | QOptionPropValue)[] | undefined,
+    arr: Optional<(string | number | QOptionPropValue)[]>,
     optionValue: string | number | QOptionPropValue
   ) => number;
   toggleOptionSelection: (option: QOptionModel) => void;
@@ -143,8 +143,8 @@ interface QSelectTagsInstance {
   collapseTags: Ref<Nullable<boolean> | boolean>;
   isDisabled: Ref<Nullable<boolean> | boolean>;
   autocomplete: Ref<Nullable<string>>;
-  selected: Ref<QSelectState['selected'] | undefined>;
-  query: Ref<string | undefined>;
+  selected: Ref<Optional<QSelectState['selected']>>;
+  query: Ref<Optional<string>>;
   handleBackspaceKeyDown: () => void;
   handleTagClose: (option: Nullable<QOptionModel[]>) => void;
   handleInput: (event: KeyboardEvent) => void;

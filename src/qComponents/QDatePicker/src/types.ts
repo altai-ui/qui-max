@@ -35,7 +35,7 @@ type QDatePickerPropDisabledValues = Nullable<{
   }[];
 }>;
 
-type HandlePickClickSecondArg = { hidePicker?: boolean | undefined };
+type HandlePickClickSecondArg = { hidePicker?: boolean };
 
 interface QDatePickerProps {
   type: QDatePickerPropType;
@@ -114,7 +114,7 @@ interface QDatePickerInstance {
   handlePickClick: (
     val: QDatePickerPropModelValue,
     options?: {
-      hidePicker?: boolean | undefined;
+      hidePicker?: boolean;
     }
   ) => void;
   handleFocus: () => void;

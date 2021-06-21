@@ -122,7 +122,7 @@ import type { QInputInstance } from '@/qComponents/QInput';
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
 import type { QOptionModel, QOptionPropValue } from '@/qComponents/QOption';
-import type { Nullable } from '#/helpers';
+import type { Nullable, Optional } from '#/helpers';
 
 import type {
   QSelectPropModelValue,
@@ -600,7 +600,7 @@ export default defineComponent({
     const rootResize = useResizeListener(root);
 
     watch(rootResize.observedEntry, value => {
-      const el = value?.target as HTMLElement | undefined;
+      const el = value?.target as Optional<HTMLElement>;
       if (el) handleResize(el);
     });
 

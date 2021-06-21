@@ -37,7 +37,7 @@ import {
 import { isEmpty } from 'lodash-es';
 
 import { useResizeListener } from '@/qComponents/hooks';
-import type { Nullable } from '#/helpers';
+import type { Nullable, Optional } from '#/helpers';
 
 import QTableTBody from '../QTableTBody/QTableTBody.vue';
 import QTableTColgroup from '../QTableTColgroup/QTableTColgroup.vue';
@@ -111,7 +111,7 @@ export default defineComponent({
     };
 
     watch(rootResize.observedEntry, value => {
-      const el = value?.target as HTMLElement | undefined;
+      const el = value?.target as Optional<HTMLElement>;
       if (el) setTableHeight(el);
     });
 

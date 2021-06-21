@@ -26,6 +26,8 @@
 <script lang="ts">
 import { defineComponent, computed, PropType } from 'vue';
 
+import type { Optional } from '#/helpers';
+
 import type {
   QBreadcrumbsProps,
   QBreadcrumbsPropRoute,
@@ -68,7 +70,9 @@ export default defineComponent({
 
     const breadcrumbs = computed<RouteItem[]>(() => {
       const newBreadcrumbs = [...crumbs.value];
+
       newBreadcrumbs.pop();
+
       return newBreadcrumbs;
     });
 
@@ -84,7 +88,7 @@ export default defineComponent({
     }: {
       name?: string | symbol;
       path?: string;
-    }): string | Record<'name', string | symbol> | undefined =>
+    }): Optional<string | Record<'name', string | symbol>> =>
       name ? { name } : path;
 
     return {

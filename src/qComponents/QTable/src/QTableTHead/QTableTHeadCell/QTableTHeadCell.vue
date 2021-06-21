@@ -10,7 +10,7 @@ import {
   Slot
 } from 'vue';
 
-import type { Nullable } from '#/helpers';
+import type { Nullable, Optional } from '#/helpers';
 
 import { useSticky } from '../../hooks/sticky';
 import type { StickyConfig } from '../../hooks/sticky';
@@ -94,7 +94,7 @@ export default defineComponent({
       minWidth: qTable.fixedLayout.value ? props.column.minWidth ?? '' : ''
     }));
 
-    const currentSlot = computed<Slot | undefined>(() => {
+    const currentSlot = computed<Optional<Slot>>(() => {
       const slotName = props.column.slots?.header ?? 'header';
       return qTable.slots[slotName];
     });

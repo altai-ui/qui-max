@@ -2,6 +2,7 @@ import { createApp, nextTick } from 'vue';
 import type { App, ComponentPublicInstance, UnwrapRef } from 'vue';
 
 import { installI18n } from '@/qComponents/constants/locales';
+import type { Optional } from '#/helpers';
 
 import { QMessageBoxContainer } from './QMessageBoxContainer';
 import type { QMessageBoxContainerInstance } from './QMessageBoxContainer';
@@ -18,7 +19,7 @@ export const createMessageBox = (
   options?: QMessageBoxOptions
 ): Promise<QMessageBoxEvent> => {
   let messageBoxPromise: MessageBoxPromise;
-  let app: App<Element> | undefined;
+  let app: Optional<App<Element>>;
 
   const handleDone = ({ action, payload }: QMessageBoxEvent): void => {
     if (action === QMessageBoxAction.confirm) {

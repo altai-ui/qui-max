@@ -54,7 +54,7 @@ import {
 
 import { validateArray } from '@/qComponents/helpers';
 import { useResizeListener } from '@/qComponents/hooks';
-import type { Nullable } from '#/helpers';
+import type { Nullable, Optional } from '#/helpers';
 
 import QBar from './QBar.vue';
 import type {
@@ -175,7 +175,7 @@ export default defineComponent({
     };
 
     const rootParent = computed<Nullable<HTMLElement>>(
-      () => (root.value?.parentNode as HTMLElement | undefined) ?? null
+      () => (root.value?.parentNode as Optional<HTMLElement>) ?? null
     );
 
     const viewResize = useResizeListener(view, false);

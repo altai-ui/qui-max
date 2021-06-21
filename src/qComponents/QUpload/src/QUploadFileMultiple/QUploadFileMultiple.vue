@@ -78,12 +78,12 @@ import { defineComponent, computed, PropType } from 'vue';
 import { isNil } from 'lodash-es';
 import { useI18n } from 'vue-i18n';
 
+import type { QUploadFile } from '../types';
 import type {
-  QUploadFile,
   QUploadFileMultipleProps,
   QUploadFileMultiplePropValue,
   QUploadFileMultipleInstance
-} from '../types';
+} from './types';
 
 export default defineComponent({
   name: 'QUploadFileMultiple',

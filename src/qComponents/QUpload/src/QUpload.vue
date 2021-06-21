@@ -47,12 +47,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, ref, computed, watch, PropType } from 'vue';
+import { defineComponent, inject, ref, computed, watch } from 'vue';
+import type { PropType } from 'vue';
 import { isNil } from 'lodash-es';
 
 import { validateArray, randId } from '@/qComponents/helpers';
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
+
 import QUploadDropZone from './QUploadDropZone';
 import QUploadFileSingle from './QUploadFileSingle';
 import QUploadFileMultiple from './QUploadFileMultiple';

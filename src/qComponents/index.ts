@@ -130,6 +130,7 @@ const install = (
 
   setConfig({
     locale,
+    customI18nMessages,
     zIndex: zIndexCounter
   });
 

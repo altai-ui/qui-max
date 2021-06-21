@@ -5,7 +5,7 @@ export interface InstallOptions {
   locale: string;
 }
 
-let $Q: any = {
+let $Q: InstallOptions = {
   zIndex: 2000,
   locale: 'ru'
 };
@@ -17,12 +17,16 @@ const setConfig = (option: Partial<InstallOptions>): void => {
 export type GetConfigKey = keyof InstallOptions | 'nextZIndex';
 export type GetConfigResult = InstallOptions & { nextZIndex: number };
 
-const getConfig = (key: any): any => {
+const getConfig = <T extends GetConfigKey>(key: T): GetConfigResult[T] => {
   if (key === 'nextZIndex') {
     $Q.zIndex += 1;
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     return $Q.zIndex;
   }
 
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   return $Q[key];
 };
 

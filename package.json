@@ -60,7 +60,6 @@
     "lint-staged": "^11.0.0",
     "prettier": "^2.3.1",
     "rollup-plugin-copy": "^3.4.0",
-    "rollup-plugin-dts": "^3.0.2",
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "rollup-plugin-sass": "^1.2.2",
     "rollup-plugin-typescript2": "^0.30.0",

@@ -124,6 +124,12 @@ import QInput from '@/qComponents/QInput';
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QInputInstance } from '@/qComponents/QInput';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
+
+import DatePanel from './panel/Date/DatePanel.vue';
+import DateRangePanel from './panel/DateRange/DateRange.vue';
+import MonthRangePanel from './panel/MonthRange/MonthRange.vue';
+import YearRangePanel from './panel/YearRange/YearRange.vue';
+import type { DatePanelInstance } from './panel/Date/types';
 import {
   calcInputData,
   formatToLocalReadableString,
@@ -131,10 +137,6 @@ import {
   checkArrayValueIsValid,
   convertISOToDate
 } from './helpers';
-import DatePanel from './panel/Date/DatePanel.vue';
-import DateRangePanel from './panel/DateRange/DateRange.vue';
-import MonthRangePanel from './panel/MonthRange/MonthRange.vue';
-import YearRangePanel from './panel/YearRange/YearRange.vue';
 import type {
   QDatePickerPropDisabledValues,
   QDatePickerPropModelValue,
@@ -143,9 +145,9 @@ import type {
   QDatePickerPropShortcuts,
   QDatePickerPropType,
   QDatePickerProvider,
-  QDatePickerState
+  QDatePickerState,
+  QDatePickerInstance
 } from './types';
-import type { DatePanelInstance } from './panel/Date/types';
 
 export default defineComponent({
   name: 'QDatePicker',
@@ -286,7 +288,7 @@ export default defineComponent({
     'intermediateChange'
   ],
 
-  setup(props: QDatePickerProps, ctx) {
+  setup(props: QDatePickerProps, ctx): QDatePickerInstance {
     const root = ref<null | HTMLElement>(null);
     const panel = ref<UnwrapRef<
       ComponentPublicInstance<DatePanelInstance>
@@ -671,8 +673,8 @@ export default defineComponent({
 
     return {
       state,
-      panel,
       root,
+      panel,
       reference,
       isRanged,
       isPickerDisabled,

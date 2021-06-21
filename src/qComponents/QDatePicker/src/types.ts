@@ -1,7 +1,16 @@
 import type { Instance } from '@popperjs/core';
-import type { ComputedRef, Ref } from 'vue';
+import type { ComputedRef, Ref, UnwrapRef, ComponentPublicInstance } from 'vue';
+import type { Composer } from 'vue-i18n';
 
+import type { QInputInstance } from '@/qComponents/QInput';
 import type { Nullable } from '#/helpers';
+
+import type DatePanel from './panel/Date/DatePanel.vue';
+import type DateRangePanel from './panel/DateRange/DateRange.vue';
+import type MonthRangePanel from './panel/MonthRange/MonthRange.vue';
+import type YearRangePanel from './panel/YearRange/YearRange.vue';
+
+import type { DatePanelInstance } from './panel/Date/types';
 
 type QDatePickerPropModelValue = Nullable<string | Date | string[] | Date[]>;
 type QDatePickerPropOutputFormat = 'date' | 'iso';
@@ -76,6 +85,47 @@ interface QDatePickerProvider {
   type: Ref<QDatePickerPropType>;
 }
 
+interface QDatePickerInstance {
+  state: QDatePickerState;
+  root: Ref<Nullable<HTMLElement>>;
+  panel: Ref<Nullable<UnwrapRef<ComponentPublicInstance<DatePanelInstance>>>>;
+  reference: Ref<
+    Nullable<ComponentPublicInstance<UnwrapRef<QInputInstance>> | HTMLElement>
+  >;
+
+  isRanged: ComputedRef<boolean>;
+  isPickerDisabled: ComputedRef<boolean>;
+  isValueEmpty: ComputedRef<boolean>;
+  calcFirstDayOfWeek: ComputedRef<number>;
+  transformedToDate: ComputedRef<Nullable<Date | Date[]>>;
+  rangeClasses: ComputedRef<Record<string, boolean>>;
+  panelComponent: ComputedRef<
+    | typeof DateRangePanel
+    | typeof MonthRangePanel
+    | typeof YearRangePanel
+    | typeof DatePanel
+  >;
+  displayValue: ComputedRef<Nullable<string | string[]>>;
+  iconClass: ComputedRef<string>;
+  handleInputDateChange: () => void;
+  handleKeyUp: (e: KeyboardEvent) => void;
+  popperInit: () => void;
+  destroyPopper: () => void;
+  handlePickClick: (
+    val: QDatePickerPropModelValue,
+    options?: {
+      hidePicker?: boolean | undefined;
+    }
+  ) => void;
+  handleFocus: () => void;
+  handleInput: (arg: { target: HTMLInputElement; inputType: string }) => void;
+  handleMouseEnter: () => void;
+  handleRangeClick: () => void;
+  handleClose: () => void;
+  handleIconClick: (event: MouseEvent) => void;
+  t: Composer['t'];
+}
+
 export {
   QDatePickerProps,
   QDatePickerPropModelValue,
@@ -84,5 +134,6 @@ export {
   QDatePickerPropOutputFormat,
   QDatePickerPropDisabledValues,
   QDatePickerState,
-  QDatePickerProvider
+  QDatePickerProvider,
+  QDatePickerInstance
 };

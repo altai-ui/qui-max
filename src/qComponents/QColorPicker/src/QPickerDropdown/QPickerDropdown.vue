@@ -69,15 +69,15 @@ import { validateArray } from '@/qComponents/helpers';
 import { CLEAR_EVENT, CLOSE_EVENT } from '@/qComponents/constants/events';
 import QButton from '@/qComponents/QButton';
 import QInput from '@/qComponents/QInput';
-import QColorSvpanel from './QColorSvpanel.vue';
-import QColorAlphaSlider from './QColorAlphaSlider.vue';
-import QColorHueSlider from './QColorHueSlider.vue';
+import QColorSvpanel from '../QColorSvpanel/QColorSvpanel.vue';
+import QColorAlphaSlider from '../QColorAlphaSlider/QColorAlphaSlider.vue';
+import QColorHueSlider from '../QColorHueSlider/QColorHueSlider.vue';
 import type {
   QPickerDropdownProps,
   QPickerDropdownPropColorFormat,
   QColorPickerProvider,
   QPickerDropdownInstance
-} from './types';
+} from '../types';
 
 const PICK_EVENT = 'pick';
 

@@ -1,17 +1,16 @@
 <template>
   <div
     ref="root"
-    class="q-color-alpha-slider"
+    class="q-color-hue-slider"
   >
     <div
       ref="bar"
-      class="q-color-alpha-slider__bar"
-      :style="barStyles"
+      class="q-color-hue-slider__bar"
       @click="handleBarClick"
     />
     <div
       ref="thumb"
-      class="q-color-alpha-slider__thumb"
+      class="q-color-hue-slider__thumb"
       :style="thumbStyles"
     />
   </div>
@@ -20,40 +19,28 @@
 <script lang="ts">
 import { defineComponent, ref, computed, onMounted, watch } from 'vue';
 
-import draggable from './draggable';
-import type {
-  QColorAlphaSliderProps,
-  QColorAlphaSliderInstance
-} from './types';
+import draggable from '../draggable';
+import type { QColorHueSliderProps, QColorHueSliderInstance } from '../types';
 
-const UPDATE_ALPHA_EVENT = 'update:alpha';
+const UPDATE_HUE_EVENT = 'update:hue';
 
 export default defineComponent({
-  name: 'QColorAlphaSlider',
-  componentName: 'QColorAlphaSlider',
+  name: 'QColorHueSlider',
+  componentName: 'QColorHueSlider',
 
   props: {
-    color: {
-      type: String,
-      required: true
-    },
-    alpha: {
+    hue: {
       type: Number,
       required: true
     }
   },
 
-  emits: [UPDATE_ALPHA_EVENT],
+  emits: [UPDATE_HUE_EVENT],
 
-  setup(props: QColorAlphaSliderProps, ctx): QColorAlphaSliderInstance {
-    const thumbLeft = ref<number>(0);
-
-    const barStyles = computed<Record<string, string>>(() => ({
-      backgroundImage: `linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, ${props.color})`
-    }));
-
+  setup(props: QColorHueSliderProps, ctx): QColorHueSliderInstance {
+    const thumbTop = ref<number>(0);
     const thumbStyles = computed<Record<string, string>>(() => ({
-      left: `${thumbLeft.value}px`
+      top: `${thumbTop.value}px`
     }));
 
     const root = ref<HTMLElement | null>(null);
@@ -66,42 +53,40 @@ export default defineComponent({
 
       const rect = root.value.getBoundingClientRect();
 
-      let left = event.clientX - rect.left;
-      left = Math.max(thumbElement.offsetWidth / 2, left);
-      left = Math.min(left, rect.width - thumbElement.offsetWidth / 2);
-      const alpha = Math.round(
-        ((left - thumbElement.offsetWidth / 2) /
-          (rect.width - thumbElement.offsetWidth)) *
-          100
+      let top = event.clientY - rect.top;
+      top = Math.min(top, rect.height - thumbElement.offsetHeight / 2);
+      top = Math.max(thumbElement.offsetHeight / 2, top);
+      const hue = Math.round(
+        ((top - thumbElement.offsetHeight / 2) /
+          (rect.height - thumbElement.offsetHeight)) *
+          360
       );
 
-      ctx.emit(UPDATE_ALPHA_EVENT, alpha);
+      ctx.emit(UPDATE_HUE_EVENT, hue);
     };
 
     const handleBarClick = (event: MouseEvent): void => {
-      if (event.target !== thumb.value) {
-        handleDrag(event);
-      }
+      if (event.target !== thumb.value) handleDrag(event);
     };
 
-    const getThumbLeft = (): number => {
+    const getThumbTop = (): number => {
       const rootElement = root.value;
       const thumbElement = thumb.value;
       if (!rootElement || !thumbElement) return 0;
 
       return Math.round(
-        (props.alpha *
-          (rootElement.offsetWidth - thumbElement.offsetWidth * 1.5)) /
-          100
+        (props.hue *
+          (rootElement.offsetHeight - thumbElement.offsetHeight * 1.5)) /
+          360
       );
     };
 
     const update = (): void => {
-      thumbLeft.value = getThumbLeft();
+      thumbTop.value = getThumbTop();
     };
 
     watch(
-      () => props.alpha,
+      () => props.hue,
       () => {
         update();
       },
@@ -123,7 +108,6 @@ export default defineComponent({
       root,
       thumb,
       bar,
-      barStyles,
       thumbStyles,
       handleBarClick
     };

@@ -14,8 +14,8 @@
 <script lang="ts">
 import { defineComponent, ref, computed, onMounted, watch } from 'vue';
 
-import draggable from './draggable';
-import type { QColorSvpanelProps, QColorSvpanelInstance } from './types';
+import draggable from '../draggable';
+import type { QColorSvpanelProps, QColorSvpanelInstance } from '../types';
 
 const UPDATE_SATURATION_EVENT = 'update:saturation';
 const UPDATE_VALUE_EVENT = 'update:value';

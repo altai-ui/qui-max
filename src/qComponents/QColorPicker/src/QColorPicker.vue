@@ -77,8 +77,9 @@ import {
 } from '@/qComponents/constants/events';
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
-import QPickerDropdown from './QPickerDropdown/QPickerDropdown.vue';
-import type { QPickerDropdownInstance } from './QPickerDropdown/types';
+
+import QPickerDropdown from './QPickerDropdown';
+import type { QPickerDropdownInstance } from './QPickerDropdown';
 import type {
   QColorPickerProps,
   QColorPickerPropColorFormat,

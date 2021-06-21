@@ -3,7 +3,7 @@ import type { Placement, Options } from '@popperjs/core';
 
 import type { Nullable } from '#/helpers';
 
-import type { QPickerDropdownInstance } from './QPickerDropdown/types';
+import type { QPickerDropdownInstance } from './QPickerDropdown';
 
 export type ColorFormat = 'hex' | 'rgb';
 

@@ -20,7 +20,7 @@
 <script lang="ts">
 import { defineComponent, ref, computed, onMounted, watch } from 'vue';
 
-import draggable from '../draggable';
+import draggable from '../utils/draggable';
 import type {
   QColorAlphaSliderProps,
   QColorAlphaSliderInstance

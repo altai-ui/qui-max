@@ -69,10 +69,12 @@ import { validateArray } from '@/qComponents/helpers';
 import { CLEAR_EVENT, CLOSE_EVENT } from '@/qComponents/constants/events';
 import QButton from '@/qComponents/QButton';
 import QInput from '@/qComponents/QInput';
-import QColorSvpanel from '../QColorSvpanel/QColorSvpanel.vue';
-import QColorAlphaSlider from '../QColorAlphaSlider/QColorAlphaSlider.vue';
-import QColorHueSlider from '../QColorHueSlider/QColorHueSlider.vue';
+
+import QColorSvpanel from '../QColorSvpanel';
+import QColorAlphaSlider from '../QColorAlphaSlider';
+import QColorHueSlider from '../QColorHueSlider';
 import type { QColorPickerProvider } from '../types';
+
 import type {
   QPickerDropdownProps,
   QPickerDropdownPropColorFormat,

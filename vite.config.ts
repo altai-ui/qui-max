@@ -7,6 +7,7 @@ import sass from 'sass';
 import sassPlugin from 'rollup-plugin-sass';
 import copy from 'rollup-plugin-copy';
 import vue from '@vitejs/plugin-vue';
+import dts from 'vite-plugin-dts';
 /* eslint-enable import/no-extraneous-dependencies */
 
 // https://vitejs.dev/config/
@@ -15,17 +16,24 @@ export default defineConfig({
     alias: [
       // @/xxxx => src/xxxx
       {
-        find: /^@\//,
-        replacement: `${resolve(__dirname, 'src')}/`
+        find: /^@\/(.+)/,
+        replacement: `${resolve(__dirname, 'src')}/$1`
       },
       // #/xxxx => types/xxxx
       {
-        find: /^#\//,
-        replacement: `${resolve(__dirname, 'types')}/`
+        find: /^#\/(.+)/,
+        replacement: `${resolve(__dirname, 'types')}/$1`
       }
     ]
   },
-  plugins: [vue()],
+  plugins: [
+    dts({
+      staticImport: true,
+      insertTypesEntry: true,
+      include: ['src/**/*.ts', 'src/**/*.vue', 'src/**/*.d.ts', 'types/**/*.ts']
+    }),
+    vue()
+  ],
   build: {
     lib: {
       entry: resolve(__dirname, 'src/qComponents/index.ts'),

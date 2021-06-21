@@ -1,7 +1,6 @@
 import { createApp, nextTick } from 'vue';
 import type { App, ComponentPublicInstance, UnwrapRef } from 'vue';
 
-import { getConfig } from '@/qComponents/config';
 import { installI18n } from '@/qComponents/constants/locales';
 
 import { QMessageBoxContainer } from './QMessageBoxContainer';
@@ -49,8 +48,7 @@ export const createMessageBox = (
 
     options?.onBeforeMount?.(app);
 
-    const customI18nMessages = getConfig('customI18nMessages');
-    installI18n({ app, customI18nMessages });
+    installI18n(app);
 
     const container = app.mount(document.createElement('div'));
     options?.onMounted?.(

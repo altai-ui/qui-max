@@ -78,6 +78,8 @@ import QCheckbox from '@/qComponents/QCheckbox';
 import { getConfig } from '@/qComponents/config';
 import type { QSelectProvider } from '@/qComponents/QSelect';
 import type { QOptionPropValue } from '@/qComponents/QOption';
+import type { Nullable } from '#/helpers';
+
 import type { QSelectDropdownInstance, QSelectDropdownProps } from './types';
 
 const DEFAULT_Z_INDEX = 2000;
@@ -107,16 +109,17 @@ export default defineComponent({
   emits: ['select-all'],
 
   setup(props: QSelectDropdownProps, ctx): QSelectDropdownInstance {
-    const root = ref<HTMLDivElement | null>(null);
-    const scrollbar = ref<ComponentPublicInstance<
-      UnwrapRef<QScrollbarInstance>
-    > | null>(null);
+    const root = ref<Nullable<HTMLDivElement>>(null);
+    const scrollbar =
+      ref<Nullable<ComponentPublicInstance<UnwrapRef<QScrollbarInstance>>>>(
+        null
+      );
     const qSelect = inject<QSelectProvider>('qSelect', {} as QSelectProvider);
     const qSelectState = qSelect.state ?? null;
     const multiple = qSelect.multiple ?? ref(false);
     const zIndex = ref<number>(DEFAULT_Z_INDEX);
 
-    const styles = computed<Record<string, string | number | null>>(() => ({
+    const styles = computed<Record<string, Nullable<string | number>>>(() => ({
       zIndex: zIndex.value,
       width: props.width ? `${props.width}px` : null
     }));

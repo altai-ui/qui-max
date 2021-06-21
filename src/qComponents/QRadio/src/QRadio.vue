@@ -37,6 +37,8 @@ import { defineComponent, inject, computed } from 'vue';
 import { CHANGE_EVENT } from '@/qComponents/constants/events';
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QRadioGroupProvider } from '@/qComponents/QRadioGroup';
+import type { Nullable } from '#/helpers';
+
 import type { QRadioProps, QRadioInstance } from './types';
 
 export default defineComponent({
@@ -64,8 +66,11 @@ export default defineComponent({
   emits: [CHANGE_EVENT],
 
   setup(props: QRadioProps, ctx): QRadioInstance {
-    const qForm = inject<QFormProvider | null>('qForm', null);
-    const qRadioGroup = inject<QRadioGroupProvider | null>('qRadioGroup', null);
+    const qForm = inject<Nullable<QFormProvider>>('qForm', null);
+    const qRadioGroup = inject<Nullable<QRadioGroupProvider>>(
+      'qRadioGroup',
+      null
+    );
 
     const isGroup = computed<boolean>(() => Boolean(qRadioGroup));
 

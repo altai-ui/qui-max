@@ -59,6 +59,7 @@ import {
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
 import type { QCheckboxGroupProvider } from '@/qComponents/QCheckboxGroup';
+import type { Nullable } from '#/helpers';
 
 import type { QCheckboxProps, QCheckboxInstance } from './types';
 
@@ -95,13 +96,13 @@ export default defineComponent({
   emits: [UPDATE_MODEL_VALUE_EVENT, CHANGE_EVENT],
 
   setup(props: QCheckboxProps, ctx): QCheckboxInstance {
-    const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
-    const qForm = inject<QFormProvider | null>('qForm', null);
-    const qCheckboxGroup = inject<QCheckboxGroupProvider | null>(
+    const qFormItem = inject<Nullable<QFormItemProvider>>('qFormItem', null);
+    const qForm = inject<Nullable<QFormProvider>>('qForm', null);
+    const qCheckboxGroup = inject<Nullable<QCheckboxGroupProvider>>(
       'qCheckboxGroup',
       null
     );
-    const checkboxInput = ref<HTMLInputElement | null>(null);
+    const checkboxInput = ref<Nullable<HTMLInputElement>>(null);
 
     const focus = ref<boolean>(false);
 

@@ -64,6 +64,8 @@ import { placements } from '@popperjs/core/lib/enums';
 
 import { validateArray } from '@/qComponents/helpers';
 import { getConfig } from '@/qComponents/config';
+import type { Nullable } from '#/helpers';
+
 import type {
   QPopoverProps,
   QPopoverPropTeleportTo,
@@ -181,10 +183,10 @@ export default defineComponent({
       console.error('QPopover requires reference be provided in the slot.');
     }
 
-    const reference = ref<HTMLElement | null>(null);
+    const reference = ref<Nullable<HTMLElement>>(null);
     const isPopoverShown = ref<boolean>(false);
     const zIndex = ref<number>(DEFAULT_Z_INDEX);
-    const popover = ref<HTMLElement | null>(null);
+    const popover = ref<Nullable<HTMLElement>>(null);
 
     const popoverClasses = computed<Record<string, boolean>>(() => ({
       'q-popover_without-icon': !props.icon

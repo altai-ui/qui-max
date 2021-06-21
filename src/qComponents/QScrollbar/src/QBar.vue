@@ -25,6 +25,8 @@ import {
 } from 'vue';
 
 import { validateArray } from '@/qComponents/helpers';
+import type { Nullable } from '#/helpers';
+
 import type {
   QBarProps,
   QBarPropType,
@@ -51,8 +53,8 @@ export default defineComponent({
 
   setup(props: QBarProps): QBarInstance {
     const qScrollbar = inject<QScrollbarProvider>('qScrollbar');
-    const root = ref<HTMLElement | null>(null);
-    const thumb = ref<HTMLElement | null>(null);
+    const root = ref<Nullable<HTMLElement>>(null);
+    const thumb = ref<Nullable<HTMLElement>>(null);
     const cursorDown = ref<boolean>(false);
 
     let axis = 0;
@@ -72,7 +74,7 @@ export default defineComponent({
       'q-scrollbar__thumb_secondary': props?.theme === 'secondary'
     }));
 
-    const wrap = computed<HTMLElement | null>(
+    const wrap = computed<Nullable<HTMLElement>>(
       () => qScrollbar?.wrap.value ?? null
     );
 

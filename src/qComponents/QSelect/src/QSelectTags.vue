@@ -53,6 +53,8 @@ import { defineComponent, inject, ref, toRefs } from 'vue';
 
 import type { QOptionModel } from '@/qComponents/QOption';
 import type { QSelectProvider } from '@/qComponents/QSelect';
+import type { Nullable } from '#/helpers';
+
 import type { QSelectTagsInstance } from './types';
 
 export default defineComponent({
@@ -62,8 +64,8 @@ export default defineComponent({
   emits: ['remove-tag', 'exit', 'update:query', 'focus', 'keyup-enter'],
 
   setup(props, ctx): QSelectTagsInstance {
-    const input = ref<HTMLInputElement | null>(null);
-    const qSelect = inject<QSelectProvider | null>('qSelect', null);
+    const input = ref<Nullable<HTMLInputElement>>(null);
+    const qSelect = inject<Nullable<QSelectProvider>>('qSelect', null);
     const { selected = ref([]), query = ref('') } = toRefs(
       qSelect?.state ?? {}
     );

@@ -102,6 +102,8 @@ import type { PropType } from 'vue';
 import { addYears, getDecade, isDate, subYears } from 'date-fns';
 import { isNil } from 'lodash-es';
 
+import type { Nullable } from '#/helpers';
+
 import PeriodTable from '../../tables/PeriodTable/PeriodTable.vue';
 import type { QDatePickerProvider } from '../../types';
 import type { DatePanelRangePropModelValue } from '../DateRange/types';
@@ -157,9 +159,9 @@ export default defineComponent({
       'qDatePicker',
       {} as QDatePickerProvider
     );
-    const root = ref<HTMLElement | null>(null);
-    const leftPanel = ref<HTMLElement | null>(null);
-    const rightPanel = ref<HTMLElement | null>(null);
+    const root = ref<Nullable<HTMLElement>>(null);
+    const leftPanel = ref<Nullable<HTMLElement>>(null);
+    const rightPanel = ref<Nullable<HTMLElement>>(null);
 
     const rightYear = computed<number>(() => {
       if (isDate(state.rightDate) && isDate(state.leftDate)) {

@@ -122,6 +122,7 @@ import QInput from '@/qComponents/QInput';
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QInputInstance } from '@/qComponents/QInput';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
+import type { Nullable } from '#/helpers';
 
 import DatePanel from './panel/Date/DatePanel.vue';
 import DateRangePanel from './panel/DateRange/DateRange.vue';
@@ -288,11 +289,12 @@ export default defineComponent({
 
   setup(props: QDatePickerProps, ctx): QDatePickerInstance {
     const root = ref<null | HTMLElement>(null);
-    const panel = ref<UnwrapRef<
-      ComponentPublicInstance<DatePanelInstance>
-    > | null>(null);
-    const qForm = inject<QFormProvider | null>('qForm', null);
-    const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
+    const panel =
+      ref<Nullable<UnwrapRef<ComponentPublicInstance<DatePanelInstance>>>>(
+        null
+      );
+    const qForm = inject<Nullable<QFormProvider>>('qForm', null);
+    const qFormItem = inject<Nullable<QFormItemProvider>>('qFormItem', null);
     const reference = ref<
       ComponentPublicInstance<UnwrapRef<QInputInstance>> | HTMLElement | null
     >(null);
@@ -373,7 +375,7 @@ export default defineComponent({
       return !transformedToDate.value;
     });
 
-    const displayValue = computed<string | string[] | null>(() => {
+    const displayValue = computed<Nullable<string | string[]>>(() => {
       let formattedValue: string | number | Date | (string | number | Date)[] =
         '';
 

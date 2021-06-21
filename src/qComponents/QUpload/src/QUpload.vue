@@ -54,6 +54,7 @@ import { isNil } from 'lodash-es';
 import { validateArray, randId } from '@/qComponents/helpers';
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
+import type { Nullable } from '#/helpers';
 
 import QUploadDropZone from './QUploadDropZone';
 import QUploadFileSingle from './QUploadFileSingle';
@@ -166,8 +167,8 @@ export default defineComponent({
   emits: ['clear-all', 'clear', 'abort', 'select', 'exceed', 'select-all'],
 
   setup(props: QUploadProps, ctx): QUploadInstance {
-    const qForm = inject<QFormProvider | null>('qForm', null);
-    const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
+    const qForm = inject<Nullable<QFormProvider>>('qForm', null);
+    const qFormItem = inject<Nullable<QFormItemProvider>>('qFormItem', null);
 
     const hasValue = computed<boolean>(() =>
       props.multiple
@@ -197,7 +198,7 @@ export default defineComponent({
         !isNil(!Array.isArray(props.value) ? props.value?.loading : null)
     );
 
-    const fileInput = ref<HTMLInputElement | null>(null);
+    const fileInput = ref<Nullable<HTMLInputElement>>(null);
 
     const handleUploadClick = (): void => {
       if (isDisabled.value || isLoading.value) return;

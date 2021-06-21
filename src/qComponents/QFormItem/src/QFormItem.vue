@@ -57,6 +57,8 @@ import AsyncValidator, { ErrorList, FieldErrorList } from 'async-validator';
 import { get, set } from 'lodash-es';
 
 import type { QFormProvider } from '@/qComponents/QForm';
+import type { Nullable } from '#/helpers';
+
 import type {
   QFormItemProps,
   QFormItemPropRules,
@@ -121,9 +123,9 @@ export default defineComponent({
 
   setup(props: QFormItemProps, ctx): QFormItemInstance {
     let initialValue: unknown = null;
-    const errorMessage = ref<string | null>(null);
+    const errorMessage = ref<Nullable<string>>(null);
 
-    const qForm = inject<QFormProvider | null>('qForm', null);
+    const qForm = inject<Nullable<QFormProvider>>('qForm', null);
 
     const isErrorSlotShown = computed<boolean>(() =>
       Boolean(
@@ -133,7 +135,7 @@ export default defineComponent({
       )
     );
 
-    const labelFor = computed<string | null>(() => props.for ?? props.prop);
+    const labelFor = computed<Nullable<string>>(() => props.for ?? props.prop);
 
     const propRules = computed<FilteredRuleItem[]>(() => {
       const rules =

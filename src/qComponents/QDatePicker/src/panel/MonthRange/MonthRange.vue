@@ -98,6 +98,8 @@ import type { PropType } from 'vue';
 import { isDate, addYears, addMonths, isSameMonth } from 'date-fns';
 import { isNil } from 'lodash-es';
 
+import type { Nullable } from '#/helpers';
+
 import PeriodTable from '../../tables/PeriodTable/PeriodTable.vue';
 import { PERIOD_CELLS_IN_ROW_COUNT } from '../../constants';
 import type { DatePanelRangePropModelValue } from '../DateRange/types';
@@ -158,9 +160,9 @@ export default defineComponent({
       'qDatePicker',
       {} as QDatePickerProvider
     );
-    const root = ref<HTMLElement | null>(null);
-    const leftPanel = ref<HTMLElement | null>(null);
-    const rightPanel = ref<HTMLElement | null>(null);
+    const root = ref<Nullable<HTMLElement>>(null);
+    const leftPanel = ref<Nullable<HTMLElement>>(null);
+    const rightPanel = ref<Nullable<HTMLElement>>(null);
 
     const leftPanelClasses = computed<Record<string, boolean>>(() => ({
       'q-picker-panel__content': true,

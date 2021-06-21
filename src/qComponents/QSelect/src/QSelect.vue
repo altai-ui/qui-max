@@ -122,6 +122,8 @@ import type { QInputInstance } from '@/qComponents/QInput';
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
 import type { QOptionModel, QOptionPropValue } from '@/qComponents/QOption';
+import type { Nullable } from '#/helpers';
+
 import type {
   QSelectPropModelValue,
   NewOption,
@@ -248,18 +250,19 @@ export default defineComponent({
   ],
 
   setup(props: QSelectProps, ctx): QSelectInstance {
-    const input = ref<ComponentPublicInstance<
-      UnwrapRef<QInputInstance>
-    > | null>(null);
-    const dropdown = ref<ComponentPublicInstance<
-      UnwrapRef<QSelectDropdownInstance>
-    > | null>(null);
-    const tags = ref<ComponentPublicInstance<
-      UnwrapRef<QSelectTagsInstance>
-    > | null>(null);
-    const root = ref<HTMLElement | null>(null);
-    const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
-    const qForm = inject<QFormProvider | null>('qForm', null);
+    const input =
+      ref<Nullable<ComponentPublicInstance<UnwrapRef<QInputInstance>>>>(null);
+    const dropdown =
+      ref<
+        Nullable<ComponentPublicInstance<UnwrapRef<QSelectDropdownInstance>>>
+      >(null);
+    const tags =
+      ref<Nullable<ComponentPublicInstance<UnwrapRef<QSelectTagsInstance>>>>(
+        null
+      );
+    const root = ref<Nullable<HTMLElement>>(null);
+    const qFormItem = inject<Nullable<QFormItemProvider>>('qFormItem', null);
+    const qForm = inject<Nullable<QFormProvider>>('qForm', null);
 
     const { t } = useI18n();
 
@@ -282,7 +285,7 @@ export default defineComponent({
     } else if (Array.isArray(props.modelValue))
       ctx.emit('update:modelValue', '');
 
-    const preparedPlaceholder = computed<string | null>(() => {
+    const preparedPlaceholder = computed<Nullable<string>>(() => {
       return state.query || (props.multiple && props.modelValue)
         ? ''
         : props.placeholder;

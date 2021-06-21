@@ -61,6 +61,8 @@ import QScrollbar from '@/qComponents/QScrollbar';
 import { validateArray } from '@/qComponents/helpers';
 import { CLOSE_EVENT } from '@/qComponents/constants/events';
 import { getConfig } from '@/qComponents/config';
+import type { Nullable } from '#/helpers';
+
 import type {
   QDrawerProps,
   QDrawerPropBeforeClose,
@@ -162,11 +164,11 @@ export default defineComponent({
   setup(props: QDrawerProps, ctx): QDrawerInstance {
     const zIndex = ref<number>(DEFAULT_Z_INDEX);
     const isRendered = ref<boolean>(false);
-    const drawer = ref<HTMLElement | null>(null);
+    const drawer = ref<Nullable<HTMLElement>>(null);
 
     let elementToFocusAfterClosing: HTMLElement | null = null;
 
-    const drawerStyle = computed<Record<string, string | number | null>>(
+    const drawerStyle = computed<Record<string, Nullable<string | number>>>(
       () => ({
         width: Number(props.width) ? `${Number(props.width)}px` : props.width
       })

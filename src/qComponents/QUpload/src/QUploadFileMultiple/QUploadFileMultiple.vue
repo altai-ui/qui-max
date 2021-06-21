@@ -78,6 +78,8 @@ import { defineComponent, computed, PropType } from 'vue';
 import { isNil } from 'lodash-es';
 import { useI18n } from 'vue-i18n';
 
+import type { Nullable } from '#/helpers';
+
 import type { QUploadFile } from '../types';
 import type {
   QUploadFileMultipleProps,
@@ -117,7 +119,9 @@ export default defineComponent({
       () => props.textUploadedFiles ?? t('QUpload.uploadedFiles')
     );
 
-    const calcBarStyle = (loading: number | null): Record<string, string> => {
+    const calcBarStyle = (
+      loading: Nullable<number>
+    ): Record<string, string> => {
       let progress = loading ?? null;
 
       if (progress === null) return {};

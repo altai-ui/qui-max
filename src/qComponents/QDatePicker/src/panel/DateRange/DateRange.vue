@@ -129,6 +129,8 @@ import type { PropType } from 'vue';
 import { addMonths, subMonths, isSameMonth } from 'date-fns';
 import { isNil } from 'lodash-es';
 
+import type { Nullable } from '#/helpers';
+
 import type { QDatePickerProvider } from '../../types';
 import type { RangePickValue, RangeState } from '../../commonTypes';
 import {
@@ -195,9 +197,9 @@ export default defineComponent({
       'qDatePicker',
       {} as QDatePickerProvider
     );
-    const root = ref<HTMLElement | null>(null);
-    const leftPanel = ref<HTMLElement | null>(null);
-    const rightPanel = ref<HTMLElement | null>(null);
+    const root = ref<Nullable<HTMLElement>>(null);
+    const leftPanel = ref<Nullable<HTMLElement>>(null);
+    const rightPanel = ref<Nullable<HTMLElement>>(null);
 
     const transformedValue = computed<Date[]>(() =>
       Array.isArray(props.modelValue) ? props.modelValue : []

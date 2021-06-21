@@ -16,6 +16,7 @@ import type {
   QFormPropModel,
   QFormInstance
 } from '@/qComponents/QForm';
+import type { Nullable } from '#/helpers';
 
 const storyMetadata: Meta = {
   title: 'Components/QForm',
@@ -47,9 +48,8 @@ const INITIAL_RULES: QFormPropRules = {
 const QFormStory: Story<QFormProps> = args =>
   defineComponent({
     setup() {
-      const form = ref<ComponentPublicInstance<
-        UnwrapRef<QFormInstance>
-      > | null>(null);
+      const form =
+        ref<Nullable<ComponentPublicInstance<UnwrapRef<QFormInstance>>>>(null);
 
       const formModel = reactive(model);
       const rules = reactive(INITIAL_RULES);

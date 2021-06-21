@@ -108,6 +108,7 @@ import { isNil } from 'lodash-es';
 import { useI18n } from 'vue-i18n';
 
 import { getConfig } from '@/qComponents/config';
+import type { Nullable } from '#/helpers';
 
 import PeriodTable from '../../tables/PeriodTable/PeriodTable.vue';
 import DateTable from '../../tables/DateTable/DateTable.vue';
@@ -179,8 +180,8 @@ export default defineComponent({
       state.month = props.modelValue.getMonth();
     }
 
-    const root = ref<HTMLElement | null>(null);
-    const datePanel = ref<HTMLElement | null>(null);
+    const root = ref<Nullable<HTMLElement>>(null);
+    const datePanel = ref<Nullable<HTMLElement>>(null);
 
     onMounted(() => {
       if (!root.value) return;

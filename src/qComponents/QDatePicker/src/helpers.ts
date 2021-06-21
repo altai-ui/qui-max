@@ -9,6 +9,8 @@ import {
 import { ru, enGB as en } from 'date-fns/locale';
 import { isString } from 'lodash-es';
 
+import type { Nullable } from '#/helpers';
+
 import type { RangeState } from './commonTypes';
 import { MAX_DATE_INPUT_LENGTH } from './constants';
 import type {

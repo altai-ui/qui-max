@@ -10,6 +10,8 @@ import {
   Slot
 } from 'vue';
 
+import type { Nullable } from '#/helpers';
+
 import { useSticky } from '../../hooks/sticky';
 import type { StickyConfig } from '../../hooks/sticky';
 import type { QTableProvider } from '../../types';
@@ -50,7 +52,7 @@ export default defineComponent({
   setup(props: QTableTHeadCellProps, ctx): QTableTHeadCellInstance {
     const qTable = inject<QTableProvider>('qTable', {} as QTableProvider);
     const qTableT = inject<QTableTProvider>('qTableT', {} as QTableTProvider);
-    const root = ref<HTMLElement | null>(null);
+    const root = ref<Nullable<HTMLElement>>(null);
 
     const stickyConfig = computed<StickyConfig>(() =>
       useSticky(
@@ -102,7 +104,7 @@ export default defineComponent({
       'q-table-t-head-cell__content_ellipsis': !currentSlot.value
     }));
 
-    const content = computed<VNode[] | string | number | null>(() => {
+    const content = computed<Nullable<VNode[] | string | number>>(() => {
       if (!currentSlot.value) return props.column.value;
 
       return currentSlot.value({
@@ -148,7 +150,7 @@ export default defineComponent({
       });
     };
 
-    const sortArrowEl = computed<VNode | null>(() => {
+    const sortArrowEl = computed<Nullable<VNode>>(() => {
       if (!isSortable.value) return null;
 
       return h('button', {
@@ -181,7 +183,7 @@ export default defineComponent({
       document.addEventListener('mousemove', handleMouseMove);
     };
 
-    const dragTriggerEl = computed<VNode | null>(() => {
+    const dragTriggerEl = computed<Nullable<VNode>>(() => {
       if (!props.column.group.draggable || props.column.draggable === false)
         return null;
 
@@ -191,7 +193,7 @@ export default defineComponent({
       });
     });
 
-    const dummyEl = computed<VNode | null>(() => {
+    const dummyEl = computed<Nullable<VNode>>(() => {
       if (props.draggedColumn?.key !== props.column.key) return null;
 
       const style = {
@@ -209,7 +211,7 @@ export default defineComponent({
       ctx.emit('drop', position, props.column.key);
     };
 
-    const dropZoneEls = computed<VNode[] | null>(() => {
+    const dropZoneEls = computed<Nullable<VNode[]>>(() => {
       if (props.draggedColumn === null) return null;
 
       const style = { height: `${qTableT.tableHeight.value}px` };

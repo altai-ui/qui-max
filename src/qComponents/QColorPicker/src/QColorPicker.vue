@@ -77,6 +77,7 @@ import {
 } from '@/qComponents/constants/events';
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
+import type { Nullable } from '#/helpers';
 
 import QPickerDropdown from './QPickerDropdown';
 import type { QPickerDropdownInstance } from './QPickerDropdown';
@@ -159,12 +160,12 @@ export default defineComponent({
   emits: [UPDATE_MODEL_VALUE_EVENT, CHANGE_EVENT, CLICK_EVENT],
 
   setup(props: QColorPickerProps, ctx): QColorPickerInstance {
-    const qForm = inject<QFormProvider | null>('qForm', null);
-    const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
+    const qForm = inject<Nullable<QFormProvider>>('qForm', null);
+    const qFormItem = inject<Nullable<QFormItemProvider>>('qFormItem', null);
 
     const zIndex = ref<number>(DEFAULT_Z_INDEX);
     const isPickerShown = ref<boolean>(false);
-    const popperJS = ref<Instance | null>(null);
+    const popperJS = ref<Nullable<Instance>>(null);
 
     const isDisabled = computed<boolean>(
       () => props.disabled || (qForm?.disabled.value ?? false)
@@ -226,10 +227,11 @@ export default defineComponent({
       isPickerShown.value = false;
     };
 
-    const trigger = ref<HTMLElement | null>(null);
-    const dropdown = ref<ComponentPublicInstance<
-      UnwrapRef<QPickerDropdownInstance>
-    > | null>(null);
+    const trigger = ref<Nullable<HTMLElement>>(null);
+    const dropdown =
+      ref<
+        Nullable<ComponentPublicInstance<UnwrapRef<QPickerDropdownInstance>>>
+      >(null);
 
     const createPopperJs = (): void => {
       if (popperJS.value?.destroy) {

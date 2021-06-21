@@ -1,9 +1,9 @@
 import type { Instance } from '@popperjs/core';
-import type { ComputedRef, Ref, UnwrapRef, ComponentPublicInstance } from 'vue';
+import type { ComputedRef, Ref } from 'vue';
 import type { Composer } from 'vue-i18n';
 
 import type { QInputInstance } from '@/qComponents/QInput';
-import type { Nullable } from '#/helpers';
+import type { Nullable, UnwrappedInstance } from '#/helpers';
 
 import type DatePanel from './panel/Date/DatePanel.vue';
 import type DateRangePanel from './panel/DateRange/DateRange.vue';
@@ -88,10 +88,8 @@ interface QDatePickerProvider {
 interface QDatePickerInstance {
   state: QDatePickerState;
   root: Ref<Nullable<HTMLElement>>;
-  panel: Ref<Nullable<UnwrapRef<ComponentPublicInstance<DatePanelInstance>>>>;
-  reference: Ref<
-    Nullable<ComponentPublicInstance<UnwrapRef<QInputInstance>> | HTMLElement>
-  >;
+  panel: Ref<UnwrappedInstance<DatePanelInstance>>;
+  reference: Ref<Nullable<UnwrappedInstance<QInputInstance> | HTMLElement>>;
 
   isRanged: ComputedRef<boolean>;
   isPickerDisabled: ComputedRef<boolean>;

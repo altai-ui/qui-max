@@ -24,20 +24,11 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  inject,
-  ref,
-  computed,
-  provide,
-  ComponentPublicInstance,
-  UnwrapRef,
-  watch
-} from 'vue';
+import { defineComponent, inject, ref, computed, provide, watch } from 'vue';
 import { isEmpty } from 'lodash-es';
 
 import { useResizeListener } from '@/qComponents/hooks';
-import type { Nullable, Optional } from '#/helpers';
+import type { Nullable, Optional, UnwrappedInstance } from '#/helpers';
 
 import QTableTBody from '../QTableTBody/QTableTBody.vue';
 import QTableTColgroup from '../QTableTColgroup/QTableTColgroup.vue';
@@ -74,10 +65,7 @@ export default defineComponent({
 
     const root = ref<Nullable<HTMLElement>>(null);
     const thead = ref<Nullable<HTMLElement>>(null);
-    const sticky =
-      ref<Nullable<ComponentPublicInstance<UnwrapRef<QTableTStickyInstance>>>>(
-        null
-      );
+    const sticky = ref<UnwrappedInstance<QTableTStickyInstance>>(null);
 
     const rootResize = useResizeListener(root);
 

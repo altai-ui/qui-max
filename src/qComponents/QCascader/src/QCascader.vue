@@ -34,8 +34,6 @@ import {
   provide,
   toRef,
   PropType,
-  ComponentPublicInstance,
-  UnwrapRef,
   watch,
   nextTick
 } from 'vue';
@@ -49,7 +47,7 @@ import {
 } from '@/qComponents/constants/events';
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
-import type { Nullable } from '#/helpers';
+import type { Nullable, UnwrappedInstance } from '#/helpers';
 
 import QCascaderDropdown from './QCascaderDropdown/QCascaderDropdown.vue';
 import QCascaderInput from './QCascaderInput/QCascaderInput.vue';
@@ -162,10 +160,7 @@ export default defineComponent({
   setup(props: QCascaderProps, ctx): QCascaderInstance {
     const qForm = inject<Nullable<QFormProvider>>('qForm', null);
     const qFormItem = inject<Nullable<QFormItemProvider>>('qFormItem', null);
-    const reference =
-      ref<Nullable<ComponentPublicInstance<UnwrapRef<QCascaderInputInstance>>>>(
-        null
-      );
+    const reference = ref<UnwrappedInstance<QCascaderInputInstance>>(null);
 
     const popperJS = ref<Nullable<Instance>>(null);
     const isDropdownShown = ref<boolean>(false);

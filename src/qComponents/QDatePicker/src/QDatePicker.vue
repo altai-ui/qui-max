@@ -102,7 +102,7 @@ import {
   provide,
   toRef
 } from 'vue';
-import type { PropType, UnwrapRef, ComponentPublicInstance } from 'vue';
+import type { PropType } from 'vue';
 import { createPopper } from '@popperjs/core';
 import { isNumber, isString } from 'lodash-es';
 import {
@@ -122,7 +122,7 @@ import QInput from '@/qComponents/QInput';
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QInputInstance } from '@/qComponents/QInput';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
-import type { Nullable } from '#/helpers';
+import type { Nullable, UnwrappedInstance } from '#/helpers';
 
 import DatePanel from './panel/Date/DatePanel.vue';
 import DateRangePanel from './panel/DateRange/DateRange.vue';
@@ -290,18 +290,11 @@ export default defineComponent({
 
   setup(props: QDatePickerProps, ctx): QDatePickerInstance {
     const root = ref<Nullable<HTMLElement>>(null);
-    const panel =
-      ref<Nullable<UnwrapRef<ComponentPublicInstance<DatePanelInstance>>>>(
-        null
-      );
+    const panel = ref<UnwrappedInstance<DatePanelInstance>>(null);
     const qForm = inject<Nullable<QFormProvider>>('qForm', null);
     const qFormItem = inject<Nullable<QFormItemProvider>>('qFormItem', null);
     const reference =
-      ref<
-        Nullable<
-          ComponentPublicInstance<UnwrapRef<QInputInstance>> | HTMLElement
-        >
-      >(null);
+      ref<Nullable<UnwrappedInstance<QInputInstance> | HTMLElement>>(null);
 
     const state = reactive<QDatePickerState>({
       pickerVisible: false,

@@ -1,8 +1,8 @@
 import { createApp, nextTick } from 'vue';
-import type { App, ComponentPublicInstance, UnwrapRef } from 'vue';
+import type { App } from 'vue';
 
 import { installI18n } from '@/qComponents/constants/locales';
-import type { Optional } from '#/helpers';
+import type { Optional, UnwrappedInstance } from '#/helpers';
 
 import { QMessageBoxContainer } from './QMessageBoxContainer';
 import type { QMessageBoxContainerInstance } from './QMessageBoxContainer';
@@ -54,9 +54,7 @@ export const createMessageBox = (
     const container = app.mount(document.createElement('div'));
     options?.onMounted?.(
       app,
-      container as ComponentPublicInstance<
-        UnwrapRef<QMessageBoxContainerInstance>
-      >
+      container as NonNullable<UnwrappedInstance<QMessageBoxContainerInstance>>
     );
   });
 

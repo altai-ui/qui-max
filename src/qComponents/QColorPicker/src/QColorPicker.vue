@@ -60,9 +60,7 @@ import {
   ref,
   computed,
   watch,
-  provide,
-  ComponentPublicInstance,
-  UnwrapRef
+  provide
 } from 'vue';
 import { createPopper, Instance, Options } from '@popperjs/core';
 import { placements } from '@popperjs/core/lib/enums';
@@ -77,7 +75,7 @@ import {
 } from '@/qComponents/constants/events';
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
-import type { Nullable } from '#/helpers';
+import type { Nullable, UnwrappedInstance } from '#/helpers';
 
 import QPickerDropdown from './QPickerDropdown';
 import type { QPickerDropdownInstance } from './QPickerDropdown';
@@ -228,10 +226,7 @@ export default defineComponent({
     };
 
     const trigger = ref<Nullable<HTMLElement>>(null);
-    const dropdown =
-      ref<
-        Nullable<ComponentPublicInstance<UnwrapRef<QPickerDropdownInstance>>>
-      >(null);
+    const dropdown = ref<UnwrappedInstance<QPickerDropdownInstance>>(null);
 
     const createPopperJs = (): void => {
       if (popperJS.value?.destroy) {

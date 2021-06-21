@@ -1,7 +1,7 @@
-import type { Ref, ComputedRef, ComponentPublicInstance, UnwrapRef } from 'vue';
+import type { Ref, ComputedRef } from 'vue';
 import type { Placement, Options } from '@popperjs/core';
 
-import type { Nullable } from '#/helpers';
+import type { Nullable, UnwrappedInstance } from '#/helpers';
 
 import type { QPickerDropdownInstance } from './QPickerDropdown';
 
@@ -29,9 +29,7 @@ export interface QColorPickerProvider {
 
 export interface QColorPickerInstance {
   trigger: Ref<Nullable<HTMLElement>>;
-  dropdown: Ref<
-    Nullable<ComponentPublicInstance<UnwrapRef<QPickerDropdownInstance>>>
-  >;
+  dropdown: Ref<UnwrappedInstance<QPickerDropdownInstance>>;
   zIndex: Ref<number>;
   iconClasses: ComputedRef<Record<string, boolean>>;
   isDisabled: ComputedRef<boolean>;

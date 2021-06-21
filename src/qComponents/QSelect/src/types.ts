@@ -1,11 +1,11 @@
-import type { Ref, ComputedRef, ComponentPublicInstance, UnwrapRef } from 'vue';
+import type { Ref, ComputedRef } from 'vue';
 import type { Instance as PopperInstance } from '@popperjs/core';
 import type { Composer } from 'vue-i18n';
 
 import type { QOptionModel, QOptionPropValue } from '@/qComponents/QOption';
 import type { QScrollbarInstance } from '@/qComponents/QScrollbar';
 import type { QInputInstance } from '@/qComponents/QInput';
-import type { Nullable, Optional } from '#/helpers';
+import type { Nullable, Optional, UnwrappedInstance } from '#/helpers';
 
 type QSelectPropModelValue = Nullable<
   string | number | QOptionPropValue | (string | number | QOptionPropValue)[]
@@ -18,11 +18,9 @@ type NewOption = {
 };
 
 interface QSelectInstance {
-  input: Ref<Nullable<ComponentPublicInstance<UnwrapRef<QInputInstance>>>>;
-  tags: Ref<Nullable<ComponentPublicInstance<UnwrapRef<QSelectTagsInstance>>>>;
-  dropdown: Ref<
-    Nullable<ComponentPublicInstance<UnwrapRef<QSelectDropdownInstance>>>
-  >;
+  input: Ref<UnwrappedInstance<QInputInstance>>;
+  tags: Ref<UnwrappedInstance<QSelectTagsInstance>>;
+  dropdown: Ref<UnwrappedInstance<QSelectDropdownInstance>>;
   root: Ref<Nullable<HTMLElement>>;
   state: QSelectState;
   preparedPlaceholder: ComputedRef<Nullable<string>>;
@@ -120,9 +118,7 @@ interface QSelectDropdownInstance {
   handleSelectAllClick: () => void;
   root: Ref<Nullable<HTMLDivElement>>;
   multiple: Ref<Nullable<boolean>> | boolean;
-  scrollbar: Ref<
-    Nullable<ComponentPublicInstance<UnwrapRef<QScrollbarInstance>>>
-  >;
+  scrollbar: Ref<UnwrappedInstance<QScrollbarInstance>>;
   qSelectState: Partial<Nullable<QSelectState>>;
 }
 

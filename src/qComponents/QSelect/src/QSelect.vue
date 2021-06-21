@@ -100,9 +100,7 @@ import {
   provide,
   PropType,
   toRefs,
-  toRef,
-  ComponentPublicInstance,
-  UnwrapRef
+  toRef
 } from 'vue';
 import {
   isObject,
@@ -122,7 +120,7 @@ import type { QInputInstance } from '@/qComponents/QInput';
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
 import type { QOptionModel, QOptionPropValue } from '@/qComponents/QOption';
-import type { Nullable, Optional } from '#/helpers';
+import type { Nullable, Optional, UnwrappedInstance } from '#/helpers';
 
 import type {
   QSelectPropModelValue,
@@ -250,16 +248,9 @@ export default defineComponent({
   ],
 
   setup(props: QSelectProps, ctx): QSelectInstance {
-    const input =
-      ref<Nullable<ComponentPublicInstance<UnwrapRef<QInputInstance>>>>(null);
-    const dropdown =
-      ref<
-        Nullable<ComponentPublicInstance<UnwrapRef<QSelectDropdownInstance>>>
-      >(null);
-    const tags =
-      ref<Nullable<ComponentPublicInstance<UnwrapRef<QSelectTagsInstance>>>>(
-        null
-      );
+    const input = ref<UnwrappedInstance<QInputInstance>>(null);
+    const dropdown = ref<UnwrappedInstance<QSelectDropdownInstance>>(null);
+    const tags = ref<UnwrappedInstance<QSelectTagsInstance>>(null);
     const root = ref<Nullable<HTMLElement>>(null);
     const qFormItem = inject<Nullable<QFormItemProvider>>('qFormItem', null);
     const qForm = inject<Nullable<QFormProvider>>('qForm', null);

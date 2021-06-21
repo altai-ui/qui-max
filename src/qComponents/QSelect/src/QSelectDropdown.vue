@@ -62,15 +62,7 @@
 
 <script lang="ts">
 import { get, isPlainObject } from 'lodash-es';
-import {
-  computed,
-  defineComponent,
-  inject,
-  ref,
-  watch,
-  ComponentPublicInstance,
-  UnwrapRef
-} from 'vue';
+import { computed, defineComponent, inject, ref, watch } from 'vue';
 
 import QScrollbar, { QScrollbarInstance } from '@/qComponents/QScrollbar';
 import QOption from '@/qComponents/QOption';
@@ -78,7 +70,7 @@ import QCheckbox from '@/qComponents/QCheckbox';
 import { getConfig } from '@/qComponents/config';
 import type { QSelectProvider } from '@/qComponents/QSelect';
 import type { QOptionPropValue } from '@/qComponents/QOption';
-import type { Nullable } from '#/helpers';
+import type { Nullable, UnwrappedInstance } from '#/helpers';
 
 import type { QSelectDropdownInstance, QSelectDropdownProps } from './types';
 
@@ -110,10 +102,7 @@ export default defineComponent({
 
   setup(props: QSelectDropdownProps, ctx): QSelectDropdownInstance {
     const root = ref<Nullable<HTMLDivElement>>(null);
-    const scrollbar =
-      ref<Nullable<ComponentPublicInstance<UnwrapRef<QScrollbarInstance>>>>(
-        null
-      );
+    const scrollbar = ref<UnwrappedInstance<QScrollbarInstance>>(null);
     const qSelect = inject<QSelectProvider>('qSelect', {} as QSelectProvider);
     const qSelectState = qSelect.state ?? null;
     const multiple = qSelect.multiple ?? ref(false);

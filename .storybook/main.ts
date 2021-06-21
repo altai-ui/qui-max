@@ -5,8 +5,19 @@ module.exports = {
   addons: [
     '@storybook/addon-links',
     '@storybook/addon-essentials',
-    '@storybook/addon-storysource',
-    '@storybook/preset-scss'
+    '@storybook/preset-scss',
+    {
+      name: '@storybook/addon-storysource',
+      options: {
+        rule: {
+          test: [/\.stories\.ts?$/],
+          include: [path.resolve(__dirname, '../src')] // You can specify directories
+        },
+        loaderOptions: {
+          parser: 'typescript'
+        }
+      }
+    }
   ],
   core: {
     builder: 'webpack5'

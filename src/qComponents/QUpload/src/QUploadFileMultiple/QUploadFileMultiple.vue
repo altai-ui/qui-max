@@ -83,7 +83,7 @@ import type {
   QUploadFileMultipleProps,
   QUploadFileMultiplePropValue,
   QUploadFileMultipleInstance
-} from './types';
+} from '../types';
 
 export default defineComponent({
   name: 'QUploadFileMultiple',

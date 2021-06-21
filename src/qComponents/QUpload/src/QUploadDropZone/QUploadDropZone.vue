@@ -20,7 +20,7 @@
 import { defineComponent, ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import type { QUploadDropZoneProps, QUploadDropZoneInstance } from './types';
+import type { QUploadDropZoneProps, QUploadDropZoneInstance } from '../types';
 
 export default defineComponent({
   name: 'QUploadDropZone',

@@ -1,7 +1,7 @@
-@import './QPickerDropdown/q-picker-dropdown';
-@import './QColorSvpanel/q-color-svpanel';
-@import './QColorHueSlider/q-color-hue-slider';
-@import './QColorAlphaSlider/q-color-alpha-slider';
+@import './QPickerDropdown/q-picker-dropdown.scss';
+@import './QColorSvpanel/q-color-svpanel.scss';
+@import './QColorHueSlider/q-color-hue-slider.scss';
+@import './QColorAlphaSlider/q-color-alpha-slider.scss';
 
 .q-color-picker {
   &-trigger {

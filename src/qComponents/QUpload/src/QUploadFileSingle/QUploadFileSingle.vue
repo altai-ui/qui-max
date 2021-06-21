@@ -36,7 +36,7 @@ import { defineComponent, computed } from 'vue';
 import type {
   QUploadFileSingleProps,
   QUploadFileSingleInstance
-} from './types';
+} from '../types';
 
 export default defineComponent({
   name: 'QUploadFileSingle',

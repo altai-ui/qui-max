@@ -73,6 +73,7 @@ export default defineComponent({
 
       if (loading < 0) loading = 0;
       if (loading > 100) loading = 100;
+
       return {
         width: `${loading}%`
       };

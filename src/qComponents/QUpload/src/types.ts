@@ -71,11 +71,13 @@ export interface QUploadFileMultipleProps {
 export interface QUploadFileMultipleInstance {
   classes: ComputedRef<Record<string, boolean>>;
   title: ComputedRef<string>;
-  fileList: {
-    file: QUploadFile;
-    isLoading: boolean;
-    barStyle: Record<string, string>;
-  }[];
+  fileList: ComputedRef<
+    {
+      file: QUploadFile;
+      isLoading: boolean;
+      barStyle: Record<string, string>;
+    }[]
+  >;
   handleRemoveAllFilesBtnClick: () => void;
   handleRemoveFileBtnClick: (fileId: string) => void;
   handleAbortUploadingBtnClick: (fileId: string) => void;

@@ -81,7 +81,8 @@ import { useI18n } from 'vue-i18n';
 import type {
   QUploadFile,
   QUploadFileMultipleProps,
-  QUploadFileMultiplePropValue
+  QUploadFileMultiplePropValue,
+  QUploadFileMultipleInstance
 } from './types';
 
 export default defineComponent({
@@ -109,7 +110,7 @@ export default defineComponent({
 
   emits: ['clear-all', 'clear', 'abort'],
 
-  setup(props: QUploadFileMultipleProps, ctx) {
+  setup(props: QUploadFileMultipleProps, ctx): QUploadFileMultipleInstance {
     const { t } = useI18n();
 
     const title = computed<string>(

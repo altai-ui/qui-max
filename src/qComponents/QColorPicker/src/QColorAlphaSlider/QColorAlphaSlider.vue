@@ -24,7 +24,7 @@ import draggable from '../draggable';
 import type {
   QColorAlphaSliderProps,
   QColorAlphaSliderInstance
-} from '../types';
+} from './types';
 
 const UPDATE_ALPHA_EVENT = 'update:alpha';
 

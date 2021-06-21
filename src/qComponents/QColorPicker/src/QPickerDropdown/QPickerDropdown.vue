@@ -72,12 +72,12 @@ import QInput from '@/qComponents/QInput';
 import QColorSvpanel from '../QColorSvpanel/QColorSvpanel.vue';
 import QColorAlphaSlider from '../QColorAlphaSlider/QColorAlphaSlider.vue';
 import QColorHueSlider from '../QColorHueSlider/QColorHueSlider.vue';
+import type { QColorPickerProvider } from '../types';
 import type {
   QPickerDropdownProps,
   QPickerDropdownPropColorFormat,
-  QColorPickerProvider,
   QPickerDropdownInstance
-} from '../types';
+} from './types';
 
 const PICK_EVENT = 'pick';
 

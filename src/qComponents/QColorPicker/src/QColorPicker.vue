@@ -78,6 +78,7 @@ import {
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
 import QPickerDropdown from './QPickerDropdown/QPickerDropdown.vue';
+import type { QPickerDropdownInstance } from './QPickerDropdown/types';
 import type {
   QColorPickerProps,
   QColorPickerPropColorFormat,
@@ -85,8 +86,7 @@ import type {
   QColorPickerPropPopperOptions,
   QColorPickerPropTeleportTo,
   QColorPickerProvider,
-  QColorPickerInstance,
-  QPickerDropdownInstance
+  QColorPickerInstance
 } from './types';
 
 const DEFAULT_Z_INDEX = 2000;

@@ -29,8 +29,6 @@ const setConfig = ({
   $Q = merge($Q, options);
 };
 
-setConfig({});
-
 const getConfig = <T extends keyof InstallOptions>(
   key: T
 ): InstallOptions[T] => {

@@ -89,19 +89,25 @@
 </template>
 
 <script lang="ts">
-import { addYears, getDecade, isDate, subYears } from 'date-fns';
 import {
   reactive,
   computed,
   watch,
   inject,
-  PropType,
   ref,
   onMounted,
   defineComponent
 } from 'vue';
+import type { PropType } from 'vue';
+import { addYears, getDecade, isDate, subYears } from 'date-fns';
 import { isNil } from 'lodash-es';
+
 import PeriodTable from '../../tables/PeriodTable/PeriodTable.vue';
+import type { QDatePickerProvider } from '../../types';
+import type { DatePanelRangePropModelValue } from '../DateRange/types';
+import { PERIOD_CELLS_IN_ROW_COUNT, YEARS_IN_DECADE } from '../../constants';
+import { RangePickValue, RangeState } from '../../commonTypes';
+
 import {
   leftYearComposable,
   isValidValue,
@@ -114,10 +120,6 @@ import type {
   YearRangePanelProps,
   YearRangeState
 } from './types';
-import type { QDatePickerProvider } from '../../types';
-import type { DatePanelRangePropModelValue } from '../DateRange/types';
-import { PERIOD_CELLS_IN_ROW_COUNT, YEARS_IN_DECADE } from '../../constants';
-import { RangePickValue, RangeState } from '../../commonTypes';
 
 export default defineComponent({
   name: 'QDatePickerYearRange',

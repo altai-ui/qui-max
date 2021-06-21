@@ -10,7 +10,7 @@ import { isDate } from 'lodash-es';
 import { getConfig } from '@/qComponents/config';
 import type { Nullable } from '#/helpers';
 
-import { RangePickValue, RangeState } from '../commonTypes';
+import type { RangePickValue, RangeState } from '../commonTypes';
 import {
   CELLS_COUNT_IN_YEAR_RANGE,
   LEFT_PERIOD_PANEL_START_INDEX,

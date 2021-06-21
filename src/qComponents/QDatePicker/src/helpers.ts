@@ -8,6 +8,7 @@ import {
 } from 'date-fns';
 import { ru, enGB as en } from 'date-fns/locale';
 import { isString } from 'lodash-es';
+
 import type { RangeState } from './commonTypes';
 import { MAX_DATE_INPUT_LENGTH } from './constants';
 import type {
@@ -21,6 +22,7 @@ const checkDisabled = (
   isSameFn: (dateLeft: number | Date, dateRight: number | Date) => boolean
 ): boolean => {
   if (!disabledValues) return false;
+
   const disabled = [];
   if (Array.isArray(disabledValues.ranges)) {
     disabledValues.ranges.forEach((range: Record<string, Date>) => {
@@ -59,12 +61,14 @@ const calcInputData = (data: string, inputType: string): string => {
   const array = clearVal.split('');
   const options = { separator: '.', maxLength: MAX_DATE_INPUT_LENGTH };
 
-  if (inputType === 'insertText' && !array[array.length - 1]?.match(/[0-9]+/))
+  if (inputType === 'insertText' && !array[array.length - 1]?.match(/[0-9]+/)) {
     return data;
+  }
 
   if (array.length > 1) array.splice(2, 0, options.separator);
-  if (array.length > 3 && array.length !== 4)
+  if (array.length > 3 && array.length !== 4) {
     array.splice(5, 0, options.separator);
+  }
   if (array.length > options.maxLength) return data;
 
   if (
@@ -89,12 +93,8 @@ const validator = function (val: string | string[] | null): boolean {
 const checkISOIsValid = (isoDate: string): boolean =>
   isValid(parseISO(isoDate));
 
-const convertISOToDate = (value: string | Date): Date => {
-  if (isString(value)) {
-    return parseISO(value);
-  }
-  return value;
-};
+const convertISOToDate = (value: string | Date): Date =>
+  isString(value) ? parseISO(value) : value;
 
 const checkArrayValueIsValid = (value: unknown[]): boolean =>
   Boolean(
@@ -103,6 +103,7 @@ const checkArrayValueIsValid = (value: unknown[]): boolean =>
 
 const modelValueValidator = (val: QDatePickerPropModelValue): boolean => {
   if (val === null) return true;
+
   return Boolean(
     (isString(val) && checkISOIsValid(val)) ||
       isValid(val) ||

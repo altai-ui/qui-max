@@ -91,6 +91,18 @@
 </template>
 
 <script lang="ts">
+import {
+  computed,
+  defineComponent,
+  inject,
+  reactive,
+  ref,
+  watch,
+  onBeforeUnmount,
+  provide,
+  toRef
+} from 'vue';
+import type { PropType, UnwrapRef, ComponentPublicInstance } from 'vue';
 import { createPopper } from '@popperjs/core';
 import { isNumber, isString } from 'lodash-es';
 import {
@@ -102,20 +114,6 @@ import {
   startOfYear,
   parseISO
 } from 'date-fns';
-import {
-  computed,
-  defineComponent,
-  inject,
-  PropType,
-  reactive,
-  ref,
-  watch,
-  UnwrapRef,
-  onBeforeUnmount,
-  provide,
-  ComponentPublicInstance,
-  toRef
-} from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import { getConfig } from '@/qComponents/config';

@@ -85,19 +85,25 @@
 </template>
 
 <script lang="ts">
-import { isDate, addYears, addMonths, isSameMonth } from 'date-fns';
-import { isNil } from 'lodash-es';
 import {
   reactive,
   computed,
   watch,
   inject,
-  PropType,
   onMounted,
   ref,
   defineComponent
 } from 'vue';
+import type { PropType } from 'vue';
+import { isDate, addYears, addMonths, isSameMonth } from 'date-fns';
+import { isNil } from 'lodash-es';
+
 import PeriodTable from '../../tables/PeriodTable/PeriodTable.vue';
+import { PERIOD_CELLS_IN_ROW_COUNT } from '../../constants';
+import type { DatePanelRangePropModelValue } from '../DateRange/types';
+import type { QDatePickerProvider } from '../../types';
+import type { RangePickValue, RangeState } from '../../commonTypes';
+
 import {
   leftYearComposable,
   isValidValue,
@@ -110,15 +116,11 @@ import {
   getPeriodNextNodeIndex
 } from '../composition';
 
-import { PERIOD_CELLS_IN_ROW_COUNT } from '../../constants';
-import type { DatePanelRangePropModelValue } from '../DateRange/types';
 import type {
   MonthRangePanelInstance,
   MonthRangePanelProps,
   MonthRangeState
 } from './types';
-import type { QDatePickerProvider } from '../../types';
-import type { RangePickValue, RangeState } from '../../commonTypes';
 
 export default defineComponent({
   name: 'QDatePickerMonthRange',

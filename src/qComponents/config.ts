@@ -20,9 +20,13 @@ export type GetConfigResult = InstallOptions & { nextZIndex: number };
 const getConfig = <T extends GetConfigKey>(key: T): GetConfigResult[T] => {
   if (key === 'nextZIndex') {
     $Q.zIndex += 1;
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     return $Q.zIndex;
   }
 
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   return $Q[key];
 };
 

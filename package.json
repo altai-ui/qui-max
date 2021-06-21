@@ -21,7 +21,6 @@
     "date-fns": "^2.22.1",
     "focus-visible": "^5.2.0",
     "lodash-es": "^4.17.21",
-    "resize-observer-polyfill": "^1.5.1",
     "vue-i18n": "^9.0.0"
   },
   "peerDependencies": {
@@ -40,6 +39,7 @@
     "@storybook/storybook-deployer": "^2.8.10",
     "@storybook/vue3": "^6.2.9",
     "@types/lodash-es": "^4.17.4",
+    "@types/node": "^15.12.3",
     "@types/sass": "^1.16.0",
     "@typescript-eslint/eslint-plugin": "^4.27.0",
     "@typescript-eslint/parser": "^4.27.0",
@@ -69,6 +69,7 @@
     "stylelint": "^13.13.1",
     "typescript": "^4.3.4",
     "vite": "^2.3.8",
+    "vite-plugin-dts": "^0.5.1",
     "vue": "^3.1.1",
     "vue-loader": "^16.2.0"
   },
@@ -76,6 +77,7 @@
   "main": "./dist/qui-max.umd.js",
   "module": "./dist/qui-max.es.js",
   "style": "./dist/style.css",
+  "types": "./dist/src/qComponents/index.d.ts",
   "exports": {
     ".": {
       "import": "./dist/qui-max.es.js",

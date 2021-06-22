@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import type { Meta, Story } from '@storybook/vue3';
 import { defineComponent } from 'vue';
 import { placements } from '@popperjs/core/lib/enums';
@@ -12,9 +11,9 @@ const storyMetadata: Meta = {
   title: 'Components/QPopover',
   component: QPopover,
   argTypes: {
-    trigger: { control: { type: 'inline-radio', options: ['click', 'hover'] } },
-    placement: { control: { type: 'select', options: placements } },
-    icon: { control: { type: 'select', options: iconsList } }
+    trigger: { options: ['click', 'hover'], control: { type: 'inline-radio' } },
+    placement: { options: placements, control: { type: 'select' } },
+    icon: { options: iconsList, control: { type: 'select' } }
   }
 };
 

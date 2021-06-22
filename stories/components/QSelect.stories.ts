@@ -1,5 +1,4 @@
 import { defineComponent, watch, reactive } from 'vue';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import type { Meta, Story } from '@storybook/vue3';
 
 import QSelect from '@/qComponents/QSelect';

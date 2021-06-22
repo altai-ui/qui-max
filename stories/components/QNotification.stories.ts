@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import type { Meta, Story } from '@storybook/vue3';
 import { defineComponent } from 'vue';
 
@@ -14,8 +13,8 @@ const storyMetadata: Meta = {
   title: 'Components/QNotification',
   component: QNotificationToast,
   argTypes: {
-    icon: { control: { type: 'select', options: iconsList } },
-    type: { control: { type: 'select', options: Object.values(NotifyType) } }
+    icon: { options: iconsList, control: { type: 'select' } },
+    type: { options: Object.values(NotifyType), control: { type: 'select' } }
   }
 };
 

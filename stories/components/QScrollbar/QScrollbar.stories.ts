@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import type { Meta, Story } from '@storybook/vue3';
 import { defineComponent } from 'vue';
 
@@ -12,7 +11,8 @@ const storyMetadata: Meta = {
   component: QScrollbar,
   argTypes: {
     theme: {
-      control: { type: 'inline-radio', options: ['primary', 'secondary'] }
+      options: ['primary', 'secondary'],
+      control: { type: 'inline-radio' }
     }
   }
 };

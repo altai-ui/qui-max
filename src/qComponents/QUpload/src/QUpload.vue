@@ -51,6 +51,14 @@ import { defineComponent, inject, ref, computed, watch } from 'vue';
 import type { PropType } from 'vue';
 import { isNil } from 'lodash-es';
 
+import {
+  CLEAR_ALL_EVENT,
+  CLEAR_EVENT,
+  ABORT_EVENT,
+  SELECT_EVENT,
+  EXCEED_EVENT,
+  SELECT_ALL_EVENT
+} from '@/qComponents/constants/events';
 import { validateArray, randId } from '@/qComponents/helpers';
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
@@ -164,7 +172,14 @@ export default defineComponent({
     }
   },
 
-  emits: ['clear-all', 'clear', 'abort', 'select', 'exceed', 'select-all'],
+  emits: [
+    CLEAR_ALL_EVENT,
+    CLEAR_EVENT,
+    ABORT_EVENT,
+    SELECT_EVENT,
+    EXCEED_EVENT,
+    SELECT_ALL_EVENT
+  ],
 
   setup(props: QUploadProps, ctx): QUploadInstance {
     const qForm = inject<Nullable<QFormProvider>>('qForm', null);
@@ -218,7 +233,7 @@ export default defineComponent({
       /**
        * triggers when clear all files button clicked
        */
-      ctx.emit('clear-all');
+      ctx.emit(CLEAR_ALL_EVENT);
     };
 
     const handleClear = (fileId: string): void => {
@@ -226,7 +241,7 @@ export default defineComponent({
       /**
        * triggers when the file clear button clicked
        */
-      ctx.emit('clear', fileId);
+      ctx.emit(CLEAR_EVENT, fileId);
     };
 
     const handleAbort = (fileId: string): void => {
@@ -234,7 +249,7 @@ export default defineComponent({
       /**
        * triggers when the file abort button clicked
        */
-      ctx.emit('abort', fileId);
+      ctx.emit(ABORT_EVENT, fileId);
     };
 
     const processFile = ({ target }: MouseEvent): void => {
@@ -249,7 +264,7 @@ export default defineComponent({
          * triggers when a file is selected
          */
         const sourceFile = fileList[0];
-        if (sourceFile) ctx.emit('select', sourceFile, randId());
+        if (sourceFile) ctx.emit(SELECT_EVENT, sourceFile, randId());
         return;
       }
 
@@ -261,7 +276,7 @@ export default defineComponent({
         /**
          * triggers when limit is exceeded
          */
-        ctx.emit('exceed');
+        ctx.emit(EXCEED_EVENT);
         return;
       }
 
@@ -270,7 +285,7 @@ export default defineComponent({
         /**
          * triggers when a file is selected
          */
-        ctx.emit('select', sourceFile, fileId);
+        ctx.emit(SELECT_EVENT, sourceFile, fileId);
 
         return { id: fileId, sourceFile };
       });
@@ -278,7 +293,7 @@ export default defineComponent({
       /**
        * triggers when multiple files are selected
        */
-      ctx.emit('select-all', preparedFileList);
+      ctx.emit(SELECT_ALL_EVENT, preparedFileList);
     };
 
     watch(

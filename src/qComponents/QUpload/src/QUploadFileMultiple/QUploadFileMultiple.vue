@@ -78,6 +78,11 @@ import { defineComponent, computed, PropType } from 'vue';
 import { isNil } from 'lodash-es';
 import { useI18n } from 'vue-i18n';
 
+import {
+  CLEAR_ALL_EVENT,
+  CLEAR_EVENT,
+  ABORT_EVENT
+} from '@/qComponents/constants/events';
 import type { Nullable } from '#/helpers';
 
 import type { QUploadFile } from '../types';
@@ -110,7 +115,7 @@ export default defineComponent({
     }
   },
 
-  emits: ['clear-all', 'clear', 'abort'],
+  emits: [CLEAR_ALL_EVENT, CLEAR_EVENT, ABORT_EVENT],
 
   setup(props: QUploadFileMultipleProps, ctx): QUploadFileMultipleInstance {
     const { t } = useI18n();
@@ -155,15 +160,15 @@ export default defineComponent({
     }));
 
     const handleRemoveAllFilesBtnClick = (): void => {
-      ctx.emit('clear-all');
+      ctx.emit(CLEAR_ALL_EVENT);
     };
 
     const handleRemoveFileBtnClick = (fileId: string): void => {
-      ctx.emit('clear', fileId);
+      ctx.emit(CLEAR_EVENT, fileId);
     };
 
     const handleAbortUploadingBtnClick = (fileId: string): void => {
-      ctx.emit('abort', fileId);
+      ctx.emit(ABORT_EVENT, fileId);
     };
 
     return {

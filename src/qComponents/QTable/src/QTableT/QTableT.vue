@@ -24,19 +24,11 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  inject,
-  ref,
-  computed,
-  provide,
-  ComponentPublicInstance,
-  UnwrapRef,
-  watch
-} from 'vue';
+import { defineComponent, inject, ref, computed, provide, watch } from 'vue';
 import { isEmpty } from 'lodash-es';
 
 import { useResizeListener } from '@/qComponents/hooks';
+import type { Nullable, Optional, UnwrappedInstance } from '#/helpers';
 
 import QTableTBody from '../QTableTBody/QTableTBody.vue';
 import QTableTColgroup from '../QTableTColgroup/QTableTColgroup.vue';
@@ -71,11 +63,9 @@ export default defineComponent({
     );
     const isTotalShown = computed<boolean>(() => !isEmpty(qTable.total.value));
 
-    const root = ref<HTMLElement | null>(null);
-    const thead = ref<HTMLElement | null>(null);
-    const sticky = ref<ComponentPublicInstance<
-      UnwrapRef<QTableTStickyInstance>
-    > | null>(null);
+    const root = ref<Nullable<HTMLElement>>(null);
+    const thead = ref<Nullable<HTMLElement>>(null);
+    const sticky = ref<UnwrappedInstance<QTableTStickyInstance>>(null);
 
     const rootResize = useResizeListener(root);
 
@@ -93,7 +83,7 @@ export default defineComponent({
         }
     );
 
-    const tableHeight = ref<number | null>(null);
+    const tableHeight = ref<Nullable<number>>(null);
 
     provide<QTableTProvider>('qTableT', {
       stickyGlobalConfig,
@@ -109,7 +99,7 @@ export default defineComponent({
     };
 
     watch(rootResize.observedEntry, value => {
-      const el = value?.target as HTMLElement | undefined;
+      const el = value?.target as Optional<HTMLElement>;
       if (el) setTableHeight(el);
     });
 

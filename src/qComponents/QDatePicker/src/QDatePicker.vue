@@ -91,6 +91,18 @@
 </template>
 
 <script lang="ts">
+import {
+  computed,
+  defineComponent,
+  inject,
+  reactive,
+  ref,
+  watch,
+  onBeforeUnmount,
+  provide,
+  toRef
+} from 'vue';
+import type { PropType } from 'vue';
 import { createPopper } from '@popperjs/core';
 import { isNumber, isString } from 'lodash-es';
 import {
@@ -102,20 +114,6 @@ import {
   startOfYear,
   parseISO
 } from 'date-fns';
-import {
-  computed,
-  defineComponent,
-  inject,
-  PropType,
-  reactive,
-  ref,
-  watch,
-  UnwrapRef,
-  onBeforeUnmount,
-  provide,
-  ComponentPublicInstance,
-  toRef
-} from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import { getConfig } from '@/qComponents/config';
@@ -124,6 +122,13 @@ import QInput from '@/qComponents/QInput';
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QInputInstance } from '@/qComponents/QInput';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
+import type { Nullable, UnwrappedInstance } from '#/helpers';
+
+import DatePanel from './panel/Date/DatePanel.vue';
+import DateRangePanel from './panel/DateRange/DateRange.vue';
+import MonthRangePanel from './panel/MonthRange/MonthRange.vue';
+import YearRangePanel from './panel/YearRange/YearRange.vue';
+import type { DatePanelInstance } from './panel/Date/types';
 import {
   calcInputData,
   formatToLocalReadableString,
@@ -131,10 +136,6 @@ import {
   checkArrayValueIsValid,
   convertISOToDate
 } from './helpers';
-import DatePanel from './panel/Date/DatePanel.vue';
-import DateRangePanel from './panel/DateRange/DateRange.vue';
-import MonthRangePanel from './panel/MonthRange/MonthRange.vue';
-import YearRangePanel from './panel/YearRange/YearRange.vue';
 import type {
   QDatePickerPropDisabledValues,
   QDatePickerPropModelValue,
@@ -143,9 +144,9 @@ import type {
   QDatePickerPropShortcuts,
   QDatePickerPropType,
   QDatePickerProvider,
-  QDatePickerState
+  QDatePickerState,
+  QDatePickerInstance
 } from './types';
-import type { DatePanelInstance } from './panel/Date/types';
 
 export default defineComponent({
   name: 'QDatePicker',
@@ -202,7 +203,8 @@ export default defineComponent({
     firstDayOfWeek: {
       default: null,
       type: Number,
-      validator: (val: number | null) => val === null || (val >= 0 && val <= 6)
+      validator: (val: Nullable<number>) =>
+        val === null || (val >= 0 && val <= 6)
     },
     /**
      * as native name for input
@@ -273,7 +275,7 @@ export default defineComponent({
      * (has to be a valid query selector, or an HTMLElement)
      */
     teleportTo: {
-      type: [String, HTMLElement] as PropType<null | string | HTMLElement>,
+      type: [String, HTMLElement] as PropType<Nullable<string | HTMLElement>>,
       default: null
     }
   },
@@ -286,16 +288,13 @@ export default defineComponent({
     'intermediateChange'
   ],
 
-  setup(props: QDatePickerProps, ctx) {
-    const root = ref<null | HTMLElement>(null);
-    const panel = ref<UnwrapRef<
-      ComponentPublicInstance<DatePanelInstance>
-    > | null>(null);
-    const qForm = inject<QFormProvider | null>('qForm', null);
-    const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
-    const reference = ref<
-      ComponentPublicInstance<UnwrapRef<QInputInstance>> | HTMLElement | null
-    >(null);
+  setup(props: QDatePickerProps, ctx): QDatePickerInstance {
+    const root = ref<Nullable<HTMLElement>>(null);
+    const panel = ref<UnwrappedInstance<DatePanelInstance>>(null);
+    const qForm = inject<Nullable<QFormProvider>>('qForm', null);
+    const qFormItem = inject<Nullable<QFormItemProvider>>('qFormItem', null);
+    const reference =
+      ref<Nullable<UnwrappedInstance<QInputInstance> | HTMLElement>>(null);
 
     const state = reactive<QDatePickerState>({
       pickerVisible: false,
@@ -310,7 +309,7 @@ export default defineComponent({
     });
 
     // transform to plain Date to handle it easily
-    const transformedToDate = computed<null | Date | Date[]>(() => {
+    const transformedToDate = computed<Nullable<Date | Date[]>>(() => {
       if (Array.isArray(props.modelValue)) {
         if (checkArrayValueIsValid(props.modelValue)) {
           return [
@@ -373,7 +372,7 @@ export default defineComponent({
       return !transformedToDate.value;
     });
 
-    const displayValue = computed<string | string[] | null>(() => {
+    const displayValue = computed<Nullable<string | string[]>>(() => {
       let formattedValue: string | number | Date | (string | number | Date)[] =
         '';
 
@@ -671,8 +670,8 @@ export default defineComponent({
 
     return {
       state,
-      panel,
       root,
+      panel,
       reference,
       isRanged,
       isPickerDisabled,

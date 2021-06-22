@@ -43,6 +43,8 @@ import {
 } from '@/qComponents/constants/events';
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
+import type { Nullable } from '#/helpers';
+
 import calcTextareaHeight from './calcTextareaHeight';
 import type {
   QTextareaProps,
@@ -120,9 +122,9 @@ export default defineComponent({
       height?: string;
       resize?: string;
     }>({});
-    const qForm = inject<QFormProvider | null>('qForm', null);
-    const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
-    const textarea = ref<HTMLTextAreaElement | null>(null);
+    const qForm = inject<Nullable<QFormProvider>>('qForm', null);
+    const qFormItem = inject<Nullable<QFormItemProvider>>('qFormItem', null);
+    const textarea = ref<Nullable<HTMLTextAreaElement>>(null);
 
     const isDisabled = computed<boolean>(
       () => props.disabled || (qForm?.disabled.value ?? false)

@@ -1,6 +1,5 @@
 import type { App } from 'vue';
 import { createI18n } from 'vue-i18n';
-import type { LocaleMessageDictionary, VueMessageType } from 'vue-i18n';
 import { merge } from 'lodash-es';
 
 import { getConfig } from '@/qComponents/config';
@@ -8,13 +7,7 @@ import { getConfig } from '@/qComponents/config';
 import ru from './ru';
 import en from './en';
 
-const installI18n = ({
-  app,
-  customI18nMessages
-}: {
-  app: App;
-  customI18nMessages: Record<string, LocaleMessageDictionary<VueMessageType>>;
-}): void => {
+const installI18n = (app: App): void => {
   /* eslint-disable-next-line no-underscore-dangle */
   const isI18nExist = Boolean(app.config.globalProperties._i18n);
   if (isI18nExist) {
@@ -26,6 +19,7 @@ const installI18n = ({
   }
 
   const locale = getConfig('locale');
+  const customI18nMessages = getConfig('customI18nMessages');
   const i18n = createI18n({
     legacy: false,
     locale,

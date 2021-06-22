@@ -1,6 +1,6 @@
 import type { ComputedRef } from 'vue';
 
-import type { Nullable } from '#/helpers';
+import type { Nullable, Optional } from '#/helpers';
 
 export interface RouteItem {
   name?: string | symbol;
@@ -22,7 +22,7 @@ export interface QBreadcrumbsInstance {
   pushTo: (arg0: {
     name?: string | symbol;
     path?: string;
-  }) => string | Record<'name', string | symbol> | undefined;
+  }) => Optional<string | Record<'name', string | symbol>>;
   breadcrumbs: ComputedRef<RouteItem[]>;
   lastCrumb: ComputedRef<string>;
 }

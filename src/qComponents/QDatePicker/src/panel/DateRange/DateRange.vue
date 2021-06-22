@@ -116,18 +116,30 @@
 </template>
 
 <script lang="ts">
-import { addMonths, subMonths, isSameMonth } from 'date-fns';
-import { isNil } from 'lodash-es';
 import {
   reactive,
   computed,
   inject,
   watch,
-  PropType,
   ref,
   onMounted,
   defineComponent
 } from 'vue';
+import type { PropType } from 'vue';
+import { addMonths, subMonths, isSameMonth } from 'date-fns';
+import { isNil } from 'lodash-es';
+
+import type { Nullable } from '#/helpers';
+
+import type { QDatePickerProvider } from '../../types';
+import type { RangePickValue, RangeState } from '../../commonTypes';
+import {
+  DATE_CELLS_COUNT,
+  DATE_CELLS_IN_ROW_COUNT,
+  MONTHS_COUNT
+} from '../../constants';
+import DateTable from '../../tables/DateTable/DateTable.vue';
+
 import {
   getActualMonth,
   leftYearComposable,
@@ -139,7 +151,6 @@ import {
   getRangeChangedState,
   getLabelFromDate
 } from '../composition';
-import DateTable from '../../tables/DateTable/DateTable.vue';
 
 import type {
   DatePanelRangePropModelValue,
@@ -147,13 +158,6 @@ import type {
   DateRangePanelProps,
   DateRangePanelState
 } from './types';
-import type { QDatePickerProvider } from '../../types';
-import type { RangePickValue, RangeState } from '../../commonTypes';
-import {
-  DATE_CELLS_COUNT,
-  DATE_CELLS_IN_ROW_COUNT,
-  MONTHS_COUNT
-} from '../../constants';
 
 export default defineComponent({
   name: 'QDatePickerPanelDateRange',
@@ -193,9 +197,9 @@ export default defineComponent({
       'qDatePicker',
       {} as QDatePickerProvider
     );
-    const root = ref<HTMLElement | null>(null);
-    const leftPanel = ref<HTMLElement | null>(null);
-    const rightPanel = ref<HTMLElement | null>(null);
+    const root = ref<Nullable<HTMLElement>>(null);
+    const leftPanel = ref<Nullable<HTMLElement>>(null);
+    const rightPanel = ref<Nullable<HTMLElement>>(null);
 
     const transformedValue = computed<Date[]>(() =>
       Array.isArray(props.modelValue) ? props.modelValue : []

@@ -20,9 +20,9 @@ export interface QTextareaProps {
 export interface QTextareaInstance {
   t: Composer['t'];
   textareaCalcStyle: Ref<{
-    minHeight?: string | undefined;
-    height?: string | undefined;
-    resize?: string | undefined;
+    minHeight?: string;
+    height?: string;
+    resize?: string;
   }>;
   classes: ComputedRef<Record<string, boolean>>;
   textarea: Ref<Nullable<HTMLTextAreaElement>>;

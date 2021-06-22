@@ -23,6 +23,10 @@ export default defineConfig({
       {
         find: /^#\/(.+)/,
         replacement: `${resolve(__dirname, 'types')}/$1`
+      },
+      {
+        find: 'vue-i18n',
+        replacement: 'vue-i18n/dist/vue-i18n.runtime.esm-bundler.js'
       }
     ]
   },
@@ -95,7 +99,7 @@ export default defineConfig({
             },
             {
               src: 'src/assets',
-              dest: 'dist/assets'
+              dest: 'dist'
             }
           ],
           verbose: true,

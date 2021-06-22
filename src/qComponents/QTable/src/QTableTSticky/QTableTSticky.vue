@@ -28,6 +28,7 @@ import { isEmpty } from 'lodash-es';
 
 import { useResizeListener } from '@/qComponents/hooks';
 import type { QScrollbarProvider } from '@/qComponents/QScrollbar';
+import type { Nullable, Nillable } from '#/helpers';
 
 import { SELECTABLE_COLUMN_STICKY_INDEX } from '../config';
 import type { QTableContainerProvider } from '../QTableContainer/types';
@@ -48,7 +49,7 @@ export default defineComponent({
       {} as QScrollbarProvider
     );
 
-    const root = ref<HTMLElement | null>(null);
+    const root = ref<Nullable<HTMLElement>>(null);
 
     const rootResize = useResizeListener(root);
 
@@ -123,8 +124,8 @@ export default defineComponent({
     const checkSticky = (value: number = qScrollbar.moveXInPx.value): void => {
       const { selectableColumn } = colSizes.value;
 
-      const columnsLeftNew: Record<string, number | null> = {};
-      const columnsRightNew: Record<string, number | null> = {};
+      const columnsLeftNew: Record<string, Nullable<number>> = {};
+      const columnsRightNew: Record<string, Nullable<number>> = {};
 
       if (selectableColumn) {
         if (value > (root.value?.offsetLeft ?? 0)) {
@@ -149,14 +150,8 @@ export default defineComponent({
         }
 
         if (column.sticky?.position === 'right') {
-          const parent = root.value?.offsetParent as
-            | HTMLElement
-            | null
-            | undefined;
-          const grandParent = parent?.offsetParent as
-            | HTMLElement
-            | null
-            | undefined;
+          const parent = root.value?.offsetParent as Nillable<HTMLElement>;
+          const grandParent = parent?.offsetParent as Nillable<HTMLElement>;
           const grandParentWidth = grandParent?.offsetWidth ?? 0;
 
           if (

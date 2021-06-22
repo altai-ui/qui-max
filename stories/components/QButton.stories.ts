@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import type { Meta, Story } from '@storybook/vue3';
 import { defineComponent } from 'vue';
 
@@ -9,11 +8,18 @@ const storyMetadata: Meta = {
   title: 'Components/QButton',
   component: QButton,
   argTypes: {
-    type: { control: { type: 'select', options: ['default', 'icon'] } },
-    theme: {
-      control: { type: 'select', options: ['primary', 'secondary', 'link'] }
+    type: {
+      options: ['default', 'icon'],
+      control: { type: 'select' }
     },
-    size: { control: { type: 'select', options: ['small', 'medium'] } }
+    theme: {
+      options: ['primary', 'secondary', 'link'],
+      control: { type: 'select' }
+    },
+    size: {
+      options: ['small', 'medium'],
+      control: { type: 'select' }
+    }
   }
 };
 

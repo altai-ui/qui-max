@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import type { Meta } from '@storybook/vue3';
 
 import QUpload from '@/qComponents/QUpload';
@@ -12,7 +11,8 @@ const storyMetadata: Meta = {
   argTypes: {
     multiple: { control: { type: 'none' } },
     direction: {
-      control: { type: 'select', options: ['right', 'bottom'] }
+      options: ['right', 'bottom'],
+      control: { type: 'select' }
     }
   }
 };

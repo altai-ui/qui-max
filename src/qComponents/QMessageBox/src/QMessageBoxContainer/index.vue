@@ -59,6 +59,7 @@ import type { PropType } from 'vue';
 
 import QScrollbar from '@/qComponents/QScrollbar';
 import { getConfig } from '@/qComponents/config';
+import type { Nullable } from '#/helpers';
 
 import { QMessageBoxContent } from '../QMessageBoxContent';
 import { QMessageBoxAction } from '../constants';
@@ -134,7 +135,7 @@ export default defineComponent({
     const instance = getCurrentInstance();
 
     const isShown = ref<boolean>(false);
-    const messageBox = ref<HTMLElement | null>(null);
+    const messageBox = ref<Nullable<HTMLElement>>(null);
     const zIndex = getConfig('nextZIndex');
 
     const preparedContent = computed<QMessageBoxComponent>(() => {
@@ -155,8 +156,8 @@ export default defineComponent({
       };
     });
 
-    const elementToFocusAfterClosing: HTMLElement | null =
-      document.activeElement as HTMLElement | null;
+    const elementToFocusAfterClosing: Nullable<HTMLElement> =
+      document.activeElement as Nullable<HTMLElement>;
 
     const handleAfterLeave = (): void => {
       ctx.emit(REMOVE_EVENT);

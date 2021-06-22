@@ -38,6 +38,7 @@ import { createPopper } from '@popperjs/core';
 
 import { getConfig } from '@/qComponents/config';
 import { CLOSE_EVENT } from '@/qComponents/constants/events';
+import type { Nullable } from '#/helpers';
 
 import QCascaderColumn from '../QCascaderColumn/QCascaderColumn.vue';
 import type { QCascaderProvider } from '../types';
@@ -67,7 +68,7 @@ export default defineComponent({
     );
 
     const zIndex = ref<number>(getConfig('nextZIndex') ?? DEFAULT_Z_INDEX);
-    const dropdown = ref<HTMLElement | null>(null);
+    const dropdown = ref<Nullable<HTMLElement>>(null);
 
     const expandedRows = ref<number[]>([]);
 

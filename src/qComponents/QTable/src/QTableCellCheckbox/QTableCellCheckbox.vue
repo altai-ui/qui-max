@@ -9,6 +9,7 @@ import {
 } from 'vue';
 
 import { CHANGE_EVENT } from '@/qComponents/constants/events';
+import type { Nullable } from '#/helpers';
 
 import { useSticky } from '../hooks/sticky';
 import type { StickyConfig } from '../hooks/sticky';
@@ -77,7 +78,7 @@ export default defineComponent({
     };
 
     const QCheckbox = resolveComponent('q-checkbox');
-    const content = computed<VNode | null>(() => {
+    const content = computed<Nullable<VNode>>(() => {
       if (qTable.isLoading.value && props.isCheckable)
         return h('div', { class: 'q-table-t__skeleton' });
 

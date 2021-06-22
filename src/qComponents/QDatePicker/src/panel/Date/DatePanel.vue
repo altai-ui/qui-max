@@ -92,13 +92,9 @@
 </template>
 
 <script lang="ts">
-import { subMonths, addMonths, subYears, addYears } from 'date-fns';
-import { isNil } from 'lodash-es';
-import { useI18n } from 'vue-i18n';
 import {
   reactive,
   computed,
-  PropType,
   onMounted,
   ref,
   inject,
@@ -106,17 +102,16 @@ import {
   watch,
   nextTick
 } from 'vue';
+import type { PropType } from 'vue';
+import { subMonths, addMonths, subYears, addYears } from 'date-fns';
+import { isNil } from 'lodash-es';
+import { useI18n } from 'vue-i18n';
+
 import { getConfig } from '@/qComponents/config';
+import type { Nullable } from '#/helpers';
+
 import PeriodTable from '../../tables/PeriodTable/PeriodTable.vue';
 import DateTable from '../../tables/DateTable/DateTable.vue';
-
-import type {
-  DatePanelPropModelValue,
-  DatePanelInstance,
-  DatePanelProps,
-  DatePanelState
-} from './types';
-
 import {
   DATE_CELLS_COUNT,
   DATE_CELLS_IN_ROW_COUNT,
@@ -127,6 +122,13 @@ import {
 } from '../../constants';
 import type { QDatePickerProvider } from '../../types';
 import { getPeriodNextNodeIndex } from '../composition';
+
+import type {
+  DatePanelPropModelValue,
+  DatePanelInstance,
+  DatePanelProps,
+  DatePanelState
+} from './types';
 
 export default defineComponent({
   name: 'QDatePickerPanelDate',
@@ -178,8 +180,8 @@ export default defineComponent({
       state.month = props.modelValue.getMonth();
     }
 
-    const root = ref<HTMLElement | null>(null);
-    const datePanel = ref<HTMLElement | null>(null);
+    const root = ref<Nullable<HTMLElement>>(null);
+    const datePanel = ref<Nullable<HTMLElement>>(null);
 
     onMounted(() => {
       if (!root.value) return;

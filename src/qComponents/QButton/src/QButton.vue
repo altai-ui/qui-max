@@ -27,8 +27,9 @@
 import { defineComponent, PropType, computed, inject } from 'vue';
 
 import { validateArray } from '@/qComponents/helpers';
-
 import type { QFormProvider } from '@/qComponents/QForm';
+import type { Nullable } from '#/helpers';
+
 import type {
   QButtonProps,
   QButtonPropType,
@@ -113,7 +114,7 @@ export default defineComponent({
   },
 
   setup(props: QButtonProps): QButtonInstance {
-    const qForm = inject<QFormProvider | null>('qForm', null);
+    const qForm = inject<Nullable<QFormProvider>>('qForm', null);
 
     const isDisabled = computed<boolean>(
       () => props.disabled || (qForm?.disabled.value ?? false)

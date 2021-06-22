@@ -19,7 +19,9 @@
 <script lang="ts">
 import { defineComponent, ref, computed, onMounted, watch } from 'vue';
 
-import draggable from './draggable';
+import type { Nullable } from '#/helpers';
+
+import draggable from '../utils/draggable';
 import type { QColorHueSliderProps, QColorHueSliderInstance } from './types';
 
 const UPDATE_HUE_EVENT = 'update:hue';
@@ -43,9 +45,9 @@ export default defineComponent({
       top: `${thumbTop.value}px`
     }));
 
-    const root = ref<HTMLElement | null>(null);
-    const thumb = ref<HTMLElement | null>(null);
-    const bar = ref<HTMLElement | null>(null);
+    const root = ref<Nullable<HTMLElement>>(null);
+    const thumb = ref<Nullable<HTMLElement>>(null);
+    const bar = ref<Nullable<HTMLElement>>(null);
 
     const handleDrag = (event: MouseEvent): void => {
       const thumbElement = thumb.value;

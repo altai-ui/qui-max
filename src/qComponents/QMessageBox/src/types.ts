@@ -1,6 +1,6 @@
-import type { App, ComponentPublicInstance, UnwrapRef } from 'vue';
+import type { App } from 'vue';
 
-import type { Nullable } from '#/helpers';
+import type { Nullable, UnwrappedInstance } from '#/helpers';
 
 import type {
   QMessageBoxContainerPropContent,
@@ -24,7 +24,7 @@ export interface QMessageBoxOptions {
   onBeforeMount?: (app: App<Element>) => void;
   onMounted?: (
     app: App<Element>,
-    container: ComponentPublicInstance<UnwrapRef<QMessageBoxContainerInstance>>
+    container: NonNullable<UnwrappedInstance<QMessageBoxContainerInstance>>
   ) => void;
   onUnmounted?: (app: App<Element>) => void;
 }

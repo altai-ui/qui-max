@@ -12,6 +12,8 @@
 import { defineComponent, PropType, computed } from 'vue';
 
 import { validateArray } from '@/qComponents/helpers';
+import type { Nullable } from '#/helpers';
+
 import type {
   QRowProps,
   QRowPropAlignV,
@@ -38,7 +40,7 @@ export default defineComponent({
     alignV: {
       type: String as PropType<QRowPropAlignV>,
       default: null,
-      validator: validateArray<QRowPropAlignV | null>([
+      validator: validateArray<Nullable<QRowPropAlignV>>([
         null,
         'start',
         'end',
@@ -54,7 +56,7 @@ export default defineComponent({
     alignH: {
       type: String as PropType<QRowPropAlignH>,
       default: null,
-      validator: validateArray<QRowPropAlignH | null>([
+      validator: validateArray<Nullable<QRowPropAlignH>>([
         null,
         'start',
         'end',

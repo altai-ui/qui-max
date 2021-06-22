@@ -1,9 +1,9 @@
 import type { App } from 'vue';
-import type { LocaleMessageDictionary, VueMessageType } from 'vue-i18n';
-import { setConfig } from './config';
-import { installI18n } from './constants/locales';
+
 import 'focus-visible';
 
+import { setConfig } from './config';
+import { installI18n } from './constants/locales';
 import QBreadcrumbs from './QBreadcrumbs';
 import QButton from './QButton';
 import QCascader from './QCascader';
@@ -36,6 +36,8 @@ import QTabs from './QTabs';
 import QTag from './QTag';
 import QTextarea from './QTextarea';
 import QUpload from './QUpload';
+
+import type { ConfigOptions } from './types';
 
 import '../fonts/fonts.scss';
 import '../icons/icons.scss';
@@ -72,17 +74,6 @@ import './QTabs/src/q-tabs.scss';
 import './QTag/src/q-tag.scss';
 import './QTextarea/src/q-textarea.scss';
 import './QUpload/src/q-upload.scss';
-
-interface Localization {
-  locale?: string;
-  customI18nMessages?: Record<string, LocaleMessageDictionary<VueMessageType>>;
-}
-
-interface ConfigOptions {
-  localization?: Localization;
-  zIndexCounter?: number;
-  useAllComponents?: boolean;
-}
 
 // install
 const install = (
@@ -130,10 +121,11 @@ const install = (
 
   setConfig({
     locale,
+    customI18nMessages,
     zIndex: zIndexCounter
   });
 
-  installI18n({ app, customI18nMessages });
+  installI18n(app);
 };
 
 export default { install };

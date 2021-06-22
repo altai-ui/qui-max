@@ -1,6 +1,7 @@
 import { createApp, ref, nextTick } from 'vue';
 
-import { randId } from '../../helpers';
+import { installI18n } from '@/qComponents/constants/locales';
+import { randId } from '@/qComponents/helpers';
 
 import QNotificationContainer from './QNotificationContainer';
 import { NotifyType } from './constants';
@@ -36,6 +37,9 @@ export const createNotification = (
         list: notifyList,
         onRemove: closeNotify
       });
+
+      installI18n(app);
+
       const component = app.mount(document.createElement('div'));
 
       config?.onMounted?.(component, app);

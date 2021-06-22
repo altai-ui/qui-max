@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import type { Meta, Story } from '@storybook/vue3';
 import { defineComponent } from 'vue';
 
@@ -13,16 +12,12 @@ const storyMetadata: Meta = {
   subcomponents: { QCol },
   argTypes: {
     alignV: {
-      control: {
-        type: 'select',
-        options: [null, 'start', 'end', 'center', 'baseline', 'stretch']
-      }
+      options: [null, 'start', 'end', 'center', 'baseline', 'stretch'],
+      control: { type: 'select' }
     },
     alignH: {
-      control: {
-        type: 'select',
-        options: [null, 'start', 'end', 'center', 'between', 'around']
-      }
+      options: [null, 'start', 'end', 'center', 'between', 'around'],
+      control: { type: 'select' }
     }
   }
 };

@@ -1,6 +1,6 @@
-import type { Ref, ComputedRef, ComponentPublicInstance, UnwrapRef } from 'vue';
+import type { Ref, ComputedRef } from 'vue';
 
-import type { Nullable } from '#/helpers';
+import type { Nullable, UnwrappedInstance } from '#/helpers';
 
 export interface QScrollbarProvider {
   wrap: Ref<Nullable<HTMLElement>>;
@@ -62,7 +62,7 @@ export interface QScrollbarInstance {
   root: Ref<Nullable<HTMLElement>>;
   wrap: Ref<Nullable<HTMLElement>>;
   view: Ref<Nullable<HTMLElement>>;
-  ybar: Ref<Nullable<ComponentPublicInstance<UnwrapRef<QBarInstance>>>>;
+  ybar: Ref<UnwrappedInstance<QBarInstance>>;
   sizeWidth: Ref<string>;
   sizeHeight: Ref<string>;
   isXBarShown: ComputedRef<boolean>;

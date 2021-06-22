@@ -47,13 +47,12 @@ import {
   ref,
   computed,
   nextTick,
-  provide,
-  ComponentPublicInstance,
-  UnwrapRef
+  provide
 } from 'vue';
 
 import { validateArray } from '@/qComponents/helpers';
 import { useResizeListener } from '@/qComponents/hooks';
+import type { Nullable, Optional, UnwrappedInstance } from '#/helpers';
 
 import QBar from './QBar.vue';
 import type {
@@ -120,12 +119,10 @@ export default defineComponent({
   },
 
   setup(props: QScrollbarProps): QScrollbarInstance {
-    const root = ref<HTMLElement | null>(null);
-    const wrap = ref<HTMLElement | null>(null);
-    const view = ref<HTMLElement | null>(null);
-    const ybar = ref<ComponentPublicInstance<UnwrapRef<QBarInstance>> | null>(
-      null
-    );
+    const root = ref<Nullable<HTMLElement>>(null);
+    const wrap = ref<Nullable<HTMLElement>>(null);
+    const view = ref<Nullable<HTMLElement>>(null);
+    const ybar = ref<UnwrappedInstance<QBarInstance>>(null);
     const sizeWidth = ref<string>('0');
     const sizeHeight = ref<string>('0');
     const moveX = ref<number>(0);
@@ -174,8 +171,8 @@ export default defineComponent({
       sizeWidth.value = widthPercentage < 100 ? `${widthPercentage}%` : '';
     };
 
-    const rootParent = computed<HTMLElement | null>(
-      () => (root.value?.parentNode as HTMLElement | undefined) ?? null
+    const rootParent = computed<Nullable<HTMLElement>>(
+      () => (root.value?.parentNode as Optional<HTMLElement>) ?? null
     );
 
     const viewResize = useResizeListener(view, false);

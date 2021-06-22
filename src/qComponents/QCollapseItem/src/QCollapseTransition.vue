@@ -7,6 +7,8 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 
+import type { QCollapseTransitionInstance } from './types';
+
 /* eslint-disable no-param-reassign */
 const on = {
   beforeEnter(el: HTMLElement): void {
@@ -72,7 +74,7 @@ const on = {
 export default defineComponent({
   name: 'QCollapseTransition',
 
-  setup() {
+  setup(): QCollapseTransitionInstance {
     return { on };
   }
 });

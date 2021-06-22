@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import type { Meta, Story } from '@storybook/vue3';
 import { defineComponent, ref } from 'vue';
 
@@ -12,9 +11,9 @@ const storyMetadata: Meta = {
     placeholder: { category: 'Native attrs', control: { type: 'text' } },
     maxlength: { category: 'Native attrs', control: { type: 'number' } },
     resize: {
+      options: ['vertical', 'horizontal', 'both', 'none'],
       control: {
-        type: 'select',
-        options: ['vertical', 'horizontal', 'both', 'none']
+        type: 'select'
       }
     },
     autocomplete: {

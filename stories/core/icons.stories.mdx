@@ -14,7 +14,8 @@ import iconsList from './iconsList';
   title="Core/Icons"
   argTypes={{
     icon: {
-      control: { type: 'select', options: iconsList }
+      options: iconsList,
+      control: { type: 'select' }
     },
     size: {
       control: { type: 'range', min: 8, max: 320 }

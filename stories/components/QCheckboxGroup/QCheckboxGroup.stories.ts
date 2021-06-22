@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import type { Meta } from '@storybook/vue3';
 
 import QCheckboxGroup from '@/qComponents/QCheckboxGroup';
@@ -11,7 +10,8 @@ const storyMetadata: Meta = {
   component: QCheckboxGroup,
   argTypes: {
     direction: {
-      control: { type: 'inline-radio', options: ['vertical', 'horizontal'] }
+      options: ['vertical', 'horizontal'],
+      control: { type: 'inline-radio' }
     }
   }
 };

@@ -56,6 +56,8 @@ import {
 } from '@/qComponents/constants/events';
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
+import type { Nullable } from '#/helpers';
+
 import type {
   QInputNumberProps,
   QInputNumberState,
@@ -109,8 +111,8 @@ export default defineComponent({
   emits: [CHANGE_EVENT, FOCUS_EVENT, BLUR_EVENT, INPUT_EVENT],
 
   setup(props: QInputNumberProps, ctx): QInputNumberInstance {
-    const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
-    const qForm = inject<QFormProvider | null>('qForm', null);
+    const qFormItem = inject<Nullable<QFormItemProvider>>('qFormItem', null);
+    const qForm = inject<Nullable<QFormProvider>>('qForm', null);
 
     const state = reactive<QInputNumberState>({
       number: null,
@@ -178,8 +180,8 @@ export default defineComponent({
       ctx.emit(FOCUS_EVENT, event);
     };
 
-    const changesEmmiter = (value: number | null, type: string): void => {
-      let passedData: number | null = null;
+    const changesEmmiter = (value: Nullable<number>, type: string): void => {
+      let passedData: Nullable<number> = null;
 
       if (value !== null) {
         state.number = Number(value.toFixed(props.precision ?? 0));

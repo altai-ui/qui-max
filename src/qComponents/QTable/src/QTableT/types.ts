@@ -1,6 +1,6 @@
-import type { Ref, ComputedRef, ComponentPublicInstance, UnwrapRef } from 'vue';
+import type { Ref, ComputedRef } from 'vue';
 
-import type { Nullable } from '#/helpers';
+import type { Nullable, UnwrappedInstance } from '#/helpers';
 
 import type {
   StickyGlobalConfig,
@@ -15,9 +15,7 @@ export interface QTableTProvider {
 export interface QTableTInstance {
   root: Ref<Nullable<HTMLElement>>;
   thead: Ref<Nullable<HTMLElement>>;
-  sticky: Ref<
-    Nullable<ComponentPublicInstance<UnwrapRef<QTableTStickyInstance>>>
-  >;
+  sticky: Ref<UnwrappedInstance<QTableTStickyInstance>>;
   isColgroupShown: ComputedRef<boolean>;
   isTotalShown: ComputedRef<boolean>;
   rootClasses: ComputedRef<Record<string, boolean>>;

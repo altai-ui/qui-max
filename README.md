@@ -4,7 +4,6 @@
 
 [![Storybook](https://cdn.jsdelivr.net/gh/storybookjs/brand@master/badge/badge-storybook.svg)](link to site)
 
-
 <p align="center" class="unchanged rich-diff-level-one">
 
 # A Vue 3 Design System for Web
@@ -20,6 +19,15 @@ What is it?
 - 🏳️‍🌈 colors & grid
 - 🥷 neumorphism styles
 - 📚 storybook sandbox
+
+Some examples below:
+
+![buttons](/.readme-assets/buttons.jpg?raw=true)
+![inputs](/.readme-assets/inputs.gif?raw=true)
+![icons](/.readme-assets/icons.gif?raw=true)
+![tables](/.readme-assets/tables.jpg?raw=true)
+![datepicker](/.readme-assets/datepicker.jpg?raw=true)
+![other](/.readme-assets/other.jpg?raw=true)
 
 ## Install
 

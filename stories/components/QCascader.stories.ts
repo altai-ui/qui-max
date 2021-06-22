@@ -102,16 +102,15 @@ const defaultArgs = {
   ]
 };
 
-const Default: Story<QCascaderProps> = Template.bind({});
+export const Default = Template.bind({});
 Default.args = {
   ...defaultArgs
 };
 
-const Multiple: Story<QCascaderProps> = Template.bind({});
+export const Multiple = Template.bind({});
 Multiple.args = {
   ...defaultArgs,
   multiple: true
 };
 
-export { Default, Multiple };
 export default storyMetadata;

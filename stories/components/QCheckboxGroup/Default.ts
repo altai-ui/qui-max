@@ -41,6 +41,7 @@ const QCheckboxGroupStory: Story<QCheckboxGroupProps> = args =>
   });
 
 QCheckboxGroupStory.storyName = 'Default';
+QCheckboxGroupStory.bind({});
 QCheckboxGroupStory.args = {
   min: 1,
   max: 3

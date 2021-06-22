@@ -120,13 +120,13 @@ const Template: Story<QDatePickerProps> = args =>
     `
   });
 
-export const Default: Story<QDatePickerProps> = Template.bind({});
-export const Month: Story<QDatePickerProps> = Template.bind({});
-export const Year: Story<QDatePickerProps> = Template.bind({});
-export const DateRange: Story<QDatePickerProps> = Template.bind({});
-export const MonthRange: Story<QDatePickerProps> = Template.bind({});
-export const YearRange: Story<QDatePickerProps> = Template.bind({});
-export const Shortcuts: Story<QDatePickerProps> = Template.bind({});
+export const Default = Template.bind({});
+export const Month = Template.bind({});
+export const Year = Template.bind({});
+export const DateRange = Template.bind({});
+export const MonthRange = Template.bind({});
+export const YearRange = Template.bind({});
+export const Shortcuts = Template.bind({});
 
 YearRange.args = {
   type: 'yearrange'

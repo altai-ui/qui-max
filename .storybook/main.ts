@@ -1,4 +1,5 @@
 const path = require('path');
+const createCompiler = require('@storybook/addon-docs/mdx-compiler-plugin');
 
 module.exports = {
   stories: ['../stories/**/**/*.stories.@(ts|js|mdx)'],
@@ -6,18 +7,7 @@ module.exports = {
     '@storybook/addon-links',
     '@storybook/addon-essentials',
     '@storybook/preset-scss',
-    {
-      name: '@storybook/addon-storysource',
-      options: {
-        rule: {
-          test: [/\.stories\.ts?$/],
-          include: [path.resolve(__dirname, '../src')] // You can specify directories
-        },
-        loaderOptions: {
-          parser: 'typescript'
-        }
-      }
-    }
+    '@storybook/addon-storysource'
   ],
   core: {
     builder: 'webpack5'

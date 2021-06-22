@@ -33,8 +33,8 @@ const QContextMenuStory: Story<QContextMenuProps> = args =>
     `
   });
 
-QContextMenuStory.storyName = 'Default';
-QContextMenuStory.args = {
+export const Default = QContextMenuStory.bind({});
+Default.args = {
   menuItems: [
     {
       action: 'action1',
@@ -54,5 +54,4 @@ QContextMenuStory.args = {
   ]
 };
 
-export { QContextMenuStory };
 export default storyMetadata;

@@ -39,11 +39,10 @@ const QDialogStory: Story<QDialogProps> = args =>
     `
   });
 
-QDialogStory.storyName = 'Default';
-QDialogStory.args = {
+export const Default = QDialogStory.bind({});
+Default.args = {
   visible: false,
   title: 'Morbi massa libero, vehicula nec consequat sed, porta a sem.'
 };
 
-export { QDialogStory };
 export default storyMetadata;

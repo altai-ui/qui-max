@@ -127,7 +127,5 @@ const QFormStory: Story<QFormProps> = args =>
     `
   });
 
-QFormStory.storyName = 'Default';
-
-export { QFormStory };
+export const Default = QFormStory.bind({});
 export default storyMetadata;

@@ -43,7 +43,5 @@ const QInputNumberStory: Story<QInputNumberProps> = args =>
     `
   });
 
-QInputNumberStory.storyName = 'Default';
-
-export { QInputNumberStory };
+export const Default = QInputNumberStory.bind({});
 export default storyMetadata;

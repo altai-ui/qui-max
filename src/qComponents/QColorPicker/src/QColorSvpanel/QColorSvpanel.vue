@@ -14,7 +14,9 @@
 <script lang="ts">
 import { defineComponent, ref, computed, onMounted, watch } from 'vue';
 
-import draggable from './draggable';
+import type { Nullable } from '#/helpers';
+
+import draggable from '../utils/draggable';
 import type { QColorSvpanelProps, QColorSvpanelInstance } from './types';
 
 const UPDATE_SATURATION_EVENT = 'update:saturation';
@@ -54,7 +56,7 @@ export default defineComponent({
       left: `${cursorLeft.value}px`
     }));
 
-    const root = ref<HTMLElement | null>(null);
+    const root = ref<Nullable<HTMLElement>>(null);
 
     const update = (): void => {
       if (!root.value) return;

@@ -1,7 +1,8 @@
 import { createApp, nextTick } from 'vue';
-import type { App, ComponentPublicInstance, UnwrapRef } from 'vue';
+import type { App } from 'vue';
 
 import { installI18n } from '@/qComponents/constants/locales';
+import type { Optional, UnwrappedInstance } from '#/helpers';
 
 import { QMessageBoxContainer } from './QMessageBoxContainer';
 import type { QMessageBoxContainerInstance } from './QMessageBoxContainer';
@@ -18,7 +19,7 @@ export const createMessageBox = (
   options?: QMessageBoxOptions
 ): Promise<QMessageBoxEvent> => {
   let messageBoxPromise: MessageBoxPromise;
-  let app: App<Element> | undefined;
+  let app: Optional<App<Element>>;
 
   const handleDone = ({ action, payload }: QMessageBoxEvent): void => {
     if (action === QMessageBoxAction.confirm) {
@@ -48,15 +49,12 @@ export const createMessageBox = (
 
     options?.onBeforeMount?.(app);
 
-    // TODO: Inherit customI18nMessages from QUI
-    installI18n({ app, customI18nMessages: {} });
+    installI18n(app);
 
     const container = app.mount(document.createElement('div'));
     options?.onMounted?.(
       app,
-      container as ComponentPublicInstance<
-        UnwrapRef<QMessageBoxContainerInstance>
-      >
+      container as NonNullable<UnwrappedInstance<QMessageBoxContainerInstance>>
     );
   });
 

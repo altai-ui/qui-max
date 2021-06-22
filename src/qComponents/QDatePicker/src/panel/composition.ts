@@ -10,7 +10,7 @@ import { isDate } from 'lodash-es';
 import { getConfig } from '@/qComponents/config';
 import type { Nullable } from '#/helpers';
 
-import { RangePickValue, RangeState } from '../commonTypes';
+import type { RangePickValue, RangeState } from '../commonTypes';
 import {
   CELLS_COUNT_IN_YEAR_RANGE,
   LEFT_PERIOD_PANEL_START_INDEX,
@@ -127,13 +127,11 @@ const getRangeChangedState = (
   maxDate: Nullable<Date>;
   minDate: Nullable<Date>;
   rangeState: RangeState;
-} => {
-  return {
-    maxDate: newValue.maxDate ? endOfDay(newValue.maxDate) : newValue.maxDate,
-    minDate: newValue.minDate,
-    rangeState: newValue.rangeState ? newValue.rangeState : currentRangeState
-  };
-};
+} => ({
+  maxDate: newValue.maxDate ? endOfDay(newValue.maxDate) : newValue.maxDate,
+  minDate: newValue.minDate,
+  rangeState: newValue.rangeState ? newValue.rangeState : currentRangeState
+});
 
 export {
   leftYearComposable,

@@ -1,7 +1,7 @@
 import { computed, reactive } from 'vue';
 import { isNil } from 'lodash-es';
 
-import type { Nullable } from '#/helpers';
+import type { Nullable, Optional } from '#/helpers';
 
 import type { StickyGlobalConfig } from '../../QTableTSticky/types';
 
@@ -10,7 +10,7 @@ import type { StickyConfig } from './types';
 const BASE_Z_INDEX = 100;
 
 export const useSticky = (
-  position: Nullable<'left' | 'right' | undefined>,
+  position: Nullable<Optional<'left' | 'right'>>,
   columnIndex: number,
   sticky: StickyGlobalConfig
 ): StickyConfig => {

@@ -33,6 +33,8 @@
 <script lang="ts">
 import { defineComponent, computed } from 'vue';
 
+import { CLEAR_EVENT, ABORT_EVENT } from '@/qComponents/constants/events';
+
 import type {
   QUploadFileSingleProps,
   QUploadFileSingleInstance
@@ -61,7 +63,7 @@ export default defineComponent({
     }
   },
 
-  emits: ['clear', 'abort'],
+  emits: [CLEAR_EVENT, ABORT_EVENT],
 
   setup(props: QUploadFileSingleProps, ctx): QUploadFileSingleInstance {
     const fileName = computed<string>(() => props.value?.name ?? '');
@@ -73,17 +75,18 @@ export default defineComponent({
 
       if (loading < 0) loading = 0;
       if (loading > 100) loading = 100;
+
       return {
         width: `${loading}%`
       };
     });
 
     const handleRemoveFileBtnClick = (): void => {
-      ctx.emit('clear');
+      ctx.emit(CLEAR_EVENT);
     };
 
     const handleAbortUploadingBtnClick = (): void => {
-      ctx.emit('abort');
+      ctx.emit(ABORT_EVENT);
     };
 
     return {

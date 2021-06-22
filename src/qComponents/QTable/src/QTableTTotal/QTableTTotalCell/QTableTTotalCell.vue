@@ -1,6 +1,8 @@
 <script lang="ts">
 import { h, defineComponent, computed, PropType, inject, VNode } from 'vue';
 
+import type { Nullable } from '#/helpers';
+
 import { useSticky } from '../../hooks/sticky';
 import type { StickyConfig } from '../../hooks/sticky';
 import type { QTableProvider } from '../../types';
@@ -57,7 +59,7 @@ export default defineComponent({
         : ''
     }));
 
-    const content = computed<VNode[] | string | number | null>(() => {
+    const content = computed<Nullable<VNode[] | string | number>>(() => {
       if (qTable.isLoading.value)
         return [h('div', { class: 'q-table-t__skeleton' })];
 

@@ -16,22 +16,18 @@ const storyMetadata: Meta = {
   argTypes: {
     'v-model': { control: { type: 'none' } },
     disabledValues: {
-      control: {
-        type: 'select',
-        options: [
-          null,
-          {
-            to: subMonths(now, 2),
-            ranges: [{ start: now, end: new Date(addMonths(now, 1)) }]
-          }
-        ]
-      }
+      options: [
+        null,
+        {
+          to: subMonths(now, 2),
+          ranges: [{ start: now, end: new Date(addMonths(now, 1)) }]
+        }
+      ],
+      control: { type: 'select' }
     },
     outputFormat: {
-      control: {
-        type: 'select',
-        options: ['date', 'iso']
-      }
+      options: ['date', 'iso'],
+      control: { type: 'select' }
     },
     placeholder: {
       type: { name: 'string', required: false }
@@ -41,25 +37,21 @@ const storyMetadata: Meta = {
       type: { name: 'string', required: false }
     },
     type: {
-      control: {
-        type: 'select',
-        options: [
-          'date',
-          'week',
-          'month',
-          'year',
-          'daterange',
-          'monthrange',
-          'yearrange'
-        ]
-      },
+      options: [
+        'date',
+        'week',
+        'month',
+        'year',
+        'daterange',
+        'monthrange',
+        'yearrange'
+      ],
+      control: { type: 'select' },
       datetime: { disable: true }
     },
     firstDayOfWeek: {
-      control: {
-        type: 'select',
-        options: [0, 1, 2, 3, 4, 5, 6]
-      }
+      options: [0, 1, 2, 3, 4, 5, 6],
+      control: { type: 'select' }
     }
   }
 };

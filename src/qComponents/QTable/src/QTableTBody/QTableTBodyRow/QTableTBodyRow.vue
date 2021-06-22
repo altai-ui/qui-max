@@ -28,6 +28,8 @@
 import { defineComponent, PropType, computed, inject } from 'vue';
 
 import { randId } from '@/qComponents/helpers';
+import type { Nullable } from '#/helpers';
+
 import QTableTBodyCell from '../QTableTBodyCell/QTableTBodyCell.vue';
 import QTableCellCheckbox from '../../QTableCellCheckbox/QTableCellCheckbox.vue';
 import type { QTableProvider } from '../../types';
@@ -114,7 +116,8 @@ export default defineComponent({
       () => qTableContainer?.columnList.value ?? []
     );
 
-    const getRowValue = (key: string): unknown | null => props.row[key] ?? null;
+    const getRowValue = (key: string): Nullable<unknown> =>
+      props.row[key] ?? null;
 
     const handleCheckboxChange = (): void => {
       if (!qTable) return;

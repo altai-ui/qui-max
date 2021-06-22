@@ -1,3 +1,3 @@
-export { randId } from './randId';
-export { validateArray } from './validateArray';
-export { notNull } from './notNull';
+export * from './randId';
+export * from './validateArray';
+export * from './notNull';

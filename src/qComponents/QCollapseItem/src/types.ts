@@ -12,3 +12,14 @@ export interface QCollapseItemInstance {
   icon: ComputedRef<'q-icon-minus' | 'q-icon-plus'>;
   handleHeaderClick: () => void;
 }
+
+export interface QCollapseTransitionInstance {
+  on: {
+    beforeEnter(el: HTMLElement): void;
+    enter(el: HTMLElement): void;
+    afterEnter(el: HTMLElement): void;
+    beforeLeave(el: HTMLElement): void;
+    leave(el: HTMLElement): void;
+    afterLeave(el: HTMLElement): void;
+  };
+}

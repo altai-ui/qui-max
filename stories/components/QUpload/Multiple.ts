@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import type { Story } from '@storybook/vue3';
 import { defineComponent, reactive } from 'vue';
 

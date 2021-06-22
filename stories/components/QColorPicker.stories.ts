@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import type { Meta, Story } from '@storybook/vue3';
 import { defineComponent, ref } from 'vue';
 import { placements } from '@popperjs/core/lib/enums';
@@ -11,8 +10,8 @@ const storyMetadata: Meta = {
   component: QColorPicker,
   argTypes: {
     modelValue: { control: { type: 'none' } },
-    placement: { control: { type: 'select', options: placements } },
-    colorFormat: { control: { type: 'select', options: ['hex', 'rgb'] } }
+    placement: { options: placements, control: { type: 'select' } },
+    colorFormat: { options: ['hex', 'rgb'], control: { type: 'select' } }
   }
 };
 

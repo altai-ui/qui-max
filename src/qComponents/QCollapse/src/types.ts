@@ -12,7 +12,7 @@ export interface QCollapseProps {
 }
 
 export interface QCollapseProvider {
-  uniqueId: (prefix?: string | undefined) => string;
+  uniqueId: (prefix?: string) => string;
   activeNames: Ref<(string | number)[]>;
   updateValue: (name: string | number) => void;
 }

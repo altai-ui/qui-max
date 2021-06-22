@@ -30,6 +30,8 @@ import {
 } from '@/qComponents/constants/events';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
 import type { QRadioGroupProvider } from '@/qComponents/QRadioGroup';
+import type { Nullable } from '#/helpers';
+
 import type {
   QRadioGroupProps,
   QRadioGroupPropModelValue,
@@ -64,8 +66,8 @@ export default defineComponent({
   emits: [UPDATE_MODEL_VALUE_EVENT, CHANGE_EVENT],
 
   setup(props: QRadioGroupProps, ctx): QRadioGroupInstance {
-    const root = ref<HTMLElement | null>(null);
-    const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
+    const root = ref<Nullable<HTMLElement>>(null);
+    const qFormItem = inject<Nullable<QFormItemProvider>>('qFormItem', null);
 
     const changeValue = (value: QRadioGroupPropModelValue): void => {
       ctx.emit(UPDATE_MODEL_VALUE_EVENT, value);

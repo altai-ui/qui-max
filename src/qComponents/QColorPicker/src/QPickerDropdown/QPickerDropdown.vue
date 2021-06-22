@@ -69,13 +69,16 @@ import { validateArray } from '@/qComponents/helpers';
 import { CLEAR_EVENT, CLOSE_EVENT } from '@/qComponents/constants/events';
 import QButton from '@/qComponents/QButton';
 import QInput from '@/qComponents/QInput';
-import QColorSvpanel from './QColorSvpanel.vue';
-import QColorAlphaSlider from './QColorAlphaSlider.vue';
-import QColorHueSlider from './QColorHueSlider.vue';
+import type { Nullable } from '#/helpers';
+
+import QColorSvpanel from '../QColorSvpanel';
+import QColorAlphaSlider from '../QColorAlphaSlider';
+import QColorHueSlider from '../QColorHueSlider';
+import type { QColorPickerProvider } from '../types';
+
 import type {
   QPickerDropdownProps,
   QPickerDropdownPropColorFormat,
-  QColorPickerProvider,
   QPickerDropdownInstance
 } from './types';
 
@@ -120,7 +123,7 @@ export default defineComponent({
   emits: [CLOSE_EVENT, CLEAR_EVENT, PICK_EVENT],
 
   setup(props: QPickerDropdownProps, ctx): QPickerDropdownInstance {
-    const elementToFocusAfterClosing = ref<HTMLElement | null>(null);
+    const elementToFocusAfterClosing = ref<Nullable<HTMLElement>>(null);
     const tempColor = ref<string>('');
     const hue = ref<number>(0);
     const saturation = ref<number>(100);
@@ -144,7 +147,7 @@ export default defineComponent({
       return colorModel.value.toHex();
     });
 
-    const dropdown = ref<HTMLElement | null>(null);
+    const dropdown = ref<Nullable<HTMLElement>>(null);
 
     const handleDocumentFocus = (event: FocusEvent): void => {
       const refDropdown = dropdown.value;
@@ -167,7 +170,7 @@ export default defineComponent({
       }
     };
 
-    const qColorPicker = inject<QColorPickerProvider | null>(
+    const qColorPicker = inject<Nullable<QColorPickerProvider>>(
       'qColorPicker',
       null
     );
@@ -191,9 +194,9 @@ export default defineComponent({
       ctx.emit(PICK_EVENT, colorString.value);
     };
 
-    const refSv = ref<typeof QColorSvpanel | null>(null);
-    const refHue = ref<typeof QColorHueSlider | null>(null);
-    const refAlpha = ref<typeof QColorAlphaSlider | null>(null);
+    const refSv = ref<Nullable<typeof QColorSvpanel>>(null);
+    const refHue = ref<Nullable<typeof QColorHueSlider>>(null);
+    const refAlpha = ref<Nullable<typeof QColorAlphaSlider>>(null);
 
     watch(
       () => props.isShown,

@@ -69,6 +69,8 @@ import {
 
 import { validateArray } from '@/qComponents/helpers';
 import { getConfig } from '@/qComponents/config';
+import type { Nullable } from '#/helpers';
+
 import type {
   QContextMenuProps,
   QContextMenuPropPosition,
@@ -105,11 +107,11 @@ export default defineComponent({
   },
 
   setup(props: QContextMenuProps, ctx): QContextMenuInstance {
-    const reference = ref<HTMLElement | null>(null);
-    const contextMenu = ref<HTMLElement | null>(null);
+    const reference = ref<Nullable<HTMLElement>>(null);
+    const contextMenu = ref<Nullable<HTMLElement>>(null);
     const isContextMenuShown = ref<boolean>(false);
     const zIndex = ref<number>(DEFAULT_Z_INDEX);
-    const popperJS = ref<Instance | null>(null);
+    const popperJS = ref<Nullable<Instance>>(null);
 
     const placement = computed<Placement>(() =>
       props.position === 'right' ? 'bottom-start' : 'bottom-end'

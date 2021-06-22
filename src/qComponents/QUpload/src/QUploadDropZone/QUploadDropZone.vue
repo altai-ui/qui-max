@@ -63,7 +63,7 @@ export default defineComponent({
     const isDragover = ref<boolean>(false);
 
     const classes = computed<Record<string, boolean>>(() => ({
-      'q-upload-drop-zone_is-dragover': Boolean(isDragover.value),
+      'q-upload-drop-zone_is-dragover': isDragover.value,
       'q-upload-drop-zone_is-disabled': Boolean(props.isDisabled),
       'q-upload-drop-zone_is-loading': Boolean(props.isLoading)
     }));

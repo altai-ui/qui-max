@@ -18,10 +18,7 @@ const storyMetadata: Meta = {
 // eslint-disable-next-line vue/one-component-per-file
 app.component('RouterLink', {
   props: {
-    to: {
-      type: [String, Object],
-      default: null
-    }
+    to: { type: [String, Object], default: null }
   },
   template: '<a href="#" @click.prevent.stop><slot/></a>'
 });

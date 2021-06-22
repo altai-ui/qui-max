@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import type { Meta, Story } from '@storybook/vue3';
 import { defineComponent } from 'vue';
 

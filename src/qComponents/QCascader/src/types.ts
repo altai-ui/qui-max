@@ -1,7 +1,7 @@
-import type { Ref, ComputedRef, ComponentPublicInstance, UnwrapRef } from 'vue';
+import type { Ref, ComputedRef } from 'vue';
 import type { Instance } from '@popperjs/core';
 
-import type { Nullable } from '#/helpers';
+import type { Nullable, UnwrappedInstance } from '#/helpers';
 
 import type { QCascaderInputInstance } from './QCascaderInput/types';
 
@@ -32,9 +32,7 @@ export interface QCascaderProps {
   teleportTo: QCascaderPropTeleportTo;
 }
 
-type Reference = Ref<
-  Nullable<ComponentPublicInstance<UnwrapRef<QCascaderInputInstance>>>
->;
+type Reference = Ref<UnwrappedInstance<QCascaderInputInstance>>;
 
 export interface QCascaderInstance {
   reference: Reference;

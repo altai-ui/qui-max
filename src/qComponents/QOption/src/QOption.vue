@@ -47,6 +47,8 @@ import {
 
 import QCheckbox from '@/qComponents/QCheckbox';
 import type { QSelectProvider } from '@/qComponents/QSelect';
+import type { Nullable } from '#/helpers';
+
 import type {
   QOptionPropValue,
   QOptionInstance,
@@ -80,8 +82,8 @@ export default defineComponent({
   },
 
   setup(props: QOptionProps): QOptionInstance {
-    const qSelect = inject<QSelectProvider | null>('qSelect', null);
-    const root = ref<HTMLElement | null>(null);
+    const qSelect = inject<Nullable<QSelectProvider>>('qSelect', null);
+    const root = ref<Nullable<HTMLElement>>(null);
     const qSelectState = qSelect?.state;
     const multiple = qSelect?.multiple.value ?? false;
     const multipleLimit = qSelect?.multipleLimit.value ?? 0;

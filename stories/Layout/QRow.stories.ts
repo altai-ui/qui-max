@@ -57,10 +57,8 @@ const QRowStory: Story<QRowProps> = args =>
     `
   });
 
-QRowStory.storyName = 'Default';
+export const Default = QRowStory.bind({});
 QRowStory.args = {
   tag: 'div'
 };
-
-export { QRowStory };
 export default storyMetadata;

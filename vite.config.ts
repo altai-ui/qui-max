@@ -39,6 +39,7 @@ export default defineConfig({
     vue()
   ],
   build: {
+    sourcemap: true,
     lib: {
       entry: resolve(__dirname, 'src/qComponents/index.ts'),
       name: 'qui-max'

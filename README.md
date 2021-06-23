@@ -17,8 +17,11 @@
 # Qui Max is a Vue 3 Design System for Web
 
 A component's library helping us build great products for our customers.
+This library for Vue 3.x
 
 [Storybook (live demo)](https://qvant-lab.github.io/qui-max/)
+  
+  Qui for Vue 2.x is [here](https://qvant-lab.github.io/qui)! 
 
 What is it?
 

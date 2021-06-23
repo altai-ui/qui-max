@@ -1,4 +1,4 @@
-import type { App } from 'vue';
+import type { App, Plugin } from 'vue';
 
 import 'focus-visible';
 
@@ -75,50 +75,13 @@ import './QTag/src/q-tag.scss';
 import './QTextarea/src/q-textarea.scss';
 import './QUpload/src/q-upload.scss';
 
-// install
-const install = (
+const setupQui = (
   app: App,
   {
     localization: { locale, customI18nMessages = {} } = {},
-    zIndexCounter,
-    useAllComponents = false
+    zIndexCounter
   }: ConfigOptions = {}
 ): void => {
-  if (useAllComponents) {
-    app.use(QBreadcrumbs);
-    app.use(QButton);
-    app.use(QCascader);
-    app.use(QCheckbox);
-    app.use(QCheckboxGroup);
-    app.use(QCol);
-    app.use(QCollapse);
-    app.use(QCollapseItem);
-    app.use(QColorPicker);
-    app.use(QContextMenu);
-    app.use(QDatePicker);
-    app.use(QDialog);
-    app.use(QDrawer);
-    app.use(QForm);
-    app.use(QFormItem);
-    app.use(QInput);
-    app.use(QInputNumber);
-    app.use(QNotification);
-    app.use(QOption);
-    app.use(QPagination);
-    app.use(QPopover);
-    app.use(QRadio);
-    app.use(QRadioGroup);
-    app.use(QRow);
-    app.use(QScrollbar);
-    app.use(QSelect);
-    app.use(QTable);
-    app.use(QTabPane);
-    app.use(QTabs);
-    app.use(QTag);
-    app.use(QTextarea);
-    app.use(QUpload);
-  }
-
   setConfig({
     locale,
     customI18nMessages,
@@ -128,8 +91,53 @@ const install = (
   installI18n(app);
 };
 
+const createQui = (config?: ConfigOptions): Plugin => ({
+  install: (app: App): void => {
+    setupQui(app, config);
+  }
+});
+
+// install
+const install = (app: App, config?: ConfigOptions): void => {
+  setupQui(app, config);
+
+  app.use(QBreadcrumbs);
+  app.use(QButton);
+  app.use(QCascader);
+  app.use(QCheckbox);
+  app.use(QCheckboxGroup);
+  app.use(QCol);
+  app.use(QCollapse);
+  app.use(QCollapseItem);
+  app.use(QColorPicker);
+  app.use(QContextMenu);
+  app.use(QDatePicker);
+  app.use(QDialog);
+  app.use(QDrawer);
+  app.use(QForm);
+  app.use(QFormItem);
+  app.use(QInput);
+  app.use(QInputNumber);
+  app.use(QNotification);
+  app.use(QOption);
+  app.use(QPagination);
+  app.use(QPopover);
+  app.use(QRadio);
+  app.use(QRadioGroup);
+  app.use(QRow);
+  app.use(QScrollbar);
+  app.use(QSelect);
+  app.use(QTable);
+  app.use(QTabPane);
+  app.use(QTabs);
+  app.use(QTag);
+  app.use(QTextarea);
+  app.use(QUpload);
+};
+
 export default { install };
 export {
+  createQui,
   QBreadcrumbs,
   QButton,
   QCascader,

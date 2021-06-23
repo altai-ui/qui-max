@@ -91,14 +91,14 @@ const setupQui = (
   installI18n(app);
 };
 
-const createQui = (config: ConfigOptions = {}): Plugin => ({
+const createQui = (config?: ConfigOptions): Plugin => ({
   install: (app: App): void => {
     setupQui(app, config);
   }
 });
 
 // install
-const install = (app: App, config: ConfigOptions = {}): void => {
+const install = (app: App, config?: ConfigOptions): void => {
   setupQui(app, config);
 
   app.use(QBreadcrumbs);

@@ -6,7 +6,7 @@
   <img src="https://img.shields.io/badge/vue-3.x-brightgreen">
   <img alt="npm type definitions" src="https://img.shields.io/npm/types/@qvant/qui-max">
   <a href="https://github.com/storybooks/storybook" target="_blank"><img src="https://raw.githubusercontent.com/storybooks/brand/master/badge/badge-storybook.svg"></a>
-<img alt="npm bundle size" src="https://img.shields.io/bundlephobia/minzip/@qvant/qui-max?color=green">
+<img alt="npm bundle size" src="https://img.shields.io/bundlephobia/minzip/@qvant/qui-max?color=brightgreen">
 <span class="badge-npmversion"><a href="https://npmjs.org/package/@qvant/qui-max" title="View this project on NPM"><img src="https://img.shields.io/npm/v/@qvant/qui-max.svg" alt="NPM version" /></a></span>
 <span class="badge-npmdownloads"><a href="https://npmjs.org/package/@qvant/qui-max" title="View this project on NPM"><img src="https://img.shields.io/npm/dm/@qvant/qui-max.svg" alt="NPM downloads" /></a></span>
 <!--/BADGES--></p>
@@ -34,7 +34,6 @@ Some examples below:
 ![inputs](/.readme-assets/inputs.gif?raw=true)
 ![icons](/.readme-assets/icons.gif?raw=true)
 ![tables](/.readme-assets/tables.jpg?raw=true)
-![datepicker](/.readme-assets/datepicker.jpg?raw=true)
 ![other](/.readme-assets/other.jpg?raw=true)
 
 ## Install

@@ -12,7 +12,7 @@
     "serve": "vite preview",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "deploy-storybook": "storybook-to-ghpages",
+    "deploy-storybook": "storybook-to-ghpages --source-branch main",
     "eslint": "eslint --fix --no-ignore '**/*.{vue,ts}'",
     "prettier": "prettier --check --ignore-unknown '**/*'",
     "prettier:fix": "prettier --write --ignore-unknown '**/*'",

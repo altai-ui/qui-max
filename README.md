@@ -14,7 +14,7 @@
 
 <p align="center" class="unchanged rich-diff-level-one">
 
-# A Vue 3 Design System for Web
+# Qui Max is a Vue 3 Design System for Web
 
 A component's library helping us build great products for our customers.
 

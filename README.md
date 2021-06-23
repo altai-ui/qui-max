@@ -126,10 +126,6 @@ app.use(QButton);
 Now you have implemented Vue and Qui Max to your project, and it's time to write your code.
 Please refer to each component's [Stories](https://qvant-lab.github.io/qui-max/) to learn how to use them.
 
-## Not quick setup
-
-...
-
 ## Supported languages
 
 - Russian ✅

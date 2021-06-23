@@ -20,7 +20,7 @@ This library for Vue 3.x
 
 [Storybook (live demo)](https://qvant-lab.github.io/qui-max/)
 
-Qui for Vue 2.x is [here](https://qvant-lab.github.io/qui)!
+Qui for Vue 2.x is [here](https://github.com/Qvant-lab/qui)!
 
 What is it?
 

@@ -1,11 +1,16 @@
-import type { Story } from '@storybook/vue3';
+import type { Story, Meta } from '@storybook/vue3';
 import { defineComponent } from 'vue';
 
-import { useMessageBox } from '@/qComponents/QMessageBox';
+import { QMessageBoxContent, useMessageBox } from '@/qComponents/QMessageBox';
 import type {
   QMessageBoxContentPropBeforeClose,
   QMessageBoxContentProps
 } from '@/qComponents/QMessageBox/src/QMessageBoxContent';
+
+const storyMetadata: Meta = {
+  title: 'Components/QMessageBox',
+  component: QMessageBoxContent
+};
 
 const QMessageBoxStory: Story<QMessageBoxContentProps> = args =>
   defineComponent({
@@ -63,8 +68,8 @@ const QMessageBoxStory: Story<QMessageBoxContentProps> = args =>
     template: '<q-button @click="handleClick">Click to open</q-button>'
   });
 
-QMessageBoxStory.storyName = 'Default';
-QMessageBoxStory.args = {
+export const Default = QMessageBoxStory.bind({});
+Default.args = {
   title: 'Morbi massa libero, vehicula nec consequat sed, porta a sem.',
   message:
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vehicula volutpat nulla et egestas. Mauris mollis, lorem vel aliquam gravida.',
@@ -74,4 +79,4 @@ QMessageBoxStory.args = {
   cancelButtonText: 'Integer non'
 };
 
-export default QMessageBoxStory;
+export default storyMetadata;

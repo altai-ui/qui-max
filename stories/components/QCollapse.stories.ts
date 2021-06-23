@@ -88,7 +88,5 @@ const QCollapseStory: Story<QCollapseProps> = args =>
     `
   });
 
-QCollapseStory.storyName = 'Default';
-
-export { QCollapseStory };
+export const Default = QCollapseStory.bind({});
 export default storyMetadata;

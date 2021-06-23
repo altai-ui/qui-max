@@ -1,6 +1,11 @@
 {
   "name": "@qvant/qui-max",
   "version": "0.1.1",
+  "private": false,
+  "description": "A Vue 3 Design system for Web.",
+  "author": {
+    "name": "Qvant Frontend team"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -87,5 +92,36 @@
     "./css/*": "./dist/css/*.css",
     "./fonts": "./dist/fonts/fonts.css",
     "./icons": "./dist/icons/icons.css"
+  },
+  "bugs": {
+    "url": "https://github.com/Qvant-lab/qui-max/issues"
+  },
+  "homepage": "https://github.com/Qvant-lab/qui-max#readme",
+  "keywords": [
+    "design-system",
+    "ui kit",
+    "components",
+    "library",
+    "ui",
+    "vue",
+    "vue 3",
+    "sass",
+    "typescript",
+    "neumorphism"
+  ],
+  "license": "MIT",
+  "maintainers": [
+    {
+      "name": "Tim Bochkarev",
+      "url": "https://github.com/Tim152"
+    },
+    {
+      "name": "Viktor Zheleztsov",
+      "url": "https://github.com/ViZhe"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Qvant-lab/qui.git"
   }
 }

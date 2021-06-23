@@ -1,7 +1,12 @@
-import type { Story } from '@storybook/vue3';
+import type { Story, Meta } from '@storybook/vue3';
 import { defineComponent, defineAsyncComponent } from 'vue';
 
-import { useMessageBox } from '@/qComponents/QMessageBox';
+import { QMessageBoxContent, useMessageBox } from '@/qComponents/QMessageBox';
+
+const storyMetadata: Meta = {
+  title: 'Components/QMessageBox',
+  component: QMessageBoxContent
+};
 
 const QMessageBoxComponentExtendedStory: Story<never> = () =>
   defineComponent({
@@ -39,6 +44,6 @@ const QMessageBoxComponentExtendedStory: Story<never> = () =>
     template: '<q-button @click="handleClick">Click to open</q-button>'
   });
 
-QMessageBoxComponentExtendedStory.storyName = 'Extended Component';
+export const ExtendedComponent = QMessageBoxComponentExtendedStory.bind({});
 
-export default QMessageBoxComponentExtendedStory;
+export default storyMetadata;

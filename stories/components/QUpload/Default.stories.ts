@@ -1,45 +1,57 @@
-import type { Story } from '@storybook/vue3';
+import type { Story, Meta } from '@storybook/vue3';
 import { defineComponent, reactive } from 'vue';
 
 import type { QUploadProps, QUploadFile } from '@/qComponents/QUpload';
+import QUpload from '@/qComponents/QUpload';
+import type { Nullable } from '#/helpers';
 
 interface FormModelFile extends QUploadFile {
   sourceFile: File;
 }
 
 interface FormModel {
-  files: FormModelFile[];
+  file: Nullable<FormModelFile>;
 }
 
-const QUploadStoryMultiple: Story<QUploadProps> = args =>
+const storyMetadata: Meta = {
+  title: 'Components/QUpload',
+  component: QUpload,
+  argTypes: {
+    multiple: { control: { type: 'none' } },
+    direction: {
+      options: ['right', 'bottom'],
+      control: { type: 'select' }
+    }
+  }
+};
+
+const QUploadStory: Story<QUploadProps> = args =>
   defineComponent({
     setup() {
-      const formModel = reactive<FormModel>({ files: [] });
+      const formModel = reactive<FormModel>({ file: null });
 
       const handleFileSelect = async (
         sourceFile: File,
         fileId: string
       ): Promise<void> => {
-        formModel.files.push({
+        formModel.file = {
           id: fileId,
           sourceFile,
           name: sourceFile.name,
           loading: 0
-        });
-
-        const currentFile = formModel.files.find(({ id }) => id === fileId);
+        };
 
         const promise = (): Promise<void> =>
-          new Promise((resolve): void => {
+          new Promise(resolve => {
             const interval = setInterval(() => {
-              if (!currentFile) return;
-              if (currentFile.loading === null) currentFile.loading = 0;
-              currentFile.loading += 10;
+              if (!formModel.file) return;
+              if (formModel.file.loading === null) formModel.file.loading = 0;
+              formModel.file.loading += 10;
             }, 100);
 
             setTimeout(() => {
               clearInterval(interval);
-              if (currentFile) currentFile.loading = null;
+              if (formModel.file) formModel.file.loading = null;
               resolve();
             }, 1000);
           });
@@ -47,31 +59,20 @@ const QUploadStoryMultiple: Story<QUploadProps> = args =>
         await promise();
       };
 
-      const handleAbort = (fileId: string): void => {
+      const handleAbort = (): void => {
         // eslint-disable-next-line no-console
-        console.log('abort uploading for: ', fileId);
+        console.log('abort uploading');
       };
 
-      const handleClear = (fileId: string): void => {
-        formModel.files = formModel.files.filter(({ id }) => id !== fileId);
+      const handleClear = (): void => {
+        formModel.file = null;
       };
 
-      const handleClearAll = (): void => {
-        formModel.files = [];
-      };
-
-      return {
-        args,
-        formModel,
-        handleFileSelect,
-        handleAbort,
-        handleClear,
-        handleClearAll
-      };
+      return { args, formModel, handleFileSelect, handleAbort, handleClear };
     },
     template: `
       <q-upload
-        :multiple="true"
+        :multiple="false"
         :direction="args.direction"
         :limit="args.limit"
         :accept="args.accept"
@@ -82,18 +83,17 @@ const QUploadStoryMultiple: Story<QUploadProps> = args =>
         :text-replace-file="args.textReplaceFile"
         :text-loading-file="args.textLoadingFile"
         :text-uploaded-files="args.textUploadedFiles"
-        :value="formModel.files"
+        :value="formModel.file"
         @select="handleFileSelect"
         @abort="handleAbort"
         @clear="handleClear"
-        @clear-all="handleClearAll"
       />
     `
   });
 
-QUploadStoryMultiple.storyName = 'Multiple';
-QUploadStoryMultiple.args = {
+export const Default = QUploadStory.bind({});
+Default.args = {
   accept: ['image/*', '.pdf']
 };
 
-export default QUploadStoryMultiple;
+export default storyMetadata;

@@ -91,12 +91,12 @@ const QInputStory: Story<StoryArgs> = args =>
     `
   });
 
-QInputStory.storyName = 'Default';
-QInputStory.args = {
+export const Default = QInputStory.bind({});
+
+Default.args = {
   placeholder: 'Input text',
   maxlength: 25,
   type: 'text'
 };
 
-export { QInputStory };
 export default storyMetadata;

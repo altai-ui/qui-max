@@ -53,12 +53,11 @@ const QPopoverStory: Story<QPopoverProps> = args =>
     `
   });
 
-QPopoverStory.storyName = 'Default';
-QPopoverStory.args = {
+export const Default = QPopoverStory.bind({});
+Default.args = {
   title: 'What is Lorem Ipsum?',
   icon: 'q-icon-question',
   popperOptions: {}
 };
 
-export { QPopoverStory };
 export default storyMetadata;

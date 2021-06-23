@@ -54,7 +54,7 @@ const Template: Story<StoryArgs> = args =>
     `
   });
 
-const ThemePrimary: Story<StoryArgs> = Template.bind({});
+export const ThemePrimary = Template.bind({});
 ThemePrimary.args = {
   theme: 'primary',
   type: 'default',
@@ -62,7 +62,7 @@ ThemePrimary.args = {
   size: 'medium'
 };
 
-const ThemeSecondary: Story<StoryArgs> = Template.bind({});
+export const ThemeSecondary = Template.bind({});
 ThemeSecondary.args = {
   theme: 'secondary',
   type: 'default',
@@ -70,7 +70,7 @@ ThemeSecondary.args = {
   size: 'medium'
 };
 
-const ThemeLink: Story<StoryArgs> = Template.bind({});
+export const ThemeLink = Template.bind({});
 ThemeLink.args = {
   theme: 'link',
   type: 'default',
@@ -78,7 +78,7 @@ ThemeLink.args = {
   size: 'medium'
 };
 
-const IconPrimary: Story<StoryArgs> = Template.bind({});
+export const IconPrimary = Template.bind({});
 IconPrimary.args = {
   theme: 'primary',
   type: 'icon',
@@ -86,7 +86,7 @@ IconPrimary.args = {
   size: 'medium'
 };
 
-const IconSecondary: Story<StoryArgs> = Template.bind({});
+export const IconSecondary = Template.bind({});
 IconSecondary.args = {
   theme: 'secondary',
   type: 'icon',
@@ -94,7 +94,7 @@ IconSecondary.args = {
   size: 'medium'
 };
 
-const IconLink: Story<StoryArgs> = Template.bind({});
+export const IconLink = Template.bind({});
 IconLink.args = {
   theme: 'link',
   type: 'icon',
@@ -102,12 +102,4 @@ IconLink.args = {
   size: 'medium'
 };
 
-export {
-  ThemePrimary,
-  ThemeSecondary,
-  ThemeLink,
-  IconPrimary,
-  IconSecondary,
-  IconLink
-};
 export default storyMetadata;

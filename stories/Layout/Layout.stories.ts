@@ -120,7 +120,5 @@ const LayoutStory: Story<StoryArgs> = args =>
     `
   });
 
-LayoutStory.storyName = 'Default';
-
-export { LayoutStory };
+export const Default = LayoutStory.bind({});
 export default storyMetadata;

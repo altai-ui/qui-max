@@ -52,12 +52,10 @@ const QColStory: Story<QColProps> = args =>
     `
   });
 
-QColStory.storyName = 'Default';
-QColStory.args = {
+export const Default = QColStory.bind({});
+Default.args = {
   tag: 'div',
   cols: 5,
   offset: 3
 };
-
-export { QColStory };
 export default storyMetadata;

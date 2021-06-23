@@ -59,13 +59,11 @@ const QNotificationStory: Story<QNotificationToastProps> = args =>
     `
   });
 
-QNotificationStory.storyName = 'Default';
-QNotificationStory.args = {
+export const Default = QNotificationStory.bind({});
+Default.args = {
   content: 'Morbi massa libero, vehicula nec consequat sed, porta a sem.',
   type: NotifyType.WARNING,
   duration: null,
   icon: null
 };
-
-export { QNotificationStory };
 export default storyMetadata;

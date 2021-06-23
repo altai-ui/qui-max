@@ -23,7 +23,7 @@ app.component('RouterLink', {
   template: '<a href="#" @click.prevent.stop><slot/></a>'
 });
 
-const QBreadcrumbsStory: Story<QBreadcrumbsProps> = args =>
+const Template: Story<QBreadcrumbsProps> = args =>
   // eslint-disable-next-line vue/one-component-per-file
   defineComponent({
     setup() {
@@ -75,7 +75,6 @@ const QBreadcrumbsStory: Story<QBreadcrumbsProps> = args =>
     `
   });
 
-QBreadcrumbsStory.storyName = 'Default';
+export const Default = Template.bind({});
 
-export { QBreadcrumbsStory };
 export default storyMetadata;

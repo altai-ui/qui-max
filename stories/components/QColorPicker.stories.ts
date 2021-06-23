@@ -36,10 +36,8 @@ const QColorPickerStory: Story<QColorPickerProps> = args =>
     `
   });
 
-QColorPickerStory.storyName = 'Default';
-QColorPickerStory.args = {
+export const Default = QColorPickerStory.bind({});
+Default.args = {
   popperOptions: {}
 };
-
-export { QColorPickerStory };
 export default storyMetadata;

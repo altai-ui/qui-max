@@ -43,12 +43,11 @@ const QDrawerStory: Story<QDrawerProps> = args =>
     `
   });
 
-QDrawerStory.storyName = 'Default';
-QDrawerStory.args = {
+export const Default = QDrawerStory.bind({});
+Default.args = {
   visible: false,
   title: 'What is Lorem Ipsum?',
   width: 350
 };
 
-export { QDrawerStory };
 export default storyMetadata;

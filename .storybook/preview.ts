@@ -80,7 +80,10 @@ export const parameters = {
   layout: 'centered',
   controls: { expanded: true },
   docs: {
-    inlineStories: true
+    inlineStories: true,
+    source: {
+      state: 'open'
+    }
   },
   actions: { argTypesRegex: '^on[A-Z].*' }
 };

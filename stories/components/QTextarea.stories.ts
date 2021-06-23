@@ -97,12 +97,11 @@ const QTextareaStory: Story<StoryArgs> = args =>
     `
   });
 
-QTextareaStory.storyName = 'Default';
-QTextareaStory.args = {
+export const Default = QTextareaStory.bind({});
+Default.args = {
   placeholder: 'Input text',
   maxlength: 100,
   autosize: true
 };
 
 export default storyMetadata;
-export { QTextareaStory };

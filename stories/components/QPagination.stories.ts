@@ -15,6 +15,7 @@ const QPaginationStory: Story<QPaginationProps> = args =>
     setup() {
       return { args };
     },
+
     template: `
       <q-pagination
         :page-count="args.pageCount"
@@ -27,13 +28,12 @@ const QPaginationStory: Story<QPaginationProps> = args =>
     `
   });
 
-QPaginationStory.storyName = 'Default';
-QPaginationStory.args = {
+export const Default = QPaginationStory.bind({});
+Default.args = {
   pageCount: 30,
   currentPage: 1,
   total: 300,
   pageSize: 10
 };
 
-export { QPaginationStory };
 export default storyMetadata;

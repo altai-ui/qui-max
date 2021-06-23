@@ -23,10 +23,6 @@ export default defineConfig({
       {
         find: /^#\/(.+)/,
         replacement: `${resolve(__dirname, 'types')}/$1`
-      },
-      {
-        find: 'vue-i18n',
-        replacement: 'vue-i18n/dist/vue-i18n.runtime.esm-bundler.js'
       }
     ]
   },
@@ -39,6 +35,7 @@ export default defineConfig({
     vue()
   ],
   build: {
+    sourcemap: true,
     lib: {
       entry: resolve(__dirname, 'src/qComponents/index.ts'),
       name: 'qui-max'

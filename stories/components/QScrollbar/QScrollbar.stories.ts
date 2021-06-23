@@ -48,13 +48,12 @@ const QScrollbarStory: Story<QScrollbarProps> = args =>
     `
   });
 
-QScrollbarStory.storyName = 'Default';
-QScrollbarStory.args = {
+export const Default = QScrollbarStory.bind({});
+Default.args = {
   theme: 'primary',
   viewTag: 'div',
   wrapClass: 'scrollbar__wrap',
   viewClass: ''
 };
 
-export { QScrollbarStory };
 export default storyMetadata;

@@ -2,6 +2,12 @@
   <img src="/.readme-assets/qui-logo.svg?raw=true" />
 </p>
 
+<p align="center" class="unchanged rich-diff-level-one">
+<!--BADGES--><span class="badge-shields"><img src="https://img.shields.io/badge/responsive-yes-green.svg" /></span>
+<span class="badge-npmversion"><a href="https://npmjs.org/package/@qvant/qui-max" title="View this project on NPM"><img src="https://img.shields.io/npm/v/@qvant/qui-max.svg" alt="NPM version" /></a></span>
+<span class="badge-npmdownloads"><a href="https://npmjs.org/package/@qvant/qui-max" title="View this project on NPM"><img src="https://img.shields.io/npm/dm/@qvant/qui-max.svg" alt="NPM downloads" /></a></span>
+<span class="badge-daviddm"><a href="https://david-dm.org/Qvant-lab/qui-max" title="View the status of this project's dependencies on DavidDM"><img src="https://img.shields.io/david/Qvant-lab/qui-max.svg" alt="Dependency Status" /></a></span>
+<span class="badge-daviddmdev"><a href="https://david-dm.org/Qvant-lab/qui-max#info=devDependencies" title="View the status of this project's development dependencies on DavidDM"><img src="https://img.shields.io/david/dev/Qvant-lab/qui-max.svg" alt="Dev Dependency Status" /></a></span><!--/BADGES--></p>
 [![Storybook](https://cdn.jsdelivr.net/gh/storybookjs/brand@master/badge/badge-storybook.svg)](link to site)
 
 <p align="center" class="unchanged rich-diff-level-one">

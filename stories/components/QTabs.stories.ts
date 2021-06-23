@@ -45,7 +45,5 @@ const QTabsStory: Story<QTabsProps> = args =>
     `
   });
 
-QTabsStory.storyName = 'Default';
-
-export { QTabsStory };
+export const Default = QTabsStory.bind({});
 export default storyMetadata;

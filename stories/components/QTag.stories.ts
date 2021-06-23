@@ -35,7 +35,5 @@ const QTagStory: Story<QTagProps> = args =>
     `
   });
 
-QTagStory.storyName = 'Default';
-
-export { QTagStory };
+export const Default = QTagStory.bind({});
 export default storyMetadata;

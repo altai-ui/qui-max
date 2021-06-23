@@ -40,7 +40,5 @@ const QRadioGroupStory: Story<QRadioGroupProps> = args =>
     `
   });
 
-QRadioGroupStory.storyName = 'Default';
-
-export { QRadioGroupStory };
+export const Default = QRadioGroupStory.bind({});
 export default storyMetadata;

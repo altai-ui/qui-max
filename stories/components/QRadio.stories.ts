@@ -67,10 +67,9 @@ const QRadioStory: Story<QRadioProps> = args =>
     `
   });
 
-QRadioStory.storyName = 'Default';
-QRadioStory.args = {
+export const Default = QRadioStory.bind({});
+Default.args = {
   label: 'Option A'
 };
 
-export { QRadioStory };
 export default storyMetadata;

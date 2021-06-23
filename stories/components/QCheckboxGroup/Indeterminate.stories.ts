@@ -1,9 +1,20 @@
-import type { Story } from '@storybook/vue3';
+import type { Story, Meta } from '@storybook/vue3';
 import { defineComponent, ref, watch } from 'vue';
 
 import QCheckboxGroup from '@/qComponents/QCheckboxGroup';
 import QCheckbox from '@/qComponents/QCheckbox';
 import type { QCheckboxGroupProps } from '@/qComponents/QCheckboxGroup';
+
+const storyMetadata: Meta = {
+  title: 'Components/QCheckbox/QCheckboxGroup',
+  component: QCheckboxGroup,
+  argTypes: {
+    direction: {
+      options: ['vertical', 'horizontal'],
+      control: { type: 'inline-radio' }
+    }
+  }
+};
 
 const QCheckboxGroupIndeterminateStory: Story<QCheckboxGroupProps> = args =>
   defineComponent({
@@ -69,6 +80,6 @@ const QCheckboxGroupIndeterminateStory: Story<QCheckboxGroupProps> = args =>
     `
   });
 
-QCheckboxGroupIndeterminateStory.storyName = 'Indeterminate';
+export const Indeterminate = QCheckboxGroupIndeterminateStory.bind({});
 
-export default QCheckboxGroupIndeterminateStory;
+export default storyMetadata;

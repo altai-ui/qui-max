@@ -13,14 +13,7 @@ const QPaginationStory: Story<QPaginationProps> = args =>
   defineComponent({
     components: { QPagination },
     setup() {
-      const transformedArgs = {
-        ...args,
-        pageCount: 30,
-        currentPage: 1,
-        total: 300,
-        pageSize: 10
-      };
-      return { args: transformedArgs };
+      return { args };
     },
 
     template: `
@@ -36,4 +29,11 @@ const QPaginationStory: Story<QPaginationProps> = args =>
   });
 
 export const Default = QPaginationStory.bind({});
+Default.args = {
+  pageCount: 30,
+  currentPage: 1,
+  total: 300,
+  pageSize: 10
+};
+
 export default storyMetadata;

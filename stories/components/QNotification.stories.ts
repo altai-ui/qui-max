@@ -22,21 +22,14 @@ const QNotificationStory: Story<QNotificationToastProps> = args =>
   defineComponent({
     setup() {
       const notify = useNotify();
-      const transformedArgs = {
-        ...args,
-        content: 'Morbi massa libero, vehicula nec consequat sed, porta a sem.',
-        type: NotifyType.WARNING,
-        duration: null,
-        icon: null
-      };
 
       let lastCloudId: Nullable<QNotifyId> = null;
 
       const handleClick = (): void => {
-        const notifyId = notify(transformedArgs.content, {
-          type: transformedArgs.type,
-          duration: transformedArgs.duration,
-          icon: transformedArgs.icon
+        const notifyId = notify(args.content, {
+          type: args.type,
+          duration: args.duration,
+          icon: args.icon
         });
 
         lastCloudId = notifyId;
@@ -67,4 +60,10 @@ const QNotificationStory: Story<QNotificationToastProps> = args =>
   });
 
 export const Default = QNotificationStory.bind({});
+Default.args = {
+  content: 'Morbi massa libero, vehicula nec consequat sed, porta a sem.',
+  type: NotifyType.WARNING,
+  duration: null,
+  icon: null
+};
 export default storyMetadata;

@@ -98,46 +98,41 @@ const createQui = (config: ConfigOptions = {}): Plugin => ({
 });
 
 // install
-const install = (
-  app: App,
-  config: ConfigOptions & { useAllComponents?: boolean } = {}
-): void => {
+const install = (app: App, config: ConfigOptions = {}): void => {
   setupQui(app, config);
 
-  if (config.useAllComponents) {
-    app.use(QBreadcrumbs);
-    app.use(QButton);
-    app.use(QCascader);
-    app.use(QCheckbox);
-    app.use(QCheckboxGroup);
-    app.use(QCol);
-    app.use(QCollapse);
-    app.use(QCollapseItem);
-    app.use(QColorPicker);
-    app.use(QContextMenu);
-    app.use(QDatePicker);
-    app.use(QDialog);
-    app.use(QDrawer);
-    app.use(QForm);
-    app.use(QFormItem);
-    app.use(QInput);
-    app.use(QInputNumber);
-    app.use(QNotification);
-    app.use(QOption);
-    app.use(QPagination);
-    app.use(QPopover);
-    app.use(QRadio);
-    app.use(QRadioGroup);
-    app.use(QRow);
-    app.use(QScrollbar);
-    app.use(QSelect);
-    app.use(QTable);
-    app.use(QTabPane);
-    app.use(QTabs);
-    app.use(QTag);
-    app.use(QTextarea);
-    app.use(QUpload);
-  }
+  app.use(QBreadcrumbs);
+  app.use(QButton);
+  app.use(QCascader);
+  app.use(QCheckbox);
+  app.use(QCheckboxGroup);
+  app.use(QCol);
+  app.use(QCollapse);
+  app.use(QCollapseItem);
+  app.use(QColorPicker);
+  app.use(QContextMenu);
+  app.use(QDatePicker);
+  app.use(QDialog);
+  app.use(QDrawer);
+  app.use(QForm);
+  app.use(QFormItem);
+  app.use(QInput);
+  app.use(QInputNumber);
+  app.use(QNotification);
+  app.use(QOption);
+  app.use(QPagination);
+  app.use(QPopover);
+  app.use(QRadio);
+  app.use(QRadioGroup);
+  app.use(QRow);
+  app.use(QScrollbar);
+  app.use(QSelect);
+  app.use(QTable);
+  app.use(QTabPane);
+  app.use(QTabs);
+  app.use(QTag);
+  app.use(QTextarea);
+  app.use(QUpload);
 };
 
 export default { install };

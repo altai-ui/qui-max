@@ -1,4 +1,4 @@
-import type { App } from 'vue';
+import type { App, Plugin } from 'vue';
 
 import 'focus-visible';
 
@@ -75,16 +75,36 @@ import './QTag/src/q-tag.scss';
 import './QTextarea/src/q-textarea.scss';
 import './QUpload/src/q-upload.scss';
 
-// install
-const install = (
+const setupQui = (
   app: App,
   {
     localization: { locale, customI18nMessages = {} } = {},
-    zIndexCounter,
-    useAllComponents = false
+    zIndexCounter
   }: ConfigOptions = {}
 ): void => {
-  if (useAllComponents) {
+  setConfig({
+    locale,
+    customI18nMessages,
+    zIndex: zIndexCounter
+  });
+
+  installI18n(app);
+};
+
+const createQui = (config: ConfigOptions = {}): Plugin => ({
+  install: (app: App): void => {
+    setupQui(app, config);
+  }
+});
+
+// install
+const install = (
+  app: App,
+  config: ConfigOptions & { useAllComponents?: boolean } = {}
+): void => {
+  setupQui(app, config);
+
+  if (config.useAllComponents) {
     app.use(QBreadcrumbs);
     app.use(QButton);
     app.use(QCascader);
@@ -118,18 +138,11 @@ const install = (
     app.use(QTextarea);
     app.use(QUpload);
   }
-
-  setConfig({
-    locale,
-    customI18nMessages,
-    zIndex: zIndexCounter
-  });
-
-  installI18n(app);
 };
 
 export default { install };
 export {
+  createQui,
   QBreadcrumbs,
   QButton,
   QCascader,

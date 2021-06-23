@@ -11,7 +11,6 @@
   <span class="badge-npmdownloads"><a href="https://npmjs.org/package/@qvant/qui-max" title="View this project on NPM"><img src="https://img.shields.io/npm/dm/@qvant/qui-max.svg" alt="NPM downloads" /></a></span>
 </p>
 
-
 <p align="center" class="unchanged rich-diff-level-one">
 
 # Qui Max is a Vue 3 Design System for Web
@@ -20,8 +19,8 @@ A component's library helping us build great products for our customers.
 This library for Vue 3.x
 
 [Storybook (live demo)](https://qvant-lab.github.io/qui-max/)
-  
-  Qui for Vue 2.x is [here](https://qvant-lab.github.io/qui)! 
+
+Qui for Vue 2.x is [here](https://qvant-lab.github.io/qui)!
 
 What is it?
 
@@ -61,7 +60,7 @@ import '@qvant/qui-max/styles';
 
 const app = createApp(App);
 // Setup all components
-app.use(Qui, { useAllComponents: true });
+app.use(Qui);
 // that's it! All components will be imported with styles
 ```
 
@@ -94,7 +93,7 @@ In main.js:
 
 ```js
 import { createApp } from 'vue';
-import Qui, { QButton } from '@qvant/qui-max';
+import { createQui, QButton } from '@qvant/qui-max';
 
 // import required styles
 import '@qvant/qui-max/css/main';
@@ -104,10 +103,10 @@ import '@qvant/qui-max/icons';
 // import the only styles of component you gonna use
 import '@qvant/qui-max/css/q-button';
 
-app.use(Qui, {
-  useAllComponents: false,
+const Qui = createQui({
   localization: {
-    locale: 'en', // Russian language by default, you can set `en` for English
+    // Russian language by default, you can set `en` for English
+    locale: 'en',
     customI18nMessages: {
       // rewrite default texts, see the source: src/qComponents/constants/locales
       en: {
@@ -116,10 +115,13 @@ app.use(Qui, {
         }
       }
     },
-    zIndexCounter: 3000 // zIndexCounter is being used by some components, (e.g QPopover, QSelect, QDialog ...etc), 2000 by default
+    // zIndexCounter is being used by some components (e.g QPopover, QSelect, QDialog ...etc)
+    // 2000 by default
+    zIndexCounter: 3000
   }
 });
 
+app.use(Qui);
 app.use(QButton);
 ```
 

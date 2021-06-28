@@ -1,15 +1,11 @@
-import type { App } from 'vue';
+import { createMessageBox as useMessageBox } from './src';
 
-import QMessageBox from './src/QMessageBox.vue';
-
-/* istanbul ignore next */
-QMessageBox.install = (app: App): void => {
-  app.component(QMessageBox.name, QMessageBox);
-};
-
+export { useMessageBox };
+export { QMessageBoxContent } from './src/QMessageBoxContent';
 export type {
-  QMessageBoxProps,
-  QMessageBoxPropBeforeClose,
-  QMessageBoxInstance
-} from './src/types';
-export default QMessageBox as SFCWithInstall<App, typeof QMessageBox>;
+  QMessageBoxContentPropBeforeClose,
+  QMessageBoxContentProps,
+  QMessageBoxContentInstance
+} from './src/QMessageBoxContent';
+export { QMessageBoxAction } from './src/constants';
+export type { QMessageBoxOptions } from './src/types';

@@ -34,31 +34,25 @@ import {
   provide,
   toRef,
   PropType,
-  ComponentPublicInstance,
-  UnwrapRef,
   watch,
-  onMounted,
-  onBeforeUnmount,
   nextTick
 } from 'vue';
 import type { Instance } from '@popperjs/core';
 
-import {
-  randId,
-  addResizeListener,
-  removeResizeListener
-} from '@/qComponents/helpers';
+import { randId } from '@/qComponents/helpers';
+import { useResizeListener } from '@/qComponents/hooks';
 import {
   UPDATE_MODEL_VALUE_EVENT,
   CHANGE_EVENT
 } from '@/qComponents/constants/events';
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
+import type { Nullable, UnwrappedInstance } from '#/helpers';
 
 import QCascaderDropdown from './QCascaderDropdown/QCascaderDropdown.vue';
 import QCascaderInput from './QCascaderInput/QCascaderInput.vue';
 import QCascaderTags from './QCascaderTags/QCascaderTags.vue';
-import type { QCascaderInputInstance } from './QCascaderInput/QCascaderInput';
+import type { QCascaderInputInstance } from './QCascaderInput/types';
 
 import type {
   QCascaderPropModelValue,
@@ -67,7 +61,7 @@ import type {
   QCascaderProps,
   QCascaderInstance,
   QCascaderProvider
-} from './QCascader';
+} from './types';
 
 export default defineComponent({
   name: 'QCascader',
@@ -152,7 +146,7 @@ export default defineComponent({
       default: null
     },
     /**
-     * Specifies a target element where Drawer will be moved.
+     * Specifies a target element where QCascader will be moved.
      * (has to be a valid query selector, or an HTMLElement)
      */
     teleportTo: {
@@ -164,14 +158,11 @@ export default defineComponent({
   emits: [UPDATE_MODEL_VALUE_EVENT, CHANGE_EVENT],
 
   setup(props: QCascaderProps, ctx): QCascaderInstance {
-    const qForm = inject<QFormProvider | null>('qForm', null);
-    const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
-    const reference =
-      ref<ComponentPublicInstance<UnwrapRef<QCascaderInputInstance>> | null>(
-        null
-      );
+    const qForm = inject<Nullable<QFormProvider>>('qForm', null);
+    const qFormItem = inject<Nullable<QFormItemProvider>>('qFormItem', null);
+    const reference = ref<UnwrappedInstance<QCascaderInputInstance>>(null);
 
-    const popperJS = ref<Instance | null>(null);
+    const popperJS = ref<Nullable<Instance>>(null);
     const isDropdownShown = ref<boolean>(false);
 
     const isDisabled = computed<boolean>(
@@ -207,7 +198,7 @@ export default defineComponent({
     };
 
     const updateValue = (
-      value: string | number | (string | number)[] | null,
+      value: Nullable<string | number | (string | number)[]>,
       isExist?: boolean
     ): void => {
       if (!props.multiple || value === null) {
@@ -268,18 +259,14 @@ export default defineComponent({
       popperJS.value?.destroy();
     };
 
-    onMounted(() => {
-      addResizeListener(
-        reference.value?.$el as HTMLElement | undefined,
-        updatePopperJs
-      );
-    });
+    const referenceEl = computed<Nullable<HTMLElement>>(
+      () => reference.value?.$el ?? null
+    );
 
-    onBeforeUnmount(() => {
-      removeResizeListener(
-        reference.value?.$el as HTMLElement | undefined,
-        updatePopperJs
-      );
+    const referenceElResize = useResizeListener(referenceEl);
+
+    watch(referenceElResize.observedEntry, () => {
+      updatePopperJs();
     });
 
     return {

@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import type { Meta, Story } from '@storybook/vue3';
 import { defineComponent, ref } from 'vue';
 
@@ -46,7 +45,5 @@ const QTabsStory: Story<QTabsProps> = args =>
     `
   });
 
-QTabsStory.storyName = 'Default';
-
-export { QTabsStory };
+export const Default = QTabsStory.bind({});
 export default storyMetadata;

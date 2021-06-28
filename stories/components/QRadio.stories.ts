@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import type { Meta, Story } from '@storybook/vue3';
 import { defineComponent, ref } from 'vue';
 
@@ -68,10 +67,9 @@ const QRadioStory: Story<QRadioProps> = args =>
     `
   });
 
-QRadioStory.storyName = 'Default';
-QRadioStory.args = {
+export const Default = QRadioStory.bind({});
+Default.args = {
   label: 'Option A'
 };
 
-export { QRadioStory };
 export default storyMetadata;

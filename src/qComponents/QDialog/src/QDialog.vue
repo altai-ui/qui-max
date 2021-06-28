@@ -68,6 +68,8 @@ import { CLOSE_EVENT } from '@/qComponents/constants/events';
 import { getConfig } from '@/qComponents/config';
 import QButton from '@/qComponents/QButton';
 import QScrollbar from '@/qComponents/QScrollbar';
+import type { Nullable } from '#/helpers';
+
 import type {
   QDialogProps,
   QDialogPropBeforeClose,
@@ -167,11 +169,11 @@ export default defineComponent({
   setup(props: QDialogProps, ctx): QDialogInstance {
     const zIndex = ref<number>(DEFAULT_Z_INDEX);
     const isRendered = ref<boolean>(false);
-    const dialog = ref<HTMLElement | null>(null);
+    const dialog = ref<Nullable<HTMLElement>>(null);
 
-    let elementToFocusAfterClosing: HTMLElement | null = null;
+    let elementToFocusAfterClosing: Nullable<HTMLElement> = null;
 
-    const dialogStyle = computed<Record<string, string | number | null>>(
+    const dialogStyle = computed<Record<string, Nullable<string | number>>>(
       () => ({
         width: Number(props.width) ? `${Number(props.width)}px` : props.width
       })

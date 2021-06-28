@@ -1,5 +1,6 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { app, Meta, Story } from '@storybook/vue3';
+import { app } from '@storybook/vue3';
+import type { Meta, Story } from '@storybook/vue3';
 import { defineComponent, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
@@ -17,15 +18,12 @@ const storyMetadata: Meta = {
 // eslint-disable-next-line vue/one-component-per-file
 app.component('RouterLink', {
   props: {
-    to: {
-      type: [String, Object],
-      default: null
-    }
+    to: { type: [String, Object], default: null }
   },
   template: '<a href="#" @click.prevent.stop><slot/></a>'
 });
 
-const QBreadcrumbsStory: Story<QBreadcrumbsProps> = args =>
+const Template: Story<QBreadcrumbsProps> = args =>
   // eslint-disable-next-line vue/one-component-per-file
   defineComponent({
     setup() {
@@ -77,7 +75,6 @@ const QBreadcrumbsStory: Story<QBreadcrumbsProps> = args =>
     `
   });
 
-QBreadcrumbsStory.storyName = 'Default';
+export const Default = Template.bind({});
 
-export { QBreadcrumbsStory };
 export default storyMetadata;

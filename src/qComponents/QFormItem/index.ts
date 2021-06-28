@@ -1,5 +1,7 @@
 import type { App } from 'vue';
 
+import type { SFCWithInstall } from '#/helpers';
+
 import QFormItem from './src/QFormItem.vue';
 
 /* istanbul ignore next */

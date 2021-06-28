@@ -1,27 +1,38 @@
 import { merge } from 'lodash-es';
+import type { LocaleMessageDictionary, VueMessageType } from 'vue-i18n';
+
+import type { Nullable } from '#/helpers';
 
 export interface InstallOptions {
-  zIndex: number;
+  nextZIndex: number;
   locale: string;
+  customI18nMessages: Nullable<
+    Record<string, LocaleMessageDictionary<VueMessageType>>
+  >;
 }
 
 let $Q: InstallOptions = {
-  zIndex: 2000,
-  locale: 'ru'
+  nextZIndex: 0,
+  locale: 'ru',
+  customI18nMessages: null
 };
 
-const setConfig = (option: Partial<InstallOptions>): void => {
-  $Q = merge($Q, option);
+const setConfig = ({
+  zIndex,
+  customI18nMessages,
+  ...options
+}: Partial<
+  Pick<InstallOptions, 'locale' | 'customI18nMessages'> & { zIndex: number }
+>): void => {
+  $Q.nextZIndex = zIndex ?? 2000;
+  $Q.customI18nMessages = customI18nMessages ?? null;
+  $Q = merge($Q, options);
 };
 
-export type GetConfigKey = keyof InstallOptions | 'nextZIndex';
-export type GetConfigResult = InstallOptions & { nextZIndex: number };
-
-const getConfig = <T extends GetConfigKey>(key: T): GetConfigResult[T] => {
-  if (key === 'nextZIndex') {
-    $Q.zIndex += 1;
-    return $Q.zIndex;
-  }
+const getConfig = <T extends keyof InstallOptions>(
+  key: T
+): InstallOptions[T] => {
+  if (key === 'nextZIndex') $Q.nextZIndex += 1;
 
   return $Q[key];
 };

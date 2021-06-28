@@ -18,6 +18,8 @@ import type { FieldErrorList } from 'async-validator';
 import { concat } from 'lodash-es';
 
 import type { QFormItemContext } from '@/qComponents/QFormItem';
+import type { Nullable } from '#/helpers';
+
 import type {
   QFormProps,
   QFormPropModel,
@@ -129,7 +131,7 @@ export default defineComponent({
      */
     const validate = async (
       passedProps?: string[] | string
-    ): Promise<ValidateFnResult | null> => {
+    ): Promise<Nullable<ValidateFnResult>> => {
       if (!props.model) {
         if (process.env.NODE_ENV !== 'production') {
           // eslint-disable-next-line no-console

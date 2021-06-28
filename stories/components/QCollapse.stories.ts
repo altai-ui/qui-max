@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import type { Meta, Story } from '@storybook/vue3';
 import { defineComponent, ref } from 'vue';
 
@@ -89,7 +88,5 @@ const QCollapseStory: Story<QCollapseProps> = args =>
     `
   });
 
-QCollapseStory.storyName = 'Default';
-
-export { QCollapseStory };
+export const Default = QCollapseStory.bind({});
 export default storyMetadata;

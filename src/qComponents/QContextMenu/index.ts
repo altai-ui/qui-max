@@ -1,5 +1,7 @@
 import type { App } from 'vue';
 
+import type { SFCWithInstall } from '#/helpers';
+
 import QContextMenu from './src/QContextMenu.vue';
 
 /* istanbul ignore next */

@@ -1,32 +1,31 @@
-import type { App } from 'vue';
+import { getCurrentInstance, provide, inject } from 'vue';
+import type { App, Plugin } from 'vue';
 
-import { eventBus, randId } from '@/qComponents/helpers';
-import QNotification from './src/QNotification.vue';
-import type { QNotificationCloudItem } from './src/types';
+import { createNotification } from './src';
+import { NotifyType, NOTIFICATION_INJECTION_KEY } from './src/constants';
+import type { QNotify, QNotificationOptions } from './src/types';
 
-/* istanbul ignore next */
-QNotification.install = (app: App): void => {
-  app.component(QNotification.name, QNotification);
+const QNotification: Plugin = {
+  install: (app: App, options?: QNotificationOptions): void => {
+    const notify = createNotification(options);
+    app.provide<QNotify>(NOTIFICATION_INJECTION_KEY, notify);
+  }
 };
 
-const notify = (cloud: QNotificationCloudItem): string => {
-  const id = randId();
-  eventBus.emit('QNotification/add', { id, ...cloud });
-  return id;
+const provideNotify = (options?: QNotificationOptions): void => {
+  const notify = createNotification(options);
+
+  provide<QNotify>(NOTIFICATION_INJECTION_KEY, notify);
 };
 
-const notifyCloseAll = (): void => {
-  eventBus.emit('QNotification/removeAll');
+const useNotify = (options?: QNotificationOptions): QNotify => {
+  const notify = getCurrentInstance()
+    ? inject<QNotify>(NOTIFICATION_INJECTION_KEY)
+    : null;
+
+  return notify ?? createNotification(options, false);
 };
 
-const notifyClose = (id?: Nullable<string>): void => {
-  eventBus.emit('QNotification/remove', id);
-};
-
-export type {
-  QNotificationProps,
-  QNotificationCloudItem,
-  QNotificationInstance
-} from './src/types';
-export { notify, notifyClose, notifyCloseAll };
-export default QNotification as SFCWithInstall<App, typeof QNotification>;
+export type { QNotify, QNotifyId } from './src/types';
+export { NotifyType, provideNotify, useNotify };
+export default QNotification;

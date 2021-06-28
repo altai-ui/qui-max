@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import type { Meta, Story } from '@storybook/vue3';
 import { defineComponent, ref } from 'vue';
 
@@ -14,13 +13,14 @@ const storyMetadata: Meta = {
     maxlength: { control: { type: 'number' } },
     modelValue: { control: { type: 'none' } },
     type: {
-      control: {
-        type: 'select',
-        options: ['text', 'password', 'number', 'email', 'hidden', 'tel', 'url']
-      }
+      options: ['text', 'password', 'number', 'email', 'hidden', 'tel', 'url'],
+      control: { type: 'select' }
     },
-    suffixIcon: { control: { type: 'select', options: iconsList } },
-    autocomplete: { control: { type: 'select', options: ['on', 'off'] } },
+    suffixIcon: { options: [null, ...iconsList], control: { type: 'select' } },
+    autocomplete: {
+      options: ['on', 'off'],
+      control: { type: 'select' }
+    },
     readonly: { control: { type: 'boolean' } }
   }
 };
@@ -91,12 +91,12 @@ const QInputStory: Story<StoryArgs> = args =>
     `
   });
 
-QInputStory.storyName = 'Default';
-QInputStory.args = {
+export const Default = QInputStory.bind({});
+
+Default.args = {
   placeholder: 'Input text',
   maxlength: 25,
   type: 'text'
 };
 
-export { QInputStory };
 export default storyMetadata;

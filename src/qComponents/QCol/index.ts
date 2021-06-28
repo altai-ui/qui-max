@@ -1,5 +1,7 @@
 import type { App } from 'vue';
 
+import type { SFCWithInstall } from '#/helpers';
+
 import QCol from './src/QCol.vue';
 
 /* istanbul ignore next */

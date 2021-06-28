@@ -1,12 +1,14 @@
-import type { Option } from '../QCascader';
+import type { Nullable } from '#/helpers';
+
+import type { Option } from '../types';
 
 const findFullPath = (
-  branches: Option[] | null,
-  find: string | number | null
-): string[] | null => {
+  branches: Nullable<Option[]>,
+  find: Nullable<string | number>
+): Nullable<string[]> => {
   if (!branches) return null;
 
-  let level: string[] | null = null;
+  let level: Nullable<string[]> = null;
   for (let i = 0; i < branches.length; i += 1) {
     if (branches[i].value === find) {
       level = [branches[i].label];

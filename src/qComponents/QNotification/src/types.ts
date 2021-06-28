@@ -1,55 +1,58 @@
-import type { Ref, ComputedRef } from 'vue';
+import type { App, Ref, ComponentPublicInstance } from 'vue';
 
-export type QNotificationCloudPropType =
-  | 'success'
-  | 'warning'
-  | 'info'
-  | 'error';
+import type { Nullable } from '#/helpers';
 
-export type QNotificationCloudPropOnClose = Nullable<(id: string) => void>;
+import type { NotifyType } from './constants';
 
-export interface QNotificationProps {
-  icon: Nullable<string>;
-  duration: Nullable<number>;
-}
+export type QNotifyId = string | number;
 
-export interface QNotificationCloudItem {
-  id?: string;
-  message?: Nullable<string>;
-  type?: QNotificationCloudPropType;
-  dangerouslyUseHTMLString?: Nullable<boolean>;
+export interface QNotifyOptions {
+  id?: QNotifyId;
+  type?: NotifyType;
   icon?: Nullable<string>;
   duration?: Nullable<number>;
-  onClose?: QNotificationCloudPropOnClose;
+  onClick?: (callback: () => void) => void;
+  onClose?: () => void;
 }
 
-export interface Cloud extends QNotificationCloudItem {
-  id: string;
+export type QNotifyContent = string;
+
+export interface QNotifyItem extends QNotifyOptions {
+  id: QNotifyId;
+  content: QNotifyContent;
 }
 
-export type QNotificationMethodAddCloud = (cloud?: Cloud) => void;
+export interface QNotify {
+  (content: QNotifyContent, options?: QNotifyOptions): QNotifyId;
 
-export interface QNotificationInstance {
-  clouds: Ref<Cloud[]>;
-  removeCloud: (cloudId?: Nullable<string>) => void;
+  close(id: QNotifyId): void;
+  closeAll(): void;
+
+  success: (
+    content: QNotifyContent,
+    options?: QNotifyOptions & { type?: NotifyType.SUCCESS }
+  ) => QNotifyId;
+
+  info: (
+    content: QNotifyContent,
+    options?: QNotifyOptions & { type?: NotifyType.INFO }
+  ) => QNotifyId;
+
+  error: (
+    content: QNotifyContent,
+    options?: QNotifyOptions & { type?: NotifyType.ERROR }
+  ) => QNotifyId;
+
+  warning: (
+    content: QNotifyContent,
+    options?: QNotifyOptions & { type?: NotifyType.WARNING }
+  ) => QNotifyId;
 }
 
-export type QNotificationCloudPropMessage = Nullable<string>;
-export type QNotificationCloudPropDangerouslyUseHtmlString = Nullable<boolean>;
-export interface QNotificationCloudProps {
-  uniqId: string;
-  message: QNotificationCloudPropMessage;
-  type: QNotificationCloudPropType;
-  dangerouslyUseHtmlString: QNotificationCloudPropDangerouslyUseHtmlString;
-  icon: Nullable<string>;
-  duration: Nullable<number>;
-  onClose: QNotificationCloudPropOnClose;
-}
-
-export interface QNotificationCloudInstance {
-  notificationClasses: ComputedRef<Record<string, boolean>>;
-  iconClass: ComputedRef<string>;
-  clearTimer: () => void;
-  startTimer: () => void;
-  close: () => void;
+export interface QNotificationOptions {
+  list: Ref<QNotifyItem[]>;
+  onMounted?: (
+    containerComponent: ComponentPublicInstance,
+    containerApp: App<Element>
+  ) => void;
 }

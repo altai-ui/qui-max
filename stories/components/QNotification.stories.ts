@@ -1,67 +1,55 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import type { Meta, Story } from '@storybook/vue3';
 import { defineComponent } from 'vue';
 
-import QNotification, {
-  notify,
-  notifyClose,
-  notifyCloseAll
-} from '@/qComponents/QNotification';
-
-import QNotificationCloud from '@/qComponents/QNotification/src/QNotificationCloud.vue';
-import type {
-  QNotificationProps,
-  QNotificationCloudItem
-} from '@/qComponents/QNotification';
+import { useNotify, NotifyType } from '@/qComponents/QNotification';
+import QNotificationToast, {
+  QNotificationToastProps
+} from '@/qComponents/QNotification/src/QNotificationToast';
+import type { QNotifyId } from '@/qComponents/QNotification';
+import type { Nullable } from '#/helpers';
 import iconsList from '../core/iconsList';
 
 const storyMetadata: Meta = {
   title: 'Components/QNotification',
-  component: QNotification,
-  subcomponents: { QNotificationCloud },
+  component: QNotificationToast,
   argTypes: {
-    icon: { control: { type: 'select', options: iconsList } },
-    notifyArgs: { control: { type: 'object' } }
+    icon: { options: iconsList, control: { type: 'select' } },
+    type: { options: Object.values(NotifyType), control: { type: 'select' } }
   }
 };
 
-interface Args extends QNotificationProps {
-  notifyArgs: QNotificationCloudItem;
-}
-
-const QNotificationStory: Story<Args> = args =>
+const QNotificationStory: Story<QNotificationToastProps> = args =>
   defineComponent({
-    components: { QNotification },
     setup() {
-      let lastCloudId: Nullable<string> = null;
+      const notify = useNotify();
+
+      let lastCloudId: Nullable<QNotifyId> = null;
 
       const handleClick = (): void => {
-        const notifyId = notify(args.notifyArgs);
+        const notifyId = notify(args.content, {
+          type: args.type,
+          duration: args.duration,
+          icon: args.icon
+        });
 
         lastCloudId = notifyId;
       };
 
       const handleCloseLastClick = (): void => {
-        notifyClose(lastCloudId);
+        if (lastCloudId) notify.close(lastCloudId);
       };
 
       const handleCloseAllClick = (): void => {
-        notifyCloseAll();
+        notify.closeAll();
       };
 
       return {
-        args,
         handleClick,
         handleCloseLastClick,
         handleCloseAllClick
       };
     },
     template: `
-      <q-notification
-        :icon="args.icon"
-        :duration="args.duration"
-      />
-
       <q-button @click="handleClick">Click to open</q-button>
       <q-button @click="handleCloseLastClick">Close last</q-button>
       <q-button
@@ -71,16 +59,11 @@ const QNotificationStory: Story<Args> = args =>
     `
   });
 
-QNotificationStory.storyName = 'Default';
-QNotificationStory.args = {
-  notifyArgs: {
-    message: 'Morbi massa libero, vehicula nec consequat sed, porta a sem.',
-    type: 'warning',
-    dangerouslyUseHTMLString: false,
-    duration: null,
-    icon: null
-  }
+export const Default = QNotificationStory.bind({});
+Default.args = {
+  content: 'Morbi massa libero, vehicula nec consequat sed, porta a sem.',
+  type: NotifyType.WARNING,
+  duration: null,
+  icon: null
 };
-
-export { QNotificationStory };
 export default storyMetadata;

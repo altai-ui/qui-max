@@ -1,6 +1,8 @@
 import type { Ref, ComputedRef } from 'vue';
 import type { RuleItem, ErrorList, FieldErrorList } from 'async-validator';
 
+import type { Nullable } from '#/helpers';
+
 export interface FilteredRuleItem extends RuleItem {
   trigger?: Nullable<string>;
 }

@@ -27,15 +27,17 @@
 import { defineComponent, ref, computed, inject } from 'vue';
 import { isEmpty, cloneDeep } from 'lodash-es';
 
+import type { Nullable } from '#/helpers';
+
 import { TOTAL_CHECKED_INDEX } from '../config';
-import QTableTHeadCell from './QTableTHeadCell.vue';
 import QTableCellCheckbox from '../QTableCellCheckbox/QTableCellCheckbox.vue';
-import type { QTablePropSortBy, QTableProvider } from '../QTable';
+import type { QTablePropSortBy, QTableProvider } from '../types';
 import type {
   ExtendedColumn,
   QTableContainerProvider
-} from '../QTableContainer/QTableContainer';
-import type { QTableTHeadInstance } from './QTableTHead';
+} from '../QTableContainer/types';
+import QTableTHeadCell from './QTableTHeadCell/QTableTHeadCell.vue';
+import type { QTableTHeadInstance } from './types';
 
 export default defineComponent({
   name: 'QTableTHead',
@@ -98,7 +100,7 @@ export default defineComponent({
       qTable.updateCheckedRows(checkedRows);
     };
 
-    const draggedColumn = ref<ExtendedColumn | null>(null);
+    const draggedColumn = ref<Nullable<ExtendedColumn>>(null);
 
     const handleColumnDrag = (column: ExtendedColumn): void => {
       draggedColumn.value = column;

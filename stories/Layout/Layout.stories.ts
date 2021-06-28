@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import type { Meta, Story } from '@storybook/vue3';
 import { defineComponent, computed } from 'vue';
 
@@ -121,7 +120,5 @@ const LayoutStory: Story<StoryArgs> = args =>
     `
   });
 
-LayoutStory.storyName = 'Default';
-
-export { LayoutStory };
+export const Default = LayoutStory.bind({});
 export default storyMetadata;

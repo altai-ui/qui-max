@@ -11,6 +11,8 @@
 <script lang="ts">
 import { defineComponent, computed } from 'vue';
 
+import type { Nullable } from '#/helpers';
+
 import type { QColProps, QColInstance } from './types';
 
 export default defineComponent({
@@ -32,7 +34,7 @@ export default defineComponent({
     cols: {
       type: [String, Number],
       default: null,
-      validator: (value: string | number | null): boolean =>
+      validator: (value: Nullable<string | number>): boolean =>
         value === null || value === 'auto' || (value > 0 && value <= 12)
     },
     /**
@@ -42,7 +44,7 @@ export default defineComponent({
     offset: {
       type: [String, Number],
       default: null,
-      validator: (value: string | number | null): boolean =>
+      validator: (value: Nullable<string | number>): boolean =>
         value === null || (value >= 0 && value <= 11)
     }
   },

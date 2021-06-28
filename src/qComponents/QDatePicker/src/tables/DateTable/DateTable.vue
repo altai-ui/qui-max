@@ -42,6 +42,8 @@
 </template>
 
 <script lang="ts">
+import { reactive, computed, inject, defineComponent } from 'vue';
+import type { PropType } from 'vue';
 import {
   getDaysInMonth,
   startOfMonth,
@@ -55,24 +57,27 @@ import {
 } from 'date-fns';
 import { throttle } from 'lodash-es';
 import { ru, enGB as en } from 'date-fns/locale';
-import { reactive, computed, PropType, inject, defineComponent } from 'vue';
+
 import { getConfig } from '@/qComponents/config';
 import { notNull } from '@/qComponents/helpers';
+
 import { isDateInRangeInterval } from '../../helpers';
-import type { DateTableInterface, DateTableState } from './DateTable';
-import type { DateCellModel, RangeState, TableProps } from '../../Common';
-import type { QDatePickerProvider } from '../../QDatePicker';
+import type { DateCellModel, RangeState, TableProps } from '../../commonTypes';
+import type { QDatePickerProvider } from '../../types';
 import {
   DAYS_IN_WEEK,
   LAST_MONTH_IN_YEAR_INDEX,
   WEEK_FRONTIER
 } from '../../constants';
+
+import type { DateTableInterface, DateTableState } from './types';
 import checkDisabled from './checkDisabled';
 
 const locales: Record<string, Locale> = { ru, en };
 
 export default defineComponent({
   name: 'QDatePickerDateTable',
+
   props: {
     year: {
       type: Number,

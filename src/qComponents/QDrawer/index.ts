@@ -1,5 +1,7 @@
 import type { App } from 'vue';
 
+import type { SFCWithInstall } from '#/helpers';
+
 import QDrawer from './src/QDrawer.vue';
 
 /* istanbul ignore next */

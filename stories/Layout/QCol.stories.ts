@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import type { Meta, Story } from '@storybook/vue3';
 import { defineComponent } from 'vue';
 
@@ -13,16 +12,12 @@ const storyMetadata: Meta = {
   subcomponents: { QRow },
   argTypes: {
     cols: {
-      control: {
-        type: 'select',
-        options: [null, 'auto', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-      }
+      options: [null, 'auto', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+      control: { type: 'select' }
     },
     offset: {
-      control: {
-        type: 'select',
-        options: [null, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-      }
+      options: [null, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+      control: { type: 'select' }
     }
   }
 };
@@ -57,12 +52,10 @@ const QColStory: Story<QColProps> = args =>
     `
   });
 
-QColStory.storyName = 'Default';
-QColStory.args = {
+export const Default = QColStory.bind({});
+Default.args = {
   tag: 'div',
   cols: 5,
   offset: 3
 };
-
-export { QColStory };
 export default storyMetadata;

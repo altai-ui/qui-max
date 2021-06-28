@@ -1,5 +1,7 @@
 import type { Ref, ComputedRef } from 'vue';
 
+import type { Nullable } from '#/helpers';
+
 export type QDrawerPropBeforeClose = Nullable<(hide: () => void) => void>;
 export type QDrawerPropPosition = 'left' | 'right';
 export type QDrawerPropTeleportTo = Nullable<string | HTMLElement>;

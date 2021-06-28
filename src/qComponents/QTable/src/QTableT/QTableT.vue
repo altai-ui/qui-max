@@ -24,33 +24,24 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  inject,
-  ref,
-  computed,
-  provide,
-  onMounted,
-  onBeforeUnmount,
-  ComponentPublicInstance,
-  UnwrapRef
-} from 'vue';
+import { defineComponent, inject, ref, computed, provide, watch } from 'vue';
 import { isEmpty } from 'lodash-es';
 
-import { addResizeListener, removeResizeListener } from '@/qComponents/helpers';
+import { useResizeListener } from '@/qComponents/hooks';
+import type { Nullable, Optional, UnwrappedInstance } from '#/helpers';
 
 import QTableTBody from '../QTableTBody/QTableTBody.vue';
 import QTableTColgroup from '../QTableTColgroup/QTableTColgroup.vue';
 import QTableTHead from '../QTableTHead/QTableTHead.vue';
 import QTableTSticky from '../QTableTSticky/QTableTSticky.vue';
 import QTableTTotal from '../QTableTTotal/QTableTTotal.vue';
-import type { QTableProvider } from '../QTable';
+import type { QTableProvider } from '../types';
 import type {
   StickyGlobalConfig,
   QTableTStickyInstance
-} from '../QTableTSticky/QTableTSticky';
+} from '../QTableTSticky/types';
 
-import type { QTableTProvider, QTableTInstance } from './QTableT';
+import type { QTableTProvider, QTableTInstance } from './types';
 
 export default defineComponent({
   name: 'QTableT',
@@ -72,12 +63,11 @@ export default defineComponent({
     );
     const isTotalShown = computed<boolean>(() => !isEmpty(qTable.total.value));
 
-    const root = ref<HTMLElement | null>(null);
-    const thead = ref<HTMLElement | null>(null);
-    const sticky =
-      ref<ComponentPublicInstance<UnwrapRef<QTableTStickyInstance>> | null>(
-        null
-      );
+    const root = ref<Nullable<HTMLElement>>(null);
+    const thead = ref<Nullable<HTMLElement>>(null);
+    const sticky = ref<UnwrappedInstance<QTableTStickyInstance>>(null);
+
+    const rootResize = useResizeListener(root);
 
     const rootClasses = computed<Record<string, boolean>>(() => ({
       'q-table-t': true,
@@ -93,17 +83,14 @@ export default defineComponent({
         }
     );
 
-    const tableHeight = ref<number | null>(null);
+    const tableHeight = ref<Nullable<number>>(null);
 
     provide<QTableTProvider>('qTableT', {
       stickyGlobalConfig,
       tableHeight
     });
 
-    const setTableHeight = (): void => {
-      const el = root.value;
-      if (!el) return;
-
+    const setTableHeight = (el: HTMLElement): void => {
       const computedStyle = getComputedStyle(el);
       tableHeight.value =
         el.clientHeight -
@@ -111,12 +98,9 @@ export default defineComponent({
         parseFloat(computedStyle.paddingBottom);
     };
 
-    onMounted(() => {
-      addResizeListener(root.value, setTableHeight);
-    });
-
-    onBeforeUnmount(() => {
-      removeResizeListener(root.value, setTableHeight);
+    watch(rootResize.observedEntry, value => {
+      const el = value?.target as Optional<HTMLElement>;
+      if (el) setTableHeight(el);
     });
 
     return {

@@ -1,5 +1,7 @@
 import type { ComputedRef } from 'vue';
 
+import type { Nullable } from '#/helpers';
+
 export interface QInputNumberProps {
   precision: Nullable<number>;
   disabled: Nullable<boolean>;

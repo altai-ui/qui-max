@@ -1,11 +1,12 @@
-import { addMonths, startOfYesterday, subMonths, subWeeks } from 'date-fns';
-import QDatePicker from '@/qComponents/QDatePicker';
 import { defineComponent, reactive, watch } from 'vue';
 import type { Meta, Story } from '@storybook/vue3';
+import { addMonths, startOfYesterday, subMonths, subWeeks } from 'date-fns';
+
+import QDatePicker from '@/qComponents/QDatePicker';
 import type {
   QDatePickerPropModelValue,
   QDatePickerProps
-} from '@/qComponents/QDatePicker/src/QDatePicker';
+} from '@/qComponents/QDatePicker';
 
 const now = new Date();
 
@@ -15,22 +16,18 @@ const storyMetadata: Meta = {
   argTypes: {
     'v-model': { control: { type: 'none' } },
     disabledValues: {
-      control: {
-        type: 'select',
-        options: [
-          null,
-          {
-            to: subMonths(now, 2),
-            ranges: [{ start: now, end: new Date(addMonths(now, 1)) }]
-          }
-        ]
-      }
+      options: [
+        null,
+        {
+          to: subMonths(now, 2),
+          ranges: [{ start: now, end: new Date(addMonths(now, 1)) }]
+        }
+      ],
+      control: { type: 'select' }
     },
     outputFormat: {
-      control: {
-        type: 'select',
-        options: ['date', 'iso']
-      }
+      options: ['date', 'iso'],
+      control: { type: 'select' }
     },
     placeholder: {
       type: { name: 'string', required: false }
@@ -40,25 +37,21 @@ const storyMetadata: Meta = {
       type: { name: 'string', required: false }
     },
     type: {
-      control: {
-        type: 'select',
-        options: [
-          'date',
-          'week',
-          'month',
-          'year',
-          'daterange',
-          'monthrange',
-          'yearrange'
-        ]
-      },
+      options: [
+        'date',
+        'week',
+        'month',
+        'year',
+        'daterange',
+        'monthrange',
+        'yearrange'
+      ],
+      control: { type: 'select' },
       datetime: { disable: true }
     },
     firstDayOfWeek: {
-      control: {
-        type: 'select',
-        options: [0, 1, 2, 3, 4, 5, 6]
-      }
+      options: [0, 1, 2, 3, 4, 5, 6],
+      control: { type: 'select' }
     }
   }
 };
@@ -119,13 +112,13 @@ const Template: Story<QDatePickerProps> = args =>
     `
   });
 
-export const Default: Story<QDatePickerProps> = Template.bind({});
-export const Month: Story<QDatePickerProps> = Template.bind({});
-export const Year: Story<QDatePickerProps> = Template.bind({});
-export const DateRange: Story<QDatePickerProps> = Template.bind({});
-export const MonthRange: Story<QDatePickerProps> = Template.bind({});
-export const YearRange: Story<QDatePickerProps> = Template.bind({});
-export const Shortcuts: Story<QDatePickerProps> = Template.bind({});
+export const Default = Template.bind({});
+export const Month = Template.bind({});
+export const Year = Template.bind({});
+export const DateRange = Template.bind({});
+export const MonthRange = Template.bind({});
+export const YearRange = Template.bind({});
+export const Shortcuts = Template.bind({});
 
 YearRange.args = {
   type: 'yearrange'

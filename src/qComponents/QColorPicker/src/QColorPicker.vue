@@ -60,13 +60,11 @@ import {
   ref,
   computed,
   watch,
-  provide,
-  ComponentPublicInstance,
-  UnwrapRef
+  provide
 } from 'vue';
 import { createPopper, Instance, Options } from '@popperjs/core';
 import { placements } from '@popperjs/core/lib/enums';
-import Color from 'color';
+import { colord } from 'colord';
 
 import { validateArray } from '@/qComponents/helpers';
 import { getConfig } from '@/qComponents/config';
@@ -77,7 +75,10 @@ import {
 } from '@/qComponents/constants/events';
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
-import QPickerDropdown from './QPickerDropdown.vue';
+import type { Nullable, UnwrappedInstance } from '#/helpers';
+
+import QPickerDropdown from './QPickerDropdown';
+import type { QPickerDropdownInstance } from './QPickerDropdown';
 import type {
   QColorPickerProps,
   QColorPickerPropColorFormat,
@@ -85,8 +86,7 @@ import type {
   QColorPickerPropPopperOptions,
   QColorPickerPropTeleportTo,
   QColorPickerProvider,
-  QColorPickerInstance,
-  QPickerDropdownInstance
+  QColorPickerInstance
 } from './types';
 
 const DEFAULT_Z_INDEX = 2000;
@@ -146,7 +146,7 @@ export default defineComponent({
       default: (): Partial<QColorPickerPropPopperOptions> => ({})
     },
     /**
-     * Specifies a target element where QMessageBox will be moved.
+     * Specifies a target element where QColorPicker will be moved.
      * (has to be a valid query selector, or an HTMLElement)
      */
     teleportTo: {
@@ -158,19 +158,19 @@ export default defineComponent({
   emits: [UPDATE_MODEL_VALUE_EVENT, CHANGE_EVENT, CLICK_EVENT],
 
   setup(props: QColorPickerProps, ctx): QColorPickerInstance {
-    const qForm = inject<QFormProvider | null>('qForm', null);
-    const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
+    const qForm = inject<Nullable<QFormProvider>>('qForm', null);
+    const qFormItem = inject<Nullable<QFormItemProvider>>('qFormItem', null);
 
     const zIndex = ref<number>(DEFAULT_Z_INDEX);
     const isPickerShown = ref<boolean>(false);
-    const popperJS = ref<Instance | null>(null);
+    const popperJS = ref<Nullable<Instance>>(null);
 
     const isDisabled = computed<boolean>(
       () => props.disabled || (qForm?.disabled.value ?? false)
     );
 
     const isColorDark = computed<boolean>(() =>
-      props.modelValue ? Color(props.modelValue).isDark() : false
+      props.modelValue ? colord(props.modelValue).isDark() : false
     );
 
     const iconClasses = computed<Record<string, boolean>>(() => ({
@@ -225,11 +225,8 @@ export default defineComponent({
       isPickerShown.value = false;
     };
 
-    const trigger = ref<HTMLElement | null>(null);
-    const dropdown =
-      ref<ComponentPublicInstance<UnwrapRef<QPickerDropdownInstance>> | null>(
-        null
-      );
+    const trigger = ref<Nullable<HTMLElement>>(null);
+    const dropdown = ref<UnwrappedInstance<QPickerDropdownInstance>>(null);
 
     const createPopperJs = (): void => {
       if (popperJS.value?.destroy) {

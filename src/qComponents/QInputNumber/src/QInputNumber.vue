@@ -57,6 +57,7 @@ import type { QFormProvider } from '@/qComponents/QForm';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
 
 import type { QInputInstance } from '@/qComponents/QInput/src/types';
+import type { Nullable } from '#/helpers';
 
 import type {
   QInputNumberProps,
@@ -157,8 +158,8 @@ export default defineComponent({
   ],
 
   setup(props: QInputNumberProps, ctx): QInputNumberInstance {
-    const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
-    const qForm = inject<QFormProvider | null>('qForm', null);
+    const qFormItem = inject<Nullable<QFormItemProvider>>('qFormItem', null);
+    const qForm = inject<Nullable<QFormProvider>>('qForm', null);
 
     const inputRef = ref<QInputInstance | null>(null);
 
@@ -252,7 +253,7 @@ export default defineComponent({
         }
       );
 
-    const changesEmmiter = (value: number | null, type: string): void => {
+    const changesEmmiter = (value: Nullable<number>, type: string): void => {
       ctx.emit(UPDATE_MODEL_VALUE_EVENT, value);
 
       if (type === CHANGE_EVENT) {

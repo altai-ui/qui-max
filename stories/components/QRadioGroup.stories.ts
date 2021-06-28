@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import type { Meta, Story } from '@storybook/vue3';
 import { defineComponent, ref } from 'vue';
 
@@ -13,7 +12,8 @@ const storyMetadata: Meta = {
   argTypes: {
     modelValue: { control: { type: 'none' } },
     direction: {
-      control: { type: 'inline-radio', options: ['vertical', 'horizontal'] }
+      options: ['vertical', 'horizontal'],
+      control: { type: 'inline-radio' }
     }
   }
 };
@@ -40,7 +40,5 @@ const QRadioGroupStory: Story<QRadioGroupProps> = args =>
     `
   });
 
-QRadioGroupStory.storyName = 'Default';
-
-export { QRadioGroupStory };
+export const Default = QRadioGroupStory.bind({});
 export default storyMetadata;

@@ -1,6 +1,8 @@
 import type { Ref, ComputedRef } from 'vue';
 
-export type QOptionPropModelValue = string | number | Record<string, unknown>;
+import type { Nullable } from '#/helpers';
+
+export type QOptionPropValue = string | number | Record<string, unknown>;
 
 export interface QOptionInstance {
   multiple: boolean;
@@ -15,7 +17,7 @@ export interface QOptionInstance {
 }
 
 export interface QOptionProps {
-  modelValue: Nullable<QOptionPropModelValue>;
+  value: Nullable<QOptionPropValue>;
   label: Nullable<string | number>;
   created: Nullable<boolean>;
   disabled: Nullable<boolean>;

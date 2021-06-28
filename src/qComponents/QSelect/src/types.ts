@@ -1,19 +1,14 @@
-import type { Ref, ComputedRef, ComponentPublicInstance, UnwrapRef } from 'vue';
+import type { Ref, ComputedRef } from 'vue';
 import type { Instance as PopperInstance } from '@popperjs/core';
 import type { Composer } from 'vue-i18n';
 
-import type {
-  QOptionModel,
-  QOptionPropModelValue
-} from '@/qComponents/QOption';
+import type { QOptionModel, QOptionPropValue } from '@/qComponents/QOption';
 import type { QScrollbarInstance } from '@/qComponents/QScrollbar';
 import type { QInputInstance } from '@/qComponents/QInput';
+import type { Nullable, Optional, UnwrappedInstance } from '#/helpers';
 
 type QSelectPropModelValue = Nullable<
-  | string
-  | number
-  | QOptionPropModelValue
-  | (string | number | QOptionPropModelValue)[]
+  string | number | QOptionPropValue | (string | number | QOptionPropValue)[]
 >;
 
 type NewOption = {
@@ -23,11 +18,9 @@ type NewOption = {
 };
 
 interface QSelectInstance {
-  input: Ref<Nullable<ComponentPublicInstance<UnwrapRef<QInputInstance>>>>;
-  tags: Ref<Nullable<ComponentPublicInstance<UnwrapRef<QSelectTagsInstance>>>>;
-  dropdown: Ref<
-    Nullable<ComponentPublicInstance<UnwrapRef<QSelectDropdownInstance>>>
-  >;
+  input: Ref<UnwrappedInstance<QInputInstance>>;
+  tags: Ref<UnwrappedInstance<QSelectTagsInstance>>;
+  dropdown: Ref<UnwrappedInstance<QSelectDropdownInstance>>;
   root: Ref<Nullable<HTMLElement>>;
   state: QSelectState;
   preparedPlaceholder: ComputedRef<Nullable<string>>;
@@ -47,8 +40,8 @@ interface QSelectInstance {
   handleBlur: (event: MouseEvent) => void;
   clearSelected: () => void;
   getValueIndex: (
-    arr: (string | number | QOptionPropModelValue)[] | undefined,
-    optionValue: string | number | QOptionPropModelValue
+    arr: Optional<(string | number | QOptionPropValue)[]>,
+    optionValue: string | number | QOptionPropValue
   ) => number;
   toggleOptionSelection: (option: QOptionModel) => void;
   emitValueUpdate: (value: QSelectPropModelValue) => void;
@@ -125,9 +118,7 @@ interface QSelectDropdownInstance {
   handleSelectAllClick: () => void;
   root: Ref<Nullable<HTMLDivElement>>;
   multiple: Ref<Nullable<boolean>> | boolean;
-  scrollbar: Ref<
-    Nullable<ComponentPublicInstance<UnwrapRef<QScrollbarInstance>>>
-  >;
+  scrollbar: Ref<UnwrappedInstance<QScrollbarInstance>>;
   qSelectState: Partial<Nullable<QSelectState>>;
 }
 
@@ -148,8 +139,8 @@ interface QSelectTagsInstance {
   collapseTags: Ref<Nullable<boolean> | boolean>;
   isDisabled: Ref<Nullable<boolean> | boolean>;
   autocomplete: Ref<Nullable<string>>;
-  selected: Ref<QSelectState['selected'] | undefined>;
-  query: Ref<string | undefined>;
+  selected: Ref<Optional<QSelectState['selected']>>;
+  query: Ref<Optional<string>>;
   handleBackspaceKeyDown: () => void;
   handleTagClose: (option: Nullable<QOptionModel[]>) => void;
   handleInput: (event: KeyboardEvent) => void;
@@ -157,7 +148,7 @@ interface QSelectTagsInstance {
 }
 
 export {
-  QOptionPropModelValue,
+  QOptionPropValue,
   QSelectPropModelValue,
   NewOption,
   QSelectInstance,

@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import type { Meta, Story } from '@storybook/vue3';
 import { defineComponent, ref } from 'vue';
 
@@ -6,7 +5,7 @@ import QCascader from '@/qComponents/QCascader';
 import type { QCascaderProps } from '@/qComponents/QCascader';
 
 const storyMetadata: Meta = {
-  title: 'Components/Cascader',
+  title: 'Components/QCascader',
   component: QCascader,
   argTypes: {
     modelValue: { control: { type: 'none' } }
@@ -102,16 +101,15 @@ const defaultArgs = {
   ]
 };
 
-const Default: Story<QCascaderProps> = Template.bind({});
+export const Default = Template.bind({});
 Default.args = {
   ...defaultArgs
 };
 
-const Multiple: Story<QCascaderProps> = Template.bind({});
+export const Multiple = Template.bind({});
 Multiple.args = {
   ...defaultArgs,
   multiple: true
 };
 
-export { Default, Multiple };
 export default storyMetadata;

@@ -70,6 +70,8 @@ import {
 } from '@/qComponents/constants/events';
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
+import type { Nullable } from '#/helpers';
+
 import type {
   QInputInstance,
   QInputProps,
@@ -150,10 +152,10 @@ export default defineComponent({
   ],
 
   setup(props: QInputProps, ctx): QInputInstance {
-    const root = ref<HTMLElement | null>(null);
-    const input = ref<HTMLInputElement | null>(null);
-    const qFormItem = inject<QFormItemProvider | null>('qFormItem', null);
-    const qForm = inject<QFormProvider | null>('qForm', null);
+    const root = ref<Nullable<HTMLElement>>(null);
+    const input = ref<Nullable<HTMLInputElement>>(null);
+    const qFormItem = inject<Nullable<QFormItemProvider>>('qFormItem', null);
+    const qForm = inject<Nullable<QFormProvider>>('qForm', null);
 
     const state = reactive<QInputState>({
       hovering: false,

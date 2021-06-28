@@ -7,10 +7,14 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 
+import type { QCollapseTransitionInstance } from './types';
+
 /* eslint-disable no-param-reassign */
 const on = {
   beforeEnter(el: HTMLElement): void {
     el.classList.add('collapse-transition');
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     if (!el.dataset) el.dataset = {};
     el.dataset.oldPaddingTop = el.style.paddingTop;
     el.dataset.oldPaddingBottom = el.style.paddingBottom;
@@ -38,6 +42,8 @@ const on = {
     el.style.overflow = el.dataset.oldOverflow ?? '';
   },
   beforeLeave(el: HTMLElement): void {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     if (!el.dataset) el.dataset = {};
     el.dataset.oldPaddingTop = el.style.paddingTop;
     el.dataset.oldPaddingBottom = el.style.paddingBottom;
@@ -68,7 +74,7 @@ const on = {
 export default defineComponent({
   name: 'QCollapseTransition',
 
-  setup() {
+  setup(): QCollapseTransitionInstance {
     return { on };
   }
 });

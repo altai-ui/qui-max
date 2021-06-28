@@ -22,22 +22,18 @@ import {
   reactive,
   watch,
   onBeforeUpdate,
-  onUpdated,
-  onMounted,
-  onBeforeUnmount
+  onUpdated
 } from 'vue';
 import { isEmpty } from 'lodash-es';
 
-import { addResizeListener, removeResizeListener } from '@/qComponents/helpers';
+import { useResizeListener } from '@/qComponents/hooks';
 import type { QScrollbarProvider } from '@/qComponents/QScrollbar';
+import type { Nullable, Nillable } from '#/helpers';
 
 import { SELECTABLE_COLUMN_STICKY_INDEX } from '../config';
-import type { QTableContainerProvider } from '../QTableContainer/QTableContainer';
+import type { QTableContainerProvider } from '../QTableContainer/types';
 
-import type {
-  StickyGlobalConfig,
-  QTableTStickyInstance
-} from './QTableTSticky';
+import type { StickyGlobalConfig, QTableTStickyInstance } from './types';
 
 export default defineComponent({
   name: 'QTableTSticky',
@@ -53,7 +49,9 @@ export default defineComponent({
       {} as QScrollbarProvider
     );
 
-    const root = ref<HTMLElement | null>(null);
+    const root = ref<Nullable<HTMLElement>>(null);
+
+    const rootResize = useResizeListener(root);
 
     const colRefs = ref<Record<string, HTMLElement>>({});
     const colSizes = ref<Record<string, { width: number; offsetLeft: number }>>(
@@ -111,8 +109,6 @@ export default defineComponent({
       columnsRightNew: {}
     });
 
-    getSizes();
-
     onBeforeUpdate(() => {
       colRefs.value = {};
     });
@@ -121,19 +117,15 @@ export default defineComponent({
       getSizes();
     });
 
-    onMounted(() => {
-      addResizeListener(root.value, getSizes);
-    });
-
-    onBeforeUnmount(() => {
-      removeResizeListener(root.value, getSizes);
+    watch(rootResize.observedEntry, () => {
+      getSizes();
     });
 
     const checkSticky = (value: number = qScrollbar.moveXInPx.value): void => {
       const { selectableColumn } = colSizes.value;
 
-      const columnsLeftNew: Record<string, number | null> = {};
-      const columnsRightNew: Record<string, number | null> = {};
+      const columnsLeftNew: Record<string, Nullable<number>> = {};
+      const columnsRightNew: Record<string, Nullable<number>> = {};
 
       if (selectableColumn) {
         if (value > (root.value?.offsetLeft ?? 0)) {
@@ -158,14 +150,8 @@ export default defineComponent({
         }
 
         if (column.sticky?.position === 'right') {
-          const parent = root.value?.offsetParent as
-            | HTMLElement
-            | null
-            | undefined;
-          const grandParent = parent?.offsetParent as
-            | HTMLElement
-            | null
-            | undefined;
+          const parent = root.value?.offsetParent as Nillable<HTMLElement>;
+          const grandParent = parent?.offsetParent as Nillable<HTMLElement>;
           const grandParentWidth = grandParent?.offsetWidth ?? 0;
 
           if (

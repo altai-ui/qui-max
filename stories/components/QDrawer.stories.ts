@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import type { Meta, Story } from '@storybook/vue3';
 import { defineComponent, ref } from 'vue';
 
@@ -11,7 +10,10 @@ const storyMetadata: Meta = {
   argTypes: {
     visible: { control: { type: 'none' } },
     width: { control: { type: 'number' } },
-    position: { control: { type: 'inline-radio', options: ['left', 'right'] } }
+    position: {
+      options: ['left', 'right'],
+      control: { type: 'inline-radio' }
+    }
   }
 };
 
@@ -41,12 +43,11 @@ const QDrawerStory: Story<QDrawerProps> = args =>
     `
   });
 
-QDrawerStory.storyName = 'Default';
-QDrawerStory.args = {
+export const Default = QDrawerStory.bind({});
+Default.args = {
   visible: false,
   title: 'What is Lorem Ipsum?',
   width: 350
 };
 
-export { QDrawerStory };
 export default storyMetadata;

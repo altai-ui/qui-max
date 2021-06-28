@@ -9,16 +9,17 @@ import {
 } from 'vue';
 
 import { CHANGE_EVENT } from '@/qComponents/constants/events';
+import type { Nullable } from '#/helpers';
 
-import useSticky from '../helpers/sticky';
-import type { StickyConfig } from '../helpers/sticky.d';
-import type { QTableProvider } from '../QTable';
-import type { QTableTProvider } from '../QTableT/QTableT';
+import { useSticky } from '../hooks/sticky';
+import type { StickyConfig } from '../hooks/sticky';
+import type { QTableProvider } from '../types';
+import type { QTableTProvider } from '../QTableT/types';
 
 import type {
   QTableCellCheckboxProps,
   QTableCellCheckboxInstance
-} from './QTableCellCheckbox';
+} from './types';
 
 export default defineComponent({
   name: 'QTableCellCheckbox',
@@ -77,7 +78,7 @@ export default defineComponent({
     };
 
     const QCheckbox = resolveComponent('q-checkbox');
-    const content = computed<VNode | null>(() => {
+    const content = computed<Nullable<VNode>>(() => {
       if (qTable.isLoading.value && props.isCheckable)
         return h('div', { class: 'q-table-t__skeleton' });
 

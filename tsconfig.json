@@ -11,13 +11,23 @@
     "esModuleInterop": true,
     "strictNullChecks": true,
     "lib": ["ESNext", "DOM"],
-    "types": ["vite/client"],
+    "types": ["vite/client", "node"],
     "baseUrl": "./",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src/*"],
+      "#/*": ["types/*"]
     },
     "plugins": [{ "name": "@vuedx/typescript-plugin-vue" }]
   },
   "exclude": ["node_modules"],
-  "include": ["src/**/*", "stories/**/*", "vite.config.ts"]
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.vue",
+    "stories/**/*.ts",
+    "stories/**/*.vue",
+    "types/**/*.d.ts",
+    "types/**/*.ts",
+    "vite.config.ts"
+  ]
 }

@@ -1,5 +1,7 @@
 import type { App } from 'vue';
 
+import type { SFCWithInstall } from '#/helpers';
+
 import QTable from './src/QTable.vue';
 
 /* istanbul ignore next */
@@ -13,5 +15,5 @@ export type {
   QTablePropCheckedRows,
   QTablePropSortBy,
   QTableInstance
-} from './src/QTable';
+} from './src/types';
 export default QTable as SFCWithInstall<App, typeof QTable>;

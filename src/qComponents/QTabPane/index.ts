@@ -1,5 +1,7 @@
 import type { App } from 'vue';
 
+import type { SFCWithInstall } from '#/helpers';
+
 import QTabPane from './src/QTabPane.vue';
 
 /* istanbul ignore next */

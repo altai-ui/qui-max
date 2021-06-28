@@ -38,17 +38,19 @@ import {
 } from 'vue';
 
 import QScrollbar from '@/qComponents/QScrollbar';
+import type { Nullable } from '#/helpers';
+
 import findAllLeaves from '../helpers/findAllLeaves';
 import QCascaderRow from '../QCascaderRow/QCascaderRow.vue';
-import type { QCascaderDropdownProvider } from '../QCascaderDropdown/QCascaderDropdown';
-import type { Option, QCascaderProvider } from '../QCascader';
+import type { QCascaderDropdownProvider } from '../QCascaderDropdown/types';
+import type { Option, QCascaderProvider } from '../types';
 
 import { getSibling } from './helpers';
 import type {
   QCascaderColumnPropColumn,
   QCascaderColumnProps,
   QCascaderColumnInstance
-} from './QCascaderColumn';
+} from './types';
 
 const EXPAND_EVENT = 'expand';
 
@@ -81,7 +83,7 @@ export default defineComponent({
       'qCascaderDropdown',
       {} as QCascaderDropdownProvider
     );
-    const root = ref<HTMLElement | null>(null);
+    const root = ref<Nullable<HTMLElement>>(null);
 
     const rootClasses = computed<Record<string, boolean>>(() => {
       const columnList = qCascaderDropdown.columnList.value;
@@ -119,7 +121,7 @@ export default defineComponent({
       qCascader.updateValue(leaves, isExist);
     };
 
-    const scrollTo = ref<HTMLElement | null>(null);
+    const scrollTo = ref<Nullable<HTMLElement>>(null);
 
     const handleArrowUpDownKeyUp = (e: KeyboardEvent): void => {
       const distance = e.key === 'ArrowUp' ? -1 : 1;
@@ -131,7 +133,7 @@ export default defineComponent({
       scrollTo.value = sibling;
     };
 
-    const focusRow = (index: number | null = null): void => {
+    const focusRow = (index: Nullable<number> = null): void => {
       const rowList = root.value?.querySelectorAll<HTMLElement>(
         '.q-cascader-row[tabindex="-1"]'
       );

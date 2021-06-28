@@ -35,10 +35,12 @@ import { isNumber, isEmpty } from 'lodash-es';
 import { useI18n } from 'vue-i18n';
 
 import QInput from '@/qComponents/QInput';
-import findFullPath from '../helpers/findFullPath';
-import type { QCascaderProvider } from '../QCascader';
+import type { Nullable } from '#/helpers';
 
-import type { QCascaderInputInstance } from './QCascaderInput';
+import findFullPath from '../helpers/findFullPath';
+import type { QCascaderProvider } from '../types';
+
+import type { QCascaderInputInstance } from './types';
 
 export default defineComponent({
   name: 'QCascaderInput',
@@ -51,7 +53,7 @@ export default defineComponent({
       {} as QCascaderProvider
     );
 
-    const value = computed<string | number | null>(() => {
+    const value = computed<Nullable<string | number>>(() => {
       const modelValue = qCascader.modelValue.value;
 
       if (Array.isArray(modelValue)) return null;
@@ -73,7 +75,7 @@ export default defineComponent({
 
     const { t } = useI18n();
 
-    const placeholder = computed<string | null>(() => {
+    const placeholder = computed<Nullable<string>>(() => {
       const text = qCascader.placeholder.value ?? t('QCascader.placeholder');
       if (!qCascader.multiple.value) return text;
       return hasValue.value ? null : text;

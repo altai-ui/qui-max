@@ -1,0 +1,17 @@
+.q-notification-container {
+  position: fixed;
+  top: 0;
+  right: 16px;
+  z-index: 999999;
+  transition: all 0.8s var(--transition-spline-base);
+
+  &-enter-from,
+  &-leave-to {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+
+  &-leave-active {
+    position: absolute;
+  }
+}

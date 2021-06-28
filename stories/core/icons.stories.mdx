@@ -5,16 +5,17 @@ import {
   ArgsTable,
   IconGallery,
   IconItem
-} from '@storybook/addon-docs/blocks';
+} from '@storybook/addon-docs';
 
-import '../../src/icons/index.scss';
+import '../../src/icons/icons.scss';
 import iconsList from './iconsList';
 
 <Meta
   title="Core/Icons"
   argTypes={{
     icon: {
-      control: { type: 'select', options: iconsList }
+      options: iconsList,
+      control: { type: 'select' }
     },
     size: {
       control: { type: 'range', min: 8, max: 320 }

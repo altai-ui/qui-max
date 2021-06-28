@@ -29,6 +29,8 @@
 </template>
 
 <script lang="ts">
+import { reactive, computed, inject, defineComponent } from 'vue';
+import type { PropType } from 'vue';
 import {
   addYears,
   startOfMonth,
@@ -36,27 +38,30 @@ import {
   isSameYear,
   startOfDecade
 } from 'date-fns';
-import { reactive, computed, PropType, inject, defineComponent } from 'vue';
 import { debounce } from 'lodash-es';
+
 import { getConfig } from '@/qComponents/config';
 import { notNull } from '@/qComponents/helpers';
+
 import {
   formatToLocalReadableString,
   isDateInRangeInterval,
   checkDisabled
 } from '../../helpers';
-import type { RangeState } from '../../Common';
+import type { RangeState } from '../../commonTypes';
+import type { QDatePickerProvider } from '../../types';
+import { PERIOD_CELLS_IN_ROW_COUNT } from '../../constants';
+
 import type {
   PeriodCellModel,
   PeriodTableInstance,
   PeriodTableProps,
   PeriodTableState
-} from './PeriodTable';
-import type { QDatePickerProvider } from '../../QDatePicker';
-import { PERIOD_CELLS_IN_ROW_COUNT } from '../../constants';
+} from './types';
 
 export default defineComponent({
   name: 'QDatePickerPeriodTable',
+
   props: {
     value: { type: Date, default: null },
     minDate: { type: Date, default: null },
@@ -78,13 +83,11 @@ export default defineComponent({
     },
     rangeState: {
       type: Object as PropType<RangeState>,
-      default: (): RangeState => {
-        return {
-          hoveredDate: null,
-          pickedDate: null,
-          selecting: false
-        };
-      },
+      default: (): RangeState => ({
+        hoveredDate: null,
+        pickedDate: null,
+        selecting: false
+      }),
       validator: notNull
     }
   },

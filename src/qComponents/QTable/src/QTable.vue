@@ -16,12 +16,13 @@
 
 <script lang="ts">
 import { defineComponent, PropType, computed, provide, toRef } from 'vue';
-import { isEmpty } from 'lodash-es';
+import { isEmpty, isFunction } from 'lodash-es';
 
 import QTableContainer from './QTableContainer/QTableContainer.vue';
 import QTableEmpty from './QTableEmpty/QTableEmpty.vue';
 
 import type {
+  Row,
   QTableProps,
   QTablePropSelectionColumn,
   QTablePropGroupsOfColumns,
@@ -33,12 +34,11 @@ import type {
   QTablePropCustomRowStyle,
   QTableProvider,
   QTableInstance
-} from './QTable';
+} from './types';
 
 const UPDATE_CHECKED_ROWS_EVENT = 'update:checkedRows';
 const UPDATE_SORT_BY_EVENT = 'update:sortBy';
 const UPDATE_GROUPS_OF_COLUMNS = 'update:groupsOfColumns';
-const ROW_CLICK_EVENT = 'row-click';
 
 export default defineComponent({
   name: 'QTable',
@@ -168,7 +168,6 @@ export default defineComponent({
   emits: [
     UPDATE_CHECKED_ROWS_EVENT,
     UPDATE_SORT_BY_EVENT,
-    ROW_CLICK_EVENT,
     UPDATE_GROUPS_OF_COLUMNS
   ],
 
@@ -178,7 +177,7 @@ export default defineComponent({
         ({ columns }) => columns.length
       );
 
-      return !props.rows.length || !doesColumnsExist;
+      return !props.isLoading && (!props.rows.length || !doesColumnsExist);
     });
 
     const isRowClickable = computed<boolean>(() =>
@@ -209,11 +208,9 @@ export default defineComponent({
       ctx.emit(UPDATE_GROUPS_OF_COLUMNS, value);
     };
 
-    const emitRowClick = (
-      row: Record<string, unknown>,
-      rowIndex: number
-    ): void => {
-      ctx.emit(ROW_CLICK_EVENT, row, rowIndex);
+    const emitRowClick = (row: Row, rowIndex: number): void => {
+      const { onRowClick } = ctx.attrs;
+      if (isFunction(onRowClick)) onRowClick(row, rowIndex);
     };
 
     provide<QTableProvider>('qTable', {

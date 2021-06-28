@@ -1,5 +1,7 @@
 import type { Ref } from 'vue';
 
+import type { Nullable } from '#/helpers';
+
 export type QCollapsePropModelValue = Nullable<
   string | number | (string | number)[]
 >;
@@ -10,7 +12,7 @@ export interface QCollapseProps {
 }
 
 export interface QCollapseProvider {
-  uniqueId: (prefix?: string | undefined) => string;
+  uniqueId: (prefix?: string) => string;
   activeNames: Ref<(string | number)[]>;
   updateValue: (name: string | number) => void;
 }

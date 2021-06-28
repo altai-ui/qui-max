@@ -47,7 +47,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, ref, computed, watch } from 'vue';
+import { defineComponent, inject, ref, computed } from 'vue';
 import type { PropType } from 'vue';
 import { isNil } from 'lodash-es';
 
@@ -61,7 +61,7 @@ import {
 } from '@/qComponents/constants/events';
 import { validateArray, randId } from '@/qComponents/helpers';
 import type { QFormProvider } from '@/qComponents/QForm';
-import type { QFormItemProvider } from '@/qComponents/QFormItem';
+
 import type { Nullable } from '#/helpers';
 
 import QUploadDropZone from './QUploadDropZone';
@@ -183,7 +183,6 @@ export default defineComponent({
 
   setup(props: QUploadProps, ctx): QUploadInstance {
     const qForm = inject<Nullable<QFormProvider>>('qForm', null);
-    const qFormItem = inject<Nullable<QFormItemProvider>>('qFormItem', null);
 
     const hasValue = computed<boolean>(() =>
       props.multiple
@@ -295,13 +294,6 @@ export default defineComponent({
        */
       ctx.emit(SELECT_ALL_EVENT, preparedFileList);
     };
-
-    watch(
-      () => props.value,
-      () => {
-        if (props.validateEvent) qFormItem?.validateField('change');
-      }
-    );
 
     return {
       isDisabled,

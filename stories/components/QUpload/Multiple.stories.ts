@@ -13,7 +13,7 @@ interface FormModel {
 }
 
 const storyMetadata: Meta = {
-  title: 'Components/QUpload',
+  title: 'Components/QUpload/Multiple',
   component: QUpload,
   argTypes: {
     multiple: { control: { type: 'none' } },

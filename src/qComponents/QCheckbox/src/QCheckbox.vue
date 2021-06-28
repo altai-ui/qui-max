@@ -156,14 +156,14 @@ export default defineComponent({
 
         qCheckboxGroup.update(Array.from(set));
       }
-
-      watch(
-        () => props.modelValue,
-        () => {
-          if (props.validateEvent) qFormItem?.validateField('change');
-        }
-      );
     };
+
+    watch(
+      () => props.modelValue,
+      () => {
+        if (props.validateEvent) qFormItem?.validateField('change');
+      }
+    );
 
     /**
      * @public

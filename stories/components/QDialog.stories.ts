@@ -16,15 +16,15 @@ const storyMetadata: Meta = {
 const QDialogStory: Story<QDialogProps> = args =>
   defineComponent({
     setup() {
-      const dialog = ref<boolean>(false);
+      const isVisible = ref<boolean>(false);
 
-      return { args, dialog };
+      return { args, isVisible };
     },
     template: `
-      <q-button @click="dialog = true">open</q-button>
+      <q-button @click="isVisible = true">open</q-button>
 
       <q-dialog
-        v-model:visible="dialog"
+        v-model:visible="isVisible"
         :offset-top="args.offsetTop"
         :title="args.title"
         :visible="args.visible"
@@ -40,7 +40,6 @@ const QDialogStory: Story<QDialogProps> = args =>
 
 export const Default = QDialogStory.bind({});
 Default.args = {
-  visible: false,
   title: 'Morbi massa libero, vehicula nec consequat sed, porta a sem.'
 };
 

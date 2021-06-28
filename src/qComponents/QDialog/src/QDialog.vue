@@ -86,7 +86,9 @@ const DEFAULT_Z_INDEX = 2000;
 export default defineComponent({
   name: 'QDialog',
   componentName: 'QDialog',
+
   components: { QButton, QScrollbar },
+
   props: {
     /**
      * width of QDialog

@@ -12,7 +12,7 @@
       type="button"
       :disabled="isDisabled || isDecreaseDisabled"
       :class="isDecreaseDisabled && 'q-input-number__button_is-disabled'"
-      @click.prevent="handleChangeNumberButtonClick(false)"
+      @click="handleChangeNumberButtonClick(false)"
     />
 
     <q-input
@@ -36,7 +36,7 @@
       type="button"
       :disabled="isDisabled || isIncreaseDisabled"
       :class="isIncreaseDisabled && 'q-input-number__button_is-disabled'"
-      @click.prevent="handleChangeNumberButtonClick(true)"
+      @click="handleChangeNumberButtonClick(true)"
     />
   </div>
 </template>
@@ -56,8 +56,8 @@ import {
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
 
-import type { QInputInstance } from '@/qComponents/QInput/src/types';
-import type { Nullable } from '#/helpers';
+import type { QInputInstance } from '@/qComponents/QInput';
+import type { Nullable, UnwrappedInstance } from '#/helpers';
 
 import type {
   QInputNumberProps,
@@ -161,7 +161,7 @@ export default defineComponent({
     const qFormItem = inject<Nullable<QFormItemProvider>>('qFormItem', null);
     const qForm = inject<Nullable<QFormProvider>>('qForm', null);
 
-    const inputRef = ref<QInputInstance | null>(null);
+    const inputRef = ref<UnwrappedInstance<QInputInstance>>(null);
 
     const state = reactive<QInputNumberState>({
       minValue: ctx.attrs.min ? Number(ctx.attrs.min) : Number.MIN_SAFE_INTEGER,
@@ -191,14 +191,17 @@ export default defineComponent({
       return props.modelValue !== null ? `${prefix}${value}${suffix}` : '';
     });
 
-    const parsedValue = computed<string>(() => {
-      return getValueWithoutAdditions(formattedValue.value, additions.value);
-    });
+    const parsedValue = computed<string>(() =>
+      getValueWithoutAdditions(formattedValue.value, additions.value)
+    );
 
     const parsedNumber = computed<number>(() => {
-      return formattedValue.value
-        ? parseLocaleNumber(parsedValue.value, localizationTag.value)
-        : 0;
+      const numberWithoutSeparators = parseLocaleNumber(
+        parsedValue.value,
+        localizationTag.value
+      );
+
+      return formattedValue.value ? numberWithoutSeparators : 0;
     });
 
     const isDisabled = computed<boolean>(
@@ -408,15 +411,12 @@ export default defineComponent({
           updateInput(insertTextFn(target, event.key));
           break;
         case 'ArrowLeft':
-        case 'ArrowRight':
-          if (
-            (event.key === 'ArrowLeft' &&
-              (selectionStart ?? 0) < prefixLength.value + 1) ||
-            (event.key === 'ArrowRight' &&
-              (selectionEnd ?? 0) > value.length - suffixLength.value - 1)
-          ) {
+          if ((selectionStart ?? 0) < prefixLength.value + 1)
             event.preventDefault();
-          }
+          break;
+        case 'ArrowRight':
+          if ((selectionEnd ?? 0) > value.length - suffixLength.value - 1)
+            event.preventDefault();
           break;
         case 'ArrowUp':
           event.preventDefault();

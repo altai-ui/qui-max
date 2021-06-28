@@ -60,4 +60,8 @@ export interface QFormItemInstance {
   isHeaderShown: ComputedRef<boolean>;
   rootClasses: ComputedRef<Record<string, boolean>>;
   getFilteredRules: (trigger: Nullable<string>) => Nullable<FilteredRuleItem[]>;
+  validateField: (
+    trigger?: Nullable<string>
+  ) => Nullable<Promise<{ errors?: ErrorList; fields?: FieldErrorList }>>;
+  resetField: () => void;
 }

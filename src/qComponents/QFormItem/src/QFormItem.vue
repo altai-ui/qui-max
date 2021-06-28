@@ -271,7 +271,10 @@ export default defineComponent({
       isRequired,
       isHeaderShown,
       rootClasses,
-      getFilteredRules
+      getFilteredRules,
+      // for refs
+      validateField,
+      resetField
     };
   }
 });

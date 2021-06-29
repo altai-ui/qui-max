@@ -77,7 +77,6 @@
     "vite": "^2.3.8",
     "vite-plugin-dts": "^0.5.1",
     "vue": "^3.1.2",
-    "vue-i18n": "^8.24.5",
     "vue-loader": "^16.2.0"
   },
   "files": ["dist"],

@@ -1,16 +1,19 @@
 import { get, isString } from 'lodash-es';
-import type { IVueI18n } from 'vue-i18n';
 
 import { getConfig } from '@/qComponents/config';
-import { en as defaultLang } from '@/qComponents/constants/locales';
 import { Nullable } from '#/helpers';
 
-let currentLocale: IVueI18n['messages'] = defaultLang;
+export type Locale = {
+  [key: string]: string | string[] | Locale;
+};
 
-let i18nHandler: Nullable<IVueI18n['t']> = null;
+let currentLocale: Nullable<Locale> = null;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const t: IVueI18n['t'] = (key: string, ...args: any[]) => {
+let i18nHandler: Nullable<(key: string, ...args: any[]) => string> = null;
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const t = (key: string, ...args: any[]): string => {
   if (i18nHandler) return i18nHandler(key, ...args);
 
   const locale = getConfig('locale');
@@ -19,12 +22,12 @@ export const t: IVueI18n['t'] = (key: string, ...args: any[]) => {
   return isString(text) ? text : '';
 };
 
-export const i18n = (fn: (...args: unknown[]) => string): void => {
+export const useI18n = (fn: (...args: unknown[]) => string): void => {
   i18nHandler = fn;
 };
 
-export const use = (locale: IVueI18n['messages']): void => {
-  currentLocale = locale;
+export const setupLocale = (locale?: Locale): void => {
+  if (locale) currentLocale = locale;
 };
 
-export default { use, t, i18n };
+export default { setupLocale, t, useI18n };

@@ -7,7 +7,7 @@ export interface InstallOptions {
 
 let $Q: InstallOptions = {
   nextZIndex: 0,
-  locale: 'ru'
+  locale: 'en'
 };
 
 const setConfig = ({

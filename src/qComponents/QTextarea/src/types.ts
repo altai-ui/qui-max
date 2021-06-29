@@ -1,5 +1,4 @@
 import type { Ref, ComputedRef } from 'vue';
-import type { IVueI18n } from 'vue-i18n';
 
 import type { Nullable } from '#/helpers';
 
@@ -18,7 +17,7 @@ export interface QTextareaProps {
 }
 
 export interface QTextareaInstance {
-  t: IVueI18n['t'];
+  t: (key: string) => string;
   textareaCalcStyle: Ref<{
     minHeight?: string;
     height?: string;

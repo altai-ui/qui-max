@@ -1,5 +1,4 @@
 import type { ComputedRef, Ref } from 'vue';
-import type { TranslateResult, Path, Locale } from 'vue-i18n';
 
 import type { Nullable } from '#/helpers';
 
@@ -43,7 +42,7 @@ interface DatePanelInstance {
   handleShortcutClick: (shortcut: Date) => void;
   handlePeriodPick: (month: number, year: number, type: string) => void;
   handleDatePick: (value: DatePanelPropModelValue) => void;
-  t: (key: Path, locale?: Locale) => TranslateResult;
+  t: (key: string) => string;
 }
 
 export {

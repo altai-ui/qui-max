@@ -1,5 +1,4 @@
 import type { Ref, ComputedRef } from 'vue';
-import type { IVueI18n } from 'vue-i18n';
 
 import type { Nullable } from '#/helpers';
 
@@ -16,7 +15,7 @@ export interface QPickerDropdownProps {
 }
 
 export interface QPickerDropdownInstance {
-  t: IVueI18n['t'];
+  t: (key: string) => string;
   dropdown: Ref<Nullable<HTMLElement>>;
   saturation: Ref<number>;
   value: Ref<number>;

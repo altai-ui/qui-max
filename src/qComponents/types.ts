@@ -1,8 +1,8 @@
-import type { IVueI18n } from 'vue-i18n';
+import type { Locale } from '@/qComponents/locale';
 
 export interface Localization {
   locale?: string;
-  customI18nMessages?: IVueI18n['messages'];
+  customI18nMessages?: Locale;
 }
 
 export interface ConfigOptions {

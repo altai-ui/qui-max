@@ -3,7 +3,7 @@ import { merge } from 'lodash-es';
 
 import 'focus-visible';
 
-import { use as useLocale } from './locale';
+import { setupLocale } from './locale';
 import { setConfig } from './config';
 import { en } from './constants/locales';
 import QBreadcrumbs from './QBreadcrumbs';
@@ -77,30 +77,41 @@ import './QTag/src/q-tag.scss';
 import './QTextarea/src/q-textarea.scss';
 import './QUpload/src/q-upload.scss';
 
-const setupQui = (
-  app: App,
-  {
-    localization: { locale, customI18nMessages = {} } = {},
-    zIndexCounter
-  }: ConfigOptions = {}
-): void => {
+const setupQui = ({
+  localization: { locale, customI18nMessages } = {},
+  zIndexCounter
+}: ConfigOptions = {}): void => {
   setConfig({
     locale,
     zIndex: zIndexCounter
   });
-
-  useLocale(merge({ en }, customI18nMessages));
+  setupLocale(customI18nMessages);
 };
 
 const createQui = (config?: ConfigOptions): Plugin => ({
-  install: (app: App): void => {
-    setupQui(app, config);
+  install: (): void => {
+    setupQui({
+      ...config,
+      localization: {
+        ...config?.localization
+      }
+    });
   }
 });
 
 // install
 const install = (app: App, config?: ConfigOptions): void => {
-  setupQui(app, config);
+  const customI18nMessages = merge(
+    { en },
+    config?.localization?.customI18nMessages
+  );
+  setupQui({
+    ...(config ?? {}),
+    localization: {
+      ...(config?.localization ?? {}),
+      customI18nMessages
+    }
+  });
 
   app.use(QBreadcrumbs);
   app.use(QButton);
@@ -173,6 +184,7 @@ export {
   QUpload
 };
 
+export { useI18n } from './locale';
 export * from './QBreadcrumbs';
 export * from './QButton';
 export * from './QCascader';

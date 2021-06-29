@@ -4,7 +4,7 @@ import { defineComponent, defineAsyncComponent } from 'vue';
 import { QMessageBoxContent, useMessageBox } from '@/qComponents/QMessageBox';
 
 const storyMetadata: Meta = {
-  title: 'Components/QMessageBox',
+  title: 'Components/QMessageBox/Component',
   component: QMessageBoxContent
 };
 

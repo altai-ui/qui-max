@@ -6,7 +6,7 @@ import QRadio from '@/qComponents/QRadio';
 import type { QRadioGroupProps } from '@/qComponents/QRadioGroup';
 
 const storyMetadata: Meta = {
-  title: 'Components/QRadio/QRadioGroup',
+  title: 'Components/QRadioGroup',
   component: QRadioGroup,
   subcomponents: { QRadio },
   argTypes: {

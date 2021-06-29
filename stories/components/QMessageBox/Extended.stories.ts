@@ -4,11 +4,11 @@ import { defineComponent, defineAsyncComponent } from 'vue';
 import { QMessageBoxContent, useMessageBox } from '@/qComponents/QMessageBox';
 
 const storyMetadata: Meta = {
-  title: 'Components/QMessageBox',
+  title: 'Components/QMessageBox/Extended',
   component: QMessageBoxContent
 };
 
-const QMessageBoxComponentExtendedStory: Story<never> = () =>
+const QMessageBoxExtendedStory: Story<never> = () =>
   defineComponent({
     setup() {
       const handleClick = async (): Promise<void> => {
@@ -44,6 +44,6 @@ const QMessageBoxComponentExtendedStory: Story<never> = () =>
     template: '<q-button @click="handleClick">Click to open</q-button>'
   });
 
-export const ExtendedComponent = QMessageBoxComponentExtendedStory.bind({});
+export const Extended = QMessageBoxExtendedStory.bind({});
 
 export default storyMetadata;

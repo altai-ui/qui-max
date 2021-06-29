@@ -74,7 +74,8 @@ import {
   getDecreasedValue,
   getCleanSelections,
   insertText,
-  insertPasteText
+  insertPasteText,
+  setCursorPosition
 } from './helpers';
 
 export default defineComponent({
@@ -284,17 +285,11 @@ export default defineComponent({
       changesEmmiter(updatedNumber, CHANGE_EVENT);
     };
 
-    const setCursorPosition = (
-      target: HTMLInputElement,
-      position: number
-    ): void => {
-      target.setSelectionRange(position, position);
-    };
-
     const updateInput = ({
       target,
       newValue,
       selectionEnd,
+      key,
       hasMinusChar
     }: InsertedTextParts): void => {
       if (!target) return;
@@ -317,9 +312,11 @@ export default defineComponent({
       const newFormattedValue = `${prefix}${value}${suffix}`;
 
       const newLength = newFormattedValue.length;
+      const defaultMove = key === 'Backspace' ? -1 : 1;
+
       const newCaretPosition =
         target.value.length > 1
-          ? selectionEnd + (newLength - target.value.length || 1)
+          ? selectionEnd + (newLength - target.value.length || defaultMove)
           : target.value.length + prefixLength.value + 1;
 
       if (inputRef?.value?.input)

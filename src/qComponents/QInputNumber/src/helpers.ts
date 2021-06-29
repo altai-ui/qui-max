@@ -1,6 +1,13 @@
 import type { QInputInstance } from '@/qComponents/QInput/src/types';
 import type { Selections, AddittionsMatch, InsertedTextParts } from './types';
 
+const setCursorPosition = (
+  target: HTMLInputElement,
+  position: number
+): void => {
+  target.setSelectionRange(position, position);
+};
+
 const checkStringAdditions = (
   value: string,
   additions: AddittionsMatch,
@@ -44,8 +51,8 @@ const getCleanSelections = (
 ): Selections => {
   const { value, selectionStart, selectionEnd } = target;
 
-  const prefixLength = additions.prefix.length;
-  const suffixLength = additions.suffix.length;
+  const prefixLength = additions.prefix?.length ?? 0;
+  const suffixLength = additions.suffix?.length ?? 0;
 
   const selectionNewStart =
     selectionStart <= prefixLength ? prefixLength : selectionStart;
@@ -102,13 +109,17 @@ const updateValue = (
   insertedValue: string,
   key: string,
   additions: AddittionsMatch,
-  minMax: { min: number; max: number }
+  minMax: { min: number; max: number },
+  localizationTag: string
 ): InsertedTextParts => {
   const { value } = target;
 
   const valueSeparatedParts = {
-    prev: value.substring(additions.prefix.length, selectionStart),
-    next: value.substring(selectionEnd, value.length - additions.suffix.length)
+    prev: value.substring(additions.prefix?.length ?? 0, selectionStart),
+    next: value.substring(
+      selectionEnd,
+      value.length - (additions.suffix?.length ?? 0)
+    )
   };
 
   if (
@@ -124,7 +135,8 @@ const updateValue = (
   }
 
   const newValue = parseLocaleNumber(
-    `${valueSeparatedParts.prev}${insertedValue}${valueSeparatedParts.next}`
+    `${valueSeparatedParts.prev}${insertedValue}${valueSeparatedParts.next}`,
+    localizationTag
   );
 
   if (newValue > minMax.max || newValue < minMax.min) return {};
@@ -133,6 +145,7 @@ const updateValue = (
     target,
     newValue,
     selectionEnd,
+    key,
     hasMinusChar: newValue < 0 || key === '-'
   };
 };
@@ -176,6 +189,7 @@ const insertText = (
         target,
         newValue: null,
         selectionEnd: movedSelectionEnd,
+        key,
         hasMinusChar: false
       };
     }
@@ -188,7 +202,8 @@ const insertText = (
         insertedValue,
         key,
         additions,
-        minMax
+        minMax,
+        localizationTag
       );
     }
 
@@ -212,7 +227,10 @@ const insertText = (
   const prevChar = previousPart.substring(previousPart.length - 1);
   const nextChar = lastPart.substring(1, -1);
 
-  if (key === getLocaleSeparator('decimal', localizationTag)) {
+  if (
+    key === getLocaleSeparator('decimal', localizationTag) ||
+    key === getLocaleSeparator('', localizationTag)
+  ) {
     if (nextChar === getLocaleSeparator('decimal', localizationTag))
       setCursorPosition(target, (selectionStart ?? 0) + 1);
 
@@ -248,6 +266,7 @@ const insertText = (
       target,
       newValue: Number(key) * -1,
       selectionEnd: movedSelectionEnd,
+      key,
       hasMinusChar: false
     };
   }
@@ -268,7 +287,8 @@ const insertText = (
     insertedValue,
     key,
     additions,
-    minMax
+    minMax,
+    localizationTag
   );
 };
 
@@ -311,5 +331,6 @@ export {
   getDecreasedValue,
   getCleanSelections,
   insertText,
-  insertPasteText
+  insertPasteText,
+  setCursorPosition
 };

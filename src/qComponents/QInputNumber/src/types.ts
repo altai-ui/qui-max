@@ -35,6 +35,7 @@ export interface InsertedTextParts {
   target: HTMLInputElement;
   newValue: Nullable<number>;
   selectionEnd: number;
+  key: string;
   hasMinusChar: boolean;
 }
 

@@ -2,7 +2,7 @@
 import { app } from '@storybook/vue3';
 import type { Meta, Story } from '@storybook/vue3';
 import { defineComponent, computed } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { t } from '@/qComponents/locale';
 
 import QBreadcrumbs from '@/qComponents/QBreadcrumbs';
 import type {
@@ -27,8 +27,6 @@ const Template: Story<QBreadcrumbsProps> = args =>
   // eslint-disable-next-line vue/one-component-per-file
   defineComponent({
     setup() {
-      const { t } = useI18n();
-
       const route = computed<QBreadcrumbsPropRoute>(() => {
         if (args.route) return args.route;
 
@@ -37,28 +35,28 @@ const Template: Story<QBreadcrumbsProps> = args =>
             path: 'path-a',
             name: 'ROUTE_A',
             meta: {
-              breadcrumb: t('qBreadcrumbsStories.routeA')
+              breadcrumb: t('qBreadcrumbsStories.routeA') as string
             }
           },
           {
             path: 'path-b',
             name: 'ROUTE_b',
             meta: {
-              breadcrumb: t('qBreadcrumbsStories.routeB')
+              breadcrumb: t('qBreadcrumbsStories.routeB') as string
             }
           },
           {
             path: 'path-c',
             name: 'ROUTE_c',
             meta: {
-              breadcrumb: t('qBreadcrumbsStories.routeC')
+              breadcrumb: t('qBreadcrumbsStories.routeC') as string
             }
           },
           {
             path: 'path-d',
             name: 'ROUTE_d',
             meta: {
-              breadcrumb: t('qBreadcrumbsStories.routeD')
+              breadcrumb: t('qBreadcrumbsStories.routeD') as string
             }
           }
         ];

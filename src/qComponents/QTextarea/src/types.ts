@@ -1,5 +1,5 @@
 import type { Ref, ComputedRef } from 'vue';
-import type { Composer } from 'vue-i18n';
+import type { IVueI18n } from 'vue-i18n';
 
 import type { Nullable } from '#/helpers';
 
@@ -18,7 +18,7 @@ export interface QTextareaProps {
 }
 
 export interface QTextareaInstance {
-  t: Composer['t'];
+  t: IVueI18n['t'];
   textareaCalcStyle: Ref<{
     minHeight?: string;
     height?: string;

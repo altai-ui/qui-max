@@ -1,9 +1,11 @@
 import type { App, Plugin } from 'vue';
+import { merge } from 'lodash-es';
 
 import 'focus-visible';
 
+import { use as useLocale } from './locale';
 import { setConfig } from './config';
-import { installI18n } from './constants/locales';
+import { en } from './constants/locales';
 import QBreadcrumbs from './QBreadcrumbs';
 import QButton from './QButton';
 import QCascader from './QCascader';
@@ -84,11 +86,10 @@ const setupQui = (
 ): void => {
   setConfig({
     locale,
-    customI18nMessages,
     zIndex: zIndexCounter
   });
 
-  installI18n(app);
+  useLocale(merge({ en }, customI18nMessages));
 };
 
 const createQui = (config?: ConfigOptions): Plugin => ({

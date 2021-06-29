@@ -31,8 +31,8 @@ import {
   watch,
   PropType
 } from 'vue';
-import { useI18n } from 'vue-i18n';
 
+import { t } from '@/qComponents/locale';
 import { validateArray } from '@/qComponents/helpers';
 import {
   UPDATE_MODEL_VALUE_EVENT,
@@ -210,8 +210,6 @@ export default defineComponent({
     onMounted(() => {
       resizeTextarea();
     });
-
-    const { t } = useI18n();
 
     return {
       t,

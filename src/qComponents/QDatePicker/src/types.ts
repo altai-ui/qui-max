@@ -1,6 +1,6 @@
 import type { Instance } from '@popperjs/core';
 import type { ComputedRef, Ref } from 'vue';
-import type { Composer } from 'vue-i18n';
+import type { IVueI18n } from 'vue-i18n';
 
 import type { QInputInstance } from '@/qComponents/QInput';
 import type { Nullable, UnwrappedInstance } from '#/helpers';
@@ -121,7 +121,7 @@ interface QDatePickerInstance {
   handleRangeClick: () => void;
   handleClose: () => void;
   handleIconClick: (event: MouseEvent) => void;
-  t: Composer['t'];
+  t: IVueI18n['t'];
 }
 
 export {

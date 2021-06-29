@@ -1,5 +1,5 @@
 import type { Ref, ComputedRef } from 'vue';
-import type { Composer } from 'vue-i18n';
+import type { IVueI18n } from 'vue-i18n';
 
 import type { Nullable } from '#/helpers';
 
@@ -44,5 +44,5 @@ export interface QInputInstance {
   handleInput: (event: Event) => void;
   handleChange: (event: Event) => void;
   updateModel: (event: Event) => void;
-  t: Composer['t'];
+  t: IVueI18n['t'];
 }

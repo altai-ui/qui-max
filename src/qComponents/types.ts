@@ -1,8 +1,8 @@
-import type { LocaleMessageDictionary, VueMessageType } from 'vue-i18n';
+import type { IVueI18n } from 'vue-i18n';
 
 export interface Localization {
   locale?: string;
-  customI18nMessages?: Record<string, LocaleMessageDictionary<VueMessageType>>;
+  customI18nMessages?: IVueI18n['messages'];
 }
 
 export interface ConfigOptions {

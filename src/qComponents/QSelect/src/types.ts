@@ -1,6 +1,6 @@
 import type { Ref, ComputedRef } from 'vue';
 import type { Instance as PopperInstance } from '@popperjs/core';
-import type { Composer } from 'vue-i18n';
+import type { IVueI18n } from 'vue-i18n';
 
 import type { QOptionModel, QOptionPropValue } from '@/qComponents/QOption';
 import type { QScrollbarInstance } from '@/qComponents/QScrollbar';
@@ -50,7 +50,7 @@ interface QSelectInstance {
   onInputChange: () => void;
   deleteTag: (tag: QOptionModel) => void;
   afterLeave: () => void;
-  t: Composer['t'];
+  t: IVueI18n['t'];
 }
 
 interface QSelectProvider {

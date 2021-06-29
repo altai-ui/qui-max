@@ -61,10 +61,10 @@ import {
   nextTick,
   inject
 } from 'vue';
-import { useI18n } from 'vue-i18n';
 import { colord } from 'colord';
 import type { Colord } from 'colord';
 
+import { t } from '@/qComponents/locale';
 import { validateArray } from '@/qComponents/helpers';
 import { CLEAR_EVENT, CLOSE_EVENT } from '@/qComponents/constants/events';
 import QButton from '@/qComponents/QButton';
@@ -244,8 +244,6 @@ export default defineComponent({
       },
       { immediate: true }
     );
-
-    const { t } = useI18n();
 
     return {
       t,

@@ -5,7 +5,7 @@ import 'focus-visible';
 
 import { setupLocale } from './locale';
 import { setConfig } from './config';
-import { en } from './constants/locales';
+import { en as localeEn, ru as localeRu } from './constants/locales';
 import QBreadcrumbs from './QBreadcrumbs';
 import QButton from './QButton';
 import QCascader from './QCascader';
@@ -102,7 +102,7 @@ const createQui = (config?: ConfigOptions): Plugin => ({
 // install
 const install = (app: App, config?: ConfigOptions): void => {
   const customI18nMessages = merge(
-    { en },
+    { en: localeEn },
     config?.localization?.customI18nMessages
   );
   setupQui({
@@ -181,7 +181,9 @@ export {
   QTabs,
   QTag,
   QTextarea,
-  QUpload
+  QUpload,
+  localeEn,
+  localeRu
 };
 
 export { useI18n } from './locale';

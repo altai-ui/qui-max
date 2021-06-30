@@ -1,8 +1,9 @@
-import type { Locale } from '@/qComponents/locale';
+import type { Messages } from '@/qComponents/locale';
 
 export interface Localization {
   locale?: string;
-  customI18nMessages?: Locale;
+  messages?: Messages;
+  i18n?: (...args: unknown[]) => string;
 }
 
 export interface ConfigOptions {

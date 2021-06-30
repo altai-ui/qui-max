@@ -3,7 +3,7 @@ import { merge } from 'lodash-es';
 
 import 'focus-visible';
 
-import { setupLocale } from './locale';
+import { setMessages, setI18n } from './locale';
 import { setConfig } from './config';
 import { en as localeEn, ru as localeRu } from './constants/locales';
 import QBreadcrumbs from './QBreadcrumbs';
@@ -78,14 +78,16 @@ import './QTextarea/src/q-textarea.scss';
 import './QUpload/src/q-upload.scss';
 
 const setupQui = ({
-  localization: { locale, customI18nMessages } = {},
+  localization: { locale, messages, i18n } = {},
   zIndexCounter
 }: ConfigOptions = {}): void => {
   setConfig({
     locale,
     zIndex: zIndexCounter
   });
-  setupLocale(customI18nMessages);
+
+  if (messages) setMessages(messages);
+  if (i18n) setI18n(i18n);
 };
 
 const createQui = (config?: ConfigOptions): Plugin => ({
@@ -101,15 +103,12 @@ const createQui = (config?: ConfigOptions): Plugin => ({
 
 // install
 const install = (app: App, config?: ConfigOptions): void => {
-  const customI18nMessages = merge(
-    { en: localeEn },
-    config?.localization?.customI18nMessages
-  );
+  const messages = merge({ en: localeEn }, config?.localization?.messages);
   setupQui({
     ...(config ?? {}),
     localization: {
       ...(config?.localization ?? {}),
-      customI18nMessages
+      messages
     }
   });
 
@@ -150,6 +149,8 @@ const install = (app: App, config?: ConfigOptions): void => {
 export default { install };
 export {
   createQui,
+  setMessages,
+  setI18n,
   QBreadcrumbs,
   QButton,
   QCascader,
@@ -186,7 +187,6 @@ export {
   localeRu
 };
 
-export { useI18n } from './locale';
 export * from './QBreadcrumbs';
 export * from './QButton';
 export * from './QCascader';

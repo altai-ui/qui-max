@@ -5,4 +5,9 @@
       left: 32px;
     }
   }
+
+  &__wrapper {
+    box-sizing: content-box;
+    padding: 8px 32px 16px;
+  }
 }

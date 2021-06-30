@@ -9,11 +9,9 @@ export type Messages = {
 
 let currentMessages: Nullable<Messages> = null;
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-let i18nHandler: Nullable<(key: string, ...args: any[]) => string> = null;
+let i18nHandler: Nullable<(key: string, ...args: unknown[]) => string> = null;
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const t = (key: string, ...args: any[]): string => {
+export const t = (key: string, ...args: unknown[]): string => {
   if (i18nHandler) return i18nHandler(key, ...args);
 
   const locale = getConfig('locale');

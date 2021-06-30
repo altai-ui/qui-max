@@ -3,7 +3,7 @@
   overflow: hidden;
   box-shadow: var(--table-box-shadow-base);
 
-  &::after {
+  .q-table-t-body-cell:first-child::after {
     position: absolute;
     top: 0;
     bottom: 0;
@@ -15,15 +15,11 @@
     background-color: var(--row-custom-border-color, transparent);
   }
 
-  &:not(:first-child)::after {
-    top: 1px;
-  }
-
   &:last-child {
     border-bottom-right-radius: var(--border-radius-base);
 
     &,
-    &::after {
+    .q-table-t-body-cell:first-child::after {
       border-bottom-left-radius: var(--border-radius-base);
     }
   }
@@ -32,7 +28,7 @@
     border-top-right-radius: var(--border-radius-base);
 
     &,
-    &::after {
+    .q-table-t-body-cell:first-child::after {
       border-top-left-radius: var(--border-radius-base);
     }
   }

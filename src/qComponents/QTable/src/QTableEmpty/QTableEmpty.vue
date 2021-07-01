@@ -18,8 +18,8 @@
 
 <script lang="ts">
 import { defineComponent, computed } from 'vue';
-import { useI18n } from 'vue-i18n';
 
+import { t } from '@/qComponents/locale';
 import image from '@/assets/empty-table-v2.svg';
 import type { QTableEmptyProps, QTableEmptyInstance } from './types';
 
@@ -35,8 +35,6 @@ export default defineComponent({
   },
 
   setup(props: QTableEmptyProps): QTableEmptyInstance {
-    const { t } = useI18n();
-
     const noDataText = computed<string>(
       () => props.emptyText || t('QTable.noDataText')
     );

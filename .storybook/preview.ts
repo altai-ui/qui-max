@@ -6,7 +6,7 @@ import messages from './locales';
 app.use(Qui, {
   localization: {
     locale: 'en',
-    customI18nMessages: messages
+    messages
   }
 });
 

@@ -85,7 +85,7 @@ export default {
 Configure setup:
 
 - import styles separately to avoid unused css
-- set customI18nMessages to support any language for components
+- set `localization.messages` to support any language for components
 - change zIndex of appeared components (e.g Dialogs, Notifications, Dropdowns etc.)
 - control setup of components
 
@@ -107,7 +107,7 @@ const Qui = createQui({
   localization: {
     // Russian language by default, you can set `en` for English
     locale: 'en',
-    customI18nMessages: {
+    messages: {
       // rewrite default texts, see the source: src/qComponents/constants/locales
       en: {
         QDatepicker: {
@@ -132,7 +132,7 @@ Please refer to each component's [Stories](https://qvant-lab.github.io/qui-max/)
 
 - Russian ✅
 - English ✅
-- Also you can use any language by setting texts for components via 'customI18nMessages' property in the Qui instance. See the example above.
+- Also you can use any language by setting texts for components via `localization.messages` property in the Qui instance. See the example above.
 
 ## Browser Support
 

@@ -94,7 +94,7 @@ const Template: Story<QSelectProps> = args =>
     },
 
     template: `
-      <div style="width: 304px;">
+      <div style="width: 304px; height:240px">
         <q-select
           v-model="state.value"
           :disabled="args.disabled"

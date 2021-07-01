@@ -22,7 +22,6 @@ import {
 
 import { validateArray } from '@/qComponents/helpers';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
-import { UPDATE_MODEL_VALUE_EVENT } from '@/qComponents/constants/events';
 import type { Nullable } from '#/helpers';
 
 import type {
@@ -70,7 +69,12 @@ export default defineComponent({
     }
   },
 
-  emits: [UPDATE_MODEL_VALUE_EVENT],
+  emits: [
+    /**
+     * triggers when model updates
+     */
+    'update:modelValue'
+  ],
 
   setup(props: QCheckboxGroupProps, ctx): QCheckboxGroupInstance {
     const qFormItem = inject<Nullable<QFormItemProvider>>('qFormItem', null);
@@ -85,7 +89,7 @@ export default defineComponent({
     });
 
     const update = (value: string[]): void => {
-      ctx.emit(UPDATE_MODEL_VALUE_EVENT, value);
+      ctx.emit('update:modelValue', value);
     };
 
     watch(

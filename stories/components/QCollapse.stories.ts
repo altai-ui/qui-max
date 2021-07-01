@@ -31,7 +31,7 @@ const QCollapseStory: Story<QCollapseProps> = args =>
         v-model="activeNames"
         :accordion="args.accordion"
         style="max-width:732px"
-        @change="handleChange"
+        @update:modelValue="handleChange"
       >
         <q-collapse-item
           title="Consistency"

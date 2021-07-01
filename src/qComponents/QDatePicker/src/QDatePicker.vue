@@ -281,10 +281,21 @@ export default defineComponent({
   },
 
   emits: [
+    /**
+     * triggers when input gets focus
+     */
     'focus',
-    'change',
+    /**
+     * triggers when native input event fires
+     */
     'input',
+    /**
+     * triggers when model updates
+     */
     'update:modelValue',
+    /**
+     * triggers when first date in range picks
+     */
     'intermediateChange'
   ],
 
@@ -429,7 +440,6 @@ export default defineComponent({
 
       if (val !== props.modelValue) {
         ctx.emit('update:modelValue', result);
-        ctx.emit('change', result);
         if (props.validateEvent) {
           qFormItem?.validateField('change');
         }

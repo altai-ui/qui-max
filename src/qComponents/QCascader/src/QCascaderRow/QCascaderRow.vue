@@ -43,9 +43,6 @@ import type {
   QCascaderRowInstance
 } from './types';
 
-const EXPAND_EVENT = 'expand';
-const CHECK_EVENT = 'check';
-
 export default defineComponent({
   name: 'QCascaderRow',
   components: { QCheckbox },
@@ -70,7 +67,7 @@ export default defineComponent({
     }
   },
 
-  emits: [EXPAND_EVENT, CHECK_EVENT],
+  emits: ['expand', 'check'],
 
   setup(props: QCascaderRowProps, ctx): QCascaderRowInstance {
     const qCascader = inject<QCascaderProvider>(
@@ -144,27 +141,27 @@ export default defineComponent({
       if (props.row.disabled) return;
 
       if (!isMultiple.value && !props.row.children) {
-        ctx.emit(CHECK_EVENT, props.row, isChecked.value);
+        ctx.emit('check', props.row, isChecked.value);
       }
 
-      ctx.emit(EXPAND_EVENT, props.rowIndex, hasChildren.value);
+      ctx.emit('expand', props.rowIndex, hasChildren.value);
     };
 
     const handleRightKeyUp = (): void => {
       if (props.row.disabled) return;
 
-      ctx.emit(EXPAND_EVENT, props.rowIndex, hasChildren.value);
+      ctx.emit('expand', props.rowIndex, hasChildren.value);
     };
 
     const handleEnterKeyUp = (): void => {
       if (props.row.disabled || (!isMultiple.value && hasChildren.value))
         return;
 
-      ctx.emit(CHECK_EVENT, props.row, isChecked.value);
+      ctx.emit('check', props.row, isChecked.value);
     };
 
     const handleCheckboxChange = (): void => {
-      ctx.emit(CHECK_EVENT, props.row, isChecked.value);
+      ctx.emit('check', props.row, isChecked.value);
     };
 
     return {

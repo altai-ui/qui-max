@@ -19,9 +19,6 @@ import type { Nullable } from '#/helpers';
 import draggable from '../utils/draggable';
 import type { QColorSvpanelProps, QColorSvpanelInstance } from './types';
 
-const UPDATE_SATURATION_EVENT = 'update:saturation';
-const UPDATE_VALUE_EVENT = 'update:value';
-
 export default defineComponent({
   name: 'QColorSvpanel',
   componentName: 'QColorSvpanel',
@@ -41,7 +38,7 @@ export default defineComponent({
     }
   },
 
-  emits: [UPDATE_SATURATION_EVENT, UPDATE_VALUE_EVENT],
+  emits: ['update:saturation', 'update:value'],
 
   setup(props: QColorSvpanelProps, ctx): QColorSvpanelInstance {
     const rootStyles = computed<Record<string, string>>(() => ({
@@ -79,8 +76,8 @@ export default defineComponent({
       cursorLeft.value = left;
       cursorTop.value = top;
 
-      ctx.emit(UPDATE_SATURATION_EVENT, (left / rect.width) * 100);
-      ctx.emit(UPDATE_VALUE_EVENT, 100 - (top / rect.height) * 100);
+      ctx.emit('update:saturation', (left / rect.width) * 100);
+      ctx.emit('update:value', 100 - (top / rect.height) * 100);
     };
 
     watch(

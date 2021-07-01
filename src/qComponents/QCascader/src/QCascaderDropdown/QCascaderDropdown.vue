@@ -37,7 +37,6 @@ import {
 import { createPopper } from '@popperjs/core';
 
 import { getConfig } from '@/qComponents/config';
-import { CLOSE_EVENT } from '@/qComponents/constants/events';
 import type { Nullable } from '#/helpers';
 
 import QCascaderColumn from '../QCascaderColumn/QCascaderColumn.vue';
@@ -59,7 +58,7 @@ export default defineComponent({
     QCascaderColumn
   },
 
-  emits: [CLOSE_EVENT],
+  emits: ['close'],
 
   setup(_, ctx): QCascaderDropdownInstance {
     const qCascader = inject<QCascaderProvider>(
@@ -105,7 +104,7 @@ export default defineComponent({
           !qCascader.popoverReference.value?.$el?.contains(target) &&
           (!dropdown.value?.contains(target) || target === dropdown.value))
       ) {
-        ctx.emit(CLOSE_EVENT);
+        ctx.emit('close');
       }
     };
 

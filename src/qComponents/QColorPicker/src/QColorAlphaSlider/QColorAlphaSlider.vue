@@ -28,8 +28,6 @@ import type {
   QColorAlphaSliderInstance
 } from './types';
 
-const UPDATE_ALPHA_EVENT = 'update:alpha';
-
 export default defineComponent({
   name: 'QColorAlphaSlider',
   componentName: 'QColorAlphaSlider',
@@ -45,7 +43,7 @@ export default defineComponent({
     }
   },
 
-  emits: [UPDATE_ALPHA_EVENT],
+  emits: ['update:alpha'],
 
   setup(props: QColorAlphaSliderProps, ctx): QColorAlphaSliderInstance {
     const thumbLeft = ref<number>(0);
@@ -77,7 +75,7 @@ export default defineComponent({
           100
       );
 
-      ctx.emit(UPDATE_ALPHA_EVENT, alpha);
+      ctx.emit('update:alpha', alpha);
     };
 
     const handleBarClick = (event: MouseEvent): void => {

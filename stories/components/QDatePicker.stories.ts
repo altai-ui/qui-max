@@ -88,27 +88,29 @@ const Template: Story<QDatePickerProps> = args =>
       };
     },
     template: `
-      <q-date-picker
-        v-model="state.value"
-        :clearable="args.clearable"
-        :editable="args.editable"
-        :placeholder="args.placeholder"
-        :type="args.type"
-        :format="args.format"
-        :output-format="args.outputFormat"
-        :name="args.name"
-        :disabled="args.disabled"
-        :disabled-values="args.disabledValues"
-        :shortcuts="args.shortcuts"
-        :start-placeholder="args.startPlaceholder"
-        :end-placeholder="args.endPlaceholder"
-        :first-day-of-week="args.firstDayOfWeek"
-        :range-separator="args.rangeSeparator"
-        :validate-event="args.validateEvent"
-        :teleport-to="args.teleportTo"
-        @rangepick="handleRangePickClick"
-        @change="handleChange"
-      />
+      <div style="width: 220px; height:300px">
+        <q-date-picker
+          v-model="state.value"
+          :clearable="args.clearable"
+          :editable="args.editable"
+          :placeholder="args.placeholder"
+          :type="args.type"
+          :format="args.format"
+          :output-format="args.outputFormat"
+          :name="args.name"
+          :disabled="args.disabled"
+          :disabled-values="args.disabledValues"
+          :shortcuts="args.shortcuts"
+          :start-placeholder="args.startPlaceholder"
+          :end-placeholder="args.endPlaceholder"
+          :first-day-of-week="args.firstDayOfWeek"
+          :range-separator="args.rangeSeparator"
+          :validate-event="args.validateEvent"
+          :teleport-to="args.teleportTo"
+          @rangepick="handleRangePickClick"
+          @change="handleChange"
+        />
+      </div>
     `
   });
 

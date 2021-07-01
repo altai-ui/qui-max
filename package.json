@@ -23,7 +23,7 @@
   "dependencies": {
     "@popperjs/core": "^2.9.2",
     "async-validator": "^3.5.2",
-    "colord": "^2.0.1",
+    "colord": "^2.1.0",
     "date-fns": "^2.22.1",
     "focus-visible": "^5.2.0",
     "lodash-es": "^4.17.21"
@@ -61,7 +61,7 @@
     "eslint-plugin-import": "^2.23.4",
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-vue": "^7.12.1",
-    "husky": "^6.0.0",
+    "husky": "^7.0.0",
     "lint-staged": "^11.0.0",
     "prettier": "^2.3.2",
     "rollup-plugin-copy": "^3.4.0",
@@ -73,9 +73,9 @@
     "sass-loader": "^12.1.0",
     "style-loader": "^3.0.0",
     "stylelint": "^13.13.1",
-    "typescript": "^4.3.4",
+    "typescript": "^4.3.5",
     "vite": "^2.3.8",
-    "vite-plugin-dts": "^0.5.1",
+    "vite-plugin-dts": "^0.5.2",
     "vue": "^3.1.2",
     "vue-loader": "^16.3.0"
   },

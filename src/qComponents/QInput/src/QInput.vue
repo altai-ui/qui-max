@@ -167,7 +167,7 @@ export default defineComponent({
     const inputType = computed<string>(() => {
       if (!props.passwordSwitch) return (ctx.attrs.type ?? 'text') as string;
 
-      return state.isPasswordVisible ? 'password' : 'text';
+      return state.isPasswordVisible ? 'text' : 'password';
     });
 
     const isDisabled = computed<boolean>(

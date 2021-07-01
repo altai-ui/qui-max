@@ -1,6 +1,5 @@
 import type { Instance } from '@popperjs/core';
 import type { ComputedRef, Ref } from 'vue';
-import type { Composer } from 'vue-i18n';
 
 import type { QInputInstance } from '@/qComponents/QInput';
 import type { Nullable, UnwrappedInstance } from '#/helpers';
@@ -90,7 +89,6 @@ interface QDatePickerInstance {
   root: Ref<Nullable<HTMLElement>>;
   panel: Ref<UnwrappedInstance<DatePanelInstance>>;
   reference: Ref<Nullable<UnwrappedInstance<QInputInstance> | HTMLElement>>;
-
   isRanged: ComputedRef<boolean>;
   isPickerDisabled: ComputedRef<boolean>;
   isValueEmpty: ComputedRef<boolean>;
@@ -121,7 +119,7 @@ interface QDatePickerInstance {
   handleRangeClick: () => void;
   handleClose: () => void;
   handleIconClick: (event: MouseEvent) => void;
-  t: Composer['t'];
+  t: (key: string) => string;
 }
 
 export {

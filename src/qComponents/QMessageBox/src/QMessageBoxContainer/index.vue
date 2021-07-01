@@ -139,7 +139,13 @@ export default defineComponent({
     const zIndex = getConfig('nextZIndex');
 
     const preparedContent = computed<QMessageBoxComponent>(() => {
-      if (isExternalComponent(props.content)) return props.content;
+      if (isExternalComponent(props.content)) {
+        return {
+          props: {},
+          listeners: {},
+          ...props.content
+        };
+      }
 
       if (isInternalComponent(props.content)) {
         return {

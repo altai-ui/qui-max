@@ -114,9 +114,9 @@ import {
   startOfYear,
   parseISO
 } from 'date-fns';
-import { useI18n } from 'vue-i18n';
 
 import { getConfig } from '@/qComponents/config';
+import { t } from '@/qComponents/locale';
 import { notNull, validateArray } from '@/qComponents/helpers';
 import QInput from '@/qComponents/QInput';
 import type { QFormProvider } from '@/qComponents/QForm';
@@ -653,8 +653,6 @@ export default defineComponent({
         }
       }
     );
-
-    const { t } = useI18n();
 
     onBeforeUnmount(() => destroyPopper());
 

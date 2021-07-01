@@ -32,8 +32,8 @@
 <script lang="ts">
 import { defineComponent, inject, computed } from 'vue';
 import { isNumber, isEmpty } from 'lodash-es';
-import { useI18n } from 'vue-i18n';
 
+import { t } from '@/qComponents/locale';
 import QInput from '@/qComponents/QInput';
 import type { Nullable } from '#/helpers';
 
@@ -72,8 +72,6 @@ export default defineComponent({
         isNumber(qCascader.modelValue.value) ||
         !isEmpty(qCascader.modelValue.value)
     );
-
-    const { t } = useI18n();
 
     const placeholder = computed<Nullable<string>>(() => {
       const text = qCascader.placeholder.value ?? t('QCascader.placeholder');

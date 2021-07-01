@@ -59,7 +59,7 @@
 
 <script lang="ts">
 import { inject, computed, ref, reactive, watch, defineComponent } from 'vue';
-import { useI18n } from 'vue-i18n';
+
 import {
   UPDATE_MODEL_VALUE_EVENT,
   CHANGE_EVENT,
@@ -68,6 +68,7 @@ import {
   CLEAR_EVENT,
   INPUT_EVENT
 } from '@/qComponents/constants/events';
+import { t } from '@/qComponents/locale';
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
 import type { Nullable } from '#/helpers';
@@ -268,8 +269,6 @@ export default defineComponent({
         if (props.validateEvent) qFormItem?.validateField('change');
       }
     );
-
-    const { t } = useI18n();
 
     return {
       root,

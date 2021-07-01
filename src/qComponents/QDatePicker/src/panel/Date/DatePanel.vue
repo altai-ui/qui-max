@@ -105,8 +105,8 @@ import {
 import type { PropType } from 'vue';
 import { subMonths, addMonths, subYears, addYears } from 'date-fns';
 import { isNil } from 'lodash-es';
-import { useI18n } from 'vue-i18n';
 
+import { t } from '@/qComponents/locale';
 import { getConfig } from '@/qComponents/config';
 import type { Nullable } from '#/helpers';
 
@@ -332,8 +332,6 @@ export default defineComponent({
     const handleDatePick = (value: DatePanelPropModelValue): void => {
       ctx.emit('pick', value);
     };
-
-    const { t } = useI18n();
 
     const moveWithinPeriod = (e: KeyboardEvent): void => {
       if (!state?.periodCells?.length || !state.panelInFocus) return;

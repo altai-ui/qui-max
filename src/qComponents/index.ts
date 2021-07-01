@@ -1,9 +1,11 @@
 import type { App, Plugin } from 'vue';
+import { merge } from 'lodash-es';
 
 import 'focus-visible';
 
+import { setMessages, setI18n } from './locale';
 import { setConfig } from './config';
-import { installI18n } from './constants/locales';
+import { en as localeEn, ru as localeRu } from './constants/locales';
 import QBreadcrumbs from './QBreadcrumbs';
 import QButton from './QButton';
 import QCascader from './QCascader';
@@ -75,31 +77,40 @@ import './QTag/src/q-tag.scss';
 import './QTextarea/src/q-textarea.scss';
 import './QUpload/src/q-upload.scss';
 
-const setupQui = (
-  app: App,
-  {
-    localization: { locale, customI18nMessages = {} } = {},
-    zIndexCounter
-  }: ConfigOptions = {}
-): void => {
+const setupQui = ({
+  localization: { locale, messages, i18n } = {},
+  zIndexCounter
+}: ConfigOptions = {}): void => {
   setConfig({
     locale,
-    customI18nMessages,
     zIndex: zIndexCounter
   });
 
-  installI18n(app);
+  if (messages) setMessages(messages);
+  if (i18n) setI18n(i18n);
 };
 
 const createQui = (config?: ConfigOptions): Plugin => ({
-  install: (app: App): void => {
-    setupQui(app, config);
+  install: (): void => {
+    setupQui({
+      ...config,
+      localization: {
+        ...config?.localization
+      }
+    });
   }
 });
 
 // install
 const install = (app: App, config?: ConfigOptions): void => {
-  setupQui(app, config);
+  const messages = merge({ en: localeEn }, config?.localization?.messages);
+  setupQui({
+    ...(config ?? {}),
+    localization: {
+      ...(config?.localization ?? {}),
+      messages
+    }
+  });
 
   app.use(QBreadcrumbs);
   app.use(QButton);
@@ -138,6 +149,8 @@ const install = (app: App, config?: ConfigOptions): void => {
 export default { install };
 export {
   createQui,
+  setMessages,
+  setI18n,
   QBreadcrumbs,
   QButton,
   QCascader,
@@ -169,7 +182,9 @@ export {
   QTabs,
   QTag,
   QTextarea,
-  QUpload
+  QUpload,
+  localeEn,
+  localeRu
 };
 
 export * from './QBreadcrumbs';

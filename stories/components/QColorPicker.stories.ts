@@ -19,12 +19,8 @@ const QColorPickerStory: Story<QColorPickerProps> = args =>
   defineComponent({
     setup() {
       const color = ref<string>('#f25');
-      const handleValueUpdate = (newColor: string): void => {
-        // eslint-disable-next-line no-console
-        console.log('update:modelValue', newColor);
-      };
 
-      return { args, color, handleValueUpdate };
+      return { args, color };
     },
     template: `
       <div style="width: 304px; height:280px">
@@ -37,7 +33,6 @@ const QColorPickerStory: Story<QColorPickerProps> = args =>
           :placement="args.placement"
           :popper-options="args.popperOptions"
           :teleport-to="args.teleportTo"
-          @update:modelValue="handleValueUpdate"
         />
       </div>
     `

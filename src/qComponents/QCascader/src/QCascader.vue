@@ -187,7 +187,11 @@ export default defineComponent({
     });
 
     watch(isDropdownShown, value => {
-      if (value) ctx.emit('dropdown-expand');
+      if (value) {
+        ctx.emit('dropdown-expand');
+      } else {
+        ctx.emit('dropdown-close');
+      }
     });
 
     const rootClasses = computed<Record<string, boolean>>(() => ({
@@ -205,7 +209,6 @@ export default defineComponent({
 
     const handleDropdownClose = (): void => {
       isDropdownShown.value = false;
-      ctx.emit('dropdown-close');
     };
 
     const emitChange = (value: QCascaderPropModelValue = null): void => {

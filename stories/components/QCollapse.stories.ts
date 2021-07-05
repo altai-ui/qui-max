@@ -19,19 +19,13 @@ const QCollapseStory: Story<QCollapseProps> = args =>
     setup() {
       const activeNames = ref<string[]>(['1']);
 
-      const handleChange = (value: (string | number)[]): void => {
-        // eslint-disable-next-line no-console
-        console.log('handleChange', value);
-      };
-
-      return { args, activeNames, handleChange };
+      return { args, activeNames };
     },
     template: `
       <q-collapse
         v-model="activeNames"
         :accordion="args.accordion"
         style="max-width:732px"
-        @update:modelValue="handleChange"
       >
         <q-collapse-item
           title="Consistency"

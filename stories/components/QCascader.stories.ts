@@ -27,11 +27,6 @@ const Template: Story<QCascaderProps> = args =>
         console.log('dropdown-close');
       };
 
-      const handleValueUpdate = (value: string): void => {
-        // eslint-disable-next-line no-console
-        console.log('update:modelValue', value);
-      };
-
       return {
         args,
         modelValue,
@@ -53,7 +48,6 @@ const Template: Story<QCascaderProps> = args =>
           :separator="args.separator"
           :all-levels-shown="args.allLevelsShown"
           :collapse-tags="args.collapseTags"
-          @update:modelValue="handleValueUpdate"
           @dropdown-close="handleDropdownClose"
           @dropdown-expand="handleDropdownExpand"
         />

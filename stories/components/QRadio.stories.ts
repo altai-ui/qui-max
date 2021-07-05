@@ -20,8 +20,13 @@ const QRadioStory: Story<QRadioProps> = args =>
     setup() {
       const radio1 = ref<number>(1);
       const radio2 = ref<number>(1);
+      const handleChange = (value: number): void => {
+        // eslint-disable-next-line no-console
+        console.log(value, 'change');
+        radio1.value = value;
+      };
 
-      return { radio1, radio2, args };
+      return { radio1, radio2, args, handleChange };
     },
     template: `
       <div>
@@ -31,21 +36,21 @@ const QRadioStory: Story<QRadioProps> = args =>
           :label="args.label"
           :disabled="args.disabled"
           :name="args.name"
-          @change="radio1 = $event"
+          @change="handleChange"
         />
         <br /><br />
         <q-radio
           :checked="radio1 === 2"
           :value="2"
           label="Option B"
-          @change="radio1 = $event"
+          @change="handleChange"
         />
         <br /><br />
         <q-radio
           :checked="radio1 === 3"
           :value="3"
           label="Option C"
-          @change="radio1 = $event"
+          @change="handleChange"
         />
         <br /><br />
         <q-radio
@@ -53,7 +58,7 @@ const QRadioStory: Story<QRadioProps> = args =>
           :value="4"
           disabled
           label="Disabled"
-          @change="radio1 = $event"
+          @change="handleChange"
         />
         <br /><br />
         <q-radio

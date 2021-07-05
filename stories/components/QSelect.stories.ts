@@ -69,6 +69,9 @@ const Template: Story<QSelectProps> = args =>
       );
 
       const handleSearch = (query: string): void => {
+        // eslint-disable-next-line no-console
+        console.log(query, 'search');
+
         if (!args.remote) return;
 
         state.remoteLoading = true;
@@ -94,7 +97,7 @@ const Template: Story<QSelectProps> = args =>
     },
 
     template: `
-      <div style="width: 304px;">
+      <div style="width: 304px; height:240px">
         <q-select
           v-model="state.value"
           :disabled="args.disabled"

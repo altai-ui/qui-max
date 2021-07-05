@@ -71,10 +71,6 @@ import type {
   QDrawerInstance
 } from './types';
 
-const OPENED_EVENT = 'opened';
-const CLOSED_EVENT = 'closed';
-const OPEN_EVENT = 'open';
-const UPDATE_VISIBLE_EVENT = 'update:visible';
 const DEFAULT_Z_INDEX = 2000;
 
 export default defineComponent({
@@ -154,11 +150,26 @@ export default defineComponent({
   },
 
   emits: [
-    OPEN_EVENT,
-    OPENED_EVENT,
-    CLOSE_EVENT,
-    CLOSED_EVENT,
-    UPDATE_VISIBLE_EVENT
+    /**
+     * triggers when dialog starts appearing (animation started)
+     */
+    'open',
+    /**
+     * triggers when dialog appeared (animation ended)
+     */
+    'opened',
+    /**
+     * triggers when dialog starts dissappearing
+     */
+    'close',
+    /**
+     * triggers when dialog starts dissapped
+     */
+    'closed',
+    /**
+     * triggers when visible state changes
+     */
+    'update:visible'
   ],
 
   setup(props: QDrawerProps, ctx): QDrawerInstance {
@@ -185,16 +196,16 @@ export default defineComponent({
     };
 
     const afterEnter = (): void => {
-      ctx.emit(OPENED_EVENT);
+      ctx.emit('opened');
     };
 
     const afterLeave = (): void => {
-      ctx.emit(CLOSED_EVENT);
+      ctx.emit('closed');
     };
 
     const hide = (): void => {
       ctx.emit(CLOSE_EVENT);
-      ctx.emit(UPDATE_VISIBLE_EVENT, false);
+      ctx.emit('update:visible', false);
     };
 
     const closeDrawer = (): void => {
@@ -230,7 +241,7 @@ export default defineComponent({
         nextTick(() => {
           drawer.value?.focus();
         });
-        ctx.emit(OPEN_EVENT);
+        ctx.emit('open');
 
         zIndex.value = getConfig('nextZIndex') ?? DEFAULT_Z_INDEX;
         document.body.style.overflow = 'hidden';

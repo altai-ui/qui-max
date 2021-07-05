@@ -24,8 +24,6 @@ import type { Nullable } from '#/helpers';
 import draggable from '../utils/draggable';
 import type { QColorHueSliderProps, QColorHueSliderInstance } from './types';
 
-const UPDATE_HUE_EVENT = 'update:hue';
-
 export default defineComponent({
   name: 'QColorHueSlider',
   componentName: 'QColorHueSlider',
@@ -37,7 +35,7 @@ export default defineComponent({
     }
   },
 
-  emits: [UPDATE_HUE_EVENT],
+  emits: ['update:hue'],
 
   setup(props: QColorHueSliderProps, ctx): QColorHueSliderInstance {
     const thumbTop = ref<number>(0);
@@ -64,7 +62,7 @@ export default defineComponent({
           360
       );
 
-      ctx.emit(UPDATE_HUE_EVENT, hue);
+      ctx.emit('update:hue', hue);
     };
 
     const handleBarClick = (event: MouseEvent): void => {

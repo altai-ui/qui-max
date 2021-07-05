@@ -31,7 +31,6 @@ import {
   PropType
 } from 'vue';
 
-import { REMOVE_EVENT } from '@/qComponents/constants/events';
 import { validateArray } from '@/qComponents/helpers';
 import type { Nullable } from '#/helpers';
 
@@ -91,7 +90,12 @@ export default defineComponent({
     }
   },
 
-  emits: [REMOVE_EVENT],
+  emits: [
+    /**
+     * triggers when notification removes
+     */
+    'remove'
+  ],
 
   setup(props: QNotificationToastProps, ctx): QNotificationToastInstance {
     const notificationClasses = computed<Record<string, boolean>>(() => ({
@@ -124,7 +128,7 @@ export default defineComponent({
     const close = (): void => {
       if (typeof props.onClose === 'function') props.onClose(props.uniqId);
 
-      ctx.emit(REMOVE_EVENT, props.uniqId);
+      ctx.emit('remove', props.uniqId);
     };
 
     const startTimer = (): void => {

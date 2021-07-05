@@ -79,7 +79,6 @@ import type {
   QContextMenuInstance
 } from './types';
 
-const ACTION_EVENT = 'action';
 const DEFAULT_Z_INDEX = 2000;
 
 export default defineComponent({
@@ -105,6 +104,13 @@ export default defineComponent({
       default: null
     }
   },
+
+  emits: [
+    /**
+     * click on menu item
+     */
+    'action'
+  ],
 
   setup(props: QContextMenuProps, ctx): QContextMenuInstance {
     const reference = ref<Nullable<HTMLElement>>(null);
@@ -211,7 +217,7 @@ export default defineComponent({
     };
 
     const handleItemClick = (actionName: string): void => {
-      ctx.emit(ACTION_EVENT, actionName);
+      ctx.emit('action', actionName);
       closePopper();
     };
 

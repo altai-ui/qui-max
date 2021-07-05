@@ -7,10 +7,6 @@
 <script lang="ts">
 import { defineComponent, ref, provide, watch, toRef } from 'vue';
 
-import {
-  UPDATE_MODEL_VALUE_EVENT,
-  CHANGE_EVENT
-} from '@/qComponents/constants/events';
 import type {
   QTabPropModelValue,
   QTabsProps,
@@ -43,17 +39,26 @@ export default defineComponent({
     }
   },
 
-  emits: [UPDATE_MODEL_VALUE_EVENT, CHANGE_EVENT],
+  emits: [
+    /**
+     * triggers when model updates
+     */
+    'update:modelValue',
+    /**
+     * alias for update:modelValue
+     */
+    'change'
+  ],
 
   setup(props: QTabsProps, { emit }): QTabsInstance {
     const currentName = ref<QTabPropModelValue>(props.modelValue);
 
     const updateValue = (name: string): void => {
-      emit(UPDATE_MODEL_VALUE_EVENT, name);
+      emit('update:modelValue', name);
       /**
        * triggers when the tab changes
        */
-      emit(CHANGE_EVENT, name);
+      emit('change', name);
       currentName.value = name;
     };
 

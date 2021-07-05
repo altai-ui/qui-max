@@ -281,10 +281,25 @@ export default defineComponent({
   },
 
   emits: [
+    /**
+     * triggers when input gets focus
+     */
     'focus',
-    'change',
+    /**
+     * triggers when native input event fires
+     */
     'input',
+    /**
+     * triggers when model updates
+     */
     'update:modelValue',
+    /**
+     * alias for update:modelValue
+     */
+    'change',
+    /**
+     * triggers when first date in range picks
+     */
     'intermediateChange'
   ],
 

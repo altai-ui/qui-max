@@ -52,10 +52,6 @@
 <script lang="ts">
 import { computed, defineComponent, inject, watch, ref } from 'vue';
 
-import {
-  UPDATE_MODEL_VALUE_EVENT,
-  CHANGE_EVENT
-} from '@/qComponents/constants/events';
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
 import type { QCheckboxGroupProvider } from '@/qComponents/QCheckboxGroup';
@@ -93,7 +89,16 @@ export default defineComponent({
     validateEvent: { type: Boolean, default: false }
   },
 
-  emits: [UPDATE_MODEL_VALUE_EVENT, CHANGE_EVENT],
+  emits: [
+    /**
+     * triggers when model updates
+     */
+    'update:modelValue',
+    /**
+     * alias for update:modelValue
+     */
+    'change'
+  ],
 
   setup(props: QCheckboxProps, ctx): QCheckboxInstance {
     const qFormItem = inject<Nullable<QFormItemProvider>>('qFormItem', null);
@@ -141,8 +146,8 @@ export default defineComponent({
       const value = !isChecked.value;
 
       if (!qCheckboxGroup) {
-        ctx.emit(UPDATE_MODEL_VALUE_EVENT, value);
-        ctx.emit(CHANGE_EVENT, value);
+        ctx.emit('update:modelValue', value);
+        ctx.emit('change', value);
       } else {
         if (!props.label) return;
 

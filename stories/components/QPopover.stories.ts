@@ -21,7 +21,15 @@ const QPopoverStory: Story<QPopoverProps> = args =>
   defineComponent({
     components: { QPopover },
     setup() {
-      return { args };
+      const handleShow = (): void => {
+        console.log('show');
+      };
+
+      const handleHide = (): void => {
+        console.log('hide');
+      };
+
+      return { args, handleShow, handleHide };
     },
     template: `
       <q-popover
@@ -37,6 +45,8 @@ const QPopoverStory: Story<QPopoverProps> = args =>
         :min-width="args.minWidth"
         :max-width="args.maxWidth"
         :popper-options="args.popperOptions"
+        @show="handleShow"
+        @hide="handleHide"
       >
         <template #reference>
           <q-button

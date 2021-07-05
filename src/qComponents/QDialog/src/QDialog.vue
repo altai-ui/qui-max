@@ -64,7 +64,6 @@ import {
   onUnmounted
 } from 'vue';
 
-import { CLOSE_EVENT } from '@/qComponents/constants/events';
 import { getConfig } from '@/qComponents/config';
 import QButton from '@/qComponents/QButton';
 import QScrollbar from '@/qComponents/QScrollbar';
@@ -77,10 +76,6 @@ import type {
   QDialogInstance
 } from './types';
 
-const OPENED_EVENT = 'opened';
-const CLOSED_EVENT = 'closed';
-const OPEN_EVENT = 'open';
-const UPDATE_VISIBLE_EVENT = 'update:visible';
 const DEFAULT_Z_INDEX = 2000;
 
 export default defineComponent({
@@ -161,11 +156,26 @@ export default defineComponent({
   },
 
   emits: [
-    OPEN_EVENT,
-    OPENED_EVENT,
-    CLOSE_EVENT,
-    CLOSED_EVENT,
-    UPDATE_VISIBLE_EVENT
+    /**
+     * triggers when dialog starts appearing (animation started)
+     */
+    'open',
+    /**
+     * triggers when dialog appeared (animation ended)
+     */
+    'opened',
+    /**
+     * triggers when dialog starts dissappearing
+     */
+    'close',
+    /**
+     * triggers when dialog starts dissapped
+     */
+    'closed',
+    /**
+     * triggers when visible state changes
+     */
+    'update:visible'
   ],
 
   setup(props: QDialogProps, ctx): QDialogInstance {
@@ -188,16 +198,16 @@ export default defineComponent({
     };
 
     const afterEnter = (): void => {
-      ctx.emit(OPENED_EVENT);
+      ctx.emit('opened');
     };
 
     const afterLeave = (): void => {
-      ctx.emit(CLOSED_EVENT);
+      ctx.emit('closed');
     };
 
     const hide = (): void => {
-      ctx.emit(CLOSE_EVENT);
-      ctx.emit(UPDATE_VISIBLE_EVENT, false);
+      ctx.emit('close');
+      ctx.emit('update:visible', false);
     };
 
     const closeDialog = (): void => {
@@ -219,6 +229,7 @@ export default defineComponent({
           document.body.style.overflow = '';
 
           document.removeEventListener('focus', handleDocumentFocus, true);
+
           if (props.destroyOnClose) {
             isRendered.value = false;
           }
@@ -233,7 +244,7 @@ export default defineComponent({
         nextTick(() => {
           dialog.value?.focus();
         });
-        ctx.emit(OPEN_EVENT);
+        ctx.emit('open');
 
         zIndex.value = getConfig('nextZIndex') ?? DEFAULT_Z_INDEX;
         document.body.style.overflow = 'hidden';

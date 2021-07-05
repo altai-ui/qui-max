@@ -60,14 +60,6 @@
 <script lang="ts">
 import { inject, computed, ref, reactive, watch, defineComponent } from 'vue';
 
-import {
-  UPDATE_MODEL_VALUE_EVENT,
-  CHANGE_EVENT,
-  FOCUS_EVENT,
-  BLUR_EVENT,
-  CLEAR_EVENT,
-  INPUT_EVENT
-} from '@/qComponents/constants/events';
 import { t } from '@/qComponents/locale';
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
@@ -144,12 +136,30 @@ export default defineComponent({
   },
 
   emits: [
-    UPDATE_MODEL_VALUE_EVENT,
-    CHANGE_EVENT,
-    FOCUS_EVENT,
-    BLUR_EVENT,
-    CLEAR_EVENT,
-    INPUT_EVENT
+    /**
+     * triggers when model updates
+     */
+    'update:modelValue',
+    /**
+     * alias for update:modelValue
+     */
+    'change',
+    /**
+     * triggers when input gets focus
+     */
+    'focus',
+    /**
+     * triggers when input gets blur
+     */
+    'blur',
+    /**
+     * triggers when clear button clicks
+     */
+    'clear',
+    /**
+     * triggers when native input event fires
+     */
+    'input'
   ],
 
   setup(props: QInputProps, ctx): QInputInstance {
@@ -229,28 +239,28 @@ export default defineComponent({
 
     const updateModel = (event: Event): void => {
       const target = event.target as HTMLInputElement;
-      ctx.emit(UPDATE_MODEL_VALUE_EVENT, target.value ?? '');
+      ctx.emit('update:modelValue', target.value ?? '');
     };
 
     const handleInput = (event: Event): void => {
-      ctx.emit(INPUT_EVENT, event);
+      ctx.emit('input', event);
       updateModel(event);
     };
 
     const handleChange = (event: Event): void => {
-      ctx.emit(CHANGE_EVENT, event);
+      ctx.emit('change', event);
       updateModel(event);
     };
 
     const handleBlur = (event: FocusEvent): void => {
       state.focused = false;
-      ctx.emit(BLUR_EVENT, event);
+      ctx.emit('blur', event);
       if (props.validateEvent) qFormItem?.validateField('blur');
     };
 
     const handleFocus = (event: FocusEvent): void => {
       state.focused = true;
-      ctx.emit(FOCUS_EVENT, event);
+      ctx.emit('focus', event);
     };
 
     const handlePasswordVisible = (): void => {
@@ -259,8 +269,8 @@ export default defineComponent({
     };
 
     const handleClearClick = (event: MouseEvent): void => {
-      ctx.emit(UPDATE_MODEL_VALUE_EVENT, '');
-      ctx.emit(CLEAR_EVENT, event);
+      ctx.emit('update:modelValue', '');
+      ctx.emit('clear', event);
     };
 
     watch(

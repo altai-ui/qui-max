@@ -66,8 +66,6 @@ import type {
   QMessageBoxContentInstance
 } from './types';
 
-const DONE_EVENT = 'done';
-
 export default defineComponent({
   name: 'QMessageBoxContent',
   componentName: 'QMessageBoxContent',
@@ -118,7 +116,12 @@ export default defineComponent({
     }
   },
 
-  emits: [DONE_EVENT],
+  emits: [
+    /**
+     * triggers when confirm/cancel action happens
+     */
+    'done'
+  ],
 
   setup(props: QMessageBoxContentProps, ctx): QMessageBoxContentInstance {
     const isConfirmBtnLoading = ref<boolean>(false);
@@ -146,7 +149,7 @@ export default defineComponent({
       const isDone = await commitBeforeClose(action);
       isConfirmBtnLoading.value = false;
 
-      if (isDone) ctx.emit(DONE_EVENT, { action });
+      if (isDone) ctx.emit('done', { action });
     };
 
     const handleCancelBtnClick = async (): Promise<void> => {
@@ -155,7 +158,7 @@ export default defineComponent({
       const isDone = await commitBeforeClose(action);
       isCancelBtnLoading.value = false;
 
-      if (isDone) ctx.emit(DONE_EVENT, { action });
+      if (isDone) ctx.emit('done', { action });
     };
 
     return {

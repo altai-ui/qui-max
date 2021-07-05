@@ -63,14 +63,16 @@ const Template: Story<QDatePickerProps> = args =>
         value: null
       });
 
-      const handleRangePickClick = (val: QDatePickerPropModelValue): void => {
-        // eslint-disable-next-line no-console
-        console.log('handleRangePickClick', val);
-      };
-
       const handleChange = (val: QDatePickerPropModelValue): void => {
         // eslint-disable-next-line no-console
         console.log('handleChange', val);
+      };
+
+      const handleIntermediateChange = (
+        val: QDatePickerPropModelValue
+      ): void => {
+        // eslint-disable-next-line no-console
+        console.log('handleIntermediateChange', val);
       };
 
       watch(
@@ -83,7 +85,7 @@ const Template: Story<QDatePickerProps> = args =>
       return {
         args,
         state,
-        handleRangePickClick,
+        handleIntermediateChange,
         handleChange
       };
     },
@@ -107,8 +109,8 @@ const Template: Story<QDatePickerProps> = args =>
           :range-separator="args.rangeSeparator"
           :validate-event="args.validateEvent"
           :teleport-to="args.teleportTo"
-          @rangepick="handleRangePickClick"
           @change="handleChange"
+          @intermediateChange="handleIntermediateChange"
         />
       </div>
     `

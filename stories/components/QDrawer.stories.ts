@@ -22,7 +22,34 @@ const QDrawerStory: Story<QDrawerProps> = args =>
     setup() {
       const drawer = ref<boolean>(false);
 
-      return { args, drawer };
+      const handleOpen = (): void => {
+        // eslint-disable-next-line no-console
+        console.log('handleOpen');
+      };
+
+      const handleOpened = (): void => {
+        // eslint-disable-next-line no-console
+        console.log('handleOpened');
+      };
+
+      const handleClose = (): void => {
+        // eslint-disable-next-line no-console
+        console.log('handleClose');
+      };
+
+      const handleClosed = (): void => {
+        // eslint-disable-next-line no-console
+        console.log('handleClosed');
+      };
+
+      return {
+        args,
+        drawer,
+        handleOpen,
+        handleOpened,
+        handleClose,
+        handleClosed
+      };
     },
     template: `
       <q-button @click="drawer = true">open</q-button>
@@ -39,6 +66,10 @@ const QDrawerStory: Story<QDrawerProps> = args =>
         :custom-class="args.customClass"
         :teleport-to="args.teleportTo"
         :render-on-mount="args.renderOnMount"
+        @open="handleOpen"
+        @opened="handleOpened"
+        @close="handleClose"
+        @closed="handleClosed"
       >I'm drawer's slot</q-drawer>
     `
   });

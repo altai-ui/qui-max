@@ -236,15 +236,42 @@ export default defineComponent({
   },
 
   emits: [
+    /**
+     * triggers when native input event fires
+     */
     'input',
+    /**
+     * triggers when input gets focus
+     */
     'focus',
+    /**
+     * triggers when input gets blur
+     */
     'blur',
+    /**
+     * triggers when click on clear button
+     */
     'clear',
+    /**
+     * triggers when model updates
+     */
+    'update:modelValue',
+    /**
+     * alias for update:modelValue
+     */
     'change',
+    /**
+     * triggers when tag removes (only if multiple: true)
+     */
     'remove-tag',
+    /**
+     * triggers when search query changes
+     */
     'search',
-    'visible-change',
-    'update:modelValue'
+    /**
+     * triggers when dropdown state changes
+     */
+    'visible-change'
   ],
 
   setup(props: QSelectProps, ctx): QSelectInstance {

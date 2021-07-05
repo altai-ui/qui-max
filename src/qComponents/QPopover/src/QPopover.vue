@@ -75,8 +75,6 @@ import type {
   QPopoveInstance
 } from './types';
 
-const SHOW_EVENT = 'show';
-const HIDE_EVENT = 'hide';
 const DEFAULT_Z_INDEX = 2000;
 
 export default defineComponent({
@@ -175,7 +173,16 @@ export default defineComponent({
     }
   },
 
-  emits: [SHOW_EVENT, HIDE_EVENT],
+  emits: [
+    /**
+     * triggers when appeares
+     */
+    'show',
+    /**
+     * triggers when disappeares
+     */
+    'hide'
+  ],
 
   setup(props: QPopoverProps, ctx): QPopoveInstance {
     if (!ctx.slots.reference && process.env.NODE_ENV !== 'production') {
@@ -292,10 +299,10 @@ export default defineComponent({
     watch(isPopoverShown, value => {
       if (value && !popperJS) {
         zIndex.value = getConfig('nextZIndex') ?? DEFAULT_Z_INDEX;
-        ctx.emit(SHOW_EVENT);
+        ctx.emit('show');
         createPopper();
       } else {
-        ctx.emit(HIDE_EVENT);
+        ctx.emit('hide');
       }
     });
 

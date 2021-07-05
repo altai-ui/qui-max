@@ -294,6 +294,10 @@ export default defineComponent({
      */
     'update:modelValue',
     /**
+     * alias for update:modelValue
+     */
+    'change',
+    /**
      * triggers when first date in range picks
      */
     'intermediateChange'
@@ -440,6 +444,7 @@ export default defineComponent({
 
       if (val !== props.modelValue) {
         ctx.emit('update:modelValue', result);
+        ctx.emit('change', result);
         if (props.validateEvent) {
           qFormItem?.validateField('change');
         }

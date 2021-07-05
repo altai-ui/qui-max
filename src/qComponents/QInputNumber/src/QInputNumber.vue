@@ -48,12 +48,6 @@ import {
   nextTick
 } from 'vue';
 
-import {
-  CHANGE_EVENT,
-  FOCUS_EVENT,
-  BLUR_EVENT,
-  INPUT_EVENT
-} from '@/qComponents/constants/events';
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
 import type { Nullable } from '#/helpers';
@@ -108,7 +102,24 @@ export default defineComponent({
     }
   },
 
-  emits: [CHANGE_EVENT, FOCUS_EVENT, BLUR_EVENT, INPUT_EVENT],
+  emits: [
+    /**
+     * triggers when model updates
+     */
+    'change',
+    /**
+     * triggers when input gets focus
+     */
+    'focus',
+    /**
+     * triggers when input gets blur
+     */
+    'blur',
+    /**
+     * triggers when native input event fires
+     */
+    'input'
+  ],
 
   setup(props: QInputNumberProps, ctx): QInputNumberInstance {
     const qFormItem = inject<Nullable<QFormItemProvider>>('qFormItem', null);
@@ -172,12 +183,12 @@ export default defineComponent({
     );
 
     const handleBlur = (event: FocusEvent): void => {
-      ctx.emit(BLUR_EVENT, event);
+      ctx.emit('blur', event);
       if (props.validateEvent) qFormItem?.validateField('blur');
     };
 
     const handleFocus = (event: FocusEvent): void => {
-      ctx.emit(FOCUS_EVENT, event);
+      ctx.emit('focus', event);
     };
 
     const changesEmmiter = (value: Nullable<number>, type: string): void => {
@@ -189,12 +200,12 @@ export default defineComponent({
       }
 
       if (type === 'change') {
-        ctx.emit(CHANGE_EVENT, passedData);
+        ctx.emit('change', passedData);
         if (props.validateEvent) qFormItem?.validateField('change');
         return;
       }
 
-      ctx.emit(INPUT_EVENT, passedData);
+      ctx.emit('input', passedData);
       if (props.validateEvent) qFormItem?.validateField('input');
     };
 
@@ -220,7 +231,7 @@ export default defineComponent({
         return;
       }
 
-      ctx.emit(INPUT_EVENT, Number(value.toFixed(props.precision ?? 0)));
+      ctx.emit('input', Number(value.toFixed(props.precision ?? 0)));
       if (props.validateEvent) qFormItem?.validateField('input');
     };
 

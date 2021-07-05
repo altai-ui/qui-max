@@ -21,7 +21,6 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 
-import { CLOSE_EVENT } from '@/qComponents/constants/events';
 import type { QTagProps, QTagInstance } from './types';
 
 export default defineComponent({
@@ -38,14 +37,16 @@ export default defineComponent({
     }
   },
 
-  emits: [CLOSE_EVENT],
+  emits: [
+    /**
+     * triggers when the close button is clicked
+     */
+    'close'
+  ],
 
   setup(_: QTagProps, { emit }): QTagInstance {
     const handleClose = (event: MouseEvent): void => {
-      /**
-       * triggers when the close button is clicked
-       */
-      emit(CLOSE_EVENT, event);
+      emit('close', event);
     };
 
     return { handleClose };

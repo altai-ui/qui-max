@@ -18,7 +18,34 @@ const QDialogStory: Story<QDialogProps> = args =>
     setup() {
       const isVisible = ref<boolean>(false);
 
-      return { args, isVisible };
+      const handleOpen = (): void => {
+        // eslint-disable-next-line no-console
+        console.log('handleOpen');
+      };
+
+      const handleOpened = (): void => {
+        // eslint-disable-next-line no-console
+        console.log('handleOpened');
+      };
+
+      const handleClose = (): void => {
+        // eslint-disable-next-line no-console
+        console.log('handleClose');
+      };
+
+      const handleClosed = (): void => {
+        // eslint-disable-next-line no-console
+        console.log('handleClosed');
+      };
+
+      return {
+        args,
+        isVisible,
+        handleOpen,
+        handleOpened,
+        handleClose,
+        handleClosed
+      };
     },
     template: `
       <q-button @click="isVisible = true">open</q-button>
@@ -34,6 +61,10 @@ const QDialogStory: Story<QDialogProps> = args =>
         :custom-class="args.customClass"
         :teleport-to="args.teleportTo"
         :render-on-mount="args.renderOnMount"
+        @open="handleOpen"
+        @opened="handleOpened"
+        @close="handleClose"
+        @closed="handleClosed"
       >I'm dialog's slot</q-dialog>
     `
   });

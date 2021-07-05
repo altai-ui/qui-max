@@ -36,10 +36,6 @@ import type {
   QTableInstance
 } from './types';
 
-const UPDATE_CHECKED_ROWS_EVENT = 'update:checkedRows';
-const UPDATE_SORT_BY_EVENT = 'update:sortBy';
-const UPDATE_GROUPS_OF_COLUMNS = 'update:groupsOfColumns';
-
 export default defineComponent({
   name: 'QTable',
   componentName: ' QTable',
@@ -166,9 +162,18 @@ export default defineComponent({
   },
 
   emits: [
-    UPDATE_CHECKED_ROWS_EVENT,
-    UPDATE_SORT_BY_EVENT,
-    UPDATE_GROUPS_OF_COLUMNS
+    /**
+     * triggers when any row checks
+     */
+    'update:checkedRows',
+    /**
+     * triggers when sort arrow clicks
+     */
+    'update:sortBy',
+    /**
+     * triggers when columns list changes
+     */
+    'update:groupsOfColumns'
   ],
 
   setup(props: QTableProps, ctx): QTableInstance {
@@ -197,15 +202,15 @@ export default defineComponent({
     const checkedRows = computed<number[]>(() => props.checkedRows ?? []);
 
     const updateCheckedRows = (value: number[]): void => {
-      ctx.emit(UPDATE_CHECKED_ROWS_EVENT, value);
+      ctx.emit('update:checkedRows', value);
     };
 
     const updateSortBy = (value: QTablePropSortBy): void => {
-      ctx.emit(UPDATE_SORT_BY_EVENT, value);
+      ctx.emit('update:sortBy', value);
     };
 
     const updateGroupsOfColumns = (value: QTablePropGroupsOfColumns): void => {
-      ctx.emit(UPDATE_GROUPS_OF_COLUMNS, value);
+      ctx.emit('update:groupsOfColumns', value);
     };
 
     const emitRowClick = (row: Row, rowIndex: number): void => {

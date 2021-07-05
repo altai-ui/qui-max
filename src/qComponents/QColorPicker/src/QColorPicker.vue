@@ -154,7 +154,11 @@ export default defineComponent({
     /**
      * triggers when model updates
      */
-    'update:modelValue'
+    'update:modelValue',
+    /**
+     * alias for update:modelValue
+     */
+    'change'
   ],
 
   setup(props: QColorPickerProps, ctx): QColorPickerInstance {
@@ -205,6 +209,7 @@ export default defineComponent({
 
     const handleClear = (): void => {
       ctx.emit('update:modelValue', null);
+      ctx.emit('change', null);
 
       if (props.modelValue !== null) {
         qFormItem?.validateField('change');
@@ -215,6 +220,7 @@ export default defineComponent({
 
     const handlePick = (value: string): void => {
       ctx.emit('update:modelValue', value);
+      ctx.emit('change', value);
 
       if (props.modelValue !== value) {
         qFormItem?.validateField('change');

@@ -37,7 +37,11 @@ export default defineComponent({
     /**
      * triggers when model updates
      */
-    'update:modelValue'
+    'update:modelValue',
+    /**
+     * alias for update:modelValue
+     */
+    'change'
   ],
 
   setup(props: QCollapseProps, ctx): QCollapseInstance {
@@ -57,6 +61,7 @@ export default defineComponent({
       }
 
       ctx.emit('update:modelValue', activeNames.value);
+      ctx.emit('change', activeNames.value);
     };
 
     watch(

@@ -93,7 +93,11 @@ export default defineComponent({
     /**
      * triggers when model updates
      */
-    'update:modelValue'
+    'update:modelValue',
+    /**
+     * alias for update:modelValue
+     */
+    'change'
   ],
 
   setup(props: QCheckboxProps, ctx): QCheckboxInstance {
@@ -143,6 +147,7 @@ export default defineComponent({
 
       if (!qCheckboxGroup) {
         ctx.emit('update:modelValue', value);
+        ctx.emit('change', value);
       } else {
         if (!props.label) return;
 

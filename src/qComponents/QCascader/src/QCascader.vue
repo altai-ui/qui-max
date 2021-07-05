@@ -157,6 +157,10 @@ export default defineComponent({
      */
     'update:modelValue',
     /**
+     * alias for update:modelValue
+     */
+    'change',
+    /**
      * triggers when dropdown closes
      */
     'dropdown-close',
@@ -206,6 +210,7 @@ export default defineComponent({
 
     const emitChange = (value: QCascaderPropModelValue = null): void => {
       ctx.emit('update:modelValue', value);
+      ctx.emit('change', value);
 
       qFormItem?.validateField('change');
     };

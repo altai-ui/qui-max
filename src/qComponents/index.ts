@@ -27,6 +27,7 @@ import QNotification from './QNotification';
 import QOption from './QOption';
 import QPagination from './QPagination';
 import QPopover from './QPopover';
+import QProgressBar from './QProgressBar';
 import QRadio from './QRadio';
 import QRadioGroup from './QRadioGroup';
 import QRow from './QRow';
@@ -65,6 +66,7 @@ import './QNotification/src/q-notification.scss';
 import './QOption/src/q-option.scss';
 import './QPagination/src/q-pagination.scss';
 import './QPopover/src/q-popover.scss';
+import './QProgressBar/src/q-progress-bar.scss';
 import './QRadio/src/q-radio.scss';
 import './QRadioGroup/src/q-radio-group.scss';
 import './QRow/src/q-row.scss';
@@ -133,6 +135,7 @@ const install = (app: App, config?: ConfigOptions): void => {
   app.use(QOption);
   app.use(QPagination);
   app.use(QPopover);
+  app.use(QProgressBar);
   app.use(QRadio);
   app.use(QRadioGroup);
   app.use(QRow);
@@ -172,6 +175,7 @@ export {
   QOption,
   QPagination,
   QPopover,
+  QProgressBar,
   QRadio,
   QRadioGroup,
   QRow,
@@ -209,6 +213,7 @@ export * from './QNotification';
 export * from './QOption';
 export * from './QPagination';
 export * from './QPopover';
+export * from './QProgressBar';
 export * from './QRadio';
 export * from './QRadioGroup';
 export * from './QRow';

@@ -1,6 +1,8 @@
-import type { App, ComponentPublicInstance } from 'vue';
+import type { App, ComponentPublicInstance, Ref } from 'vue';
 
 export interface QProgressBar {
+  isStarted: Ref<boolean>;
+  progress: Ref<number>;
   start: () => void;
   set: (value: number) => void;
   inc: (value: number) => void;

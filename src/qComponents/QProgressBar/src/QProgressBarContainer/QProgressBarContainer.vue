@@ -1,20 +1,16 @@
-<template>
-  <div
-    :class="classes"
-    :style="styles"
-  ></div>
-</template>
-
 <script lang="ts">
 import {
+  h,
   defineComponent,
   computed,
   getCurrentInstance,
   onMounted,
   PropType
 } from 'vue';
+import type { VNode } from 'vue';
 
 import type {
+  QProgressBarContainerPropIsShown,
   QProgressBarContainerPropIsStarted,
   QProgressBarContainerPropProgress,
   QProgressBarContainerProps,
@@ -26,6 +22,10 @@ export default defineComponent({
   componentName: 'QProgressBarContainer',
 
   props: {
+    isShown: {
+      type: Object as PropType<QProgressBarContainerPropIsShown>,
+      required: true
+    },
     isStarted: {
       type: Object as PropType<QProgressBarContainerPropIsStarted>,
       required: true
@@ -41,11 +41,11 @@ export default defineComponent({
 
     const classes = computed<Record<string, boolean>>(() => ({
       'q-progress-bar': true,
-      'q-progress-bar_shown': props.isStarted.value
+      'q-progress-bar_shown': props.isShown.value
     }));
 
     const styles = computed<Record<string, string>>(() => ({
-      transform: `translateX(${-100 + (props.progress.value ?? 0)}%)`
+      transform: `translateX(${-100 + props.progress.value}%)`
     }));
 
     const mountInstance = (): void => {
@@ -59,10 +59,11 @@ export default defineComponent({
       mountInstance();
     });
 
-    return {
-      classes,
-      styles
-    };
+    return (): VNode =>
+      h('div', {
+        class: classes.value,
+        style: styles.value
+      });
   }
 });
 </script>

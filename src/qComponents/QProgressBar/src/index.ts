@@ -1,13 +1,18 @@
 import { createApp, ref, nextTick } from 'vue';
 
-import { Nullable } from '#/helpers';
-
 import QProgressBarContainer from './QProgressBarContainer';
+
+import { ANIMATION_IN_MS } from './constants';
+import { createQueue } from './utils';
 import type { QProgressBar, QProgressBarPluginOptions } from './types';
 
+const isShown = ref<boolean>(false);
 const isStarted = ref<boolean>(false);
-const progress = ref<Nullable<number>>(null);
+const isAnimated = ref<boolean>(false);
+const progress = ref<number>(0);
 const callStacks = ref<number>(0);
+
+const queue = createQueue();
 
 export const createProgressBar = (
   config?: QProgressBarPluginOptions
@@ -21,6 +26,7 @@ export const createProgressBar = (
 
   nextTick(() => {
     const app = createApp(QProgressBarContainer, {
+      isShown,
       isStarted,
       progress
     });
@@ -31,22 +37,25 @@ export const createProgressBar = (
   const set = (value: number): void => {
     if (!isStarted.value) return;
 
-    progress.value = Math.abs(value) > 100 ? 100 : Math.abs(value);
+    queue(next => {
+      let newValue = value;
+
+      if (newValue < 0) {
+        newValue = 0;
+      } else if (newValue > 100) {
+        newValue = 1000;
+      }
+
+      progress.value = newValue;
+
+      next();
+    });
   };
 
   const inc = (value: number): void => {
     if (!isStarted.value) return;
-    if (progress.value === null) progress.value = value;
 
-    let newValue = progress.value + value;
-
-    if (newValue < 0) {
-      newValue = 0;
-    } else if (newValue > 100) {
-      newValue = 100;
-    }
-
-    progress.value = newValue;
+    set(progress.value + value);
   };
 
   const trickle = (): void => {
@@ -60,14 +69,22 @@ export const createProgressBar = (
   };
 
   const start = (): void => {
-    if (isStarted.value) return;
+    queue(next => {
+      if (isStarted.value && !options.stackable) return;
+      if (options.stackable) {
+        callStacks.value += 1;
+        if (isStarted.value) return;
+      }
 
-    if (options.stackable) callStacks.value = +1;
+      isStarted.value = true;
 
-    set(0);
-    isStarted.value = true;
+      progress.value = 0;
+      isShown.value = true;
+      isAnimated.value = true;
 
-    if (options?.trickle ?? true) trickle();
+      if (options?.trickle ?? true) trickle();
+      next();
+    });
   };
 
   const done = (): void => {
@@ -78,12 +95,19 @@ export const createProgressBar = (
     }
 
     set(100);
-    setTimeout(() => {
+
+    queue(next => {
       isStarted.value = false;
+
       setTimeout(() => {
-        set(0);
-      }, 1000);
-    }, 300);
+        isShown.value = false;
+
+        setTimeout(() => {
+          progress.value = 0;
+          next();
+        }, ANIMATION_IN_MS);
+      }, ANIMATION_IN_MS * 2);
+    });
   };
 
   const forceDone = (): void => {
@@ -94,6 +118,8 @@ export const createProgressBar = (
   };
 
   return {
+    isStarted,
+    progress,
     start,
     set,
     inc,

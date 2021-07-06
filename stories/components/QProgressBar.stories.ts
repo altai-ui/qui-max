@@ -26,6 +26,10 @@ const QProgressBarStory: Story<QProgressBarPluginOptions> = () =>
         progressBar?.inc(10);
       };
 
+      const handleDecClick = (): void => {
+        progressBar?.inc(-10);
+      };
+
       const handleDoneClick = (): void => {
         progressBar?.done();
       };
@@ -38,6 +42,7 @@ const QProgressBarStory: Story<QProgressBarPluginOptions> = () =>
         handleStartClick,
         handleSetClick,
         handleIncClick,
+        handleDecClick,
         handleDoneClick,
         handleForceDoneClick
       };
@@ -46,6 +51,7 @@ const QProgressBarStory: Story<QProgressBarPluginOptions> = () =>
       <q-button @click="handleStartClick">Start</q-button>
       <q-button @click="handleSetClick">Set 25</q-button>
       <q-button @click="handleIncClick">Inc 10</q-button>
+      <q-button @click="handleDecClick">Dec -10</q-button>
       <q-button @click="handleDoneClick">Done</q-button>
       <q-button @click="handleForceDoneClick">Force done</q-button>
     `

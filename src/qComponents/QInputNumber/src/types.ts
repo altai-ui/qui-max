@@ -33,10 +33,10 @@ export interface AddittionsMatch {
 
 export interface InsertedTextParts {
   target: HTMLInputElement;
-  newValue: Nullable<number>;
-  selectionEnd: number;
+  numberValue: Nullable<number>;
+  prevPart: string;
+  lastPart: string;
   key: string;
-  hasMinusChar: boolean;
 }
 
 export interface QInputNumberInstance {

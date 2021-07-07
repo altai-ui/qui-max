@@ -73,6 +73,7 @@ import {
   getIncreasedValue,
   getDecreasedValue,
   getCleanSelections,
+  getLocaleSeparator,
   insertText,
   insertPasteText,
   setCursorPosition
@@ -186,7 +187,8 @@ export default defineComponent({
 
       const value = Intl.NumberFormat(localizationTag.value, {
         useGrouping: props.useGrouping ?? undefined,
-        minimumFractionDigits: props.precision ?? undefined
+        minimumFractionDigits: props.precision ?? undefined,
+        maximumFractionDigits: props.precision ?? undefined
       }).format(Number(props.modelValue));
 
       return props.modelValue !== null ? `${prefix}${value}${suffix}` : '';
@@ -254,7 +256,8 @@ export default defineComponent({
         {
           min: state.minValue,
           max: state.maxValue
-        }
+        },
+        props.precision ?? 0
       );
 
     const changesEmmiter = (value: Nullable<number>, type: string): void => {
@@ -285,59 +288,105 @@ export default defineComponent({
       changesEmmiter(updatedNumber, CHANGE_EVENT);
     };
 
-    const updateInput = ({
-      target,
-      newValue,
-      selectionEnd,
-      key,
-      hasMinusChar
-    }: InsertedTextParts): void => {
-      if (!target) return;
-      if (newValue === null) {
-        changesEmmiter(null, INPUT_EVENT);
+    const setCaret = (
+      target: HTMLInputElement,
+      newValue: Nullable<string>,
+      prevPart: string,
+      lastPart: string,
+      key: string,
+      selectionStart: number,
+      selectionEnd: number
+    ): void => {
+      if (prevPart === '-') {
+        setCursorPosition(target, (props.prefix?.length || 0) + key.length + 1);
         return;
       }
 
-      const fixedNewValue = newValue.toFixed(props.precision ?? 0);
-
-      const minusZero = Number(fixedNewValue) === 0 && hasMinusChar;
-
-      const prefix = props.prefix ?? '';
-      const suffix = props.suffix ?? '';
-      const value = Intl.NumberFormat(localizationTag.value, {
-        useGrouping: props.useGrouping ?? undefined,
-        minimumFractionDigits: props.precision ?? undefined
-      }).format(Number(minusZero ? -0 : fixedNewValue));
-
-      const newFormattedValue = `${prefix}${value}${suffix}`;
-
-      const newLength = newFormattedValue.length;
-      const defaultMove = key === 'Backspace' ? -1 : 1;
-
-      const newCaretPosition =
-        target.value.length > 1
-          ? selectionEnd + (newLength - target.value.length || defaultMove)
-          : target.value.length + prefixLength.value + 1;
-
-      if (inputRef?.value?.input)
-        inputRef.value.input.value = newFormattedValue;
-
-      changesEmmiter(Number(minusZero ? -0 : fixedNewValue), INPUT_EVENT);
-
-      let movedCaret = newCaretPosition;
-
-      if (newCaretPosition < 0) {
-        movedCaret = selectionEnd;
-      } else if (newCaretPosition < prefixLength.value) {
-        movedCaret = prefixLength.value;
-      } else if (
-        newCaretPosition >
-        newFormattedValue.length - prefixLength.value
-      ) {
-        movedCaret = newFormattedValue.length - prefixLength.value;
+      if (!prevPart && !lastPart) {
+        setCursorPosition(target, (props.prefix?.length || 0) + key.length);
+        return;
       }
 
-      setCursorPosition(target, movedCaret);
+      let selectionMove = prevPart.includes(
+        getLocaleSeparator('decimal', localizationTag.value)
+      )
+        ? 1
+        : 0;
+
+      let newCaretPos =
+        (newValue?.length || 0) - lastPart.length + selectionMove;
+      const difference = (newValue?.length || 0) - lastPart.length || 1;
+
+      if (key === 'Backspace') {
+        selectionMove = prevPart.includes(
+          getLocaleSeparator('decimal', localizationTag.value)
+        )
+          ? (selectionEnd - selectionStart || 1) * -1
+          : 0;
+
+        newCaretPos = difference + selectionMove;
+      }
+
+      if (key === 'Delete') {
+        selectionMove = prevPart.includes(
+          getLocaleSeparator('decimal', localizationTag.value)
+        )
+          ? -1
+          : 0;
+        newCaretPos = difference + selectionMove;
+      }
+
+      setCursorPosition(target, newCaretPos);
+    };
+
+    const updateInput = ({
+      target,
+      numberValue,
+      prevPart,
+      lastPart,
+      key
+    }: InsertedTextParts): void => {
+      const { selectionStart, selectionEnd } = target;
+
+      if (!numberValue) {
+        const correction = key === 'Backspace' ? -1 : 1;
+        setCursorPosition(target, (selectionStart || 0) + correction);
+        return;
+      }
+
+      if (
+        (numberValue.toString().includes('.') ||
+          numberValue.toString().includes('-.')) &&
+        !Number(numberValue) &&
+        inputRef?.value?.input
+      ) {
+        inputRef.value.input.value = '';
+        changesEmmiter(null, 'input');
+        setCursorPosition(target, props.prefix?.length || 0);
+        return;
+      }
+
+      const newForamttedValue = Intl.NumberFormat(localizationTag.value, {
+        useGrouping: props.useGrouping ?? undefined,
+        minimumFractionDigits: props.precision ?? undefined,
+        maximumFractionDigits: props.precision ?? undefined
+      }).format(Number(numberValue));
+
+      const newValue = `${additions.value.prefix}${newForamttedValue}${additions.value.suffix}`;
+
+      if (inputRef?.value?.input) inputRef.value.input.value = newValue;
+
+      changesEmmiter(Number(numberValue), 'input');
+
+      setCaret(
+        target,
+        newValue,
+        prevPart,
+        lastPart,
+        key,
+        selectionStart ?? 0,
+        selectionEnd ?? 0
+      );
     };
 
     const handleBlur = (event: FocusEvent): void => {
@@ -365,16 +414,9 @@ export default defineComponent({
     };
 
     const handleKeyPress = (event: KeyboardEvent): void => {
+      if (Number.isNaN(Number(event.key)) && event.key !== '-') return;
+
       const target = event.target as HTMLInputElement;
-
-      if (
-        Number.isNaN(Number(event.key)) &&
-        event.key !== '-' &&
-        event.key !== '.' &&
-        event.key !== ','
-      )
-        return;
-
       const { value, selectionNewStart, selectionNewEnd } = getCleanSelections(
         target,
         additions.value
@@ -386,10 +428,14 @@ export default defineComponent({
           selectionNewEnd - selectionNewStart === value.length
         ) {
           if (inputRef?.value?.input) inputRef.value.input.value = '-';
-        } else if (selectionNewStart === 1) {
+        } else if (selectionNewStart === 0 && !value.includes('-')) {
           updateInput(insertTextFn(target, event.key));
         }
 
+        return;
+      }
+
+      if (value.length && selectionNewStart > value.length) {
         return;
       }
 
@@ -400,20 +446,59 @@ export default defineComponent({
       const target = event.target as HTMLInputElement;
 
       const { value, selectionStart, selectionEnd } = target;
+      const {
+        value: cleanValue,
+        selectionNewStart,
+        selectionNewEnd
+      } = getCleanSelections(target, additions.value);
 
       switch (event.key) {
         case 'Backspace':
         case 'Delete':
           event.preventDefault();
-          updateInput(insertTextFn(target, event.key));
+
+          if (
+            ((event.key === 'Backspace' && selectionNewStart === 0) ||
+              (event.key === 'Delete' &&
+                selectionNewEnd === cleanValue.length)) &&
+            selectionStart === selectionEnd
+          ) {
+            return;
+          }
+
+          if (
+            selectionNewEnd - selectionNewStart === cleanValue.length ||
+            cleanValue === '-'
+          ) {
+            if (inputRef?.value?.input) inputRef.value.input.value = '';
+            changesEmmiter(null, 'input');
+          } else {
+            updateInput(insertTextFn(target, event.key));
+          }
+
           break;
         case 'ArrowLeft':
-          if ((selectionStart ?? 0) < prefixLength.value + 1)
+          if (
+            (selectionStart ?? 0) <= prefixLength.value &&
+            selectionStart !== selectionEnd
+          ) {
+            setCursorPosition(target, prefixLength.value);
+          }
+
+          if (props.prefix && (selectionStart ?? 0) <= prefixLength.value)
             event.preventDefault();
+
           break;
         case 'ArrowRight':
-          if ((selectionEnd ?? 0) > value.length - suffixLength.value - 1)
-            event.preventDefault();
+          if (
+            selectionNewEnd >= cleanValue.length &&
+            selectionStart !== selectionEnd
+          ) {
+            setCursorPosition(target, value.length - suffixLength.value);
+          }
+
+          if (selectionNewEnd >= cleanValue.length) event.preventDefault();
+
           break;
         case 'ArrowUp':
           event.preventDefault();

@@ -51,16 +51,24 @@ const getCleanSelections = (
 ): Selections => {
   const { value, selectionStart, selectionEnd } = target;
 
+  if (value === '-') {
+    return {
+      selectionNewStart: selectionStart,
+      selectionNewEnd: selectionEnd,
+      value
+    };
+  }
+
   const prefixLength = additions.prefix?.length ?? 0;
   const suffixLength = additions.suffix?.length ?? 0;
 
   const selectionNewStart =
-    selectionStart <= prefixLength ? prefixLength : selectionStart;
+    selectionStart <= prefixLength ? 0 : selectionStart - prefixLength;
 
   const selectionNewEnd =
     selectionEnd >= value.length - suffixLength
-      ? value.length - suffixLength
-      : selectionEnd;
+      ? value.length - suffixLength - prefixLength
+      : selectionEnd - prefixLength;
 
   return {
     selectionNewStart,
@@ -102,54 +110,6 @@ const parseLocaleNumber = (
   );
 };
 
-const updateValue = (
-  target: HTMLInputElement,
-  selectionStart: number,
-  selectionEnd: number,
-  insertedValue: string,
-  key: string,
-  additions: AddittionsMatch,
-  minMax: { min: number; max: number },
-  localizationTag: string
-): InsertedTextParts => {
-  const { value } = target;
-
-  const valueSeparatedParts = {
-    prev: value.substring(additions.prefix?.length ?? 0, selectionStart),
-    next: value.substring(
-      selectionEnd,
-      value.length - (additions.suffix?.length ?? 0)
-    )
-  };
-
-  if (
-    !valueSeparatedParts.prev &&
-    valueSeparatedParts.next.substring(1, -1) === getLocaleSeparator('decimal')
-  ) {
-    return {
-      target,
-      newValue: null,
-      selectionEnd,
-      hasMinusChar: false
-    };
-  }
-
-  const newValue = parseLocaleNumber(
-    `${valueSeparatedParts.prev}${insertedValue}${valueSeparatedParts.next}`,
-    localizationTag
-  );
-
-  if (newValue > minMax.max || newValue < minMax.min) return {};
-
-  return {
-    target,
-    newValue,
-    selectionEnd,
-    key,
-    hasMinusChar: newValue < 0 || key === '-'
-  };
-};
-
 const insertText = (
   target: HTMLInputElement,
   key: string,
@@ -157,139 +117,66 @@ const insertText = (
   additions: AddittionsMatch,
   inputRef: Ref<QInputInstance | null>,
   localizationTag: string,
-  minMax: { min: number; max: number }
+  minMax: { min: number; max: number },
+  precision: number
 ): InsertedTextParts => {
-  const { selectionStart, selectionEnd } = target;
+  const { value, selectionStart, selectionEnd } = target;
 
-  const { value, selectionNewStart, selectionNewEnd } = getCleanSelections(
-    target,
-    additions
-  );
+  let correction = 0;
+  let insertedKey = key;
 
-  let movedSelectionEnd = selectionNewEnd;
+  let prevPart = value.substring(0, selectionStart + correction);
+  let lastPart = value.substring(selectionEnd, value.length);
 
-  let moveSelection = 0;
-  let insertedValue = '';
+  if (key === 'Backspace' || key === 'Delete') {
+    const movedCaret = key === 'Delete' ? 1 : -1;
+    correction = selectionEnd !== selectionStart ? 0 : movedCaret;
 
-  const previousPart = getValueWithoutAdditions(
-    formattedValue.substring(0, selectionNewStart),
-    additions
-  );
-  const lastPart = getValueWithoutAdditions(
-    formattedValue.substring(movedSelectionEnd),
-    additions
-  );
+    const deletedChar =
+      key === 'Delete' ? value[selectionStart] : value[selectionStart - 1];
 
-  if (
-    (key === 'Backspace' && !previousPart.length) ||
-    (key === 'Delete' && !lastPart.length)
-  ) {
-    if (movedSelectionEnd - selectionNewStart === value.length) {
+    if (selectionEnd === selectionStart && isCharReadonly(deletedChar)) {
       return {
         target,
-        newValue: null,
-        selectionEnd: movedSelectionEnd,
-        key,
-        hasMinusChar: false
+        key
       };
     }
 
-    if (movedSelectionEnd > selectionNewStart) {
-      return updateValue(
-        target,
-        selectionNewStart,
-        movedSelectionEnd,
-        insertedValue,
-        key,
-        additions,
-        minMax,
-        localizationTag
-      );
-    }
+    insertedKey = '';
 
-    if (value === '-') {
-      // eslint-disable-next-line no-param-reassign
-      inputRef.value.input.value = '';
-    }
-
-    return {};
+    if (key === 'Backspace')
+      prevPart = value.substring(0, selectionStart + correction);
+    else lastPart = value.substring(selectionEnd + correction, value.length);
   }
 
-  if (
-    key !== 'Backspace' &&
-    !lastPart.length &&
-    selectionStart === selectionEnd &&
-    selectionStart !== 0
-  ) {
-    return {};
-  }
+  const newStringValue = `${prevPart}${insertedKey}${lastPart}`;
 
-  const prevChar = previousPart.substring(previousPart.length - 1);
-  const nextChar = lastPart.substring(1, -1);
+  const numberValue = [...newStringValue]
+    .filter(
+      num =>
+        !Number.isNaN(Number(num)) ||
+        num === getLocaleSeparator('decimal', localizationTag) ||
+        num === '-'
+    )
+    .join('');
 
-  if (
-    key === getLocaleSeparator('decimal', localizationTag) ||
-    key === getLocaleSeparator('', localizationTag)
-  ) {
-    if (nextChar === getLocaleSeparator('decimal', localizationTag))
-      setCursorPosition(target, (selectionStart ?? 0) + 1);
-
-    return {};
-  }
-
-  if (key === '-' && nextChar === key) return {};
-
-  switch (key) {
-    case 'Backspace':
-      if (movedSelectionEnd > selectionNewStart) {
-        moveSelection = isCharReadonly(prevChar) ? -1 : 0;
-      } else {
-        moveSelection = isCharReadonly(prevChar) ? -2 : -1;
-        movedSelectionEnd -= isCharReadonly(prevChar) ? 1 : 0;
-      }
-      break;
-    case 'Delete':
-      if (movedSelectionEnd > selectionNewStart) {
-        moveSelection = 0;
-      } else {
-        moveSelection = isCharReadonly(nextChar) ? 1 : 0;
-        movedSelectionEnd += isCharReadonly(nextChar) ? 2 : 1;
-      }
-      break;
-    default:
-      insertedValue = key;
-      break;
-  }
-
-  if (insertedValue && value === '-') {
+  if (numberValue > minMax.max || numberValue < minMax.min) {
     return {
       target,
-      newValue: Number(key) * -1,
-      selectionEnd: movedSelectionEnd,
-      key,
-      hasMinusChar: false
+      key
     };
   }
 
-  if (movedSelectionEnd - selectionNewStart === value.length) {
-    return {
-      target,
-      newValue: Number(key),
-      selectionEnd: selectionNewStart + key.length,
-      hasMinusChar: false
-    };
-  }
+  const match = `^-?\\d+(?:\\.\\d{0,${precision}})?`;
+  const reg = new RegExp(match);
 
-  return updateValue(
+  return {
     target,
-    selectionNewStart + moveSelection,
-    movedSelectionEnd,
-    insertedValue,
-    key,
-    additions,
-    minMax,
-    localizationTag
-  );
+    numberValue: numberValue.match(reg)?.[0] || numberValue,
+    prevPart,
+    lastPart,
+    key
+  };
 };
 
 const insertPasteText = (
@@ -330,6 +217,7 @@ export {
   getIncreasedValue,
   getDecreasedValue,
   getCleanSelections,
+  getLocaleSeparator,
   insertText,
   insertPasteText,
   setCursorPosition

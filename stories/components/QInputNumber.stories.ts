@@ -19,7 +19,7 @@ const storyMetadata: Meta = {
 const QInputNumberStory: Story<QInputNumberProps> = args =>
   defineComponent({
     setup() {
-      const numberValue = ref<string>('1124');
+      const numberValue = ref<string>('1234');
       const useGrouping = ref<boolean>(true);
       const precision = ref<number>(2);
 

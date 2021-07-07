@@ -2,7 +2,7 @@ import { createApp, ref, nextTick } from 'vue';
 
 import QProgressBarContainer from './QProgressBarContainer';
 
-import { ANIMATION_IN_MS } from './constants';
+import { HIDE_ANIMATION_IN_MS, TRANSFORM_ANIMATION_IN_MS } from './constants';
 import { createQueue } from './utils';
 import type { QProgressBar, QProgressBarPluginOptions } from './types';
 
@@ -104,15 +104,16 @@ export const createProgressBar = (
 
         setTimeout(() => {
           progress.value = 0;
-          next();
-        }, ANIMATION_IN_MS);
-      }, ANIMATION_IN_MS * 2);
+
+          setTimeout(() => {
+            next();
+          }, HIDE_ANIMATION_IN_MS);
+        }, HIDE_ANIMATION_IN_MS);
+      }, TRANSFORM_ANIMATION_IN_MS);
     });
   };
 
   const forceDone = (): void => {
-    if (!isStarted.value) start();
-
     if (options.stackable) callStacks.value = 0;
     done();
   };

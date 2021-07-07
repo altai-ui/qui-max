@@ -27,7 +27,7 @@ jobs:
       - run: yarn build-storybook
 
       - name: Deploy to Netlify
-        uses: nwtgck/actions-netlify@v1.2
+        uses: nwtgck/actions-netlify@v1.2.2
         if: startsWith(github.head_ref, 'dependabot/*') == false
         with:
           publish-dir: 'storybook-static'

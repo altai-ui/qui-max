@@ -89,9 +89,10 @@ export const createProgressBar = (
 
   const done = (): void => {
     if (!isStarted.value) return;
-    if (options.stackable && callStacks.value > 1) {
-      callStacks.value -= 1;
-      return;
+
+    if (options.stackable) {
+      if (callStacks.value) callStacks.value -= 1;
+      if (callStacks.value) return;
     }
 
     set(100);

@@ -13,7 +13,7 @@
 
 <p align="center" class="unchanged rich-diff-level-one">
 
-# Qui is Neumorphic design system for Web.
+# Qui is Neumorphic design system for Web
 
 Written on TypeScript with Composition API 🔥
 

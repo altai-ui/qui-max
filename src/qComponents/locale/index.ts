@@ -1,7 +1,7 @@
 import { get, isString } from 'lodash-es';
 
 import { getConfig } from '@/qComponents/config';
-import { Nullable } from '#/helpers';
+import type { Nullable } from '#/helpers';
 
 export type Messages = {
   [key: string]: string | string[] | Messages;

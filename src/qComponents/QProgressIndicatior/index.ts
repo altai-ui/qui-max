@@ -7,7 +7,7 @@ import type {
   QProgressIndicatior,
   QProgressIndicatiorPluginOptions
 } from './src/types';
-import { Nullable, Nillable } from '#/helpers';
+import type { Nullable, Nillable } from '#/helpers';
 
 let progressIndicatior: Nullable<QProgressIndicatior> = null;
 

@@ -54,8 +54,8 @@ const QProgressIndicatiorStory: Story<QProgressIndicatiorPluginOptions> = () =>
       <q-button @click="handleSetClick">Set 25</q-button>
       <q-button @click="handleIncClick">Inc 10</q-button>
       <q-button @click="handleDecClick">Dec -10</q-button>
-      <q-button @click="handleDoneClick">Done</q-button>
-      <q-button @click="handleForceDoneClick">Force done</q-button>
+      <q-button @click="handleDoneClick" theme="secondary">Done</q-button>
+      <q-button @click="handleForceDoneClick" theme="secondary">Force done</q-button>
     `
   });
 

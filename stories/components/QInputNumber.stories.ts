@@ -35,10 +35,10 @@ const QInputNumberStory: Story<QInputNumberProps> = args =>
       <q-input-number
         v-model="numberValue"
         :precision="precision"
-        :disabled="args.disabled"
-        :use-grouping="useGrouping"
         prefix=">"
         suffix="<"
+        :disabled="args.disabled"
+        :use-grouping="useGrouping"
         :no-controls="args.noControls"
         :validate-event="args.validateEvent"
         @input="handleEmit($event, 'input')"

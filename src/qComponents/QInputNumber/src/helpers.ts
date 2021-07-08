@@ -113,9 +113,6 @@ const parseLocaleNumber = (
 const insertText = (
   target: HTMLInputElement,
   key: string,
-  formattedValue: string,
-  additions: AddittionsMatch,
-  inputRef: Ref<QInputInstance | null>,
   localizationTag: string,
   minMax: { min: number; max: number },
   precision: number
@@ -138,7 +135,8 @@ const insertText = (
     if (selectionEnd === selectionStart && isCharReadonly(deletedChar)) {
       return {
         target,
-        key
+        key,
+        numberValue: null
       };
     }
 
@@ -163,7 +161,8 @@ const insertText = (
   if (numberValue > minMax.max || numberValue < minMax.min) {
     return {
       target,
-      key
+      key,
+      numberValue: numberValue > minMax.max ? minMax.max : minMax.min
     };
   }
 
@@ -182,32 +181,41 @@ const insertText = (
 const insertPasteText = (
   target: HTMLInputElement,
   text: string,
-  formattedValue: string,
-  additions: AddittionsMatch
+  localizationTag: string,
+  minMax: { min: number; max: number },
+  precision: number
 ): InsertedTextParts => {
-  const parsedText = parseLocaleNumber(
-    getValueWithoutAdditions(text, additions)
-  );
-  if (Number.isNaN(Number(parsedText))) return {};
+  const { value, selectionStart, selectionEnd } = target;
 
-  const { selectionStart, selectionEnd } = target;
+  const prevPart = value.substring(0, selectionStart);
+  const lastPart = value.substring(selectionEnd, value.length);
 
-  const previousPart = getValueWithoutAdditions(
-    formattedValue.substring(0, selectionStart ?? 0),
-    additions
-  );
-  const lastPart = getValueWithoutAdditions(
-    formattedValue.substring(selectionEnd ?? 0),
-    additions
-  );
+  const numberValue = [...`${prevPart}${text}${lastPart}`]
+    .filter(
+      num =>
+        !Number.isNaN(Number(num)) ||
+        num === getLocaleSeparator('decimal', localizationTag) ||
+        num === '-'
+    )
+    .join('');
 
-  const newValue = parseLocaleNumber(`${previousPart}${parsedText}${lastPart}`);
+  if (numberValue > minMax.max || numberValue < minMax.min) {
+    return {
+      target,
+      key: text,
+      numberValue: numberValue > minMax.max ? minMax.max : minMax.min
+    };
+  }
+
+  const match = `^-?\\d+(?:\\.\\d{0,${precision}})?`;
+  const reg = new RegExp(match);
 
   return {
     target,
-    newValue,
-    selectionEnd: selectionEnd ?? 0,
-    hasMinusChar: false
+    numberValue: numberValue.match(reg)?.[0] || numberValue,
+    prevPart,
+    lastPart,
+    key: text
   };
 };
 

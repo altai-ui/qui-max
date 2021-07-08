@@ -249,9 +249,6 @@ export default defineComponent({
       insertText(
         target,
         key,
-        formattedValue.value,
-        additions.value,
-        inputRef,
         localizationTag.value,
         {
           min: state.minValue,
@@ -298,12 +295,12 @@ export default defineComponent({
       selectionEnd: number
     ): void => {
       if (prevPart === '-') {
-        setCursorPosition(target, (props.prefix?.length || 0) + key.length + 1);
+        setCursorPosition(target, prefixLength.value + key.length + 1);
         return;
       }
 
       if (!prevPart && !lastPart) {
-        setCursorPosition(target, (props.prefix?.length || 0) + key.length);
+        setCursorPosition(target, prefixLength.value + key.length);
         return;
       }
 
@@ -315,7 +312,8 @@ export default defineComponent({
 
       let newCaretPos =
         (newValue?.length || 0) - lastPart.length + selectionMove;
-      const difference = (newValue?.length || 0) - lastPart.length || 1;
+      const difference =
+        (newValue?.length || 0) - lastPart.length || prefixLength.value;
 
       if (key === 'Backspace') {
         selectionMove = prevPart.includes(
@@ -323,8 +321,7 @@ export default defineComponent({
         )
           ? (selectionEnd - selectionStart || 1) * -1
           : 0;
-
-        newCaretPos = difference + selectionMove;
+        newCaretPos = (difference <= 0 ? 0 : difference) + selectionMove;
       }
 
       if (key === 'Delete') {
@@ -348,7 +345,7 @@ export default defineComponent({
     }: InsertedTextParts): void => {
       const { selectionStart, selectionEnd } = target;
 
-      if (!numberValue) {
+      if (numberValue === null) {
         const correction = key === 'Backspace' ? -1 : 1;
         setCursorPosition(target, (selectionStart || 0) + correction);
         return;
@@ -356,7 +353,8 @@ export default defineComponent({
 
       if (
         (numberValue.toString().includes('.') ||
-          numberValue.toString().includes('-.')) &&
+          numberValue.toString().includes('-.') ||
+          !numberValue) &&
         !Number(numberValue) &&
         inputRef?.value?.input
       ) {
@@ -366,17 +364,30 @@ export default defineComponent({
         return;
       }
 
+      const numberValueAsNumber = Number(numberValue);
+
       const newForamttedValue = Intl.NumberFormat(localizationTag.value, {
         useGrouping: props.useGrouping ?? undefined,
         minimumFractionDigits: props.precision ?? undefined,
         maximumFractionDigits: props.precision ?? undefined
-      }).format(Number(numberValue));
+      }).format(numberValueAsNumber);
 
-      const newValue = `${additions.value.prefix}${newForamttedValue}${additions.value.suffix}`;
+      const newValue = `${props.prefix || ''}${newForamttedValue}${
+        props.suffix || ''
+      }`;
+
+      if (
+        numberValueAsNumber >= state.maxValue ||
+        numberValueAsNumber <= state.minValue
+      ) {
+        changesEmmiter(numberValueAsNumber, 'input');
+        setCursorPosition(target, newValue.length);
+        return;
+      }
 
       if (inputRef?.value?.input) inputRef.value.input.value = newValue;
 
-      changesEmmiter(Number(numberValue), 'input');
+      changesEmmiter(numberValueAsNumber, 'input');
 
       setCaret(
         target,
@@ -517,8 +528,19 @@ export default defineComponent({
       const target = event.target as HTMLInputElement;
       const text = event?.clipboardData?.getData('Text') ?? '';
 
+      if (Number.isNaN(Number(text))) return;
+
       updateInput(
-        insertPasteText(target, text, formattedValue.value, additions.value)
+        insertPasteText(
+          target,
+          text,
+          localizationTag.value,
+          {
+            min: state.minValue,
+            max: state.maxValue
+          },
+          props.precision ?? 0
+        )
       );
     };
 

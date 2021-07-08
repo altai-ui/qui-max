@@ -11,7 +11,6 @@ import type {
 
 const isShown = ref<boolean>(false);
 const isStarted = ref<boolean>(false);
-const isAnimated = ref<boolean>(false);
 const progress = ref<number>(0);
 const callStacks = ref<number>(0);
 
@@ -83,7 +82,6 @@ export const createProgressIndicatior = (
 
       progress.value = 0;
       isShown.value = true;
-      isAnimated.value = true;
 
       if (options?.trickle ?? true) trickle();
       next();

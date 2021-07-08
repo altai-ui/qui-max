@@ -14,6 +14,7 @@
 <p align="center" class="unchanged rich-diff-level-one">
 
 # Qui is Neumorphic design system for Web.
+
 Written on TypeScript with Composition API 🔥
 
 A component's library helping us build great products for our customers.
@@ -94,7 +95,7 @@ In main.js:
 
 ```js
 import { createApp } from 'vue';
-import { createQui, QButton } from '@qvant/qui-max';
+import { createQui, QButton, QProgressIndicatior } from '@qvant/qui-max';
 
 // import required styles
 import '@qvant/qui-max/css/main';
@@ -103,6 +104,7 @@ import '@qvant/qui-max/icons';
 
 // import the only styles of component you gonna use
 import '@qvant/qui-max/css/q-button';
+import '@qvant/qui-max/css/q-progress-indicatior';
 
 const Qui = createQui({
   localization: {
@@ -124,6 +126,11 @@ const Qui = createQui({
 
 app.use(Qui);
 app.use(QButton);
+app.use(QProgressIndicatior, {
+  trickle: true,
+  trickleSpeed: 200,
+  stackable: true
+});
 ```
 
 Now you have implemented Vue and Qui Max to your project, and it's time to write your code.

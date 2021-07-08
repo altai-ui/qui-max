@@ -1,5 +1,10 @@
 import type { QInputInstance } from '@/qComponents/QInput/src/types';
-import type { Selections, AddittionsMatch, InsertedTextParts } from './types';
+import type {
+  Selections,
+  AddittionsMatch,
+  InsertedTextParts,
+  InsertedTextArgs
+} from './types';
 
 const setCursorPosition = (
   target: HTMLInputElement,
@@ -110,46 +115,80 @@ const parseLocaleNumber = (
   );
 };
 
-const insertText = (
+const setCaret = (
   target: HTMLInputElement,
+  newValue: Nullable<string>,
+  prevPart: string,
+  lastPart: string,
   key: string,
-  localizationTag: string,
-  minMax: { min: number; max: number },
-  precision: number
-): InsertedTextParts => {
-  const { value, selectionStart, selectionEnd } = target;
-
-  let correction = 0;
-  let insertedKey = key;
-
-  let prevPart = value.substring(0, selectionStart + correction);
-  let lastPart = value.substring(selectionEnd, value.length);
-
-  if (key === 'Backspace' || key === 'Delete') {
-    const movedCaret = key === 'Delete' ? 1 : -1;
-    correction = selectionEnd !== selectionStart ? 0 : movedCaret;
-
-    const deletedChar =
-      key === 'Delete' ? value[selectionStart] : value[selectionStart - 1];
-
-    if (selectionEnd === selectionStart && isCharReadonly(deletedChar)) {
-      return {
-        target,
-        key,
-        numberValue: null
-      };
-    }
-
-    insertedKey = '';
-
-    if (key === 'Backspace')
-      prevPart = value.substring(0, selectionStart + correction);
-    else lastPart = value.substring(selectionEnd + correction, value.length);
+  selectionStart: number,
+  selectionEnd: number,
+  prefixLength: number,
+  localizationTag: string
+): void => {
+  if (prevPart === '-') {
+    setCursorPosition(target, prefixLength + key.length + 1);
+    return;
   }
 
-  const newStringValue = `${prevPart}${insertedKey}${lastPart}`;
+  if (!prevPart && !lastPart) {
+    setCursorPosition(target, prefixLength + key.length);
+    return;
+  }
 
-  const numberValue = [...newStringValue]
+  let selectionMove = prevPart.includes(
+    getLocaleSeparator('decimal', localizationTag)
+  )
+    ? 1
+    : 0;
+
+  let newCaretPos = (newValue?.length || 0) - lastPart.length + selectionMove;
+  const difference = (newValue?.length || 0) - lastPart.length || prefixLength;
+
+  if (key === 'Backspace') {
+    console.log(
+      prevPart.includes(getLocaleSeparator('decimal', localizationTag))
+    );
+    selectionMove = prevPart.includes(
+      getLocaleSeparator('decimal', localizationTag)
+    )
+      ? (selectionEnd - selectionStart || 1) * -1
+      : 0;
+    newCaretPos = (difference <= 0 ? 0 : difference) + selectionMove;
+  }
+
+  if (key === 'Delete') {
+    selectionMove = prevPart.includes(
+      getLocaleSeparator('decimal', localizationTag)
+    )
+      ? -1
+      : 0;
+    newCaretPos = difference + selectionMove;
+  }
+
+  setCursorPosition(target, newCaretPos);
+};
+
+const updateValue = ({
+  target,
+  key,
+  insertedText,
+  localizationTag,
+  minMax,
+  precision,
+  prevPart,
+  lastPart
+}: {
+  target: HTMLInputElement;
+  key: string;
+  insertedText: string;
+  localizationTag: string;
+  minMax: { min: number; max: number };
+  precision: number;
+  prevPart: string;
+  lastPart: string;
+}): InsertedTextParts => {
+  const numberValue = [...`${prevPart}${insertedText}${lastPart}`]
     .filter(
       num =>
         !Number.isNaN(Number(num)) ||
@@ -178,45 +217,50 @@ const insertText = (
   };
 };
 
-const insertPasteText = (
-  target: HTMLInputElement,
-  text: string,
-  localizationTag: string,
-  minMax: { min: number; max: number },
-  precision: number
-): InsertedTextParts => {
+const insertText = (args: InsertedTextArgs): InsertedTextParts => {
+  const { target, key } = args;
   const { value, selectionStart, selectionEnd } = target;
+
+  const passedData = { ...args };
+  passedData.insertedText = key;
+
+  let correction = 0;
+
+  let prevPart = value.substring(0, selectionStart + correction);
+  let lastPart = value.substring(selectionEnd, value.length);
+
+  if (key === 'Backspace' || key === 'Delete') {
+    const movedCaret = key === 'Delete' ? 1 : -1;
+    correction = selectionEnd !== selectionStart ? 0 : movedCaret;
+
+    const deletedChar =
+      key === 'Delete' ? value[selectionStart] : value[selectionStart - 1];
+
+    if (selectionEnd === selectionStart && isCharReadonly(deletedChar)) {
+      return {
+        target,
+        key,
+        numberValue: null
+      };
+    }
+
+    passedData.insertedText = '';
+
+    if (key === 'Backspace')
+      prevPart = value.substring(0, selectionStart + correction);
+    else lastPart = value.substring(selectionEnd + correction, value.length);
+  }
+
+  return updateValue({ ...passedData, prevPart, lastPart });
+};
+
+const insertPasteText = (args: InsertedTextArgs): InsertedTextParts => {
+  const { value, selectionStart, selectionEnd } = args.target;
 
   const prevPart = value.substring(0, selectionStart);
   const lastPart = value.substring(selectionEnd, value.length);
 
-  const numberValue = [...`${prevPart}${text}${lastPart}`]
-    .filter(
-      num =>
-        !Number.isNaN(Number(num)) ||
-        num === getLocaleSeparator('decimal', localizationTag) ||
-        num === '-'
-    )
-    .join('');
-
-  if (numberValue > minMax.max || numberValue < minMax.min) {
-    return {
-      target,
-      key: text,
-      numberValue: numberValue > minMax.max ? minMax.max : minMax.min
-    };
-  }
-
-  const match = `^-?\\d+(?:\\.\\d{0,${precision}})?`;
-  const reg = new RegExp(match);
-
-  return {
-    target,
-    numberValue: numberValue.match(reg)?.[0] || numberValue,
-    prevPart,
-    lastPart,
-    key: text
-  };
+  return updateValue({ ...args, insertedText: args.key, prevPart, lastPart });
 };
 
 export {
@@ -228,5 +272,6 @@ export {
   getLocaleSeparator,
   insertText,
   insertPasteText,
-  setCursorPosition
+  setCursorPosition,
+  setCaret
 };

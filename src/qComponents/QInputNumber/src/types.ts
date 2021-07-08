@@ -39,6 +39,15 @@ export interface InsertedTextParts {
   key: string;
 }
 
+export interface InsertedTextArgs {
+  target: HTMLInputElement;
+  key: string;
+  insertedText: string;
+  localizationTag: string;
+  minMax: { min: number; max: number };
+  precision: number;
+}
+
 export interface QInputNumberInstance {
   state: QInputNumberState;
   isDisabled: ComputedRef<boolean>;
@@ -51,7 +60,8 @@ export interface QInputNumberInstance {
   handleFocus: (event: FocusEvent) => void;
   handleKeyDown: (event: KeyboardEvent) => void;
   handleKeyPress: (event: KeyboardEvent) => void;
-  handleChangeNumberButtonClick: (isIncrease: boolean) => void;
+  handleDecreaseClick: () => void;
+  handleIncreaseClick: () => void;
   inputRef: Ref<Nullable<HTMLElement>>;
   handlePaste: (event: ClipboardEvent) => void;
   handleClick: (event: MouseEvent) => void;

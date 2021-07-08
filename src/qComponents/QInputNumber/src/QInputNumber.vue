@@ -12,7 +12,7 @@
       type="button"
       :disabled="isDisabled || isDecreaseDisabled"
       :class="isDecreaseDisabled && 'q-input-number__button_is-disabled'"
-      @click="handleChangeNumberButtonClick(false)"
+      @click="handleDecreaseClick"
     />
 
     <q-input
@@ -36,7 +36,7 @@
       type="button"
       :disabled="isDisabled || isIncreaseDisabled"
       :class="isIncreaseDisabled && 'q-input-number__button_is-disabled'"
-      @click="handleChangeNumberButtonClick(true)"
+      @click="handleIncreaseClick"
     />
   </div>
 </template>
@@ -69,7 +69,8 @@ import {
   getLocaleSeparator,
   insertText,
   insertPasteText,
-  setCursorPosition
+  setCursorPosition,
+  setCaret
 } from './helpers';
 
 export default defineComponent({
@@ -254,16 +255,16 @@ export default defineComponent({
       target: HTMLInputElement,
       key: string
     ): InsertedTextParts =>
-      insertText(
+      insertText({
         target,
         key,
-        localizationTag.value,
-        {
+        localizationTag: localizationTag.value,
+        minMax: {
           min: state.minValue,
           max: state.maxValue
         },
-        props.precision ?? 0
-      );
+        precision: props.precision ?? 0
+      });
 
     const changesEmmiter = (value: Nullable<number>, type: string): void => {
       ctx.emit('update:modelValue', value);
@@ -293,55 +294,12 @@ export default defineComponent({
       changesEmmiter(updatedNumber, 'change');
     };
 
-    const setCaret = (
-      target: HTMLInputElement,
-      newValue: Nullable<string>,
-      prevPart: string,
-      lastPart: string,
-      key: string,
-      selectionStart: number,
-      selectionEnd: number
-    ): void => {
-      if (prevPart === '-') {
-        setCursorPosition(target, prefixLength.value + key.length + 1);
-        return;
-      }
+    const handleDecreaseClick = (): void => {
+      handleChangeNumberButtonClick(false);
+    };
 
-      if (!prevPart && !lastPart) {
-        setCursorPosition(target, prefixLength.value + key.length);
-        return;
-      }
-
-      let selectionMove = prevPart.includes(
-        getLocaleSeparator('decimal', localizationTag.value)
-      )
-        ? 1
-        : 0;
-
-      let newCaretPos =
-        (newValue?.length || 0) - lastPart.length + selectionMove;
-      const difference =
-        (newValue?.length || 0) - lastPart.length || prefixLength.value;
-
-      if (key === 'Backspace') {
-        selectionMove = prevPart.includes(
-          getLocaleSeparator('decimal', localizationTag.value)
-        )
-          ? (selectionEnd - selectionStart || 1) * -1
-          : 0;
-        newCaretPos = (difference <= 0 ? 0 : difference) + selectionMove;
-      }
-
-      if (key === 'Delete') {
-        selectionMove = prevPart.includes(
-          getLocaleSeparator('decimal', localizationTag.value)
-        )
-          ? -1
-          : 0;
-        newCaretPos = difference + selectionMove;
-      }
-
-      setCursorPosition(target, newCaretPos);
+    const handleIncreaseClick = (): void => {
+      handleChangeNumberButtonClick(true);
     };
 
     const updateInput = ({
@@ -404,7 +362,9 @@ export default defineComponent({
         lastPart,
         key,
         selectionStart ?? 0,
-        selectionEnd ?? 0
+        selectionEnd ?? 0,
+        prefixLength.value,
+        localizationTag.value
       );
     };
 
@@ -534,21 +494,21 @@ export default defineComponent({
 
     const handlePaste = (event: ClipboardEvent): void => {
       const target = event.target as HTMLInputElement;
-      const text = event?.clipboardData?.getData('Text') ?? '';
+      const key = event?.clipboardData?.getData('Text') ?? '';
 
-      if (Number.isNaN(Number(text))) return;
+      if (Number.isNaN(Number(key))) return;
 
       updateInput(
-        insertPasteText(
+        insertPasteText({
           target,
-          text,
-          localizationTag.value,
-          {
+          key,
+          localizationTag: localizationTag.value,
+          minMax: {
             min: state.minValue,
             max: state.maxValue
           },
-          props.precision ?? 0
-        )
+          precision: props.precision ?? 0
+        })
       );
     };
 
@@ -584,7 +544,8 @@ export default defineComponent({
       handleKeyDown,
       handleKeyPress,
       formattedValue,
-      handleChangeNumberButtonClick,
+      handleDecreaseClick,
+      handleIncreaseClick,
       handlePaste,
       handleClick
     };

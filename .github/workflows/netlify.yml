@@ -1,6 +1,6 @@
 name: Build and Deploy to Netlify
 on:
-  pull_request:
+  push:
     branches:
       - main
     tags-ignore:

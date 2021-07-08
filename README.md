@@ -145,7 +145,6 @@ Modern browsers are recomended
 - opera: >=62
 - edge: >=16
 - yandex: >=18
-- ie: ? (we don't know :) and will not support it)
 
 ## Development
 

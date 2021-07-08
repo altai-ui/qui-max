@@ -1,17 +1,9 @@
-import type { Meta, Story } from '@storybook/vue3';
+import type { Story } from '@storybook/vue3';
 import { defineComponent } from 'vue';
 
-import QProgressIndicatior, {
-  useProgressIndicatior
-} from '@/qComponents/QProgressIndicatior';
-import type { QProgressIndicatiorPluginOptions } from '@/qComponents/QProgressIndicatior';
+import { useProgressIndicatior } from '@/qComponents/QProgressIndicatior';
 
-const storyMetadata: Meta = {
-  title: 'Components/QProgressIndicatior',
-  component: QProgressIndicatior
-};
-
-const QProgressIndicatiorStory: Story<QProgressIndicatiorPluginOptions> = () =>
+export const QProgressIndicatiorStory: Story = () =>
   defineComponent({
     setup() {
       const progressIndicatior = useProgressIndicatior();
@@ -58,7 +50,3 @@ const QProgressIndicatiorStory: Story<QProgressIndicatiorPluginOptions> = () =>
       <q-button @click="handleForceDoneClick" theme="secondary">Force done</q-button>
     `
   });
-
-export const Default = QProgressIndicatiorStory.bind({});
-
-export default storyMetadata;

@@ -11,9 +11,9 @@ export interface QProgressIndicatior {
 }
 
 export interface QProgressIndicatiorPluginOptions {
-  stackable: boolean;
-  trickle: boolean;
-  trickleSpeed: number;
+  stackable?: boolean;
+  trickle?: boolean;
+  trickleSpeed?: number;
   onMounted?: (
     containerComponent: ComponentPublicInstance,
     containerApp: App<Element>

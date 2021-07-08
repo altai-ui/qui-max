@@ -1,0 +1,94 @@
+import { Meta, Preview, Story } from '@storybook/addon-docs';
+import { QProgressIndicatiorStory } from './Template';
+
+<Meta title="Components/QProgressIndicatior" />
+
+# QProgressIndicatior
+
+<Preview>
+  <Story name="Default">{QProgressIndicatiorStory.bind({})}</Story>
+</Preview>
+
+## Plugin options
+
+```ts
+{
+  stackable?: boolean;
+  trickle?: boolean;
+  trickleSpeed?: number;
+  onMounted?: (
+    containerComponent: ComponentPublicInstance,
+    containerApp: App<Element>
+  ) => void;
+}
+```
+
+## Provided by useProgressIndicatior
+
+```ts
+{
+  isStarted: Ref<boolean>;
+  progress: Ref<number>; // 0-100
+  start: () => void;
+  set: (value: number) => void;
+  inc: (value: number) => void;
+  done: () => void;
+  forceDone: () => void; // forcedly completes loading, even if several start calls were called
+}
+```
+
+## Usage
+
+```ts
+// router.ts
+import type { App } from 'vue';
+import { createRouter } from 'vue-router';
+import type { Router } from 'vue-router';
+
+const router = createRouter(/* Some router options */);
+
+const setupRouter = (app: App<Element>): Router => {
+  const progressIndicatior = useProgressIndicatior();
+
+  app.use(router);
+
+  router.beforeEach((_, __, next) => {
+    progressIndicatior?.start();
+    next();
+  });
+
+  router.afterEach(() => {
+    progressIndicatior?.done();
+  });
+
+  return router;
+};
+
+export { router, setupRouter };
+```
+
+```ts
+// main.ts
+import { createApp } from 'vue';
+import { createQui, QProgressIndicatior } from '@qvant/qui-max';
+import { setupRouter } from './router';
+
+const bootstrap = async (): Promise<void> => {
+  const app = createApp(App);
+  const Qui = createQui();
+
+  app.use(Qui);
+  app.use(QProgressIndicatior, {
+    trickle: true,
+    trickleSpeed: 200,
+    stackable: true
+  });
+
+  const router = setupRouter(app);
+  await router.isReady();
+
+  app.mount('#app');
+};
+
+bootstrap();
+```

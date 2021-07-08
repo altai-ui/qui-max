@@ -1,6 +1,6 @@
 import type { App, ComponentPublicInstance, Ref } from 'vue';
 
-export interface QProgressBar {
+export interface QProgressIndicatior {
   isStarted: Ref<boolean>;
   progress: Ref<number>;
   start: () => void;
@@ -10,7 +10,7 @@ export interface QProgressBar {
   forceDone: () => void;
 }
 
-export interface QProgressBarPluginOptions {
+export interface QProgressIndicatiorPluginOptions {
   stackable: boolean;
   trickle: boolean;
   trickleSpeed: number;

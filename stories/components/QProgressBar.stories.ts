@@ -1,41 +1,43 @@
 import type { Meta, Story } from '@storybook/vue3';
 import { defineComponent } from 'vue';
 
-import QProgressBar, { useProgressBar } from '@/qComponents/QProgressBar';
-import type { QProgressBarPluginOptions } from '@/qComponents/QProgressBar';
+import QProgressIndicatior, {
+  useProgressIndicatior
+} from '@/qComponents/QProgressIndicatior';
+import type { QProgressIndicatiorPluginOptions } from '@/qComponents/QProgressIndicatior';
 
 const storyMetadata: Meta = {
-  title: 'Components/QProgressBar',
-  component: QProgressBar
+  title: 'Components/QProgressIndicatior',
+  component: QProgressIndicatior
 };
 
-const QProgressBarStory: Story<QProgressBarPluginOptions> = () =>
+const QProgressIndicatiorStory: Story<QProgressIndicatiorPluginOptions> = () =>
   defineComponent({
     setup() {
-      const progressBar = useProgressBar();
+      const progressIndicatior = useProgressIndicatior();
 
       const handleStartClick = (): void => {
-        progressBar?.start();
+        progressIndicatior?.start();
       };
 
       const handleSetClick = (): void => {
-        progressBar?.set(25);
+        progressIndicatior?.set(25);
       };
 
       const handleIncClick = (): void => {
-        progressBar?.inc(10);
+        progressIndicatior?.inc(10);
       };
 
       const handleDecClick = (): void => {
-        progressBar?.inc(-10);
+        progressIndicatior?.inc(-10);
       };
 
       const handleDoneClick = (): void => {
-        progressBar?.done();
+        progressIndicatior?.done();
       };
 
       const handleForceDoneClick = (): void => {
-        progressBar?.forceDone();
+        progressIndicatior?.forceDone();
       };
 
       return {
@@ -57,6 +59,6 @@ const QProgressBarStory: Story<QProgressBarPluginOptions> = () =>
     `
   });
 
-export const Default = QProgressBarStory.bind({});
+export const Default = QProgressIndicatiorStory.bind({});
 
 export default storyMetadata;

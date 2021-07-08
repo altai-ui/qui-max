@@ -1,10 +1,13 @@
 import { createApp, ref, nextTick } from 'vue';
 
-import QProgressBarContainer from './QProgressBarContainer';
+import QProgressIndicatiorContainer from './QProgressIndicatiorContainer';
 
 import { HIDE_ANIMATION_IN_MS, TRANSFORM_ANIMATION_IN_MS } from './constants';
 import { createQueue } from './utils';
-import type { QProgressBar, QProgressBarPluginOptions } from './types';
+import type {
+  QProgressIndicatior,
+  QProgressIndicatiorPluginOptions
+} from './types';
 
 const isShown = ref<boolean>(false);
 const isStarted = ref<boolean>(false);
@@ -14,9 +17,9 @@ const callStacks = ref<number>(0);
 
 const queue = createQueue();
 
-export const createProgressBar = (
-  config?: QProgressBarPluginOptions
-): QProgressBar => {
+export const createProgressIndicatior = (
+  config?: QProgressIndicatiorPluginOptions
+): QProgressIndicatior => {
   const options = {
     trickle: true,
     trickleSpeed: 200,
@@ -25,7 +28,7 @@ export const createProgressBar = (
   };
 
   nextTick(() => {
-    const app = createApp(QProgressBarContainer, {
+    const app = createApp(QProgressIndicatiorContainer, {
       isShown,
       isStarted,
       progress

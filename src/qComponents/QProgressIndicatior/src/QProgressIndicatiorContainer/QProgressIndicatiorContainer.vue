@@ -10,38 +10,40 @@ import {
 import type { VNode } from 'vue';
 
 import type {
-  QProgressBarContainerPropIsShown,
-  QProgressBarContainerPropIsStarted,
-  QProgressBarContainerPropProgress,
-  QProgressBarContainerProps,
-  QProgressBarContainerInstance
+  QProgressIndicatiorContainerPropIsShown,
+  QProgressIndicatiorContainerPropIsStarted,
+  QProgressIndicatiorContainerPropProgress,
+  QProgressIndicatiorContainerProps,
+  QProgressIndicatiorContainerInstance
 } from './types';
 
 export default defineComponent({
-  name: 'QProgressBarContainer',
-  componentName: 'QProgressBarContainer',
+  name: 'QProgressIndicatiorContainer',
+  componentName: 'QProgressIndicatiorContainer',
 
   props: {
     isShown: {
-      type: Object as PropType<QProgressBarContainerPropIsShown>,
+      type: Object as PropType<QProgressIndicatiorContainerPropIsShown>,
       required: true
     },
     isStarted: {
-      type: Object as PropType<QProgressBarContainerPropIsStarted>,
+      type: Object as PropType<QProgressIndicatiorContainerPropIsStarted>,
       required: true
     },
     progress: {
-      type: Object as PropType<QProgressBarContainerPropProgress>,
+      type: Object as PropType<QProgressIndicatiorContainerPropProgress>,
       required: true
     }
   },
 
-  setup(props: QProgressBarContainerProps): QProgressBarContainerInstance {
+  setup(
+    props: QProgressIndicatiorContainerProps
+  ): QProgressIndicatiorContainerInstance {
     const instance = getCurrentInstance();
 
     const classes = computed<Record<string, boolean>>(() => ({
-      'q-progress-bar': true,
-      'q-progress-bar_shown': props.isShown.value
+      'q-progress-indicatior': true,
+      'q-progress-indicatior_shown': props.isShown.value
     }));
 
     const styles = computed<Record<string, string>>(() => ({

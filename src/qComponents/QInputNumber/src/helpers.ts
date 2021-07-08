@@ -172,19 +172,19 @@ const setCaret = (
 const updateValue = ({
   target,
   key,
-  insertedText,
   localizationTag,
   minMax,
   precision,
+  insertedText,
   prevPart,
   lastPart
 }: {
   target: HTMLInputElement;
   key: string;
-  insertedText: string;
   localizationTag: string;
   minMax: { min: number; max: number };
   precision: number;
+  insertedText: string;
   prevPart: string;
   lastPart: string;
 }): InsertedTextParts => {
@@ -263,6 +263,26 @@ const insertPasteText = (args: InsertedTextArgs): InsertedTextParts => {
   return updateValue({ ...args, insertedText: args.key, prevPart, lastPart });
 };
 
+const handleClickFn = (
+  event: MouseEvent,
+  prefixLength: number,
+  suffixLength: number
+): void => {
+  const target = event.target as HTMLInputElement;
+  const { value, selectionStart, selectionEnd } = target;
+
+  if (selectionStart !== selectionEnd) {
+    event.preventDefault();
+    return;
+  }
+
+  if ((selectionStart ?? 0) < prefixLength + 1) {
+    setCursorPosition(target, prefixLength);
+  } else if ((selectionStart ?? 0) > value.length - suffixLength - 1) {
+    setCursorPosition(target, value.length - suffixLength);
+  }
+};
+
 export {
   parseLocaleNumber,
   getValueWithoutAdditions,
@@ -273,5 +293,6 @@ export {
   insertText,
   insertPasteText,
   setCursorPosition,
-  setCaret
+  setCaret,
+  handleClickFn
 };

@@ -42,7 +42,6 @@ export interface InsertedTextParts {
 export interface InsertedTextArgs {
   target: HTMLInputElement;
   key: string;
-  insertedText: string;
   localizationTag: string;
   minMax: { min: number; max: number };
   precision: number;

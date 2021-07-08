@@ -66,7 +66,7 @@ import {
   getIncreasedValue,
   getDecreasedValue,
   getCleanSelections,
-  getLocaleSeparator,
+  handleClickFn,
   insertText,
   insertPasteText,
   setCursorPosition,
@@ -326,7 +326,7 @@ export default defineComponent({
       ) {
         inputRef.value.input.value = '';
         changesEmmiter(null, 'input');
-        setCursorPosition(target, props.prefix?.length || 0);
+        setCursorPosition(target, prefixLength.value);
         return;
       }
 
@@ -513,22 +513,7 @@ export default defineComponent({
     };
 
     const handleClick = (event: MouseEvent): void => {
-      const target = event.target as HTMLInputElement;
-      const { value, selectionStart, selectionEnd } = target;
-
-      if (selectionStart !== selectionEnd) {
-        event.preventDefault();
-        return;
-      }
-
-      if ((selectionStart ?? 0) < prefixLength.value + 1) {
-        setCursorPosition(target, prefixLength.value);
-      } else if (
-        (selectionStart ?? 0) >
-        value.length - suffixLength.value - 1
-      ) {
-        setCursorPosition(target, value.length - suffixLength.value);
-      }
+      handleClickFn(event, prefixLength.value, suffixLength.value);
     };
 
     return {

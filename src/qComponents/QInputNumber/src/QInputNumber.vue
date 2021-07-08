@@ -46,13 +46,6 @@ import { inject, computed, reactive, ref, defineComponent } from 'vue';
 
 import { getConfig } from '@/qComponents/config';
 
-import {
-  CHANGE_EVENT,
-  FOCUS_EVENT,
-  BLUR_EVENT,
-  INPUT_EVENT,
-  UPDATE_MODEL_VALUE_EVENT
-} from '@/qComponents/constants/events';
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
 
@@ -152,11 +145,26 @@ export default defineComponent({
   },
 
   emits: [
-    CHANGE_EVENT,
-    FOCUS_EVENT,
-    BLUR_EVENT,
-    INPUT_EVENT,
-    UPDATE_MODEL_VALUE_EVENT
+    /**
+     * triggers when model updates
+     */
+    'change',
+    /**
+     * triggers when input gets focus
+     */
+    'focus',
+    /**
+     * triggers when input gets blur
+     */
+    'blur',
+    /**
+     * triggers when native input event fires
+     */
+    'input',
+    /**
+     * triggers when model updates
+     */
+    'update:modelValue'
   ],
 
   setup(props: QInputNumberProps, ctx): QInputNumberInstance {
@@ -258,17 +266,17 @@ export default defineComponent({
       );
 
     const changesEmmiter = (value: Nullable<number>, type: string): void => {
-      ctx.emit(UPDATE_MODEL_VALUE_EVENT, value);
+      ctx.emit('update:modelValue', value);
 
-      if (type === CHANGE_EVENT) {
-        ctx.emit(CHANGE_EVENT, value);
-        if (props.validateEvent) qFormItem?.validateField(CHANGE_EVENT);
+      if (type === 'change') {
+        ctx.emit('change', value);
+        if (props.validateEvent) qFormItem?.validateField('change');
         return;
       }
 
-      ctx.emit(INPUT_EVENT, value);
-      ctx.emit(CHANGE_EVENT, value);
-      if (props.validateEvent) qFormItem?.validateField(INPUT_EVENT);
+      ctx.emit('input', value);
+      ctx.emit('change', value);
+      if (props.validateEvent) qFormItem?.validateField('input');
     };
 
     const handleChangeNumberButtonClick = (isIncrease: boolean): void => {
@@ -282,7 +290,7 @@ export default defineComponent({
       )
         return;
 
-      changesEmmiter(updatedNumber, CHANGE_EVENT);
+      changesEmmiter(updatedNumber, 'change');
     };
 
     const setCaret = (
@@ -403,7 +411,7 @@ export default defineComponent({
     const handleBlur = (event: FocusEvent): void => {
       if (state.prevValue === inputRef?.value?.input?.value) return;
 
-      ctx.emit(BLUR_EVENT, event);
+      ctx.emit('blur', event);
 
       const target = event.target as HTMLInputElement;
 
@@ -417,11 +425,11 @@ export default defineComponent({
 
       changesEmmiter(emittedValue, 'change');
 
-      if (props.validateEvent) qFormItem?.validateField(BLUR_EVENT);
+      if (props.validateEvent) qFormItem?.validateField('blur');
     };
     const handleFocus = (event: FocusEvent): void => {
       state.prevValue = inputRef?.value?.input?.value ?? null;
-      ctx.emit(FOCUS_EVENT, event);
+      ctx.emit('focus', event);
     };
 
     const handleKeyPress = (event: KeyboardEvent): void => {

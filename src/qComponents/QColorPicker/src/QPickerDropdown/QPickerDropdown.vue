@@ -61,12 +61,11 @@ import {
   nextTick,
   inject
 } from 'vue';
-import { useI18n } from 'vue-i18n';
 import { colord } from 'colord';
 import type { Colord } from 'colord';
 
+import { t } from '@/qComponents/locale';
 import { validateArray } from '@/qComponents/helpers';
-import { CLEAR_EVENT, CLOSE_EVENT } from '@/qComponents/constants/events';
 import QButton from '@/qComponents/QButton';
 import QInput from '@/qComponents/QInput';
 import type { Nullable } from '#/helpers';
@@ -81,8 +80,6 @@ import type {
   QPickerDropdownPropColorFormat,
   QPickerDropdownInstance
 } from './types';
-
-const PICK_EVENT = 'pick';
 
 export default defineComponent({
   name: 'QPickerDropdown',
@@ -120,7 +117,7 @@ export default defineComponent({
     }
   },
 
-  emits: [CLOSE_EVENT, CLEAR_EVENT, PICK_EVENT],
+  emits: ['close', 'clear', 'pick'],
 
   setup(props: QPickerDropdownProps, ctx): QPickerDropdownInstance {
     const elementToFocusAfterClosing = ref<Nullable<HTMLElement>>(null);
@@ -182,16 +179,16 @@ export default defineComponent({
           !qColorPicker?.trigger.value?.contains(e.target as HTMLElement) &&
           !dropdown.value?.contains(e.target as HTMLElement))
       ) {
-        ctx.emit(CLOSE_EVENT);
+        ctx.emit('close');
       }
     };
 
     const handleClearBtnClick = (): void => {
-      ctx.emit(CLEAR_EVENT);
+      ctx.emit('clear');
     };
 
     const handleConfirmBtnClick = (): void => {
-      ctx.emit(PICK_EVENT, colorString.value);
+      ctx.emit('pick', colorString.value);
     };
 
     const refSv = ref<Nullable<typeof QColorSvpanel>>(null);
@@ -244,8 +241,6 @@ export default defineComponent({
       },
       { immediate: true }
     );
-
-    const { t } = useI18n();
 
     return {
       t,

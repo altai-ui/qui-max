@@ -18,8 +18,8 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed } from 'vue';
-import { useI18n } from 'vue-i18n';
 
+import { t } from '@/qComponents/locale';
 import type { QUploadDropZoneProps, QUploadDropZoneInstance } from './types';
 
 export default defineComponent({
@@ -73,8 +73,6 @@ export default defineComponent({
 
       return props.isDisabled ? 'q-icon-lock' : 'q-icon-cloud-upload';
     });
-
-    const { t } = useI18n();
 
     const text = computed<string>(() => {
       if (props.isLoading) return props.textLoadingFile ?? t('QUpload.loading');

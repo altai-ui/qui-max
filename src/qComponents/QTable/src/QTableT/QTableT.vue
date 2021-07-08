@@ -28,7 +28,7 @@ import { defineComponent, inject, ref, computed, provide, watch } from 'vue';
 import { isEmpty } from 'lodash-es';
 
 import { useResizeListener } from '@/qComponents/hooks';
-import type { Nullable, Optional, UnwrappedInstance } from '#/helpers';
+import type { Nullable, UnwrappedInstance } from '#/helpers';
 
 import QTableTBody from '../QTableTBody/QTableTBody.vue';
 import QTableTColgroup from '../QTableTColgroup/QTableTColgroup.vue';
@@ -43,6 +43,8 @@ import type {
 
 import type { QTableTProvider, QTableTInstance } from './types';
 
+const CHANGE_WIDTH_EVENT = 'change-width';
+
 export default defineComponent({
   name: 'QTableT',
   componentName: ' QTableT',
@@ -55,7 +57,9 @@ export default defineComponent({
     QTableTTotal
   },
 
-  setup(): QTableTInstance {
+  emits: [CHANGE_WIDTH_EVENT],
+
+  setup(_, ctx): QTableTInstance {
     const qTable = inject<QTableProvider>('qTable', {} as QTableProvider);
 
     const isColgroupShown = computed<boolean>(() =>
@@ -90,17 +94,9 @@ export default defineComponent({
       tableHeight
     });
 
-    const setTableHeight = (el: HTMLElement): void => {
-      const computedStyle = getComputedStyle(el);
-      tableHeight.value =
-        el.clientHeight -
-        parseFloat(computedStyle.paddingTop) -
-        parseFloat(computedStyle.paddingBottom);
-    };
-
     watch(rootResize.observedEntry, value => {
-      const el = value?.target as Optional<HTMLElement>;
-      if (el) setTableHeight(el);
+      tableHeight.value = value?.contentRect?.height ?? null;
+      ctx.emit(CHANGE_WIDTH_EVENT, value?.contentRect.width ?? null);
     });
 
     return {

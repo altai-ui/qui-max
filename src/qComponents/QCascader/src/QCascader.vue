@@ -41,10 +41,6 @@ import type { Instance } from '@popperjs/core';
 
 import { randId } from '@/qComponents/helpers';
 import { useResizeListener } from '@/qComponents/hooks';
-import {
-  UPDATE_MODEL_VALUE_EVENT,
-  CHANGE_EVENT
-} from '@/qComponents/constants/events';
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
 import type { Nullable, UnwrappedInstance } from '#/helpers';
@@ -155,7 +151,24 @@ export default defineComponent({
     }
   },
 
-  emits: [UPDATE_MODEL_VALUE_EVENT, CHANGE_EVENT],
+  emits: [
+    /**
+     * triggers when model updates
+     */
+    'update:modelValue',
+    /**
+     * alias for update:modelValue
+     */
+    'change',
+    /**
+     * triggers when dropdown closes
+     */
+    'dropdown-close',
+    /**
+     * triggers when dropdown expands
+     */
+    'dropdown-expand'
+  ],
 
   setup(props: QCascaderProps, ctx): QCascaderInstance {
     const qForm = inject<Nullable<QFormProvider>>('qForm', null);
@@ -171,6 +184,14 @@ export default defineComponent({
 
     watch(isDisabled, value => {
       if (value) isDropdownShown.value = false;
+    });
+
+    watch(isDropdownShown, value => {
+      if (value) {
+        ctx.emit('dropdown-expand');
+      } else {
+        ctx.emit('dropdown-close');
+      }
     });
 
     const rootClasses = computed<Record<string, boolean>>(() => ({
@@ -191,8 +212,8 @@ export default defineComponent({
     };
 
     const emitChange = (value: QCascaderPropModelValue = null): void => {
-      ctx.emit(UPDATE_MODEL_VALUE_EVENT, value);
-      ctx.emit(CHANGE_EVENT, value);
+      ctx.emit('update:modelValue', value);
+      ctx.emit('change', value);
 
       qFormItem?.validateField('change');
     };

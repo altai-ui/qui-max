@@ -76,13 +76,13 @@
 <script lang="ts">
 import { defineComponent, computed, PropType } from 'vue';
 import { isNil } from 'lodash-es';
-import { useI18n } from 'vue-i18n';
 
 import {
   CLEAR_ALL_EVENT,
   CLEAR_EVENT,
   ABORT_EVENT
 } from '@/qComponents/constants/events';
+import { t } from '@/qComponents/locale';
 import type { Nullable } from '#/helpers';
 
 import type { QUploadFile } from '../types';
@@ -118,8 +118,6 @@ export default defineComponent({
   emits: [CLEAR_ALL_EVENT, CLEAR_EVENT, ABORT_EVENT],
 
   setup(props: QUploadFileMultipleProps, ctx): QUploadFileMultipleInstance {
-    const { t } = useI18n();
-
     const title = computed<string>(
       () => props.textUploadedFiles ?? t('QUpload.uploadedFiles')
     );

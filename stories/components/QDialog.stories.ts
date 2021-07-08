@@ -16,15 +16,42 @@ const storyMetadata: Meta = {
 const QDialogStory: Story<QDialogProps> = args =>
   defineComponent({
     setup() {
-      const dialog = ref<boolean>(false);
+      const isVisible = ref<boolean>(false);
 
-      return { args, dialog };
+      const handleOpen = (): void => {
+        // eslint-disable-next-line no-console
+        console.log('handleOpen');
+      };
+
+      const handleOpened = (): void => {
+        // eslint-disable-next-line no-console
+        console.log('handleOpened');
+      };
+
+      const handleClose = (): void => {
+        // eslint-disable-next-line no-console
+        console.log('handleClose');
+      };
+
+      const handleClosed = (): void => {
+        // eslint-disable-next-line no-console
+        console.log('handleClosed');
+      };
+
+      return {
+        args,
+        isVisible,
+        handleOpen,
+        handleOpened,
+        handleClose,
+        handleClosed
+      };
     },
     template: `
-      <q-button @click="dialog = true">open</q-button>
+      <q-button @click="isVisible = true">open</q-button>
 
       <q-dialog
-        v-model:visible="dialog"
+        v-model:visible="isVisible"
         :offset-top="args.offsetTop"
         :title="args.title"
         :visible="args.visible"
@@ -34,13 +61,16 @@ const QDialogStory: Story<QDialogProps> = args =>
         :custom-class="args.customClass"
         :teleport-to="args.teleportTo"
         :render-on-mount="args.renderOnMount"
+        @open="handleOpen"
+        @opened="handleOpened"
+        @close="handleClose"
+        @closed="handleClosed"
       >I'm dialog's slot</q-dialog>
     `
   });
 
 export const Default = QDialogStory.bind({});
 Default.args = {
-  visible: false,
   title: 'Morbi massa libero, vehicula nec consequat sed, porta a sem.'
 };
 

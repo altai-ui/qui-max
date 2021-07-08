@@ -35,6 +35,8 @@ import type { QTableContainerProvider } from '../QTableContainer/types';
 
 import type { StickyGlobalConfig, QTableTStickyInstance } from './types';
 
+const WRAPPER_PADDING_LEFT = 32;
+
 export default defineComponent({
   name: 'QTableTSticky',
   componentName: ' QTableTSticky',
@@ -172,7 +174,7 @@ export default defineComponent({
     watch(
       [qScrollbar.moveXInPx, qScrollbar.sizeWidth, offsetsList],
       ([value]) => {
-        nextTick(() => checkSticky(value ?? 0));
+        nextTick(() => checkSticky(value - WRAPPER_PADDING_LEFT ?? 0));
       }
     );
 

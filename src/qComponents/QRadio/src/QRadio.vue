@@ -34,7 +34,6 @@
 <script lang="ts">
 import { defineComponent, inject, computed } from 'vue';
 
-import { CHANGE_EVENT } from '@/qComponents/constants/events';
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QRadioGroupProvider } from '@/qComponents/QRadioGroup';
 import type { Nullable } from '#/helpers';
@@ -63,7 +62,12 @@ export default defineComponent({
     disabled: { type: Boolean, default: false }
   },
 
-  emits: [CHANGE_EVENT],
+  emits: [
+    /**
+     * triggers when value updates
+     */
+    'change'
+  ],
 
   setup(props: QRadioProps, ctx): QRadioInstance {
     const qForm = inject<Nullable<QFormProvider>>('qForm', null);
@@ -99,14 +103,14 @@ export default defineComponent({
     const handleSpaceKeyUp = (): void => {
       if (isGroup.value) return;
 
-      ctx.emit(CHANGE_EVENT, props.value);
+      ctx.emit('change', props.value);
     };
 
     const handleChange = (): void => {
       /**
        * triggers when the value changes
        */
-      ctx.emit(CHANGE_EVENT, props.value);
+      ctx.emit('change', props.value);
 
       if (isGroup.value) {
         qRadioGroup?.changeValue(props.value);

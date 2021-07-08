@@ -17,10 +17,26 @@ const Template: Story<QCascaderProps> = args =>
     setup() {
       const modelValue = ref(null);
 
-      return { args, modelValue };
+      const handleDropdownExpand = (): void => {
+        // eslint-disable-next-line no-console
+        console.log('dropdown-expand');
+      };
+
+      const handleDropdownClose = (): void => {
+        // eslint-disable-next-line no-console
+        console.log('dropdown-close');
+      };
+
+      return {
+        args,
+        modelValue,
+        handleDropdownClose,
+        handleValueUpdate,
+        handleDropdownExpand
+      };
     },
     template: `
-      <div style="width: 304px;">
+      <div style="width: 304px; height:240px">
         <q-cascader
           v-model="modelValue"
           :check-strictly="args.checkStrictly"
@@ -32,6 +48,8 @@ const Template: Story<QCascaderProps> = args =>
           :separator="args.separator"
           :all-levels-shown="args.allLevelsShown"
           :collapse-tags="args.collapseTags"
+          @dropdown-close="handleDropdownClose"
+          @dropdown-expand="handleDropdownExpand"
         />
       </div>
     `

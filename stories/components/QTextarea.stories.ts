@@ -12,18 +12,11 @@ const storyMetadata: Meta = {
     maxlength: { category: 'Native attrs', control: { type: 'number' } },
     resize: {
       options: ['vertical', 'horizontal', 'both', 'none'],
-      control: {
-        type: 'select'
-      }
+      control: { type: 'select' }
     },
-    autocomplete: {
-      options: ['on', 'off'],
-      control: { type: 'radio' },
-      defaultValue: 'on'
-    },
+    autocomplete: { options: ['on', 'off'], control: { type: 'radio' } },
     modelValue: { control: { type: 'none' } },
     autosize: {
-      defaultValue: true,
       options: [true, false, 'restrictions'],
       mapping: {
         true: true,
@@ -45,6 +38,7 @@ const storyMetadata: Meta = {
 type StoryArgs = QTextareaProps & {
   placeholder: string;
   maxlength: string | number;
+  autocomplete: 'on' | 'off';
 };
 
 const QTextareaStory: Story<StoryArgs> = args =>
@@ -99,6 +93,7 @@ const QTextareaStory: Story<StoryArgs> = args =>
 
 export const Default = QTextareaStory.bind({});
 Default.args = {
+  autocomplete: 'off',
   placeholder: 'Input text',
   maxlength: 100,
   autosize: true

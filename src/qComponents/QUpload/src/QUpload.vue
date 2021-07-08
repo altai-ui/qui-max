@@ -47,21 +47,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, ref, computed, watch } from 'vue';
+import { defineComponent, inject, ref, computed } from 'vue';
 import type { PropType } from 'vue';
 import { isNil } from 'lodash-es';
-
-import {
-  CLEAR_ALL_EVENT,
-  CLEAR_EVENT,
-  ABORT_EVENT,
-  SELECT_EVENT,
-  EXCEED_EVENT,
-  SELECT_ALL_EVENT
-} from '@/qComponents/constants/events';
 import { validateArray, randId } from '@/qComponents/helpers';
 import type { QFormProvider } from '@/qComponents/QForm';
-import type { QFormItemProvider } from '@/qComponents/QFormItem';
+
 import type { Nullable } from '#/helpers';
 
 import QUploadDropZone from './QUploadDropZone';
@@ -173,17 +164,34 @@ export default defineComponent({
   },
 
   emits: [
-    CLEAR_ALL_EVENT,
-    CLEAR_EVENT,
-    ABORT_EVENT,
-    SELECT_EVENT,
-    EXCEED_EVENT,
-    SELECT_ALL_EVENT
+    /**
+     * triggers when all files removes
+     */
+    'clear-all',
+    /**
+     * triggers when one file removes
+     */
+    'clear',
+    /**
+     * triggers when the file abort button clicks
+     */
+    'abort',
+    /**
+     * triggers when file selects
+     */
+    'select',
+    /**
+     * triggers when limit is exceeded
+     */
+    'exceed',
+    /**
+     * triggers when all files select
+     */
+    'select-all'
   ],
 
   setup(props: QUploadProps, ctx): QUploadInstance {
     const qForm = inject<Nullable<QFormProvider>>('qForm', null);
-    const qFormItem = inject<Nullable<QFormItemProvider>>('qFormItem', null);
 
     const hasValue = computed<boolean>(() =>
       props.multiple
@@ -230,26 +238,17 @@ export default defineComponent({
 
     const handleClearAll = (): void => {
       resetNativeInput();
-      /**
-       * triggers when clear all files button clicked
-       */
-      ctx.emit(CLEAR_ALL_EVENT);
+      ctx.emit('clear-all');
     };
 
     const handleClear = (fileId: string): void => {
       resetNativeInput();
-      /**
-       * triggers when the file clear button clicked
-       */
-      ctx.emit(CLEAR_EVENT, fileId);
+      ctx.emit('clear', fileId);
     };
 
     const handleAbort = (fileId: string): void => {
       resetNativeInput();
-      /**
-       * triggers when the file abort button clicked
-       */
-      ctx.emit(ABORT_EVENT, fileId);
+      ctx.emit('abort', fileId);
     };
 
     const processFile = ({ target }: MouseEvent): void => {
@@ -260,11 +259,8 @@ export default defineComponent({
       if (!fileList) return;
 
       if (!props.multiple) {
-        /**
-         * triggers when a file is selected
-         */
         const sourceFile = fileList[0];
-        if (sourceFile) ctx.emit(SELECT_EVENT, sourceFile, randId());
+        if (sourceFile) ctx.emit('select', sourceFile, randId());
         return;
       }
 
@@ -273,35 +269,18 @@ export default defineComponent({
         Array.isArray(props.value) &&
         props.value.length + fileList.length > props.limit
       ) {
-        /**
-         * triggers when limit is exceeded
-         */
-        ctx.emit(EXCEED_EVENT);
+        ctx.emit('exceed');
         return;
       }
 
       const preparedFileList = Array.from(fileList).map(sourceFile => {
         const fileId = randId();
-        /**
-         * triggers when a file is selected
-         */
-        ctx.emit(SELECT_EVENT, sourceFile, fileId);
+        ctx.emit('select', sourceFile, fileId);
 
         return { id: fileId, sourceFile };
       });
-
-      /**
-       * triggers when multiple files are selected
-       */
-      ctx.emit(SELECT_ALL_EVENT, preparedFileList);
+      ctx.emit('select-all', preparedFileList);
     };
-
-    watch(
-      () => props.value,
-      () => {
-        if (props.validateEvent) qFormItem?.validateField('change');
-      }
-    );
 
     return {
       isDisabled,

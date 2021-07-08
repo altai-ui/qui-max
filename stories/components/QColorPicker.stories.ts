@@ -23,16 +23,18 @@ const QColorPickerStory: Story<QColorPickerProps> = args =>
       return { args, color };
     },
     template: `
-      <q-color-picker
-        v-model="color"
-        :disabled="args.disabled"
-        :clearable="args.clearable"
-        :alpha-shown="args.alphaShown"
-        :color-format="args.colorFormat"
-        :placement="args.placement"
-        :popper-options="args.popperOptions"
-        :teleport-to="args.teleportTo"
-      />
+      <div style="width: 304px; height:280px">
+        <q-color-picker
+          v-model="color"
+          :disabled="args.disabled"
+          :clearable="args.clearable"
+          :alpha-shown="args.alphaShown"
+          :color-format="args.colorFormat"
+          :placement="args.placement"
+          :popper-options="args.popperOptions"
+          :teleport-to="args.teleportTo"
+        />
+      </div>
     `
   });
 

@@ -4,13 +4,20 @@
       ref="scrollbar"
       theme="secondary"
     >
-      <q-table-t />
+      <div
+        class="q-table-container__wrapper"
+        :style="wrapperStyles"
+      >
+        <q-table-t @change-width="handleWidthChange" />
+      </div>
     </q-scrollbar>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, provide, inject } from 'vue';
+import { defineComponent, computed, ref, provide, inject } from 'vue';
+
+import type { Nullable } from '#/helpers';
 
 import QTableT from '../QTableT/QTableT.vue';
 import type { QTableProvider } from '../types';
@@ -47,12 +54,26 @@ export default defineComponent({
       Boolean(qTable.selectionColumn.value?.enabled)
     );
 
+    const tableWidth = ref<Nullable<number>>(null);
+
+    const wrapperStyles = computed<{ width: Nullable<string> }>(() => ({
+      width: tableWidth.value ? `${tableWidth.value}px` : null
+    }));
+
+    const handleWidthChange = (width: Nullable<number>): void => {
+      tableWidth.value = width;
+    };
+
     provide<QTableContainerProvider>('qTableContainer', {
       columnList,
       isSelectable
     });
 
-    return { columnList };
+    return {
+      columnList,
+      wrapperStyles,
+      handleWidthChange
+    };
   }
 });
 </script>

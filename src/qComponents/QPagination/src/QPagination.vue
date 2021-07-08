@@ -88,12 +88,6 @@ import { range } from 'lodash-es';
 
 import type { QPaginationProps, QPaginationInstance } from './types';
 
-const CURRENT_CHANGE_EVENT = 'current-change';
-const PREV_CLICK_EVENT = 'prev-click';
-const NEXT_CLICK_EVENT = 'next-click';
-const QUICK_PREV_CLICK_EVENT = 'quick-prev-click';
-const QUICK_NEXT_CLICK_EVENT = 'quick-next-click';
-
 export default defineComponent({
   name: 'QPagination',
   componentName: 'QPagination',
@@ -134,11 +128,26 @@ export default defineComponent({
   },
 
   emits: [
-    CURRENT_CHANGE_EVENT,
-    PREV_CLICK_EVENT,
-    NEXT_CLICK_EVENT,
-    QUICK_PREV_CLICK_EVENT,
-    QUICK_NEXT_CLICK_EVENT
+    /**
+     * triggers when the current page changes
+     */
+    'current-change',
+    /**
+     * triggers when the prev button is clicked
+     */
+    'prev-click',
+    /**
+     * triggers when the next button is clicked
+     */
+    'next-click',
+    /**
+     * triggers when the quick prev button (...) is clicked
+     */
+    'quick-prev-click',
+    /**
+     * triggers when the quick next button (...) is clicked
+     */
+    'quick-next-click'
   ],
 
   setup(props: QPaginationProps, { emit }): QPaginationInstance {
@@ -196,29 +205,20 @@ export default defineComponent({
       let newPage = props.currentPage - 1;
       if (newPage > preparedPageCount.value) newPage = preparedPageCount.value;
 
-      /**
-       * triggers when the prev button is clicked
-       */
-      emit(PREV_CLICK_EVENT, newPage);
-      /**
-       * triggers when the current page changes
-       */
-      emit(CURRENT_CHANGE_EVENT, newPage);
+      emit('prev-click', newPage);
+      emit('current-change', newPage);
     };
 
     const handlePageBtnClick = (newPage: number): void => {
       if (props.currentPage === newPage) return;
-      emit(CURRENT_CHANGE_EVENT, newPage);
+      emit('current-change', newPage);
     };
 
     const handleNextBtnClick = (): void => {
       const newPage = props.currentPage + 1;
 
-      /**
-       * triggers when the next button is clicked
-       */
-      emit(NEXT_CLICK_EVENT, newPage);
-      emit(CURRENT_CHANGE_EVENT, newPage);
+      emit('next-click', newPage);
+      emit('current-change', newPage);
     };
 
     const handlePrevQuickBtnClick = (): void => {
@@ -226,8 +226,8 @@ export default defineComponent({
       if (newPage > preparedPageCount.value) newPage = preparedPageCount.value;
       else if (newPage < 1) newPage = 1;
 
-      emit(QUICK_PREV_CLICK_EVENT, newPage);
-      emit(CURRENT_CHANGE_EVENT, newPage);
+      emit('quick-prev-click', newPage);
+      emit('current-change', newPage);
     };
 
     const handleNextQuickBtnClick = (): void => {
@@ -235,8 +235,8 @@ export default defineComponent({
       if (newPage > preparedPageCount.value) newPage = preparedPageCount.value;
       else if (newPage < 1) newPage = 1;
 
-      emit(QUICK_NEXT_CLICK_EVENT, newPage);
-      emit(CURRENT_CHANGE_EVENT, newPage);
+      emit('quick-next-click', newPage);
+      emit('current-change', newPage);
     };
 
     return {

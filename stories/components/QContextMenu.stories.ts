@@ -23,12 +23,14 @@ const QContextMenuStory: Story<QContextMenuProps> = args =>
       return { args, handleAction };
     },
     template: `
-      <q-context-menu
-        :menu-items="args.menuItems"
-        :position="args.position"
-        :teleport-to="args.teleportTo"
-        @action="handleAction"
-      />
+      <div style="width: 304px; height:140px">
+        <q-context-menu
+          :menu-items="args.menuItems"
+          :position="args.position"
+          :teleport-to="args.teleportTo"
+          @action="handleAction"
+        />
+      </div>
     `
   });
 

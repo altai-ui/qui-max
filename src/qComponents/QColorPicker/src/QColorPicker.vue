@@ -68,11 +68,6 @@ import { colord } from 'colord';
 
 import { validateArray } from '@/qComponents/helpers';
 import { getConfig } from '@/qComponents/config';
-import {
-  UPDATE_MODEL_VALUE_EVENT,
-  CLICK_EVENT,
-  CHANGE_EVENT
-} from '@/qComponents/constants/events';
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
 import type { Nullable, UnwrappedInstance } from '#/helpers';
@@ -155,7 +150,16 @@ export default defineComponent({
     }
   },
 
-  emits: [UPDATE_MODEL_VALUE_EVENT, CHANGE_EVENT, CLICK_EVENT],
+  emits: [
+    /**
+     * triggers when model updates
+     */
+    'update:modelValue',
+    /**
+     * alias for update:modelValue
+     */
+    'change'
+  ],
 
   setup(props: QColorPickerProps, ctx): QColorPickerInstance {
     const qForm = inject<Nullable<QFormProvider>>('qForm', null);
@@ -204,8 +208,8 @@ export default defineComponent({
     };
 
     const handleClear = (): void => {
-      ctx.emit(CHANGE_EVENT, null);
-      ctx.emit(UPDATE_MODEL_VALUE_EVENT, null);
+      ctx.emit('update:modelValue', null);
+      ctx.emit('change', null);
 
       if (props.modelValue !== null) {
         qFormItem?.validateField('change');
@@ -215,8 +219,8 @@ export default defineComponent({
     };
 
     const handlePick = (value: string): void => {
-      ctx.emit(CHANGE_EVENT, value);
-      ctx.emit(UPDATE_MODEL_VALUE_EVENT, value);
+      ctx.emit('update:modelValue', value);
+      ctx.emit('change', value);
 
       if (props.modelValue !== value) {
         qFormItem?.validateField('change');

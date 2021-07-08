@@ -6,7 +6,7 @@ import QRadio from '@/qComponents/QRadio';
 import type { QRadioGroupProps } from '@/qComponents/QRadioGroup';
 
 const storyMetadata: Meta = {
-  title: 'Components/QRadio/QRadioGroup',
+  title: 'Components/QRadioGroup',
   component: QRadioGroup,
   subcomponents: { QRadio },
   argTypes: {
@@ -22,9 +22,13 @@ const QRadioGroupStory: Story<QRadioGroupProps> = args =>
   defineComponent({
     components: { QRadio, QRadioGroup },
     setup() {
-      const value = ref<number>(3);
+      const value = ref<number>(1);
+      const handleChange = (modelValue: number): void => {
+        // eslint-disable-next-line no-console
+        console.log(modelValue, 'change');
+      };
 
-      return { value, args };
+      return { value, args, handleChange };
     },
     template: `
       <q-radio-group
@@ -32,10 +36,11 @@ const QRadioGroupStory: Story<QRadioGroupProps> = args =>
         :direction="args.direction"
         :disabled="args.disabled"
         :tag="args.tag"
+        @change="handleChange"
       >
-        <q-radio :value="3" label="Option A" />
-        <q-radio :value="6" label="Option B" />
-        <q-radio :value="9" label="Option C" />
+        <q-radio :value="1" label="Option A" />
+        <q-radio :value="2" label="Option B" />
+        <q-radio :value="3" label="Option C" />
       </q-radio-group>
     `
   });

@@ -2,7 +2,7 @@
 import { app } from '@storybook/vue3';
 import type { Meta, Story } from '@storybook/vue3';
 import { defineComponent, computed } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { t } from '@/qComponents/locale';
 
 import QBreadcrumbs from '@/qComponents/QBreadcrumbs';
 import type {
@@ -27,8 +27,6 @@ const Template: Story<QBreadcrumbsProps> = args =>
   // eslint-disable-next-line vue/one-component-per-file
   defineComponent({
     setup() {
-      const { t } = useI18n();
-
       const route = computed<QBreadcrumbsPropRoute>(() => {
         if (args.route) return args.route;
 

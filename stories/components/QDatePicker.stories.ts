@@ -63,14 +63,16 @@ const Template: Story<QDatePickerProps> = args =>
         value: null
       });
 
-      const handleRangePickClick = (val: QDatePickerPropModelValue): void => {
-        // eslint-disable-next-line no-console
-        console.log('handleRangePickClick', val);
-      };
-
       const handleChange = (val: QDatePickerPropModelValue): void => {
         // eslint-disable-next-line no-console
         console.log('handleChange', val);
+      };
+
+      const handleIntermediateChange = (
+        val: QDatePickerPropModelValue
+      ): void => {
+        // eslint-disable-next-line no-console
+        console.log('handleIntermediateChange', val);
       };
 
       watch(
@@ -83,32 +85,34 @@ const Template: Story<QDatePickerProps> = args =>
       return {
         args,
         state,
-        handleRangePickClick,
+        handleIntermediateChange,
         handleChange
       };
     },
     template: `
-      <q-date-picker
-        v-model="state.value"
-        :clearable="args.clearable"
-        :editable="args.editable"
-        :placeholder="args.placeholder"
-        :type="args.type"
-        :format="args.format"
-        :output-format="args.outputFormat"
-        :name="args.name"
-        :disabled="args.disabled"
-        :disabled-values="args.disabledValues"
-        :shortcuts="args.shortcuts"
-        :start-placeholder="args.startPlaceholder"
-        :end-placeholder="args.endPlaceholder"
-        :first-day-of-week="args.firstDayOfWeek"
-        :range-separator="args.rangeSeparator"
-        :validate-event="args.validateEvent"
-        :teleport-to="args.teleportTo"
-        @rangepick="handleRangePickClick"
-        @change="handleChange"
-      />
+      <div style="width: 220px; height:300px">
+        <q-date-picker
+          v-model="state.value"
+          :clearable="args.clearable"
+          :editable="args.editable"
+          :placeholder="args.placeholder"
+          :type="args.type"
+          :format="args.format"
+          :output-format="args.outputFormat"
+          :name="args.name"
+          :disabled="args.disabled"
+          :disabled-values="args.disabledValues"
+          :shortcuts="args.shortcuts"
+          :start-placeholder="args.startPlaceholder"
+          :end-placeholder="args.endPlaceholder"
+          :first-day-of-week="args.firstDayOfWeek"
+          :range-separator="args.rangeSeparator"
+          :validate-event="args.validateEvent"
+          :teleport-to="args.teleportTo"
+          @change="handleChange"
+          @intermediateChange="handleIntermediateChange"
+        />
+      </div>
     `
   });
 

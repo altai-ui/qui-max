@@ -8,7 +8,7 @@ import type {
 } from '@/qComponents/QMessageBox/src/QMessageBoxContent';
 
 const storyMetadata: Meta = {
-  title: 'Components/QMessageBox',
+  title: 'Plugins/QMessageBox',
   component: QMessageBoxContent
 };
 

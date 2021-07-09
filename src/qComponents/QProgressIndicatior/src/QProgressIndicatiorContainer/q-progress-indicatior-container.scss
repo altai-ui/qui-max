@@ -1,0 +1,35 @@
+.q-progress-indicatior {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 999999;
+  width: 100%;
+  height: 0;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+    -90deg,
+    var(--color-primary-blue-aqua) 0,
+    var(--color-primary-blue) 25%,
+    var(--color-primary-blue) 75%,
+    var(--color-primary-blue-aqua) 100%
+  );
+  background-size: 500% 100%;
+  opacity: 0;
+  transition: transform 0.4s, height 0.8s, opacity 0.8s;
+  animation: gradient 8s linear infinite;
+
+  &_shown {
+    height: 2px;
+    opacity: 1;
+  }
+}
+
+@keyframes gradient {
+  from {
+    background-position: 500% 100%;
+  }
+  to {
+    background-position: 0 100%;
+  }
+}

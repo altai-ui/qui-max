@@ -9,6 +9,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-18.04
+    if: startsWith(github.head_ref, 'dependabot') == false
     steps:
       - uses: actions/checkout@v2
       - name: Setup Node
@@ -28,7 +29,6 @@ jobs:
 
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v1.2.2
-        if: startsWith(github.head_ref, 'dependabot') == false
         with:
           publish-dir: 'storybook-static'
           production-branch: main

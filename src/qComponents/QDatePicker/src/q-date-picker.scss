@@ -276,5 +276,25 @@
     &__link-btn {
       vertical-align: middle;
     }
+
+    &_animation {
+      &-enter-active,
+      &-leave-active {
+        transition: opacity var(--transition-spline-base) 0.25s;
+
+        .q-picker-panel__body {
+          transition: margin-top var(--transition-spline-base) 0.25s;
+        }
+      }
+
+      &-enter-from,
+      &-leave-to {
+        opacity: 0;
+
+        .q-picker-panel__body {
+          margin-top: -8px;
+        }
+      }
+    }
   }
 }

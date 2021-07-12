@@ -74,7 +74,7 @@
       :disabled="!teleportTo"
     >
       <transition
-        name="q-fade"
+        name="q-picker-panel_animation"
         @after-leave="destroyPopper"
         @before-enter="popperInit"
       >

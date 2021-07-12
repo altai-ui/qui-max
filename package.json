@@ -37,7 +37,7 @@
     "@qvant/stylelint-config": "^0.0.1",
     "@storybook/addon-actions": "^6.3.2",
     "@storybook/addon-essentials": "^6.3.2",
-    "@storybook/addon-links": "^6.3.2",
+    "@storybook/addon-links": "^6.3.4",
     "@storybook/addon-storysource": "^6.3.2",
     "@storybook/builder-webpack5": "^6.3.4",
     "@storybook/manager-webpack5": "^6.3.2",

@@ -1683,16 +1683,16 @@
     storybook-addon-outline "^1.4.1"
     ts-dedent "^2.0.0"
 
-"@storybook/addon-links@^6.3.2":
-  version "6.3.2"
-  resolved "https://registry.yarnpkg.com/@storybook/addon-links/-/addon-links-6.3.2.tgz#4db9d63d0e195f5887fe74dab09ae5bb0c64275c"
-  integrity sha512-JT7HLIZRvUJ0dDkhz4daL/GdpS/JPhuRaKPonRbtLW6RFAbBjLolqALVfxRJzOsYMwStUMtnxzzgKmeLOjtPIA==
+"@storybook/addon-links@^6.3.4":
+  version "6.3.4"
+  resolved "https://registry.yarnpkg.com/@storybook/addon-links/-/addon-links-6.3.4.tgz#2ec5b7532e67303b7ec693ecc22a6c4feac93cb3"
+  integrity sha512-qIey6kNcrg43vsmMmEGXGMbO1Wjqc6hbcMaLstUn3xN29vZnjUcv7PVPFlJsBBYIxW7gXBtRmqjdxN5UD0bvZA==
   dependencies:
-    "@storybook/addons" "6.3.2"
-    "@storybook/client-logger" "6.3.2"
-    "@storybook/core-events" "6.3.2"
+    "@storybook/addons" "6.3.4"
+    "@storybook/client-logger" "6.3.4"
+    "@storybook/core-events" "6.3.4"
     "@storybook/csf" "0.0.1"
-    "@storybook/router" "6.3.2"
+    "@storybook/router" "6.3.4"
     "@types/qs" "^6.9.5"
     core-js "^3.8.2"
     global "^4.4.0"

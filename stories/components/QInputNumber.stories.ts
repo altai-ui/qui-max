@@ -20,25 +20,28 @@ const QInputNumberStory: Story<QInputNumberProps> = args =>
   defineComponent({
     setup() {
       const numberValue = ref<string>('1234');
-      const useGrouping = ref<boolean>(true);
-      const precision = ref<number>(2);
 
       const handleEmit = (value: number, type: string): void => {
         // eslint-disable-next-line no-console
         console.log(value, type);
       };
 
-      return { args, numberValue, useGrouping, precision, handleEmit };
+      return { args, numberValue, handleEmit };
     },
 
     template: `
       <q-input-number
         v-model="numberValue"
-        :precision="precision"
-        prefix=">"
-        suffix="<"
+        :prefix="args.prefix"
+        :suffix="args.suffix"
+        :step="args.step"
+        :min="args.min"
+        :max="args.max"
+        :useGrouping="args.useGrouping"
+        :placeholder="args.placeholder"
+        :precision="args.precision"
         :disabled="args.disabled"
-        :use-grouping="useGrouping"
+        :localization="args.localization"
         :no-controls="args.noControls"
         :validate-event="args.validateEvent"
         @input="handleEmit($event, 'input')"

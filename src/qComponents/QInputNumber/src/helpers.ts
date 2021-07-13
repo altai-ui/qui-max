@@ -1,4 +1,3 @@
-import type { QInputInstance } from '@/qComponents/QInput/src/types';
 import type {
   Selections,
   AddittionsMatch,
@@ -56,13 +55,12 @@ const getCleanSelections = (
 ): Selections => {
   const { value, selectionStart, selectionEnd } = target;
 
-  if (value === '-') {
+  if (value === '-')
     return {
       selectionNewStart: selectionStart,
       selectionNewEnd: selectionEnd,
       value
     };
-  }
 
   const prefixLength = additions.prefix?.length ?? 0;
   const suffixLength = additions.suffix?.length ?? 0;
@@ -82,9 +80,8 @@ const getCleanSelections = (
   };
 };
 
-const isCharReadonly = (char: string): boolean => {
-  return Number.isNaN(Number(char)) && char !== '-';
-};
+const isCharReadonly = (char: string): boolean =>
+  Number.isNaN(Number(char)) && char !== '-';
 
 const getIncreasedValue = (number: number, step: number): number =>
   Math.round((number + step) * 100) / 100;
@@ -92,17 +89,16 @@ const getIncreasedValue = (number: number, step: number): number =>
 const getDecreasedValue = (number: number, step: number): number =>
   Math.round((number - step) * 100) / 100;
 
-const getLocaleSeparator = (type: string, localizationTag: string): string => {
-  return Intl.NumberFormat(localizationTag)
+const getLocaleSeparator = (type: string, localizationTag: string): string =>
+  Intl.NumberFormat(localizationTag)
     .format(type === 'decimal' ? 1.1 : 11111)
     .replace(/\p{Number}/gu, '');
-};
 
 const parseLocaleNumber = (
   stringNumber: string,
   localizationTag: string
-): number => {
-  return parseFloat(
+): number =>
+  parseFloat(
     stringNumber
       .replace(
         new RegExp(`\\${getLocaleSeparator('', localizationTag)}`, 'g'),
@@ -113,7 +109,6 @@ const parseLocaleNumber = (
         '.'
       )
   );
-};
 
 const setCaret = (
   target: HTMLInputElement,
@@ -146,9 +141,6 @@ const setCaret = (
   const difference = (newValue?.length || 0) - lastPart.length || prefixLength;
 
   if (key === 'Backspace') {
-    console.log(
-      prevPart.includes(getLocaleSeparator('decimal', localizationTag))
-    );
     selectionMove = prevPart.includes(
       getLocaleSeparator('decimal', localizationTag)
     )
@@ -236,13 +228,12 @@ const insertText = (args: InsertedTextArgs): InsertedTextParts => {
     const deletedChar =
       key === 'Delete' ? value[selectionStart] : value[selectionStart - 1];
 
-    if (selectionEnd === selectionStart && isCharReadonly(deletedChar)) {
+    if (selectionEnd === selectionStart && isCharReadonly(deletedChar))
       return {
         target,
         key,
         numberValue: null
       };
-    }
 
     passedData.insertedText = '';
 

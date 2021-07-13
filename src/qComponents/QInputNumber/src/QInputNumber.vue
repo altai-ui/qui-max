@@ -465,9 +465,8 @@ export default defineComponent({
               (event.key === 'Delete' &&
                 selectionNewEnd === cleanValue.length)) &&
             selectionStart === selectionEnd
-          ) {
+          )
             return;
-          }
 
           if (
             selectionNewEnd - selectionNewStart === cleanValue.length ||

@@ -73,6 +73,9 @@ import {
   setCaret
 } from './helpers';
 
+const MIN_INTEGER = Number.MIN_SAFE_INTEGER;
+const MAX_INTEGER = Number.MAX_SAFE_INTEGER;
+
 export default defineComponent({
   name: 'QInputNumber',
   componentName: 'QInputNumber',
@@ -142,6 +145,27 @@ export default defineComponent({
     useGrouping: {
       type: Boolean,
       default: false
+    },
+    /**
+     * Minimum allowed value
+     */
+    min: {
+      type: Number,
+      default: MIN_INTEGER
+    },
+    /**
+     * Maximum allowed value
+     */
+    max: {
+      type: Number,
+      default: MAX_INTEGER
+    },
+    /**
+     * Incremental step
+     */
+    step: {
+      type: Number,
+      default: 1
     }
   },
 
@@ -175,9 +199,6 @@ export default defineComponent({
     const inputRef = ref<UnwrappedInstance<QInputInstance>>(null);
 
     const state = reactive<QInputNumberState>({
-      minValue: ctx.attrs.min ? Number(ctx.attrs.min) : Number.MIN_SAFE_INTEGER,
-      maxValue: ctx.attrs.max ? Number(ctx.attrs.max) : Number.MAX_SAFE_INTEGER,
-      step: ctx.attrs.step ? Number(ctx.attrs.step) : 1,
       prevValue: null
     });
 
@@ -233,8 +254,8 @@ export default defineComponent({
       const number = parsedNumber.value ?? 0;
 
       return (
-        number >= state.maxValue ||
-        getIncreasedValue(number, state.step) > state.maxValue
+        number >= (props.max ?? MAX_INTEGER) ||
+        getIncreasedValue(number, props.step || 1) > (props.max ?? MAX_INTEGER)
       );
     });
 
@@ -242,8 +263,8 @@ export default defineComponent({
       const number = parsedNumber.value ?? 0;
 
       return (
-        number <= state.minValue ||
-        getDecreasedValue(number, state.step) < state.minValue
+        number <= (props.min ?? MIN_INTEGER) ||
+        getDecreasedValue(number, props.step || 1) < (props.min ?? MIN_INTEGER)
       );
     });
 
@@ -260,8 +281,8 @@ export default defineComponent({
         key,
         localizationTag: localizationTag.value,
         minMax: {
-          min: state.minValue,
-          max: state.maxValue
+          min: props.min ?? MIN_INTEGER,
+          max: props.max ?? MAX_INTEGER
         },
         precision: props.precision ?? 0
       });
@@ -281,13 +302,13 @@ export default defineComponent({
     };
 
     const handleChangeNumberButtonClick = (isIncrease: boolean): void => {
-      const step = isIncrease ? state.step : -state.step;
+      const step = isIncrease ? props.step || 1 : -(props.step || 1);
 
       const updatedNumber = getIncreasedValue(parsedNumber.value, step);
 
       if (
-        (isIncrease && updatedNumber > state.maxValue) ||
-        updatedNumber < state.minValue
+        (isIncrease && updatedNumber > (props.max ?? MAX_INTEGER)) ||
+        updatedNumber < (props.min ?? MIN_INTEGER)
       )
         return;
 
@@ -343,8 +364,8 @@ export default defineComponent({
       }`;
 
       if (
-        numberValueAsNumber >= state.maxValue ||
-        numberValueAsNumber <= state.minValue
+        numberValueAsNumber >= (props.max ?? MAX_INTEGER) ||
+        numberValueAsNumber <= (props.min ?? MIN_INTEGER)
       ) {
         changesEmmiter(numberValueAsNumber, 'input');
         setCursorPosition(target, newValue.length);
@@ -504,8 +525,8 @@ export default defineComponent({
           key,
           localizationTag: localizationTag.value,
           minMax: {
-            min: state.minValue,
-            max: state.maxValue
+            min: props.min ?? MIN_INTEGER,
+            max: props.max ?? MAX_INTEGER
           },
           precision: props.precision ?? 0
         })

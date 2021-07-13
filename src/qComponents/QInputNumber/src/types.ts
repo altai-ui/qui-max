@@ -12,12 +12,12 @@ export interface QInputNumberProps {
   suffix: Nullable<string>;
   localization: Nullable<string>;
   useGrouping: Nullable<boolean>;
+  min: Nullable<number>;
+  max: Nullable<number>;
+  step: Nullable<number>;
 }
 
 export interface QInputNumberState {
-  minValue: number;
-  maxValue: number;
-  step: number;
   prevValue: Nullable<number | string>;
 }
 

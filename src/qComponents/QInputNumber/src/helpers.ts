@@ -36,8 +36,8 @@ const getValueWithoutAdditions = (
 
   const { prefix, suffix } = additions;
 
-  const prefixReg = new RegExp(`^${prefix}`, 'g');
-  const suffixReg = new RegExp(`${suffix}$`, 'g');
+  const prefixReg = new RegExp(`^[${prefix}]`, 'g');
+  const suffixReg = new RegExp(`[${suffix}]$`, 'g');
 
   let newValue = value;
 

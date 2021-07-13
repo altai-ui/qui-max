@@ -435,7 +435,10 @@ export default defineComponent({
         return;
       }
 
-      if (value.length && selectionNewStart > value.length) {
+      if (
+        (value.length && selectionNewStart > value.length) ||
+        value[selectionNewStart] === '-'
+      ) {
         return;
       }
 

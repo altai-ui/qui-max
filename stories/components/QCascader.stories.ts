@@ -31,7 +31,6 @@ const Template: Story<QCascaderProps> = args =>
         args,
         modelValue,
         handleDropdownClose,
-        handleValueUpdate,
         handleDropdownExpand
       };
     },

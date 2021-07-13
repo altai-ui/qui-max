@@ -1,16 +1,24 @@
-name: Build and Deploy to Netlify
+name: CI
+
 on:
   push:
-    branches:
-      - main
-    tags-ignore:
-      - 'v*.*'
+  pull_request:
+    types:
+      - opened
+      - synchronize
 
 jobs:
-  build:
-    runs-on: ubuntu-18.04
+  # This job will:
+  #   * deploy a draft every time there is a pull request created or synchronized that is not on main branch
+  #   * comment on that pull request with the deploy URL
+  deployPRDraft:
+    name: Deploy draft to Netlify
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' && github.ref != 'refs/heads/main'
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
       - name: Setup Node
         uses: actions/setup-node@v1
         with:
@@ -25,19 +33,16 @@ jobs:
             ${{ runner.os }}-node-
       - run: yarn --frozen-lockfile
       - run: yarn build-storybook
-
-      - name: Deploy to Netlify
-        uses: nwtgck/actions-netlify@v1.2.2
-        if: startsWith(github.head_ref, 'dependabot/*') == false
-        with:
-          publish-dir: 'storybook-static'
-          production-branch: main
-          github-token: Qvant-lab:${{ secrets.GITHUB_TOKEN }}
-          enable-commit-comment: true
-          overwrites-pull-request-comment: true
-          github-deployment-environment: 'Netlify'
-          fails-without-credentials: false
+      - run: yarn deploy-storybook -- --ci
         env:
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-        timeout-minutes: 1
+          GH_TOKEN: Qvant-lab:${{ secrets.GITHUB_TOKEN }}
+
+      - name: Deploy draft to Netlify
+        uses: South-Paw/action-netlify-deploy@v1.2.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          netlify-auth-token: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          netlify-site-id: ${{ secrets.NETLIFY_SITE_ID }}
+          build-dir: './storybook-static'
+          draft: true
+          comment-on-pull-request: true

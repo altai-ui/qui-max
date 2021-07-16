@@ -48,10 +48,9 @@ import { getConfig } from '@/qComponents/config';
 
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
-
 import type { QInputInstance } from '@/qComponents/QInput';
-import type { Nullable, UnwrappedInstance } from '#/helpers';
 
+import type { Nullable, UnwrappedInstance } from '#/helpers';
 import type {
   QInputNumberProps,
   QInputNumberState,

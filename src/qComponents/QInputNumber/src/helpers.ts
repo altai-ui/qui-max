@@ -27,6 +27,10 @@ const checkStringAdditions = (
   return position === expectedPosition;
 };
 
+const escapeRegExp = (string: string): string => {
+  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+};
+
 const getValueWithoutAdditions = (
   value: string,
   additions: AddittionsMatch
@@ -35,8 +39,8 @@ const getValueWithoutAdditions = (
 
   const { prefix, suffix } = additions;
 
-  const prefixReg = new RegExp(`^[${prefix}]`, 'g');
-  const suffixReg = new RegExp(`[${suffix}]$`, 'g');
+  const prefixReg = prefix ? new RegExp(`^(${escapeRegExp(prefix)})`, 'g') : '';
+  const suffixReg = suffix ? new RegExp(`(${escapeRegExp(suffix)})$`, 'g') : '';
 
   let newValue = value;
 

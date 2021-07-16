@@ -73,8 +73,9 @@ import {
   setCaret
 } from './helpers';
 
-const MIN_INTEGER = Number.MIN_SAFE_INTEGER;
-const MAX_INTEGER = Number.MAX_SAFE_INTEGER;
+// to round to decimal, it must be multiplied by 100
+const MIN_INTEGER = (Number.MIN_SAFE_INTEGER + 91) / 100;
+const MAX_INTEGER = (Number.MAX_SAFE_INTEGER - 91) / 100;
 
 export default defineComponent({
   name: 'QInputNumber',
@@ -151,14 +152,16 @@ export default defineComponent({
      */
     min: {
       type: Number,
-      default: MIN_INTEGER
+      default: MIN_INTEGER,
+      validator: (val: number) => val >= MIN_INTEGER
     },
     /**
      * Maximum allowed value
      */
     max: {
       type: Number,
-      default: MAX_INTEGER
+      default: MAX_INTEGER,
+      validator: (val: number) => val <= MAX_INTEGER
     },
     /**
      * Incremental step
@@ -510,6 +513,7 @@ export default defineComponent({
           event.preventDefault();
           setCursorPosition(target, value.length - suffixLength.value);
           break;
+        case ' ':
         default:
           break;
       }
@@ -517,14 +521,15 @@ export default defineComponent({
 
     const handlePaste = (event: ClipboardEvent): void => {
       const target = event.target as HTMLInputElement;
-      const key = event?.clipboardData?.getData('Text') ?? '';
+      const text = event?.clipboardData?.getData('Text') ?? '';
+      const numericText = text.replace(/[^\d.-]/g, '');
 
-      if (Number.isNaN(Number(key))) return;
+      if (Number.isNaN(Number(numericText))) return;
 
       updateInput(
         insertPasteText({
           target,
-          key,
+          key: numericText,
           localizationTag: localizationTag.value,
           minMax: {
             min: props.min ?? MIN_INTEGER,

@@ -68,13 +68,14 @@
       &::before {
         position: absolute;
         top: -4px;
-        left: 9px;
+        left: 50%;
         display: block;
         width: 2px;
         height: 2px;
         content: '';
         background-color: var(--color-primary);
         border-radius: 50%;
+        transform: translateX(-50%);
       }
 
       &:not(.cell_disabled) {

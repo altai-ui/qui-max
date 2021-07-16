@@ -152,6 +152,13 @@ export default defineComponent({
     renderOnMount: {
       type: Boolean,
       default: false
+    },
+    /**
+     * cancel focus on document.activeElement after modal was closed
+     */
+    preventFocusAfterClosing: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -240,7 +247,9 @@ export default defineComponent({
           return;
         }
 
-        elementToFocusAfterClosing = document.activeElement as HTMLElement;
+        if (!props.preventFocusAfterClosing) {
+          elementToFocusAfterClosing = document.activeElement as HTMLElement;
+        }
         nextTick(() => {
           dialog.value?.focus();
         });

@@ -185,6 +185,7 @@
       &-sign {
         display: flex;
         flex-basis: 72px;
+        flex-grow: 1;
         justify-content: center;
         margin-right: 12px;
         margin-left: 12px;
@@ -245,6 +246,7 @@
       min-width: 20px;
       height: 20px;
       padding: 0;
+      margin: 0 6px 0 0;
       font-size: 20px;
       color: var(--color-primary-blue);
       cursor: pointer;
@@ -293,6 +295,102 @@
 
         .q-picker-panel__body {
           margin-top: -8px;
+        }
+      }
+    }
+  }
+
+  .dialog-view {
+    .q-dialog__inner {
+      padding: 0;
+    }
+
+    .q-dialog__close {
+      position: absolute;
+      top: 100px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .q-dialog__content {
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+
+      .q-picker-panel {
+        max-width: 415px;
+        &__body {
+          width: 100%;
+        }
+
+        &__content {
+          width: 100%;
+        }
+
+        &__header-label {
+          font-size: 14px;
+        }
+
+        &__icon-btn {
+          width: 30px;
+          height: 30px;
+          font-size: 29px;
+        }
+
+        .q-date-table__days {
+          font-size: 12px;
+        }
+      }
+
+      .q-date-table__cell-wrapper {
+        width: 30px;
+        height: 30px;
+
+        .cell {
+          width: 30px;
+          height: 30px;
+          font-size: 14px;
+        }
+      }
+
+      .q-period-table__cell {
+        width: 60px;
+        height: 60px;
+        font-size: 16px;
+      }
+    }
+  }
+}
+
+@media (min-width: 375px) {
+  .q-date-picker {
+    .dialog-view {
+      .q-dialog__content {
+        .q-picker-panel {
+          &__header-label {
+            font-size: 16px;
+          }
+
+          .q-date-table__days {
+            font-size: 14px;
+          }
+        }
+
+        .q-date-table__cell-wrapper {
+          width: 40px;
+          height: 40px;
+
+          .cell {
+            width: 40px;
+            height: 40px;
+            font-size: 15px;
+          }
+        }
+
+        .q-period-table__cell {
+          width: 80px;
+          height: 80px;
+          font-size: 16px;
         }
       }
     }

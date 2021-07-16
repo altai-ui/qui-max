@@ -73,7 +73,23 @@
       :to="teleportTo"
       :disabled="!teleportTo"
     >
+      <q-dialog
+        v-if="isMobileView"
+        v-model:visible="state.pickerVisible"
+        custom-class="dialog-view"
+        destroy-on-close
+        prevent-focus-after-closing
+        @close="handleClose"
+      >
+        <component
+          :is="panelComponent"
+          ref="panel"
+          v-model="transformedToDate"
+          @pick="handlePickClick"
+        />
+      </q-dialog>
       <transition
+        v-else
         name="q-picker-panel_animation"
         @after-leave="destroyPopper"
         @before-enter="popperInit"
@@ -100,7 +116,9 @@ import {
   watch,
   onBeforeUnmount,
   provide,
-  toRef
+  toRef,
+  onMounted,
+  onUnmounted
 } from 'vue';
 import type { PropType } from 'vue';
 import { createPopper } from '@popperjs/core';
@@ -119,9 +137,11 @@ import { getConfig } from '@/qComponents/config';
 import { t } from '@/qComponents/locale';
 import { notNull, validateArray } from '@/qComponents/helpers';
 import QInput from '@/qComponents/QInput';
+import QDialog from '@/qComponents/QDialog';
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QInputInstance } from '@/qComponents/QInput';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
+import { log } from 'console';
 import type { Nullable, UnwrappedInstance } from '#/helpers';
 
 import DatePanel from './panel/Date/DatePanel.vue';
@@ -151,7 +171,7 @@ import type {
 export default defineComponent({
   name: 'QDatePicker',
   componentName: 'QDatePicker',
-  components: { QInput },
+  components: { QInput, QDialog },
   props: {
     /**
      * one of sugested types
@@ -318,6 +338,12 @@ export default defineComponent({
       popper: null
     });
 
+    const dynamicClientWidth = ref<number>(document.body.clientWidth);
+
+    const isMobileView = computed<boolean>(
+      () => dynamicClientWidth.value < 768
+    );
+
     const calcFirstDayOfWeek = computed<number>(() => {
       if (isNumber(props.firstDayOfWeek)) return props.firstDayOfWeek;
       return getConfig('locale') === 'ru' ? 1 : 0;
@@ -356,11 +382,6 @@ export default defineComponent({
 
     const isRanged = computed<boolean>(() => props.type.includes('range'));
 
-    const iconClass = computed<string>(() => {
-      if (isPickerDisabled.value) return 'q-icon-lock';
-      return state.showCloseIcon ? 'q-icon-close' : 'q-icon-calendar';
-    });
-
     const panelComponent = computed<
       | typeof DateRangePanel
       | typeof MonthRangePanel
@@ -385,6 +406,15 @@ export default defineComponent({
       }
 
       return !transformedToDate.value;
+    });
+
+    const iconClass = computed<string>(() => {
+      if (isPickerDisabled.value) return 'q-icon-lock';
+      if (isMobileView.value)
+        return !isValueEmpty.value && props.clearable
+          ? 'q-icon-close'
+          : 'q-icon-calendar';
+      return state.showCloseIcon ? 'q-icon-close' : 'q-icon-calendar';
     });
 
     const displayValue = computed<Nullable<string | string[]>>(() => {
@@ -589,7 +619,6 @@ export default defineComponent({
 
     const handleFocus = (): void => {
       if (isPickerDisabled.value) return;
-
       state.pickerVisible = true;
       ctx.emit('focus');
       if (!transformedToDate.value || Array.isArray(transformedToDate.value))
@@ -632,6 +661,10 @@ export default defineComponent({
       ctx.emit('focus');
     };
 
+    const updateClientWidth = (): void => {
+      dynamicClientWidth.value = document.body.clientWidth;
+    };
+
     const handleInput = ({
       target,
       inputType
@@ -669,11 +702,20 @@ export default defineComponent({
       }
     );
 
+    onMounted(() => {
+      window.addEventListener('resize', updateClientWidth, true);
+    });
+
+    onUnmounted(() => {
+      window.removeEventListener('resize', updateClientWidth);
+    });
+
     onBeforeUnmount(() => destroyPopper());
 
     provide<QDatePickerProvider>('qDatePicker', {
       emit: ctx.emit,
       firstDayOfWeek: calcFirstDayOfWeek,
+      isMobileView,
       emitChange,
       handlePickClick,
       type: toRef(props, 'type'),
@@ -686,6 +728,7 @@ export default defineComponent({
       root,
       panel,
       reference,
+      isMobileView,
       isRanged,
       isPickerDisabled,
       calcFirstDayOfWeek,

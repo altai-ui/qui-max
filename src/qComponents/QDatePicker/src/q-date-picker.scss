@@ -360,6 +360,19 @@
       }
     }
   }
+
+  &_ranged {
+    .dialog-view {
+      .q-dialog__content {
+        .q-picker-panel {
+          width: 100%;
+          &__header-label {
+            font-size: 16px;
+          }
+        }
+      }
+    }
+  }
 }
 
 @media (min-width: 375px) {

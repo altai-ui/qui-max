@@ -63,6 +63,7 @@
             @pick="handleRangePick"
             @range-selecting="handleRangeSelecting"
           />
+          <q-button v-if="isMobileView">Выбрать окончание</q-button>
         </div>
         <div
           ref="rightPanel"

@@ -2,6 +2,7 @@
   <div
     ref="root"
     class="q-date-picker"
+    :class="{'q-date-picker_ranged': isRanged}"
   >
     <div
       v-if="!isRanged"
@@ -141,7 +142,6 @@ import QDialog from '@/qComponents/QDialog';
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QInputInstance } from '@/qComponents/QInput';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
-import { log } from 'console';
 import type { Nullable, UnwrappedInstance } from '#/helpers';
 
 import DatePanel from './panel/Date/DatePanel.vue';

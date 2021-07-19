@@ -310,6 +310,10 @@
       top: 100px;
       left: 50%;
       transform: translateX(-50%);
+
+      .q-icon-close {
+        margin: 2px 0 0 2px;
+      }
     }
 
     .q-dialog__content {
@@ -320,7 +324,21 @@
       .q-picker-panel {
         max-width: 415px;
         &__body {
+          flex-direction: column;
           width: 100%;
+        }
+
+        &__sidebar {
+          width: 100%;
+          max-height: 132px;
+          margin-bottom: 1px;
+          overflow-y: scroll;
+        }
+
+        &__shortcut {
+          display: inline-block;
+          width: auto;
+          font-size: 16px;
         }
 
         &__content {
@@ -328,6 +346,10 @@
         }
 
         &__header-label {
+          font-size: 14px;
+        }
+
+        &__header-sign {
           font-size: 14px;
         }
 
@@ -385,6 +407,11 @@
     .dialog-view {
       .q-dialog__content {
         .q-picker-panel {
+          &__header-label {
+            font-size: 16px;
+          }
+
+          &__header-sign,
           &__header-label {
             font-size: 16px;
           }

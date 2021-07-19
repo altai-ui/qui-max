@@ -61,6 +61,7 @@ const QDialogStory: Story<QDialogProps> = args =>
         :custom-class="args.customClass"
         :teleport-to="args.teleportTo"
         :render-on-mount="args.renderOnMount"
+        :prevent-focus-after-closing="args.preventFocusAfterClosing"
         @open="handleOpen"
         @opened="handleOpened"
         @close="handleClose"

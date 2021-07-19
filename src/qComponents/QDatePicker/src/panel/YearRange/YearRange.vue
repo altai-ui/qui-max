@@ -51,6 +51,7 @@
           />
         </div>
         <div
+          v-if="!isMobileView"
           ref="rightPanel"
           :class="rightPanelClasses"
         >
@@ -180,9 +181,10 @@ export default defineComponent({
       getLabelFromDate(state.rightDate, picker.type.value)
     );
 
-    const enableYearArrow = computed(
-      () => rightYear.value > leftYear.value + YEARS_IN_DECADE
-    );
+    const enableYearArrow = computed(() => {
+      if (picker.isMobileView.value) return true;
+      return rightYear.value > leftYear.value + YEARS_IN_DECADE;
+    });
     const leftPanelClasses = computed(() => ({
       'q-picker-panel__content': true,
       'q-picker-panel__content_no-right-borders': true,
@@ -212,7 +214,6 @@ export default defineComponent({
       state.maxDate = null;
       state.leftDate = new Date();
       state.rightDate = addYears(new Date(), YEARS_IN_DECADE);
-      ctx.emit('pick', null);
     };
 
     const handleRangePick = (val: RangePickValue, close = true): void => {
@@ -333,7 +334,8 @@ export default defineComponent({
       handleRangeSelecting,
       navigateDropdown,
       handleShortcutClick,
-      shortcuts: picker.shortcuts
+      shortcuts: picker.shortcuts,
+      isMobileView: picker.isMobileView
     };
   }
 });

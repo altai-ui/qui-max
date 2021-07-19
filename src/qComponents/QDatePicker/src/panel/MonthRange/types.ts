@@ -28,6 +28,7 @@ interface MonthRangePanelInstance {
   leftPanel: Ref<Nullable<HTMLElement>>;
   rightPanel: Ref<Nullable<HTMLElement>>;
   shortcuts: Ref<Nullable<QDatePickerPropShortcuts>>;
+  isMobileView: ComputedRef<boolean>;
   state: MonthRangeState;
   leftPanelClasses: ComputedRef<Record<string, boolean>>;
   rightPanelClasses: ComputedRef<Record<string, boolean>>;

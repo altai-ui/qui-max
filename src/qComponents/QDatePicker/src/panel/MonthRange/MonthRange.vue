@@ -33,7 +33,6 @@
             <button
               type="button"
               :disabled="!enableYearArrow"
-              :class="{ 'q-picker-panel__icon-btn_disabled': !enableYearArrow }"
               class="q-picker-panel__icon-btn q-icon-double-triangle-right"
               @click="handleLeftNextYearClick"
             />
@@ -50,6 +49,7 @@
           />
         </div>
         <div
+          v-if="!isMobileView"
           ref="rightPanel"
           :class="rightPanelClasses"
         >
@@ -192,9 +192,10 @@ export default defineComponent({
       getActualMonth(state.rightDate, 1)
     );
 
-    const enableYearArrow = computed<boolean>(
-      () => rightYear.value > leftYear.value + 1
-    );
+    const enableYearArrow = computed<boolean>(() => {
+      if (picker.isMobileView.value) return true;
+      return rightYear.value > leftYear.value + 1;
+    });
 
     const handleRangeSelecting = (value: RangeState): void => {
       state.rangeState = value;
@@ -224,7 +225,6 @@ export default defineComponent({
       state.maxDate = null;
       state.leftDate = new Date();
       state.rightDate = addYears(new Date(), 1);
-      ctx.emit('pick', null);
     };
 
     const handleLeftPrevYearClick = (): void => {
@@ -342,7 +342,8 @@ export default defineComponent({
       handleRightNextYearClick,
       handleRightPrevYearClick,
       navigateDropdown,
-      shortcuts: picker.shortcuts
+      shortcuts: picker.shortcuts,
+      isMobileView: picker.isMobileView
     };
   }
 });

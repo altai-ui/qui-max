@@ -2,7 +2,7 @@
   <div
     ref="root"
     class="q-date-picker"
-    :class="{'q-date-picker_ranged': isRanged}"
+    :class="{ 'q-date-picker_ranged': isRanged }"
   >
     <div
       v-if="!isRanged"
@@ -78,7 +78,6 @@
         v-if="isMobileView"
         v-model:visible="state.pickerVisible"
         custom-class="dialog-view"
-        destroy-on-close
         prevent-focus-after-closing
         @close="handleClose"
       >
@@ -701,6 +700,12 @@ export default defineComponent({
         }
       }
     );
+
+    watch(isMobileView, value => {
+      if (value) {
+        handleClose();
+      }
+    });
 
     onMounted(() => {
       window.addEventListener('resize', updateClientWidth, true);

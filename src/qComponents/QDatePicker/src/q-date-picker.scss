@@ -265,7 +265,7 @@
         background-color: var(--color-tertiary-gray);
       }
 
-      &_disabled {
+      &:disabled {
         color: var(--color-tertiary-gray-ultra-darker);
 
         &:hover {
@@ -368,6 +368,11 @@
           width: 100%;
           &__header-label {
             font-size: 16px;
+          }
+
+          &__mobile-next-btn {
+            width: calc(100% - 26px);
+            margin: 13px 13px 20px 13px;
           }
         }
       }

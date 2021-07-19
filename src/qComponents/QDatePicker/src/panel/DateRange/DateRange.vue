@@ -39,16 +39,12 @@
             <button
               type="button"
               :disabled="!enableMonthArrow"
-              :class="{
-                'q-picker-panel__icon-btn_disabled': !enableMonthArrow
-              }"
               class="q-picker-panel__icon-btn q-icon-triangle-right"
               @click="handleLeftNextMonthClick"
             />
             <button
               type="button"
               :disabled="!enableYearArrow"
-              :class="{ 'q-picker-panel__icon-btn_disabled': !enableYearArrow }"
               class="q-picker-panel__icon-btn q-icon-double-triangle-right"
               @click="handleLeftNextYearClick"
             />
@@ -63,9 +59,9 @@
             @pick="handleRangePick"
             @range-selecting="handleRangeSelecting"
           />
-          <q-button v-if="isMobileView">Выбрать окончание</q-button>
         </div>
         <div
+          v-if="!isMobileView"
           ref="rightPanel"
           :class="rightPanelClasses"
         >
@@ -249,6 +245,7 @@ export default defineComponent({
 
     const rightYear = computed<number>(() => state.rightDate.getFullYear());
     const enableMonthArrow = computed<boolean>(() => {
+      if (picker.isMobileView.value) return true;
       const nextMonth = (leftMonth.value + 1) % 12;
       const yearOffset = leftMonth.value + 1 >= 12 ? 1 : 0;
       return (
@@ -258,6 +255,7 @@ export default defineComponent({
     });
 
     const enableYearArrow = computed<boolean>(() => {
+      if (picker.isMobileView.value) return true;
       return Boolean(
         rightYear.value * MONTHS_COUNT +
           rightMonth.value -
@@ -489,7 +487,8 @@ export default defineComponent({
       handleRightPrevMonthClick,
       handleRangeSelecting,
       navigateDropdown,
-      shortcuts: picker.shortcuts
+      shortcuts: picker.shortcuts,
+      isMobileView: picker.isMobileView
     };
   }
 });

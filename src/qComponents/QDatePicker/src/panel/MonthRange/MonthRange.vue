@@ -176,7 +176,7 @@ export default defineComponent({
       'q-picker-panel__content_focused': state.panelInFocus === 'right'
     }));
 
-    const rightYear = computed(() => {
+    const rightYear = computed<number>(() => {
       if (isDate(state.rightDate) && isDate(state.leftDate)) {
         return state.rightDate.getFullYear() === state.leftDate.getFullYear()
           ? state.leftDate.getFullYear() + 1

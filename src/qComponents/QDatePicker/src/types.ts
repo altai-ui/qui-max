@@ -109,6 +109,7 @@ interface QDatePickerInstance {
   handleKeyUp: (e: KeyboardEvent) => void;
   popperInit: () => void;
   destroyPopper: () => void;
+  closePicker: () => void;
   handlePickClick: (
     val: QDatePickerPropModelValue,
     options?: {
@@ -119,7 +120,6 @@ interface QDatePickerInstance {
   handleInput: (arg: { target: HTMLInputElement; inputType: string }) => void;
   handleMouseEnter: () => void;
   handleRangeClick: () => void;
-  handleClose: () => void;
   handleIconClick: (event: MouseEvent) => void;
   t: (key: string) => string;
 }

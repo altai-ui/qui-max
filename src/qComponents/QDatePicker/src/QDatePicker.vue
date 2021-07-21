@@ -11,8 +11,9 @@
     >
       <q-input
         ref="reference"
+        class="q-date-picker__input"
         :model-value="displayValue"
-        :class="['q-date-editor', { 'q-input_focus': state.pickerVisible }]"
+        :root-class="{ 'q-input_focus': state.pickerVisible }"
         :readonly="!editable"
         :disabled="isPickerDisabled"
         :name="name"
@@ -45,7 +46,7 @@
     >
       <input
         autocomplete="off"
-        class="q-range-input"
+        class="q-date-picker__input"
         :placeholder="startPlaceholder || t('QDatePicker.startPlaceholder')"
         :value="displayValue && displayValue[0]"
         :disabled="isPickerDisabled"
@@ -53,20 +54,20 @@
         tabindex="-1"
       />
       <slot name="range-separator">
-        <span class="q-range-separator">{{ rangeSeparator }}</span>
+        <span class="q-date-picker__range-separator">{{ rangeSeparator }}</span>
       </slot>
       <input
         autocomplete="off"
         :placeholder="endPlaceholder || t('QDatePicker.endPlaceholder')"
         :value="displayValue && displayValue[1]"
         :disabled="isPickerDisabled"
-        class="q-range-input"
+        class="q-date-picker__input"
         readonly
         tabindex="-1"
       />
       <span
         :class="iconClass"
-        class="q-input__icon"
+        class="q-date-picker__suffix"
         @click="handleIconClick"
       />
     </div>
@@ -77,20 +78,20 @@
       <q-dialog
         v-if="isMobileView"
         v-model:visible="state.pickerVisible"
-        custom-class="dialog-view"
         prevent-focus-after-closing
-        @close="handleClose"
+        @close="closePicker"
       >
         <component
           :is="panelComponent"
           ref="panel"
           v-model="transformedToDate"
+          class="q-picker-panel_dialog-view"
           @pick="handlePickClick"
         />
       </q-dialog>
       <transition
         v-else
-        name="q-picker-panel_animation"
+        name="q-picker-panel-animation"
         @after-leave="destroyPopper"
         @before-enter="popperInit"
       >
@@ -373,10 +374,9 @@ export default defineComponent({
     );
 
     const rangeClasses = computed<Record<string, boolean>>(() => ({
-      'q-date-editor': true,
-      'q-range-editor': true,
-      'q-range-editor_disabled': isPickerDisabled.value,
-      'q-range-editor_focused': state.pickerVisible
+      'q-date-picker__range-wrapper': true,
+      'q-date-picker__range-wrapper_disabled': isPickerDisabled.value,
+      'q-date-picker__range-wrapper_focused': state.pickerVisible
     }));
 
     const isRanged = computed<boolean>(() => props.type.includes('range'));
@@ -649,7 +649,7 @@ export default defineComponent({
       }
     };
 
-    const handleClose = (): void => {
+    const closePicker = (): void => {
       if (!state.pickerVisible) return;
       state.pickerVisible = false;
     };
@@ -703,7 +703,7 @@ export default defineComponent({
 
     watch(isMobileView, value => {
       if (value) {
-        handleClose();
+        closePicker();
       }
     });
 
@@ -752,7 +752,7 @@ export default defineComponent({
       handleInput,
       handleMouseEnter,
       handleRangeClick,
-      handleClose,
+      closePicker,
       handleIconClick,
       t
     };

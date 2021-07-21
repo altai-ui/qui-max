@@ -173,25 +173,25 @@ export default defineComponent({
 
       return new Date().getFullYear() + YEARS_IN_DECADE;
     });
-    const leftYear = computed(() => leftYearComposable(state.leftDate));
-    const leftLabel = computed(() =>
+    const leftYear = computed<number>(() => leftYearComposable(state.leftDate));
+    const leftLabel = computed<string>(() =>
       getLabelFromDate(state.leftDate, picker.type.value)
     );
-    const rightLabel = computed(() =>
+    const rightLabel = computed<string>(() =>
       getLabelFromDate(state.rightDate, picker.type.value)
     );
 
-    const enableYearArrow = computed(() => {
+    const enableYearArrow = computed<boolean>(() => {
       if (picker.isMobileView.value) return true;
       return rightYear.value > leftYear.value + YEARS_IN_DECADE;
     });
-    const leftPanelClasses = computed(() => ({
+    const leftPanelClasses = computed<Record<string, boolean>>(() => ({
       'q-picker-panel__content': true,
       'q-picker-panel__content_no-right-borders': true,
       'q-picker-panel__content_focused': state.panelInFocus === 'left'
     }));
 
-    const rightPanelClasses = computed(() => ({
+    const rightPanelClasses = computed<Record<string, boolean>>(() => ({
       'q-picker-panel__content': true,
       'q-picker-panel__content_no-left-borders': true,
       'q-picker-panel__content_focused': state.panelInFocus === 'right'

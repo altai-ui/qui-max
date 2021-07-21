@@ -241,15 +241,16 @@ export default defineComponent({
             isRendered.value = false;
           }
 
-          nextTick(() => {
-            elementToFocusAfterClosing?.focus();
-          });
+          if (!props.preventFocusAfterClosing) {
+            nextTick(() => {
+              elementToFocusAfterClosing?.focus();
+            });
+          }
+
           return;
         }
 
-        if (!props.preventFocusAfterClosing) {
-          elementToFocusAfterClosing = document.activeElement as HTMLElement;
-        }
+        elementToFocusAfterClosing = document.activeElement as HTMLElement;
         nextTick(() => {
           dialog.value?.focus();
         });

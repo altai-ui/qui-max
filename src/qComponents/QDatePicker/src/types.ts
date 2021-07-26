@@ -78,7 +78,7 @@ interface QDatePickerProvider {
     { hidePicker }?: HandlePickClickSecondArg
   ) => void;
   firstDayOfWeek: ComputedRef<number>;
-  isMobileView: ComputedRef<boolean>;
+  isMobileView: Ref<boolean>;
   disabledValues: Ref<QDatePickerPropDisabledValues>;
   shortcuts: Ref<Nullable<QDatePickerPropShortcuts>>;
   emitChange: (val: QDatePickerPropModelValue, intermediate: boolean) => void;
@@ -93,7 +93,7 @@ interface QDatePickerInstance {
   isRanged: ComputedRef<boolean>;
   isPickerDisabled: ComputedRef<boolean>;
   isValueEmpty: ComputedRef<boolean>;
-  isMobileView: ComputedRef<boolean>;
+  isMobileView: Ref<boolean>;
   calcFirstDayOfWeek: ComputedRef<number>;
   transformedToDate: ComputedRef<Nullable<Date | Date[]>>;
   rangeClasses: ComputedRef<Record<string, boolean>>;

@@ -90,11 +90,6 @@
         &.q-icon-close {
           color: var(--field-icon-color-base);
 
-          &::before {
-            // stylelint-disable-next-line font-family-no-missing-generic-family-keyword
-            font-family: 'qicon';
-          }
-
           &.focus-visible,
           &:hover {
             color: var(--field-icon-color-hover);

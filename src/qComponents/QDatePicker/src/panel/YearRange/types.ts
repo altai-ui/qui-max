@@ -36,7 +36,7 @@ interface YearRangePanelInstance {
   leftPanelClasses: ComputedRef<Record<string, boolean>>;
   rightPanelClasses: ComputedRef<Record<string, boolean>>;
   shortcuts: Ref<Nullable<QDatePickerPropShortcuts>>;
-  isMobileView: ComputedRef<boolean>;
+  isMobileView: Ref<boolean>;
   handleLeftNextYearClick: () => void;
   handleLeftPrevYearClick: () => void;
   handleRightNextYearClick: () => void;

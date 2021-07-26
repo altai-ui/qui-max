@@ -85,7 +85,7 @@
           :is="panelComponent"
           ref="panel"
           v-model="transformedToDate"
-          class="q-picker-panel_dialog-view"
+          class="q-picker-panel__dialog-view"
           @pick="handlePickClick"
         />
       </q-dialog>
@@ -117,9 +117,7 @@ import {
   watch,
   onBeforeUnmount,
   provide,
-  toRef,
-  onMounted,
-  onUnmounted
+  toRef
 } from 'vue';
 import type { PropType } from 'vue';
 import { createPopper } from '@popperjs/core';
@@ -136,7 +134,8 @@ import {
 
 import { getConfig } from '@/qComponents/config';
 import { t } from '@/qComponents/locale';
-import { notNull, validateArray } from '@/qComponents/helpers';
+import { notNull, validateArray, isTouchDevice } from '@/qComponents/helpers';
+import { useMediaQuery } from '@/qComponents/hooks';
 import QInput from '@/qComponents/QInput';
 import QDialog from '@/qComponents/QDialog';
 import type { QFormProvider } from '@/qComponents/QForm';
@@ -338,11 +337,7 @@ export default defineComponent({
       popper: null
     });
 
-    const dynamicClientWidth = ref<number>(document.body.clientWidth);
-
-    const isMobileView = computed<boolean>(
-      () => dynamicClientWidth.value < 768
-    );
+    const isMobileView = useMediaQuery('(max-width: 768px)');
 
     const calcFirstDayOfWeek = computed<number>(() => {
       if (isNumber(props.firstDayOfWeek)) return props.firstDayOfWeek;
@@ -409,7 +404,7 @@ export default defineComponent({
 
     const iconClass = computed<string>(() => {
       if (isPickerDisabled.value) return 'q-icon-lock';
-      if (isMobileView.value)
+      if (isTouchDevice())
         return !isValueEmpty.value && props.clearable
           ? 'q-icon-close'
           : 'q-icon-calendar';
@@ -660,10 +655,6 @@ export default defineComponent({
       ctx.emit('focus');
     };
 
-    const updateClientWidth = (): void => {
-      dynamicClientWidth.value = document.body.clientWidth;
-    };
-
     const handleInput = ({
       target,
       inputType
@@ -705,14 +696,6 @@ export default defineComponent({
       if (value) {
         closePicker();
       }
-    });
-
-    onMounted(() => {
-      window.addEventListener('resize', updateClientWidth, true);
-    });
-
-    onUnmounted(() => {
-      window.removeEventListener('resize', updateClientWidth);
     });
 
     onBeforeUnmount(() => destroyPopper());

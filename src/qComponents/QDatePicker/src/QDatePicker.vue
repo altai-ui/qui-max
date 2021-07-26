@@ -134,7 +134,7 @@ import {
 
 import { getConfig } from '@/qComponents/config';
 import { t } from '@/qComponents/locale';
-import { notNull, validateArray, isTouchDevice } from '@/qComponents/helpers';
+import { notNull, validateArray } from '@/qComponents/helpers';
 import { useMediaQuery } from '@/qComponents/hooks';
 import QInput from '@/qComponents/QInput';
 import QDialog from '@/qComponents/QDialog';
@@ -338,6 +338,7 @@ export default defineComponent({
     });
 
     const isMobileView = useMediaQuery('(max-width: 768px)');
+    const isTouchMode = useMediaQuery('(pointer: coarse)');
 
     const calcFirstDayOfWeek = computed<number>(() => {
       if (isNumber(props.firstDayOfWeek)) return props.firstDayOfWeek;
@@ -404,7 +405,7 @@ export default defineComponent({
 
     const iconClass = computed<string>(() => {
       if (isPickerDisabled.value) return 'q-icon-lock';
-      if (isTouchDevice())
+      if (isTouchMode.value)
         return !isValueEmpty.value && props.clearable
           ? 'q-icon-close'
           : 'q-icon-calendar';

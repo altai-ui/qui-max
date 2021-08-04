@@ -295,12 +295,6 @@ export default defineComponent({
       isDropdownShown: false
     });
 
-    // set right modelValues if incorrect formats were passed
-    if (props.multiple) {
-      if (!Array.isArray(props.modelValue)) ctx.emit('update:modelValue', []);
-    } else if (Array.isArray(props.modelValue))
-      ctx.emit('update:modelValue', '');
-
     const preparedPlaceholder = computed<Nullable<string>>(() => {
       return state.query || (props.multiple && props.modelValue)
         ? ''
@@ -654,8 +648,7 @@ export default defineComponent({
     };
 
     const clearSelected = (): void => {
-      const value = props.multiple ? [] : null;
-      emitValueUpdate(value);
+      emitValueUpdate(null);
 
       state.isDropdownShown = false;
       ctx.emit('clear');
@@ -665,7 +658,8 @@ export default defineComponent({
       arr = [] as QOptionPropValue[],
       optionValue: QOptionPropValue
     ): number => {
-      if (isString(optionValue)) return arr.indexOf(optionValue);
+      if (isString(optionValue) || isNumber(optionValue))
+        return arr.indexOf(optionValue);
       const valueKey = props.valueKey;
       const valueByValuekey = get(optionValue, valueKey ?? '');
       return arr.findIndex(
@@ -678,26 +672,31 @@ export default defineComponent({
      */
     const toggleOptionSelection = (option: QOptionModel): void => {
       if (!option.value) return;
-      if (props.multiple && Array.isArray(props.modelValue)) {
-        const value = [...props.modelValue];
+      if (props.multiple) {
+        if (Array.isArray(props.modelValue)) {
+          const value = [...props.modelValue];
 
-        const optionIndex = getValueIndex(value, option.value);
-        const limit = props.multipleLimit ?? 0;
+          const optionIndex = getValueIndex(value, option.value);
+          const limit = props.multipleLimit ?? 0;
 
-        if (optionIndex > -1) {
-          value.splice(optionIndex, 1);
-        } else if (limit <= 0 || value.length < limit) {
-          value.push(option.value);
-        }
+          if (optionIndex > -1) {
+            value.splice(optionIndex, 1);
+          } else if (limit <= 0 || value.length < limit) {
+            value.push(option.value);
+          }
 
-        emitValueUpdate(value);
-        if (option.created) {
-          state.query = '';
-        }
-        if (props.filterable) {
-          const inputElInsideTags = tags?.value?.input;
+          const emittedValue = value.length ? value : null;
+          emitValueUpdate(emittedValue);
+          if (option.created) {
+            state.query = '';
+          }
+          if (props.filterable) {
+            const inputElInsideTags = tags?.value?.input;
 
-          inputElInsideTags?.focus();
+            inputElInsideTags?.focus();
+          }
+        } else {
+          emitValueUpdate([option.value]);
         }
       } else {
         emitValueUpdate(option.value);
@@ -711,6 +710,10 @@ export default defineComponent({
         option = state.options.find(({ created }) => created);
       } else {
         option = state.options[state.hoverIndex];
+      }
+
+      if (option?.created) {
+        state.query = '';
       }
 
       if (option?.isVisible) {
@@ -730,8 +733,8 @@ export default defineComponent({
       if (index === -1) return;
       const value = [...props.modelValue];
       value.splice(index, 1);
-
-      emitValueUpdate(value);
+      const emittedValue = value.length ? value : null;
+      emitValueUpdate(emittedValue);
       ctx.emit('remove-tag', tag.value);
     };
 

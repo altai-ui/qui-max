@@ -642,7 +642,8 @@ export default defineComponent({
     };
 
     const emitValueUpdate = (value: QSelectPropModelValue): void => {
-      ctx.emit('update:modelValue', value);
+      const emittedValue = Array.isArray(value) && value.length ? value : null;
+      ctx.emit('update:modelValue', emittedValue);
 
       if (!isEqual(props.modelValue, value)) ctx.emit('change', value);
     };
@@ -685,8 +686,7 @@ export default defineComponent({
             value.push(option.value);
           }
 
-          const emittedValue = value.length ? value : null;
-          emitValueUpdate(emittedValue);
+          emitValueUpdate(value);
           if (option.created) {
             state.query = '';
           }
@@ -733,8 +733,7 @@ export default defineComponent({
       if (index === -1) return;
       const value = [...props.modelValue];
       value.splice(index, 1);
-      const emittedValue = value.length ? value : null;
-      emitValueUpdate(emittedValue);
+      emitValueUpdate(value);
       ctx.emit('remove-tag', tag.value);
     };
 

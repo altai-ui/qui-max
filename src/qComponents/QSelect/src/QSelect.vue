@@ -642,10 +642,15 @@ export default defineComponent({
     };
 
     const emitValueUpdate = (value: QSelectPropModelValue): void => {
-      const emittedValue = Array.isArray(value) && value.length ? value : null;
+      let emittedValue = value;
+      if (Array.isArray(value)) {
+        emittedValue = value.length ? value : null;
+      }
+
       ctx.emit('update:modelValue', emittedValue);
 
-      if (!isEqual(props.modelValue, value)) ctx.emit('change', value);
+      if (!isEqual(props.modelValue, emittedValue))
+        ctx.emit('change', emittedValue);
     };
 
     const clearSelected = (): void => {

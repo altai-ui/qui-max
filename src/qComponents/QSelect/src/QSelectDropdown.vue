@@ -184,7 +184,7 @@ export default defineComponent({
           break;
 
         case 'Tab':
-          qSelect.toggleMenu();
+          qSelect.toggleMenu(e);
           break;
 
         case 'ArrowDown':

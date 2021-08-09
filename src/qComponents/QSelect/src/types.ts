@@ -44,8 +44,8 @@ interface QSelectInstance {
   ) => number;
   toggleOptionSelection: (option: QOptionModel) => void;
   emitValueUpdate: (value: QSelectPropModelValue) => void;
-  toggleMenu: () => void;
-  handleEnterKeyUp: () => void;
+  toggleMenu: (event: MouseEvent | KeyboardEvent) => void;
+  handleEnterKeyUp: (event: KeyboardEvent) => void;
   onInputChange: () => void;
   deleteTag: (tag: QOptionModel) => void;
   afterLeave: () => void;
@@ -53,7 +53,7 @@ interface QSelectInstance {
 }
 
 interface QSelectProvider {
-  toggleMenu: () => void;
+  toggleMenu: (event: MouseEvent | KeyboardEvent) => void;
   toggleOptionSelection: (option: QOptionModel) => void;
   setSelected: () => void;
   addOption: (optionInstance: QOptionModel) => void;
@@ -141,7 +141,7 @@ interface QSelectTagsInstance {
   selected: Ref<Optional<QSelectState['selected']>>;
   query: Ref<Optional<string>>;
   handleBackspaceKeyDown: () => void;
-  handleTagClose: (option: Nullable<QOptionModel[]>) => void;
+  handleTagClose: (option: Nullable<QOptionModel | NewOption>) => void;
   handleInput: (event: KeyboardEvent) => void;
   input: Ref<Nullable<HTMLInputElement>>;
 }

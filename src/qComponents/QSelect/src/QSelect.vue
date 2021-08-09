@@ -444,20 +444,21 @@ export default defineComponent({
       state.selected = null;
     };
 
-    const toggleMenu = (): void => {
+    const toggleMenu = (event: MouseEvent | KeyboardEvent): void => {
       if (isDisabled.value) return;
+
+      const tagsInputEl = tags?.value?.input;
+      if (state.isDropdownShown) {
+        const elementToFocus = tagsInputEl ?? input.value?.input;
+        elementToFocus?.focus();
+      }
+
+      if (props.filterable && event.target === input.value?.input) return;
 
       if (state.menuVisibleOnFocus) {
         state.menuVisibleOnFocus = false;
       } else {
         state.isDropdownShown = !state.isDropdownShown;
-      }
-
-      const tagsInputEl = tags?.value?.input;
-
-      if (state.isDropdownShown) {
-        const elementToFocus = tagsInputEl ?? input.value?.input;
-        elementToFocus?.focus();
       }
     };
 
@@ -635,7 +636,7 @@ export default defineComponent({
       ctx.emit('focus', event);
     };
 
-    const handleBlur = (event: MouseEvent): void => {
+    const handleBlur = (event: MouseEvent | KeyboardEvent): void => {
       setTimeout(() => {
         ctx.emit('blur', event);
       }, 50);
@@ -692,16 +693,17 @@ export default defineComponent({
           }
 
           emitValueUpdate(value);
-          if (option.created) {
-            state.query = '';
-          }
-          if (props.filterable) {
-            const inputElInsideTags = tags?.value?.input;
-
-            inputElInsideTags?.focus();
-          }
         } else {
           emitValueUpdate([option.value]);
+        }
+
+        if (props.filterable) {
+          const inputElInsideTags = tags?.value?.input;
+          inputElInsideTags?.focus();
+        }
+
+        if (option.created) {
+          state.query = '';
         }
       } else {
         emitValueUpdate(option.value);
@@ -709,7 +711,7 @@ export default defineComponent({
       }
     };
 
-    const handleEnterKeyUp = (): void => {
+    const handleEnterKeyUp = (event: KeyboardEvent): void => {
       let option = null;
       if (isNewOptionShown.value) {
         option = state.options.find(({ created }) => created);
@@ -723,6 +725,11 @@ export default defineComponent({
 
       if (option?.isVisible) {
         toggleOptionSelection(option);
+      }
+
+      if (input.value?.input) {
+        input.value.input.blur();
+        handleBlur(event);
       }
     };
 
@@ -740,6 +747,10 @@ export default defineComponent({
       value.splice(index, 1);
       emitValueUpdate(value);
       ctx.emit('remove-tag', tag.value);
+      if (props.filterable) {
+        const inputElInsideTags = tags?.value?.input;
+        inputElInsideTags?.focus();
+      }
     };
 
     const onInputChange = (): void => {

@@ -1,4 +1,4 @@
-import type { App } from 'vue';
+import type { App, ComponentInternalInstance } from 'vue';
 
 import type { Nullable, UnwrappedInstance } from '#/helpers';
 
@@ -16,7 +16,12 @@ type Styles = Record<string, string | number>;
 export type QMessageBoxOptionWrapClass = Nullable<string | Classes | Classes[]>;
 export type QMessageBoxOptionWrapStyle = Nullable<string | Styles | Styles[]>;
 
+export interface QMessageBoxHookOptions {
+  parentInstance?: Nullable<ComponentInternalInstance>;
+}
+
 export interface QMessageBoxOptions {
+  parentInstance?: Nullable<ComponentInternalInstance>;
   closeOnClickShadow?: Nullable<boolean>;
   distinguishCancelAndClose?: Nullable<boolean>;
   wrapClass?: QMessageBoxOptionWrapClass;
@@ -37,4 +42,11 @@ export interface QMessageBoxEvent {
 export interface MessageBoxPromise {
   resolve: (event: QMessageBoxEvent) => void;
   reject: (event: QMessageBoxEvent) => void;
+}
+
+export interface QMessageBox {
+  (
+    content: QMessageBoxContent,
+    options?: QMessageBoxOptions
+  ): Promise<QMessageBoxEvent>;
 }

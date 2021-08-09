@@ -11,9 +11,11 @@ const storyMetadata: Meta = {
 const QMessageBoxComponentStory: Story<never> = () =>
   defineComponent({
     setup() {
+      const messageBox = useMessageBox();
+
       const handleClick = async (): Promise<void> => {
         try {
-          const result = await useMessageBox(
+          const result = await messageBox(
             defineAsyncComponent(() => import('./MessageBoxFormTest.vue')),
             { distinguishCancelAndClose: true }
           );

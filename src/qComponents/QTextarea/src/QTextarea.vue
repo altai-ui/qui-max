@@ -12,6 +12,7 @@
       class="q-textarea__inner"
       :disabled="isDisabled"
       :style="textareaStyle"
+      :value="modelValue"
       @input="handleInput"
       @change="handleChange"
       @focus="handleFocus"

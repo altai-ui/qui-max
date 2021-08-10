@@ -43,14 +43,12 @@ function calculateNodeStyling(targetElement: HTMLTextAreaElement): NodeStyling {
   const boxSizing = style.getPropertyValue('box-sizing');
 
   const paddingSize =
-    parseFloat(style.getPropertyValue('padding-bottom')) ||
-    0 + parseFloat(style.getPropertyValue('padding-top')) ||
-    0;
+    (parseFloat(style.getPropertyValue('padding-bottom')) || 0) +
+    (parseFloat(style.getPropertyValue('padding-top')) || 0);
 
   const borderSize =
-    parseFloat(style.getPropertyValue('border-bottom-width')) ||
-    0 + parseFloat(style.getPropertyValue('border-top-width')) ||
-    0;
+    (parseFloat(style.getPropertyValue('border-bottom-width')) || 0) +
+    (parseFloat(style.getPropertyValue('border-top-width')) || 0);
 
   const contextStyles: string[] = [];
 

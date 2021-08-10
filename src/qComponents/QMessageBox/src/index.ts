@@ -52,13 +52,15 @@ export const createMessageBox = (
       });
 
       const parentAppContext = config?.parentInstance?.appContext;
-      const components = parentAppContext?.components ?? {};
-      const provides = parentAppContext?.provides ?? {};
 
+      // Register a global components from main app instance
+      const components = parentAppContext?.components ?? {};
       Object.entries(components).forEach(([key, value]) => {
         app?.component(key, value);
       });
 
+      // Reprovide a global provides from main app instance
+      const provides = parentAppContext?.provides ?? {};
       const providerKeys = Object.getOwnPropertySymbols(provides);
       providerKeys.forEach(key => {
         // TS does not allow use 'symbol' as index type, so we pretend like we don't

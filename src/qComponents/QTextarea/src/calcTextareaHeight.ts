@@ -1,6 +1,10 @@
+import { isNaN } from 'lodash-es';
 import type { Nullable } from '#/helpers';
 
 let hiddenTextarea: Nullable<HTMLTextAreaElement>;
+
+const DEFAULT_PADDING = 20;
+const DEFAULT_BORDER_SIZE = 0;
 
 const HIDDEN_STYLE = `
   height:0 !important;
@@ -42,17 +46,27 @@ function calculateNodeStyling(targetElement: HTMLTextAreaElement): NodeStyling {
 
   const boxSizing = style.getPropertyValue('box-sizing');
 
-  const paddingSize =
+  let paddingSize =
     parseFloat(style.getPropertyValue('padding-bottom')) +
     parseFloat(style.getPropertyValue('padding-top'));
 
-  const borderSize =
+  paddingSize = isNaN(paddingSize) ? DEFAULT_PADDING : paddingSize;
+
+  let borderSize =
     parseFloat(style.getPropertyValue('border-bottom-width')) +
     parseFloat(style.getPropertyValue('border-top-width'));
 
-  const contextStyle = CONTEXT_STYLE.map(
-    name => `${name}:${style.getPropertyValue(name)}`
-  ).join(';');
+  borderSize = isNaN(borderSize) ? DEFAULT_BORDER_SIZE : borderSize;
+
+  const contextStyles: string[] = [];
+
+  CONTEXT_STYLE.forEach(name => {
+    if (style.getPropertyValue(name) !== '') {
+      contextStyles.push(`${name}:${style.getPropertyValue(name)}`);
+    }
+  });
+
+  const contextStyle: string = contextStyles.join(';');
 
   return { contextStyle, paddingSize, borderSize, boxSizing };
 }

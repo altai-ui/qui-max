@@ -161,7 +161,7 @@ export default defineComponent({
 
     const textareaStyle = computed<Record<string, string>>(() => ({
       ...textareaCalcStyle.value,
-      resize: props.resize
+      resize: props.autosize ? 'none' : props.resize
     }));
 
     const updateModel = (event: Event): void => {
@@ -188,7 +188,8 @@ export default defineComponent({
       ctx.emit('focus', event);
     };
 
-    const resizeTextarea = (): void => {
+    const resizeTextarea = async (): Promise<void> => {
+      await nextTick();
       const { autosize } = props;
 
       if (!autosize) {
@@ -211,14 +212,12 @@ export default defineComponent({
     watch(
       () => props.modelValue,
       () => {
-        nextTick(() => resizeTextarea());
+        resizeTextarea();
         if (props.validateEvent) qFormItem?.validateField('change');
       }
     );
 
-    onMounted(() => {
-      resizeTextarea();
-    });
+    onMounted(() => resizeTextarea());
 
     return {
       t,

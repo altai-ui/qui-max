@@ -31,7 +31,7 @@
 
         <q-option
           v-if="isNewOptionShown"
-          :model-value="qSelectState?.query"
+          :value="qSelectState?.query"
           :label="qSelectState?.query"
           created
         />
@@ -184,7 +184,7 @@ export default defineComponent({
           break;
 
         case 'Tab':
-          qSelect.toggleMenu();
+          qSelect.toggleMenu(e);
           break;
 
         case 'ArrowDown':

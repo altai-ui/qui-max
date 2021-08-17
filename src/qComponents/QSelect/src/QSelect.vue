@@ -295,12 +295,6 @@ export default defineComponent({
       isDropdownShown: false
     });
 
-    // set right modelValues if incorrect formats were passed
-    if (props.multiple) {
-      if (!Array.isArray(props.modelValue)) ctx.emit('update:modelValue', []);
-    } else if (Array.isArray(props.modelValue))
-      ctx.emit('update:modelValue', '');
-
     const preparedPlaceholder = computed<Nullable<string>>(() => {
       return state.query || (props.multiple && props.modelValue)
         ? ''
@@ -450,20 +444,21 @@ export default defineComponent({
       state.selected = null;
     };
 
-    const toggleMenu = (): void => {
+    const toggleMenu = (event: MouseEvent | KeyboardEvent): void => {
       if (isDisabled.value) return;
+
+      const tagsInputEl = tags?.value?.input;
+      if (state.isDropdownShown) {
+        const elementToFocus = tagsInputEl ?? input.value?.input;
+        elementToFocus?.focus();
+      }
+
+      if (props.filterable && event.target === input.value?.input) return;
 
       if (state.menuVisibleOnFocus) {
         state.menuVisibleOnFocus = false;
       } else {
         state.isDropdownShown = !state.isDropdownShown;
-      }
-
-      const tagsInputEl = tags?.value?.input;
-
-      if (state.isDropdownShown) {
-        const elementToFocus = tagsInputEl ?? input.value?.input;
-        elementToFocus?.focus();
       }
     };
 
@@ -641,21 +636,26 @@ export default defineComponent({
       ctx.emit('focus', event);
     };
 
-    const handleBlur = (event: MouseEvent): void => {
+    const handleBlur = (event: MouseEvent | KeyboardEvent): void => {
       setTimeout(() => {
         ctx.emit('blur', event);
       }, 50);
     };
 
     const emitValueUpdate = (value: QSelectPropModelValue): void => {
-      ctx.emit('update:modelValue', value);
+      let emittedValue = value;
+      if (Array.isArray(value)) {
+        emittedValue = value.length ? value : null;
+      }
 
-      if (!isEqual(props.modelValue, value)) ctx.emit('change', value);
+      ctx.emit('update:modelValue', emittedValue);
+
+      if (!isEqual(props.modelValue, emittedValue))
+        ctx.emit('change', emittedValue);
     };
 
     const clearSelected = (): void => {
-      const value = props.multiple ? [] : null;
-      emitValueUpdate(value);
+      emitValueUpdate(null);
 
       state.isDropdownShown = false;
       ctx.emit('clear');
@@ -665,7 +665,8 @@ export default defineComponent({
       arr = [] as QOptionPropValue[],
       optionValue: QOptionPropValue
     ): number => {
-      if (isString(optionValue)) return arr.indexOf(optionValue);
+      if (isString(optionValue) || isNumber(optionValue))
+        return arr.indexOf(optionValue);
       const valueKey = props.valueKey;
       const valueByValuekey = get(optionValue, valueKey ?? '');
       return arr.findIndex(
@@ -678,26 +679,31 @@ export default defineComponent({
      */
     const toggleOptionSelection = (option: QOptionModel): void => {
       if (!option.value) return;
-      if (props.multiple && Array.isArray(props.modelValue)) {
-        const value = [...props.modelValue];
+      if (props.multiple) {
+        if (Array.isArray(props.modelValue)) {
+          const value = [...props.modelValue];
 
-        const optionIndex = getValueIndex(value, option.value);
-        const limit = props.multipleLimit ?? 0;
+          const optionIndex = getValueIndex(value, option.value);
+          const limit = props.multipleLimit ?? 0;
 
-        if (optionIndex > -1) {
-          value.splice(optionIndex, 1);
-        } else if (limit <= 0 || value.length < limit) {
-          value.push(option.value);
+          if (optionIndex > -1) {
+            value.splice(optionIndex, 1);
+          } else if (limit <= 0 || value.length < limit) {
+            value.push(option.value);
+          }
+
+          emitValueUpdate(value);
+        } else {
+          emitValueUpdate([option.value]);
         }
 
-        emitValueUpdate(value);
-        if (option.created) {
-          state.query = '';
-        }
         if (props.filterable) {
           const inputElInsideTags = tags?.value?.input;
-
           inputElInsideTags?.focus();
+        }
+
+        if (option.created) {
+          state.query = '';
         }
       } else {
         emitValueUpdate(option.value);
@@ -705,7 +711,7 @@ export default defineComponent({
       }
     };
 
-    const handleEnterKeyUp = (): void => {
+    const handleEnterKeyUp = (event: KeyboardEvent): void => {
       let option = null;
       if (isNewOptionShown.value) {
         option = state.options.find(({ created }) => created);
@@ -713,8 +719,17 @@ export default defineComponent({
         option = state.options[state.hoverIndex];
       }
 
+      if (option?.created) {
+        state.query = '';
+      }
+
       if (option?.isVisible) {
         toggleOptionSelection(option);
+      }
+
+      if (input.value?.input) {
+        input.value.input.blur();
+        handleBlur(event);
       }
     };
 
@@ -730,9 +745,12 @@ export default defineComponent({
       if (index === -1) return;
       const value = [...props.modelValue];
       value.splice(index, 1);
-
       emitValueUpdate(value);
       ctx.emit('remove-tag', tag.value);
+      if (props.filterable) {
+        const inputElInsideTags = tags?.value?.input;
+        inputElInsideTags?.focus();
+      }
     };
 
     const onInputChange = (): void => {

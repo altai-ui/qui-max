@@ -9,5 +9,5 @@ export enum NotifyType {
   DEFAULT = 'default'
 }
 
-export const NOTIFICATION_INJECTION_KEY: InjectionKey<string> =
+export const Q_NOTIFY_INJECTION_KEY: InjectionKey<string> =
   Symbol('QNotification');

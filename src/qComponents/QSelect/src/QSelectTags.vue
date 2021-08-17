@@ -6,32 +6,33 @@
       'q-select-tags_collapse-tags': collapseTags
     }"
   >
-    <template v-if="collapseTags && selected.length">
-      <q-tag
-        :closable="!isDisabled"
-        @close="handleTagClose(selected[0])"
-      >
-        {{ selected[0].preparedLabel }}
-      </q-tag>
-      <q-tag
-        v-if="selected.length > 1"
-        :closable="false"
-      >
-        + {{ selected.length - 1 }}
-      </q-tag>
-    </template>
+    <template v-if="Array.isArray(selected)">
+      <template v-if="collapseTags && selected.length">
+        <q-tag
+          :closable="!isDisabled"
+          @close="handleTagClose(selected[0])"
+        >
+          {{ selected[0].preparedLabel }}
+        </q-tag>
+        <q-tag
+          v-if="selected.length > 1"
+          :closable="false"
+        >
+          + {{ selected.length - 1 }}
+        </q-tag>
+      </template>
 
-    <template v-if="!collapseTags">
-      <q-tag
-        v-for="option in selected"
-        :key="option.key"
-        :closable="!isDisabled"
-        @close="handleTagClose(option)"
-      >
-        {{ option.preparedLabel }}
-      </q-tag>
+      <template v-if="!collapseTags">
+        <q-tag
+          v-for="option in selected"
+          :key="option.key"
+          :closable="!isDisabled"
+          @close="handleTagClose(option)"
+        >
+          {{ option.preparedLabel }}
+        </q-tag>
+      </template>
     </template>
-
     <input
       v-if="filterable && !isDisabled"
       ref="input"
@@ -55,7 +56,7 @@ import type { QOptionModel } from '@/qComponents/QOption';
 import type { QSelectProvider } from '@/qComponents/QSelect';
 import type { Nullable } from '#/helpers';
 
-import type { QSelectTagsInstance } from './types';
+import type { NewOption, QSelectTagsInstance } from './types';
 
 export default defineComponent({
   name: 'QSelectTags',
@@ -79,7 +80,9 @@ export default defineComponent({
       }
     };
 
-    const handleTagClose = (option: Nullable<QOptionModel[]>): void => {
+    const handleTagClose = (
+      option: Nullable<QOptionModel | NewOption>
+    ): void => {
       ctx.emit('remove-tag', option);
     };
 

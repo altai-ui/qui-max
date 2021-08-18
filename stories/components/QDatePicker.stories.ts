@@ -3,7 +3,6 @@ import type { Meta, Story } from '@storybook/vue3';
 import { addMonths, startOfYesterday, subMonths, subWeeks } from 'date-fns';
 
 import QDatePicker from '@/qComponents/QDatePicker';
-import QPopover from '@/qComponents/QPopover';
 import type {
   QDatePickerPropModelValue,
   QDatePickerProps
@@ -13,7 +12,7 @@ const now = new Date();
 
 const storyMetadata: Meta = {
   title: 'Components/QDatePicker',
-  component: [QDatePicker, QPopover],
+  component: QDatePicker,
   argTypes: {
     'v-model': { control: { type: 'none' } },
     disabledValues: {
@@ -106,12 +105,10 @@ const Template: Story<QDatePickerProps> = args =>
               icon="q-icon-question-mark"
             />
           </template>
-
           outputFormat prop for type date doesn't work in template (always shows iso), better check the browser console
         </q-popover>
         </h3>
         <div><b>v-model: </b>{{ JSON.stringify(state.value) }}</div>
-        <br />
         <br />
         <q-date-picker
           v-model="state.value"

@@ -60,6 +60,7 @@
   &-trigger {
     display: inline-block;
     cursor: pointer;
+    border-radius: 100%;
 
     &__button {
       display: block;
@@ -70,13 +71,13 @@
       color: var(--color-primary-blue);
       background-color: transparent;
       border: none;
+      border-radius: 100%;
       outline: none;
 
       &:hover,
       &[data-focus-visible-added] {
         color: var(--color-primary-black);
         background-color: rgba(var(--color-rgb-gray), 0.16);
-        border-radius: 100%;
       }
     }
   }

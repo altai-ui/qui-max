@@ -59,8 +59,6 @@
 
   &-trigger {
     display: inline-block;
-    cursor: pointer;
-    border-radius: 100%;
 
     &__button {
       display: block;
@@ -69,6 +67,7 @@
       padding: 0;
       font-size: 24px;
       color: var(--color-primary-blue);
+      cursor: pointer;
       background-color: transparent;
       border: none;
       border-radius: 100%;

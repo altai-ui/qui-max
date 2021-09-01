@@ -54,6 +54,7 @@ const QDialogStory: Story<QDialogProps> = args =>
         v-model:visible="isVisible"
         :offset-top="args.offsetTop"
         :title="args.title"
+        :width="args.width"
         :visible="args.visible"
         :destroy-on-close="args.destroyOnClose"
         :wrapper-closable="args.wrapperClosable"

@@ -13,13 +13,14 @@ const QPaginationStory: Story<QPaginationProps> = args =>
   defineComponent({
     components: { QPagination },
     setup() {
-      const currentPage = ref<number>(1);
+      const currentPage = ref<number>(args.currentPage);
 
       const handlePageChange = (value: number): void => {
         // eslint-disable-next-line no-console
-        console.log(value, 'current-change');
+        console.log('current-change', value);
         currentPage.value = value;
       };
+
       return { args, currentPage, handlePageChange };
     },
 
@@ -39,6 +40,7 @@ const QPaginationStory: Story<QPaginationProps> = args =>
 export const Default = QPaginationStory.bind({});
 Default.args = {
   pageCount: 30,
+  currentPage: 1,
   total: 300,
   pageSize: 10
 };

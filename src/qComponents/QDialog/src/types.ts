@@ -23,7 +23,7 @@ export interface QDialogInstance {
   zIndex: Ref<number>;
   isRendered: Ref<boolean>;
   dialogStyle: ComputedRef<Record<string, Nullable<string | number>>>;
-  qDialogStyle?: ComputedRef<Record<string, Nullable<number | string>>>;
+  containerStyle?: ComputedRef<Record<number, Nullable<string>>>;
   afterEnter: () => void;
   afterLeave: () => void;
   closeDialog: () => void;

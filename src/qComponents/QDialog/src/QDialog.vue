@@ -12,13 +12,13 @@
         v-if="isRendered"
         v-show="visible"
         class="q-dialog"
-        :style="containerStyle"
+        :style="dialogStyle"
         @click.self="handleWrapperClick"
       >
         <div
           ref="dialog"
           tabindex="-1"
-          :style="dialogStyle"
+          :style="containerStyle"
           class="q-dialog__container"
           :class="customClass"
           @keyup.esc="closeDialog"
@@ -96,7 +96,7 @@ export default defineComponent({
      * offset from top border of parent relative element
      */
     offsetTop: {
-      type: Number,
+      type: [String, Number],
       default: null
     },
     /**
@@ -185,16 +185,20 @@ export default defineComponent({
 
     let elementToFocusAfterClosing: Nullable<HTMLElement> = null;
 
-    const dialogStyle = computed<Record<string, Nullable<string | number>>>(
+    const dialogStyle = computed<Record<string, Nullable<number | string>>>(
+      () => ({
+        zIndex: zIndex.value,
+        top: Number(props.offsetTop)
+          ? `${Number(props.offsetTop)}px`
+          : props.offsetTop
+      })
+    );
+
+    const containerStyle = computed<Record<string, Nullable<string | number>>>(
       () => ({
         width: Number(props.width) ? `${Number(props.width)}px` : props.width
       })
     );
-
-    const containerStyle = computed<Record<number, Nullable<string>>>(() => ({
-      zIndex: zIndex.value,
-      top: props.offsetTop ? `${Number(props.offsetTop)}px` : props.offsetTop
-    }));
 
     const handleDocumentFocus = (event: FocusEvent): void => {
       if (dialog.value && !dialog.value.contains(event.target as HTMLElement)) {

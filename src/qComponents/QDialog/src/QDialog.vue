@@ -12,7 +12,7 @@
         v-if="isRendered"
         v-show="visible"
         class="q-dialog"
-        :style="{ zIndex }"
+        :style="[{ zIndex }, qDialogStyle]"
         @click.self="handleWrapperClick"
       >
         <div
@@ -191,6 +191,14 @@ export default defineComponent({
       })
     );
 
+    const qDialogStyle = computed<Record<string, Nullable<string | number>>>(
+      () => ({
+        top: Number(props.offsetTop)
+          ? `${Number(props.offsetTop)}px`
+          : props.offsetTop
+      })
+    );
+
     const handleDocumentFocus = (event: FocusEvent): void => {
       if (dialog.value && !dialog.value.contains(event.target as HTMLElement)) {
         dialog.value.focus();
@@ -269,6 +277,7 @@ export default defineComponent({
       zIndex,
       isRendered,
       dialogStyle,
+      qDialogStyle,
       afterEnter,
       afterLeave,
       closeDialog,

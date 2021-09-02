@@ -9,7 +9,8 @@ const storyMetadata: Meta = {
   component: QDialog,
   argTypes: {
     visible: { control: { type: 'none' } },
-    offsetTop: { control: { type: 'number' } }
+    offsetTop: { control: { type: 'number' } },
+    width: { control: { type: 'text' } }
   }
 };
 

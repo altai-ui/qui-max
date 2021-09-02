@@ -1,5 +1,5 @@
 import type { Meta, Story } from '@storybook/vue3';
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
 
 import QPagination from '@/qComponents/QPagination';
 import type { QPaginationProps } from '@/qComponents/QPagination';
@@ -13,7 +13,15 @@ const QPaginationStory: Story<QPaginationProps> = args =>
   defineComponent({
     components: { QPagination },
     setup() {
-      return { args };
+      const currentPage = ref<number>(args.currentPage);
+
+      const handlePageChange = (value: number): void => {
+        // eslint-disable-next-line no-console
+        console.log('current-change', value);
+        currentPage.value = value;
+      };
+
+      return { args, currentPage, handlePageChange };
     },
 
     template: `
@@ -21,9 +29,10 @@ const QPaginationStory: Story<QPaginationProps> = args =>
         :page-count="args.pageCount"
         :total="args.total"
         :page-size="args.pageSize"
-        :current-page="args.currentPage"
+        :current-page="currentPage"
         :disabled="args.disabled"
         :pager-count="args.pagerCount"
+        @current-change="handlePageChange"
       />
     `
   });

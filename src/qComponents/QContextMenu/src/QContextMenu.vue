@@ -165,7 +165,8 @@ export default defineComponent({
       popperJS.value = null;
     };
 
-    const handleTriggerClick = (): void => {
+    const handleTriggerClick = (e: MouseEvent): void => {
+      if (reference.value === e.target) return;
       if (isContextMenuShown.value) {
         closePopper();
         return;

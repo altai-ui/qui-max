@@ -17,9 +17,6 @@ export type QCascaderPropModelValue = Nullable<
 >;
 export type QCascaderPropOptions = Nullable<Option[]>;
 export type QCascaderPropTeleportTo = Nullable<string | HTMLElement>;
-export interface QCascaderState {
-  hovered: boolean;
-}
 
 export interface QCascaderProps {
   modelValue: QCascaderPropModelValue;
@@ -38,7 +35,6 @@ export interface QCascaderProps {
 type Reference = Ref<UnwrappedInstance<QCascaderInputInstance>>;
 
 export interface QCascaderInstance {
-  state: QCascaderState;
   reference: Reference;
   isDropdownShown: Ref<boolean>;
   isDisabled: ComputedRef<boolean>;

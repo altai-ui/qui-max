@@ -1,5 +1,9 @@
 <template>
-  <div :class="rootClasses">
+  <div
+    :class="rootClasses"
+    @mouseover="isHovered = true"
+    @mouseleave="isHovered = false"
+  >
     <template v-if="collapseTags && tagList.length">
       <q-tag
         :closable="!isDisabled"
@@ -29,7 +33,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, computed } from 'vue';
+import { defineComponent, inject, computed, ref } from 'vue';
 
 import QTag from '@/qComponents/QTag/src/QTag.vue';
 import findFullPath from '../helpers/findFullPath';
@@ -48,9 +52,12 @@ export default defineComponent({
       {} as QCascaderProvider
     );
 
+    const isHovered = ref<boolean>(false);
+
     const rootClasses = computed<Record<string, boolean>>(() => ({
       'q-cascader-tags': true,
-      'q-cascader-tags_collapse-tags': Boolean(qCascader.collapseTags.value)
+      'q-cascader-tags_collapse-tags': Boolean(qCascader.collapseTags.value),
+      'q-cascader-tags_hover': isHovered.value === true
     }));
 
     const separator = qCascader.separator.value ?? ' ';
@@ -72,6 +79,7 @@ export default defineComponent({
 
     return {
       rootClasses,
+      isHovered,
       tagList,
       collapseTags: qCascader.collapseTags,
       isDisabled: qCascader.disabled,

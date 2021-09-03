@@ -1,9 +1,5 @@
 <template>
-  <div
-    :class="rootClasses"
-    @mouseover="state.hovered = true"
-    @mouseleave="state.hovered = false"
-  >
+  <div :class="rootClasses">
     <q-cascader-input
       ref="reference"
       @click="handleReferenceTrigger"
@@ -39,8 +35,7 @@ import {
   toRef,
   PropType,
   watch,
-  nextTick,
-  reactive
+  nextTick
 } from 'vue';
 import type { Instance } from '@popperjs/core';
 
@@ -61,8 +56,7 @@ import type {
   QCascaderPropTeleportTo,
   QCascaderProps,
   QCascaderInstance,
-  QCascaderProvider,
-  QCascaderState
+  QCascaderProvider
 } from './types';
 
 export default defineComponent({
@@ -188,10 +182,6 @@ export default defineComponent({
       () => props.disabled || (qForm?.disabled.value ?? false)
     );
 
-    const state = reactive<QCascaderState>({
-      hovered: false
-    });
-
     watch(isDisabled, value => {
       if (value) isDropdownShown.value = false;
     });
@@ -209,8 +199,7 @@ export default defineComponent({
       'q-cascader_disabled': isDisabled.value,
       'q-cascader_multiple': Boolean(props.multiple),
       'q-cascader_single': !props.multiple,
-      'q-cascader_clearable': Boolean(props.clearable),
-      'q-cascader_hover': state.hovered
+      'q-cascader_clearable': Boolean(props.clearable)
     }));
 
     const handleReferenceTrigger = (): void => {
@@ -302,7 +291,6 @@ export default defineComponent({
     });
 
     return {
-      state,
       reference,
       isDropdownShown,
       isDisabled,

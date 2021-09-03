@@ -12,5 +12,6 @@ export interface QCascaderTagsInstance {
   tagList: ComputedRef<TagItem[]>;
   collapseTags: Ref<Nullable<boolean>>;
   isDisabled: Ref<Nullable<boolean>>;
+  isHovered: Ref<boolean>;
   handleTagClose: (value: string | number) => void;
 }

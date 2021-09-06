@@ -33,6 +33,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.14.6",
+    "@commitlint/cli": "^13.1.0",
     "@commitlint/config-conventional": "^13.1.0",
     "@qvant/prettier-config": "^0.0.1",
     "@qvant/stylelint-config": "^0.0.1",
@@ -55,7 +56,6 @@
     "@vue/eslint-config-typescript": "^7.0.0",
     "@vuedx/typescript-plugin-vue": "^0.7.4",
     "babel-loader": "^8.2.2",
-    "commitlint": "^13.1.0",
     "css-loader": "^5.2.6",
     "eslint": "^7.30.0",
     "eslint-config-airbnb-typescript": "^12.3.1",

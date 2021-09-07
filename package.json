@@ -80,8 +80,7 @@
     "vite": "^2.5.3",
     "vite-plugin-dts": "^0.7.0",
     "vue": "^3.2.9",
-    "vue-loader": "^15.9.8",
-    "webpack": "^5.52.0"
+    "vue-loader": "^15.9.8"
   },
   "files": ["dist"],
   "main": "./dist/qui-max.umd.js",

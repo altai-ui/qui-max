@@ -10,6 +10,7 @@
   },
 
   "extends": [
+    "airbnb-base",
     "airbnb-typescript/base",
     "plugin:vue/vue3-recommended",
     "@vue/typescript/recommended",
@@ -32,7 +33,6 @@
     "import/extensions": "off",
     "import/no-unresolved": "off",
     "import/prefer-default-export": "off",
-    "import/no-extraneous-dependencies": "off",
 
     "vue/component-name-in-template-casing": ["error", "kebab-case"],
     "vue/max-attributes-per-line": "warn",

@@ -1,5 +1,5 @@
 import type { Ref } from 'vue';
-import type { FieldErrorList } from 'async-validator';
+import type { ValidateFieldsError } from 'async-validator';
 
 import type {
   QFormItemContext,
@@ -21,7 +21,7 @@ export interface QFormProps {
 
 export interface ValidateFnResult {
   isValid: boolean;
-  invalidFields: FieldErrorList;
+  invalidFields: ValidateFieldsError;
 }
 
 export interface QFormProvider {

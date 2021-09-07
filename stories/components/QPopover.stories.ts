@@ -22,10 +22,12 @@ const QPopoverStory: Story<QPopoverProps> = args =>
     components: { QPopover },
     setup() {
       const handleShow = (): void => {
+        // eslint-disable-next-line no-console
         console.log('show');
       };
 
       const handleHide = (): void => {
+        // eslint-disable-next-line no-console
         console.log('hide');
       };
 

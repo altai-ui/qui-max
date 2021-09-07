@@ -53,7 +53,10 @@ import {
   watch,
   PropType
 } from 'vue';
-import AsyncValidator, { ErrorList, FieldErrorList } from 'async-validator';
+import AsyncValidator, {
+  ValidateError,
+  ValidateFieldsError
+} from 'async-validator';
 import { get, set } from 'lodash-es';
 
 import type { QFormProvider } from '@/qComponents/QForm';
@@ -184,8 +187,8 @@ export default defineComponent({
       trigger: Nullable<string> = null
     ): Nullable<
       Promise<{
-        errors?: ErrorList;
-        fields?: FieldErrorList;
+        errors?: Nullable<ValidateError[]>;
+        fields?: ValidateFieldsError;
       }>
     > => {
       const triggeredRules = getFilteredRules(trigger);

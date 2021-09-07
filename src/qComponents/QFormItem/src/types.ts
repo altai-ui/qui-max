@@ -1,5 +1,9 @@
 import type { Ref, ComputedRef } from 'vue';
-import type { RuleItem, ErrorList, FieldErrorList } from 'async-validator';
+import type {
+  RuleItem,
+  ValidateError,
+  ValidateFieldsError
+} from 'async-validator';
 
 import type { Nullable } from '#/helpers';
 
@@ -22,9 +26,12 @@ export interface QFormItemProps {
 }
 
 export interface QFormItemContext {
-  validateField: (
-    trigger?: Nullable<string>
-  ) => Nullable<Promise<{ errors?: ErrorList; fields?: FieldErrorList }>>;
+  validateField: (trigger?: Nullable<string>) => Nullable<
+    Promise<{
+      errors?: Nullable<ValidateError[]>;
+      fields?: ValidateFieldsError;
+    }>
+  >;
   clearValidate: () => void;
   errorMessage: Ref<Nullable<string>>;
   getFilteredRules: (trigger: Nullable<string>) => Nullable<FilteredRuleItem[]>;
@@ -46,9 +53,12 @@ export interface QFormItemContext {
 }
 
 export interface QFormItemProvider {
-  validateField: (
-    trigger?: Nullable<string>
-  ) => Nullable<Promise<{ errors?: ErrorList; fields?: FieldErrorList }>>;
+  validateField: (trigger?: Nullable<string>) => Nullable<
+    Promise<{
+      errors?: Nullable<ValidateError[]>;
+      fields?: ValidateFieldsError;
+    }>
+  >;
   resetField: () => void;
 }
 
@@ -60,8 +70,11 @@ export interface QFormItemInstance {
   isHeaderShown: ComputedRef<boolean>;
   rootClasses: ComputedRef<Record<string, boolean>>;
   getFilteredRules: (trigger: Nullable<string>) => Nullable<FilteredRuleItem[]>;
-  validateField: (
-    trigger?: Nullable<string>
-  ) => Nullable<Promise<{ errors?: ErrorList; fields?: FieldErrorList }>>;
+  validateField: (trigger?: Nullable<string>) => Nullable<
+    Promise<{
+      errors?: Nullable<ValidateError[]>;
+      fields?: ValidateFieldsError;
+    }>
+  >;
   resetField: () => void;
 }

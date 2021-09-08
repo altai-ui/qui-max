@@ -4,6 +4,7 @@
     ref="dropdown"
     class="q-picker-dropdown"
     tabindex="-1"
+    @mousedown="handleMouseDown"
   >
     <div class="q-picker-dropdown__base">
       <q-color-svpanel
@@ -121,6 +122,8 @@ export default defineComponent({
 
   setup(props: QPickerDropdownProps, ctx): QPickerDropdownInstance {
     const elementToFocusAfterClosing = ref<Nullable<HTMLElement>>(null);
+    const isMouseOnPicker = ref<boolean>(false);
+
     const tempColor = ref<string>('');
     const hue = ref<number>(0);
     const saturation = ref<number>(100);
@@ -167,6 +170,13 @@ export default defineComponent({
       }
     };
 
+    // wip
+    const updateMouseState = (newState: boolean): void => {
+      isMouseOnPicker.value = !newState;
+      // eslint-disable-next-line no-console
+      console.log(newState);
+    };
+
     const qColorPicker = inject<Nullable<QColorPickerProvider>>(
       'qColorPicker',
       null
@@ -177,9 +187,19 @@ export default defineComponent({
         (e.type === 'keyup' && (e as KeyboardEvent).key === 'Escape') ||
         (e.type === 'click' &&
           !qColorPicker?.trigger.value?.contains(e.target as HTMLElement) &&
-          !dropdown.value?.contains(e.target as HTMLElement))
+          !dropdown.value?.contains(e.target as HTMLElement) &&
+          !isMouseOnPicker.value)
       ) {
         ctx.emit('close');
+      }
+    };
+
+    const handleMouseDown = (e: MouseEvent): void => {
+      const target = e.target as HTMLElement;
+      const element = dropdown.value;
+
+      if (element?.contains(target)) {
+        isMouseOnPicker.value = true;
       }
     };
 
@@ -202,6 +222,7 @@ export default defineComponent({
           document.removeEventListener('keyup', closeDropdown, true);
           document.removeEventListener('click', closeDropdown, true);
           document.removeEventListener('focus', handleDocumentFocus, true);
+          document.removeEventListener('mousedown', handleMouseDown, true);
           await nextTick();
           elementToFocusAfterClosing.value?.focus();
           return;
@@ -210,6 +231,7 @@ export default defineComponent({
         document.addEventListener('keyup', closeDropdown, true);
         document.addEventListener('click', closeDropdown, true);
         document.addEventListener('focus', handleDocumentFocus, true);
+        document.addEventListener('mousedown', handleMouseDown, true);
 
         if (props.color) updateHSVA(props.color);
 
@@ -254,7 +276,10 @@ export default defineComponent({
       updateHSVA,
       closeDropdown,
       handleClearBtnClick,
-      handleConfirmBtnClick
+      handleConfirmBtnClick,
+      handleMouseDown,
+      updateMouseState,
+      isMouseOnPicker
     };
   }
 });

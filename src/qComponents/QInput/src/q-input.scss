@@ -65,9 +65,12 @@
       height: 0;
     }
 
+    &:focus {
+      outline: none;
+    }
+
     &.focus-visible {
       background-color: var(--field-background-color-focus);
-      outline: none;
       box-shadow: var(--field-box-shadow-focus);
     }
 
@@ -167,8 +170,8 @@
         font-family: 'qicon';
       }
 
-      &.focus-visible,
-      &:hover {
+      &:hover,
+      &.focus-visible {
         color: var(--field-icon-color-hover);
       }
     }

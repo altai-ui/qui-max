@@ -4,8 +4,8 @@
     ref="dropdown"
     class="q-picker-dropdown"
     tabindex="-1"
-    @mousedown="isDragging = true"
-    @mouseup="isDragging = false"
+    @mousedown="handleMouseDown"
+    @mouseup="handleMouseUp"
   >
     <div class="q-picker-dropdown__base">
       <q-color-svpanel
@@ -123,7 +123,7 @@ export default defineComponent({
 
   setup(props: QPickerDropdownProps, ctx): QPickerDropdownInstance {
     const elementToFocusAfterClosing = ref<Nullable<HTMLElement>>(null);
-    const isDragging = ref<boolean>(false);
+    const isMousePressed = ref<boolean>(false);
 
     const tempColor = ref<string>('');
     const hue = ref<number>(0);
@@ -184,16 +184,28 @@ export default defineComponent({
       ctx.emit('pick', colorString.value);
     };
 
+    const handleMouseUp = (): void => {
+      isMousePressed.value = false;
+      console.log(isMousePressed.value);
+    };
+
+    const handleMouseDown = (): void => {
+      isMousePressed.value = true;
+      console.log(isMousePressed.value);
+    };
+
     const closeDropdown = (e: KeyboardEvent | MouseEvent): void => {
       if (e.type === 'keyup' && (e as KeyboardEvent).key === 'Escape') {
         ctx.emit('close');
       }
+
       if (
         e.type === 'click' &&
-        isDragging.value === false &&
         !qColorPicker?.trigger.value?.contains(e.target as HTMLElement) &&
-        !dropdown.value?.contains(e.target as HTMLElement)
+        !dropdown.value?.contains(e.target as HTMLElement) &&
+        isMousePressed.value === false
       ) {
+        handleMouseUp();
         ctx.emit('close');
       }
     };
@@ -262,7 +274,9 @@ export default defineComponent({
       closeDropdown,
       handleClearBtnClick,
       handleConfirmBtnClick,
-      isDragging
+      isMousePressed,
+      handleMouseDown,
+      handleMouseUp
     };
   }
 });

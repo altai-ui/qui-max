@@ -15,12 +15,14 @@
   }
 
   &:not(.q-cascader-row_disabled) {
+    &:focus {
+      outline: none;
+    }
+
     &:hover,
-    &:focus,
     &.focus-visible {
       color: var(--color-primary-black);
       background-color: var(--color-tertiary-gray);
-      outline: none;
     }
   }
 

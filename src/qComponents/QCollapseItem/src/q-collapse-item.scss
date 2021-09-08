@@ -26,12 +26,8 @@
       outline: none;
     }
 
-    &.focus-visible,
-    &:hover {
-      background-color: var(--color-tertiary-gray);
-    }
-
-    &:focus-visible {
+    &:hover,
+    &.focus-visible {
       background-color: var(--color-tertiary-gray);
     }
   }

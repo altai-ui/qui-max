@@ -57,6 +57,7 @@ import {
   onUnmounted
 } from 'vue';
 
+import { isServer } from '@/qComponents/constants/isServer';
 import QScrollbar from '@/qComponents/QScrollbar';
 import { validateArray } from '@/qComponents/helpers';
 import { CLOSE_EVENT } from '@/qComponents/constants/events';
@@ -140,7 +141,10 @@ export default defineComponent({
      * (has to be a valid query selector, or an HTMLElement)
      */
     teleportTo: {
-      type: [String, HTMLElement] as PropType<QDrawerPropTeleportTo>,
+      type: [
+        String,
+        isServer ? Object : HTMLElement
+      ] as PropType<QDrawerPropTeleportTo>,
       default: null
     },
     renderOnMount: {

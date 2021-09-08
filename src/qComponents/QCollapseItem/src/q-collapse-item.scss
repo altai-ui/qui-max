@@ -22,8 +22,16 @@
       border-radius: var(--border-radius-base) var(--border-radius-base) 0 0;
     }
 
-    &:focus,
+    &:focus {
+      outline: none;
+    }
+
+    &.focus-visible,
     &:hover {
+      background-color: var(--color-tertiary-gray);
+    }
+
+    &:focus-visible {
       background-color: var(--color-tertiary-gray);
     }
   }

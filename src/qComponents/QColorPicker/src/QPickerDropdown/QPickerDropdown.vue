@@ -4,7 +4,8 @@
     ref="dropdown"
     class="q-picker-dropdown"
     tabindex="-1"
-    @mousedown="handleMouseDown"
+    @mousedown="isDragging = true"
+    @mouseup="isDragging = false"
   >
     <div class="q-picker-dropdown__base">
       <q-color-svpanel
@@ -122,7 +123,7 @@ export default defineComponent({
 
   setup(props: QPickerDropdownProps, ctx): QPickerDropdownInstance {
     const elementToFocusAfterClosing = ref<Nullable<HTMLElement>>(null);
-    const isMouseOnPicker = ref<boolean>(false);
+    const isDragging = ref<boolean>(false);
 
     const tempColor = ref<string>('');
     const hue = ref<number>(0);
@@ -170,38 +171,10 @@ export default defineComponent({
       }
     };
 
-    // wip
-    const updateMouseState = (newState: boolean): void => {
-      isMouseOnPicker.value = !newState;
-      // eslint-disable-next-line no-console
-      console.log(newState);
-    };
-
     const qColorPicker = inject<Nullable<QColorPickerProvider>>(
       'qColorPicker',
       null
     );
-
-    const closeDropdown = (e: KeyboardEvent | MouseEvent): void => {
-      if (
-        (e.type === 'keyup' && (e as KeyboardEvent).key === 'Escape') ||
-        (e.type === 'click' &&
-          !qColorPicker?.trigger.value?.contains(e.target as HTMLElement) &&
-          !dropdown.value?.contains(e.target as HTMLElement) &&
-          !isMouseOnPicker.value)
-      ) {
-        ctx.emit('close');
-      }
-    };
-
-    const handleMouseDown = (e: MouseEvent): void => {
-      const target = e.target as HTMLElement;
-      const element = dropdown.value;
-
-      if (element?.contains(target)) {
-        isMouseOnPicker.value = true;
-      }
-    };
 
     const handleClearBtnClick = (): void => {
       ctx.emit('clear');
@@ -209,6 +182,20 @@ export default defineComponent({
 
     const handleConfirmBtnClick = (): void => {
       ctx.emit('pick', colorString.value);
+    };
+
+    const closeDropdown = (e: KeyboardEvent | MouseEvent): void => {
+      if (e.type === 'keyup' && (e as KeyboardEvent).key === 'Escape') {
+        ctx.emit('close');
+      }
+      if (
+        e.type === 'click' &&
+        isDragging.value === false &&
+        !qColorPicker?.trigger.value?.contains(e.target as HTMLElement) &&
+        !dropdown.value?.contains(e.target as HTMLElement)
+      ) {
+        ctx.emit('close');
+      }
     };
 
     const refSv = ref<Nullable<typeof QColorSvpanel>>(null);
@@ -222,7 +209,6 @@ export default defineComponent({
           document.removeEventListener('keyup', closeDropdown, true);
           document.removeEventListener('click', closeDropdown, true);
           document.removeEventListener('focus', handleDocumentFocus, true);
-          document.removeEventListener('mousedown', handleMouseDown, true);
           await nextTick();
           elementToFocusAfterClosing.value?.focus();
           return;
@@ -231,7 +217,6 @@ export default defineComponent({
         document.addEventListener('keyup', closeDropdown, true);
         document.addEventListener('click', closeDropdown, true);
         document.addEventListener('focus', handleDocumentFocus, true);
-        document.addEventListener('mousedown', handleMouseDown, true);
 
         if (props.color) updateHSVA(props.color);
 
@@ -277,9 +262,7 @@ export default defineComponent({
       closeDropdown,
       handleClearBtnClick,
       handleConfirmBtnClick,
-      handleMouseDown,
-      updateMouseState,
-      isMouseOnPicker
+      isDragging
     };
   }
 });

@@ -22,12 +22,10 @@ export interface QPickerDropdownInstance {
   hue: Ref<number>;
   alpha: Ref<number>;
   tempColor: Ref<string>;
-  isMouseOnPicker: Ref<boolean>;
+  isDragging: Ref<boolean>;
   rgbString: ComputedRef<string>;
   updateHSVA: (newValue: string) => void;
   closeDropdown: (e: KeyboardEvent | MouseEvent) => void;
   handleClearBtnClick: () => void;
   handleConfirmBtnClick: () => void;
-  updateMouseState: (isUpdated: boolean) => void;
-  handleMouseDown: (e: MouseEvent) => void;
 }

@@ -186,12 +186,10 @@ export default defineComponent({
 
     const handleMouseUp = (): void => {
       isMousePressed.value = false;
-      console.log(isMousePressed.value);
     };
 
     const handleMouseDown = (): void => {
       isMousePressed.value = true;
-      console.log(isMousePressed.value);
     };
 
     const closeDropdown = (e: KeyboardEvent | MouseEvent): void => {
@@ -205,8 +203,9 @@ export default defineComponent({
         !dropdown.value?.contains(e.target as HTMLElement) &&
         isMousePressed.value === false
       ) {
-        handleMouseUp();
         ctx.emit('close');
+      } else {
+        handleMouseUp();
       }
     };
 

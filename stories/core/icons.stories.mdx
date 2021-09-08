@@ -1,6 +1,6 @@
 import {
   Meta,
-  Preview,
+  Canvas,
   Story,
   ArgsTable,
   IconGallery,
@@ -58,7 +58,7 @@ export const Template = args => ({
   `
 });
 
-<Preview>
+<Canvas>
   <Story
     name="Playground"
     args={{
@@ -69,6 +69,6 @@ export const Template = args => ({
   >
     {Template.bind({})}
   </Story>
-</Preview>
+</Canvas>
 
 <ArgsTable story="Playground" />

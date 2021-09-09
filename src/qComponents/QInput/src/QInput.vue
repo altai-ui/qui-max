@@ -29,7 +29,10 @@
       v-if="isSuffixVisible"
       class="q-input__suffix"
     >
-      <span class="q-input__suffix-inner">
+      <span
+        class="q-input__suffix-inner"
+        :class="{ 'q-input__suffix-inner--without-slot': suffixIcon }"
+      >
         <template v-if="!isClearButtonShown || !isPasswordSwitchShown">
           <span
             v-if="suffixIcon"

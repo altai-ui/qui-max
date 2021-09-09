@@ -137,8 +137,12 @@
 
   &__suffix-inner {
     display: block;
-    pointer-events: none;
+    pointer-events: all;
     cursor: text;
+
+    &--without-slot {
+      pointer-events: none;
+    }
   }
 
   &__icon {
@@ -163,7 +167,6 @@
     &.q-icon-eye,
     &.q-icon-eye-close {
       color: var(--field-icon-color-base);
-      pointer-events: all;
       cursor: pointer;
 
       &::before {

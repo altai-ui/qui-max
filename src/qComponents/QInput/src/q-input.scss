@@ -110,13 +110,16 @@
     &::after {
       position: absolute;
       top: 0;
-      right: 8px;
+      right: 0;
+      width: 40px;
       // stylelint-disable-next-line font-family-no-missing-generic-family-keyword
       font-family: 'qicon';
       font-size: 24px;
       line-height: 40px;
+      text-align: center;
+      pointer-events: none;
       cursor: not-allowed;
-      content: '\e912';
+      content: '\e930';
     }
   }
 
@@ -168,11 +171,6 @@
     &.q-icon-eye-close {
       color: var(--field-icon-color-base);
       cursor: pointer;
-
-      &::before {
-        // stylelint-disable-next-line font-family-no-missing-generic-family-keyword
-        font-family: 'qicon';
-      }
 
       &:hover,
       &.focus-visible {

@@ -227,6 +227,8 @@ export default defineComponent({
     watch(
       () => props.visible,
       isVisible => {
+        if (isServer) return;
+
         if (!isVisible) {
           document.body.style.overflow = '';
 

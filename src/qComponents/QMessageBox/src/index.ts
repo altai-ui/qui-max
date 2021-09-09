@@ -1,6 +1,7 @@
 import { createApp, nextTick } from 'vue';
 import type { App } from 'vue';
 
+import { isServer } from '@/qComponents/constants/isServer';
 import type { Optional, UnwrappedInstance } from '#/helpers';
 
 import { QMessageBoxContainer } from './QMessageBoxContainer';
@@ -44,6 +45,8 @@ export const createMessageBox = (
     };
 
     nextTick(() => {
+      if (isServer) return;
+
       app = createApp(QMessageBoxContainer, {
         ...(options ?? {}),
         content,

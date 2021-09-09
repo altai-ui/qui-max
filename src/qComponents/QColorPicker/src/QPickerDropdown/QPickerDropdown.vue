@@ -5,7 +5,6 @@
     class="q-picker-dropdown"
     tabindex="-1"
     @mousedown="handleMouseDown"
-    @mouseup="handleMouseUp"
   >
     <div class="q-picker-dropdown__base">
       <q-color-svpanel
@@ -184,28 +183,21 @@ export default defineComponent({
       ctx.emit('pick', colorString.value);
     };
 
-    const handleMouseUp = (): void => {
-      isMousePressed.value = false;
-    };
-
     const handleMouseDown = (): void => {
       isMousePressed.value = true;
     };
 
     const closeDropdown = (e: KeyboardEvent | MouseEvent): void => {
-      if (e.type === 'keyup' && (e as KeyboardEvent).key === 'Escape') {
-        ctx.emit('close');
-      }
-
       if (
-        e.type === 'click' &&
-        !qColorPicker?.trigger.value?.contains(e.target as HTMLElement) &&
-        !dropdown.value?.contains(e.target as HTMLElement) &&
-        isMousePressed.value === false
+        (e.type === 'keyup' && (e as KeyboardEvent).key === 'Escape') ||
+        (e.type === 'click' &&
+          !qColorPicker?.trigger.value?.contains(e.target as HTMLElement) &&
+          !dropdown.value?.contains(e.target as HTMLElement) &&
+          isMousePressed.value === false)
       ) {
         ctx.emit('close');
       } else {
-        handleMouseUp();
+        isMousePressed.value = false;
       }
     };
 
@@ -274,8 +266,7 @@ export default defineComponent({
       handleClearBtnClick,
       handleConfirmBtnClick,
       isMousePressed,
-      handleMouseDown,
-      handleMouseUp
+      handleMouseDown
     };
   }
 });

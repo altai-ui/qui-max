@@ -29,5 +29,4 @@ export interface QPickerDropdownInstance {
   handleClearBtnClick: () => void;
   handleConfirmBtnClick: () => void;
   handleMouseDown: () => void;
-  handleMouseUp: () => void;
 }

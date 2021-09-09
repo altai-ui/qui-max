@@ -140,7 +140,7 @@
     pointer-events: all;
     cursor: text;
 
-    &--without-slot {
+    &_without-slot {
       pointer-events: none;
     }
   }

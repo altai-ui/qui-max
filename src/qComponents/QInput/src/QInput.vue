@@ -31,7 +31,7 @@
     >
       <span
         class="q-input__suffix-inner"
-        :class="{ 'q-input__suffix-inner--without-slot': suffixIcon }"
+        :class="{ 'q-input__suffix-inner_without-slot': suffixIcon }"
       >
         <template v-if="!isClearButtonShown || !isPasswordSwitchShown">
           <span

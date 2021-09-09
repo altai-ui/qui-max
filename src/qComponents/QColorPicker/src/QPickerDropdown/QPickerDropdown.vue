@@ -122,7 +122,7 @@ export default defineComponent({
 
   setup(props: QPickerDropdownProps, ctx): QPickerDropdownInstance {
     const elementToFocusAfterClosing = ref<Nullable<HTMLElement>>(null);
-    const isMousePressed = ref<boolean>(false);
+    const shouldPreventCloseByClick = ref<boolean>(false);
 
     const tempColor = ref<string>('');
     const hue = ref<number>(0);
@@ -158,7 +158,7 @@ export default defineComponent({
     };
 
     const handleMouseDown = (): void => {
-      isMousePressed.value = true;
+      shouldPreventCloseByClick.value = true;
     };
 
     const updateHSVA = (newValue: string): void => {
@@ -185,11 +185,11 @@ export default defineComponent({
         (e.type === 'click' &&
           !qColorPicker?.trigger.value?.contains(e.target as HTMLElement) &&
           !dropdown.value?.contains(e.target as HTMLElement) &&
-          isMousePressed.value === false)
+          shouldPreventCloseByClick.value === false)
       ) {
         ctx.emit('close');
       }
-      isMousePressed.value = false;
+      shouldPreventCloseByClick.value = false;
     };
 
     const handleClearBtnClick = (): void => {
@@ -253,6 +253,7 @@ export default defineComponent({
 
     return {
       t,
+      shouldPreventCloseByClick,
       dropdown,
       saturation,
       value,
@@ -261,11 +262,10 @@ export default defineComponent({
       tempColor,
       rgbString,
       updateHSVA,
-      closeDropdown,
+      handleMouseDown,
       handleClearBtnClick,
       handleConfirmBtnClick,
-      isMousePressed,
-      handleMouseDown
+      closeDropdown
     };
   }
 });

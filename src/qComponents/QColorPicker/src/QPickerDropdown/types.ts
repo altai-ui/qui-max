@@ -16,6 +16,7 @@ export interface QPickerDropdownProps {
 
 export interface QPickerDropdownInstance {
   t: (key: string) => string;
+  shouldPreventCloseByClick: Ref<boolean>;
   dropdown: Ref<Nullable<HTMLElement>>;
   saturation: Ref<number>;
   value: Ref<number>;
@@ -24,7 +25,8 @@ export interface QPickerDropdownInstance {
   tempColor: Ref<string>;
   rgbString: ComputedRef<string>;
   updateHSVA: (newValue: string) => void;
-  closeDropdown: (e: KeyboardEvent | MouseEvent) => void;
+  handleMouseDown: () => void;
   handleClearBtnClick: () => void;
   handleConfirmBtnClick: () => void;
+  closeDropdown: (e: KeyboardEvent | MouseEvent) => void;
 }

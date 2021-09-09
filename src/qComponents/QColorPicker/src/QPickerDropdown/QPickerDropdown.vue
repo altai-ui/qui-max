@@ -157,6 +157,10 @@ export default defineComponent({
       }
     };
 
+    const handleMouseDown = (): void => {
+      isMousePressed.value = true;
+    };
+
     const updateHSVA = (newValue: string): void => {
       try {
         const color = colord(newValue).toHsv();
@@ -175,18 +179,6 @@ export default defineComponent({
       null
     );
 
-    const handleClearBtnClick = (): void => {
-      ctx.emit('clear');
-    };
-
-    const handleConfirmBtnClick = (): void => {
-      ctx.emit('pick', colorString.value);
-    };
-
-    const handleMouseDown = (): void => {
-      isMousePressed.value = true;
-    };
-
     const closeDropdown = (e: KeyboardEvent | MouseEvent): void => {
       if (
         (e.type === 'keyup' && (e as KeyboardEvent).key === 'Escape') ||
@@ -196,9 +188,16 @@ export default defineComponent({
           isMousePressed.value === false)
       ) {
         ctx.emit('close');
-      } else {
-        isMousePressed.value = false;
       }
+      isMousePressed.value = false;
+    };
+
+    const handleClearBtnClick = (): void => {
+      ctx.emit('clear');
+    };
+
+    const handleConfirmBtnClick = (): void => {
+      ctx.emit('pick', colorString.value);
     };
 
     const refSv = ref<Nullable<typeof QColorSvpanel>>(null);

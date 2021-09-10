@@ -31,7 +31,7 @@
     >
       <span
         class="q-input__suffix-inner"
-        :class="{ 'q-input__suffix-inner_without-slot': suffixIcon }"
+        :class="{ 'q-input__suffix-inner_has-slot': hasSlot }"
       >
         <template v-if="!isClearButtonShown || !isPasswordSwitchShown">
           <span
@@ -225,6 +225,13 @@ export default defineComponent({
       )
     );
 
+    const hasSlot = computed<boolean>(
+      () =>
+        !props.suffixIcon ||
+        isPasswordSwitchShown.value ||
+        isClearButtonShown.value
+    );
+
     const classes = computed<QInputClass[]>(() => {
       const mainClass = 'q-input';
 
@@ -292,6 +299,7 @@ export default defineComponent({
       isSuffixVisible,
       isClearButtonShown,
       isSymbolLimitShown,
+      hasSlot,
       textLength,
       inputType,
       input,

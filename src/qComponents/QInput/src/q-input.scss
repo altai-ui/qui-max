@@ -140,11 +140,11 @@
 
   &__suffix-inner {
     display: block;
-    pointer-events: all;
+    pointer-events: none;
     cursor: text;
 
-    &_without-slot {
-      pointer-events: none;
+    &_has-slot {
+      pointer-events: all;
     }
   }
 

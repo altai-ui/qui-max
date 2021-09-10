@@ -13,6 +13,7 @@
         {{ t('QInput.charNumber') }}: {{ textLength }}/{{ $attrs.maxlength }}
       </span>
     </div>
+
     <input
       v-bind="$attrs"
       ref="input"
@@ -25,37 +26,39 @@
       @focus="handleFocus"
       @blur="handleBlur"
     />
+
     <span
       v-if="isSuffixVisible"
       class="q-input__suffix"
     >
       <span
-        class="q-input__suffix-inner"
-        :class="{ 'q-input__suffix-inner_has-slot': hasSlot }"
-      >
-        <template v-if="!isClearButtonShown || !isPasswordSwitchShown">
-          <span
-            v-if="suffixIcon"
-            class="q-input__icon"
-            :class="suffixIcon"
-          />
-          <slot
-            v-else
-            name="suffix"
-          />
-        </template>
-        <span
-          v-if="isClearButtonShown"
-          class="q-input__icon q-icon-close"
-          @click="handleClearClick"
-        />
-        <span
-          v-if="isPasswordSwitchShown"
-          class="q-input__icon"
-          :class="state.isPasswordVisible ? 'q-icon-eye' : 'q-icon-eye-close'"
-          @click="handlePasswordVisible"
-        />
-      </span>
+        v-if="isDisabled"
+        class="q-input__icon q-icon-lock"
+      />
+
+      <span
+        v-else-if="isClearButtonShown"
+        class="q-input__icon q-icon-close"
+        @click="handleClearClick"
+      />
+
+      <span
+        v-else-if="isPasswordSwitchShown"
+        class="q-input__icon"
+        :class="state.isPasswordVisible ? 'q-icon-eye' : 'q-icon-eye-close'"
+        @click="handlePasswordVisible"
+      />
+
+      <span
+        v-else-if="suffixIcon"
+        class="q-input__icon"
+        :class="suffixIcon"
+      />
+
+      <slot
+        v-else
+        name="suffix"
+      />
     </span>
   </div>
 </template>
@@ -131,7 +134,9 @@ export default defineComponent({
       type: Boolean,
       default: false
     },
-    /** as native attrs bind to native input, via rootСlass you can set class for q-input root */
+    /**
+     * as native attrs bind to native input, via rootСlass you can set class for q-input root
+     */
     rootClass: {
       type: [Array, Object],
       default: null
@@ -174,11 +179,12 @@ export default defineComponent({
     const state = reactive<QInputState>({
       hovering: false,
       focused: false,
-      isPasswordVisible: false // state of passwordSwitch
+      // state of passwordSwitch
+      isPasswordVisible: false
     });
 
     const inputType = computed<string>(() => {
-      if (!props.passwordSwitch) return (ctx.attrs.type ?? 'text') as string;
+      if (!props.passwordSwitch) return String(ctx.attrs.type ?? 'text');
 
       return state.isPasswordVisible ? 'text' : 'password';
     });
@@ -200,7 +206,6 @@ export default defineComponent({
     const isPasswordSwitchShown = computed<boolean>(() =>
       Boolean(
         props.passwordSwitch &&
-          !isDisabled.value &&
           !ctx.attrs.readonly &&
           (props.modelValue || state.focused || state.hovering)
       )
@@ -209,7 +214,6 @@ export default defineComponent({
     const isClearButtonShown = computed<boolean>(() =>
       Boolean(
         props.clearable &&
-          !isDisabled.value &&
           !ctx.attrs.readonly &&
           props.modelValue &&
           (state.focused || state.hovering)
@@ -218,18 +222,12 @@ export default defineComponent({
 
     const isSuffixVisible = computed<boolean>(() =>
       Boolean(
-        ctx.slots.suffix ||
-          props.suffixIcon ||
+        isDisabled.value ||
           isClearButtonShown.value ||
-          props.passwordSwitch
+          isPasswordSwitchShown.value ||
+          props.suffixIcon ||
+          ctx.slots.suffix
       )
-    );
-
-    const hasSlot = computed<boolean>(
-      () =>
-        !props.suffixIcon ||
-        isPasswordSwitchShown.value ||
-        isClearButtonShown.value
     );
 
     const classes = computed<QInputClass[]>(() => {
@@ -281,6 +279,7 @@ export default defineComponent({
     const handleClearClick = (event: MouseEvent): void => {
       ctx.emit('update:modelValue', '');
       ctx.emit('clear', event);
+      input?.value?.focus();
     };
 
     watch(
@@ -299,7 +298,6 @@ export default defineComponent({
       isSuffixVisible,
       isClearButtonShown,
       isSymbolLimitShown,
-      hasSlot,
       textLength,
       inputType,
       input,

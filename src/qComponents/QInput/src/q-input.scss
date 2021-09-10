@@ -106,23 +106,6 @@
     }
   }
 
-  &_disabled {
-    &::after {
-      position: absolute;
-      top: 0;
-      right: 0;
-      width: 40px;
-      // stylelint-disable-next-line font-family-no-missing-generic-family-keyword
-      font-family: 'qicon';
-      font-size: 24px;
-      line-height: 40px;
-      text-align: center;
-      pointer-events: none;
-      cursor: not-allowed;
-      content: '\e930';
-    }
-  }
-
   &__suffix {
     position: absolute;
     top: 0;
@@ -132,44 +115,25 @@
     text-align: center;
     pointer-events: none;
     transition: all 0.3s;
-
-    .q-input.q-input_disabled & {
-      display: none;
-    }
-  }
-
-  &__suffix-inner {
-    display: block;
-    pointer-events: none;
-    cursor: text;
-
-    &_has-slot {
-      pointer-events: all;
-    }
   }
 
   &__icon {
     width: 40px;
+    font-size: 24px;
+    line-height: 40px;
     color: var(--field-icon-color-inactive);
     text-align: center;
-
-    &_reverse {
-      color: var(--field-icon-color-base);
-    }
+    pointer-events: none;
 
     &:not(:last-child) {
       display: none;
-    }
-
-    &::before {
-      font-size: 24px;
-      line-height: 40px;
     }
 
     &.q-icon-close,
     &.q-icon-eye,
     &.q-icon-eye-close {
       color: var(--field-icon-color-base);
+      pointer-events: all;
       cursor: pointer;
 
       &:hover,
@@ -177,6 +141,10 @@
         color: var(--field-icon-color-hover);
       }
     }
+  }
+
+  &__suffix-slot {
+    pointer-events: all;
   }
 
   &__count {

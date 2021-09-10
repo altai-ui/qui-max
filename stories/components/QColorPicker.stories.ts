@@ -23,7 +23,7 @@ const QColorPickerStory: Story<QColorPickerProps> = args =>
       return { args, color };
     },
     template: `
-      <div style="width: 304px; height:280px">
+      <div style="width:584px; height:312px">
         <q-color-picker
           v-model="color"
           :disabled="args.disabled"

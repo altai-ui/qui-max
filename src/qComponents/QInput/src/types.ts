@@ -30,7 +30,6 @@ export interface QInputInstance {
   isSuffixVisible: Ref<boolean>;
   isClearButtonShown: Ref<boolean>;
   isSymbolLimitShown: Ref<boolean>;
-  hasSlot: Ref<boolean>;
   textLength: Ref<number>;
   inputType: Ref<string>;
   // refs

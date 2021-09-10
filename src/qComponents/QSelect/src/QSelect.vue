@@ -358,7 +358,7 @@ export default defineComponent({
     const iconClass = computed<string>(() => {
       if (props.remote && props.filterable) return 'q-icon-search';
       return state.isDropdownShown
-        ? 'q-icon-triangle-up q-input__icon_reverse'
+        ? 'q-icon-triangle-up'
         : 'q-icon-triangle-down';
     });
 

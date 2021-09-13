@@ -16,7 +16,7 @@
         :disabled="isDisabled"
         :readonly="isReadonly"
         :validate-event="false"
-        :root-class="{ 'q-input_focus': state.isDropdownShown }"
+        :root-class="{ 'q-input_focused': state.isDropdownShown }"
         :tabindex="multiple && filterable ? '-1' : null"
         @focus="handleFocus"
         @blur="handleBlur"
@@ -358,7 +358,7 @@ export default defineComponent({
     const iconClass = computed<string>(() => {
       if (props.remote && props.filterable) return 'q-icon-search';
       return state.isDropdownShown
-        ? 'q-icon-triangle-up q-input__icon_reverse'
+        ? 'q-icon-triangle-up'
         : 'q-icon-triangle-down';
     });
 

@@ -14,7 +14,7 @@
 
   .q-cascader:not(.q-cascader_disabled) & {
     .q-input__inner,
-    .q-input__suffix-inner {
+    .q-input__suffix {
       cursor: pointer;
     }
   }
@@ -29,6 +29,7 @@
 
   &__icon-close {
     display: none;
+    pointer-events: all;
 
     .q-cascader-input:hover & {
       display: block;

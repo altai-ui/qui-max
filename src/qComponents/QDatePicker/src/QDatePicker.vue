@@ -11,7 +11,7 @@
       <q-input
         ref="reference"
         :model-value="displayValue"
-        :class="['q-date-editor', { 'q-input_focus': state.pickerVisible }]"
+        :class="['q-date-editor', { 'q-input_focused': state.pickerVisible }]"
         :readonly="!editable"
         :disabled="isPickerDisabled"
         :name="name"

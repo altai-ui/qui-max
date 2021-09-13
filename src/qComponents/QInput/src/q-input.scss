@@ -69,6 +69,7 @@
       outline: none;
     }
 
+    .q-input_focused &,
     &.focus-visible {
       background-color: var(--field-background-color-focus);
       box-shadow: var(--field-box-shadow-focus);
@@ -77,12 +78,6 @@
     &:hover {
       background-color: var(--field-background-color-hover);
       box-shadow: var(--field-box-shadow-hover);
-    }
-
-    .q-input_focus & {
-      background-color: var(--field-background-color-focus);
-      outline: none;
-      box-shadow: var(--field-box-shadow-focus);
     }
 
     .q-input_disabled & {
@@ -123,7 +118,6 @@
     line-height: 40px;
     color: var(--field-icon-color-inactive);
     text-align: center;
-    pointer-events: none;
 
     &:not(:last-child) {
       display: none;

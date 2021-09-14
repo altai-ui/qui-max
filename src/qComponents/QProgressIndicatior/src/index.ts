@@ -1,7 +1,8 @@
 import { createApp, ref, nextTick } from 'vue';
 
-import QProgressIndicatiorContainer from './QProgressIndicatiorContainer';
+import { isServer } from '@/qComponents/constants/isServer';
 
+import QProgressIndicatiorContainer from './QProgressIndicatiorContainer';
 import { HIDE_ANIMATION_IN_MS, TRANSFORM_ANIMATION_IN_MS } from './constants';
 import { createQueue } from './utils';
 import type {
@@ -26,15 +27,17 @@ export const createProgressIndicatior = (
     ...config
   };
 
-  nextTick(() => {
-    const app = createApp(QProgressIndicatiorContainer, {
-      isShown,
-      isStarted,
-      progress
+  if (!isServer) {
+    nextTick(() => {
+      const app = createApp(QProgressIndicatiorContainer, {
+        isShown,
+        isStarted,
+        progress
+      });
+      const component = app.mount(document.createElement('div'));
+      options.onMounted?.(component, app);
     });
-    const component = app.mount(document.createElement('div'));
-    options.onMounted?.(component, app);
-  });
+  }
 
   const set = (value: number): void => {
     if (!isStarted.value) return;

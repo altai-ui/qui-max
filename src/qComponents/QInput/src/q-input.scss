@@ -69,6 +69,7 @@
       outline: none;
     }
 
+    .q-input_focused &,
     &.focus-visible {
       background-color: var(--field-background-color-focus);
       box-shadow: var(--field-box-shadow-focus);
@@ -77,12 +78,6 @@
     &:hover {
       background-color: var(--field-background-color-hover);
       box-shadow: var(--field-box-shadow-hover);
-    }
-
-    .q-input_focus & {
-      background-color: var(--field-background-color-focus);
-      outline: none;
-      box-shadow: var(--field-box-shadow-focus);
     }
 
     .q-input_disabled & {
@@ -106,20 +101,6 @@
     }
   }
 
-  &_disabled {
-    &::after {
-      position: absolute;
-      top: 0;
-      right: 8px;
-      // stylelint-disable-next-line font-family-no-missing-generic-family-keyword
-      font-family: 'qicon';
-      font-size: 24px;
-      line-height: 40px;
-      cursor: not-allowed;
-      content: '\e912';
-    }
-  }
-
   &__suffix {
     position: absolute;
     top: 0;
@@ -129,52 +110,35 @@
     text-align: center;
     pointer-events: none;
     transition: all 0.3s;
-
-    .q-input.q-input_disabled & {
-      display: none;
-    }
-  }
-
-  &__suffix-inner {
-    display: block;
-    pointer-events: all;
-    cursor: text;
   }
 
   &__icon {
     width: 40px;
+    font-size: 24px;
+    line-height: 40px;
     color: var(--field-icon-color-inactive);
     text-align: center;
 
-    &_reverse {
-      color: var(--field-icon-color-base);
-    }
-
     &:not(:last-child) {
       display: none;
-    }
-
-    &::before {
-      font-size: 24px;
-      line-height: 40px;
     }
 
     &.q-icon-close,
     &.q-icon-eye,
     &.q-icon-eye-close {
       color: var(--field-icon-color-base);
+      pointer-events: all;
       cursor: pointer;
-
-      &::before {
-        // stylelint-disable-next-line font-family-no-missing-generic-family-keyword
-        font-family: 'qicon';
-      }
 
       &:hover,
       &.focus-visible {
         color: var(--field-icon-color-hover);
       }
     }
+  }
+
+  &__suffix-slot {
+    pointer-events: all;
   }
 
   &__count {

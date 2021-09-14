@@ -62,6 +62,7 @@ import {
 import { createPopper as createPopperJs, Instance } from '@popperjs/core';
 import { placements } from '@popperjs/core/lib/enums';
 
+import { isServer } from '@/qComponents/constants/isServer';
 import { validateArray } from '@/qComponents/helpers';
 import { getConfig } from '@/qComponents/config';
 import type { Nullable } from '#/helpers';
@@ -168,7 +169,10 @@ export default defineComponent({
      * (has to be a valid query selector, or an HTMLElement)
      */
     teleportTo: {
-      type: [String, HTMLElement] as PropType<QPopoverPropTeleportTo>,
+      type: [
+        String,
+        isServer ? Object : HTMLElement
+      ] as PropType<QPopoverPropTeleportTo>,
       default: 'body'
     }
   },

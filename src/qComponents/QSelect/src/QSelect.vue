@@ -16,7 +16,7 @@
         :disabled="isDisabled"
         :readonly="isReadonly"
         :validate-event="false"
-        :root-class="{ 'q-input_focus': state.isDropdownShown }"
+        :root-class="{ 'q-input_focused': state.isDropdownShown }"
         :tabindex="multiple && filterable ? '-1' : null"
         @focus="handleFocus"
         @blur="handleBlur"
@@ -52,7 +52,7 @@
     />
 
     <teleport
-      :to="teleportTo"
+      :to="teleportTo || 'body'"
       :disabled="!teleportTo"
     >
       <transition
@@ -115,6 +115,7 @@ import {
 import { createPopper } from '@popperjs/core';
 
 import { t } from '@/qComponents/locale';
+import { isServer } from '@/qComponents/constants/isServer';
 import { useResizeListener } from '@/qComponents/hooks';
 import type { QInputInstance } from '@/qComponents/QInput';
 import type { QFormProvider } from '@/qComponents/QForm';
@@ -232,7 +233,10 @@ export default defineComponent({
      * Specifies a target element where QSelect will be moved.
      * (has to be a valid query selector, or an HTMLElement)
      */
-    teleportTo: { type: [String, HTMLElement], default: null }
+    teleportTo: {
+      type: [String, isServer ? Object : HTMLElement],
+      default: null
+    }
   },
 
   emits: [
@@ -358,7 +362,7 @@ export default defineComponent({
     const iconClass = computed<string>(() => {
       if (props.remote && props.filterable) return 'q-icon-search';
       return state.isDropdownShown
-        ? 'q-icon-triangle-up q-input__icon_reverse'
+        ? 'q-icon-triangle-up'
         : 'q-icon-triangle-down';
     });
 

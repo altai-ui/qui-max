@@ -13,7 +13,7 @@
         ref="reference"
         class="q-date-picker__input"
         :model-value="displayValue"
-        :root-class="{ 'q-input_focus': state.pickerVisible }"
+        :root-class="{ 'q-input_focused': state.pickerVisible }"
         :readonly="!editable"
         :disabled="isPickerDisabled"
         :name="name"
@@ -23,6 +23,7 @@
         @keyup="handleKeyUp"
         @input="handleInput"
         @change="handleInputDateChange"
+        @keydown="handleKeydown"
       >
         <template #suffix>
           <span
@@ -72,7 +73,7 @@
       />
     </div>
     <teleport
-      :to="teleportTo"
+      :to="teleportTo || 'body'"
       :disabled="!teleportTo"
     >
       <q-dialog
@@ -132,6 +133,7 @@ import {
   parseISO
 } from 'date-fns';
 
+import { isServer } from '@/qComponents/constants/isServer';
 import { getConfig } from '@/qComponents/config';
 import { t } from '@/qComponents/locale';
 import { notNull, validateArray } from '@/qComponents/helpers';
@@ -294,7 +296,9 @@ export default defineComponent({
      * (has to be a valid query selector, or an HTMLElement)
      */
     teleportTo: {
-      type: [String, HTMLElement] as PropType<Nullable<string | HTMLElement>>,
+      type: [String, isServer ? Object : HTMLElement] as PropType<
+        Nullable<string | HTMLElement>
+      >,
       default: null
     }
   },
@@ -516,6 +520,13 @@ export default defineComponent({
       state.userInput = null;
     };
 
+    const handleKeydown = (event: KeyboardEvent): void => {
+      // prevent letters input
+      if (event.key.match(/^(?!Enter$|Backspace$)[^0-9]+/g)) {
+        event.preventDefault();
+      }
+    };
+
     const handleKeyUp = (e: KeyboardEvent): void => {
       // if user is typing, do not let picker handle key input
       if (state.userInput) {
@@ -616,8 +627,14 @@ export default defineComponent({
       if (isPickerDisabled.value) return;
       state.pickerVisible = true;
       ctx.emit('focus');
-      if (!transformedToDate.value || Array.isArray(transformedToDate.value))
+
+      if (
+        !transformedToDate.value ||
+        Array.isArray(transformedToDate.value) ||
+        isMobileView.value
+      )
         return;
+
       const format = 'dd.MM.yy';
       state.userInput = formatToLocalReadableString(
         transformedToDate.value,
@@ -734,6 +751,7 @@ export default defineComponent({
       handlePickClick,
       handleFocus,
       handleInput,
+      handleKeydown,
       handleMouseEnter,
       handleRangeClick,
       closePicker,

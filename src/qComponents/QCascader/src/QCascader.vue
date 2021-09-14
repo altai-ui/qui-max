@@ -9,7 +9,7 @@
     <q-cascader-tags />
 
     <teleport
-      :to="teleportTo"
+      :to="teleportTo || 'body'"
       :disabled="!teleportTo"
     >
       <transition
@@ -39,6 +39,7 @@ import {
 } from 'vue';
 import type { Instance } from '@popperjs/core';
 
+import { isServer } from '@/qComponents/constants/isServer';
 import { randId } from '@/qComponents/helpers';
 import { useResizeListener } from '@/qComponents/hooks';
 import type { QFormProvider } from '@/qComponents/QForm';
@@ -146,7 +147,10 @@ export default defineComponent({
      * (has to be a valid query selector, or an HTMLElement)
      */
     teleportTo: {
-      type: [String, HTMLElement] as PropType<QCascaderPropTeleportTo>,
+      type: [
+        String,
+        isServer ? Object : HTMLElement
+      ] as PropType<QCascaderPropTeleportTo>,
       default: null
     }
   },

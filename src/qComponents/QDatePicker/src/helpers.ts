@@ -59,7 +59,7 @@ const formatToLocalReadableString = (
 };
 
 const calcInputData = (data: string, inputType: string): string => {
-  const clearVal = data.replace(/ |,|:|\./g, '');
+  const clearVal = data.replace(/[^0-9]/g, '');
   const array = clearVal.split('');
   const options = { separator: '.', maxLength: MAX_DATE_INPUT_LENGTH };
 

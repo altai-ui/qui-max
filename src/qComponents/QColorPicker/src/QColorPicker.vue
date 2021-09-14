@@ -66,6 +66,7 @@ import { createPopper, Instance, Options } from '@popperjs/core';
 import { placements } from '@popperjs/core/lib/enums';
 import { colord } from 'colord';
 
+import { isServer } from '@/qComponents/constants/isServer';
 import { validateArray } from '@/qComponents/helpers';
 import { getConfig } from '@/qComponents/config';
 import type { QFormProvider } from '@/qComponents/QForm';
@@ -145,7 +146,10 @@ export default defineComponent({
      * (has to be a valid query selector, or an HTMLElement)
      */
     teleportTo: {
-      type: [String, HTMLElement] as PropType<QColorPickerPropTeleportTo>,
+      type: [
+        String,
+        isServer ? Object : HTMLElement
+      ] as PropType<QColorPickerPropTeleportTo>,
       default: null
     }
   },

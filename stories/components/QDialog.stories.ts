@@ -9,7 +9,8 @@ const storyMetadata: Meta = {
   component: QDialog,
   argTypes: {
     visible: { control: { type: 'none' } },
-    offsetTop: { control: { type: 'number' } }
+    offsetTop: { control: { type: 'text' } },
+    width: { control: { type: 'text' } }
   }
 };
 
@@ -54,6 +55,7 @@ const QDialogStory: Story<QDialogProps> = args =>
         v-model:visible="isVisible"
         :offset-top="args.offsetTop"
         :title="args.title"
+        :width="args.width"
         :visible="args.visible"
         :destroy-on-close="args.destroyOnClose"
         :wrapper-closable="args.wrapperClosable"

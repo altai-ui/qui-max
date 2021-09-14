@@ -107,6 +107,7 @@ interface QDatePickerInstance {
   iconClass: ComputedRef<string>;
   handleInputDateChange: () => void;
   handleKeyUp: (e: KeyboardEvent) => void;
+  handleKeydown: (e: KeyboardEvent) => void;
   popperInit: () => void;
   destroyPopper: () => void;
   closePicker: () => void;

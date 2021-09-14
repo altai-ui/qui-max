@@ -10,6 +10,7 @@
   },
 
   "extends": [
+    "airbnb-base",
     "airbnb-typescript/base",
     "plugin:vue/vue3-recommended",
     "@vue/typescript/recommended",

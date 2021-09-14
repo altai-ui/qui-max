@@ -1,48 +1,47 @@
 <template>
-  <teleport
-    :to="teleportTo || 'body'"
-    :disabled="!teleportTo"
+  <transition
+    name="q-fade"
+    @after-enter="afterEnter"
+    @after-leave="afterLeave"
   >
-    <transition
-      name="q-fade"
-      @after-enter="afterEnter"
-      @after-leave="afterLeave"
+    <div
+      v-show="isVisible"
+      class="q-drawer"
+      :style="{ zIndex }"
+      @click.self="handleWrapperClick"
     >
       <div
-        v-if="isRendered"
-        v-show="visible"
-        class="q-drawer"
-        :style="{ zIndex }"
-        @click.self="handleWrapperClick"
+        ref="drawer"
+        tabindex="-1"
+        class="q-drawer__wrapper"
+        :style="drawerStyle"
+        :class="[drawerClass, customClass]"
+        @keyup.esc="closeDrawer"
       >
-        <div
-          ref="drawer"
-          tabindex="-1"
-          class="q-drawer__wrapper"
-          :style="drawerStyle"
-          :class="[drawerClass, customClass]"
-          @keyup.esc="closeDrawer"
-        >
-          <div class="q-drawer__header">
-            <div
-              v-if="title"
-              class="q-drawer__title"
-            >{{ title }}</div>
-            <button
-              type="button"
-              class="q-drawer__close q-icon-close"
-              @click="closeDrawer"
+        <div class="q-drawer__header">
+          <div
+            v-if="title"
+            class="q-drawer__title"
+          >{{ title }}</div>
+          <button
+            type="button"
+            class="q-drawer__close q-icon-close"
+            @click="closeDrawer"
+          />
+        </div>
+        <q-scrollbar>
+          <div class="q-drawer__content">
+            {{ title }}
+            <component
+              :is="preparedContent.component"
+              v-bind="preparedContent.props"
+              v-on="preparedContent.listeners"
             />
           </div>
-          <q-scrollbar>
-            <div class="q-drawer__content">
-              <slot />
-            </div>
-          </q-scrollbar>
-        </div>
+        </q-scrollbar>
       </div>
-    </transition>
-  </teleport>
+    </div>
+  </transition>
 </template>
 
 <script lang="ts">
@@ -54,7 +53,9 @@ import {
   watch,
   PropType,
   onMounted,
-  onUnmounted
+  onUnmounted,
+  getCurrentInstance,
+  Component
 } from 'vue';
 
 import QScrollbar from '@/qComponents/QScrollbar';
@@ -63,12 +64,13 @@ import { CLOSE_EVENT } from '@/qComponents/constants/events';
 import { getConfig } from '@/qComponents/config';
 import type { Nullable } from '#/helpers';
 
-import type {
-  QDrawerProps,
+import {
   QDrawerPropBeforeClose,
   QDrawerPropPosition,
   QDrawerPropTeleportTo,
-  QDrawerInstance
+  QDrawerInstance,
+  QDrawerComponent,
+  QDrawerContainerProps
 } from './types';
 
 const DEFAULT_Z_INDEX = 2000;
@@ -95,10 +97,10 @@ export default defineComponent({
     /**
      * whether Drawer is visible
      */
-    visible: {
-      type: Boolean,
-      default: false
-    },
+    // visible: {
+    //   type: Boolean,
+    //   default: false
+    // },
     /**
      * whether the component will be deleted from layout
      */
@@ -143,9 +145,20 @@ export default defineComponent({
       type: [String, HTMLElement] as PropType<QDrawerPropTeleportTo>,
       default: null
     },
-    renderOnMount: {
-      type: Boolean,
-      default: false
+
+    // renderOnMount: {
+    //   type: Boolean,
+    //   default: false
+    // },
+
+    onClose: {
+      type: Function,
+      default: null
+    },
+
+    content: {
+      type: [Object, Function] as PropType<Component>,
+      required: true
     }
   },
 
@@ -172,10 +185,12 @@ export default defineComponent({
     'update:visible'
   ],
 
-  setup(props: QDrawerProps, ctx): QDrawerInstance {
+  setup(props: QDrawerContainerProps, ctx): QDrawerInstance {
     const zIndex = ref<number>(DEFAULT_Z_INDEX);
     const isRendered = ref<boolean>(false);
+    const isVisible = ref<boolean>(false);
     const drawer = ref<Nullable<HTMLElement>>(null);
+    const instance = getCurrentInstance();
 
     let elementToFocusAfterClosing: Nullable<HTMLElement> = null;
 
@@ -200,12 +215,13 @@ export default defineComponent({
     };
 
     const afterLeave = (): void => {
-      ctx.emit('closed');
+      ctx.emit('closed', true);
     };
 
     const hide = (): void => {
       ctx.emit(CLOSE_EVENT);
       ctx.emit('update:visible', false);
+      isVisible.value = false;
     };
 
     const closeDrawer = (): void => {
@@ -221,9 +237,9 @@ export default defineComponent({
     };
 
     watch(
-      () => props.visible,
-      isVisible => {
-        if (!isVisible) {
+      () => isVisible,
+      visible => {
+        if (!visible) {
           document.body.style.overflow = '';
 
           document.removeEventListener('focus', handleDocumentFocus, true);
@@ -252,8 +268,17 @@ export default defineComponent({
       { immediate: true }
     );
 
+    const preparedContent = computed<QDrawerComponent>(() => {
+      return {
+        props: { title: props.title },
+        component: props.content,
+        listeners: {}
+      };
+    });
+
     onMounted(() => {
-      if (props.renderOnMount) isRendered.value = true;
+      document.body.appendChild(instance?.vnode.el as Node);
+      isVisible.value = true;
     });
 
     onUnmounted(() => {
@@ -270,7 +295,9 @@ export default defineComponent({
       afterEnter,
       afterLeave,
       closeDrawer,
-      handleWrapperClick
+      handleWrapperClick,
+      isVisible,
+      preparedContent
     };
   }
 });

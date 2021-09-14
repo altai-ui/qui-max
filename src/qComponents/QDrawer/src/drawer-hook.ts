@@ -1,39 +1,52 @@
-import { App, createApp, getCurrentInstance, nextTick } from 'vue';
-import { Optional, UnwrappedInstance } from '#/helpers';
+import { App, Component, createApp, nextTick } from 'vue';
+import { Optional } from '#/helpers';
 import {
   QDrawerHookOptions,
   QDrawerPlugin,
-  QDrawerInstance,
   QDrawerAction,
   QDrawerEvent,
   QDrawerPromise,
-  QDrawerOptions,
-  QDrawerContent
+  QDrawerProps
 } from './types';
-import { QDrawer } from '@/qComponents';
+import QDrawer from '@/qComponents';
 
-const createDrawerPlugin = (config?: QDrawerHookOptions): QDrawerPlugin => {
+export const createDrawerPlugin = (
+  config?: QDrawerHookOptions
+): QDrawerPlugin => {
   const drawerPlugin = (
-    content: QDrawerContent,
-    options?: QDrawerOptions
+    content: Component,
+    options?: QDrawerProps
   ): Promise<QDrawerEvent> => {
     let drawerPromise: QDrawerPromise;
     let app: Optional<App<Element>>;
 
-    const handleDone = ({ action, payload }: QDrawerEvent): void => {
-      if (action === QDrawerAction.done) {
+    const handleClose = ({ action, payload }: QDrawerEvent): void => {
+      if (action === QDrawerAction.open) {
         drawerPromise.resolve({ action, payload });
       } else if (action === QDrawerAction.close) {
         drawerPromise.reject({ action, payload });
       }
     };
 
-    // wip
     nextTick(() => {
       app = createApp(QDrawer, {
         ...(options ?? {}),
         content,
-        onDone: handleDone
+        onClose: handleClose
+      });
+
+      const parentAppContext = config?.parentInstance?.appContext;
+
+      const components = parentAppContext?.components ?? {};
+      Object.entries(components).forEach(([key, value]) => {
+        app?.component(key, value);
+      });
+
+      const provides = parentAppContext?.provides ?? {};
+      const providerKeys = Object.getOwnPropertySymbols(provides);
+      providerKeys.forEach(key => {
+        const value = provides[key as unknown as string];
+        if (value) app?.provide(key, value);
       });
 
       app.mount(document.createElement('div'));
@@ -45,27 +58,4 @@ const createDrawerPlugin = (config?: QDrawerHookOptions): QDrawerPlugin => {
   };
 
   return drawerPlugin;
-};
-
-const useDrawer = (options?: QDrawerHookOptions): QDrawerPlugin => {
-  const parentInstance = getCurrentInstance();
-
-  const drawer = createDrawerPlugin({
-    parentInstance,
-    ...options
-  });
-
-  return drawer;
-};
-
-export { useDrawer, createDrawerPlugin };
-export type {
-  QDrawerHookOptions,
-  QDrawerPlugin,
-  QDrawerInstance,
-  QDrawerAction,
-  QDrawerEvent,
-  QDrawerPromise,
-  QDrawerOptions,
-  QDrawerContent
 };

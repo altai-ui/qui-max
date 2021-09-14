@@ -15,22 +15,24 @@ export type QDrawerPropTeleportTo = Nullable<string | HTMLElement>;
 export interface QDrawerProps {
   width: Nullable<string | number>;
   title: Nullable<string>;
-  visible: Nullable<boolean>;
+  // visible: Nullable<boolean>;
   destroyOnClose: Nullable<boolean>;
   wrapperClosable: Nullable<boolean>;
   beforeClose: QDrawerPropBeforeClose;
   position: QDrawerPropPosition;
   customClass: Nullable<string>;
   teleportTo: QDrawerPropTeleportTo;
-  renderOnMount: Nullable<boolean>;
+  // renderOnMount: Nullable<boolean>;
 }
 
 export interface QDrawerInstance {
   drawer: Ref<Nullable<HTMLElement>>;
   zIndex: Ref<number>;
   isRendered: Ref<boolean>;
+  isVisible: Ref<boolean>;
   drawerStyle: ComputedRef<Record<string, Nullable<string | number>>>;
   drawerClass: ComputedRef<string>;
+  preparedContent: ComputedRef<QDrawerComponent>;
   afterEnter: () => void;
   afterLeave: () => void;
   closeDrawer: () => void;
@@ -41,18 +43,12 @@ export interface QDrawerHookOptions {
   parentInstance?: Nullable<ComponentInternalInstance>;
 }
 
-export interface QDrawerOptions {
+export interface QDrawerOptions extends QDrawerProps {
   parentInstance?: Nullable<ComponentInternalInstance>;
-  onMounted?: (
-    app: App<Element>,
-    container: NonNullable<UnwrappedInstance<QDrawerInstance>>
-  ) => void;
-  onBeforeMount?: (app: App<Element>) => void;
-  onUnmounted?: (app: App<Element>) => void;
 }
 
 export enum QDrawerAction {
-  done = 'done',
+  open = 'open',
   close = 'close'
 }
 
@@ -66,14 +62,22 @@ export interface QDrawerPromise {
   reject: (event: QDrawerEvent) => void;
 }
 
+export interface QDrawerParams {
+  testProp: string;
+}
+
 export interface QDrawerComponent {
   component: Component;
-  props?: QDrawerProps | { [propName: string]: unknown };
+  props?: QDrawerParams | { [propName: string]: unknown };
   listeners?: { [listenerEvent: string]: (...args: unknown[]) => void };
 }
 
-export type QDrawerContent = Component | QDrawerProps | QDrawerComponent;
+export type QDrawerContent = QDrawerProps | QDrawerComponent | Component;
+
+export interface QDrawerContainerProps extends QDrawerProps {
+  content: Component;
+}
 
 export interface QDrawerPlugin {
-  (content: QDrawerContent, options?: QDrawerOptions): Promise<QDrawerEvent>;
+  (content: Component, options?: QDrawerOptions): Promise<QDrawerEvent>;
 }

@@ -40,7 +40,7 @@ const QDialogStory: Story<QDialogProps> = args =>
 
       const openDialog = async (): Promise<void> => {
         try {
-          const isClosed = await dialog(
+          const res = await dialog(
             defineAsyncComponent(
               () =>
                 import(
@@ -50,7 +50,7 @@ const QDialogStory: Story<QDialogProps> = args =>
             { ...args }
           );
           // eslint-disable-next-line no-console
-          console.log('isClosed:', isClosed);
+          console.log('isClosed:', res);
         } catch (e) {
           // eslint-disable-next-line no-console
           console.log(e);

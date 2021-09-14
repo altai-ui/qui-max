@@ -1,8 +1,4 @@
-import type { App } from 'vue';
-
 import { getCurrentInstance } from 'vue';
-
-import type { SFCWithInstall } from '#/helpers';
 import QDialog from './src/QDialog.vue';
 import { Dialog, QDialogHookOptions } from '@/qComponents/QDialog/src/types';
 import { createDialog } from '@/qComponents/QDialog/src';

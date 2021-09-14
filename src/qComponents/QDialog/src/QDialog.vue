@@ -37,10 +37,7 @@
             />
 
             <div class="q-dialog__content">
-              <component
-                :is="preparedContent.component"
-                v-bind="preparedContent.props"
-              />
+              <component :is="content" />
             </div>
           </div>
         </q-scrollbar>
@@ -70,7 +67,6 @@ import QScrollbar from '@/qComponents/QScrollbar';
 import type { Nullable } from '#/helpers';
 
 import type {
-  QDialogProps,
   QDialogPropBeforeClose,
   QDialogPropTeleportTo,
   QDialogInstance
@@ -89,11 +85,6 @@ export default defineComponent({
     /**
      * width of QDialog
      */
-    content: {
-      type: [Object, Function] as PropType<Component>,
-      required: true
-    },
-
     width: {
       type: [String, Number],
       default: null
@@ -144,9 +135,9 @@ export default defineComponent({
       ] as PropType<QDialogPropTeleportTo>,
       default: null
     },
-    onClose: {
-      type: Function,
-      default: null
+    content: {
+      type: [Object, Function] as PropType<Component>,
+      required: true
     }
   },
 
@@ -182,14 +173,6 @@ export default defineComponent({
 
     let elementToFocusAfterClosing: Nullable<HTMLElement> = null;
 
-    const preparedContent = computed<QDialogContentComponent>(() => {
-      return {
-        props: { title: props.title },
-        listeners: {},
-        component: props.content
-      };
-    });
-
     const dialogStyle = computed<Record<string, Nullable<number | string>>>(
       () => ({
         zIndex: zIndex.value,
@@ -216,7 +199,7 @@ export default defineComponent({
     };
 
     const afterLeave = (): void => {
-      ctx.emit('closed', true);
+      ctx.emit('closed');
     };
 
     const hide = (): void => {
@@ -292,8 +275,7 @@ export default defineComponent({
       afterLeave,
       closeDialog,
       handleWrapperClick,
-      isVisible,
-      preparedContent
+      isVisible
     };
   }
 });

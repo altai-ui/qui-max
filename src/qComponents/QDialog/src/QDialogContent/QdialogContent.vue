@@ -1,6 +1,7 @@
 <template>
   <div>
-    <h2>{{ title }}</h2>
+    <h2>Test Dialog Inner Component</h2>
+    <p>Lorem ipsum dolor sit amet</p>
   </div>
 </template>
 
@@ -11,7 +12,7 @@ export default defineComponent({
   name: 'QDialogContent',
   props: {
     title: {
-      type: [String],
+      type: String,
       default: null
     }
   },

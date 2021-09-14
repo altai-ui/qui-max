@@ -40,7 +40,7 @@ export interface QDialogInstance {
 
 // for hook
 export interface QDialogPromise {
-  resolve: (evt: boolean) => void;
+  resolve: (evt: string) => void;
   reject: (evt: string) => void;
 }
 

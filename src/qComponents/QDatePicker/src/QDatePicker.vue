@@ -70,7 +70,7 @@
       />
     </div>
     <teleport
-      :to="teleportTo"
+      :to="teleportTo || 'body'"
       :disabled="!teleportTo"
     >
       <transition
@@ -115,6 +115,7 @@ import {
   parseISO
 } from 'date-fns';
 
+import { isServer } from '@/qComponents/constants/isServer';
 import { getConfig } from '@/qComponents/config';
 import { t } from '@/qComponents/locale';
 import { notNull, validateArray } from '@/qComponents/helpers';
@@ -275,7 +276,9 @@ export default defineComponent({
      * (has to be a valid query selector, or an HTMLElement)
      */
     teleportTo: {
-      type: [String, HTMLElement] as PropType<Nullable<string | HTMLElement>>,
+      type: [String, isServer ? Object : HTMLElement] as PropType<
+        Nullable<string | HTMLElement>
+      >,
       default: null
     }
   },

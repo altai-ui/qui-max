@@ -1,5 +1,6 @@
 import { createApp, ref, nextTick } from 'vue';
 
+import { isServer } from '@/qComponents/constants/isServer';
 import { randId } from '@/qComponents/helpers';
 
 import QNotificationContainer from './QNotificationContainer';
@@ -29,7 +30,7 @@ export const createNotification = (
     if (index >= 0) notifyList.value.splice(index, 1);
   };
 
-  if (mountContainer) {
+  if (!isServer && mountContainer) {
     nextTick(() => {
       const app = createApp(QNotificationContainer, {
         ...config,

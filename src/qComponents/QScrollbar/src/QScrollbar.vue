@@ -51,6 +51,7 @@ import {
 } from 'vue';
 
 import { validateArray } from '@/qComponents/helpers';
+import { isServer } from '@/qComponents/constants/isServer';
 import { useResizeListener } from '@/qComponents/hooks';
 import type { Nullable, Optional, UnwrappedInstance } from '#/helpers';
 
@@ -78,7 +79,9 @@ export default defineComponent({
      * passing DOM element will scroll content to it (works dynamically)
      */
     scrollTo: {
-      type: HTMLElement as PropType<QScrollbarPropScrollTo>,
+      type: (isServer
+        ? Object
+        : HTMLElement) as PropType<QScrollbarPropScrollTo>,
       default: null
     },
     /**

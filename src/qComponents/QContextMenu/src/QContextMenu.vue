@@ -67,6 +67,7 @@ import {
   Placement
 } from '@popperjs/core';
 
+import { isServer } from '@/qComponents/constants/isServer';
 import { validateArray } from '@/qComponents/helpers';
 import { getConfig } from '@/qComponents/config';
 import type { Nullable } from '#/helpers';
@@ -100,7 +101,10 @@ export default defineComponent({
      * (has to be a valid query selector, or an HTMLElement)
      */
     teleportTo: {
-      type: [String, HTMLElement] as PropType<QContextMenuPropTeleportTo>,
+      type: [
+        String,
+        isServer ? Object : HTMLElement
+      ] as PropType<QContextMenuPropTeleportTo>,
       default: null
     }
   },

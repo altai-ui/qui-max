@@ -1,14 +1,13 @@
 import type { Meta, Story } from '@storybook/vue3';
 import { defineComponent, ref } from 'vue';
 
-import QDialog from '@/qComponents/QDialog';
+import QDialog, { useDialog } from '@/qComponents/QDialog';
 import type { QDialogProps } from '@/qComponents/QDialog';
 
 const storyMetadata: Meta = {
   title: 'Components/QDialog',
   component: QDialog,
   argTypes: {
-    visible: { control: { type: 'none' } },
     offsetTop: { control: { type: 'text' } },
     width: { control: { type: 'text' } }
   }
@@ -17,7 +16,7 @@ const storyMetadata: Meta = {
 const QDialogStory: Story<QDialogProps> = args =>
   defineComponent({
     setup() {
-      const isVisible = ref<boolean>(false);
+      const dialog = useDialog();
 
       const handleOpen = (): void => {
         // eslint-disable-next-line no-console
@@ -39,35 +38,28 @@ const QDialogStory: Story<QDialogProps> = args =>
         console.log('handleClosed');
       };
 
+      const openDialog = async (): Promise<void> => {
+        try {
+          const isClosed = await dialog({ ...args });
+          // eslint-disable-next-line no-console
+          console.log('isClosed:', isClosed);
+        } catch (e) {
+          // eslint-disable-next-line no-console
+          console.log(e);
+        }
+      };
+
       return {
         args,
-        isVisible,
         handleOpen,
         handleOpened,
         handleClose,
-        handleClosed
+        handleClosed,
+        openDialog
       };
     },
     template: `
-      <q-button @click="isVisible = true">open</q-button>
-
-      <q-dialog
-        v-model:visible="isVisible"
-        :offset-top="args.offsetTop"
-        :title="args.title"
-        :width="args.width"
-        :visible="args.visible"
-        :destroy-on-close="args.destroyOnClose"
-        :wrapper-closable="args.wrapperClosable"
-        :before-close="args.beforeClose"
-        :custom-class="args.customClass"
-        :teleport-to="args.teleportTo"
-        :render-on-mount="args.renderOnMount"
-        @open="handleOpen"
-        @opened="handleOpened"
-        @close="handleClose"
-        @closed="handleClosed"
-      >I'm dialog's slot</q-dialog>
+      <q-button @click="openDialog">open</q-button>
     `
   });
 

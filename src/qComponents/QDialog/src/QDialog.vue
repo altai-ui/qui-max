@@ -1,55 +1,49 @@
 <template>
-  <teleport
-    :to="teleportTo || 'body'"
-    :disabled="!teleportTo"
+  <transition
+    name="q-fade-up"
+    @after-enter="afterEnter"
+    @after-leave="afterLeave"
   >
-    <transition
-      name="q-fade-up"
-      @after-enter="afterEnter"
-      @after-leave="afterLeave"
+    <div
+      v-show="isVisible"
+      class="q-dialog"
+      :style="dialogStyle"
+      @click.self="handleWrapperClick"
     >
       <div
-        v-if="isRendered"
-        v-show="visible"
-        class="q-dialog"
-        :style="dialogStyle"
-        @click.self="handleWrapperClick"
+        ref="dialog"
+        tabindex="-1"
+        :style="containerStyle"
+        class="q-dialog__container"
+        :class="customClass"
+        @keyup.esc="closeDialog"
       >
-        <div
-          ref="dialog"
-          tabindex="-1"
-          :style="containerStyle"
-          class="q-dialog__container"
-          :class="customClass"
-          @keyup.esc="closeDialog"
+        <q-scrollbar
+          theme="secondary"
+          view-class="q-dialog__view"
         >
-          <q-scrollbar
-            theme="secondary"
-            view-class="q-dialog__view"
-          >
-            <div class="q-dialog__inner">
-              <div class="q-dialog__title">
-                {{ title }}
-              </div>
-
-              <q-button
-                class="q-dialog__close"
-                circle
-                theme="secondary"
-                type="icon"
-                icon="q-icon-close"
-                @click="closeDialog"
-              />
-
-              <div class="q-dialog__content">
-                <slot />
-              </div>
+          <div class="q-dialog__inner">
+            <div class="q-dialog__title">
+              {{ title }}
             </div>
-          </q-scrollbar>
-        </div>
+
+            <q-button
+              class="q-dialog__close"
+              circle
+              theme="secondary"
+              type="icon"
+              icon="q-icon-close"
+              @click="closeDialog"
+            />
+
+            <div class="q-dialog__content">
+              <slot />
+            </div>
+          </div>
+        </q-scrollbar>
       </div>
-    </transition>
-  </teleport>
+    </div>
+  </transition>
 </template>
 
 <script lang="ts">
@@ -61,7 +55,8 @@ import {
   watch,
   PropType,
   onMounted,
-  onUnmounted
+  onUnmounted,
+  getCurrentInstance
 } from 'vue';
 
 import { getConfig } from '@/qComponents/config';
@@ -107,25 +102,11 @@ export default defineComponent({
       default: null
     },
     /**
-     * whether QDialog is visible
-     */
-    visible: {
-      type: Boolean,
-      default: false
-    },
-    /**
-     * whether the component will be deleted from layout
-     */
-    destroyOnClose: {
-      type: Boolean,
-      default: false
-    },
-    /**
      * closes QDialog by click on shadow layer
      */
     wrapperClosable: {
       type: Boolean,
-      default: true
+      default: false
     },
     /**
      * callback before close
@@ -149,9 +130,9 @@ export default defineComponent({
       type: [String, HTMLElement] as PropType<QDialogPropTeleportTo>,
       default: null
     },
-    renderOnMount: {
-      type: Boolean,
-      default: false
+    onClose: {
+      type: Function,
+      default: null
     }
   },
 
@@ -182,6 +163,8 @@ export default defineComponent({
     const zIndex = ref<number>(DEFAULT_Z_INDEX);
     const isRendered = ref<boolean>(false);
     const dialog = ref<Nullable<HTMLElement>>(null);
+    const instance = getCurrentInstance();
+    const isVisible = ref<boolean>(false);
 
     let elementToFocusAfterClosing: Nullable<HTMLElement> = null;
 
@@ -211,12 +194,13 @@ export default defineComponent({
     };
 
     const afterLeave = (): void => {
-      ctx.emit('closed');
+      ctx.emit('closed', true);
     };
 
     const hide = (): void => {
       ctx.emit('close');
       ctx.emit('update:visible', false);
+      isVisible.value = false;
     };
 
     const closeDialog = (): void => {
@@ -232,9 +216,9 @@ export default defineComponent({
     };
 
     watch(
-      () => props.visible,
-      isVisible => {
-        if (!isVisible) {
+      () => isVisible,
+      visible => {
+        if (!visible) {
           document.body.style.overflow = '';
 
           document.removeEventListener('focus', handleDocumentFocus, true);
@@ -265,7 +249,8 @@ export default defineComponent({
     );
 
     onMounted(() => {
-      if (props.renderOnMount) isRendered.value = true;
+      document.body.appendChild(instance?.vnode.el as Node);
+      isVisible.value = true;
     });
 
     onUnmounted(() => {
@@ -282,7 +267,8 @@ export default defineComponent({
       afterEnter,
       afterLeave,
       closeDialog,
-      handleWrapperClick
+      handleWrapperClick,
+      isVisible
     };
   }
 });

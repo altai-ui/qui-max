@@ -1,5 +1,6 @@
-import type { Ref, ComputedRef } from 'vue';
+import { ComponentInternalInstance } from 'vue';
 
+import type { Ref, ComputedRef } from 'vue';
 import type { Nullable } from '#/helpers';
 
 export type QDialogPropBeforeClose = Nullable<(hide: () => void) => void>;
@@ -22,6 +23,7 @@ export interface QDialogInstance {
   dialog: Ref<Nullable<HTMLElement>>;
   zIndex: Ref<number>;
   isRendered: Ref<boolean>;
+  isVisible: Ref<boolean>;
   dialogStyle: ComputedRef<Record<string, Nullable<string | number>>>;
   containerStyle: ComputedRef<Record<string, Nullable<string | number>>>;
   afterEnter: () => void;
@@ -29,3 +31,18 @@ export interface QDialogInstance {
   closeDialog: () => void;
   handleWrapperClick: () => void;
 }
+
+// for hook
+export interface QDialogPromise {
+  resolve: (evt: boolean) => void;
+}
+
+export interface QDialogHookOptions {
+  parentInstance?: Nullable<ComponentInternalInstance>;
+}
+
+export interface QDialogOptions {
+  parentInstance?: Nullable<ComponentInternalInstance>;
+}
+
+export type Dialog = (content: QDialogProps) => Promise<boolean>;

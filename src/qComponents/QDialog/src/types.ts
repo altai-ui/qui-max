@@ -1,7 +1,8 @@
-import { ComponentInternalInstance } from 'vue';
+import { Component, ComponentInternalInstance } from 'vue';
 
 import type { Ref, ComputedRef } from 'vue';
 import type { Nullable } from '#/helpers';
+import { QMessageBoxParams } from '@/qComponents/QMessageBox/src/QMessageBoxContainer/types';
 
 export type QDialogPropBeforeClose = Nullable<(hide: () => void) => void>;
 export type QDialogPropTeleportTo = Nullable<string | HTMLElement>;
@@ -19,6 +20,10 @@ export interface QDialogProps {
   renderOnMount: Nullable<boolean>;
 }
 
+export interface QDialogContainerProps extends QDialogProps {
+  content: Component;
+}
+
 export interface QDialogInstance {
   dialog: Ref<Nullable<HTMLElement>>;
   zIndex: Ref<number>;
@@ -30,11 +35,13 @@ export interface QDialogInstance {
   afterLeave: () => void;
   closeDialog: () => void;
   handleWrapperClick: () => void;
+  preparedContent: ComputedRef<QDialogContentComponent>;
 }
 
 // for hook
 export interface QDialogPromise {
   resolve: (evt: boolean) => void;
+  reject: (evt: string) => void;
 }
 
 export interface QDialogHookOptions {
@@ -45,4 +52,17 @@ export interface QDialogOptions {
   parentInstance?: Nullable<ComponentInternalInstance>;
 }
 
-export type Dialog = (content: QDialogProps) => Promise<boolean>;
+export type Dialog = (
+  content: Component,
+  options?: QDialogProps
+) => Promise<boolean | string>;
+
+export interface QDialogParams {
+  title: string;
+}
+
+export interface QDialogContentComponent {
+  component: Component;
+  props?: QDialogParams | { [propName: string]: unknown };
+  listeners?: { [listenerEvent: string]: (...args: unknown[]) => void };
+}

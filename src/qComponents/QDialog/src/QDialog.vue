@@ -37,7 +37,10 @@
             />
 
             <div class="q-dialog__content">
-              <slot />
+              <component
+                :is="preparedContent.component"
+                v-bind="preparedContent.props"
+              />
             </div>
           </div>
         </q-scrollbar>
@@ -56,7 +59,8 @@ import {
   PropType,
   onMounted,
   onUnmounted,
-  getCurrentInstance
+  getCurrentInstance,
+  Component
 } from 'vue';
 
 import { getConfig } from '@/qComponents/config';
@@ -70,6 +74,7 @@ import type {
   QDialogPropTeleportTo,
   QDialogInstance
 } from './types';
+import { QDialogContentComponent, QDialogContainerProps } from './types';
 
 const DEFAULT_Z_INDEX = 2000;
 
@@ -83,6 +88,11 @@ export default defineComponent({
     /**
      * width of QDialog
      */
+    content: {
+      type: [Object, Function] as PropType<Component>,
+      required: true
+    },
+
     width: {
       type: [String, Number],
       default: null
@@ -159,7 +169,7 @@ export default defineComponent({
     'update:visible'
   ],
 
-  setup(props: QDialogProps, ctx): QDialogInstance {
+  setup(props: QDialogContainerProps, ctx): QDialogInstance {
     const zIndex = ref<number>(DEFAULT_Z_INDEX);
     const isRendered = ref<boolean>(false);
     const dialog = ref<Nullable<HTMLElement>>(null);
@@ -167,6 +177,14 @@ export default defineComponent({
     const isVisible = ref<boolean>(false);
 
     let elementToFocusAfterClosing: Nullable<HTMLElement> = null;
+
+    const preparedContent = computed<QDialogContentComponent>(() => {
+      return {
+        props: { title: props.title },
+        listeners: {},
+        component: props.content
+      };
+    });
 
     const dialogStyle = computed<Record<string, Nullable<number | string>>>(
       () => ({
@@ -268,7 +286,8 @@ export default defineComponent({
       afterLeave,
       closeDialog,
       handleWrapperClick,
-      isVisible
+      isVisible,
+      preparedContent
     };
   }
 });

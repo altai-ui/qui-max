@@ -1,7 +1,7 @@
 import type { Meta, Story } from '@storybook/vue3';
-import { defineComponent, ref } from 'vue';
+import { defineAsyncComponent, defineComponent, ref } from 'vue';
 
-import QDialog, { useDialog } from '@/qComponents/QDialog';
+import { QDialog, useDialog } from '@/qComponents/QDialog';
 import type { QDialogProps } from '@/qComponents/QDialog';
 
 const storyMetadata: Meta = {
@@ -40,7 +40,15 @@ const QDialogStory: Story<QDialogProps> = args =>
 
       const openDialog = async (): Promise<void> => {
         try {
-          const isClosed = await dialog({ ...args });
+          const isClosed = await dialog(
+            defineAsyncComponent(
+              () =>
+                import(
+                  '@/qComponents/QDialog/src/QDialogContent/QdialogContent.vue'
+                )
+            ),
+            { ...args }
+          );
           // eslint-disable-next-line no-console
           console.log('isClosed:', isClosed);
         } catch (e) {

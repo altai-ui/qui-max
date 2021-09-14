@@ -1,20 +1,20 @@
-import { App, createApp, nextTick } from 'vue';
+import { App, Component, createApp, nextTick } from 'vue';
 import {
+  QDialogContainerProps,
   QDialogHookOptions,
   QDialogPromise,
   QDialogProps
 } from '@/qComponents/QDialog/src/types';
 import { Optional } from '#/helpers';
-import { QDialog } from '@/qComponents';
+import { QDialog } from '@/qComponents/QDialog';
 
 export const createDialog =
   (config?: QDialogHookOptions) =>
-  (content: QDialogProps): Promise<boolean> => {
+  (content: Component, options?: QDialogProps): Promise<boolean | string> => {
     let dialogPromise: QDialogPromise;
     let app: Optional<App<Element>>;
 
     const handleClose = (isClosed: boolean): void => {
-      console.log(isClosed);
       if (!app) return;
       if (isClosed) {
         app.unmount();
@@ -24,7 +24,8 @@ export const createDialog =
 
     nextTick(() => {
       app = createApp(QDialog, {
-        ...content,
+        ...(options || {}),
+        content,
         onClosed: handleClose
       });
 
@@ -48,9 +49,10 @@ export const createDialog =
       app.mount(document.createElement('div'));
     });
 
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       dialogPromise = {
-        resolve
+        resolve,
+        reject
       };
     });
   };

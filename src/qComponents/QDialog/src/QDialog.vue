@@ -39,7 +39,9 @@
 
               <div class="q-dialog__content">
                 <component
-                  :is="content"
+                  :is="preparedContent.component"
+                  v-bind="preparedContent.props"
+                  v-on="preparedContent.listeners"
                   @closed="closeBox"
                 />
               </div>
@@ -74,9 +76,10 @@ import type {
   QDialogPropTeleportTo,
   QDialogInstance
 } from './types';
-import { QDialogContainerProps } from './types';
+import { QDialogComponent, QDialogContainerProps } from './types';
 import { QDialogActions } from '@/qComponents/QDialog/src/constants';
 import { getConfig } from '@/qComponents/config';
+import { isExternalComponent } from '@/qComponents/QMessageBox/src/QMessageBoxContainer/utils';
 
 const DEFAULT_Z_INDEX = 2000;
 const REMOVE_EVENT = 'remove';
@@ -197,6 +200,22 @@ export default defineComponent({
       })
     );
 
+    const preparedContent = computed<QDialogComponent>(() => {
+      if (isExternalComponent(props.content)) {
+        return {
+          props: {},
+          listeners: {},
+          ...props.content
+        };
+      }
+
+      return {
+        component: props.content,
+        props: {},
+        listeners: {}
+      };
+    });
+
     const handleDocumentFocus = (event: FocusEvent): void => {
       if (dialog.value && !dialog.value.contains(event.target as HTMLElement)) {
         dialog.value.focus();
@@ -256,7 +275,8 @@ export default defineComponent({
       afterLeave,
       closeBox,
       handleWrapperClick,
-      isVisible
+      isVisible,
+      preparedContent
     };
   }
 });

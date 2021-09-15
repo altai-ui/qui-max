@@ -3,6 +3,7 @@ import { Component, ComponentInternalInstance } from 'vue';
 import type { Ref, ComputedRef } from 'vue';
 import type { Nullable } from '#/helpers';
 import { QDialogActions } from '@/qComponents/QDialog/src/constants';
+import { QMessageBoxParams } from '@/qComponents/QMessageBox/src/QMessageBoxContainer/types';
 
 export type QDialogPropBeforeClose = Nullable<(hide: () => void) => void>;
 export type QDialogPropTeleportTo = Nullable<string | HTMLElement>;
@@ -35,6 +36,12 @@ export interface QDialogInstance {
   afterLeave: () => void;
   closeDialog: () => void;
   handleWrapperClick: () => void;
+}
+
+export interface QDialogComponent {
+  component: Component;
+  props?: QDialogProps | { [propName: string]: unknown };
+  listeners?: { [listenerEvent: string]: (...args: unknown[]) => void };
 }
 
 // for hook

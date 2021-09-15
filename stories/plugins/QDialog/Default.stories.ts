@@ -5,7 +5,7 @@ import { QDialog, useDialog } from '@/qComponents/QDialog';
 import type { QDialogProps } from '@/qComponents/QDialog';
 
 const storyMetadata: Meta = {
-  title: 'Components/QDialog',
+  title: 'Plugins/QDialog',
   component: QDialog,
   argTypes: {
     offsetTop: { control: { type: 'text' } },
@@ -44,7 +44,7 @@ const QDialogStory: Story<QDialogProps> = args =>
             defineAsyncComponent(
               () =>
                 import(
-                  '../../src/qComponents/QDialog/src/QDialogContent/QdialogContent.vue'
+                  '@/qComponents/QDialog/src/QDialogContent/QdialogContent.vue'
                 )
             ),
             { ...args }

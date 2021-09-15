@@ -2,7 +2,7 @@ import { Component, ComponentInternalInstance } from 'vue';
 
 import type { Ref, ComputedRef } from 'vue';
 import type { Nullable } from '#/helpers';
-import { QMessageBoxParams } from '@/qComponents/QMessageBox/src/QMessageBoxContainer/types';
+import { QDialogActions } from '@/qComponents/QDialog/src/constants';
 
 export type QDialogPropBeforeClose = Nullable<(hide: () => void) => void>;
 export type QDialogPropTeleportTo = Nullable<string | HTMLElement>;
@@ -39,8 +39,13 @@ export interface QDialogInstance {
 
 // for hook
 export interface QDialogPromise {
-  resolve: (evt: string) => void;
-  reject: (evt: string) => void;
+  resolve: (evt: QDialogEvent) => void;
+  reject: (evt: QDialogEvent) => void;
+}
+
+export interface QDialogEvent {
+  action: QDialogActions;
+  payload?: unknown;
 }
 
 export interface QDialogHookOptions {
@@ -50,4 +55,4 @@ export interface QDialogHookOptions {
 export type Dialog = (
   content: Component,
   options?: QDialogProps
-) => Promise<string>;
+) => Promise<QDialogEvent>;

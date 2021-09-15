@@ -1,5 +1,5 @@
 import type { Meta, Story } from '@storybook/vue3';
-import { defineAsyncComponent, defineComponent, ref } from 'vue';
+import { defineAsyncComponent, defineComponent } from 'vue';
 
 import { QDialog, useDialog } from '@/qComponents/QDialog';
 import type { QDialogProps } from '@/qComponents/QDialog';
@@ -44,7 +44,7 @@ const QDialogStory: Story<QDialogProps> = args =>
             defineAsyncComponent(
               () =>
                 import(
-                  '@/qComponents/QDialog/src/QDialogContent/QdialogContent.vue'
+                  '../../src/qComponents/QDialog/src/QDialogContent/QdialogContent.vue'
                 )
             ),
             { ...args }

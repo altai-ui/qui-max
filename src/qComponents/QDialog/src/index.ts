@@ -1,29 +1,37 @@
 import { App, Component, createApp, nextTick } from 'vue';
 import {
+  QDialogEvent,
   QDialogHookOptions,
   QDialogPromise,
   QDialogProps
 } from '@/qComponents/QDialog/src/types';
 import { Optional } from '#/helpers';
 import { QDialog } from '@/qComponents/QDialog';
+import { isServer } from '@/qComponents/constants/isServer';
 
 export const createDialog =
   (config?: QDialogHookOptions) =>
-  (content: Component, options?: QDialogProps): Promise<string> => {
+  (content: Component, options?: QDialogProps): Promise<QDialogEvent> => {
     let dialogPromise: QDialogPromise;
     let app: Optional<App<Element>>;
 
-    const handleClosed = (): void => {
+    const handleRemove = (): void => {
       if (!app) return;
       app.unmount();
-      dialogPromise.resolve('closed');
+    };
+
+    const handleDone = ({ action, payload }: QDialogEvent): void => {
+      dialogPromise.resolve({ action, payload });
     };
 
     nextTick(() => {
+      if (isServer) return;
+
       app = createApp(QDialog, {
         ...(options || {}),
         content,
-        onClosed: handleClosed
+        onDone: handleDone,
+        onRemove: handleRemove
       });
 
       const parentAppContext = config?.parentInstance?.appContext;

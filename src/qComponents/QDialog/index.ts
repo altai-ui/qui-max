@@ -6,10 +6,12 @@ import { createDialog } from '@/qComponents/QDialog/src';
 export const useDialog = (options?: QDialogHookOptions): Dialog => {
   const parentInstance = getCurrentInstance();
 
-  return createDialog({
+  const dialog = createDialog({
     parentInstance,
     ...options
   });
+
+  return dialog;
 };
 
 export type { QDialogProps, QDialogInstance } from './src/types';

@@ -37,7 +37,10 @@
             />
 
             <div class="q-dialog__content">
-              <component :is="content" />
+              <component
+                :is="content"
+                @closed="closeDialog"
+              />
             </div>
           </div>
         </q-scrollbar>
@@ -71,7 +74,7 @@ import type {
   QDialogPropTeleportTo,
   QDialogInstance
 } from './types';
-import { QDialogContentComponent, QDialogContainerProps } from './types';
+import { QDialogContainerProps } from './types';
 
 const DEFAULT_Z_INDEX = 2000;
 

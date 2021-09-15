@@ -35,7 +35,6 @@ export interface QDialogInstance {
   afterLeave: () => void;
   closeDialog: () => void;
   handleWrapperClick: () => void;
-  preparedContent: ComputedRef<QDialogContentComponent>;
 }
 
 // for hook
@@ -48,21 +47,7 @@ export interface QDialogHookOptions {
   parentInstance?: Nullable<ComponentInternalInstance>;
 }
 
-export interface QDialogOptions {
-  parentInstance?: Nullable<ComponentInternalInstance>;
-}
-
 export type Dialog = (
   content: Component,
   options?: QDialogProps
-) => Promise<boolean | string>;
-
-export interface QDialogParams {
-  title: string;
-}
-
-export interface QDialogContentComponent {
-  component: Component;
-  props?: QDialogParams | { [propName: string]: unknown };
-  listeners?: { [listenerEvent: string]: (...args: unknown[]) => void };
-}
+) => Promise<string>;

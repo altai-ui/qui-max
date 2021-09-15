@@ -13,7 +13,7 @@ export const createDialog =
     let dialogPromise: QDialogPromise;
     let app: Optional<App<Element>>;
 
-    const handleClose = (): void => {
+    const handleClosed = (): void => {
       if (!app) return;
       app.unmount();
       dialogPromise.resolve('closed');
@@ -23,7 +23,7 @@ export const createDialog =
       app = createApp(QDialog, {
         ...(options || {}),
         content,
-        onClosed: handleClose
+        onClosed: handleClosed
       });
 
       const parentAppContext = config?.parentInstance?.appContext;

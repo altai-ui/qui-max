@@ -50,7 +50,7 @@ const QDialogStory: Story<QDialogProps> = args =>
             { ...args }
           );
           // eslint-disable-next-line no-console
-          console.log('isClosed:', res);
+          console.log('event:', res);
         } catch (e) {
           // eslint-disable-next-line no-console
           console.log(e);

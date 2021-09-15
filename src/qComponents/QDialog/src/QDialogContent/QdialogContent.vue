@@ -2,11 +2,12 @@
   <div>
     <h2>Test Dialog Inner Component</h2>
     <p>Lorem ipsum dolor sit amet</p>
+    <button @click="handleClick">Test</button>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted } from 'vue';
+import { defineComponent } from 'vue';
 
 export default defineComponent({
   name: 'QDialogContent',
@@ -17,8 +18,18 @@ export default defineComponent({
     }
   },
 
-  setup() {
-    onMounted(() => {});
+  emits: ['closed', 'done'],
+
+  setup(_, { emit }) {
+    const handleClick = (): void => {
+      // eslint-disable-next-line no-console
+      console.log('clicked test');
+      emit('closed');
+    };
+
+    return {
+      handleClick
+    };
   }
 });
 </script>

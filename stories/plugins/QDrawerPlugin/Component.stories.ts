@@ -21,35 +21,13 @@ const QDrawerStoryComponent: Story<never> = () =>
     setup() {
       const drawerPlugin = useDrawer();
 
-      const handleOpen = (): void => {
-        // eslint-disable-next-line no-console
-        console.log('handleOpen');
-      };
-
-      const handleOpened = (): void => {
-        // eslint-disable-next-line no-console
-        console.log('handleOpened');
-      };
-
-      const handleClose = (): void => {
-        // eslint-disable-next-line no-console
-        console.log('handleClose');
-      };
-
-      const handleClosed = (): void => {
-        // eslint-disable-next-line no-console
-        console.log('handleClosed');
-      };
-
       const handleClick = async (): Promise<void> => {
         try {
-          await drawerPlugin(
-            defineAsyncComponent(
-              () => import('@/qComponents/QDrawer/src/QDrawerContent/index')
-            )
+          const result = await drawerPlugin(
+            defineAsyncComponent(() => import('./QDrawerSampleContent.vue'))
           );
           // eslint-disable-next-line no-console
-          console.log('resolve');
+          console.log('resolve', result);
         } catch (error) {
           // eslint-disable-next-line no-console
           console.log('reject', error);
@@ -57,10 +35,6 @@ const QDrawerStoryComponent: Story<never> = () =>
       };
 
       return {
-        handleOpen,
-        handleOpened,
-        handleClose,
-        handleClosed,
         handleClick
       };
     },

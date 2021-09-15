@@ -1,9 +1,5 @@
-import { App } from 'vue';
-import QDrawerContent from './src/QDrawerContent.vue';
-import { SFCWithInstall } from '#/helpers';
+import QDrawerContent from './QDrawerContent.vue';
 
-QDrawerContent.install = (app: App): void => {
-  app.component(QDrawerContent.name, QDrawerContent);
-};
+export type { QDrawerContentInstance, QDrawerParams } from './types';
 
-export default QDrawerContent as SFCWithInstall<App, typeof QDrawerContent>;
+export { QDrawerContent };

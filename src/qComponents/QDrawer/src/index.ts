@@ -1,14 +1,14 @@
 import { App, Component, createApp, nextTick } from 'vue';
-import {
-  QDrawerPromise,
-  QDrawerHookOptions,
-  QDrawerEvent,
-  QDrawerAction,
-  QDrawerOptions,
-  QDrawerInstance
-} from '@/qComponents/QDrawer/src/types';
+import type { QDrawerInstance } from '@/qComponents/QDrawer/src/QDrawerContainer/types';
 import { Optional, UnwrappedInstance } from '#/helpers';
 import { QDrawer } from '@/qComponents/QDrawer';
+import type {
+  QDrawerEvent,
+  QDrawerHookOptions,
+  QDrawerOptions,
+  QDrawerPromise
+} from '../types';
+import { QDrawerAction } from '../constants';
 
 export const createDrawer =
   (config?: QDrawerHookOptions) =>
@@ -22,7 +22,7 @@ export const createDrawer =
         : drawerPromise.reject({ action, payload });
     };
 
-    const handleClose = (): void => {
+    const handleRemove = (): void => {
       if (!app) return;
 
       app.unmount();
@@ -35,7 +35,7 @@ export const createDrawer =
         ...(options ?? {}),
         content,
         onDone: handleDone,
-        onClosed: handleClose
+        onRemove: handleRemove
       });
 
       const parentAppContext = config?.parentInstance?.appContext;

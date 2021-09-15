@@ -5,7 +5,7 @@
     @after-leave="afterLeave"
   >
     <div
-      v-show="isVisible"
+      v-show="isShown"
       class="q-drawer"
       :style="{ zIndex }"
       @click.self="handleWrapperClick"
@@ -33,7 +33,7 @@
           <div class="q-drawer__content">
             <component
               :is="content"
-              @done="doneConfirm"
+              @done="doneEmit"
             />
           </div>
         </q-scrollbar>
@@ -52,30 +52,43 @@ import {
   PropType,
   onMounted,
   onUnmounted,
-  Component,
   getCurrentInstance
 } from 'vue';
 import { isServer } from '@/qComponents/constants/isServer';
-import QScrollbar from '@/qComponents/QScrollbar';
+
 import { validateArray } from '@/qComponents/helpers';
-import { CLOSE_EVENT } from '@/qComponents/constants/events';
+import { CLOSE_EVENT, REMOVE_EVENT } from '@/qComponents/constants/events';
 import { getConfig } from '@/qComponents/config';
+
 import type { Nullable } from '#/helpers';
-import {
+
+import type { QDrawerEvent } from '@/qComponents/QDrawer/types';
+import { QDrawerAction } from '@/qComponents/QDrawer/constants';
+
+import type {
   QDrawerPropBeforeClose,
   QDrawerPropPosition,
   QDrawerInstance,
-  QDrawerEvent,
-  QDrawerAction,
-  QDrawerContainerProps
-} from '../types';
+  QDrawerContainerProps,
+  QDrawerContainerPropContent
+} from './types';
+
+import QScrollbar from '@/qComponents/QScrollbar';
+
+const DONE_EVENT = 'done';
 
 const DEFAULT_Z_INDEX = 2000;
+
 export default defineComponent({
   name: 'QDrawer',
   componentName: 'QDrawer',
   components: { QScrollbar },
   props: {
+    content: {
+      type: [Object, Function] as PropType<QDrawerContainerPropContent>,
+      required: true
+    },
+
     /**
      * width of Drawer
      */
@@ -125,11 +138,6 @@ export default defineComponent({
     customClass: {
       type: String,
       default: null
-    },
-
-    content: {
-      type: [Object, Function] as PropType<Component>,
-      required: true
     }
   },
   emits: [
@@ -154,15 +162,18 @@ export default defineComponent({
      */
     'update:visible',
 
-    'done'
-  ],
-  setup(props: QDrawerContainerProps, ctx): QDrawerInstance {
-    const zIndex = ref<number>(DEFAULT_Z_INDEX);
-    const isRendered = ref<boolean>(false);
-    const drawer = ref<Nullable<HTMLElement>>(null);
-    const isVisible = ref<boolean>(false);
+    DONE_EVENT,
 
+    REMOVE_EVENT
+  ],
+
+  setup(props: QDrawerContainerProps, ctx): QDrawerInstance {
     const instance = getCurrentInstance();
+
+    const zIndex = ref<number>(DEFAULT_Z_INDEX);
+    const drawer = ref<Nullable<HTMLElement>>(null);
+    const isRendered = ref<boolean>(false);
+    const isShown = ref<boolean>(false);
 
     let elementToFocusAfterClosing: Nullable<HTMLElement> = null;
     const drawerStyle = computed<Record<string, Nullable<string | number>>>(
@@ -181,11 +192,11 @@ export default defineComponent({
       }
     };
 
-    const doneConfirm = async ({
+    const doneEmit = async ({
       action,
       payload = null
     }: QDrawerEvent): Promise<void> => {
-      ctx.emit('done', { action, payload });
+      ctx.emit(DONE_EVENT, { action, payload });
 
       // eslint-disable-next-line no-console
       console.log(action);
@@ -201,9 +212,12 @@ export default defineComponent({
 
     const hide = (): void => {
       ctx.emit(CLOSE_EVENT);
-      doneConfirm({ action: QDrawerAction.close });
+
+      doneEmit({ action: QDrawerAction.close });
+
       ctx.emit('update:visible', false);
-      isVisible.value = false;
+
+      isShown.value = false;
     };
 
     const closeDrawer = (): void => {
@@ -219,7 +233,7 @@ export default defineComponent({
     };
 
     watch(
-      () => isVisible,
+      () => isShown,
       visible => {
         if (isServer) return;
         if (!visible) {
@@ -248,7 +262,7 @@ export default defineComponent({
 
     onMounted(() => {
       document.body.appendChild(instance?.vnode.el as Node);
-      isVisible.value = true;
+      isShown.value = true;
     });
 
     onUnmounted(() => {
@@ -260,14 +274,14 @@ export default defineComponent({
       drawer,
       zIndex,
       isRendered,
-      isVisible,
+      isShown,
       drawerStyle,
       drawerClass,
       afterEnter,
       afterLeave,
       closeDrawer,
       handleWrapperClick,
-      doneConfirm
+      doneEmit
     };
   }
 });

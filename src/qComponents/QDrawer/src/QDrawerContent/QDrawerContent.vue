@@ -15,11 +15,11 @@
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue';
-import {
-  QDrawerAction,
+import type {
   QDrawerContentInstance,
   QDrawerParams
-} from '../../types';
+} from '@/qComponents/QDrawer/src/QDrawerContent';
+import { QDrawerAction } from '@/qComponents/QDrawer/constants';
 
 export default defineComponent({
   name: 'QDrawerContent',

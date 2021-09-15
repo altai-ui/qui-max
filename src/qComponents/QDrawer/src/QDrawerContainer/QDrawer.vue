@@ -31,11 +31,9 @@
         </div>
         <q-scrollbar>
           <div class="q-drawer__content">
-            {{ title }}
             <component
-              :is="preparedContent.component"
-              v-bind="preparedContent.props"
-              v-on="preparedContent.listeners"
+              :is="content"
+              @done="doneConfirm"
             />
           </div>
         </q-scrollbar>
@@ -54,28 +52,25 @@ import {
   PropType,
   onMounted,
   onUnmounted,
-  getCurrentInstance,
-  Component
+  Component,
+  getCurrentInstance
 } from 'vue';
-
 import { isServer } from '@/qComponents/constants/isServer';
 import QScrollbar from '@/qComponents/QScrollbar';
 import { validateArray } from '@/qComponents/helpers';
 import { CLOSE_EVENT } from '@/qComponents/constants/events';
 import { getConfig } from '@/qComponents/config';
 import type { Nullable } from '#/helpers';
-
 import {
   QDrawerPropBeforeClose,
   QDrawerPropPosition,
-  QDrawerPropTeleportTo,
   QDrawerInstance,
-  QDrawerComponent,
+  QDrawerEvent,
+  QDrawerAction,
   QDrawerContainerProps
-} from './types';
+} from '../types';
 
 const DEFAULT_Z_INDEX = 2000;
-
 export default defineComponent({
   name: 'QDrawer',
   componentName: 'QDrawer',
@@ -95,13 +90,6 @@ export default defineComponent({
       type: String,
       default: null
     },
-    /**
-     * whether Drawer is visible
-     */
-    // visible: {
-    //   type: Boolean,
-    //   default: false
-    // },
     /**
      * whether the component will be deleted from layout
      */
@@ -138,34 +126,12 @@ export default defineComponent({
       type: String,
       default: null
     },
-    /**
-     * Specifies a target element where QDrawer will be moved.
-     * (has to be a valid query selector, or an HTMLElement)
-     */
-    teleportTo: {
-      type: [
-        String,
-        isServer ? Object : HTMLElement
-      ] as PropType<QDrawerPropTeleportTo>,
-      default: null
-    },
-
-    // renderOnMount: {
-    //   type: Boolean,
-    //   default: false
-    // },
-
-    onClose: {
-      type: Function,
-      default: null
-    },
 
     content: {
       type: [Object, Function] as PropType<Component>,
       required: true
     }
   },
-
   emits: [
     /**
      * triggers when dialog starts appearing (animation started)
@@ -186,18 +152,19 @@ export default defineComponent({
     /**
      * triggers when visible state changes
      */
-    'update:visible'
-  ],
+    'update:visible',
 
+    'done'
+  ],
   setup(props: QDrawerContainerProps, ctx): QDrawerInstance {
     const zIndex = ref<number>(DEFAULT_Z_INDEX);
     const isRendered = ref<boolean>(false);
-    const isVisible = ref<boolean>(false);
     const drawer = ref<Nullable<HTMLElement>>(null);
+    const isVisible = ref<boolean>(false);
+
     const instance = getCurrentInstance();
 
     let elementToFocusAfterClosing: Nullable<HTMLElement> = null;
-
     const drawerStyle = computed<Record<string, Nullable<string | number>>>(
       () => ({
         width: Number(props.width) ? `${Number(props.width)}px` : props.width
@@ -214,16 +181,27 @@ export default defineComponent({
       }
     };
 
+    const doneConfirm = async ({
+      action,
+      payload = null
+    }: QDrawerEvent): Promise<void> => {
+      ctx.emit('done', { action, payload });
+
+      // eslint-disable-next-line no-console
+      console.log(action);
+    };
+
     const afterEnter = (): void => {
       ctx.emit('opened');
     };
 
     const afterLeave = (): void => {
-      ctx.emit('closed', true);
+      ctx.emit('closed');
     };
 
     const hide = (): void => {
       ctx.emit(CLOSE_EVENT);
+      doneConfirm({ action: QDrawerAction.close });
       ctx.emit('update:visible', false);
       isVisible.value = false;
     };
@@ -244,43 +222,29 @@ export default defineComponent({
       () => isVisible,
       visible => {
         if (isServer) return;
-
         if (!visible) {
           document.body.style.overflow = '';
-
           document.removeEventListener('focus', handleDocumentFocus, true);
           if (props.destroyOnClose) {
             isRendered.value = false;
           }
-
           nextTick(() => {
             elementToFocusAfterClosing?.focus();
           });
           return;
         }
-
         elementToFocusAfterClosing = document.activeElement as HTMLElement;
         nextTick(() => {
           drawer.value?.focus();
         });
         ctx.emit('open');
-
         zIndex.value = getConfig('nextZIndex') ?? DEFAULT_Z_INDEX;
         document.body.style.overflow = 'hidden';
         document.addEventListener('focus', handleDocumentFocus, true);
-
         isRendered.value = true;
       },
       { immediate: true }
     );
-
-    const preparedContent = computed<QDrawerComponent>(() => {
-      return {
-        props: { title: props.title },
-        component: props.content,
-        listeners: {}
-      };
-    });
 
     onMounted(() => {
       document.body.appendChild(instance?.vnode.el as Node);
@@ -296,14 +260,14 @@ export default defineComponent({
       drawer,
       zIndex,
       isRendered,
+      isVisible,
       drawerStyle,
       drawerClass,
       afterEnter,
       afterLeave,
       closeDrawer,
       handleWrapperClick,
-      isVisible,
-      preparedContent
+      doneConfirm
     };
   }
 });

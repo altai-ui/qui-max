@@ -1,9 +1,9 @@
 import type {
-  App,
-  ComponentInternalInstance,
   Ref,
   ComputedRef,
-  Component
+  ComponentInternalInstance,
+  Component,
+  App
 } from 'vue';
 
 import type { Nullable, UnwrappedInstance } from '#/helpers';
@@ -21,7 +21,7 @@ export interface QDrawerProps {
   beforeClose: QDrawerPropBeforeClose;
   position: QDrawerPropPosition;
   customClass: Nullable<string>;
-  teleportTo: QDrawerPropTeleportTo;
+  // teleportTo: QDrawerPropTeleportTo;
   // renderOnMount: Nullable<boolean>;
 }
 
@@ -32,24 +32,51 @@ export interface QDrawerInstance {
   isVisible: Ref<boolean>;
   drawerStyle: ComputedRef<Record<string, Nullable<string | number>>>;
   drawerClass: ComputedRef<string>;
-  preparedContent: ComputedRef<QDrawerComponent>;
   afterEnter: () => void;
   afterLeave: () => void;
   closeDrawer: () => void;
   handleWrapperClick: () => void;
+  doneConfirm: (event: QDrawerEvent) => Promise<void>;
+}
+
+export interface QDrawerContainerProps extends QDrawerProps {
+  content: Component;
+}
+
+// for the content component
+export interface QDrawerParams {
+  title?: string;
+}
+
+// for the content component
+export interface QDrawerContentInstance {
+  handleDone: () => void;
+}
+
+export interface QDrawerComponent {
+  component: Component;
+  props?: QDrawerProps | { [propName: string]: unknown } | string;
+  listeners?: { [listenerEvent: string]: (...args: unknown[]) => void };
 }
 
 export interface QDrawerHookOptions {
   parentInstance?: Nullable<ComponentInternalInstance>;
 }
 
-export interface QDrawerOptions extends QDrawerProps {
+export interface QDrawerOptions {
   parentInstance?: Nullable<ComponentInternalInstance>;
+  onBeforeMount?: (app: App<Element>) => void;
+  onMounted?: (
+    app: App<Element>,
+    container: NonNullable<UnwrappedInstance<QDrawerInstance>>
+  ) => void;
+  onUnmounted?: (app: App<Element>) => void;
 }
 
 export enum QDrawerAction {
   open = 'open',
-  close = 'close'
+  close = 'close',
+  done = 'done'
 }
 
 export interface QDrawerEvent {
@@ -62,22 +89,8 @@ export interface QDrawerPromise {
   reject: (event: QDrawerEvent) => void;
 }
 
-export interface QDrawerParams {
-  testProp: string;
-}
+export type QDrawerContainerPropContent = Component | QDrawerComponent;
 
-export interface QDrawerComponent {
-  component: Component;
-  props?: QDrawerParams | { [propName: string]: unknown };
-  listeners?: { [listenerEvent: string]: (...args: unknown[]) => void };
-}
-
-export type QDrawerContent = QDrawerProps | QDrawerComponent | Component;
-
-export interface QDrawerContainerProps extends QDrawerProps {
-  content: Component;
-}
-
-export interface QDrawerPlugin {
+export interface DrawerPlugin {
   (content: Component, options?: QDrawerOptions): Promise<QDrawerEvent>;
 }

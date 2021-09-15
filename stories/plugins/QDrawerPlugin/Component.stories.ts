@@ -1,8 +1,7 @@
 import type { Meta, Story } from '@storybook/vue3';
 import { defineAsyncComponent, defineComponent } from 'vue';
 
-import QDrawer, { QDrawerProps } from '@/qComponents/QDrawer';
-import { useDrawer } from '@/qComponents/QDrawer/index';
+import { QDrawer, useDrawer } from '@/qComponents/QDrawer/index';
 
 const storyMetadata: Meta = {
   title: 'Plugins/QDrawerPlugin/Default',
@@ -17,7 +16,7 @@ const storyMetadata: Meta = {
   }
 };
 
-const QDrawerStoryComponent: Story<QDrawerProps> = args =>
+const QDrawerStoryComponent: Story<never> = () =>
   defineComponent({
     setup() {
       const drawerPlugin = useDrawer();
@@ -44,17 +43,13 @@ const QDrawerStoryComponent: Story<QDrawerProps> = args =>
 
       const handleClick = async (): Promise<void> => {
         try {
-          const result = await drawerPlugin(
+          await drawerPlugin(
             defineAsyncComponent(
-              () =>
-                import(
-                  '@/qComponents/QDrawer/src/QDrawerTestContent/QDrawerTestContent.vue'
-                )
-            ),
-            { ...args }
+              () => import('@/qComponents/QDrawer/src/QDrawerContent/index')
+            )
           );
           // eslint-disable-next-line no-console
-          console.log('resolve', result);
+          console.log('resolve');
         } catch (error) {
           // eslint-disable-next-line no-console
           console.log('reject', error);
@@ -62,7 +57,6 @@ const QDrawerStoryComponent: Story<QDrawerProps> = args =>
       };
 
       return {
-        args,
         handleOpen,
         handleOpened,
         handleClose,
@@ -75,9 +69,9 @@ const QDrawerStoryComponent: Story<QDrawerProps> = args =>
 
 export const Default = QDrawerStoryComponent.bind({});
 
-Default.args = {
-  title: 'What is Lorem Ipsum?',
-  width: 350
-};
+// Default.args = {
+//   title: 'What is Lorem Ipsum?',
+//   width: 350
+// };
 
 export default storyMetadata;

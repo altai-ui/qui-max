@@ -1,18 +1,13 @@
-import { App, getCurrentInstance } from 'vue';
+import { getCurrentInstance } from 'vue';
 
-import QDrawer from './src/QDrawer.vue';
-import { createDrawerPlugin } from './src/drawer-hook';
-import { QDrawerHookOptions, QDrawerPlugin } from './src/types';
+import QDrawer from './src/QDrawerContainer/QDrawer.vue';
+import { DrawerPlugin, QDrawerHookOptions } from './src/types';
+import { createDrawer } from './src';
 
-/* istanbul ignore next */
-QDrawer.install = (app: App): void => {
-  app.component(QDrawer.name, QDrawer);
-};
-
-export const useDrawer = (options?: QDrawerHookOptions): QDrawerPlugin => {
+export const useDrawer = (options?: QDrawerHookOptions): DrawerPlugin => {
   const parentInstance = getCurrentInstance();
 
-  return createDrawerPlugin({
+  return createDrawer({
     parentInstance,
     ...options
   });

@@ -2,17 +2,17 @@ import { Component, ComputedRef, Ref } from 'vue';
 import { Nullable } from '#/helpers';
 import {
   QDialogOptions,
-  QDialogPropBeforeClose,
-  QDialogPropTeleportTo
+  QDialogContainerPropBeforeClose,
+  QDialogContainerPropTeleportTo
 } from '@/qComponents/QDialog/src/types';
 
 export interface QDialogParams {
   width: Nullable<string | number>;
   offsetTop: Nullable<string | number>;
   closeOnClickShadow: Nullable<boolean>;
-  beforeClose: QDialogPropBeforeClose;
+  beforeClose: QDialogContainerPropBeforeClose;
   customClass: Nullable<string>;
-  teleportTo: QDialogPropTeleportTo;
+  teleportTo: QDialogContainerPropTeleportTo;
 }
 
 export interface QDialogComponent {
@@ -35,7 +35,7 @@ export interface QDialogContainerInstance {
   containerStyle: ComputedRef<Record<string, Nullable<string | number>>>;
   afterEnter: () => void;
   afterLeave: () => void;
-  closeBox: () => Promise<void>;
+  closeDialog: () => Promise<void>;
   handleWrapperClick: () => void;
   preparedContent: ComputedRef<QDialogComponent>;
 }

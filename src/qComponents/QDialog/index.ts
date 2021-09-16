@@ -1,9 +1,8 @@
 import { getCurrentInstance } from 'vue';
-import QDialog from './src/QDialogContainer/index.vue';
-import { Dialog, QDialogHookOptions } from './src/types';
+import { QDialog, QDialogHookOptions } from './src/types';
 import { createDialog } from './src';
 
-const useDialog = (options?: QDialogHookOptions): Dialog => {
+const useDialog = (options?: QDialogHookOptions): QDialog => {
   const parentInstance = getCurrentInstance();
 
   const dialog = createDialog({
@@ -16,6 +15,5 @@ const useDialog = (options?: QDialogHookOptions): Dialog => {
 
 export { useDialog };
 
-export { QDialogContainerAction } from './src/constants';
-export type { Dialog, QDialogOptions } from './src/types';
-export { QDialog };
+export { QDialogAction } from './src/constants';
+export type { QDialog, QDialogOptions } from './src/types';

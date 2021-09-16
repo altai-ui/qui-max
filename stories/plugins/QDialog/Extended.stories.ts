@@ -1,18 +1,19 @@
 import type { Meta, Story } from '@storybook/vue3';
 import { defineAsyncComponent, defineComponent } from 'vue';
 
-import { QDialog, useDialog } from '@/qComponents/QDialog';
+import { useDialog } from '@/qComponents/QDialog';
+import { QDialogParams } from '@/qComponents/QDialog/src/QDialogContainer/types';
+import { Default } from './Default.stories';
 
 const storyMetadata: Meta = {
   title: 'Plugins/QDialog/Extended',
-  component: QDialog,
   argTypes: {
-    offsetTop: { control: { type: 'text' } },
-    width: { control: { type: 'text' } }
+    offsetTop: { control: { type: 'number' } },
+    width: { control: { type: 'number' } }
   }
 };
 
-const QDialogExtendedStory: Story<never> = args =>
+const QDialogExtendedStory: Story<QDialogParams> = args =>
   defineComponent({
     setup() {
       const dialog = useDialog();
@@ -34,7 +35,7 @@ const QDialogExtendedStory: Story<never> = args =>
                 }
               }
             },
-            { closeOnClickShadow: true }
+            { ...args, closeOnClickShadow: true }
           );
           // eslint-disable-next-line no-console
           console.log('event:', res);
@@ -52,5 +53,8 @@ const QDialogExtendedStory: Story<never> = args =>
   });
 
 export const Extended = QDialogExtendedStory.bind({});
-
+Default.args = {
+  width: null,
+  offsetTop: null
+};
 export default storyMetadata;

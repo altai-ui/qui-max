@@ -17,7 +17,7 @@
           :style="containerStyle"
           class="q-dialog__container"
           :class="customClass"
-          @keyup.esc="closeBox"
+          @keyup.esc="closeDialog"
         >
           <q-scrollbar
             theme="secondary"
@@ -30,7 +30,7 @@
                 theme="secondary"
                 type="icon"
                 icon="q-icon-close"
-                @click="closeBox"
+                @click="closeDialog"
               />
 
               <div class="q-dialog__content">
@@ -38,7 +38,7 @@
                   :is="preparedContent.component"
                   v-bind="preparedContent.props"
                   v-on="preparedContent.listeners"
-                  @closed="closeBox"
+                  @done="closeDialog"
                 />
               </div>
             </div>
@@ -64,18 +64,22 @@ import {
 import { isServer } from '@/qComponents/constants/isServer';
 import QButton from '@/qComponents/QButton';
 import QScrollbar from '@/qComponents/QScrollbar';
+import { getConfig } from '@/qComponents/config';
 import type { Nullable } from '#/helpers';
 
-import type { QDialogPropBeforeClose, QDialogPropTeleportTo } from '../types';
-import { getConfig } from '../../../config';
-import { isExternalComponent } from '../utils';
+import type {
+  QDialogContainerPropBeforeClose,
+  QDialogContainerPropTeleportTo
+} from '../types';
+
+import { isExternalComponent } from './utils';
 import {
   QDialogComponent,
   QDialogContainerInstance,
   QDialogContainerPropContent,
   QDialogContainerProps
 } from './types';
-import { QDialogContainerAction } from '../constants';
+import { QDialogAction } from '../constants';
 
 const DEFAULT_Z_INDEX = 2000;
 const REMOVE_EVENT = 'remove';
@@ -124,7 +128,7 @@ export default defineComponent({
      * callback before close
      */
     beforeClose: {
-      type: Function as unknown as PropType<QDialogPropBeforeClose>,
+      type: Function as unknown as PropType<QDialogContainerPropBeforeClose>,
       default: null
     },
     /**
@@ -142,7 +146,7 @@ export default defineComponent({
       type: [
         String,
         isServer ? Object : HTMLElement
-      ] as PropType<QDialogPropTeleportTo>,
+      ] as PropType<QDialogContainerPropTeleportTo>,
       default: null
     }
   },
@@ -229,8 +233,8 @@ export default defineComponent({
       isShown.value = false;
     };
 
-    const closeBox = async (): Promise<void> => {
-      ctx.emit(DONE_EVENT, { action: QDialogContainerAction.closed });
+    const closeDialog = async (): Promise<void> => {
+      ctx.emit(DONE_EVENT, { action: QDialogAction.closed });
 
       hide();
 
@@ -241,7 +245,7 @@ export default defineComponent({
     };
 
     const handleWrapperClick = (): void => {
-      if (props.wrapperClosable) closeBox();
+      if (props.wrapperClosable) closeDialog();
     };
 
     onMounted(async () => {
@@ -264,7 +268,7 @@ export default defineComponent({
       containerStyle,
       afterEnter,
       afterLeave,
-      closeBox,
+      closeDialog,
       handleWrapperClick,
       isShown,
       preparedContent

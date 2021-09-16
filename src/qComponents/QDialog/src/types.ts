@@ -5,12 +5,18 @@ import {
   QDialogContainerInstance,
   QDialogContainerPropContent
 } from './QDialogContainer/types';
-import { QDialogContainerAction } from './constants';
-
-export type QDialogPropBeforeClose = Nullable<(hide: () => void) => void>;
-export type QDialogPropTeleportTo = Nullable<string | HTMLElement>;
+import { QDialogAction } from './constants';
 
 export type QDialogContent = QDialogContainerPropContent;
+
+export type QDialogContainerPropBeforeClose = Nullable<
+  (hide: () => void) => void
+>;
+export type QDialogContainerPropTeleportTo = Nullable<string | HTMLElement>;
+
+export interface QDialogHookOptions {
+  parentInstance?: Nullable<ComponentInternalInstance>;
+}
 
 export interface QDialogOptions {
   parentInstance?: Nullable<ComponentInternalInstance>;
@@ -23,21 +29,18 @@ export interface QDialogOptions {
   onUnmounted?: (app: App<Element>) => void;
 }
 
-// for hook
+export interface QDialogEvent {
+  action: QDialogAction;
+  payload?: unknown;
+}
+
 export interface QDialogPromise {
   resolve: (evt: QDialogEvent) => void;
   reject: (evt: QDialogEvent) => void;
 }
 
-export interface QDialogEvent {
-  action: QDialogContainerAction;
-  payload?: unknown;
-}
+// for hook
 
-export interface QDialogHookOptions {
-  parentInstance?: Nullable<ComponentInternalInstance>;
-}
-
-export interface Dialog {
+export interface QDialog {
   (content: Component, options?: QDialogOptions): Promise<QDialogEvent>;
 }

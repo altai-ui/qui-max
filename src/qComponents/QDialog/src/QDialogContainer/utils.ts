@@ -1,8 +1,5 @@
 import { has } from 'lodash-es';
-import {
-  QDialogComponent,
-  QDialogContainerPropContent
-} from './QDialogContainer/types';
+import { QDialogComponent, QDialogContainerPropContent } from './types';
 
 export const isExternalComponent = (
   object: QDialogContainerPropContent

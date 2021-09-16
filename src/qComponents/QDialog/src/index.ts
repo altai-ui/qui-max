@@ -2,7 +2,7 @@ import { App, createApp, nextTick } from 'vue';
 import { isServer } from '@/qComponents/constants/isServer';
 import { Optional, UnwrappedInstance } from '#/helpers';
 import {
-  Dialog,
+  QDialog,
   QDialogContent,
   QDialogEvent,
   QDialogHookOptions,
@@ -11,7 +11,7 @@ import {
 } from './types';
 import { QDialogContainer, QDialogContainerInstance } from './QDialogContainer';
 
-export const createDialog = (config?: QDialogHookOptions): Dialog => {
+export const createDialog = (config?: QDialogHookOptions): QDialog => {
   const dialog = (
     content: QDialogContent,
     options?: QDialogOptions

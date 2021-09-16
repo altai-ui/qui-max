@@ -24,7 +24,7 @@ export default defineComponent({
     const handleClick = (): void => {
       // eslint-disable-next-line no-console
       console.log('clicked test');
-      emit('closed');
+      emit('done');
       emit('click-button');
     };
 

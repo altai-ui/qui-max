@@ -9,7 +9,7 @@ import {
 import { QDrawerContentPropBeforeClose } from '@/qComponents/QDrawer/src/QDrawerContent/types';
 
 const storyMetadata: Meta = {
-  title: 'Plugins/QDrawerPlugin/Default',
+  title: 'Plugins/QDrawer/Default',
   component: QDrawerContent,
   argTypes: {
     visible: { control: { type: 'none' } },

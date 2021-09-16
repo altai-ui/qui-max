@@ -1,9 +1,5 @@
 import { App, createApp, nextTick } from 'vue';
 
-import type {
-  QDrawerContainerPropContent,
-  QDrawerInstance
-} from '@/qComponents/QDrawer/src/QDrawerContainer/types';
 import type { Optional, UnwrappedInstance } from '#/helpers';
 import type {
   QDrawerEvent,
@@ -12,6 +8,10 @@ import type {
   QDrawerPromise,
   DrawerPlugin
 } from './types';
+import type {
+  QDrawerContainerPropContent,
+  QDrawerInstance
+} from './QDrawerContainer';
 
 import { QDrawerAction } from './constants';
 import { isServer } from '@/qComponents/constants/isServer';

@@ -4,7 +4,7 @@ import { defineAsyncComponent, defineComponent } from 'vue';
 import { useDrawer, QDrawerContent } from '@/qComponents/QDrawer';
 
 const storyMetadata: Meta = {
-  title: 'Plugins/QDrawerPlugin/Component',
+  title: 'Plugins/QDrawer/Component',
   component: QDrawerContent
 };
 

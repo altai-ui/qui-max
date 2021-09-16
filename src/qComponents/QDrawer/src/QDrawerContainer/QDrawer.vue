@@ -226,9 +226,6 @@ export default defineComponent({
       payload = null
     }: QDrawerEvent): Promise<void> => {
       ctx.emit(DONE_EVENT, { action, payload });
-
-      // eslint-disable-next-line no-console
-      console.log(action);
     };
 
     const afterEnter = (): void => {
@@ -241,11 +238,8 @@ export default defineComponent({
 
     const hide = (): void => {
       ctx.emit(CLOSE_EVENT);
-
       doneEmit({ action: QDrawerAction.close });
-
       ctx.emit('update:visible', false);
-
       isShown.value = false;
     };
 

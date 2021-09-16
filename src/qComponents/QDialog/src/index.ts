@@ -1,33 +1,38 @@
-import { App, Component, createApp, nextTick } from 'vue';
+import { App, createApp, nextTick } from 'vue';
+import { isServer } from '@/qComponents/constants/isServer';
+import { Optional, UnwrappedInstance } from '#/helpers';
 import {
+  Dialog,
+  QDialogContent,
   QDialogEvent,
   QDialogHookOptions,
-  QDialogPromise,
-  QDialogProps
-} from '@/qComponents/QDialog/src/types';
-import { Optional } from '#/helpers';
-import { QDialog } from '@/qComponents/QDialog';
-import { isServer } from '@/qComponents/constants/isServer';
+  QDialogOptions,
+  QDialogPromise
+} from './types';
+import { QDialogContainer, QDialogContainerInstance } from './QDialogContainer';
 
-export const createDialog =
-  (config?: QDialogHookOptions) =>
-  (content: Component, options?: QDialogProps): Promise<QDialogEvent> => {
+export const createDialog = (config?: QDialogHookOptions): Dialog => {
+  const dialog = (
+    content: QDialogContent,
+    options?: QDialogOptions
+  ): Promise<QDialogEvent> => {
     let dialogPromise: QDialogPromise;
     let app: Optional<App<Element>>;
-
-    const handleRemove = (): void => {
-      if (!app) return;
-      app.unmount();
-    };
 
     const handleDone = ({ action, payload }: QDialogEvent): void => {
       dialogPromise.resolve({ action, payload });
     };
 
+    const handleRemove = (): void => {
+      if (!app) return;
+      app.unmount();
+      options?.onUnmounted?.(app);
+    };
+
     nextTick(() => {
       if (isServer) return;
 
-      app = createApp(QDialog, {
+      app = createApp(QDialogContainer, {
         ...(options || {}),
         content,
         onDone: handleDone,
@@ -51,7 +56,13 @@ export const createDialog =
         if (value) app?.provide(key, value);
       });
 
-      app.mount(document.createElement('div'));
+      options?.onBeforeMount?.(app);
+
+      const container = app.mount(document.createElement('div'));
+      options?.onMounted?.(
+        app,
+        container as NonNullable<UnwrappedInstance<QDialogContainerInstance>>
+      );
     });
 
     return new Promise((resolve, reject) => {
@@ -61,3 +72,5 @@ export const createDialog =
       };
     });
   };
+  return dialog;
+};

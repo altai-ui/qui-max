@@ -1,4 +1,4 @@
-export enum QDialogActions {
+export enum QDialogContainerAction {
   close = 'close',
   closed = 'closed'
 }

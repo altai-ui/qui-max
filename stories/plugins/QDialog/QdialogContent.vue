@@ -18,13 +18,14 @@ export default defineComponent({
     }
   },
 
-  emits: ['closed', 'done'],
+  emits: ['closed', 'done', 'click-button'],
 
   setup(_, { emit }) {
     const handleClick = (): void => {
       // eslint-disable-next-line no-console
       console.log('clicked test');
       emit('closed');
+      emit('click-button');
     };
 
     return {

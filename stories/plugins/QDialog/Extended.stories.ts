@@ -2,7 +2,6 @@ import type { Meta, Story } from '@storybook/vue3';
 import { defineAsyncComponent, defineComponent } from 'vue';
 
 import { QDialog, useDialog } from '@/qComponents/QDialog';
-import type { QDialogProps } from '@/qComponents/QDialog';
 
 const storyMetadata: Meta = {
   title: 'Plugins/QDialog/Extended',
@@ -13,46 +12,29 @@ const storyMetadata: Meta = {
   }
 };
 
-const QDialogExtendedStory: Story<QDialogProps> = args =>
+const QDialogExtendedStory: Story<never> = args =>
   defineComponent({
     setup() {
       const dialog = useDialog();
-
-      const handleOpen = (): void => {
-        // eslint-disable-next-line no-console
-        console.log('handleOpen');
-      };
-
-      const handleOpened = (): void => {
-        // eslint-disable-next-line no-console
-        console.log('handleOpened');
-      };
-
-      const handleClose = (): void => {
-        // eslint-disable-next-line no-console
-        console.log('handleClose');
-      };
-
-      const handleClosed = (): void => {
-        // eslint-disable-next-line no-console
-        console.log('handleClosed');
-      };
 
       const openDialog = async (): Promise<void> => {
         try {
           const res = await dialog(
             {
               component: defineAsyncComponent(
-                () =>
-                  import(
-                    '@/qComponents/QDialog/src/QDialogContent/QdialogContent.vue'
-                  )
+                () => import('./QdialogContent.vue')
               ),
               props: {
                 someExternalProp: 'Some value of some external component'
+              },
+              listeners: {
+                clickButton: () => {
+                  // eslint-disable-next-line no-console
+                  console.log('listeners - clickButton: clicked');
+                }
               }
             },
-            { ...args }
+            { closeOnClickShadow: true }
           );
           // eslint-disable-next-line no-console
           console.log('event:', res);
@@ -62,14 +44,7 @@ const QDialogExtendedStory: Story<QDialogProps> = args =>
         }
       };
 
-      return {
-        args,
-        handleOpen,
-        handleOpened,
-        handleClose,
-        handleClosed,
-        openDialog
-      };
+      return { openDialog };
     },
     template: `
       <q-button @click="openDialog">open</q-button>
@@ -77,8 +52,5 @@ const QDialogExtendedStory: Story<QDialogProps> = args =>
   });
 
 export const Extended = QDialogExtendedStory.bind({});
-Extended.args = {
-  title: 'Morbi massa libero, vehicula nec consequat sed, porta a sem.'
-};
 
 export default storyMetadata;

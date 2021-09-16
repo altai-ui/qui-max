@@ -199,6 +199,7 @@ export * from './QCollapseItem';
 export * from './QColorPicker';
 export * from './QContextMenu';
 export * from './QDatePicker';
+export * from './QDialog';
 export * from './QDrawer';
 export * from './QForm';
 export * from './QFormItem';

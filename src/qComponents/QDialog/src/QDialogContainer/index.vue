@@ -6,7 +6,7 @@
       @after-leave="afterLeave"
     >
       <div
-        v-show="isVisible"
+        v-show="isShown"
         class="q-dialog"
         :style="dialogStyle"
         @click.self="handleWrapperClick"
@@ -24,10 +24,6 @@
             view-class="q-dialog__view"
           >
             <div class="q-dialog__inner">
-              <div class="q-dialog__title">
-                {{ title }}
-              </div>
-
               <q-button
                 class="q-dialog__close"
                 circle
@@ -39,9 +35,9 @@
 
               <div class="q-dialog__content">
                 <component
-                  :is="preparedDialogContent.component"
-                  v-bind="preparedDialogContent.props"
-                  v-on="preparedDialogContent.listeners"
+                  :is="preparedContent.component"
+                  v-bind="preparedContent.props"
+                  v-on="preparedContent.listeners"
                   @closed="closeBox"
                 />
               </div>
@@ -62,7 +58,6 @@ import {
   PropType,
   onMounted,
   getCurrentInstance,
-  Component,
   onBeforeUnmount
 } from 'vue';
 
@@ -71,31 +66,32 @@ import QButton from '@/qComponents/QButton';
 import QScrollbar from '@/qComponents/QScrollbar';
 import type { Nullable } from '#/helpers';
 
-import type {
-  QDialogPropBeforeClose,
-  QDialogPropTeleportTo,
-  QDialogInstance
-} from './types';
+import type { QDialogPropBeforeClose, QDialogPropTeleportTo } from '../types';
+import { getConfig } from '../../../config';
+import { isExternalComponent } from '../utils';
 import {
   QDialogComponent,
-  QDialogContainerProps,
-  QDialogPropContent
+  QDialogContainerInstance,
+  QDialogContainerPropContent,
+  QDialogContainerProps
 } from './types';
-import { QDialogActions } from '@/qComponents/QDialog/src/constants';
-import { getConfig } from '@/qComponents/config';
-import { isDialogExternalComponent } from '@/qComponents/QDialog/src/utils';
+import { QDialogContainerAction } from '../constants';
 
 const DEFAULT_Z_INDEX = 2000;
 const REMOVE_EVENT = 'remove';
 const DONE_EVENT = 'done';
 
 export default defineComponent({
-  name: 'QDialog',
-  componentName: 'QDialog',
+  name: 'QDialogContainer',
+  componentName: 'QDialogContainer',
 
   components: { QButton, QScrollbar },
 
   props: {
+    content: {
+      type: [Object, Function] as PropType<QDialogContainerPropContent>,
+      required: true
+    },
     /**
      * width of QDialog
      */
@@ -120,7 +116,7 @@ export default defineComponent({
     /**
      * closes QDialog by click on shadow layer
      */
-    wrapperClosable: {
+    closeOnClickShadow: {
       type: Boolean,
       default: false
     },
@@ -148,10 +144,6 @@ export default defineComponent({
         isServer ? Object : HTMLElement
       ] as PropType<QDialogPropTeleportTo>,
       default: null
-    },
-    content: {
-      type: [Object, Function] as PropType<QDialogPropContent>,
-      required: true
     }
   },
 
@@ -172,22 +164,16 @@ export default defineComponent({
      * triggers when dialog starts dissapped
      */
     'closed',
-    /**
-     * triggers when visible state changes
-     */
-    'update:visible',
     REMOVE_EVENT,
     DONE_EVENT
   ],
 
-  setup(props: QDialogContainerProps, ctx): QDialogInstance {
-    const zIndex = ref<number>(DEFAULT_Z_INDEX);
-    const dialog = ref<Nullable<HTMLElement>>(null);
+  setup(props: QDialogContainerProps, ctx): QDialogContainerInstance {
     const instance = getCurrentInstance();
-    const isVisible = ref<boolean>(false);
 
-    const elementToFocusAfterClosing: Nullable<HTMLElement> =
-      document.activeElement as Nullable<HTMLElement>;
+    const isShown = ref<boolean>(false);
+    const dialog = ref<Nullable<HTMLElement>>(null);
+    const zIndex = ref<number>(DEFAULT_Z_INDEX);
 
     const dialogStyle = computed<Record<string, Nullable<number | string>>>(
       () => ({
@@ -204,8 +190,8 @@ export default defineComponent({
       })
     );
 
-    const preparedDialogContent = computed<QDialogComponent>(() => {
-      if (isDialogExternalComponent(props.content)) {
+    const preparedContent = computed<QDialogComponent>(() => {
+      if (isExternalComponent(props.content)) {
         return {
           props: {},
           listeners: {},
@@ -219,6 +205,9 @@ export default defineComponent({
         listeners: {}
       };
     });
+
+    const elementToFocusAfterClosing: Nullable<HTMLElement> =
+      document.activeElement as Nullable<HTMLElement>;
 
     const handleDocumentFocus = (event: FocusEvent): void => {
       if (dialog.value && !dialog.value.contains(event.target as HTMLElement)) {
@@ -237,12 +226,11 @@ export default defineComponent({
 
     const hide = (): void => {
       ctx.emit('close');
-      ctx.emit('update:visible', false);
-      isVisible.value = false;
+      isShown.value = false;
     };
 
     const closeBox = async (): Promise<void> => {
-      ctx.emit(DONE_EVENT, { action: QDialogActions.closed });
+      ctx.emit(DONE_EVENT, { action: QDialogContainerAction.closed });
 
       hide();
 
@@ -261,7 +249,7 @@ export default defineComponent({
       zIndex.value = getConfig('nextZIndex') ?? DEFAULT_Z_INDEX;
       document.body.style.overflow = 'hidden';
       document.addEventListener('focus', handleDocumentFocus, true);
-      isVisible.value = true;
+      isShown.value = true;
     });
 
     onBeforeUnmount(() => {
@@ -278,8 +266,8 @@ export default defineComponent({
       afterLeave,
       closeBox,
       handleWrapperClick,
-      isVisible,
-      preparedDialogContent
+      isShown,
+      preparedContent
     };
   }
 });

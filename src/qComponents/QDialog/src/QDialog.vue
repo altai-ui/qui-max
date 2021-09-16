@@ -39,9 +39,9 @@
 
               <div class="q-dialog__content">
                 <component
-                  :is="preparedContent.component"
-                  v-bind="preparedContent.props"
-                  v-on="preparedContent.listeners"
+                  :is="preparedDialogContent.component"
+                  v-bind="preparedDialogContent.props"
+                  v-on="preparedDialogContent.listeners"
                   @closed="closeBox"
                 />
               </div>
@@ -76,10 +76,14 @@ import type {
   QDialogPropTeleportTo,
   QDialogInstance
 } from './types';
-import { QDialogComponent, QDialogContainerProps } from './types';
+import {
+  QDialogComponent,
+  QDialogContainerProps,
+  QDialogPropContent
+} from './types';
 import { QDialogActions } from '@/qComponents/QDialog/src/constants';
 import { getConfig } from '@/qComponents/config';
-import { isExternalComponent } from '@/qComponents/QMessageBox/src/QMessageBoxContainer/utils';
+import { isDialogExternalComponent } from '@/qComponents/QDialog/src/utils';
 
 const DEFAULT_Z_INDEX = 2000;
 const REMOVE_EVENT = 'remove';
@@ -146,7 +150,7 @@ export default defineComponent({
       default: null
     },
     content: {
-      type: [Object, Function] as PropType<Component>,
+      type: [Object, Function] as PropType<QDialogPropContent>,
       required: true
     }
   },
@@ -178,12 +182,12 @@ export default defineComponent({
 
   setup(props: QDialogContainerProps, ctx): QDialogInstance {
     const zIndex = ref<number>(DEFAULT_Z_INDEX);
-    const isRendered = ref<boolean>(false);
     const dialog = ref<Nullable<HTMLElement>>(null);
     const instance = getCurrentInstance();
     const isVisible = ref<boolean>(false);
 
-    const elementToFocusAfterClosing: Nullable<HTMLElement> = null;
+    const elementToFocusAfterClosing: Nullable<HTMLElement> =
+      document.activeElement as Nullable<HTMLElement>;
 
     const dialogStyle = computed<Record<string, Nullable<number | string>>>(
       () => ({
@@ -200,8 +204,8 @@ export default defineComponent({
       })
     );
 
-    const preparedContent = computed<QDialogComponent>(() => {
-      if (isExternalComponent(props.content)) {
+    const preparedDialogContent = computed<QDialogComponent>(() => {
+      if (isDialogExternalComponent(props.content)) {
         return {
           props: {},
           listeners: {},
@@ -224,7 +228,7 @@ export default defineComponent({
 
     const afterEnter = (): void => {
       ctx.emit('opened');
-      dialog.value.focus();
+      dialog.value?.focus();
     };
 
     const afterLeave = (): void => {
@@ -268,7 +272,6 @@ export default defineComponent({
     return {
       dialog,
       zIndex,
-      isRendered,
       dialogStyle,
       containerStyle,
       afterEnter,
@@ -276,7 +279,7 @@ export default defineComponent({
       closeBox,
       handleWrapperClick,
       isVisible,
-      preparedContent
+      preparedDialogContent
     };
   }
 });

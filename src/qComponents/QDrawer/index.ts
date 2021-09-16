@@ -1,22 +1,24 @@
 import { getCurrentInstance } from 'vue';
+
 import { createDrawer } from './src';
+import type { QDrawerHookOptions, DrawerPlugin } from './src/types';
 
-import QDrawer from './src/QDrawerContainer/QDrawer.vue';
-
-import type { QDrawerHookOptions, DrawerPlugin } from './types';
-
-export const useDrawer = (options?: QDrawerHookOptions): DrawerPlugin => {
+const useDrawer = (options?: QDrawerHookOptions): DrawerPlugin => {
   const parentInstance = getCurrentInstance();
 
-  return createDrawer({
+  const drawer = createDrawer({
     parentInstance,
     ...options
   });
+
+  return drawer;
 };
 
+export { useDrawer };
+export { QDrawerContent } from './src/QDrawerContent';
 export type {
-  QDrawerProps,
-  QDrawerInstance
-} from './src/QDrawerContainer/types';
-
-export { QDrawer };
+  QDrawerContentInstance,
+  QDrawerParams
+} from './src/QDrawerContent';
+export { QDrawerAction } from './src/constants';
+export type { QDrawerOptions, DrawerPlugin } from './src/types';

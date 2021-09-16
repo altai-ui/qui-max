@@ -3,7 +3,7 @@ import { Nullable, UnwrappedInstance } from '#/helpers';
 import type {
   QDrawerContainerPropContent,
   QDrawerInstance
-} from './src/QDrawerContainer/types';
+} from './QDrawerContainer/types';
 import { QDrawerAction } from './constants';
 
 export interface QDrawerHookOptions {

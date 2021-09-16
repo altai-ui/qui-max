@@ -32,7 +32,9 @@
         <q-scrollbar>
           <div class="q-drawer__content">
             <component
-              :is="content"
+              :is="preparedContent.component"
+              v-bind="preparedContent.props"
+              v-on="preparedContent.listeners"
               @done="doneEmit"
             />
           </div>
@@ -62,18 +64,21 @@ import { getConfig } from '@/qComponents/config';
 
 import type { Nullable } from '#/helpers';
 
-import type { QDrawerEvent } from '@/qComponents/QDrawer/types';
-import { QDrawerAction } from '@/qComponents/QDrawer/constants';
+import type { QDrawerEvent } from '@/qComponents/QDrawer/src/types';
+import { QDrawerAction } from '@/qComponents/QDrawer/src/constants';
 
-import type {
+import {
   QDrawerPropBeforeClose,
   QDrawerPropPosition,
   QDrawerInstance,
   QDrawerContainerProps,
-  QDrawerContainerPropContent
+  QDrawerContainerPropContent,
+  QDrawerComponent
 } from './types';
 
 import QScrollbar from '@/qComponents/QScrollbar';
+import { QDrawerContent } from '../QDrawerContent';
+import { isExternalComponent, isInternalComponent } from './utils';
 
 const DONE_EVENT = 'done';
 
@@ -175,6 +180,30 @@ export default defineComponent({
     const isRendered = ref<boolean>(false);
     const isShown = ref<boolean>(false);
 
+    const preparedContent = computed<QDrawerComponent>(() => {
+      if (isExternalComponent(props.content)) {
+        return {
+          props: {},
+          listeners: {},
+          ...props.content
+        };
+      }
+
+      if (isInternalComponent(props.content)) {
+        return {
+          component: QDrawerContent,
+          props: props.content,
+          listeners: {}
+        };
+      }
+
+      return {
+        component: props.content,
+        props: {},
+        listeners: {}
+      };
+    });
+
     let elementToFocusAfterClosing: Nullable<HTMLElement> = null;
     const drawerStyle = computed<Record<string, Nullable<string | number>>>(
       () => ({
@@ -260,9 +289,15 @@ export default defineComponent({
       { immediate: true }
     );
 
-    onMounted(() => {
+    onMounted(async () => {
       document.body.appendChild(instance?.vnode.el as Node);
+      document.documentElement.style.overflow = 'hidden';
+      document.addEventListener('focus', handleDocumentFocus, true);
+
+      await nextTick();
       isShown.value = true;
+      await nextTick();
+      drawer.value?.focus();
     });
 
     onUnmounted(() => {
@@ -281,7 +316,8 @@ export default defineComponent({
       afterLeave,
       closeDrawer,
       handleWrapperClick,
-      doneEmit
+      doneEmit,
+      preparedContent
     };
   }
 });

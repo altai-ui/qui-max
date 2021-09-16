@@ -2,7 +2,7 @@ import type { Ref, ComputedRef, Component } from 'vue';
 
 import type { Nullable } from '#/helpers';
 import type { QDrawerParams } from '../QDrawerContent/types';
-import type { QDrawerEvent } from '@/qComponents/QDrawer/types';
+import type { QDrawerEvent } from '@/qComponents/QDrawer/src/types';
 
 export type QDrawerPropBeforeClose = Nullable<(hide: () => void) => void>;
 export type QDrawerPropPosition = 'left' | 'right';
@@ -25,9 +25,10 @@ export interface QDrawerInstance {
   drawer: Ref<Nullable<HTMLElement>>;
   zIndex: Ref<number>;
   isRendered: Ref<boolean>;
-  isVisible: Ref<boolean>;
+  isShown: Ref<boolean>;
   drawerStyle: ComputedRef<Record<string, Nullable<string | number>>>;
   drawerClass: ComputedRef<string>;
+  preparedContent: ComputedRef<QDrawerComponent>;
   afterEnter: () => void;
   afterLeave: () => void;
   closeDrawer: () => void;
@@ -37,7 +38,11 @@ export interface QDrawerInstance {
 
 export interface QDrawerComponent {
   component: Component;
-  props?: QDrawerProps | { [propName: string]: unknown } | string;
+  props?:
+    | QDrawerParams
+    | QDrawerProps
+    | { [propName: string]: unknown }
+    | string;
   listeners?: { [listenerEvent: string]: (...args: unknown[]) => void };
 }
 

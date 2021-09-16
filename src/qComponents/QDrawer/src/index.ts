@@ -1,36 +1,52 @@
-import { App, Component, createApp, nextTick } from 'vue';
-import type { QDrawerInstance } from '@/qComponents/QDrawer/src/QDrawerContainer/types';
-import { Optional, UnwrappedInstance } from '#/helpers';
-import { QDrawer } from '@/qComponents/QDrawer';
+import { App, createApp, nextTick } from 'vue';
+
+import type {
+  QDrawerContainerPropContent,
+  QDrawerInstance
+} from '@/qComponents/QDrawer/src/QDrawerContainer/types';
+import type { Optional, UnwrappedInstance } from '#/helpers';
 import type {
   QDrawerEvent,
   QDrawerHookOptions,
   QDrawerOptions,
-  QDrawerPromise
-} from '../types';
-import { QDrawerAction } from '../constants';
+  QDrawerPromise,
+  DrawerPlugin
+} from './types';
 
-export const createDrawer =
-  (config?: QDrawerHookOptions) =>
-  (content: Component, options?: QDrawerOptions): Promise<QDrawerEvent> => {
+import { QDrawerAction } from './constants';
+import { isServer } from '@/qComponents/constants/isServer';
+
+import { QDrawer } from './QDrawerContainer';
+
+export const createDrawer = (config?: QDrawerHookOptions): DrawerPlugin => {
+  const drawer = (
+    content: QDrawerContainerPropContent,
+    options?: QDrawerOptions
+  ): Promise<QDrawerEvent> => {
     let drawerPromise: QDrawerPromise;
     let app: Optional<App<Element>>;
 
     const handleDone = ({ action, payload }: QDrawerEvent): void => {
-      return action === QDrawerAction.done
-        ? drawerPromise.resolve({ action, payload })
-        : drawerPromise.reject({ action, payload });
+      if (action === QDrawerAction.confirm) {
+        drawerPromise.resolve({ action, payload });
+      } else if (
+        action === QDrawerAction.cancel ||
+        action === QDrawerAction.close
+      ) {
+        drawerPromise.reject({ action, payload });
+      }
     };
 
     const handleRemove = (): void => {
       if (!app) return;
 
       app.unmount();
-
       options?.onUnmounted?.(app);
     };
 
     nextTick(() => {
+      if (isServer) return;
+
       app = createApp(QDrawer, {
         ...(options ?? {}),
         content,
@@ -40,17 +56,14 @@ export const createDrawer =
 
       const parentAppContext = config?.parentInstance?.appContext;
 
-      // Register a global components from main app instance
       const components = parentAppContext?.components ?? {};
       Object.entries(components).forEach(([key, value]) => {
         app?.component(key, value);
       });
 
-      // Reprovide a global provides from main app instance
       const provides = parentAppContext?.provides ?? {};
       const providerKeys = Object.getOwnPropertySymbols(provides);
       providerKeys.forEach(key => {
-        // TS does not allow use 'symbol' as index type, so we pretend like we don't
         const value = provides[key as unknown as string];
         if (value) app?.provide(key, value);
       });
@@ -71,3 +84,6 @@ export const createDrawer =
       };
     });
   };
+
+  return drawer;
+};

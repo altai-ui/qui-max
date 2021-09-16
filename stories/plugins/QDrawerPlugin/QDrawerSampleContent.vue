@@ -9,7 +9,12 @@
       {{ someExternalProp }}
     </template>
     <template #actions>
-      <q-button @click="handleClick">Click me!</q-button>
+      <q-button @click="handleConfirmClick">Confirm</q-button>
+
+      <q-button
+        theme="secondary"
+        @click="handleCancelClick"
+      >Cancel</q-button>
     </template>
   </q-drawer-content>
 </template>
@@ -18,7 +23,7 @@
 import { defineComponent } from 'vue';
 import QDrawerContent from '@/qComponents/QDrawer/src/QDrawerContent/QDrawerContent.vue';
 import QButton from '@/qComponents/QButton/src/QButton.vue';
-import { QDrawerAction } from '@/qComponents/QDrawer/constants';
+import { QDrawerAction } from '@/qComponents/QDrawer/src/constants';
 
 const DONE_EVENT = 'done';
 
@@ -37,7 +42,7 @@ export default defineComponent({
   emits: [DONE_EVENT],
 
   setup(_, ctx) {
-    const handleClick = async (): Promise<void> => {
+    const handleConfirmClick = async (): Promise<void> => {
       const promise = (): Promise<string> =>
         new Promise(resolve => {
           setTimeout(() => resolve('done'), 1000);
@@ -46,13 +51,18 @@ export default defineComponent({
       await promise();
 
       ctx.emit(DONE_EVENT, {
-        action: QDrawerAction.done,
-        payload: {}
+        action: QDrawerAction.confirm,
+        payload: { test: true }
       });
     };
 
+    const handleCancelClick = (): void => {
+      ctx.emit(DONE_EVENT, { action: QDrawerAction.cancel });
+    };
+
     return {
-      handleClick
+      handleConfirmClick,
+      handleCancelClick
     };
   }
 });

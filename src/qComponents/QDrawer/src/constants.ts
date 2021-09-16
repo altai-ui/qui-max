@@ -1,5 +1,6 @@
 export enum QDrawerAction {
-  open = 'open',
+  confirm = 'confirm',
+  cancel = 'cancel',
   close = 'close',
   done = 'done',
   remove = 'remove'

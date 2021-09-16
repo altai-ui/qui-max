@@ -36,7 +36,7 @@
     </div>
     <div
       v-else
-      ref="reference"
+      ref="rangedReference"
       :class="rangeClasses"
       tabindex="0"
       @click="handleRangeClick"
@@ -331,8 +331,8 @@ export default defineComponent({
     const panel = ref<UnwrappedInstance<DatePanelInstance>>(null);
     const qForm = inject<Nullable<QFormProvider>>('qForm', null);
     const qFormItem = inject<Nullable<QFormItemProvider>>('qFormItem', null);
-    const reference =
-      ref<Nullable<UnwrappedInstance<QInputInstance> | HTMLElement>>(null);
+    const reference = ref<Nullable<UnwrappedInstance<QInputInstance>>>(null);
+    const rangedReference = ref<Nullable<HTMLElement>>(null);
 
     const state = reactive<QDatePickerState>({
       pickerVisible: false,
@@ -522,7 +522,11 @@ export default defineComponent({
 
     const handleKeydown = (event: KeyboardEvent): void => {
       // prevent letters input
-      if (event.key.match(/^(?!Enter$|Backspace$)[^0-9]+/g)) {
+      if (
+        event.key.match(
+          /^(?!Enter$|Escape$|Tab$|Backspace$|ArrowLeft$|ArrowRight$)[^0-9]+/g
+        )
+      ) {
         event.preventDefault();
       }
     };
@@ -534,13 +538,21 @@ export default defineComponent({
       }
 
       switch (e.key) {
-        case 'ArrowRight':
         case 'ArrowUp':
-        case 'ArrowLeft':
         case 'ArrowDown': {
           panel.value?.navigateDropdown(e);
           break;
         }
+
+        case 'ArrowRight':
+        case 'ArrowLeft': {
+          const nativeInput = reference.value?.input ?? null;
+          if (nativeInput !== document.activeElement) {
+            panel.value?.navigateDropdown(e);
+          }
+          break;
+        }
+
         case 'Escape': {
           state.pickerVisible = false;
           e.stopPropagation();
@@ -578,11 +590,9 @@ export default defineComponent({
 
     const popperInit = (): void => {
       const panelEl = panel.value?.$el ?? null;
-      let referenceEl: HTMLElement;
-      if (reference.value instanceof HTMLElement) {
-        referenceEl = reference.value;
-      } else {
-        referenceEl = reference.value?.$el;
+      let referenceEl = reference.value?.$el;
+      if (isRanged.value) {
+        referenceEl = rangedReference.value;
       }
 
       state.popper = createPopper(referenceEl, panelEl, {
@@ -734,6 +744,7 @@ export default defineComponent({
       root,
       panel,
       reference,
+      rangedReference,
       isMobileView,
       isRanged,
       isPickerDisabled,

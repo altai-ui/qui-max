@@ -89,7 +89,8 @@ interface QDatePickerInstance {
   state: QDatePickerState;
   root: Ref<Nullable<HTMLElement>>;
   panel: Ref<UnwrappedInstance<DatePanelInstance>>;
-  reference: Ref<Nullable<UnwrappedInstance<QInputInstance> | HTMLElement>>;
+  reference: Ref<Nullable<UnwrappedInstance<QInputInstance>>>;
+  rangedReference: Ref<Nullable<HTMLElement>>;
   isRanged: ComputedRef<boolean>;
   isPickerDisabled: ComputedRef<boolean>;
   isValueEmpty: ComputedRef<boolean>;

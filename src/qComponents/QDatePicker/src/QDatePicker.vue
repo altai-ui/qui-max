@@ -23,7 +23,7 @@
         @keyup="handleKeyUp"
         @input="handleInput"
         @change="handleInputDateChange"
-        @keydown="handleKeydown"
+        @keydown="handleKeyDown"
       >
         <template #suffix>
           <span
@@ -520,7 +520,7 @@ export default defineComponent({
       state.userInput = null;
     };
 
-    const handleKeydown = (event: KeyboardEvent): void => {
+    const handleKeyDown = (event: KeyboardEvent): void => {
       // prevent letters input
       if (
         event.key.match(
@@ -762,7 +762,7 @@ export default defineComponent({
       handlePickClick,
       handleFocus,
       handleInput,
-      handleKeydown,
+      handleKeyDown,
       handleMouseEnter,
       handleRangeClick,
       closePicker,

@@ -89,7 +89,7 @@ interface QDatePickerInstance {
   state: QDatePickerState;
   root: Ref<Nullable<HTMLElement>>;
   panel: Ref<UnwrappedInstance<DatePanelInstance>>;
-  reference: Ref<Nullable<UnwrappedInstance<QInputInstance>>>;
+  reference: Ref<UnwrappedInstance<QInputInstance>>;
   rangedReference: Ref<Nullable<HTMLElement>>;
   isRanged: ComputedRef<boolean>;
   isPickerDisabled: ComputedRef<boolean>;
@@ -108,7 +108,7 @@ interface QDatePickerInstance {
   iconClass: ComputedRef<string>;
   handleInputDateChange: () => void;
   handleKeyUp: (e: KeyboardEvent) => void;
-  handleKeydown: (e: KeyboardEvent) => void;
+  handleKeyDown: (e: KeyboardEvent) => void;
   popperInit: () => void;
   destroyPopper: () => void;
   closePicker: () => void;

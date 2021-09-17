@@ -1,23 +1,12 @@
 import { Component, ComputedRef, Ref } from 'vue';
-import { Nullable } from '#/helpers';
-import {
-  QDialogOptions,
-  QDialogContainerPropBeforeClose,
-  QDialogContainerPropTeleportTo
-} from '@/qComponents/QDialog/src/types';
 
-export interface QDialogParams {
-  width: Nullable<string | number>;
-  offsetTop: Nullable<string | number>;
-  closeOnClickShadow: Nullable<boolean>;
-  beforeClose: QDialogContainerPropBeforeClose;
-  customClass: Nullable<string>;
-  teleportTo: QDialogContainerPropTeleportTo;
-}
+import type { Nullable } from '#/helpers';
+
+import type { QDialogEvent, QDialogOptions } from '../types';
 
 export interface QDialogComponent {
   component: Component;
-  props?: QDialogParams | { [propName: string]: unknown };
+  props?: { [propName: string]: unknown };
   listeners?: { [listenerEvent: string]: (...args: unknown[]) => void };
 }
 
@@ -35,7 +24,13 @@ export interface QDialogContainerInstance {
   containerStyle: ComputedRef<Record<string, Nullable<string | number>>>;
   afterEnter: () => void;
   afterLeave: () => void;
-  closeDialog: () => Promise<void>;
+  closeDialog: (event: QDialogEvent) => Promise<void>;
+  handleCloseClick: () => void;
   handleWrapperClick: () => void;
   preparedContent: ComputedRef<QDialogComponent>;
 }
+
+export type QDialogContainerPropBeforeClose = Nullable<
+  (hide: () => void) => void
+>;
+export type QDialogContainerPropTeleportTo = Nullable<string | HTMLElement>;

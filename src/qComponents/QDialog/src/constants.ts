@@ -1,4 +1,5 @@
 export enum QDialogAction {
-  close = 'close',
-  closed = 'closed'
+  confirm = 'confirm',
+  cancel = 'cancel',
+  close = 'close'
 }

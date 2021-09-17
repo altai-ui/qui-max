@@ -1,15 +1,20 @@
-import { App, createApp, nextTick } from 'vue';
+import { createApp, nextTick } from 'vue';
+import type { App } from 'vue';
+
 import { isServer } from '@/qComponents/constants/isServer';
-import { Optional, UnwrappedInstance } from '#/helpers';
-import {
-  QDialog,
-  QDialogContent,
-  QDialogEvent,
+import type { Optional, UnwrappedInstance } from '#/helpers';
+
+import { QDialogContainer } from './QDialogContainer';
+import type { QDialogContainerInstance } from './QDialogContainer';
+import { QDialogAction } from './constants';
+import type {
   QDialogHookOptions,
+  QDialogContent,
   QDialogOptions,
-  QDialogPromise
+  QDialogEvent,
+  QDialogPromise,
+  QDialog
 } from './types';
-import { QDialogContainer, QDialogContainerInstance } from './QDialogContainer';
 
 export const createDialog = (config?: QDialogHookOptions): QDialog => {
   const dialog = (
@@ -20,7 +25,14 @@ export const createDialog = (config?: QDialogHookOptions): QDialog => {
     let app: Optional<App<Element>>;
 
     const handleDone = ({ action, payload }: QDialogEvent): void => {
-      dialogPromise.resolve({ action, payload });
+      if (action === QDialogAction.confirm) {
+        dialogPromise.resolve({ action, payload });
+      } else if (
+        action === QDialogAction.cancel ||
+        action === QDialogAction.close
+      ) {
+        dialogPromise.reject({ action, payload });
+      }
     };
 
     const handleRemove = (): void => {

@@ -1,18 +1,18 @@
-import { App, Component, ComponentInternalInstance } from 'vue';
-import type { Nullable } from '#/helpers';
-import { UnwrappedInstance } from '#/helpers';
+import { App, ComponentInternalInstance } from 'vue';
+
+import type { Nullable, UnwrappedInstance } from '#/helpers';
+
 import {
-  QDialogContainerInstance,
-  QDialogContainerPropContent
-} from './QDialogContainer/types';
+  QDialogContainerPropContent,
+  QDialogContainerInstance
+} from './QDialogContainer';
 import { QDialogAction } from './constants';
+import {
+  QDialogContainerPropBeforeClose,
+  QDialogContainerPropTeleportTo
+} from '@/qComponents/QDialog/src/QDialogContainer/types';
 
 export type QDialogContent = QDialogContainerPropContent;
-
-export type QDialogContainerPropBeforeClose = Nullable<
-  (hide: () => void) => void
->;
-export type QDialogContainerPropTeleportTo = Nullable<string | HTMLElement>;
 
 export interface QDialogHookOptions {
   parentInstance?: Nullable<ComponentInternalInstance>;
@@ -27,6 +27,11 @@ export interface QDialogOptions {
     container: NonNullable<UnwrappedInstance<QDialogContainerInstance>>
   ) => void;
   onUnmounted?: (app: App<Element>) => void;
+  width: Nullable<string | number>;
+  offsetTop: Nullable<string | number>;
+  customClass: Nullable<string>;
+  beforeClose: QDialogContainerPropBeforeClose;
+  teleportTo: QDialogContainerPropTeleportTo;
 }
 
 export interface QDialogEvent {
@@ -39,8 +44,6 @@ export interface QDialogPromise {
   reject: (evt: QDialogEvent) => void;
 }
 
-// for hook
-
 export interface QDialog {
-  (content: Component, options?: QDialogOptions): Promise<QDialogEvent>;
+  (content: QDialogContent, options?: QDialogOptions): Promise<QDialogEvent>;
 }

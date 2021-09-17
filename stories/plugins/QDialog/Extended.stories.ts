@@ -2,59 +2,62 @@ import type { Meta, Story } from '@storybook/vue3';
 import { defineAsyncComponent, defineComponent } from 'vue';
 
 import { useDialog } from '@/qComponents/QDialog';
-import { QDialogParams } from '@/qComponents/QDialog/src/QDialogContainer/types';
 import { Default } from './Default.stories';
+
+import { QDialogOptions } from '@/qComponents/QDialog/src/types';
 
 const storyMetadata: Meta = {
   title: 'Plugins/QDialog/Extended',
   argTypes: {
     offsetTop: { control: { type: 'number' } },
-    width: { control: { type: 'number' } }
+    width: { control: { type: 'number' } },
+    closeOnClickShadow: { control: { type: 'boolean', default: false } }
   }
 };
 
-const QDialogExtendedStory: Story<QDialogParams> = args =>
+const QDialogExtendedStory: Story<QDialogOptions> = args =>
   defineComponent({
     setup() {
       const dialog = useDialog();
 
-      const openDialog = async (): Promise<void> => {
+      const handleClick = async (): Promise<void> => {
         try {
-          const res = await dialog(
+          const result = await dialog(
             {
               component: defineAsyncComponent(
-                () => import('./QdialogContent.vue')
+                () => import('./DialogFormTest.vue')
               ),
               props: {
                 someExternalProp: 'Some value of some external component'
               },
               listeners: {
-                clickButton: () => {
+                nameInput: (value: string) => {
                   // eslint-disable-next-line no-console
-                  console.log('listeners - clickButton: clicked');
+                  console.log('listeners - nameInput:', value);
                 }
               }
             },
-            { ...args, closeOnClickShadow: true }
+            { ...args }
           );
           // eslint-disable-next-line no-console
-          console.log('event:', res);
+          console.log('event:', result);
         } catch (e) {
           // eslint-disable-next-line no-console
           console.log(e);
         }
       };
 
-      return { openDialog };
+      return { handleClick };
     },
     template: `
-      <q-button @click="openDialog">open</q-button>
+      <q-button @click="handleClick">open</q-button>
     `
   });
 
 export const Extended = QDialogExtendedStory.bind({});
 Default.args = {
   width: null,
-  offsetTop: null
+  offsetTop: null,
+  closeOnClickShadow: false
 };
 export default storyMetadata;

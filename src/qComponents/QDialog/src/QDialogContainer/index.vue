@@ -17,7 +17,7 @@
           :style="containerStyle"
           class="q-dialog__container"
           :class="customClass"
-          @keyup.esc="closeDialog"
+          @keyup.esc="handleCloseClick"
         >
           <q-scrollbar
             theme="secondary"
@@ -30,7 +30,7 @@
                 theme="secondary"
                 type="icon"
                 icon="q-icon-close"
-                @click="closeDialog"
+                @click="handleCloseClick"
               />
 
               <div class="q-dialog__content">
@@ -51,35 +51,34 @@
 
 <script lang="ts">
 import {
-  defineComponent,
   computed,
-  nextTick,
-  ref,
-  PropType,
-  onMounted,
+  defineComponent,
   getCurrentInstance,
-  onBeforeUnmount
+  nextTick,
+  onBeforeUnmount,
+  onMounted,
+  ref
 } from 'vue';
-
+import type { PropType } from 'vue';
 import { isServer } from '@/qComponents/constants/isServer';
+
 import QButton from '@/qComponents/QButton';
 import QScrollbar from '@/qComponents/QScrollbar';
 import { getConfig } from '@/qComponents/config';
 import type { Nullable } from '#/helpers';
 
-import type {
-  QDialogContainerPropBeforeClose,
-  QDialogContainerPropTeleportTo
-} from '../types';
+import { QDialogAction } from '../constants';
+import type { QDialogEvent } from '../types';
 
 import { isExternalComponent } from './utils';
-import {
+import type {
   QDialogComponent,
   QDialogContainerInstance,
+  QDialogContainerPropBeforeClose,
   QDialogContainerPropContent,
-  QDialogContainerProps
+  QDialogContainerProps,
+  QDialogContainerPropTeleportTo
 } from './types';
-import { QDialogAction } from '../constants';
 
 const DEFAULT_Z_INDEX = 2000;
 const REMOVE_EVENT = 'remove';
@@ -108,13 +107,6 @@ export default defineComponent({
      */
     offsetTop: {
       type: [String, Number],
-      default: null
-    },
-    /**
-     * QDialog's title
-     */
-    title: {
-      type: String,
       default: null
     },
     /**
@@ -228,15 +220,13 @@ export default defineComponent({
       ctx.emit(REMOVE_EVENT);
     };
 
-    const hide = (): void => {
-      ctx.emit('close');
+    const closeDialog = async ({
+      action,
+      payload = null
+    }: QDialogEvent): Promise<void> => {
+      ctx.emit(DONE_EVENT, { action, payload });
+
       isShown.value = false;
-    };
-
-    const closeDialog = async (): Promise<void> => {
-      ctx.emit(DONE_EVENT, { action: QDialogAction.closed });
-
-      hide();
 
       await nextTick();
 
@@ -244,8 +234,13 @@ export default defineComponent({
       elementToFocusAfterClosing?.focus();
     };
 
+    const handleCloseClick = (): void => {
+      closeDialog({ action: QDialogAction.close });
+    };
+
     const handleWrapperClick = (): void => {
-      if (props.wrapperClosable) closeDialog();
+      if (props.closeOnClickShadow)
+        closeDialog({ action: QDialogAction.close });
     };
 
     onMounted(async () => {
@@ -269,6 +264,7 @@ export default defineComponent({
       afterEnter,
       afterLeave,
       closeDialog,
+      handleCloseClick,
       handleWrapperClick,
       isShown,
       preparedContent

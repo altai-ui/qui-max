@@ -1,6 +1,7 @@
 import { getCurrentInstance } from 'vue';
-import { QDialog, QDialogHookOptions } from './src/types';
+
 import { createDialog } from './src';
+import { QDialog, QDialogHookOptions } from './src/types';
 
 const useDialog = (options?: QDialogHookOptions): QDialog => {
   const parentInstance = getCurrentInstance();
@@ -14,6 +15,5 @@ const useDialog = (options?: QDialogHookOptions): QDialog => {
 };
 
 export { useDialog };
-
 export { QDialogAction } from './src/constants';
-export type { QDialog, QDialogOptions } from './src/types';
+export type { QDialog } from './src/types';

@@ -1,37 +1,35 @@
-import { App, createApp, nextTick } from 'vue';
+import { createApp, nextTick } from 'vue';
+import type { App } from 'vue';
 
-import type { Optional, UnwrappedInstance } from '#/helpers';
-import type {
-  QDrawerEvent,
-  QDrawerHookOptions,
-  QDrawerOptions,
-  QDrawerPromise,
-  DrawerPlugin
-} from './types';
-import type {
-  QDrawerContainerPropContent,
-  QDrawerInstance
-} from './QDrawerContainer';
-
-import { QDrawerAction } from './constants';
 import { isServer } from '@/qComponents/constants/isServer';
+import type { Optional, UnwrappedInstance } from '#/helpers';
+import { QDrawerBoxAction } from './constants';
 
-import { QDrawer } from './QDrawerContainer';
+import { QDrawerBoxContainer } from './QDrawerContainer';
+import type { QDrawerBoxContainerInstance } from './QDrawerContainer';
+import type {
+  QDrawerBoxHookOptions,
+  QDrawerBoxContent,
+  QDrawerBoxOptions,
+  QDrawerBoxEvent,
+  QDrawerBoxPromise,
+  Drawer
+} from './types';
 
-export const createDrawer = (config?: QDrawerHookOptions): DrawerPlugin => {
+export const createDrawer = (config?: QDrawerBoxHookOptions): Drawer => {
   const drawer = (
-    content: QDrawerContainerPropContent,
-    options?: QDrawerOptions
-  ): Promise<QDrawerEvent> => {
-    let drawerPromise: QDrawerPromise;
+    content: QDrawerBoxContent,
+    options?: QDrawerBoxOptions
+  ): Promise<QDrawerBoxEvent> => {
+    let drawerPromise: QDrawerBoxPromise;
     let app: Optional<App<Element>>;
 
-    const handleDone = ({ action, payload }: QDrawerEvent): void => {
-      if (action === QDrawerAction.confirm) {
+    const handleDone = ({ action, payload }: QDrawerBoxEvent): void => {
+      if (action === QDrawerBoxAction.confirm) {
         drawerPromise.resolve({ action, payload });
       } else if (
-        action === QDrawerAction.cancel ||
-        action === QDrawerAction.close
+        action === QDrawerBoxAction.cancel ||
+        action === QDrawerBoxAction.close
       ) {
         drawerPromise.reject({ action, payload });
       }
@@ -47,7 +45,7 @@ export const createDrawer = (config?: QDrawerHookOptions): DrawerPlugin => {
     nextTick(() => {
       if (isServer) return;
 
-      app = createApp(QDrawer, {
+      app = createApp(QDrawerBoxContainer, {
         ...(options ?? {}),
         content,
         onDone: handleDone,
@@ -73,7 +71,7 @@ export const createDrawer = (config?: QDrawerHookOptions): DrawerPlugin => {
       const container = app.mount(document.createElement('div'));
       options?.onMounted?.(
         app,
-        container as NonNullable<UnwrappedInstance<QDrawerInstance>>
+        container as NonNullable<UnwrappedInstance<QDrawerBoxContainerInstance>>
       );
     });
 

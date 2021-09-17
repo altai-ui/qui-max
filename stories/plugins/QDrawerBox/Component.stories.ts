@@ -1,22 +1,22 @@
 import type { Meta, Story } from '@storybook/vue3';
 import { defineAsyncComponent, defineComponent } from 'vue';
 
-import { useDrawer, QDrawerContent } from '@/qComponents/QDrawer';
+import { useDrawer } from '@/qComponents/QDrawerBox';
 
 const storyMetadata: Meta = {
-  title: 'Plugins/QDrawer/Component',
-  component: QDrawerContent
+  title: 'Plugins/QDrawerBox/Component'
 };
 
 const QDrawerStoryComponent: Story<never> = () =>
   defineComponent({
     setup() {
-      const drawerPlugin = useDrawer();
+      const drawerBox = useDrawer();
 
       const handleClick = async (): Promise<void> => {
         try {
-          const result = await drawerPlugin(
-            defineAsyncComponent(() => import('./QDrawerSampleContent.vue'))
+          const result = await drawerBox(
+            defineAsyncComponent(() => import('./QDrawerSampleContent.vue')),
+            { width: 350, position: 'right', title: 'What is Lorem Ipsum?' }
           );
           // eslint-disable-next-line no-console
           console.log('resolve', result);

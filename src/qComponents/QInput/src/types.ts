@@ -5,6 +5,8 @@ import type { Nullable } from '#/helpers';
 type Classes = Record<string, boolean>;
 export type QInputClass = Nullable<string | Classes | Classes[]>;
 
+export type QInputPropRootClass = QInputClass;
+
 export interface QInputProps {
   modelValue: Nullable<string>;
   disabled: Nullable<boolean>;
@@ -13,7 +15,7 @@ export interface QInputProps {
   suffixIcon: Nullable<string>;
   clearable: Nullable<boolean>;
   passwordSwitch: Nullable<boolean>;
-  rootClass: QInputClass;
+  rootClass: QInputPropRootClass;
 }
 
 export interface QInputState {

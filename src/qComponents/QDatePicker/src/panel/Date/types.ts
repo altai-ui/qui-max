@@ -26,6 +26,7 @@ interface DatePanelInstance {
   state: DatePanelState;
   root: Ref<Nullable<HTMLElement>>;
   shortcuts: Ref<Nullable<QDatePickerPropShortcuts>>;
+  isMobileView: Ref<boolean>;
   datePanel: Ref<Nullable<HTMLElement>>;
   panelContentClasses: ComputedRef<Record<string, boolean>>;
   isPeriodTableShown: ComputedRef<boolean>;

@@ -435,6 +435,7 @@ export default defineComponent({
       state,
       root,
       shortcuts: picker.shortcuts,
+      isMobileView: picker.isMobileView,
       datePanel,
       panelContentClasses,
       currentMonth,

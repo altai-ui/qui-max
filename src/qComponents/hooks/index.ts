@@ -1,1 +1,2 @@
-export { useResizeListener } from './useResizeListener';
+export * from './useResizeListener';
+export * from './useMediaQuery';

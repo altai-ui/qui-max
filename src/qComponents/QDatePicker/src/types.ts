@@ -78,6 +78,7 @@ interface QDatePickerProvider {
     { hidePicker }?: HandlePickClickSecondArg
   ) => void;
   firstDayOfWeek: ComputedRef<number>;
+  isMobileView: Ref<boolean>;
   disabledValues: Ref<QDatePickerPropDisabledValues>;
   shortcuts: Ref<Nullable<QDatePickerPropShortcuts>>;
   emitChange: (val: QDatePickerPropModelValue, intermediate: boolean) => void;
@@ -88,10 +89,12 @@ interface QDatePickerInstance {
   state: QDatePickerState;
   root: Ref<Nullable<HTMLElement>>;
   panel: Ref<UnwrappedInstance<DatePanelInstance>>;
-  reference: Ref<Nullable<UnwrappedInstance<QInputInstance> | HTMLElement>>;
+  reference: Ref<UnwrappedInstance<QInputInstance>>;
+  rangedReference: Ref<Nullable<HTMLElement>>;
   isRanged: ComputedRef<boolean>;
   isPickerDisabled: ComputedRef<boolean>;
   isValueEmpty: ComputedRef<boolean>;
+  isMobileView: Ref<boolean>;
   calcFirstDayOfWeek: ComputedRef<number>;
   transformedToDate: ComputedRef<Nullable<Date | Date[]>>;
   rangeClasses: ComputedRef<Record<string, boolean>>;
@@ -105,8 +108,10 @@ interface QDatePickerInstance {
   iconClass: ComputedRef<string>;
   handleInputDateChange: () => void;
   handleKeyUp: (e: KeyboardEvent) => void;
+  handleKeyDown: (e: KeyboardEvent) => void;
   popperInit: () => void;
   destroyPopper: () => void;
+  closePicker: () => void;
   handlePickClick: (
     val: QDatePickerPropModelValue,
     options?: {
@@ -117,7 +122,6 @@ interface QDatePickerInstance {
   handleInput: (arg: { target: HTMLInputElement; inputType: string }) => void;
   handleMouseEnter: () => void;
   handleRangeClick: () => void;
-  handleClose: () => void;
   handleIconClick: (event: MouseEvent) => void;
   t: (key: string) => string;
 }

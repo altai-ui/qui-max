@@ -1,13 +1,13 @@
-import { App, ComponentInternalInstance } from 'vue';
+import type { App, ComponentInternalInstance } from 'vue';
 
 import type { Nullable, UnwrappedInstance } from '#/helpers';
 
-import {
+import type {
   QDialogContainerPropContent,
   QDialogContainerInstance
 } from './QDialogContainer';
-import { QDialogAction } from './constants';
-import { QDialogContainerPropTeleportTo } from '@/qComponents/QDialog/src/QDialogContainer/types';
+import type { QDialogAction } from './constants';
+import type { QDialogContainerPropTeleportTo } from '@/qComponents/QDialog/src/QDialogContainer/types';
 
 export type QDialogContent = QDialogContainerPropContent;
 
@@ -18,6 +18,7 @@ export interface QDialogHookOptions {
 export interface QDialogOptions {
   parentInstance?: Nullable<ComponentInternalInstance>;
   closeOnClickShadow?: Nullable<boolean>;
+  distinguishCancelAndClose?: Nullable<boolean>;
   onBeforeMount?: (app: App<Element>) => void;
   onMounted?: (
     app: App<Element>,

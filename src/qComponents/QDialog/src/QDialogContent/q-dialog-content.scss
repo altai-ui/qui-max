@@ -1,0 +1,15 @@
+.q-dialog-content {
+  &__title {
+    padding-right: 104px;
+    font-size: 24px;
+    font-weight: 800;
+    line-height: 31px;
+    color: var(--color-primary-black);
+    word-break: break-word;
+  }
+
+  &__content {
+    flex: 1;
+    margin-top: 32px;
+  }
+}

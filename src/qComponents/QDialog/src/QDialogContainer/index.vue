@@ -37,14 +37,12 @@
                 @click="emitCloseEvent"
               />
 
-              <div class="q-dialog__content">
-                <component
-                  :is="preparedContent.component"
-                  v-bind="preparedContent.props"
-                  v-on="preparedContent.listeners"
-                  @done="emitCloseEvent"
-                />
-              </div>
+              <component
+                :is="preparedContent.component"
+                v-bind="preparedContent.props"
+                v-on="preparedContent.listeners"
+                @done="emitCloseEvent"
+              />
             </div>
           </q-scrollbar>
         </div>
@@ -84,7 +82,6 @@ import type {
   QDialogComponent
 } from './types';
 
-const DEFAULT_Z_INDEX = 2000;
 const REMOVE_EVENT = 'remove';
 const DONE_EVENT = 'done';
 
@@ -119,6 +116,13 @@ export default defineComponent({
     closeOnClickShadow: {
       type: Boolean,
       default: true
+    },
+    /**
+     * whether to distinguish canceling and closing the QMessageBox
+     */
+    distinguishCancelAndClose: {
+      type: Boolean,
+      default: false
     },
     /**
      * Extra class names for QDialog's wrapper
@@ -165,12 +169,12 @@ export default defineComponent({
     const instance = getCurrentInstance();
 
     const dialog = ref<Nullable<HTMLElement>>(null);
-    const zIndex = ref<number>(getConfig('nextZIndex') ?? DEFAULT_Z_INDEX);
+    const zIndex = getConfig('nextZIndex');
     const isShown = ref<boolean>(false);
 
     const dialogStyle = computed<Record<string, Nullable<number | string>>>(
       () => ({
-        zIndex: zIndex.value,
+        zIndex,
         top: Number(props.offsetTop)
           ? `${Number(props.offsetTop)}px`
           : props.offsetTop
@@ -224,7 +228,11 @@ export default defineComponent({
     };
 
     const emitCloseEvent = (): void => {
-      closeDialog({ action: QDialogAction.close });
+      closeDialog({
+        action: props.distinguishCancelAndClose
+          ? QDialogAction.close
+          : QDialogAction.cancel
+      });
     };
 
     onMounted(async () => {

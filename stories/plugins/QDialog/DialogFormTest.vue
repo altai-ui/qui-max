@@ -1,28 +1,35 @@
 <template>
-  <h1>Morbi massa libero, vehicula nec consequat sed, porta a sem.</h1>
+  <q-dialog-content>
+    <template
+      #title
+    >Morbi massa libero, vehicula nec consequat sed, porta a sem.</template>
+    <template #content>
+      {{ someExternalProp }}
 
-  <q-form :model="formModel">
-    <q-form-item
-      prop="name"
-      label="Name"
-      required
-    >
-      <q-input
-        v-model="formModel.name"
-        @input="handleNameInput"
-      />
-    </q-form-item>
-  </q-form>
+      <q-form :model="formModel">
+        <q-form-item
+          prop="name"
+          label="Name"
+          required
+        >
+          <q-input
+            v-model="formModel.name"
+            @input="handleNameInput"
+          />
+        </q-form-item>
+      </q-form>
 
-  <q-button
-    :loading="isSending"
-    @click="handleSendClick"
-  >Send</q-button>
+      <q-button
+        :loading="isSending"
+        @click="handleSendClick"
+      >Send</q-button>
 
-  <q-button
-    theme="secondary"
-    @click="handleCancelClick"
-  >Cancel</q-button>
+      <q-button
+        theme="secondary"
+        @click="handleCancelClick"
+      >Cancel</q-button>
+    </template>
+  </q-dialog-content>
 </template>
 
 <script lang="ts">
@@ -36,13 +43,15 @@ import {
   QDialogAction
 } from '@/qComponents';
 
+import { QDialogContent } from '@/qComponents/QDialog';
+
 const DONE_EVENT = 'done';
 const NAME_INPUT_EVENT = 'name-input';
 
 export default defineComponent({
   name: 'DialogFormTest',
 
-  components: { QFormItem, QButton, QInput, QForm },
+  components: { QFormItem, QButton, QInput, QForm, QDialogContent },
 
   props: {
     someExternalProp: {

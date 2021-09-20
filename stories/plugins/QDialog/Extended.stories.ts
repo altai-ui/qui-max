@@ -8,7 +8,8 @@ const storyMetadata: Meta = {
   argTypes: {
     offsetTop: { control: { type: 'number' } },
     width: { control: { type: 'number' } },
-    closeOnClickShadow: { control: { type: 'boolean', default: true } }
+    closeOnClickShadow: { control: { type: 'boolean' } },
+    customClass: { control: { type: 'text' } }
   }
 };
 
@@ -46,13 +47,11 @@ const QDialogExtendedStory: Story<QDialogOptions> = args =>
 
       return { handleClick };
     },
-    template: `<q-button @click="handleClick">Click to open</q-button>`
+    template: '<q-button @click="handleClick">Click to open</q-button>'
   });
 
 export const Extended = QDialogExtendedStory.bind({});
 Extended.args = {
-  width: null,
-  offsetTop: null,
   closeOnClickShadow: true
 };
 export default storyMetadata;

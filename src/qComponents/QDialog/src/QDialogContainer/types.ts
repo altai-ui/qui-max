@@ -1,8 +1,9 @@
-import { Component, ComputedRef, Ref } from 'vue';
+import type { Component, ComputedRef, Ref } from 'vue';
+import { App, ComponentInternalInstance } from 'vue';
 
 import type { Nullable } from '#/helpers';
-
-import type { QDialogEvent, QDialogOptions } from '../types';
+import type { QDialogEvent } from '../types';
+import { UnwrappedInstance } from '#/helpers';
 
 export interface QDialogComponent {
   component: Component;
@@ -12,13 +13,28 @@ export interface QDialogComponent {
 
 export type QDialogContainerPropContent = Component | QDialogComponent;
 
-export interface QDialogContainerProps extends QDialogOptions {
+export type QDialogContainerPropTeleportTo = Nullable<string | HTMLElement>;
+
+export interface QDialogContainerProps {
   content: QDialogContainerPropContent;
+  parentInstance?: Nullable<ComponentInternalInstance>;
+  closeOnClickShadow?: Nullable<boolean>;
+  distinguishCancelAndClose?: Nullable<boolean>;
+  onBeforeMount?: (app: App<Element>) => void;
+  onMounted?: (
+    app: App<Element>,
+    container: NonNullable<UnwrappedInstance<QDialogContainerInstance>>
+  ) => void;
+  onUnmounted?: (app: App<Element>) => void;
+  width: Nullable<string | number>;
+  offsetTop: Nullable<string | number>;
+  customClass: Nullable<string>;
+  teleportTo: QDialogContainerPropTeleportTo;
 }
 
 export interface QDialogContainerInstance {
   dialog: Ref<Nullable<HTMLElement>>;
-  zIndex: Ref<number>;
+  zIndex: number;
   isShown: Ref<boolean>;
   dialogStyle: ComputedRef<Record<string, Nullable<string | number>>>;
   containerStyle: ComputedRef<Record<string, Nullable<string | number>>>;
@@ -27,5 +43,3 @@ export interface QDialogContainerInstance {
   closeDialog: (event: QDialogEvent) => Promise<void>;
   emitCloseEvent: () => void;
 }
-
-export type QDialogContainerPropTeleportTo = Nullable<string | HTMLElement>;

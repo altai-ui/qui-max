@@ -1,14 +1,13 @@
 import type { Meta, Story } from '@storybook/vue3';
-
 import { defineAsyncComponent, defineComponent } from 'vue';
-import { useDrawer } from '@/qComponents/QDrawerBox';
 
-import { QDrawerBoxContainerProps } from '@/qComponents/QDrawerBox/src/QDrawerContainer';
+import { useDrawer } from '@/qComponents/QDrawer';
+
+import type { QDrawerContainerProps } from '@/qComponents/QDrawer';
 
 const storyMetadata: Meta = {
-  title: 'Plugins/QDrawerBox/Extended',
+  title: 'Plugins/QDrawer/Extended',
   argTypes: {
-    visible: { control: { type: 'none' } },
     width: { control: { type: 'number' } },
     position: {
       options: ['left', 'right'],
@@ -17,14 +16,14 @@ const storyMetadata: Meta = {
   }
 };
 
-const QDrawerStoryComponent: Story<QDrawerBoxContainerProps> = args =>
+const QDrawerStoryComponent: Story<QDrawerContainerProps> = args =>
   defineComponent({
     setup() {
-      const drawerBox = useDrawer();
+      const drawer = useDrawer();
 
       const handleClick = async (): Promise<void> => {
         try {
-          const result = await drawerBox(
+          const result = await drawer(
             {
               component: defineAsyncComponent(
                 () => import('./QDrawerSampleContent.vue')
@@ -33,7 +32,10 @@ const QDrawerStoryComponent: Story<QDrawerBoxContainerProps> = args =>
                 someExternalProp: 'some external prop here'
               },
               listeners: {
-                // wip
+                nameInput: (value: string) => {
+                  // eslint-disable-next-line no-console
+                  console.log(`listeners - nameInput: ${value}`);
+                }
               }
             },
             { title: args.title, width: args.width, position: args.position }

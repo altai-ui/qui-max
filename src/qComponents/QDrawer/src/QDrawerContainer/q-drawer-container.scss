@@ -1,4 +1,4 @@
-.q-drawer {
+.q-drawer-container {
   position: fixed;
   top: 0;
   right: 0;
@@ -38,18 +38,18 @@
 
   &.q-fade-enter-active,
   &.q-fade-leave-active {
-    .q-drawer__wrapper {
+    .q-drawer-container__wrapper {
       transition: transform 0.25s var(--transition-spline-base);
     }
   }
 
   &.q-fade-enter-from,
   &.q-fade-leave-to {
-    .q-drawer__wrapper_right {
+    .q-drawer-container__wrapper_right {
       transform: translateX(100%);
     }
 
-    .q-drawer__wrapper_left {
+    .q-drawer-container__wrapper_left {
       transform: translateX(-100%);
     }
   }

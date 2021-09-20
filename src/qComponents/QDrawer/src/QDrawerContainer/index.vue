@@ -6,38 +6,39 @@
     >
       <div
         v-show="isShown"
-        class="q-drawer"
+        class="q-drawer-container"
         :style="{ zIndex }"
         @click.self="handleWrapperClick"
       >
         <div
           ref="drawer"
           tabindex="-1"
-          class="q-drawer__wrapper"
+          class="q-drawer-container__wrapper"
           :style="drawerStyle"
           :class="[drawerClass, customClass]"
           @keyup.esc="closeBox"
         >
-          <div class="q-drawer__header">
+          <div class="q-drawer-container__header">
             <div
               v-if="title"
-              class="q-drawer__title"
-            >{{ title }}</div>
+              class="q-drawer-container__title"
+            >
+              {{ title }}
+            </div>
             <button
               type="button"
-              class="q-drawer__close q-icon-close"
+              class="q-drawer-container__close q-icon-close"
               @click="closeBox"
             />
           </div>
           <q-scrollbar>
-            <div class="q-drawer__content">
+            <div class="q-drawer-container__content">
               <component
                 :is="preparedContent.component"
                 v-bind="preparedContent.props"
                 v-on="preparedContent.listeners"
                 @done="closeBox"
               />
-              <slot />
             </div>
           </q-scrollbar>
         </div>
@@ -54,7 +55,7 @@ import {
   computed,
   onMounted,
   nextTick,
-  onUnmounted
+  onBeforeUnmount
 } from 'vue';
 import type { PropType } from 'vue';
 
@@ -65,16 +66,16 @@ import { validateArray } from '@/qComponents/helpers';
 
 import type { Nullable } from '#/helpers';
 
-import { QDrawerBoxAction } from '../constants';
-import type { QDrawerBoxEvent } from '../types';
+import { QDrawerAction } from '../constants';
+import type { QDrawerEvent } from '../types';
 
 import type {
-  QDrawerBoxPropPosition,
-  QDrawerBoxContainerInstance,
-  QDrawerBoxContainerProps,
-  QDrawerBoxContainerPropContent,
-  QDrawerBoxComponent,
-  QDrawerBoxPropTeleportTo
+  QDrawerPropPosition,
+  QDrawerContainerInstance,
+  QDrawerContainerProps,
+  QDrawerContainerPropComponent,
+  QDrawerComponent,
+  QDrawerPropTeleportTo
 } from './types';
 
 import { isExternalComponent } from './utils';
@@ -83,14 +84,14 @@ const REMOVE_EVENT = 'remove';
 const DONE_EVENT = 'done';
 
 export default defineComponent({
-  name: 'QDrawerBoxContainer',
-  componentName: 'QDrawerBoxContainer',
+  name: 'QDrawerContainer',
+  componentName: 'QDrawerContainer',
 
   components: { QScrollbar },
 
   props: {
     content: {
-      type: [Object, Function] as PropType<QDrawerBoxContainerPropContent>,
+      type: [Object, Function] as PropType<QDrawerContainerPropComponent>,
       required: true
     },
     /**
@@ -110,7 +111,7 @@ export default defineComponent({
     /**
      * closes Drawer by click on shadow layer
      */
-    wrapperClosable: {
+    closeOnClickShadow: {
       type: Boolean,
       default: true
     },
@@ -118,9 +119,9 @@ export default defineComponent({
      * Drawer's position
      */
     position: {
-      type: String as PropType<QDrawerBoxPropPosition>,
+      type: String as PropType<QDrawerPropPosition>,
       default: 'right',
-      validator: validateArray<QDrawerBoxPropPosition>(['left', 'right'])
+      validator: validateArray<QDrawerPropPosition>(['left', 'right'])
     },
     /**
      * Extra class names for Drawer's wrapper
@@ -137,40 +138,20 @@ export default defineComponent({
       type: [
         String,
         isServer ? Object : HTMLElement
-      ] as PropType<QDrawerBoxPropTeleportTo>,
+      ] as PropType<QDrawerPropTeleportTo>,
       default: null
     }
   },
-  emits: [
-    /**
-     * triggers when dialog starts appearing (animation started)
-     */
-    'open',
-    /**
-     * triggers when dialog appeared (animation ended)
-     */
-    'opened',
-    /**
-     * triggers when dialog starts dissappearing
-     */
-    'close',
-    /**
-     * triggers when dialog starts dissapped
-     */
-    'closed',
+  emits: [DONE_EVENT, REMOVE_EVENT],
 
-    DONE_EVENT,
-    REMOVE_EVENT
-  ],
-
-  setup(props: QDrawerBoxContainerProps, ctx): QDrawerBoxContainerInstance {
+  setup(props: QDrawerContainerProps, ctx): QDrawerContainerInstance {
     const instance = getCurrentInstance();
 
     const isShown = ref<boolean>(false);
-    const drawerBox = ref<Nullable<HTMLElement>>(null);
+    const drawer = ref<Nullable<HTMLElement>>(null);
     const zIndex = getConfig('nextZIndex');
 
-    const preparedContent = computed<QDrawerBoxComponent>(() => {
+    const preparedContent = computed<QDrawerComponent>(() => {
       if (isExternalComponent(props.content)) {
         return {
           props: {},
@@ -190,7 +171,7 @@ export default defineComponent({
       document.activeElement as Nullable<HTMLElement>;
 
     const handleDocumentFocus = (event: FocusEvent): void => {
-      const drawerBoxValue = drawerBox.value;
+      const drawerBoxValue = drawer.value;
 
       if (
         drawerBoxValue &&
@@ -207,7 +188,7 @@ export default defineComponent({
     const closeBox = async ({
       action,
       payload = null
-    }: QDrawerBoxEvent): Promise<void> => {
+    }: QDrawerEvent): Promise<void> => {
       ctx.emit(DONE_EVENT, { action, payload });
 
       isShown.value = false;
@@ -219,7 +200,7 @@ export default defineComponent({
     };
 
     const handleWrapperClick = (): void => {
-      if (props.wrapperClosable) closeBox({ action: QDrawerBoxAction.close });
+      if (props.closeOnClickShadow) closeBox({ action: QDrawerAction.close });
     };
 
     const drawerStyle = computed<Record<string, Nullable<string | number>>>(
@@ -229,7 +210,7 @@ export default defineComponent({
     );
 
     const drawerClass = computed<string>(
-      () => `q-drawer__wrapper_${props.position}`
+      () => `q-drawer-container__wrapper_${props.position}`
     );
 
     onMounted(async () => {
@@ -241,16 +222,16 @@ export default defineComponent({
       await nextTick();
       isShown.value = true;
       await nextTick();
-      drawerBox.value?.focus();
+      drawer.value?.focus();
     });
 
-    onUnmounted(() => {
+    onBeforeUnmount(() => {
       document.documentElement.style.overflow = '';
       document.removeEventListener('focus', handleDocumentFocus, true);
     });
 
     return {
-      drawerBox,
+      drawer,
       zIndex,
       isShown,
       preparedContent,

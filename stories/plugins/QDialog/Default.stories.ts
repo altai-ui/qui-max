@@ -33,9 +33,7 @@ const QDialogComponentStory: Story<QDialogOptions> = args =>
 
       return { handleClick };
     },
-    template: `
-      <q-button @click="handleClick">Click to open</q-button>
-    `
+    template: `<q-button @click="handleClick">Click to open</q-button>`
   });
 
 export const Component = QDialogComponentStory.bind({});

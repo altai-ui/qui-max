@@ -46,9 +46,7 @@ const QDialogExtendedStory: Story<QDialogOptions> = args =>
 
       return { handleClick };
     },
-    template: `
-      <q-button @click="handleClick">Click to open</q-button>
-    `
+    template: `<q-button @click="handleClick">Click to open</q-button>`
   });
 
 export const Extended = QDialogExtendedStory.bind({});

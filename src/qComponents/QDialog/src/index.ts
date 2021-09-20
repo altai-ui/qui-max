@@ -37,6 +37,7 @@ export const createDialog = (config?: QDialogHookOptions): QDialog => {
 
     const handleRemove = (): void => {
       if (!app) return;
+
       app.unmount();
       options?.onUnmounted?.(app);
     };
@@ -84,5 +85,6 @@ export const createDialog = (config?: QDialogHookOptions): QDialog => {
       };
     });
   };
+
   return dialog;
 };

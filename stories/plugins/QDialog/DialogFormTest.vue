@@ -1,5 +1,5 @@
 <template>
-  <h2>Morbi massa libero, vehicula nec consequat sed, porta a sem.</h2>
+  <h1>Morbi massa libero, vehicula nec consequat sed, porta a sem.</h1>
 
   <q-form :model="formModel">
     <q-form-item
@@ -27,24 +27,30 @@
 
 <script lang="ts">
 import { defineComponent, reactive, ref } from 'vue';
-import QForm from '@/qComponents/QForm/src/QForm.vue';
-import QInput from '@/qComponents/QInput/src/QInput.vue';
-import QButton from '@/qComponents/QButton/src/QButton.vue';
-import QFormItem from '@/qComponents/QFormItem/src/QFormItem.vue';
-import { QDialogAction, QMessageBoxAction } from '@/qComponents';
+
+import {
+  QForm,
+  QInput,
+  QButton,
+  QFormItem,
+  QDialogAction
+} from '@/qComponents';
 
 const DONE_EVENT = 'done';
 const NAME_INPUT_EVENT = 'name-input';
 
 export default defineComponent({
   name: 'DialogFormTest',
+
   components: { QFormItem, QButton, QInput, QForm },
+
   props: {
     someExternalProp: {
       type: String,
       default: null
     }
   },
+
   emits: [DONE_EVENT, NAME_INPUT_EVENT],
 
   setup(_, ctx) {

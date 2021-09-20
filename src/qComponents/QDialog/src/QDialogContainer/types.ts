@@ -22,15 +22,10 @@ export interface QDialogContainerInstance {
   isShown: Ref<boolean>;
   dialogStyle: ComputedRef<Record<string, Nullable<string | number>>>;
   containerStyle: ComputedRef<Record<string, Nullable<string | number>>>;
-  afterEnter: () => void;
+  preparedContent: ComputedRef<QDialogComponent>;
   afterLeave: () => void;
   closeDialog: (event: QDialogEvent) => Promise<void>;
-  handleCloseClick: () => void;
-  handleWrapperClick: () => void;
-  preparedContent: ComputedRef<QDialogComponent>;
+  emitCloseEvent: () => void;
 }
 
-export type QDialogContainerPropBeforeClose = Nullable<
-  (hide: () => void) => void
->;
 export type QDialogContainerPropTeleportTo = Nullable<string | HTMLElement>;

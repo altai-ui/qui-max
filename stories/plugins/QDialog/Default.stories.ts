@@ -1,20 +1,18 @@
 import type { Meta, Story } from '@storybook/vue3';
 import { defineAsyncComponent, defineComponent } from 'vue';
 
-import { useDialog } from '@/qComponents';
-
-import { QDialogOptions } from '@/qComponents/QDialog/src/types';
+import { useDialog, QDialogOptions } from '@/qComponents';
 
 const storyMetadata: Meta = {
-  title: 'Plugins/QDialog',
+  title: 'Plugins/QDialog/Component',
   argTypes: {
     offsetTop: { control: { type: 'number' } },
     width: { control: { type: 'number' } },
-    closeOnClickShadow: { control: { type: 'boolean', default: false } }
+    closeOnClickShadow: { control: { type: 'boolean', default: true } }
   }
 };
 
-const QDialogStory: Story<QDialogOptions> = args =>
+const QDialogComponentStory: Story<QDialogOptions> = args =>
   defineComponent({
     setup() {
       const dialog = useDialog();
@@ -23,27 +21,27 @@ const QDialogStory: Story<QDialogOptions> = args =>
         try {
           const result = await dialog(
             defineAsyncComponent(() => import('./DialogFormTest.vue')),
-            { ...args }
+            { ...args, teleportTo: 'body' }
           );
           // eslint-disable-next-line no-console
-          console.log('event:', result);
-        } catch (e) {
+          console.log('resolve', result);
+        } catch (err) {
           // eslint-disable-next-line no-console
-          console.log(e);
+          console.log('reject', err);
         }
       };
 
       return { handleClick };
     },
     template: `
-      <q-button @click="handleClick">open</q-button>
+      <q-button @click="handleClick">Click to open</q-button>
     `
   });
 
-export const Default = QDialogStory.bind({});
-Default.args = {
+export const Component = QDialogComponentStory.bind({});
+Component.args = {
   width: null,
   offsetTop: null,
-  closeOnClickShadow: false
+  closeOnClickShadow: true
 };
 export default storyMetadata;

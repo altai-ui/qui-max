@@ -7,10 +7,7 @@ import {
   QDialogContainerInstance
 } from './QDialogContainer';
 import { QDialogAction } from './constants';
-import {
-  QDialogContainerPropBeforeClose,
-  QDialogContainerPropTeleportTo
-} from '@/qComponents/QDialog/src/QDialogContainer/types';
+import { QDialogContainerPropTeleportTo } from '@/qComponents/QDialog/src/QDialogContainer/types';
 
 export type QDialogContent = QDialogContainerPropContent;
 
@@ -30,7 +27,6 @@ export interface QDialogOptions {
   width: Nullable<string | number>;
   offsetTop: Nullable<string | number>;
   customClass: Nullable<string>;
-  beforeClose: QDialogContainerPropBeforeClose;
   teleportTo: QDialogContainerPropTeleportTo;
 }
 

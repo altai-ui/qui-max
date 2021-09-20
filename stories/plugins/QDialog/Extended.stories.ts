@@ -1,17 +1,14 @@
 import type { Meta, Story } from '@storybook/vue3';
 import { defineAsyncComponent, defineComponent } from 'vue';
 
-import { useDialog } from '@/qComponents/QDialog';
-import { Default } from './Default.stories';
-
-import { QDialogOptions } from '@/qComponents/QDialog/src/types';
+import { useDialog, QDialogOptions } from '@/qComponents';
 
 const storyMetadata: Meta = {
   title: 'Plugins/QDialog/Extended',
   argTypes: {
     offsetTop: { control: { type: 'number' } },
     width: { control: { type: 'number' } },
-    closeOnClickShadow: { control: { type: 'boolean', default: false } }
+    closeOnClickShadow: { control: { type: 'boolean', default: true } }
   }
 };
 
@@ -40,24 +37,24 @@ const QDialogExtendedStory: Story<QDialogOptions> = args =>
             { ...args }
           );
           // eslint-disable-next-line no-console
-          console.log('event:', result);
-        } catch (e) {
+          console.log('resolve', result);
+        } catch (err) {
           // eslint-disable-next-line no-console
-          console.log(e);
+          console.log('reject', err);
         }
       };
 
       return { handleClick };
     },
     template: `
-      <q-button @click="handleClick">open</q-button>
+      <q-button @click="handleClick">Click to open</q-button>
     `
   });
 
 export const Extended = QDialogExtendedStory.bind({});
-Default.args = {
+Extended.args = {
   width: null,
   offsetTop: null,
-  closeOnClickShadow: false
+  closeOnClickShadow: true
 };
 export default storyMetadata;

@@ -55,7 +55,7 @@ import './QCollapseItem/src/q-collapse-item.scss';
 import './QColorPicker/src/q-color-picker.scss';
 import './QContextMenu/src/q-context-menu.scss';
 import './QDatePicker/src/q-date-picker.scss';
-import './QDialog/src/QDialogContainer/q-dialog.scss';
+import './QDialog/src/q-dialog.scss';
 import './QDrawer/src/q-drawer.scss';
 import './QFormItem/src/q-form-item.scss';
 import './QInput/src/q-input.scss';

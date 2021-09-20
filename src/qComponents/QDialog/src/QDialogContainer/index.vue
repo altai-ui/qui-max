@@ -2,22 +2,26 @@
   <teleport :to="teleportTo || 'body'">
     <transition
       name="q-fade-up"
-      @after-enter="afterEnter"
       @after-leave="afterLeave"
     >
       <div
         v-show="isShown"
         class="q-dialog"
         :style="dialogStyle"
-        @click.self="handleWrapperClick"
       >
+        <div
+          v-if="closeOnClickShadow"
+          class="q-dialog__clickable-shadow"
+          @click="emitCloseEvent"
+        />
+
         <div
           ref="dialog"
           tabindex="-1"
           :style="containerStyle"
           class="q-dialog__container"
           :class="customClass"
-          @keyup.esc="handleCloseClick"
+          @keyup.esc="emitCloseEvent"
         >
           <q-scrollbar
             theme="secondary"
@@ -30,7 +34,7 @@
                 theme="secondary"
                 type="icon"
                 icon="q-icon-close"
-                @click="handleCloseClick"
+                @click="emitCloseEvent"
               />
 
               <div class="q-dialog__content">
@@ -38,7 +42,7 @@
                   :is="preparedContent.component"
                   v-bind="preparedContent.props"
                   v-on="preparedContent.listeners"
-                  @done="closeDialog"
+                  @done="emitCloseEvent"
                 />
               </div>
             </div>
@@ -60,6 +64,7 @@ import {
   ref
 } from 'vue';
 import type { PropType } from 'vue';
+
 import { isServer } from '@/qComponents/constants/isServer';
 
 import QButton from '@/qComponents/QButton';
@@ -72,12 +77,11 @@ import type { QDialogEvent } from '../types';
 
 import { isExternalComponent } from './utils';
 import type {
-  QDialogComponent,
-  QDialogContainerInstance,
-  QDialogContainerPropBeforeClose,
   QDialogContainerPropContent,
+  QDialogContainerPropTeleportTo,
   QDialogContainerProps,
-  QDialogContainerPropTeleportTo
+  QDialogContainerInstance,
+  QDialogComponent
 } from './types';
 
 const DEFAULT_Z_INDEX = 2000;
@@ -114,14 +118,7 @@ export default defineComponent({
      */
     closeOnClickShadow: {
       type: Boolean,
-      default: false
-    },
-    /**
-     * callback before close
-     */
-    beforeClose: {
-      type: Function as unknown as PropType<QDialogContainerPropBeforeClose>,
-      default: null
+      default: true
     },
     /**
      * Extra class names for QDialog's wrapper
@@ -167,9 +164,9 @@ export default defineComponent({
   setup(props: QDialogContainerProps, ctx): QDialogContainerInstance {
     const instance = getCurrentInstance();
 
-    const isShown = ref<boolean>(false);
     const dialog = ref<Nullable<HTMLElement>>(null);
-    const zIndex = ref<number>(DEFAULT_Z_INDEX);
+    const zIndex = ref<number>(getConfig('nextZIndex') ?? DEFAULT_Z_INDEX);
+    const isShown = ref<boolean>(false);
 
     const dialogStyle = computed<Record<string, Nullable<number | string>>>(
       () => ({
@@ -206,14 +203,11 @@ export default defineComponent({
       document.activeElement as Nullable<HTMLElement>;
 
     const handleDocumentFocus = (event: FocusEvent): void => {
-      if (dialog.value && !dialog.value.contains(event.target as HTMLElement)) {
-        dialog.value.focus();
-      }
-    };
+      const dialogValue = dialog.value;
 
-    const afterEnter = (): void => {
-      ctx.emit('opened');
-      dialog.value?.focus();
+      if (dialogValue && !dialogValue.contains(event.target as HTMLElement)) {
+        dialogValue.focus();
+      }
     };
 
     const afterLeave = (): void => {
@@ -227,47 +221,39 @@ export default defineComponent({
       ctx.emit(DONE_EVENT, { action, payload });
 
       isShown.value = false;
-
-      await nextTick();
-
-      document.removeEventListener('focus', handleDocumentFocus, true);
-      elementToFocusAfterClosing?.focus();
     };
 
-    const handleCloseClick = (): void => {
+    const emitCloseEvent = (): void => {
       closeDialog({ action: QDialogAction.close });
-    };
-
-    const handleWrapperClick = (): void => {
-      if (props.closeOnClickShadow)
-        closeDialog({ action: QDialogAction.close });
     };
 
     onMounted(async () => {
       document.body.appendChild(instance?.vnode.el as Node);
-      zIndex.value = getConfig('nextZIndex') ?? DEFAULT_Z_INDEX;
       document.body.style.overflow = 'hidden';
       document.addEventListener('focus', handleDocumentFocus, true);
+
+      await nextTick();
       isShown.value = true;
+      await nextTick();
+      dialog.value?.focus();
     });
 
     onBeforeUnmount(() => {
       document.body.style.overflow = '';
       document.removeEventListener('focus', handleDocumentFocus, true);
+      elementToFocusAfterClosing?.focus();
     });
 
     return {
       dialog,
       zIndex,
+      isShown,
       dialogStyle,
       containerStyle,
-      afterEnter,
+      preparedContent,
       afterLeave,
       closeDialog,
-      handleCloseClick,
-      handleWrapperClick,
-      isShown,
-      preparedContent
+      emitCloseEvent
     };
   }
 });

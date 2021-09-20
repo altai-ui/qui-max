@@ -3,7 +3,7 @@
     <template
       #title
     >Morbi massa libero, vehicula nec consequat sed, porta a sem.</template>
-    <template #content>
+    <template #default>
       {{ someExternalProp }}
 
       <q-form :model="formModel">
@@ -40,10 +40,9 @@ import {
   QInput,
   QButton,
   QFormItem,
-  QDialogAction
+  QDialogAction,
+  QDialogContent
 } from '@/qComponents';
-
-import { QDialogContent } from '@/qComponents/QDialog';
 
 const DONE_EVENT = 'done';
 const NAME_INPUT_EVENT = 'name-input';

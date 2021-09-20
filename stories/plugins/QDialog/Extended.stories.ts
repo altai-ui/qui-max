@@ -9,7 +9,8 @@ const storyMetadata: Meta = {
     offsetTop: { control: { type: 'number' } },
     width: { control: { type: 'number' } },
     closeOnClickShadow: { control: { type: 'boolean' } },
-    customClass: { control: { type: 'text' } }
+    customClass: { control: { type: 'text' } },
+    distinguishCancelAndClose: { control: { type: 'boolean' } }
   }
 };
 
@@ -51,7 +52,5 @@ const QDialogExtendedStory: Story<QDialogOptions> = args =>
   });
 
 export const Extended = QDialogExtendedStory.bind({});
-Extended.args = {
-  closeOnClickShadow: true
-};
+
 export default storyMetadata;

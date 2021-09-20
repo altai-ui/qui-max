@@ -41,7 +41,7 @@
                 :is="preparedContent.component"
                 v-bind="preparedContent.props"
                 v-on="preparedContent.listeners"
-                @done="emitCloseEvent"
+                @done="closeDialog"
               />
             </div>
           </q-scrollbar>
@@ -144,26 +144,7 @@ export default defineComponent({
     }
   },
 
-  emits: [
-    /**
-     * triggers when dialog starts appearing (animation started)
-     */
-    'open',
-    /**
-     * triggers when dialog appeared (animation ended)
-     */
-    'opened',
-    /**
-     * triggers when dialog starts dissappearing
-     */
-    'close',
-    /**
-     * triggers when dialog starts dissapped
-     */
-    'closed',
-    REMOVE_EVENT,
-    DONE_EVENT
-  ],
+  emits: [REMOVE_EVENT, DONE_EVENT],
 
   setup(props: QDialogContainerProps, ctx): QDialogContainerInstance {
     const instance = getCurrentInstance();

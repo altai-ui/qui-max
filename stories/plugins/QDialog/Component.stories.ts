@@ -9,7 +9,8 @@ const storyMetadata: Meta = {
     offsetTop: { control: { type: 'number' } },
     width: { control: { type: 'number' } },
     closeOnClickShadow: { control: { type: 'boolean' } },
-    customClass: { control: { type: 'text' } }
+    customClass: { control: { type: 'text' } },
+    distinguishCancelAndClose: { control: { type: 'boolean' } }
   }
 };
 
@@ -22,7 +23,7 @@ const QDialogComponentStory: Story<QDialogOptions> = args =>
         try {
           const result = await dialog(
             defineAsyncComponent(() => import('./DialogFormTest.vue')),
-            { ...args, distinguishCancelAndClose: true }
+            { ...args }
           );
           // eslint-disable-next-line no-console
           console.log('resolve', result);
@@ -38,7 +39,5 @@ const QDialogComponentStory: Story<QDialogOptions> = args =>
   });
 
 export const Component = QDialogComponentStory.bind({});
-Component.args = {
-  closeOnClickShadow: true
-};
+
 export default storyMetadata;

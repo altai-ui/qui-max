@@ -3,8 +3,8 @@
     <div class="q-dialog-content__title">
       <slot name="title">{{ title }}</slot>
     </div>
-    <div class="q-dialog-content__content">
-      <slot name="content" />
+    <div class="q-dialog-content__body">
+      <slot />
     </div>
   </div>
 </template>

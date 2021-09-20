@@ -4,10 +4,10 @@ import type { Nullable, UnwrappedInstance } from '#/helpers';
 
 import type {
   QDialogContainerPropContent,
-  QDialogContainerInstance
+  QDialogContainerInstance,
+  QDialogContainerPropTeleportTo
 } from './QDialogContainer';
 import type { QDialogAction } from './constants';
-import type { QDialogContainerPropTeleportTo } from '@/qComponents/QDialog/src/QDialogContainer/types';
 
 export type QDialogContent = QDialogContainerPropContent;
 

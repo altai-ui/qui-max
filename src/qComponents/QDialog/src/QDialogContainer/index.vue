@@ -118,7 +118,7 @@ export default defineComponent({
       default: true
     },
     /**
-     * whether to distinguish canceling and closing the QMessageBox
+     * whether to distinguish canceling and closing the QDialog
      */
     distinguishCancelAndClose: {
       type: Boolean,

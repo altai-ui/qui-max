@@ -211,11 +211,6 @@ export default defineComponent({
       ctx.emit(DONE_EVENT, { action, payload });
 
       isShown.value = false;
-
-      await nextTick();
-
-      document.removeEventListener('focus', handleDocumentFocus, true);
-      elementToFocusAfterClosing?.focus();
     };
 
     const emitCloseEvent = (): void => {
@@ -238,7 +233,6 @@ export default defineComponent({
 
     onMounted(async () => {
       document.body.appendChild(instance?.vnode.el as Node);
-
       document.documentElement.style.overflow = 'hidden';
       document.addEventListener('focus', handleDocumentFocus, true);
 

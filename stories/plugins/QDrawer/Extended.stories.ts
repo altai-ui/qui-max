@@ -1,9 +1,9 @@
 import type { Meta, Story } from '@storybook/vue3';
 import { defineAsyncComponent, defineComponent } from 'vue';
 
-import { useDrawer } from '@/qComponents/QDrawer';
+import { useDrawer } from '@/qComponents';
 
-import type { QDrawerContainerProps } from '@/qComponents/QDrawer';
+import type { QDrawerContainerProps } from '@/qComponents';
 
 const storyMetadata: Meta = {
   title: 'Plugins/QDrawer/Extended',
@@ -12,7 +12,10 @@ const storyMetadata: Meta = {
     position: {
       options: ['left', 'right'],
       control: { type: 'inline-radio' }
-    }
+    },
+    customClass: { control: { type: 'text' } },
+    distinguishCancelAndClose: { control: { type: 'boolean' } },
+    closeOnClickShadow: { control: { type: 'boolean' } }
   }
 };
 
@@ -38,7 +41,9 @@ const QDrawerStoryComponent: Story<QDrawerContainerProps> = args =>
                 }
               }
             },
-            { title: args.title, width: args.width, position: args.position }
+            {
+              ...args
+            }
           );
           // eslint-disable-next-line no-console
           console.log('resolve', result);
@@ -58,7 +63,8 @@ export const Extended = QDrawerStoryComponent.bind({});
 Extended.args = {
   title: 'What is Lorem Ipsum?',
   width: 350,
-  position: 'right'
+  position: 'right',
+  distinguishCancelAndClose: true
 };
 
 export default storyMetadata;

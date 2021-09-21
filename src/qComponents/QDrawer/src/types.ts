@@ -1,4 +1,4 @@
-import { App, ComponentInternalInstance } from 'vue';
+import type { App, ComponentInternalInstance } from 'vue';
 
 import type { Nullable, UnwrappedInstance } from '#/helpers';
 
@@ -6,13 +6,11 @@ import type {
   QDrawerContainerPropComponent,
   QDrawerContainerInstance,
   QDrawerPropPosition,
-  QDrawerContentPropBeforeClose,
-  QDrawerPropTeleportTo,
-  QDrawerContainerProps
-} from './QDrawerContainer/types';
+  QDrawerPropTeleportTo
+} from './QDrawerContainer';
 import type { QDrawerAction } from './constants';
 
-export type { QDrawerContainerPropComponent, QDrawerContainerProps };
+export type QDrawerContent = QDrawerContainerPropComponent;
 
 export interface QDrawerHookOptions {
   parentInstance?: Nullable<ComponentInternalInstance>;
@@ -25,8 +23,8 @@ export interface QDrawerOptions {
   teleportTo?: QDrawerPropTeleportTo;
   parentInstance?: Nullable<ComponentInternalInstance>;
   closeOnClickShadow?: Nullable<boolean>;
+  distinguishCancelAndClose?: Nullable<boolean>;
   customClass?: Nullable<string>;
-  beforeClose?: Nullable<QDrawerContentPropBeforeClose>;
   onBeforeMount?: (app: App<Element>) => void;
   onMounted?: (
     app: App<Element>,
@@ -46,8 +44,5 @@ export interface DrawerPromise {
 }
 
 export interface QDrawer {
-  (
-    content: QDrawerContainerPropComponent,
-    options?: QDrawerOptions
-  ): Promise<QDrawerEvent>;
+  (content: QDrawerContent, options?: QDrawerOptions): Promise<QDrawerEvent>;
 }

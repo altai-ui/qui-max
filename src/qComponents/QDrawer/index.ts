@@ -15,11 +15,7 @@ const useDrawer = (options?: QDrawerHookOptions): QDrawer => {
 };
 
 export { useDrawer };
+export { QDrawerContent } from './src/QDrawerContent';
 export { QDrawerAction } from './src/constants';
-export type {
-  QDrawer,
-  QDrawerOptions,
-  QDrawerContainerPropComponent,
-  QDrawerContainerProps,
-  QDrawerEvent
-} from './src/types';
+export type { QDrawerContainerProps } from './src/QDrawerContainer';
+export type { QDrawer, QDrawerOptions } from './src/types';

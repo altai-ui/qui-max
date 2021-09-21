@@ -1,29 +1,39 @@
 <template>
-  <p>{{ someExternalProp }}</p>
-  <p>
-    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sequi iure impedit
-    cupiditate.
-  </p>
-  <q-form :model="formModel">
-    <q-form-item
-      prop="name"
-      label="Name"
-      required
-    >
-      <q-input
-        v-model="formModel.name"
-        @input="handleNameInput"
-      />
-    </q-form-item>
-  </q-form>
-  <q-button
-    :loading="isLoading"
-    @click="handleConfirmClick"
-  >Confirm</q-button>
-  <q-button
-    theme="secondary"
-    @click="handleCancelClick"
-  >Cancel</q-button>
+  <q-drawer-content>
+    <template #title>
+      <p>Morbi massa libero, vehicula nec consequat sed, porta a sem.</p>
+    </template>
+
+    <template #content>
+      <p>{{ someExternalProp }}</p>
+      <p>
+        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sequi iure
+        impedit cupiditate.
+      </p>
+
+      <q-form :model="formModel">
+        <q-form-item
+          prop="name"
+          label="Name"
+          required
+        >
+          <q-input
+            v-model="formModel.name"
+            @input="handleNameInput"
+          />
+        </q-form-item>
+      </q-form>
+
+      <q-button
+        :loading="isLoading"
+        @click="handleConfirmClick"
+      >Confirm</q-button>
+      <q-button
+        theme="secondary"
+        @click="handleCancelClick"
+      >Cancel</q-button>
+    </template>
+  </q-drawer-content>
 </template>
 
 <script lang="ts">
@@ -31,7 +41,7 @@ import { defineComponent, reactive, ref } from 'vue';
 
 import { QForm, QFormItem, QInput, QButton } from '@/qComponents';
 
-import { QDrawerAction } from '@/qComponents/QDrawer';
+import { QDrawerContent, QDrawerAction } from '@/qComponents/QDrawer';
 
 const DONE_EVENT = 'done';
 const NAME_INPUT_EVENT = 'name-input';
@@ -39,7 +49,7 @@ const NAME_INPUT_EVENT = 'name-input';
 export default defineComponent({
   name: 'QDrawerSampleContent',
 
-  components: { QForm, QFormItem, QInput, QButton },
+  components: { QForm, QFormItem, QInput, QButton, QDrawerContent },
 
   props: {
     someExternalProp: {
@@ -68,8 +78,6 @@ export default defineComponent({
       const isDone = await commitBeforeClose();
 
       if (isDone) ctx.emit(DONE_EVENT, { action });
-      // eslint-disable-next-line no-console
-      console.log(action);
 
       isLoading.value = false;
     };
@@ -78,8 +86,6 @@ export default defineComponent({
       const action = QDrawerAction.cancel;
 
       ctx.emit(DONE_EVENT, { action });
-      // eslint-disable-next-line no-console
-      console.log(action);
     };
 
     return {

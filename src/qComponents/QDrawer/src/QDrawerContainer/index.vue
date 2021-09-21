@@ -8,15 +8,20 @@
         v-show="isShown"
         class="q-drawer-container"
         :style="{ zIndex }"
-        @click.self="handleWrapperClick"
+        @click.self="emitCloseEvent"
       >
+        <div
+          v-if="closeOnClickShadow"
+          class="q-drawer-container__clickable-shadow"
+          @click="emitCloseEvent"
+        />
         <div
           ref="drawer"
           tabindex="-1"
           class="q-drawer-container__wrapper"
           :style="drawerStyle"
           :class="[drawerClass, customClass]"
-          @keyup.esc="closeBox"
+          @keyup.esc="emitCloseEvent"
         >
           <div class="q-drawer-container__header">
             <div
@@ -28,9 +33,10 @@
             <button
               type="button"
               class="q-drawer-container__close q-icon-close"
-              @click="closeBox"
+              @click="emitCloseEvent"
             />
           </div>
+
           <q-scrollbar>
             <div class="q-drawer-container__content">
               <component
@@ -66,9 +72,11 @@ import { validateArray } from '@/qComponents/helpers';
 
 import type { Nullable } from '#/helpers';
 
+import { QDrawerContent } from '../QDrawerContent';
 import { QDrawerAction } from '../constants';
 import type { QDrawerEvent } from '../types';
 
+import { isExternalComponent, isInternalComponent } from './utils';
 import type {
   QDrawerPropPosition,
   QDrawerContainerInstance,
@@ -77,8 +85,6 @@ import type {
   QDrawerComponent,
   QDrawerPropTeleportTo
 } from './types';
-
-import { isExternalComponent } from './utils';
 
 const REMOVE_EVENT = 'remove';
 const DONE_EVENT = 'done';
@@ -116,6 +122,13 @@ export default defineComponent({
       default: true
     },
     /**
+     * whether to distinguish canceling and closing the QMessageBox
+     */
+    distinguishCancelAndClose: {
+      type: Boolean,
+      default: false
+    },
+    /**
      * Drawer's position
      */
     position: {
@@ -142,6 +155,7 @@ export default defineComponent({
       default: null
     }
   },
+
   emits: [DONE_EVENT, REMOVE_EVENT],
 
   setup(props: QDrawerContainerProps, ctx): QDrawerContainerInstance {
@@ -160,6 +174,14 @@ export default defineComponent({
         };
       }
 
+      if (isInternalComponent(props.content)) {
+        return {
+          component: QDrawerContent,
+          props: props.content,
+          listeners: {}
+        };
+      }
+
       return {
         component: props.content,
         props: {},
@@ -170,19 +192,16 @@ export default defineComponent({
     const elementToFocusAfterClosing: Nullable<HTMLElement> =
       document.activeElement as Nullable<HTMLElement>;
 
-    const handleDocumentFocus = (event: FocusEvent): void => {
-      const drawerBoxValue = drawer.value;
-
-      if (
-        drawerBoxValue &&
-        !drawerBoxValue.contains(event.target as HTMLElement)
-      ) {
-        drawerBoxValue.focus();
-      }
-    };
-
     const handleAfterLeave = (): void => {
       ctx.emit(REMOVE_EVENT);
+    };
+
+    const handleDocumentFocus = (event: FocusEvent): void => {
+      const drawerValue = drawer.value;
+
+      if (drawerValue && !drawerValue.contains(event.target as HTMLElement)) {
+        drawerValue.focus();
+      }
     };
 
     const closeBox = async ({
@@ -199,8 +218,12 @@ export default defineComponent({
       elementToFocusAfterClosing?.focus();
     };
 
-    const handleWrapperClick = (): void => {
-      if (props.closeOnClickShadow) closeBox({ action: QDrawerAction.close });
+    const emitCloseEvent = (): void => {
+      closeBox({
+        action: props.distinguishCancelAndClose
+          ? QDrawerAction.close
+          : QDrawerAction.cancel
+      });
     };
 
     const drawerStyle = computed<Record<string, Nullable<string | number>>>(
@@ -228,6 +251,7 @@ export default defineComponent({
     onBeforeUnmount(() => {
       document.documentElement.style.overflow = '';
       document.removeEventListener('focus', handleDocumentFocus, true);
+      elementToFocusAfterClosing?.focus();
     });
 
     return {
@@ -235,11 +259,11 @@ export default defineComponent({
       zIndex,
       isShown,
       preparedContent,
-      closeBox,
       handleAfterLeave,
-      handleWrapperClick,
+      closeBox,
       drawerStyle,
-      drawerClass
+      drawerClass,
+      emitCloseEvent
     };
   }
 });

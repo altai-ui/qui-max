@@ -10,7 +10,7 @@ import { QDrawerAction } from './constants';
 
 import type {
   QDrawerHookOptions,
-  QDrawerContainerPropComponent,
+  QDrawerContent,
   QDrawerOptions,
   QDrawerEvent,
   DrawerPromise,
@@ -19,7 +19,7 @@ import type {
 
 export const createDrawer = (config?: QDrawerHookOptions): QDrawer => {
   const drawer = (
-    content: QDrawerContainerPropComponent,
+    content: QDrawerContent,
     options?: QDrawerOptions
   ): Promise<QDrawerEvent> => {
     let drawerPromise: DrawerPromise;

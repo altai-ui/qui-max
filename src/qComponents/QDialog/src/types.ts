@@ -16,6 +16,7 @@ export interface QDialogProps {
   customClass: Nullable<string>;
   teleportTo: QDialogPropTeleportTo;
   renderOnMount: Nullable<boolean>;
+  preventFocusAfterClosing: Nullable<boolean>;
 }
 
 export interface QDialogInstance {

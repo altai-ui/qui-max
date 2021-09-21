@@ -7,7 +7,6 @@ import type { QDrawerContainerProps } from '@/qComponents/QDrawer';
 const storyMetadata: Meta = {
   title: 'Plugins/QDrawer/Component',
   argTypes: {
-    title: { control: { type: 'text' } },
     width: { control: { type: 'number' } },
     position: {
       options: ['left', 'right'],
@@ -50,7 +49,6 @@ const QDrawerStoryComponent: Story<QDrawerContainerProps> = args =>
 export const Component = QDrawerStoryComponent.bind({});
 
 Component.args = {
-  title: 'What is Lorem Ipsum?',
   width: 350,
   position: 'right',
   distinguishCancelAndClose: true

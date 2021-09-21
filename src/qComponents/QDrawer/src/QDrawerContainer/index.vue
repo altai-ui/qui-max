@@ -24,12 +24,6 @@
           @keyup.esc="emitCloseEvent"
         >
           <div class="q-drawer-container__header">
-            <div
-              v-if="title"
-              class="q-drawer-container__title"
-            >
-              {{ title }}
-            </div>
             <button
               type="button"
               class="q-drawer-container__close q-icon-close"
@@ -72,18 +66,17 @@ import { validateArray } from '@/qComponents/helpers';
 
 import type { Nullable } from '#/helpers';
 
-import { QDrawerContent } from '../QDrawerContent';
 import { QDrawerAction } from '../constants';
 import type { QDrawerEvent } from '../types';
 
-import { isExternalComponent, isInternalComponent } from './utils';
+import { isExternalComponent } from './utils';
 import type {
-  QDrawerPropPosition,
+  QDrawerContainerPropPosition,
   QDrawerContainerInstance,
   QDrawerContainerProps,
-  QDrawerContainerPropComponent,
+  QDrawerContainerPropContent,
   QDrawerComponent,
-  QDrawerPropTeleportTo
+  QDrawerContainerPropTeleportTo
 } from './types';
 
 const REMOVE_EVENT = 'remove';
@@ -97,7 +90,7 @@ export default defineComponent({
 
   props: {
     content: {
-      type: [Object, Function] as PropType<QDrawerContainerPropComponent>,
+      type: [Object, Function] as PropType<QDrawerContainerPropContent>,
       required: true
     },
     /**
@@ -105,13 +98,6 @@ export default defineComponent({
      */
     width: {
       type: [String, Number],
-      default: null
-    },
-    /**
-     * Drawer's title
-     */
-    title: {
-      type: String,
       default: null
     },
     /**
@@ -132,9 +118,9 @@ export default defineComponent({
      * Drawer's position
      */
     position: {
-      type: String as PropType<QDrawerPropPosition>,
+      type: String as PropType<QDrawerContainerPropPosition>,
       default: 'right',
-      validator: validateArray<QDrawerPropPosition>(['left', 'right'])
+      validator: validateArray<QDrawerContainerPropPosition>(['left', 'right'])
     },
     /**
      * Extra class names for Drawer's wrapper
@@ -151,7 +137,7 @@ export default defineComponent({
       type: [
         String,
         isServer ? Object : HTMLElement
-      ] as PropType<QDrawerPropTeleportTo>,
+      ] as PropType<QDrawerContainerPropTeleportTo>,
       default: null
     }
   },
@@ -171,14 +157,6 @@ export default defineComponent({
           props: {},
           listeners: {},
           ...props.content
-        };
-      }
-
-      if (isInternalComponent(props.content)) {
-        return {
-          component: QDrawerContent,
-          props: props.content,
-          listeners: {}
         };
       }
 

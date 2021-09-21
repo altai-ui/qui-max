@@ -3,24 +3,23 @@ import type { App, ComponentInternalInstance } from 'vue';
 import type { Nullable, UnwrappedInstance } from '#/helpers';
 
 import type {
-  QDrawerContainerPropComponent,
+  QDrawerContainerPropContent,
   QDrawerContainerInstance,
-  QDrawerPropPosition,
-  QDrawerPropTeleportTo
+  QDrawerContainerPropPosition,
+  QDrawerContainerPropTeleportTo
 } from './QDrawerContainer';
 import type { QDrawerAction } from './constants';
 
-export type QDrawerContent = QDrawerContainerPropComponent;
+export type QDrawerContent = QDrawerContainerPropContent;
 
 export interface QDrawerHookOptions {
   parentInstance?: Nullable<ComponentInternalInstance>;
 }
 
 export interface QDrawerOptions {
-  title: Nullable<string>;
   width: Nullable<string | number>;
-  position: QDrawerPropPosition;
-  teleportTo?: QDrawerPropTeleportTo;
+  position: QDrawerContainerPropPosition;
+  teleportTo?: QDrawerContainerPropTeleportTo;
   parentInstance?: Nullable<ComponentInternalInstance>;
   closeOnClickShadow?: Nullable<boolean>;
   distinguishCancelAndClose?: Nullable<boolean>;

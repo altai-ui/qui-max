@@ -4,7 +4,7 @@
       <p>Morbi massa libero, vehicula nec consequat sed, porta a sem.</p>
     </template>
 
-    <template #content>
+    <template #default>
       <p>{{ someExternalProp }}</p>
       <p>
         Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sequi iure
@@ -39,9 +39,14 @@
 <script lang="ts">
 import { defineComponent, reactive, ref } from 'vue';
 
-import { QForm, QFormItem, QInput, QButton } from '@/qComponents';
-
-import { QDrawerContent, QDrawerAction } from '@/qComponents/QDrawer';
+import {
+  QForm,
+  QFormItem,
+  QInput,
+  QButton,
+  QDrawerContent,
+  QDrawerAction
+} from '@/qComponents';
 
 const DONE_EVENT = 'done';
 const NAME_INPUT_EVENT = 'name-input';

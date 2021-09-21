@@ -1,25 +1,33 @@
-import type { Component, Ref, ComputedRef } from 'vue';
+import type {
+  Component,
+  Ref,
+  ComputedRef,
+  ComponentInternalInstance
+} from 'vue';
 
 import type { Nullable } from '#/helpers';
 
-import type { QDrawerEvent, QDrawerOptions } from '../types';
-
-export type QDrawerPropTeleportTo = Nullable<string | HTMLElement>;
-export type QDrawerPropPosition = 'left' | 'right';
+import type { QDrawerEvent } from '../types';
 
 export interface QDrawerComponent {
   component: Component;
-  props?: QDrawerOptions | { [propName: string]: unknown };
+  props?: { [propName: string]: unknown };
   listeners?: { [listenerEvent: string]: (...args: unknown[]) => void };
 }
 
-export type QDrawerContainerPropComponent =
-  | QDrawerOptions
-  | Component
-  | QDrawerComponent;
+export type QDrawerContainerPropContent = Component | QDrawerComponent;
+export type QDrawerContainerPropTeleportTo = Nullable<string | HTMLElement>;
+export type QDrawerContainerPropPosition = 'left' | 'right';
 
-export interface QDrawerContainerProps extends QDrawerOptions {
-  content: QDrawerContainerPropComponent;
+export interface QDrawerContainerProps {
+  content: QDrawerContainerPropContent;
+  width: Nullable<string | number>;
+  position: QDrawerContainerPropPosition;
+  teleportTo: QDrawerContainerPropTeleportTo;
+  customClass: Nullable<string>;
+  parentInstance?: Nullable<ComponentInternalInstance>;
+  closeOnClickShadow?: Nullable<boolean>;
+  distinguishCancelAndClose?: Nullable<boolean>;
 }
 
 export interface QDrawerContainerInstance {

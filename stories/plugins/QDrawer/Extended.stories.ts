@@ -2,7 +2,6 @@ import type { Meta, Story } from '@storybook/vue3';
 import { defineAsyncComponent, defineComponent } from 'vue';
 
 import { useDrawer } from '@/qComponents';
-
 import type { QDrawerContainerProps } from '@/qComponents';
 
 const storyMetadata: Meta = {
@@ -32,7 +31,7 @@ const QDrawerStoryComponent: Story<QDrawerContainerProps> = args =>
                 () => import('./QDrawerSampleContent.vue')
               ),
               props: {
-                someExternalProp: 'some external prop here'
+                someExternalProp: 'Some external prop here'
               },
               listeners: {
                 nameInput: (value: string) => {
@@ -61,7 +60,6 @@ const QDrawerStoryComponent: Story<QDrawerContainerProps> = args =>
 export const Extended = QDrawerStoryComponent.bind({});
 
 Extended.args = {
-  title: 'What is Lorem Ipsum?',
   width: 350,
   position: 'right',
   distinguishCancelAndClose: true

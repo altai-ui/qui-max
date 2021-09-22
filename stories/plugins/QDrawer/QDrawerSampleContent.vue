@@ -1,38 +1,31 @@
 <template>
   <q-drawer-content>
-    <template #title>
-      <p>Morbi massa libero, vehicula nec consequat sed, porta a sem.</p>
-    </template>
-
-    <template #default>
-      <p>{{ someExternalProp }}</p>
-      <p>
-        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sequi iure
-        impedit cupiditate.
-      </p>
-
-      <q-form :model="formModel">
-        <q-form-item
-          prop="name"
-          label="Name"
-          required
-        >
-          <q-input
-            v-model="formModel.name"
-            @input="handleNameInput"
-          />
-        </q-form-item>
-      </q-form>
-
-      <q-button
-        :loading="isLoading"
-        @click="handleConfirmClick"
-      >Confirm</q-button>
-      <q-button
-        theme="secondary"
-        @click="handleCancelClick"
-      >Cancel</q-button>
-    </template>
+    <template #title>{{ title }}</template>
+    <p>{{ someExternalProp }}</p>
+    <p>
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio corrupti
+      voluptate, error magni quod iste iure excepturi!
+    </p>
+    <q-form :model="formModel">
+      <q-form-item
+        prop="name"
+        label="Name"
+        required
+      >
+        <q-input
+          v-model="formModel.name"
+          @input="handleNameInput"
+        />
+      </q-form-item>
+    </q-form>
+    <q-button
+      :loading="isLoading"
+      @click="handleConfirmClick"
+    >Confirm</q-button>
+    <q-button
+      theme="secondary"
+      @click="handleCancelClick"
+    >Cancel</q-button>
   </q-drawer-content>
 </template>
 
@@ -57,6 +50,11 @@ export default defineComponent({
   components: { QForm, QFormItem, QInput, QButton, QDrawerContent },
 
   props: {
+    title: {
+      type: String,
+      default: null
+    },
+
     someExternalProp: {
       type: String,
       default: null

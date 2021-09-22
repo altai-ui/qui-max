@@ -1,9 +1,4 @@
-import type {
-  Component,
-  Ref,
-  ComputedRef,
-  ComponentInternalInstance
-} from 'vue';
+import type { Component, Ref, ComputedRef } from 'vue';
 
 import type { Nullable } from '#/helpers';
 
@@ -25,7 +20,6 @@ export interface QDrawerContainerProps {
   position: QDrawerContainerPropPosition;
   teleportTo: QDrawerContainerPropTeleportTo;
   customClass: Nullable<string>;
-  parentInstance?: Nullable<ComponentInternalInstance>;
   closeOnClickShadow?: Nullable<boolean>;
   distinguishCancelAndClose?: Nullable<boolean>;
 }

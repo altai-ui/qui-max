@@ -2,7 +2,7 @@ import type { Meta, Story } from '@storybook/vue3';
 import { defineAsyncComponent, defineComponent } from 'vue';
 
 import { useDrawer } from '@/qComponents';
-import type { QDrawerContainerProps } from '@/qComponents';
+import type { QDrawerOptions } from '@/qComponents';
 
 const storyMetadata: Meta = {
   title: 'Plugins/QDrawer/Extended',
@@ -18,7 +18,7 @@ const storyMetadata: Meta = {
   }
 };
 
-const QDrawerStoryComponent: Story<QDrawerContainerProps> = args =>
+const QDrawerStoryComponent: Story<QDrawerOptions> = args =>
   defineComponent({
     setup() {
       const drawer = useDrawer();
@@ -31,7 +31,8 @@ const QDrawerStoryComponent: Story<QDrawerContainerProps> = args =>
                 () => import('./QDrawerSampleContent.vue')
               ),
               props: {
-                someExternalProp: 'Some external prop here'
+                someExternalProp: 'Some external prop here',
+                title: 'Morbi massa libero.'
               },
               listeners: {
                 nameInput: (value: string) => {
@@ -60,9 +61,7 @@ const QDrawerStoryComponent: Story<QDrawerContainerProps> = args =>
 export const Extended = QDrawerStoryComponent.bind({});
 
 Extended.args = {
-  width: 350,
-  position: 'right',
-  distinguishCancelAndClose: true
+  width: 350
 };
 
 export default storyMetadata;

@@ -20,10 +20,10 @@ export interface QDrawerOptions {
   width: Nullable<string | number>;
   position: QDrawerContainerPropPosition;
   teleportTo?: QDrawerContainerPropTeleportTo;
-  parentInstance?: Nullable<ComponentInternalInstance>;
   closeOnClickShadow?: Nullable<boolean>;
   distinguishCancelAndClose?: Nullable<boolean>;
   customClass?: Nullable<string>;
+  parentInstance?: Nullable<ComponentInternalInstance>;
   onBeforeMount?: (app: App<Element>) => void;
   onMounted?: (
     app: App<Element>,

@@ -23,24 +23,14 @@
           :class="[drawerClass, customClass]"
           @keyup.esc="emitCloseEvent"
         >
-          <div class="q-drawer-container__header">
-            <button
-              type="button"
-              class="q-drawer-container__close q-icon-close"
-              @click="emitCloseEvent"
+          <div class="q-drawer-container__content">
+            <component
+              :is="preparedContent.component"
+              v-bind="preparedContent.props"
+              v-on="preparedContent.listeners"
+              @done="closeBox"
             />
           </div>
-
-          <q-scrollbar>
-            <div class="q-drawer-container__content">
-              <component
-                :is="preparedContent.component"
-                v-bind="preparedContent.props"
-                v-on="preparedContent.listeners"
-                @done="closeBox"
-              />
-            </div>
-          </q-scrollbar>
         </div>
       </div>
     </transition>
@@ -59,7 +49,6 @@ import {
 } from 'vue';
 import type { PropType } from 'vue';
 
-import QScrollbar from '@/qComponents/QScrollbar';
 import { getConfig } from '@/qComponents/config';
 import { isServer } from '@/qComponents/constants/isServer';
 import { validateArray } from '@/qComponents/helpers';
@@ -71,12 +60,12 @@ import type { QDrawerEvent } from '../types';
 
 import { isExternalComponent } from './utils';
 import type {
-  QDrawerContainerPropPosition,
-  QDrawerContainerInstance,
-  QDrawerContainerProps,
   QDrawerContainerPropContent,
   QDrawerComponent,
-  QDrawerContainerPropTeleportTo
+  QDrawerContainerPropPosition,
+  QDrawerContainerPropTeleportTo,
+  QDrawerContainerProps,
+  QDrawerContainerInstance
 } from './types';
 
 const REMOVE_EVENT = 'remove';
@@ -85,8 +74,6 @@ const DONE_EVENT = 'done';
 export default defineComponent({
   name: 'QDrawerContainer',
   componentName: 'QDrawerContainer',
-
-  components: { QScrollbar },
 
   props: {
     content: {
@@ -108,7 +95,7 @@ export default defineComponent({
       default: true
     },
     /**
-     * whether to distinguish canceling and closing the QMessageBox
+     * whether to distinguish canceling and closing the QDrawerContainer
      */
     distinguishCancelAndClose: {
       type: Boolean,

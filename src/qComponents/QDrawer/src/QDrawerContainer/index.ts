@@ -2,10 +2,10 @@ import QDrawerContainer from './index.vue';
 
 export type {
   QDrawerContainerPropContent,
-  QDrawerContainerProps,
-  QDrawerContainerInstance,
   QDrawerContainerPropPosition,
-  QDrawerContainerPropTeleportTo
+  QDrawerContainerPropTeleportTo,
+  QDrawerContainerProps,
+  QDrawerContainerInstance
 } from './types';
 
 export { QDrawerContainer };

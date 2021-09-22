@@ -1,8 +1,8 @@
 import type { Meta, Story } from '@storybook/vue3';
 import { defineAsyncComponent, defineComponent } from 'vue';
 
-import { useDrawer } from '@/qComponents/QDrawer';
-import type { QDrawerContainerProps } from '@/qComponents/QDrawer';
+import { useDrawer } from '@/qComponents';
+import type { QDrawerOptions } from '@/qComponents';
 
 const storyMetadata: Meta = {
   title: 'Plugins/QDrawer/Component',
@@ -18,7 +18,7 @@ const storyMetadata: Meta = {
   }
 };
 
-const QDrawerStoryComponent: Story<QDrawerContainerProps> = args =>
+const QDrawerStoryComponent: Story<QDrawerOptions> = args =>
   defineComponent({
     setup() {
       const drawer = useDrawer();
@@ -49,9 +49,7 @@ const QDrawerStoryComponent: Story<QDrawerContainerProps> = args =>
 export const Component = QDrawerStoryComponent.bind({});
 
 Component.args = {
-  width: 350,
-  position: 'right',
-  distinguishCancelAndClose: true
+  width: 350
 };
 
 export default storyMetadata;

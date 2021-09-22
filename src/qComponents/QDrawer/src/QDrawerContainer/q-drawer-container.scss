@@ -63,36 +63,6 @@
     background-color: rgba(var(--color-rgb-white), 0.7);
   }
 
-  &__header {
-    padding-right: 56px;
-    padding-bottom: 32px;
-  }
-
-  &__close {
-    position: absolute;
-    top: 16px;
-    right: 16px;
-    padding: 0;
-    font-size: 32px;
-    color: var(--color-primary-blue);
-    background-color: transparent;
-    border: none;
-
-    &:hover,
-    &:focus,
-    &:focus-visible {
-      color: var(--color-primary-black);
-      outline: none;
-    }
-  }
-
-  &__title {
-    font-size: 20px;
-    font-weight: 800;
-    line-height: 25px;
-    color: var(--color-primary-black);
-  }
-
   &__content {
     padding-right: 24px;
   }

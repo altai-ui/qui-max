@@ -4,6 +4,7 @@ export type {
   QDialogContainerPropContent,
   QDialogContainerProps,
   QDialogContainerInstance,
-  QDialogContainerPropTeleportTo
+  QDialogContainerPropTeleportTo,
+  QDialogContainerProvider
 } from './types';
 export { QDialogContainer };

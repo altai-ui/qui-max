@@ -2,6 +2,7 @@ import type { Component, ComputedRef, Ref } from 'vue';
 
 import type { Nullable } from '#/helpers';
 import type { QDialogEvent } from '../types';
+import { QDialogAction } from '../constants';
 
 export interface QDialogComponent {
   component: Component;
@@ -10,6 +11,10 @@ export interface QDialogComponent {
 }
 
 export type QDialogContainerPropContent = Component | QDialogComponent;
+
+export type QDialogContainerPropBeforeClose = Nullable<
+  (action: QDialogAction) => Promise<boolean>
+>;
 
 export type QDialogContainerPropTeleportTo = Nullable<string | HTMLElement>;
 
@@ -21,6 +26,7 @@ export interface QDialogContainerProps {
   offsetTop: Nullable<string | number>;
   customClass: Nullable<string>;
   teleportTo: QDialogContainerPropTeleportTo;
+  beforeClose: Nullable<QDialogContainerPropBeforeClose>;
 }
 
 export interface QDialogContainerInstance {

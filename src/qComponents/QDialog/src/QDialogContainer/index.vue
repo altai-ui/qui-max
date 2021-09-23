@@ -64,6 +64,7 @@ import { isExternalComponent } from './utils';
 import type {
   QDialogContainerPropContent,
   QDialogContainerPropTeleportTo,
+  QDialogContainerPropBeforeClose,
   QDialogContainerProps,
   QDialogContainerInstance,
   QDialogComponent,
@@ -129,6 +130,13 @@ export default defineComponent({
         isServer ? Object : HTMLElement
       ] as PropType<QDialogContainerPropTeleportTo>,
       default: null
+    },
+    /**
+     * callback before QDialog closes, and it will prevent QDialog from closing
+     */
+    beforeClose: {
+      type: Function as unknown as PropType<QDialogContainerPropBeforeClose>,
+      default: null
     }
   },
 
@@ -187,11 +195,25 @@ export default defineComponent({
       ctx.emit(REMOVE_EVENT);
     };
 
+    const commitBeforeClose = async (
+      action: QDialogAction
+    ): Promise<boolean> => {
+      let isReadyToClose = true;
+
+      if (typeof props.beforeClose === 'function') {
+        isReadyToClose = await props.beforeClose(action);
+      }
+
+      return isReadyToClose;
+    };
+
     const closeDialog = async ({
       action,
       payload = null
     }: QDialogEvent): Promise<void> => {
-      ctx.emit(DONE_EVENT, { action, payload });
+      const isDone = await commitBeforeClose(action);
+
+      if (isDone) ctx.emit(DONE_EVENT, { action, payload });
 
       isShown.value = false;
     };
@@ -204,7 +226,7 @@ export default defineComponent({
       });
     };
 
-    provide<QDialogContainerProvider>('QDialogContainer', { emitCloseEvent });
+    provide<QDialogContainerProvider>('qDialogContainer', { emitCloseEvent });
 
     onMounted(async () => {
       document.body.appendChild(instance?.vnode.el as Node);

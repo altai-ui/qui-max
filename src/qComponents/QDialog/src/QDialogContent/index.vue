@@ -8,9 +8,11 @@
       icon="q-icon-close"
       @click="handleClose"
     />
+
     <div class="q-dialog-content__title">
       <slot name="title">{{ title }}</slot>
     </div>
+
     <q-scrollbar
       theme="secondary"
       view-class="q-dialog-content__view"
@@ -23,19 +25,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, PropType } from 'vue';
+import { defineComponent, inject } from 'vue';
+import { Nullable } from '#/helpers';
 
 import QScrollbar from '@/qComponents/QScrollbar';
 import QButton from '@/qComponents/QButton';
 
-import { QDialogAction } from '../constants';
-
-import type {
-  QDialogContentProps,
-  QDialogContentInstance,
-  QDialogContentPropBeforeClose
-} from './types';
-import type { QDialogContainerProvider } from '../QDialogContainer/types';
+import type { QDialogContainerProvider } from '../QDialogContainer';
+import type { QDialogContentInstance } from './types';
 
 export default defineComponent({
   name: 'QDialogContent',
@@ -50,39 +47,17 @@ export default defineComponent({
     title: {
       type: String,
       default: null
-    },
-    /**
-     * callback before QDialog closes, and it will prevent QDialog from closing
-     */
-    beforeClose: {
-      type: Function as unknown as PropType<QDialogContentPropBeforeClose>,
-      default: null
     }
   },
 
-  setup(props: QDialogContentProps): QDialogContentInstance {
-    const commitBeforeClose = async (
-      action: QDialogAction
-    ): Promise<boolean> => {
-      let isReadyToClose = true;
-
-      if (typeof props.beforeClose === 'function') {
-        isReadyToClose = await props.beforeClose(action);
-      }
-
-      return isReadyToClose;
-    };
-
-    const dialogContainer = inject<QDialogContainerProvider>(
-      'QDialogContainer',
-      {} as QDialogContainerProvider
+  setup(): QDialogContentInstance {
+    const dialogContainer = inject<Nullable<QDialogContainerProvider>>(
+      'qDialogContainer',
+      null
     );
 
     const handleClose = async (): Promise<void> => {
-      const action = QDialogAction.cancel;
-      const isDone = await commitBeforeClose(action);
-
-      if (isDone) dialogContainer?.emitCloseEvent();
+      dialogContainer?.emitCloseEvent();
     };
 
     return { handleClose };

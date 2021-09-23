@@ -1,5 +1,12 @@
 .q-dialog-content {
   height: 100%;
+  padding: 36px 32px 32px;
+
+  &__close {
+    position: absolute;
+    top: 24px;
+    right: 32px;
+  }
 
   &__title {
     padding-right: 104px;
@@ -10,19 +17,13 @@
     word-break: break-word;
   }
 
-  &__body {
-    flex: 1;
-    padding: 0 10px 10px 0;
-    margin-top: 32px;
-  }
-
   &__view {
     display: flex;
   }
 
-  &__close {
-    position: absolute;
-    top: 24px;
-    right: 32px;
+  &__body {
+    flex: 1;
+    padding: 0 10px 10px 0;
+    margin-top: 32px;
   }
 }

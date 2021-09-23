@@ -6,12 +6,12 @@
     >
       <div
         v-show="isShown"
-        class="q-dialog"
+        class="q-dialog-container"
         :style="dialogStyle"
       >
         <div
           v-if="closeOnClickShadow"
-          class="q-dialog__clickable-shadow"
+          class="q-dialog-container__clickable-shadow"
           @click="emitCloseEvent"
         />
 
@@ -19,11 +19,11 @@
           ref="dialog"
           tabindex="-1"
           :style="containerStyle"
-          class="q-dialog__container"
+          class="q-dialog-container__container"
           :class="customClass"
           @keyup.esc="emitCloseEvent"
         >
-          <div class="q-dialog__inner">
+          <div class="q-dialog-container__inner">
             <component
               :is="preparedContent.component"
               v-bind="preparedContent.props"

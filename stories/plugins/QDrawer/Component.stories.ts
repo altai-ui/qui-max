@@ -26,7 +26,7 @@ const QDrawerStoryComponent: Story<QDrawerOptions> = args =>
       const handleClick = async (): Promise<void> => {
         try {
           const result = await drawer(
-            defineAsyncComponent(() => import('./QDrawerSampleContent.vue')),
+            defineAsyncComponent(() => import('./DrawerFormTest.vue')),
             {
               ...args
             }

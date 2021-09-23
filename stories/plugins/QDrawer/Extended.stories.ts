@@ -28,7 +28,7 @@ const QDrawerStoryComponent: Story<QDrawerOptions> = args =>
           const result = await drawer(
             {
               component: defineAsyncComponent(
-                () => import('./QDrawerSampleContent.vue')
+                () => import('./DrawerFormTest.vue')
               ),
               props: {
                 someExternalProp: 'Some external prop here',

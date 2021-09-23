@@ -7,7 +7,6 @@ import type { Optional, UnwrappedInstance } from '#/helpers';
 import { QDrawerContainer } from './QDrawerContainer';
 import type { QDrawerContainerInstance } from './QDrawerContainer';
 import { QDrawerAction } from './constants';
-
 import type {
   QDrawerHookOptions,
   QDrawerContent,

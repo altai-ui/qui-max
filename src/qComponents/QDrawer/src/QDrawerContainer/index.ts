@@ -7,5 +7,4 @@ export type {
   QDrawerContainerProps,
   QDrawerContainerInstance
 } from './types';
-
 export { QDrawerContainer };

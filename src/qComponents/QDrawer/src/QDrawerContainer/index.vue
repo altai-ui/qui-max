@@ -42,6 +42,7 @@ import {
   defineComponent,
   getCurrentInstance,
   ref,
+  provide,
   computed,
   onMounted,
   nextTick,
@@ -137,6 +138,11 @@ export default defineComponent({
     const isShown = ref<boolean>(false);
     const drawer = ref<Nullable<HTMLElement>>(null);
     const zIndex = getConfig('nextZIndex');
+
+    provide('handleClose', () => {
+      ctx.emit(DONE_EVENT, { action: 'close' });
+      isShown.value = false;
+    });
 
     const preparedContent = computed<QDrawerComponent>(() => {
       if (isExternalComponent(props.content)) {

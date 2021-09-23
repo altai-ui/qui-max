@@ -7,7 +7,7 @@
       <button
         type="button"
         class="q-drawer-content__close q-icon-close"
-        @click="handleClose"
+        @click="handleDrawerCloseButtonClick"
       />
     </div>
     <q-scrollbar
@@ -26,6 +26,7 @@
 <script lang="ts">
 import { defineComponent, inject } from 'vue';
 import QScrollbar from '@/qComponents/QScrollbar';
+import { QDrawerContainerProvider } from '../QDrawerContainer';
 
 export default defineComponent({
   name: 'QDrawerContent',
@@ -41,10 +42,13 @@ export default defineComponent({
   },
 
   setup() {
-    const handleClose = inject('handleClose');
+    const QDrawerContainer =
+      inject<QDrawerContainerProvider>('QDrawerContainer');
+    const handleDrawerCloseButtonClick =
+      QDrawerContainer?.closeDrawerButtonClick;
 
     return {
-      handleClose
+      handleDrawerCloseButtonClick
     };
   }
 });

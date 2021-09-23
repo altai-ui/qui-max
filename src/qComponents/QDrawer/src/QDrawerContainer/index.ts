@@ -5,6 +5,7 @@ export type {
   QDrawerContainerPropPosition,
   QDrawerContainerPropTeleportTo,
   QDrawerContainerProps,
+  QDrawerContainerProvider,
   QDrawerContainerInstance
 } from './types';
 export { QDrawerContainer };

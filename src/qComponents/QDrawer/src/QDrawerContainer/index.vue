@@ -66,7 +66,8 @@ import type {
   QDrawerContainerPropPosition,
   QDrawerContainerPropTeleportTo,
   QDrawerContainerProps,
-  QDrawerContainerInstance
+  QDrawerContainerInstance,
+  QDrawerContainerProvider
 } from './types';
 
 const REMOVE_EVENT = 'remove';
@@ -139,11 +140,6 @@ export default defineComponent({
     const drawer = ref<Nullable<HTMLElement>>(null);
     const zIndex = getConfig('nextZIndex');
 
-    provide('handleClose', () => {
-      ctx.emit(DONE_EVENT, { action: 'close' });
-      isShown.value = false;
-    });
-
     const preparedContent = computed<QDrawerComponent>(() => {
       if (isExternalComponent(props.content)) {
         return {
@@ -192,6 +188,10 @@ export default defineComponent({
       });
     };
 
+    const closeDrawerButtonClick = (): void => {
+      closeBox({ action: QDrawerAction.close });
+    };
+
     const drawerStyle = computed<Record<string, Nullable<string | number>>>(
       () => ({
         width: Number(props.width) ? `${Number(props.width)}px` : props.width
@@ -201,6 +201,10 @@ export default defineComponent({
     const drawerClass = computed<string>(
       () => `q-drawer-container__wrapper_${props.position}`
     );
+
+    provide<QDrawerContainerProvider>('QDrawerContainer', {
+      closeDrawerButtonClick
+    });
 
     onMounted(async () => {
       document.body.appendChild(instance?.vnode.el as Node);

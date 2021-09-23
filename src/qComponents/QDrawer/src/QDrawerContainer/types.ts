@@ -24,6 +24,12 @@ export interface QDrawerContainerProps {
   distinguishCancelAndClose?: Nullable<boolean>;
 }
 
+export interface QDrawerContainerProvider {
+  closeBox?: (props: QDrawerEvent) => Promise<void>;
+  emitCloseEvent?: () => void;
+  closeDrawerButtonClick: () => void;
+}
+
 export interface QDrawerContainerInstance {
   drawer: Ref<Nullable<HTMLElement>>;
   zIndex: number;

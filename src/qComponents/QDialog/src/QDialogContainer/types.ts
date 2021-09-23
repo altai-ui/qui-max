@@ -2,7 +2,7 @@ import type { Component, ComputedRef, Ref } from 'vue';
 
 import type { Nullable } from '#/helpers';
 import type { QDialogEvent } from '../types';
-import { QDialogAction } from '../constants';
+import type { QDialogAction } from '../constants';
 
 export interface QDialogComponent {
   component: Component;

@@ -2,9 +2,9 @@ import QDialogContainer from './index.vue';
 
 export type {
   QDialogContainerPropContent,
+  QDialogContainerPropTeleportTo,
   QDialogContainerProps,
   QDialogContainerInstance,
-  QDialogContainerPropTeleportTo,
   QDialogContainerProvider
 } from './types';
 export { QDialogContainer };

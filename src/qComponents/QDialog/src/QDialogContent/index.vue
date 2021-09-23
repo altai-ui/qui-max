@@ -26,10 +26,10 @@
 
 <script lang="ts">
 import { defineComponent, inject } from 'vue';
-import { Nullable } from '#/helpers';
 
 import QScrollbar from '@/qComponents/QScrollbar';
 import QButton from '@/qComponents/QButton';
+import type { Nullable } from '#/helpers';
 
 import type { QDialogContainerProvider } from '../QDialogContainer';
 import type { QDialogContentInstance } from './types';

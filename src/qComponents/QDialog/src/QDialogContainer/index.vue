@@ -226,24 +226,23 @@ export default defineComponent({
       });
     };
 
-    provide<QDialogContainerProvider>('qDialogContainer', { emitCloseEvent });
-
     onMounted(async () => {
       document.body.appendChild(instance?.vnode.el as Node);
       document.body.style.overflow = 'hidden';
       document.addEventListener('focus', handleDocumentFocus, true);
-
       await nextTick();
+
       isShown.value = true;
       await nextTick();
       dialog.value?.focus();
     });
-
     onBeforeUnmount(() => {
       document.body.style.overflow = '';
       document.removeEventListener('focus', handleDocumentFocus, true);
       elementToFocusAfterClosing?.focus();
     });
+
+    provide<QDialogContainerProvider>('qDialogContainer', { emitCloseEvent });
 
     return {
       dialog,

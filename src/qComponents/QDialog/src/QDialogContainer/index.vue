@@ -236,6 +236,7 @@ export default defineComponent({
       await nextTick();
       dialog.value?.focus();
     });
+
     onBeforeUnmount(() => {
       document.body.style.overflow = '';
       document.removeEventListener('focus', handleDocumentFocus, true);

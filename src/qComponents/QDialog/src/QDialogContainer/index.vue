@@ -23,28 +23,14 @@
           :class="customClass"
           @keyup.esc="emitCloseEvent"
         >
-          <q-scrollbar
-            theme="secondary"
-            view-class="q-dialog__view"
-          >
-            <div class="q-dialog__inner">
-              <q-button
-                class="q-dialog__close"
-                circle
-                theme="secondary"
-                type="icon"
-                icon="q-icon-close"
-                @click="emitCloseEvent"
-              />
-
-              <component
-                :is="preparedContent.component"
-                v-bind="preparedContent.props"
-                v-on="preparedContent.listeners"
-                @done="closeDialog"
-              />
-            </div>
-          </q-scrollbar>
+          <div class="q-dialog__inner">
+            <component
+              :is="preparedContent.component"
+              v-bind="preparedContent.props"
+              v-on="preparedContent.listeners"
+              @done="closeDialog"
+            />
+          </div>
         </div>
       </div>
     </transition>
@@ -59,6 +45,7 @@ import {
   nextTick,
   onBeforeUnmount,
   onMounted,
+  provide,
   ref
 } from 'vue';
 import type { PropType } from 'vue';
@@ -79,7 +66,8 @@ import type {
   QDialogContainerPropTeleportTo,
   QDialogContainerProps,
   QDialogContainerInstance,
-  QDialogComponent
+  QDialogComponent,
+  QDialogContainerProvider
 } from './types';
 
 const REMOVE_EVENT = 'remove';
@@ -215,6 +203,8 @@ export default defineComponent({
           : QDialogAction.cancel
       });
     };
+
+    provide<QDialogContainerProvider>('QDialogContainer', { emitCloseEvent });
 
     onMounted(async () => {
       document.body.appendChild(instance?.vnode.el as Node);

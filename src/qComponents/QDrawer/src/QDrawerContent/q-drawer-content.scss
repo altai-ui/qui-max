@@ -24,7 +24,6 @@
     &:hover,
     &.focus-visible {
       color: var(--color-primary-black);
-      outline: none;
     }
   }
 
@@ -37,15 +36,5 @@
     display: flex;
     align-items: center;
     justify-content: center;
-
-    .q-drawer-content__scrollbar:not(.q-scrollbar_has-vertical-bar) & {
-      align-items: center;
-    }
-  }
-
-  &__content {
-    &:last-child {
-      margin-bottom: 32px;
-    }
   }
 }

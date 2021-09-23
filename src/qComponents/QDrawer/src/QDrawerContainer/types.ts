@@ -17,17 +17,16 @@ export type QDrawerContainerPropPosition = 'left' | 'right';
 export interface QDrawerContainerProps {
   content: QDrawerContainerPropContent;
   width: Nullable<string | number>;
-  position: QDrawerContainerPropPosition;
-  teleportTo: QDrawerContainerPropTeleportTo;
-  customClass: Nullable<string>;
   closeOnClickShadow?: Nullable<boolean>;
   distinguishCancelAndClose?: Nullable<boolean>;
+  position: QDrawerContainerPropPosition;
+  customClass: Nullable<string>;
+  teleportTo: QDrawerContainerPropTeleportTo;
 }
 
 export interface QDrawerContainerProvider {
-  closeBox?: (props: QDrawerEvent) => Promise<void>;
-  emitCloseEvent?: () => void;
-  closeDrawerButtonClick: () => void;
+  closeBox: (props: QDrawerEvent) => Promise<void>;
+  emitCloseEvent: () => void;
 }
 
 export interface QDrawerContainerInstance {

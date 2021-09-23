@@ -188,10 +188,6 @@ export default defineComponent({
       });
     };
 
-    const closeDrawerButtonClick = (): void => {
-      closeBox({ action: QDrawerAction.close });
-    };
-
     const drawerStyle = computed<Record<string, Nullable<string | number>>>(
       () => ({
         width: Number(props.width) ? `${Number(props.width)}px` : props.width
@@ -202,8 +198,9 @@ export default defineComponent({
       () => `q-drawer-container__wrapper_${props.position}`
     );
 
-    provide<QDrawerContainerProvider>('QDrawerContainer', {
-      closeDrawerButtonClick
+    provide<QDrawerContainerProvider>('qDrawerContainer', {
+      closeBox,
+      emitCloseEvent
     });
 
     onMounted(async () => {

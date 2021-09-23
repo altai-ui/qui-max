@@ -18,11 +18,11 @@ export interface QDrawerHookOptions {
 
 export interface QDrawerOptions {
   width: Nullable<string | number>;
-  position: QDrawerContainerPropPosition;
-  teleportTo?: QDrawerContainerPropTeleportTo;
   closeOnClickShadow?: Nullable<boolean>;
   distinguishCancelAndClose?: Nullable<boolean>;
+  position: QDrawerContainerPropPosition;
   customClass?: Nullable<string>;
+  teleportTo?: QDrawerContainerPropTeleportTo;
   parentInstance?: Nullable<ComponentInternalInstance>;
   onBeforeMount?: (app: App<Element>) => void;
   onMounted?: (

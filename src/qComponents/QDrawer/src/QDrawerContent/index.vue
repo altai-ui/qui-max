@@ -7,14 +7,12 @@
       <button
         type="button"
         class="q-drawer-content__close q-icon-close"
-        @click="handleDrawerCloseButtonClick"
+        @click="handleCloseBtnClick"
       />
     </div>
     <q-scrollbar
       theme="secondary"
       class="q-drawer-content__scrollbar"
-      view-class="q-drawer-content__view"
-      visible
     >
       <div class="q-drawer-content__body">
         <slot />
@@ -25,8 +23,13 @@
 
 <script lang="ts">
 import { defineComponent, inject } from 'vue';
+
 import QScrollbar from '@/qComponents/QScrollbar';
+
+import { Nullable } from '#/helpers';
 import { QDrawerContainerProvider } from '../QDrawerContainer';
+import { QDrawerAction } from '../constants';
+import { QDrawerContentInstance, QDrawerContentProps } from './types';
 
 export default defineComponent({
   name: 'QDrawerContent',
@@ -38,17 +41,30 @@ export default defineComponent({
     title: {
       type: String,
       default: null
+    },
+
+    distinguishCancelAndClose: {
+      type: Boolean,
+      default: false
     }
   },
 
-  setup() {
-    const QDrawerContainer =
-      inject<QDrawerContainerProvider>('QDrawerContainer');
-    const handleDrawerCloseButtonClick =
-      QDrawerContainer?.closeDrawerButtonClick;
+  setup(props: QDrawerContentProps): QDrawerContentInstance {
+    const QDrawerContainer = inject<Nullable<QDrawerContainerProvider>>(
+      'qDrawerContainer',
+      null
+    );
+
+    const handleCloseBtnClick = (): void => {
+      QDrawerContainer?.closeBox({
+        action: props.distinguishCancelAndClose
+          ? QDrawerAction.cancel
+          : QDrawerAction.close
+      });
+    };
 
     return {
-      handleDrawerCloseButtonClick
+      handleCloseBtnClick
     };
   }
 });

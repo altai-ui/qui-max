@@ -13,7 +13,8 @@ import type {
   QDialogOptions,
   QDialogEvent,
   QDialogPromise,
-  QDialog
+  QDialog,
+  QDialogParentInstance
 } from './types';
 
 export const createDialog = (config?: QDialogHookOptions): QDialog => {
@@ -60,12 +61,21 @@ export const createDialog = (config?: QDialogHookOptions): QDialog => {
         app?.component(key, value);
       });
 
-      // Reprovide a global provides from main app instance
-      const provides = parentAppContext?.provides ?? {};
-      const providerKeys = Object.getOwnPropertySymbols(provides);
+      // Reprovide a global provides from main app instance and provides from parentInstance
+      const globalProvides = parentAppContext?.provides ?? {};
+      const parentInstanceProvides =
+        (config?.parentInstance as QDialogParentInstance)?.provides ?? {};
+
+      const provides = { ...globalProvides, ...parentInstanceProvides };
+
+      const providerKeys = [
+        ...Object.getOwnPropertySymbols(provides),
+        ...Object.keys(provides)
+      ];
+
       providerKeys.forEach(key => {
         // TS does not allow use 'symbol' as index type, so we pretend like we don't
-        const value = provides[key as unknown as string];
+        const value = provides[key as string];
         if (value) app?.provide(key, value);
       });
 

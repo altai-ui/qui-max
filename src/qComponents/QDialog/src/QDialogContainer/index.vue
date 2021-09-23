@@ -137,6 +137,13 @@ export default defineComponent({
     beforeClose: {
       type: Function as unknown as PropType<QDialogContainerPropBeforeClose>,
       default: null
+    },
+    /**
+     * cancel focus on document.activeElement after QDialog was closed
+     */
+    preventFocusAfterClosing: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -240,7 +247,7 @@ export default defineComponent({
     onBeforeUnmount(() => {
       document.body.style.overflow = '';
       document.removeEventListener('focus', handleDocumentFocus, true);
-      elementToFocusAfterClosing?.focus();
+      if (!props.preventFocusAfterClosing) elementToFocusAfterClosing?.focus();
     });
 
     provide<QDialogContainerProvider>('qDialogContainer', { emitCloseEvent });

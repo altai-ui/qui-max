@@ -11,6 +11,10 @@ import type { QDialogAction } from './constants';
 
 export type QDialogContent = QDialogContainerPropContent;
 
+export interface QDialogParentInstance extends ComponentInternalInstance {
+  provides: Record<string, unknown>;
+}
+
 export interface QDialogHookOptions {
   parentInstance?: Nullable<ComponentInternalInstance>;
 }
@@ -25,10 +29,11 @@ export interface QDialogOptions {
     container: NonNullable<UnwrappedInstance<QDialogContainerInstance>>
   ) => void;
   onUnmounted?: (app: App<Element>) => void;
-  width: Nullable<string | number>;
-  offsetTop: Nullable<string | number>;
-  customClass: Nullable<string>;
-  teleportTo: QDialogContainerPropTeleportTo;
+  width?: Nullable<string | number>;
+  offsetTop?: Nullable<string | number>;
+  customClass?: Nullable<string>;
+  teleportTo?: QDialogContainerPropTeleportTo;
+  preventFocusAfterClosing?: Nullable<boolean>;
 }
 
 export interface QDialogEvent {

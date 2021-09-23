@@ -76,22 +76,8 @@
       :to="teleportTo || 'body'"
       :disabled="!teleportTo"
     >
-      <q-dialog
-        v-if="isMobileView"
-        v-model:visible="state.pickerVisible"
-        prevent-focus-after-closing
-        @close="closePicker"
-      >
-        <component
-          :is="panelComponent"
-          ref="panel"
-          v-model="transformedToDate"
-          class="q-picker-panel__dialog-view"
-          @pick="handlePickClick"
-        />
-      </q-dialog>
       <transition
-        v-else
+        v-if="!isMobileView"
         name="q-picker-panel-animation"
         @after-leave="destroyPopper"
         @before-enter="popperInit"
@@ -139,7 +125,7 @@ import { t } from '@/qComponents/locale';
 import { notNull, validateArray } from '@/qComponents/helpers';
 import { useMediaQuery } from '@/qComponents/hooks';
 import QInput from '@/qComponents/QInput';
-import QDialog from '@/qComponents/QDialog';
+import { QDialogContent, useDialog } from '@/qComponents/QDialog';
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QInputInstance } from '@/qComponents/QInput';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
@@ -172,7 +158,7 @@ import type {
 export default defineComponent({
   name: 'QDatePicker',
   componentName: 'QDatePicker',
-  components: { QInput, QDialog },
+  components: { QInput },
   props: {
     /**
      * one of sugested types
@@ -333,6 +319,7 @@ export default defineComponent({
     const qFormItem = inject<Nullable<QFormItemProvider>>('qFormItem', null);
     const reference = ref<Nullable<UnwrappedInstance<QInputInstance>>>(null);
     const rangedReference = ref<Nullable<HTMLElement>>(null);
+    const dialog = useDialog();
 
     const state = reactive<QDatePickerState>({
       pickerVisible: false,
@@ -398,6 +385,20 @@ export default defineComponent({
           return DatePanel;
       }
     });
+
+    const openDialog = async (): Promise<void> => {
+      try {
+        const result = await dialog(
+          { component: panelComponent.value, props: {} },
+          { preventFocusAfterClosing: true }
+        );
+        // eslint-disable-next-line no-console
+        console.log('resolve: ', result);
+      } catch (err) {
+        // eslint-disable-next-line no-console
+        console.log('reject: ', err);
+      }
+    };
 
     const isValueEmpty = computed<boolean>(() => {
       if (Array.isArray(transformedToDate.value)) {
@@ -637,6 +638,7 @@ export default defineComponent({
       if (isPickerDisabled.value) return;
       state.pickerVisible = true;
       ctx.emit('focus');
+      if (isMobileView) openDialog();
 
       if (
         !transformedToDate.value ||

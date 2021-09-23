@@ -27,6 +27,7 @@ export interface QDialogContainerProps {
   customClass: Nullable<string>;
   teleportTo: QDialogContainerPropTeleportTo;
   beforeClose: Nullable<QDialogContainerPropBeforeClose>;
+  preventFocusAfterClosing: Nullable<boolean>;
 }
 
 export interface QDialogContainerInstance {

@@ -103,3 +103,11 @@ export default defineComponent({
   }
 });
 </script>
+
+<style lang="scss" scoped>
+.q-drawer-content {
+  &__actions {
+    display: flex;
+  }
+}
+</style>

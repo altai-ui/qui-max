@@ -390,7 +390,7 @@ export default defineComponent({
     const openDialog = async (): Promise<void> => {
       try {
         const result = await dialog(
-          { component: MobilePanel, props: { modelValue: transformedToDate } },
+          { component: MobilePanel },
           { teleportTo: '.q-date-picker', preventFocusAfterClosing: true }
         );
         // eslint-disable-next-line no-console
@@ -671,6 +671,7 @@ export default defineComponent({
         state.userInput = null;
         state.showCloseIcon = false;
       } else {
+        if (!state.pickerVisible && isMobileView) openDialog();
         state.pickerVisible = !state.pickerVisible;
       }
     };

@@ -2,7 +2,7 @@
   <q-dialog-content>
     <component
       :is="panelComponent"
-      v-model="picker.transformedToDate"
+      v-model="picker.transformedToDate.value"
       class="q-picker-panel__dialog-view"
       @pick="handleClick"
     />

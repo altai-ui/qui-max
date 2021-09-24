@@ -13,12 +13,6 @@
     <q-scrollbar>
       <div class="q-drawer-content__body">
         <slot />
-        <div
-          v-if="$slots.actions"
-          class="q-drawer-content__actions"
-        >
-          <slot name="actions" />
-        </div>
       </div>
     </q-scrollbar>
   </div>

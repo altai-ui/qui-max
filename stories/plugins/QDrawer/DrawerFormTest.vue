@@ -17,7 +17,7 @@
       </q-form-item>
     </q-form>
 
-    <template #actions>
+    <div class="q-drawer-content__actions">
       <q-button
         :loading="isLoading"
         @click="handleConfirmClick"
@@ -27,7 +27,7 @@
         theme="secondary"
         @click="handleCancelClick"
       >Cancel</q-button>
-    </template>
+    </div>
   </q-drawer-content>
 </template>
 

@@ -250,7 +250,10 @@ export default defineComponent({
       if (!props.preventFocusAfterClosing) elementToFocusAfterClosing?.focus();
     });
 
-    provide<QDialogContainerProvider>('qDialogContainer', { emitCloseEvent });
+    provide<QDialogContainerProvider>('qDialogContainer', {
+      emitCloseEvent,
+      closeDialog
+    });
 
     return {
       dialog,

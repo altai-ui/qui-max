@@ -125,7 +125,7 @@ import { t } from '@/qComponents/locale';
 import { notNull, validateArray } from '@/qComponents/helpers';
 import { useMediaQuery } from '@/qComponents/hooks';
 import QInput from '@/qComponents/QInput';
-import { QDialogContent, useDialog } from '@/qComponents/QDialog';
+import { useDialog } from '@/qComponents/QDialog';
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QInputInstance } from '@/qComponents/QInput';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
@@ -135,6 +135,7 @@ import DatePanel from './panel/Date/DatePanel.vue';
 import DateRangePanel from './panel/DateRange/DateRange.vue';
 import MonthRangePanel from './panel/MonthRange/MonthRange.vue';
 import YearRangePanel from './panel/YearRange/YearRange.vue';
+import MobilePanel from './mobile/MobilePanel.vue';
 import type { DatePanelInstance } from './panel/Date/types';
 import {
   calcInputData,
@@ -389,8 +390,8 @@ export default defineComponent({
     const openDialog = async (): Promise<void> => {
       try {
         const result = await dialog(
-          { component: panelComponent.value, props: {} },
-          { preventFocusAfterClosing: true }
+          { component: MobilePanel, props: { modelValue: transformedToDate } },
+          { teleportTo: '.q-date-picker', preventFocusAfterClosing: true }
         );
         // eslint-disable-next-line no-console
         console.log('resolve: ', result);
@@ -638,7 +639,7 @@ export default defineComponent({
       if (isPickerDisabled.value) return;
       state.pickerVisible = true;
       ctx.emit('focus');
-      if (isMobileView) openDialog();
+      if (isMobileView.value) openDialog();
 
       if (
         !transformedToDate.value ||
@@ -682,6 +683,7 @@ export default defineComponent({
     const handleRangeClick = (): void => {
       if (isPickerDisabled.value) return;
       state.pickerVisible = true;
+      if (isMobileView.value) openDialog();
       ctx.emit('focus');
     };
 
@@ -737,6 +739,7 @@ export default defineComponent({
       emitChange,
       handlePickClick,
       type: toRef(props, 'type'),
+      transformedToDate: toRef(transformedToDate, 'value'),
       disabledValues: toRef(props, 'disabledValues'),
       shortcuts: toRef(props, 'shortcuts')
     });

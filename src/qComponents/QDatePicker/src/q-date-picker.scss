@@ -128,15 +128,13 @@
     border: var(--border-error);
   }
 
-  .q-dialog {
-    &__content {
+  .q-dialog-content {
+    padding: 0;
+
+    &__body {
       display: flex;
       align-items: flex-end;
       justify-content: center;
-    }
-
-    &__inner {
-      padding: 0;
     }
 
     &__close {
@@ -154,7 +152,7 @@
 
 @media (min-width: 415px) {
   .q-date-picker {
-    .q-dialog {
+    .q-dialog-container {
       &__close {
         top: 20px;
         right: 20px;

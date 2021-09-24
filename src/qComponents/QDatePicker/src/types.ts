@@ -75,7 +75,7 @@ interface QDatePickerProvider {
   ) => void;
   handlePickClick: (
     val: QDatePickerPropModelValue,
-    { hidePicker }?: HandlePickClickSecondArg
+    { hidePicker }: HandlePickClickSecondArg
   ) => void;
   firstDayOfWeek: ComputedRef<number>;
   isMobileView: Ref<boolean>;
@@ -83,6 +83,7 @@ interface QDatePickerProvider {
   shortcuts: Ref<Nullable<QDatePickerPropShortcuts>>;
   emitChange: (val: QDatePickerPropModelValue, intermediate: boolean) => void;
   type: Ref<QDatePickerPropType>;
+  transformedToDate: Ref<Nullable<Date | Date[]>>;
 }
 
 interface QDatePickerInstance {

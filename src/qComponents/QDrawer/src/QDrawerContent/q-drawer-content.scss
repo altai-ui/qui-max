@@ -1,4 +1,6 @@
 .q-drawer-content {
+  height: 100%;
+
   &__header {
     padding-right: 56px;
     padding-bottom: 32px;
@@ -9,6 +11,7 @@
     font-weight: 800;
     line-height: 25px;
     color: var(--color-primary-black);
+    word-break: break-word;
   }
 
   &__close {
@@ -27,14 +30,11 @@
     }
   }
 
-  &__scrollbar {
-    width: 100%;
+  &__body {
+    padding-right: 24px;
   }
 
-  &__view {
-    position: relative;
+  &__actions {
     display: flex;
-    align-items: center;
-    justify-content: center;
   }
 }

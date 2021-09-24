@@ -10,12 +10,15 @@
         @click="handleCloseBtnClick"
       />
     </div>
-    <q-scrollbar
-      theme="secondary"
-      class="q-drawer-content__scrollbar"
-    >
+    <q-scrollbar>
       <div class="q-drawer-content__body">
         <slot />
+        <div
+          v-if="$slots.actions"
+          class="q-drawer-content__actions"
+        >
+          <slot name="actions" />
+        </div>
       </div>
     </q-scrollbar>
   </div>
@@ -28,7 +31,6 @@ import QScrollbar from '@/qComponents/QScrollbar';
 
 import { Nullable } from '#/helpers';
 import { QDrawerContainerProvider } from '../QDrawerContainer';
-import { QDrawerAction } from '../constants';
 import { QDrawerContentInstance, QDrawerContentProps } from './types';
 
 export default defineComponent({
@@ -41,11 +43,6 @@ export default defineComponent({
     title: {
       type: String,
       default: null
-    },
-
-    distinguishCancelAndClose: {
-      type: Boolean,
-      default: false
     }
   },
 
@@ -56,11 +53,7 @@ export default defineComponent({
     );
 
     const handleCloseBtnClick = (): void => {
-      QDrawerContainer?.closeBox({
-        action: props.distinguishCancelAndClose
-          ? QDrawerAction.cancel
-          : QDrawerAction.close
-      });
+      QDrawerContainer?.emitCloseEvent();
     };
 
     return {

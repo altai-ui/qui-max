@@ -1,11 +1,9 @@
 <template>
   <q-drawer-content>
     <template #title>{{ title }}</template>
-    <p>{{ someExternalProp }}</p>
-    <p>
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio corrupti
-      voluptate, error magni quod iste iure excepturi!
-    </p>
+
+    {{ someExternalProp }}
+
     <q-form :model="formModel">
       <q-form-item
         prop="name"
@@ -18,14 +16,18 @@
         />
       </q-form-item>
     </q-form>
-    <q-button
-      :loading="isLoading"
-      @click="handleConfirmClick"
-    >Confirm</q-button>
-    <q-button
-      theme="secondary"
-      @click="handleCancelClick"
-    >Cancel</q-button>
+
+    <template #actions>
+      <q-button
+        :loading="isLoading"
+        @click="handleConfirmClick"
+      >Confirm</q-button>
+
+      <q-button
+        theme="secondary"
+        @click="handleCancelClick"
+      >Cancel</q-button>
+    </template>
   </q-drawer-content>
 </template>
 
@@ -52,7 +54,7 @@ export default defineComponent({
   props: {
     title: {
       type: String,
-      default: null
+      default: 'What is Lorem Ipsum?'
     },
 
     someExternalProp: {

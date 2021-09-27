@@ -55,7 +55,7 @@ export default defineComponent({
 
     someExternalProp: {
       type: String,
-      default: null
+      default: 'Default external prop'
     }
   },
 
@@ -106,15 +106,11 @@ export default defineComponent({
     display: flex;
     flex-flow: column nowrap;
     justify-content: center;
+    padding-right: 24px;
   }
 
   &__externalprop {
-    padding: 24px 0;
-  }
-
-  &__actions {
-    display: flex;
-    justify-content: flex-start;
+    padding-bottom: 24px;
   }
 }
 </style>

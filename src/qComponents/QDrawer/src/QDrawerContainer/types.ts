@@ -17,8 +17,8 @@ export type QDrawerContainerPropPosition = 'left' | 'right';
 export interface QDrawerContainerProps {
   content: QDrawerContainerPropContent;
   width: Nullable<string | number>;
-  closeOnClickShadow?: Nullable<boolean>;
-  distinguishCancelAndClose?: Nullable<boolean>;
+  closeOnClickShadow: Nullable<boolean>;
+  distinguishCancelAndClose: Nullable<boolean>;
   position: QDrawerContainerPropPosition;
   customClass: Nullable<string>;
   teleportTo: QDrawerContainerPropTeleportTo;

@@ -17,7 +17,7 @@ export interface QDrawerHookOptions {
 }
 
 export interface QDrawerOptions {
-  width: Nullable<string | number>;
+  width?: Nullable<string | number>;
   closeOnClickShadow?: Nullable<boolean>;
   distinguishCancelAndClose?: Nullable<boolean>;
   position: QDrawerContainerPropPosition;

@@ -125,6 +125,7 @@
     .q-dialog-container__inner {
       display: flex;
       flex-direction: column;
+      align-items: center;
       justify-content: flex-end;
       .q-mobile-panel-close {
         position: absolute;

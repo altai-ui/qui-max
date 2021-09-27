@@ -8,11 +8,11 @@
       class="q-drawer-content__close q-icon-close"
       @click="handleCloseBtnClick"
     />
-    <div class="q-drawer-content__body">
-      <q-scrollbar>
+    <q-scrollbar>
+      <div class="q-drawer-content__body">
         <slot />
-      </q-scrollbar>
-    </div>
+      </div>
+    </q-scrollbar>
   </div>
 </template>
 

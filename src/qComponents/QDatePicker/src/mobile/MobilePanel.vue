@@ -1,6 +1,6 @@
 <template>
   <q-button
-    class="q-mobile-panel-close"
+    class="q-dialog-mobile-panel__close"
     circle
     theme="secondary"
     type="icon"
@@ -8,8 +8,8 @@
     @click="dialog.emitCloseEvent"
   />
   <component
-    :is="picker.panelComponent.value"
-    :model-value="picker.transformedToDate.value"
+    :is="panelComponent"
+    :model-value="transformedToDate"
     class="q-picker-panel__dialog-view"
     @pick="handlePick"
   />
@@ -48,7 +48,8 @@ export default defineComponent({
 
     return {
       dialog,
-      picker,
+      transformedToDate: picker.transformedToDate,
+      panelComponent: picker.panelComponent,
       handlePick
     };
   }

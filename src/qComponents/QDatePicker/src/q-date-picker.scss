@@ -1,6 +1,7 @@
 @import './panel/q-picker-panel.scss';
 @import './tables/DateTable/date-table.scss';
 @import './tables/period-table.scss';
+@import './mobile/q-dialog-mobile-panel.scss';
 
 .q-date-picker {
   --field-icon-color-base: var(--color-primary-blue);
@@ -121,38 +122,10 @@
     }
   }
 
-  &-dialog {
-    .q-dialog-container__inner {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-end;
-      .q-mobile-panel-close {
-        position: absolute;
-        top: 100px;
-        left: 50%;
-        transform: translateX(-50%);
-      }
-    }
-  }
-
   .q-input__icon {
     margin-left: auto;
   }
   .q-form-item_is-error & {
     border: var(--border-error);
-  }
-}
-
-@media (min-width: 415px) {
-  .q-date-picker {
-    &-dialog {
-      .q-mobile-panel-close {
-        top: 20px;
-        right: 20px;
-        left: auto;
-        transform: translateX(0);
-      }
-    }
   }
 }

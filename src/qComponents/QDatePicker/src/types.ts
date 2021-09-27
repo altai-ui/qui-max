@@ -37,7 +37,13 @@ type QDatePickerPropDisabledValues = Nullable<{
 
 type HandlePickClickSecondArg = { hidePicker?: boolean };
 
-type QDatePickerPropTrasformedToDate = Nullable<Date | Date[]>;
+export type QDatePickerTrasformedToDate = Nullable<Date | Date[]>;
+
+export type QDatePickerPanelComponent =
+  | typeof DateRangePanel
+  | typeof MonthRangePanel
+  | typeof YearRangePanel
+  | typeof DatePanel;
 
 interface QDatePickerProps {
   type: QDatePickerPropType;
@@ -86,13 +92,8 @@ interface QDatePickerProvider {
   shortcuts: Ref<Nullable<QDatePickerPropShortcuts>>;
   emitChange: (val: QDatePickerPropModelValue, intermediate: boolean) => void;
   type: Ref<QDatePickerPropType>;
-  transformedToDate: ComputedRef<QDatePickerPropTrasformedToDate>;
-  panelComponent: ComputedRef<
-    | typeof DateRangePanel
-    | typeof MonthRangePanel
-    | typeof YearRangePanel
-    | typeof DatePanel
-  >;
+  transformedToDate: ComputedRef<QDatePickerTrasformedToDate>;
+  panelComponent: ComputedRef<QDatePickerPanelComponent>;
 }
 
 interface QDatePickerInstance {
@@ -108,12 +109,7 @@ interface QDatePickerInstance {
   calcFirstDayOfWeek: ComputedRef<number>;
   transformedToDate: ComputedRef<Nullable<Date | Date[]>>;
   rangeClasses: ComputedRef<Record<string, boolean>>;
-  panelComponent: ComputedRef<
-    | typeof DateRangePanel
-    | typeof MonthRangePanel
-    | typeof YearRangePanel
-    | typeof DatePanel
-  >;
+  panelComponent: ComputedRef<QDatePickerPanelComponent>;
   displayValue: ComputedRef<Nullable<string | string[]>>;
   iconClass: ComputedRef<string>;
   handleInputDateChange: () => void;

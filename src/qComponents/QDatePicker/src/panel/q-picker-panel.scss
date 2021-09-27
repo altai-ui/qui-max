@@ -182,8 +182,12 @@
   }
 
   &__dialog-view {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
     width: 100%;
-    max-width: 415px;
+    height: 100%;
     // reject user-select on mobile
     -webkit-user-select: none;
     user-select: none;
@@ -191,6 +195,12 @@
     .q-picker-panel__body {
       flex-direction: column;
       width: 100%;
+      max-width: 415px;
+      height: auto;
+      &-wrapper {
+        max-width: 415px;
+        height: auto;
+      }
     }
 
     .q-picker-panel__sidebar {

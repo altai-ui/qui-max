@@ -1,0 +1,21 @@
+.q-dialog-mobile-panel {
+  &__close {
+    position: absolute;
+    top: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+
+    .q-icon-close {
+      margin: 2px 0 0 2px;
+    }
+
+    @media (max-width: 415px) {
+      &__close {
+        top: 20px;
+        right: 20px;
+        left: auto;
+        transform: translateX(0);
+      }
+    }
+  }
+}

@@ -32,7 +32,7 @@ import QButton from '@/qComponents/QButton';
 import type { Nullable } from '#/helpers';
 
 import type { QDialogContainerProvider } from '../QDialogContainer';
-import type { QDialogContentInstance } from './types';
+import type { QDialogContentInstance, QDialogContentProps } from './types';
 
 export default defineComponent({
   name: 'QDialogContent',
@@ -50,7 +50,8 @@ export default defineComponent({
     }
   },
 
-  setup(): QDialogContentInstance {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  setup(props: QDialogContentProps): QDialogContentInstance {
     const dialogContainer = inject<Nullable<QDialogContainerProvider>>(
       'qDialogContainer',
       null

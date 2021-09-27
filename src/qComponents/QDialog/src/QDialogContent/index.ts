@@ -1,4 +1,4 @@
 import QDialogContent from './index.vue';
 
-export type { QDialogContentProps } from './types';
+export type { QDialogContentProps, QDialogContentInstance } from './types';
 export { QDialogContent };

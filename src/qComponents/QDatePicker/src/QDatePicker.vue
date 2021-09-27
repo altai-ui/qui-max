@@ -482,14 +482,14 @@ export default defineComponent({
           { component: MobilePanel },
           {
             teleportTo: props.teleportTo,
-            preventFocusAfterClosing: true,
-            customClass: 'q-date-picker-dialog'
+            preventFocusAfterClosing: true
           }
         );
 
-        if (result) emitChange(result.payload as QDatePickerPropModelValue);
-        state.pickerVisible = false;
+        emitChange(result.payload as QDatePickerPropModelValue);
       } catch (err) {
+        // do nothing
+      } finally {
         state.pickerVisible = false;
       }
     };

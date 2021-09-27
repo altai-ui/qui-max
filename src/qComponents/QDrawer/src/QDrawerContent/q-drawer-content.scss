@@ -1,12 +1,8 @@
 .q-drawer-content {
   height: 100%;
 
-  &__header {
-    padding-right: 56px;
-    padding-bottom: 32px;
-  }
-
   &__title {
+    padding: 0 24px;
     font-size: 20px;
     font-weight: 800;
     line-height: 25px;
@@ -31,6 +27,7 @@
   }
 
   &__body {
-    padding-right: 24px;
+    height: 100%;
+    padding: 0 24px;
   }
 }

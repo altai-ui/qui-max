@@ -2,31 +2,34 @@
   <q-drawer-content>
     <template #title>{{ title }}</template>
 
-    {{ someExternalProp }}
+    <div class="q-drawer-sample-content__externalprop">
+      {{ someExternalProp }}
+    </div>
 
-    <q-form :model="formModel">
-      <q-form-item
-        prop="name"
-        label="Name"
-        required
-      >
-        <q-input
-          v-model="formModel.name"
-          @input="handleNameInput"
-        />
-      </q-form-item>
-    </q-form>
+    <div class="q-drawer-sample-content__input">
+      <q-form :model="formModel">
+        <q-form-item
+          prop="name"
+          label="Name"
+          required
+        >
+          <q-input
+            v-model="formModel.name"
+            @input="handleNameInput"
+          />
+        </q-form-item>
+      </q-form>
+      <div class="q-drawer-sample-content__actions">
+        <q-button
+          :loading="isLoading"
+          @click="handleConfirmClick"
+        >Confirm</q-button>
 
-    <div class="q-drawer-content__actions">
-      <q-button
-        :loading="isLoading"
-        @click="handleConfirmClick"
-      >Confirm</q-button>
-
-      <q-button
-        theme="secondary"
-        @click="handleCancelClick"
-      >Cancel</q-button>
+        <q-button
+          theme="secondary"
+          @click="handleCancelClick"
+        >Cancel</q-button>
+      </div>
     </div>
   </q-drawer-content>
 </template>
@@ -34,14 +37,7 @@
 <script lang="ts">
 import { defineComponent, reactive, ref } from 'vue';
 
-import {
-  QForm,
-  QFormItem,
-  QInput,
-  QButton,
-  QDrawerContent,
-  QDrawerAction
-} from '@/qComponents';
+import { QDrawerContent, QDrawerAction } from '@/qComponents';
 
 const DONE_EVENT = 'done';
 const NAME_INPUT_EVENT = 'name-input';
@@ -49,7 +45,7 @@ const NAME_INPUT_EVENT = 'name-input';
 export default defineComponent({
   name: 'QDrawerSampleContent',
 
-  components: { QForm, QFormItem, QInput, QButton, QDrawerContent },
+  components: { QDrawerContent },
 
   props: {
     title: {
@@ -105,9 +101,20 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.q-drawer-content {
+.q-drawer-sample-content {
+  &__input {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+  }
+
+  &__externalprop {
+    padding: 24px 0;
+  }
+
   &__actions {
     display: flex;
+    justify-content: flex-start;
   }
 }
 </style>

@@ -32,8 +32,7 @@ const QDrawerStoryComponent: Story<QDrawerOptions> = args =>
               ),
               props: {
                 someExternalProp: 'Some external prop here',
-                title:
-                  'Morbi massa libero, vehicula nec consequat sed, porta a sem.'
+                title: 'Morbi massa libero.'
               },
               listeners: {
                 nameInput: (value: string) => {
@@ -43,8 +42,7 @@ const QDrawerStoryComponent: Story<QDrawerOptions> = args =>
               }
             },
             {
-              ...args,
-              distinguishCancelAndClose: true
+              ...args
             }
           );
           // eslint-disable-next-line no-console
@@ -63,7 +61,8 @@ const QDrawerStoryComponent: Story<QDrawerOptions> = args =>
 export const Extended = QDrawerStoryComponent.bind({});
 
 Extended.args = {
-  width: 350
+  width: 350,
+  distinguishCancelAndClose: true
 };
 
 export default storyMetadata;

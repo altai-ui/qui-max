@@ -28,8 +28,7 @@ const QDrawerStoryComponent: Story<QDrawerOptions> = args =>
           const result = await drawer(
             defineAsyncComponent(() => import('./DrawerFormTest.vue')),
             {
-              ...args,
-              distinguishCancelAndClose: true
+              ...args
             }
           );
           // eslint-disable-next-line no-console
@@ -50,7 +49,8 @@ const QDrawerStoryComponent: Story<QDrawerOptions> = args =>
 export const Component = QDrawerStoryComponent.bind({});
 
 Component.args = {
-  width: 350
+  width: 350,
+  distinguishCancelAndClose: true
 };
 
 export default storyMetadata;

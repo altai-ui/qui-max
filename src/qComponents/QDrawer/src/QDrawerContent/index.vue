@@ -1,15 +1,13 @@
 <template>
   <div class="q-drawer-content">
-    <div class="q-drawer-content__header">
-      <div class="q-drawer-content__title">
-        <slot name="title">{{ title }}</slot>
-      </div>
-      <button
-        type="button"
-        class="q-drawer-content__close q-icon-close"
-        @click="handleCloseBtnClick"
-      />
+    <div class="q-drawer-content__title">
+      <slot name="title">{{ title }}</slot>
     </div>
+    <button
+      type="button"
+      class="q-drawer-content__close q-icon-close"
+      @click="handleCloseBtnClick"
+    />
     <q-scrollbar>
       <div class="q-drawer-content__body">
         <slot />
@@ -24,8 +22,9 @@ import { defineComponent, inject } from 'vue';
 import QScrollbar from '@/qComponents/QScrollbar';
 
 import { Nullable } from '#/helpers';
-import { QDrawerContainerProvider } from '../QDrawerContainer';
-import { QDrawerContentInstance, QDrawerContentProps } from './types';
+
+import type { QDrawerContainerProvider } from '../QDrawerContainer';
+import type { QDrawerContentInstance, QDrawerContentProps } from './types';
 
 export default defineComponent({
   name: 'QDrawerContent',

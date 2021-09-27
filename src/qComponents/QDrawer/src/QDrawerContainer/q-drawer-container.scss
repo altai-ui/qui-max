@@ -17,8 +17,7 @@
     flex-direction: column;
     min-width: 100px;
     height: 100%;
-    padding: 24px;
-    padding-right: 0;
+    padding: 24px 0 24px 0;
     text-align: left;
     background-color: var(--color-tertiary-gray-ultra-light);
     outline: none;
@@ -65,6 +64,5 @@
 
   &__content {
     height: 100%;
-    padding-right: 24px;
   }
 }

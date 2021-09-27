@@ -6,30 +6,28 @@
       {{ someExternalProp }}
     </div>
 
-    <div class="q-drawer-sample-content__input">
-      <q-form :model="formModel">
-        <q-form-item
-          prop="name"
-          label="Name"
-          required
-        >
-          <q-input
-            v-model="formModel.name"
-            @input="handleNameInput"
-          />
-        </q-form-item>
-      </q-form>
-      <div class="q-drawer-sample-content__actions">
-        <q-button
-          :loading="isLoading"
-          @click="handleConfirmClick"
-        >Confirm</q-button>
+    <q-form :model="formModel">
+      <q-form-item
+        prop="name"
+        label="Name"
+        required
+      >
+        <q-input
+          v-model="formModel.name"
+          @input="handleNameInput"
+        />
+      </q-form-item>
+    </q-form>
+    <div class="q-drawer-sample-content__actions">
+      <q-button
+        :loading="isLoading"
+        @click="handleConfirmClick"
+      >Confirm</q-button>
 
-        <q-button
-          theme="secondary"
-          @click="handleCancelClick"
-        >Cancel</q-button>
-      </div>
+      <q-button
+        theme="secondary"
+        @click="handleCancelClick"
+      >Cancel</q-button>
     </div>
   </q-drawer-content>
 </template>
@@ -102,13 +100,6 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .q-drawer-sample-content {
-  &__input {
-    display: flex;
-    flex-flow: column nowrap;
-    justify-content: center;
-    padding-right: 24px;
-  }
-
   &__externalprop {
     padding-bottom: 24px;
   }

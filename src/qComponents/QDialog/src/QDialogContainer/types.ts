@@ -44,5 +44,5 @@ export interface QDialogContainerInstance {
 
 export interface QDialogContainerProvider {
   emitCloseEvent: () => void;
-  close: ({ action, payload }: QDialogEvent) => Promise<void>;
+  emitDoneEvent: ({ action, payload }: QDialogEvent) => Promise<void>;
 }

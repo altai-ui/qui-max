@@ -155,6 +155,7 @@ import type {
   QDatePickerState,
   QDatePickerInstance
 } from './types';
+import { QDatePickerPanelComponent } from './types';
 
 export default defineComponent({
   name: 'QDatePicker',
@@ -370,12 +371,7 @@ export default defineComponent({
 
     const isRanged = computed<boolean>(() => props.type.includes('range'));
 
-    const panelComponent = computed<
-      | typeof DateRangePanel
-      | typeof MonthRangePanel
-      | typeof YearRangePanel
-      | typeof DatePanel
-    >(() => {
+    const panelComponent = computed<QDatePickerPanelComponent>(() => {
       switch (props.type) {
         case 'daterange':
           return DateRangePanel;
@@ -488,7 +484,7 @@ export default defineComponent({
         );
 
         emitChange(result.payload as QDatePickerPropModelValue);
-      } catch (err) {
+      } catch {
         // do nothing
       } finally {
         state.pickerVisible = false;

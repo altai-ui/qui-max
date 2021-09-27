@@ -1,6 +1,5 @@
 import type { ComputedRef } from 'vue';
 
-import type { QDialogContainerProvider } from '@/qComponents/QDialog';
 import type {
   QDatePickerPropModelValue,
   QDatePickerTrasformedToDate
@@ -8,8 +7,8 @@ import type {
 import { QDatePickerPanelComponent } from '../types';
 
 export interface MobilePanelInstance {
-  dialog: QDialogContainerProvider;
-  transformedToDate: ComputedRef<QDatePickerTrasformedToDate>;
+  handleCloseBtnClick: () => void;
   panelComponent: ComputedRef<QDatePickerPanelComponent>;
+  transformedToDate: ComputedRef<QDatePickerTrasformedToDate>;
   handlePick: (val: QDatePickerPropModelValue) => void;
 }

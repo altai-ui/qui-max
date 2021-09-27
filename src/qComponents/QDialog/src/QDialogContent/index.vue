@@ -57,7 +57,7 @@ export default defineComponent({
       null
     );
 
-    const handleClose = async (): Promise<void> => {
+    const handleClose = (): void => {
       dialogContainer?.emitCloseEvent();
     };
 

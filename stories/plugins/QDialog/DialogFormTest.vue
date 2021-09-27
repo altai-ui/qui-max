@@ -33,7 +33,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref } from 'vue';
+import { defineComponent, inject, reactive, ref } from 'vue';
 
 import {
   QForm,
@@ -41,10 +41,10 @@ import {
   QButton,
   QFormItem,
   QDialogAction,
-  QDialogContent
+  QDialogContent,
+  QDialogContainerProvider
 } from '@/qComponents';
 
-const DONE_EVENT = 'done';
 const NAME_INPUT_EVENT = 'name-input';
 
 export default defineComponent({
@@ -59,18 +59,20 @@ export default defineComponent({
     }
   },
 
-  emits: [DONE_EVENT, NAME_INPUT_EVENT],
+  emits: [NAME_INPUT_EVENT],
 
   setup(_, ctx) {
     const isSending = ref<boolean>(false);
     const formModel = reactive({ name: 'Testname' });
+
+    const dialogProvides = inject<QDialogContainerProvider>('qDialogContainer');
 
     const handleNameInput = (e: InputEvent): void => {
       ctx.emit(NAME_INPUT_EVENT, (e.target as HTMLInputElement).value);
     };
 
     const handleCancelClick = (): void => {
-      ctx.emit(DONE_EVENT, { action: QDialogAction.cancel });
+      dialogProvides?.emitDoneEvent({ action: QDialogAction.cancel });
     };
 
     const handleSendClick = async (): Promise<void> => {
@@ -83,7 +85,7 @@ export default defineComponent({
 
       await promise();
 
-      ctx.emit(DONE_EVENT, {
+      await dialogProvides?.emitDoneEvent({
         action: QDialogAction.confirm,
         payload: { test: true }
       });

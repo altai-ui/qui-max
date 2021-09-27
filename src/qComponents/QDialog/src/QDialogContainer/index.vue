@@ -28,7 +28,6 @@
               :is="preparedContent.component"
               v-bind="preparedContent.props"
               v-on="preparedContent.listeners"
-              @done="closeDialog"
             />
           </div>
         </div>
@@ -52,7 +51,6 @@ import type { PropType } from 'vue';
 
 import { isServer } from '@/qComponents/constants/isServer';
 
-import QButton from '@/qComponents/QButton';
 import QScrollbar from '@/qComponents/QScrollbar';
 import { getConfig } from '@/qComponents/config';
 import type { Nullable } from '#/helpers';
@@ -71,14 +69,11 @@ import type {
   QDialogContainerProvider
 } from './types';
 
-const REMOVE_EVENT = 'remove';
-const DONE_EVENT = 'done';
-
 export default defineComponent({
   name: 'QDialogContainer',
   componentName: 'QDialogContainer',
 
-  components: { QButton, QScrollbar },
+  components: { QScrollbar },
 
   props: {
     content: {
@@ -147,7 +142,7 @@ export default defineComponent({
     }
   },
 
-  emits: [REMOVE_EVENT, DONE_EVENT],
+  emits: ['remove', 'done'],
 
   setup(props: QDialogContainerProps, ctx): QDialogContainerInstance {
     const instance = getCurrentInstance();
@@ -199,7 +194,7 @@ export default defineComponent({
     };
 
     const afterLeave = (): void => {
-      ctx.emit(REMOVE_EVENT);
+      ctx.emit('remove');
     };
 
     const commitBeforeClose = async (
@@ -220,7 +215,7 @@ export default defineComponent({
     }: QDialogEvent): Promise<void> => {
       const isDone = await commitBeforeClose(action);
 
-      if (isDone) ctx.emit(DONE_EVENT, { action, payload });
+      if (isDone) ctx.emit('done', { action, payload });
 
       isShown.value = false;
     };
@@ -251,7 +246,7 @@ export default defineComponent({
     });
 
     provide<QDialogContainerProvider>('qDialogContainer', {
-      close: closeDialog,
+      emitDoneEvent: closeDialog,
       emitCloseEvent
     });
 

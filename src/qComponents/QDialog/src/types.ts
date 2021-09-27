@@ -43,8 +43,8 @@ export interface QDialogEvent {
 }
 
 export interface QDialogPromise {
-  resolve: (evt: QDialogEvent) => void;
-  reject: (evt: QDialogEvent) => void;
+  resolve: (event: QDialogEvent) => void;
+  reject: (event: QDialogEvent) => void;
 }
 
 export interface QDialog {

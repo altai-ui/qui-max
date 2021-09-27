@@ -5,5 +5,5 @@ export interface QDialogContentProps {
 }
 
 export interface QDialogContentInstance {
-  handleClose: () => Promise<void>;
+  handleClose: () => void;
 }

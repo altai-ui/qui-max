@@ -86,7 +86,7 @@
           :is="panelComponent"
           v-show="state.pickerVisible"
           ref="panel"
-          v-model="transformedToDate"
+          :model-value="transformedToDate"
           @pick="handlePickClick"
         />
       </transition>
@@ -387,20 +387,6 @@ export default defineComponent({
       }
     });
 
-    const openDialog = async (): Promise<void> => {
-      try {
-        const result = await dialog(
-          { component: MobilePanel },
-          { teleportTo: '.q-date-picker', preventFocusAfterClosing: true }
-        );
-        // eslint-disable-next-line no-console
-        console.log('resolve: ', result);
-      } catch (err) {
-        // eslint-disable-next-line no-console
-        console.log('reject: ', err);
-      }
-    };
-
     const isValueEmpty = computed<boolean>(() => {
       if (Array.isArray(transformedToDate.value)) {
         return !transformedToDate.value.length;
@@ -488,6 +474,24 @@ export default defineComponent({
     ): void => {
       state.pickerVisible = !hidePicker;
       emitChange(val);
+    };
+
+    const openDialog = async (): Promise<void> => {
+      try {
+        const result = await dialog(
+          { component: MobilePanel },
+          {
+            teleportTo: props.teleportTo,
+            preventFocusAfterClosing: true,
+            customClass: 'q-date-picker-dialog'
+          }
+        );
+
+        if (result) emitChange(result.payload as QDatePickerPropModelValue);
+        state.pickerVisible = false;
+      } catch (err) {
+        state.pickerVisible = false;
+      }
     };
 
     const handleInputDateChange = (): void => {
@@ -639,7 +643,6 @@ export default defineComponent({
       if (isPickerDisabled.value) return;
       state.pickerVisible = true;
       ctx.emit('focus');
-      if (isMobileView.value) openDialog();
 
       if (
         !transformedToDate.value ||
@@ -671,7 +674,6 @@ export default defineComponent({
         state.userInput = null;
         state.showCloseIcon = false;
       } else {
-        if (!state.pickerVisible && isMobileView) openDialog();
         state.pickerVisible = !state.pickerVisible;
       }
     };
@@ -684,7 +686,6 @@ export default defineComponent({
     const handleRangeClick = (): void => {
       if (isPickerDisabled.value) return;
       state.pickerVisible = true;
-      if (isMobileView.value) openDialog();
       ctx.emit('focus');
     };
 
@@ -713,6 +714,7 @@ export default defineComponent({
         if (!val) {
           state.userInput = null;
         }
+        if (val && isMobileView.value) openDialog();
       }
     );
 
@@ -740,9 +742,10 @@ export default defineComponent({
       emitChange,
       handlePickClick,
       type: toRef(props, 'type'),
-      transformedToDate: toRef(transformedToDate, 'value'),
       disabledValues: toRef(props, 'disabledValues'),
-      shortcuts: toRef(props, 'shortcuts')
+      shortcuts: toRef(props, 'shortcuts'),
+      transformedToDate,
+      panelComponent
     });
 
     return {

@@ -14,7 +14,7 @@ import type {
   QDialogEvent,
   QDialogPromise,
   QDialog,
-  QDialogParentInstance
+  ComponentInternalInstanceWithProvides
 } from './types';
 
 export const createDialog = (config?: QDialogHookOptions): QDialog => {
@@ -62,11 +62,11 @@ export const createDialog = (config?: QDialogHookOptions): QDialog => {
       });
 
       // Reprovide a global provides from main app instance and provides from parentInstance
-      const globalProvides = parentAppContext?.provides ?? {};
-      const parentInstanceProvides =
-        (config?.parentInstance as QDialogParentInstance)?.provides ?? {};
-
-      const provides = { ...globalProvides, ...parentInstanceProvides };
+      const provides =
+        (config?.parentInstance as ComponentInternalInstanceWithProvides)
+          ?.provides ??
+        parentAppContext?.provides ??
+        {};
 
       const providerKeys = [
         ...Object.getOwnPropertySymbols(provides),

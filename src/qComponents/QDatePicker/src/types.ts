@@ -37,9 +37,7 @@ type QDatePickerPropDisabledValues = Nullable<{
 
 type HandlePickClickSecondArg = { hidePicker?: boolean };
 
-type QDatePickerPropTrasformedToDate = {
-  value: Nullable<Date | Date[]>;
-};
+type QDatePickerPropTrasformedToDate = Nullable<Date | Date[]>;
 
 interface QDatePickerProps {
   type: QDatePickerPropType;
@@ -88,7 +86,13 @@ interface QDatePickerProvider {
   shortcuts: Ref<Nullable<QDatePickerPropShortcuts>>;
   emitChange: (val: QDatePickerPropModelValue, intermediate: boolean) => void;
   type: Ref<QDatePickerPropType>;
-  transformedToDate: Ref<QDatePickerPropTrasformedToDate>;
+  transformedToDate: ComputedRef<QDatePickerPropTrasformedToDate>;
+  panelComponent: ComputedRef<
+    | typeof DateRangePanel
+    | typeof MonthRangePanel
+    | typeof YearRangePanel
+    | typeof DatePanel
+  >;
 }
 
 interface QDatePickerInstance {

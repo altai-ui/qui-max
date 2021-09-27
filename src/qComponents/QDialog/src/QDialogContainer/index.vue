@@ -251,8 +251,8 @@ export default defineComponent({
     });
 
     provide<QDialogContainerProvider>('qDialogContainer', {
-      emitCloseEvent,
-      closeDialog
+      close: closeDialog,
+      emitCloseEvent
     });
 
     return {

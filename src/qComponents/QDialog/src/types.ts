@@ -11,7 +11,8 @@ import type { QDialogAction } from './constants';
 
 export type QDialogContent = QDialogContainerPropContent;
 
-export interface QDialogParentInstance extends ComponentInternalInstance {
+export interface ComponentInternalInstanceWithProvides
+  extends ComponentInternalInstance {
   provides: Record<string, unknown>;
 }
 

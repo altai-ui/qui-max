@@ -29,6 +29,8 @@ export default defineComponent({
 
   components: { QDialogContent },
 
+  emits: ['done'],
+
   setup(): MobilePanelInstance {
     const picker = inject<QDatePickerProvider>(
       'qDatePicker',

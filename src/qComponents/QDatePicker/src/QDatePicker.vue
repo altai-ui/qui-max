@@ -314,13 +314,14 @@ export default defineComponent({
   ],
 
   setup(props: QDatePickerProps, ctx): QDatePickerInstance {
+    const dialog = useDialog();
+
     const root = ref<Nullable<HTMLElement>>(null);
     const panel = ref<UnwrappedInstance<DatePanelInstance>>(null);
     const qForm = inject<Nullable<QFormProvider>>('qForm', null);
     const qFormItem = inject<Nullable<QFormItemProvider>>('qFormItem', null);
     const reference = ref<Nullable<UnwrappedInstance<QInputInstance>>>(null);
     const rangedReference = ref<Nullable<HTMLElement>>(null);
-    const dialog = useDialog();
 
     const state = reactive<QDatePickerState>({
       pickerVisible: false,

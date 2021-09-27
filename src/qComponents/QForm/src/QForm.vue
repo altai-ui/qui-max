@@ -14,7 +14,7 @@ import {
   watch,
   toRef
 } from 'vue';
-import type { FieldErrorList } from 'async-validator';
+import type { ValidateFieldsError } from 'async-validator';
 import { concat } from 'lodash-es';
 
 import type { QFormItemContext } from '@/qComponents/QFormItem';
@@ -143,7 +143,7 @@ export default defineComponent({
       const filteredFields = filterFields(passedProps);
 
       let isValid = true;
-      let invalidFields: FieldErrorList = {};
+      let invalidFields: ValidateFieldsError = {};
 
       await Promise.all(
         filteredFields.map(async field => {

@@ -64,6 +64,7 @@ export default defineConfig({
                 '.css'
               );
 
+              if (!existsSync('dist')) mkdirSync('dist');
               if (!existsSync('dist/css')) mkdirSync('dist/css');
               if (!existsSync('dist/icons')) mkdirSync('dist/icons');
               if (!existsSync('dist/fonts')) mkdirSync('dist/fonts');

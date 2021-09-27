@@ -49,14 +49,15 @@
 
       &::before {
         position: absolute;
-        top: -5px;
-        left: 19px;
+        top: -12%;
+        left: 50%;
         display: block;
         width: 2px;
         height: 2px;
         content: '';
         background-color: var(--color-primary);
         border-radius: 50%;
+        transform: translateX(-50%);
       }
     }
 

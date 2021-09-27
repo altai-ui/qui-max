@@ -23,7 +23,7 @@ export interface QContextMenuInstance {
   contextMenu: Ref<Nullable<HTMLElement>>;
   zIndex: Ref<number>;
   isContextMenuShown: Ref<boolean>;
-  handleTriggerClick: () => void;
+  handleTriggerClick: (e: MouseEvent) => void;
   handleItemClick: (actionName: string) => void;
   setItemRef: (el: HTMLElement) => void;
   afterLeave: () => void;

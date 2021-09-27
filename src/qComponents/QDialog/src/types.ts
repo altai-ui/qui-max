@@ -7,7 +7,7 @@ export type QDialogPropTeleportTo = Nullable<string | HTMLElement>;
 
 export interface QDialogProps {
   width: Nullable<string | number>;
-  offsetTop: Nullable<number>;
+  offsetTop: Nullable<string | number>;
   title: Nullable<string>;
   visible: Nullable<boolean>;
   destroyOnClose: Nullable<boolean>;
@@ -16,6 +16,7 @@ export interface QDialogProps {
   customClass: Nullable<string>;
   teleportTo: QDialogPropTeleportTo;
   renderOnMount: Nullable<boolean>;
+  preventFocusAfterClosing: Nullable<boolean>;
 }
 
 export interface QDialogInstance {
@@ -23,6 +24,7 @@ export interface QDialogInstance {
   zIndex: Ref<number>;
   isRendered: Ref<boolean>;
   dialogStyle: ComputedRef<Record<string, Nullable<string | number>>>;
+  containerStyle: ComputedRef<Record<string, Nullable<string | number>>>;
   afterEnter: () => void;
   afterLeave: () => void;
   closeDialog: () => void;

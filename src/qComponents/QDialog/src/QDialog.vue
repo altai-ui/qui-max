@@ -12,13 +12,13 @@
         v-if="isRendered"
         v-show="visible"
         class="q-dialog"
-        :style="{ zIndex }"
+        :style="dialogStyle"
         @click.self="handleWrapperClick"
       >
         <div
           ref="dialog"
           tabindex="-1"
-          :style="dialogStyle"
+          :style="containerStyle"
           class="q-dialog__container"
           :class="customClass"
           @keyup.esc="closeDialog"
@@ -64,6 +64,7 @@ import {
   onUnmounted
 } from 'vue';
 
+import { isServer } from '@/qComponents/constants/isServer';
 import { getConfig } from '@/qComponents/config';
 import QButton from '@/qComponents/QButton';
 import QScrollbar from '@/qComponents/QScrollbar';
@@ -96,7 +97,7 @@ export default defineComponent({
      * offset from top border of parent relative element
      */
     offsetTop: {
-      type: Number,
+      type: [String, Number],
       default: null
     },
     /**
@@ -146,10 +147,20 @@ export default defineComponent({
      * (has to be a valid query selector, or an HTMLElement)
      */
     teleportTo: {
-      type: [String, HTMLElement] as PropType<QDialogPropTeleportTo>,
+      type: [
+        String,
+        isServer ? Object : HTMLElement
+      ] as PropType<QDialogPropTeleportTo>,
       default: null
     },
     renderOnMount: {
+      type: Boolean,
+      default: false
+    },
+    /**
+     * cancel focus on document.activeElement after modal was closed
+     */
+    preventFocusAfterClosing: {
       type: Boolean,
       default: false
     }
@@ -185,7 +196,16 @@ export default defineComponent({
 
     let elementToFocusAfterClosing: Nullable<HTMLElement> = null;
 
-    const dialogStyle = computed<Record<string, Nullable<string | number>>>(
+    const dialogStyle = computed<Record<string, Nullable<number | string>>>(
+      () => ({
+        zIndex: zIndex.value,
+        top: Number(props.offsetTop)
+          ? `${Number(props.offsetTop)}px`
+          : props.offsetTop
+      })
+    );
+
+    const containerStyle = computed<Record<string, Nullable<string | number>>>(
       () => ({
         width: Number(props.width) ? `${Number(props.width)}px` : props.width
       })
@@ -225,6 +245,8 @@ export default defineComponent({
     watch(
       () => props.visible,
       isVisible => {
+        if (isServer) return;
+
         if (!isVisible) {
           document.body.style.overflow = '';
 
@@ -234,9 +256,12 @@ export default defineComponent({
             isRendered.value = false;
           }
 
-          nextTick(() => {
-            elementToFocusAfterClosing?.focus();
-          });
+          if (!props.preventFocusAfterClosing) {
+            nextTick(() => {
+              elementToFocusAfterClosing?.focus();
+            });
+          }
+
           return;
         }
 
@@ -269,6 +294,7 @@ export default defineComponent({
       zIndex,
       isRendered,
       dialogStyle,
+      containerStyle,
       afterEnter,
       afterLeave,
       closeDialog,

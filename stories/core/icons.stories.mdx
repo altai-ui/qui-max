@@ -1,6 +1,6 @@
 import {
   Meta,
-  Preview,
+  Canvas,
   Story,
   ArgsTable,
   IconGallery,
@@ -18,7 +18,7 @@ import iconsList from './iconsList';
       control: { type: 'select' }
     },
     size: {
-      control: { type: 'range', min: 8, max: 320 }
+      control: { type: 'number', min: 8, max: 320, step: 2 }
     },
     color: {
       control: { type: 'color' }
@@ -58,7 +58,7 @@ export const Template = args => ({
   `
 });
 
-<Preview>
+<Canvas>
   <Story
     name="Playground"
     args={{
@@ -69,6 +69,6 @@ export const Template = args => ({
   >
     {Template.bind({})}
   </Story>
-</Preview>
+</Canvas>
 
 <ArgsTable story="Playground" />

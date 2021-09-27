@@ -91,6 +91,25 @@ const Template: Story<QDatePickerProps> = args =>
     },
     template: `
       <div style="width: 220px; height:300px">
+        <h3>Value:
+        <q-popover
+          title='Note:'
+          icon='q-icon-question'
+        >
+          <template #reference>
+            <q-button
+              circle
+              type="icon"
+              theme="secondary"
+              size="small"
+              icon="q-icon-question-mark"
+            />
+          </template>
+          outputFormat prop for type date doesn't work in template (always shows iso), better check the browser console
+        </q-popover>
+        </h3>
+        <div><b>v-model: </b>{{ JSON.stringify(state.value) }}</div>
+        <br />
         <q-date-picker
           v-model="state.value"
           :clearable="args.clearable"

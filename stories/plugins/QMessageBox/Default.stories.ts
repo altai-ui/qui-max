@@ -15,6 +15,8 @@ const storyMetadata: Meta = {
 const QMessageBoxStory: Story<QMessageBoxContentProps> = args =>
   defineComponent({
     setup() {
+      const messageBox = useMessageBox();
+
       const beforeClose: QMessageBoxContentPropBeforeClose = async action => {
         if (action !== 'confirm') return true;
 
@@ -34,7 +36,7 @@ const QMessageBoxStory: Story<QMessageBoxContentProps> = args =>
 
       const handleClick = async (): Promise<void> => {
         try {
-          const result = await useMessageBox(
+          const result = await messageBox(
             {
               title: args.title,
               message: args.message,

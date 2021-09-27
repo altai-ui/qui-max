@@ -2,19 +2,19 @@ import type { Meta, Story } from '@storybook/vue3';
 import { defineAsyncComponent, defineComponent } from 'vue';
 
 import { useDrawer } from '@/qComponents';
+import { QDrawerContainer } from '@/qComponents/QDrawer/src/QDrawerContainer';
 import type { QDrawerOptions } from '@/qComponents';
 
 const storyMetadata: Meta = {
   title: 'Plugins/QDrawer/Component',
+  component: QDrawerContainer,
   argTypes: {
-    width: { control: { type: 'number' } },
+    content: { control: { type: 'none' } },
+    teleportTo: { control: { type: 'none' } },
     position: {
       options: ['left', 'right'],
       control: { type: 'inline-radio' }
-    },
-    customClass: { control: { type: 'text' } },
-    distinguishCancelAndClose: { control: { type: 'boolean' } },
-    closeOnClickShadow: { control: { type: 'boolean' } }
+    }
   }
 };
 
@@ -27,15 +27,13 @@ const QDrawerStoryComponent: Story<QDrawerOptions> = args =>
         try {
           const result = await drawer(
             defineAsyncComponent(() => import('./DrawerFormTest.vue')),
-            {
-              ...args
-            }
+            args
           );
           // eslint-disable-next-line no-console
           console.log('resolve', result);
-        } catch (error) {
+        } catch (result) {
           // eslint-disable-next-line no-console
-          console.log('reject', error);
+          console.log('reject', result);
         }
       };
 
@@ -47,10 +45,4 @@ const QDrawerStoryComponent: Story<QDrawerOptions> = args =>
   });
 
 export const Component = QDrawerStoryComponent.bind({});
-
-Component.args = {
-  width: 350,
-  distinguishCancelAndClose: true
-};
-
 export default storyMetadata;

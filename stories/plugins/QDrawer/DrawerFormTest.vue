@@ -18,6 +18,7 @@
         />
       </q-form-item>
     </q-form>
+
     <div class="q-drawer-sample-content__actions">
       <q-button
         :loading="isLoading"
@@ -33,12 +34,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref } from 'vue';
+import { defineComponent, ref, reactive, inject } from 'vue';
 
 import { QDrawerContent, QDrawerAction } from '@/qComponents';
-
-const DONE_EVENT = 'done';
-const NAME_INPUT_EVENT = 'name-input';
+import type { QDrawerContainerProvider } from '@/qComponents';
 
 export default defineComponent({
   name: 'QDrawerSampleContent',
@@ -57,14 +56,17 @@ export default defineComponent({
     }
   },
 
-  emits: [DONE_EVENT, NAME_INPUT_EVENT],
+  emits: ['name-input'],
 
   setup(_, ctx) {
+    const qDrawerContainer =
+      inject<QDrawerContainerProvider>('qDrawerContainer');
+
     const isLoading = ref<boolean>(false);
     const formModel = reactive({ name: 'Testname' });
 
     const handleNameInput = (e: InputEvent): void => {
-      ctx.emit(NAME_INPUT_EVENT, (e.target as HTMLInputElement).value);
+      ctx.emit('name-input', (e.target as HTMLInputElement).value);
     };
 
     const commitBeforeClose = (): Promise<boolean> =>
@@ -76,7 +78,7 @@ export default defineComponent({
       const action = QDrawerAction.confirm;
       const isDone = await commitBeforeClose();
 
-      if (isDone) ctx.emit(DONE_EVENT, { action });
+      if (isDone) qDrawerContainer?.emitDoneEvent({ action });
 
       isLoading.value = false;
     };
@@ -84,7 +86,7 @@ export default defineComponent({
     const handleCancelClick = async (): Promise<void> => {
       const action = QDrawerAction.cancel;
 
-      ctx.emit(DONE_EVENT, { action });
+      qDrawerContainer?.emitDoneEvent({ action });
     };
 
     return {

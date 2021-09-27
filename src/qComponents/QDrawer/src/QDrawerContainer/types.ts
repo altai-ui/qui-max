@@ -25,7 +25,7 @@ export interface QDrawerContainerProps {
 }
 
 export interface QDrawerContainerProvider {
-  closeBox: (props: QDrawerEvent) => Promise<void>;
+  emitDoneEvent: (props: QDrawerEvent) => Promise<void>;
   emitCloseEvent: () => void;
 }
 
@@ -37,6 +37,6 @@ export interface QDrawerContainerInstance {
   drawerClass: ComputedRef<string>;
   preparedContent: ComputedRef<QDrawerComponent>;
   handleAfterLeave: () => void;
-  closeBox: (event: QDrawerEvent) => Promise<void>;
+  emitDoneEvent: (event: QDrawerEvent) => Promise<void>;
   emitCloseEvent: () => void;
 }

@@ -10,6 +10,11 @@ import type {
 } from './QDrawerContainer';
 import type { QDrawerAction } from './constants';
 
+export interface ComponentInternalInstanceWithProvides
+  extends ComponentInternalInstance {
+  provides: Record<symbol | string, unknown>;
+}
+
 export type QDrawerContent = QDrawerContainerPropContent;
 
 export interface QDrawerHookOptions {

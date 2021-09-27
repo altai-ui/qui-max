@@ -1,9 +1,14 @@
 .q-drawer-content {
   position: relative;
+  display: flex;
+  flex-direction: column;
   height: 100%;
+  padding-top: 24px;
 
   &__title {
-    margin: 24px 56px 32px 24px;
+    margin-right: 56px;
+    margin-bottom: 32px;
+    margin-left: 24px;
     font-size: 20px;
     font-weight: 800;
     line-height: 25px;
@@ -13,7 +18,7 @@
 
   &__close {
     position: absolute;
-    top: -8px;
+    top: 16px;
     right: 16px;
     padding: 0;
     font-size: 32px;
@@ -27,19 +32,14 @@
     }
   }
 
-  .q-scrollbar {
-    .q-scrollbar__view {
-      display: flex;
-      flex-flow: column nowrap;
-      height: 100%;
-      min-height: auto;
-    }
+  &__view {
+    display: flex;
+    flex-direction: column;
   }
 
   &__body {
-    display: flex;
-    flex-flow: column nowrap;
-    height: 100%;
-    padding: 0 24px;
+    flex: 1;
+    padding-right: 24px;
+    padding-left: 24px;
   }
 }

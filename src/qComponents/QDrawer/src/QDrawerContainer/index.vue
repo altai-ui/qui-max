@@ -8,13 +8,13 @@
         v-show="isShown"
         class="q-drawer-container"
         :style="{ zIndex }"
-        @click.self="emitCloseEvent"
       >
         <div
           v-if="closeOnClickShadow"
           class="q-drawer-container__clickable-shadow"
           @click="emitCloseEvent"
         />
+
         <div
           ref="drawer"
           tabindex="-1"
@@ -28,7 +28,6 @@
               :is="preparedContent.component"
               v-bind="preparedContent.props"
               v-on="preparedContent.listeners"
-              @done="closeBox"
             />
           </div>
         </div>
@@ -61,17 +60,14 @@ import type { QDrawerEvent } from '../types';
 
 import { isExternalComponent } from './utils';
 import type {
-  QDrawerContainerPropContent,
   QDrawerComponent,
+  QDrawerContainerPropContent,
   QDrawerContainerPropPosition,
   QDrawerContainerPropTeleportTo,
   QDrawerContainerProps,
   QDrawerContainerInstance,
   QDrawerContainerProvider
 } from './types';
-
-const REMOVE_EVENT = 'remove';
-const DONE_EVENT = 'done';
 
 export default defineComponent({
   name: 'QDrawerContainer',
@@ -131,7 +127,7 @@ export default defineComponent({
     }
   },
 
-  emits: [DONE_EVENT, REMOVE_EVENT],
+  emits: ['done', 'remove'],
 
   setup(props: QDrawerContainerProps, ctx): QDrawerContainerInstance {
     const instance = getCurrentInstance();
@@ -142,51 +138,14 @@ export default defineComponent({
 
     const preparedContent = computed<QDrawerComponent>(() => {
       if (isExternalComponent(props.content)) {
-        return {
-          props: {},
-          listeners: {},
-          ...props.content
-        };
+        return { props: {}, listeners: {}, ...props.content };
       }
 
-      return {
-        component: props.content,
-        props: {},
-        listeners: {}
-      };
+      return { component: props.content, props: {}, listeners: {} };
     });
 
     const elementToFocusAfterClosing: Nullable<HTMLElement> =
       document.activeElement as Nullable<HTMLElement>;
-
-    const handleAfterLeave = (): void => {
-      ctx.emit(REMOVE_EVENT);
-    };
-
-    const handleDocumentFocus = (event: FocusEvent): void => {
-      const drawerValue = drawer.value;
-
-      if (drawerValue && !drawerValue.contains(event.target as HTMLElement)) {
-        drawerValue.focus();
-      }
-    };
-
-    const closeBox = async ({
-      action,
-      payload = null
-    }: QDrawerEvent): Promise<void> => {
-      ctx.emit(DONE_EVENT, { action, payload });
-
-      isShown.value = false;
-    };
-
-    const emitCloseEvent = (): void => {
-      closeBox({
-        action: props.distinguishCancelAndClose
-          ? QDrawerAction.close
-          : QDrawerAction.cancel
-      });
-    };
 
     const drawerStyle = computed<Record<string, Nullable<string | number>>>(
       () => ({
@@ -198,8 +157,37 @@ export default defineComponent({
       () => `q-drawer-container__wrapper_${props.position}`
     );
 
+    const handleAfterLeave = (): void => {
+      ctx.emit('remove');
+    };
+
+    const handleDocumentFocus = (event: FocusEvent): void => {
+      const drawerValue = drawer.value;
+
+      if (drawerValue && !drawerValue.contains(event.target as HTMLElement)) {
+        drawerValue.focus();
+      }
+    };
+
+    const emitDoneEvent = async ({
+      action,
+      payload = null
+    }: QDrawerEvent): Promise<void> => {
+      ctx.emit('done', { action, payload });
+
+      isShown.value = false;
+    };
+
+    const emitCloseEvent = (): void => {
+      emitDoneEvent({
+        action: props.distinguishCancelAndClose
+          ? QDrawerAction.close
+          : QDrawerAction.cancel
+      });
+    };
+
     provide<QDrawerContainerProvider>('qDrawerContainer', {
-      closeBox,
+      emitDoneEvent,
       emitCloseEvent
     });
 
@@ -225,10 +213,10 @@ export default defineComponent({
       zIndex,
       isShown,
       preparedContent,
-      handleAfterLeave,
-      closeBox,
       drawerStyle,
       drawerClass,
+      handleAfterLeave,
+      emitDoneEvent,
       emitCloseEvent
     };
   }

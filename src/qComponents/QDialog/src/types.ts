@@ -13,7 +13,7 @@ export type QDialogContent = QDialogContainerPropContent;
 
 export interface ComponentInternalInstanceWithProvides
   extends ComponentInternalInstance {
-  provides: Record<string, unknown>;
+  provides: Record<string | symbol, unknown>;
 }
 
 export interface QDialogHookOptions {

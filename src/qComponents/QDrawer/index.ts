@@ -1,4 +1,4 @@
-import { getCurrentInstance } from 'vue';
+import { getCurrentInstance, onUnmounted } from 'vue';
 
 import { createDrawer } from './src';
 import type { QDrawer, QDrawerHookOptions } from './src/types';
@@ -6,9 +6,13 @@ import type { QDrawer, QDrawerHookOptions } from './src/types';
 const useDrawer = (options?: QDrawerHookOptions): QDrawer => {
   const parentInstance = getCurrentInstance();
 
-  const drawer = createDrawer({
+  const { drawer, app } = createDrawer({
     parentInstance,
     ...options
+  });
+
+  onUnmounted(() => {
+    app.value?.unmount();
   });
 
   return drawer;

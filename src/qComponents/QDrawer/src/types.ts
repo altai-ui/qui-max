@@ -10,6 +10,11 @@ import type {
 } from './QDrawerContainer';
 import type { QDrawerAction } from './constants';
 
+export interface DrawerPromise {
+  resolve: (event: QDrawerEvent) => void;
+  reject: (event: QDrawerEvent) => void;
+}
+
 export interface ComponentInternalInstanceWithProvides
   extends ComponentInternalInstance {
   provides: Record<symbol | string, unknown>;
@@ -29,22 +34,17 @@ export interface QDrawerOptions {
   customClass?: Nullable<string>;
   teleportTo?: QDrawerContainerPropTeleportTo;
   parentInstance?: Nullable<ComponentInternalInstance>;
-  onBeforeMount?: (app: App<Element>) => void;
+  onBeforeMount?: (app: App<Element>) => void | Promise<void>;
   onMounted?: (
     app: App<Element>,
     container: NonNullable<UnwrappedInstance<QDrawerContainerInstance>>
-  ) => void;
-  onUnmounted?: (app: App<Element>) => void;
+  ) => void | Promise<void>;
+  onUnmounted?: (app: App<Element>) => void | Promise<void>;
 }
 
 export interface QDrawerEvent {
   action: QDrawerAction;
   payload?: unknown;
-}
-
-export interface DrawerPromise {
-  resolve: (event: QDrawerEvent) => void;
-  reject: (event: QDrawerEvent) => void;
 }
 
 export interface QDrawer {

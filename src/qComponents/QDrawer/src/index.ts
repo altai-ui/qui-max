@@ -1,52 +1,56 @@
-import { createApp, nextTick } from 'vue';
-import type { App } from 'vue';
+import { createApp, ref, nextTick } from 'vue';
+import type { App, Ref } from 'vue';
 
 import { isServer } from '@/qComponents/constants/isServer';
-import type { Nillable, Optional, UnwrappedInstance } from '#/helpers';
+import type { Nullable, Nillable, UnwrappedInstance } from '#/helpers';
 
 import { QDrawerContainer } from './QDrawerContainer';
 import type { QDrawerContainerInstance } from './QDrawerContainer';
 import { QDrawerAction } from './constants';
 import type {
+  DrawerPromise,
   ComponentInternalInstanceWithProvides,
   QDrawerHookOptions,
   QDrawerContent,
   QDrawerOptions,
   QDrawerEvent,
-  DrawerPromise,
   QDrawer
 } from './types';
 
-export const createDrawer = (config?: QDrawerHookOptions): QDrawer => {
+export const createDrawer = (
+  config?: QDrawerHookOptions
+): { drawer: QDrawer; app: Ref<Nullable<App<Element>>> } => {
+  let drawerPromise: Nullable<DrawerPromise> = null;
+  const app = ref<Nullable<App<Element>>>(null);
+
   const drawer = (
     content: QDrawerContent,
     options?: QDrawerOptions
   ): Promise<QDrawerEvent> => {
-    let drawerPromise: DrawerPromise;
-    let app: Optional<App<Element>>;
-
     const handleDone = ({ action, payload }: QDrawerEvent): void => {
       if (action === QDrawerAction.confirm) {
-        drawerPromise.resolve({ action, payload });
+        drawerPromise?.resolve({ action, payload });
       } else if (
         action === QDrawerAction.cancel ||
         action === QDrawerAction.close
       ) {
-        drawerPromise.reject({ action, payload });
+        drawerPromise?.reject({ action, payload });
       }
     };
 
-    const handleRemove = (): void => {
-      if (!app) return;
+    const handleRemove = async (): Promise<void> => {
+      if (!app.value) return;
 
-      app.unmount();
-      options?.onUnmounted?.(app);
+      app.value.unmount();
+      await options?.onUnmounted?.(app.value);
+      await nextTick();
+      app.value = null;
     };
 
-    nextTick(() => {
+    nextTick(async () => {
       if (isServer) return;
 
-      app = createApp(QDrawerContainer, {
+      app.value = createApp(QDrawerContainer, {
         ...(options ?? {}),
         content,
         onDone: handleDone,
@@ -59,7 +63,7 @@ export const createDrawer = (config?: QDrawerHookOptions): QDrawer => {
 
       const components = parentAppContext?.components ?? {};
       Object.entries(components).forEach(([key, value]) => {
-        app?.component(key, value);
+        app.value?.component(key, value);
       });
 
       // Reprovide a global provides from main app instance and provides from parentInstance
@@ -73,14 +77,14 @@ export const createDrawer = (config?: QDrawerHookOptions): QDrawer => {
 
       providerKeys.forEach(key => {
         const value = provides[key as unknown as string];
-        if (value) app?.provide(key, value);
+        if (value) app.value?.provide(key, value);
       });
 
-      options?.onBeforeMount?.(app);
+      await options?.onBeforeMount?.(app.value);
 
-      const container = app.mount(document.createElement('div'));
-      options?.onMounted?.(
-        app,
+      const container = app.value.mount(document.createElement('div'));
+      await options?.onMounted?.(
+        app.value,
         container as NonNullable<UnwrappedInstance<QDrawerContainerInstance>>
       );
     });
@@ -93,5 +97,5 @@ export const createDrawer = (config?: QDrawerHookOptions): QDrawer => {
     });
   };
 
-  return drawer;
+  return { drawer, app };
 };

@@ -10,25 +10,27 @@ const storyMetadata: Meta = {
 const IconsStory: Story = () =>
   defineComponent({
     setup() {
-      return {
-        icons
-      };
+      return { icons };
     },
-    template: `<div class="q-icons">
-        <div
-            v-for="icon in icons" 
-            :key="icon"
-            class="q-icons__icon-container"
+
+    template: `
+      <div class="q-icons">
+        <div 
+          v-for="icon in icons" 
+          :key="icon"
+          class="q-icons__icon-container"
         >
           <div class="q-icons__icon-wrapper">
-             <span
-                 class="q-icons__icon"
-                 :class="icon"
-             />
+            <span
+              class="q-icons__icon"
+              :class="icon"
+            />
           </div>
-          <div class="q-icons__icon-class">{{ icon }}</div>
+          <div class="q-icons__icon-class">
+            {{ icon }}
+          </div>
         </div>
-        </div>
+      </div>
     `
   });
 

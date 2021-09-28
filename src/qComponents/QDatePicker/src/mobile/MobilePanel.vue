@@ -18,19 +18,17 @@
 <script lang="ts">
 import { defineComponent, inject } from 'vue';
 
-import { QButton } from '@/qComponents';
-
+import QButton from '@/qComponents/QButton';
 import { QDialogContent, QDialogAction } from '@/qComponents/QDialog';
 import type { QDialogContainerProvider } from '@/qComponents/QDialog';
-import type { MobilePanelInstance } from './types';
+
 import type { QDatePickerPropModelValue, QDatePickerProvider } from '../types';
+import type { MobilePanelInstance } from './types';
 
 export default defineComponent({
   name: 'MobilePanel',
 
   components: { QDialogContent, QButton },
-
-  emits: ['done'],
 
   setup(): MobilePanelInstance {
     const picker = inject<QDatePickerProvider>(

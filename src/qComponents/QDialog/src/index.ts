@@ -1,8 +1,8 @@
-import { createApp, nextTick } from 'vue';
+import { createApp, nextTick, Ref, ref } from 'vue';
 import type { App } from 'vue';
 
 import { isServer } from '@/qComponents/constants/isServer';
-import type { Optional, UnwrappedInstance } from '#/helpers';
+import type { UnwrappedInstance, Nullable } from '#/helpers';
 
 import { QDialogContainer } from './QDialogContainer';
 import type { QDialogContainerInstance } from './QDialogContainer';
@@ -17,13 +17,16 @@ import type {
   ComponentInternalInstanceWithProvides
 } from './types';
 
-export const createDialog = (config?: QDialogHookOptions): QDialog => {
+export const createDialog = (
+  config?: QDialogHookOptions
+): { dialog: QDialog; app: Ref<Nullable<App<Element>>> } => {
+  const app = ref<Nullable<App<Element>>>(null);
+
   const dialog = (
     content: QDialogContent,
     options?: QDialogOptions
   ): Promise<QDialogEvent> => {
     let dialogPromise: QDialogPromise;
-    let app: Optional<App<Element>>;
 
     const handleDone = ({ action, payload }: QDialogEvent): void => {
       if (action === QDialogAction.confirm) {
@@ -37,16 +40,16 @@ export const createDialog = (config?: QDialogHookOptions): QDialog => {
     };
 
     const handleRemove = (): void => {
-      if (!app) return;
+      if (!app.value) return;
 
-      app.unmount();
-      options?.onUnmounted?.(app);
+      app.value.unmount();
+      options?.onUnmounted?.(app.value);
     };
 
     nextTick(() => {
       if (isServer) return;
 
-      app = createApp(QDialogContainer, {
+      app.value = createApp(QDialogContainer, {
         ...(options || {}),
         content,
         onDone: handleDone,
@@ -54,11 +57,10 @@ export const createDialog = (config?: QDialogHookOptions): QDialog => {
       });
 
       const parentAppContext = config?.parentInstance?.appContext;
-
       // Register a global components from main app instance
       const components = parentAppContext?.components ?? {};
       Object.entries(components).forEach(([key, value]) => {
-        app?.component(key, value);
+        app.value?.component(key, value);
       });
 
       // Reprovide a global provides from main app instance and provides from parentInstance
@@ -76,14 +78,14 @@ export const createDialog = (config?: QDialogHookOptions): QDialog => {
       providerKeys.forEach(key => {
         // TS does not allow use 'symbol' as index type, so we pretend like we don't
         const value = provides[key as string];
-        if (value) app?.provide(key, value);
+        if (value) app.value?.provide(key, value);
       });
 
-      options?.onBeforeMount?.(app);
+      options?.onBeforeMount?.(app.value);
 
-      const container = app.mount(document.createElement('div'));
+      const container = app.value.mount(document.createElement('div'));
       options?.onMounted?.(
-        app,
+        app.value,
         container as NonNullable<UnwrappedInstance<QDialogContainerInstance>>
       );
     });
@@ -96,5 +98,5 @@ export const createDialog = (config?: QDialogHookOptions): QDialog => {
     });
   };
 
-  return dialog;
+  return { dialog, app };
 };

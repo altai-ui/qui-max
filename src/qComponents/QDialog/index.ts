@@ -1,4 +1,4 @@
-import { getCurrentInstance } from 'vue';
+import { getCurrentInstance, onUnmounted } from 'vue';
 
 import { createDialog } from './src';
 import type { QDialog, QDialogHookOptions } from './src/types';
@@ -6,9 +6,13 @@ import type { QDialog, QDialogHookOptions } from './src/types';
 const useDialog = (options?: QDialogHookOptions): QDialog => {
   const parentInstance = getCurrentInstance();
 
-  const dialog = createDialog({
+  const { dialog, app } = createDialog({
     parentInstance,
     ...options
+  });
+
+  onUnmounted(() => {
+    app.value?.unmount();
   });
 
   return dialog;

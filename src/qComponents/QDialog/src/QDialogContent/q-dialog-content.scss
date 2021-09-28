@@ -1,5 +1,7 @@
 .q-dialog-content {
   position: relative;
+  display: flex;
+  flex-direction: column;
   height: 100%;
   padding: 36px 32px 32px;
 
@@ -12,6 +14,7 @@
 
   &__title {
     padding-right: 104px;
+    margin-bottom: 24px;
     font-size: 24px;
     font-weight: 800;
     line-height: 31px;
@@ -21,10 +24,11 @@
 
   &__view {
     display: flex;
+    padding-right: 20px;
   }
 
   &__body {
     flex: 1;
-    margin-top: 32px;
+    padding-bottom: 20px;
   }
 }

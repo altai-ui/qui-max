@@ -3,32 +3,30 @@
     <template
       #title
     >Morbi massa libero, vehicula nec consequat sed, porta a sem.</template>
-    <template #default>
-      {{ someExternalProp }}
+    {{ someExternalProp }}
 
-      <q-form :model="formModel">
-        <q-form-item
-          prop="name"
-          label="Name"
-          required
-        >
-          <q-input
-            v-model="formModel.name"
-            @input="handleNameInput"
-          />
-        </q-form-item>
-      </q-form>
+    <q-form :model="formModel">
+      <q-form-item
+        prop="name"
+        label="Name"
+        required
+      >
+        <q-input
+          v-model="formModel.name"
+          @input="handleNameInput"
+        />
+      </q-form-item>
+    </q-form>
 
-      <q-button
-        :loading="isSending"
-        @click="handleSendClick"
-      >Send</q-button>
+    <q-button
+      :loading="isSending"
+      @click="handleSendClick"
+    >Send</q-button>
 
-      <q-button
-        theme="secondary"
-        @click="handleCancelClick"
-      >Cancel</q-button>
-    </template>
+    <q-button
+      theme="secondary"
+      @click="handleCancelClick"
+    >Cancel</q-button>
   </q-dialog-content>
 </template>
 
@@ -36,21 +34,15 @@
 import { defineComponent, inject, reactive, ref } from 'vue';
 
 import {
-  QForm,
-  QInput,
-  QButton,
-  QFormItem,
   QDialogAction,
   QDialogContent,
   QDialogContainerProvider
 } from '@/qComponents';
 
-const NAME_INPUT_EVENT = 'name-input';
-
 export default defineComponent({
   name: 'DialogFormTest',
 
-  components: { QFormItem, QButton, QInput, QForm, QDialogContent },
+  components: { QDialogContent },
 
   props: {
     someExternalProp: {
@@ -59,20 +51,21 @@ export default defineComponent({
     }
   },
 
-  emits: [NAME_INPUT_EVENT],
+  emits: ['name-input'],
 
   setup(_, ctx) {
     const isSending = ref<boolean>(false);
     const formModel = reactive({ name: 'Testname' });
 
-    const dialogProvides = inject<QDialogContainerProvider>('qDialogContainer');
+    const qDialogContainer =
+      inject<QDialogContainerProvider>('qDialogContainer');
 
     const handleNameInput = (e: InputEvent): void => {
-      ctx.emit(NAME_INPUT_EVENT, (e.target as HTMLInputElement).value);
+      ctx.emit('name-input', (e.target as HTMLInputElement).value);
     };
 
     const handleCancelClick = (): void => {
-      dialogProvides?.emitDoneEvent({ action: QDialogAction.cancel });
+      qDialogContainer?.emitDoneEvent({ action: QDialogAction.cancel });
     };
 
     const handleSendClick = async (): Promise<void> => {
@@ -85,7 +78,7 @@ export default defineComponent({
 
       await promise();
 
-      await dialogProvides?.emitDoneEvent({
+      await qDialogContainer?.emitDoneEvent({
         action: QDialogAction.confirm,
         payload: { test: true }
       });

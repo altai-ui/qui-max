@@ -65,6 +65,7 @@
 
 <script lang="ts">
 import { inject, computed, ref, reactive, watch, defineComponent } from 'vue';
+import type { PropType } from 'vue';
 
 import { t } from '@/qComponents/locale';
 import type { QFormProvider } from '@/qComponents/QForm';
@@ -73,6 +74,7 @@ import type { Nullable } from '#/helpers';
 
 import type {
   QInputInstance,
+  QInputPropRootClass,
   QInputProps,
   QInputState,
   QInputClass
@@ -138,7 +140,7 @@ export default defineComponent({
      * as native attrs bind to native input, via rootСlass you can set class for q-input root
      */
     rootClass: {
-      type: [Array, Object],
+      type: [Array, Object] as PropType<QInputPropRootClass>,
       default: null
     }
   },

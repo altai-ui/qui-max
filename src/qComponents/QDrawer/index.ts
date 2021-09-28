@@ -1,13 +1,29 @@
-import type { App } from 'vue';
+import { getCurrentInstance, onUnmounted } from 'vue';
 
-import type { SFCWithInstall } from '#/helpers';
+import { createDrawer } from './src';
+import type { QDrawer, QDrawerHookOptions } from './src/types';
 
-import QDrawer from './src/QDrawer.vue';
+const useDrawer = (options?: QDrawerHookOptions): QDrawer => {
+  const parentInstance = getCurrentInstance();
 
-/* istanbul ignore next */
-QDrawer.install = (app: App): void => {
-  app.component(QDrawer.name, QDrawer);
+  const { drawer, app } = createDrawer({
+    parentInstance,
+    ...options
+  });
+
+  onUnmounted(() => {
+    app.value?.unmount();
+  });
+
+  return drawer;
 };
 
-export type { QDrawerProps, QDrawerInstance } from './src/types';
-export default QDrawer as SFCWithInstall<App, typeof QDrawer>;
+export { useDrawer };
+export type { QDrawerContainerProvider } from './src/QDrawerContainer';
+export { QDrawerContent } from './src/QDrawerContent';
+export type {
+  QDrawerContentProps,
+  QDrawerContentInstance
+} from './src/QDrawerContent';
+export { QDrawerAction } from './src/constants';
+export type { QDrawer, QDrawerOptions } from './src/types';

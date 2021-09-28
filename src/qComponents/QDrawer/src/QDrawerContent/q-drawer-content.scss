@@ -1,0 +1,45 @@
+.q-drawer-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding-top: 24px;
+
+  &__title {
+    margin-right: 56px;
+    margin-bottom: 32px;
+    margin-left: 24px;
+    font-size: 20px;
+    font-weight: 800;
+    line-height: 25px;
+    color: var(--color-primary-black);
+    word-break: break-word;
+  }
+
+  &__close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    padding: 0;
+    font-size: 32px;
+    color: var(--color-primary-blue);
+    background-color: transparent;
+    border: none;
+
+    &:hover,
+    &.focus-visible {
+      color: var(--color-primary-black);
+    }
+  }
+
+  &__view {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__body {
+    flex: 1;
+    padding-right: 24px;
+    padding-left: 24px;
+  }
+}

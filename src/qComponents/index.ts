@@ -17,7 +17,6 @@ import QCollapseItem from './QCollapseItem';
 import QColorPicker from './QColorPicker';
 import QContextMenu from './QContextMenu';
 import QDatePicker from './QDatePicker';
-import QDrawer from './QDrawer';
 import QForm from './QForm';
 import QFormItem from './QFormItem';
 import QInput from './QInput';
@@ -124,7 +123,6 @@ const install = (app: App, config?: ConfigOptions): void => {
   app.use(QColorPicker);
   app.use(QContextMenu);
   app.use(QDatePicker);
-  app.use(QDrawer);
   app.use(QForm);
   app.use(QFormItem);
   app.use(QInput);
@@ -163,7 +161,6 @@ export {
   QColorPicker,
   QContextMenu,
   QDatePicker,
-  QDrawer,
   QForm,
   QFormItem,
   QInput,

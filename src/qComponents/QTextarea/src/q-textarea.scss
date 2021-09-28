@@ -103,8 +103,11 @@
       text-align: center;
       pointer-events: none;
       cursor: not-allowed;
-      content: '\e930';
     }
+  }
+
+  &__q-icon-lock::after {
+    content: '\e930';
   }
 
   &__count {

@@ -155,7 +155,7 @@ export default defineComponent({
 
       return {
         [mainClass]: true,
-        [`${mainClass}_disabled`]: isDisabled.value
+        [`${mainClass}_disabled ${mainClass}__q-icon-lock`]: isDisabled.value
       };
     });
 

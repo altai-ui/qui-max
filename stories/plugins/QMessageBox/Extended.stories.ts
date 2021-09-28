@@ -1,14 +1,20 @@
 import type { Story, Meta } from '@storybook/vue3';
 import { defineComponent, defineAsyncComponent } from 'vue';
 
-import { QMessageBoxContent, useMessageBox } from '@/qComponents/QMessageBox';
+import { useMessageBox } from '@/qComponents';
+import { QMessageBoxContainer } from '@/qComponents/QMessageBox/src/QMessageBoxContainer';
+import type { QMessageBoxOptions } from '@/qComponents';
 
 const storyMetadata: Meta = {
   title: 'Plugins/QMessageBox/Extended',
-  component: QMessageBoxContent
+  component: QMessageBoxContainer,
+  argTypes: {
+    content: { control: { type: 'none' } },
+    teleportTo: { control: { type: 'none' } }
+  }
 };
 
-const QMessageBoxExtendedStory: Story<never> = () =>
+const QMessageBoxExtendedStory: Story<QMessageBoxOptions> = args =>
   defineComponent({
     setup() {
       const messageBox = useMessageBox();
@@ -30,20 +36,21 @@ const QMessageBoxExtendedStory: Story<never> = () =>
                 }
               }
             },
-            { distinguishCancelAndClose: true }
+            args
           );
 
           // eslint-disable-next-line no-console
           console.log('resolve', result);
-        } catch (err) {
+        } catch (result) {
           // eslint-disable-next-line no-console
-          console.log('reject', err);
+          console.log('reject', result);
         }
       };
 
       return { handleClick };
     },
-    template: '<q-button @click="handleClick">Click to open</q-button>'
+    template:
+      '<q-button @click="handleClick">Click to open message box</q-button>'
   });
 
 export const Extended = QMessageBoxExtendedStory.bind({});

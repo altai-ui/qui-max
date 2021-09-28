@@ -1,16 +1,16 @@
 import type { Meta, Story } from '@storybook/vue3';
 import { defineAsyncComponent, defineComponent } from 'vue';
 
-import { useDialog, QDialogOptions } from '@/qComponents';
+import { useDialog } from '@/qComponents';
+import { QDialogContainer } from '@/qComponents/QDialog/src/QDialogContainer';
+import type { QDialogOptions } from '@/qComponents';
 
 const storyMetadata: Meta = {
   title: 'Plugins/QDialog/Extended',
+  component: QDialogContainer,
   argTypes: {
-    offsetTop: { control: { type: 'number' } },
-    width: { control: { type: 'number' } },
-    closeOnClickShadow: { control: { type: 'boolean' } },
-    customClass: { control: { type: 'text' } },
-    distinguishCancelAndClose: { control: { type: 'boolean' } }
+    content: { control: { type: 'none' } },
+    teleportTo: { control: { type: 'none' } }
   }
 };
 
@@ -36,19 +36,20 @@ const QDialogExtendedStory: Story<QDialogOptions> = args =>
                 }
               }
             },
-            { ...args }
+            args
           );
+
           // eslint-disable-next-line no-console
           console.log('resolve', result);
-        } catch (err) {
+        } catch (result) {
           // eslint-disable-next-line no-console
-          console.log('reject', err);
+          console.log('reject', result);
         }
       };
 
       return { handleClick };
     },
-    template: '<q-button @click="handleClick">Click to open</q-button>'
+    template: '<q-button @click="handleClick">Click to open dialog</q-button>'
   });
 
 export const Extended = QDialogExtendedStory.bind({});

@@ -1,11 +1,11 @@
 import type { Story, Meta } from '@storybook/vue3';
 import { defineComponent } from 'vue';
 
-import { QMessageBoxContent, useMessageBox } from '@/qComponents/QMessageBox';
+import { QMessageBoxContent, useMessageBox } from '@/qComponents';
 import type {
   QMessageBoxContentPropBeforeClose,
   QMessageBoxContentProps
-} from '@/qComponents/QMessageBox/src/QMessageBoxContent';
+} from '@/qComponents';
 
 const storyMetadata: Meta = {
   title: 'Plugins/QMessageBox',
@@ -59,15 +59,16 @@ const QMessageBoxStory: Story<QMessageBoxContentProps> = args =>
 
           // eslint-disable-next-line no-console
           console.log('resolve', result);
-        } catch (err) {
+        } catch (result) {
           // eslint-disable-next-line no-console
-          console.log('reject', err);
+          console.log('reject', result);
         }
       };
 
       return { handleClick };
     },
-    template: '<q-button @click="handleClick">Click to open</q-button>'
+    template:
+      '<q-button @click="handleClick">Click to open message box</q-button>'
   });
 
 export const Default = QMessageBoxStory.bind({});

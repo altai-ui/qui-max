@@ -81,10 +81,6 @@
     left: 50%;
     transform: translateX(-50%);
 
-    .q-icon-close {
-      margin: 2px 0 0 2px;
-    }
-
     @media (max-width: 415px) {
       &__close {
         top: 20px;
@@ -120,6 +116,8 @@
       .q-period-table__cell {
         width: 80px;
         height: 80px;
+        margin-right: auto;
+        margin-left: auto;
         font-size: 16px;
       }
     }

@@ -51,8 +51,15 @@ export const createDrawer = (
       if (isServer) return;
 
       app.value = createApp(QDrawerContainer, {
-        ...(options ?? {}),
         content,
+        width: options?.width,
+        closeOnClickShadow: options?.closeOnClickShadow,
+        distinguishCancelAndClose: options?.distinguishCancelAndClose,
+        preventFocusAfterClosing: options?.preventFocusAfterClosing,
+        position: options?.position,
+        customClass: options?.customClass,
+        beforeClose: options?.beforeClose,
+        teleportTo: options?.teleportTo,
         onDone: handleDone,
         onRemove: handleRemove
       });
@@ -76,7 +83,8 @@ export const createDrawer = (
       ];
 
       providerKeys.forEach(key => {
-        const value = provides[key as unknown as string];
+        // TS does not allow use 'symbol' as index type, so we pretend like we don't
+        const value = provides[key as string];
         if (value) app.value?.provide(key, value);
       });
 

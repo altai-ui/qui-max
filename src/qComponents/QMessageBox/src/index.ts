@@ -1,81 +1,95 @@
-import { createApp, nextTick } from 'vue';
-import type { App } from 'vue';
+import { createApp, ref, nextTick } from 'vue';
+import type { App, Ref } from 'vue';
 
 import { isServer } from '@/qComponents/constants/isServer';
-import type { Optional, UnwrappedInstance } from '#/helpers';
+import type { Nullable, Nillable, UnwrappedInstance } from '#/helpers';
 
 import { QMessageBoxContainer } from './QMessageBoxContainer';
 import type { QMessageBoxContainerInstance } from './QMessageBoxContainer';
 import { QMessageBoxAction } from './constants';
 import type {
+  ComponentInternalInstanceWithProvides,
+  MessageBoxPromise,
   QMessageBoxHookOptions,
   QMessageBoxContent,
   QMessageBoxOptions,
   QMessageBoxEvent,
-  MessageBoxPromise,
   QMessageBox
 } from './types';
 
 export const createMessageBox = (
   config?: QMessageBoxHookOptions
-): QMessageBox => {
+): { messageBox: QMessageBox; app: Ref<Nullable<App<Element>>> } => {
+  let messageBoxPromise: Nullable<MessageBoxPromise> = null;
+  const app = ref<Nullable<App<Element>>>(null);
+
   const messageBox = (
     content: QMessageBoxContent,
     options?: QMessageBoxOptions
   ): Promise<QMessageBoxEvent> => {
-    let messageBoxPromise: MessageBoxPromise;
-    let app: Optional<App<Element>>;
-
     const handleDone = ({ action, payload }: QMessageBoxEvent): void => {
       if (action === QMessageBoxAction.confirm) {
-        messageBoxPromise.resolve({ action, payload });
+        messageBoxPromise?.resolve({ action, payload });
       } else if (
         action === QMessageBoxAction.cancel ||
         action === QMessageBoxAction.close
       ) {
-        messageBoxPromise.reject({ action, payload });
+        messageBoxPromise?.reject({ action, payload });
       }
     };
 
-    const handleRemove = (): void => {
-      if (!app) return;
+    const handleRemove = async (): Promise<void> => {
+      if (!app.value) return;
 
-      app.unmount();
-      options?.onUnmounted?.(app);
+      app.value.unmount();
+      await options?.onUnmounted?.(app.value);
+      await nextTick();
+      app.value = null;
     };
 
-    nextTick(() => {
+    nextTick(async () => {
       if (isServer) return;
 
-      app = createApp(QMessageBoxContainer, {
-        ...(options ?? {}),
+      app.value = createApp(QMessageBoxContainer, {
         content,
+        closeOnClickShadow: options?.closeOnClickShadow,
+        distinguishCancelAndClose: options?.distinguishCancelAndClose,
+        preventFocusAfterClosing: options?.preventFocusAfterClosing,
+        wrapClass: options?.wrapClass,
+        wrapStyle: options?.wrapStyle,
         onDone: handleDone,
         onRemove: handleRemove
       });
 
-      const parentAppContext = config?.parentInstance?.appContext;
+      const parentInstance =
+        config?.parentInstance as Nillable<ComponentInternalInstanceWithProvides>;
+      const parentAppContext = parentInstance?.appContext;
 
-      // Register a global components from main app instance
       const components = parentAppContext?.components ?? {};
       Object.entries(components).forEach(([key, value]) => {
-        app?.component(key, value);
+        app.value?.component(key, value);
       });
 
-      // Reprovide a global provides from main app instance
-      const provides = parentAppContext?.provides ?? {};
-      const providerKeys = Object.getOwnPropertySymbols(provides);
+      // Reprovide a global provides from main app instance and provides from parentInstance
+      const provides =
+        parentInstance?.provides ?? parentAppContext?.provides ?? {};
+
+      const providerKeys = [
+        ...Object.getOwnPropertySymbols(provides),
+        ...Object.keys(provides)
+      ];
+
       providerKeys.forEach(key => {
         // TS does not allow use 'symbol' as index type, so we pretend like we don't
-        const value = provides[key as unknown as string];
-        if (value) app?.provide(key, value);
+        const value = provides[key as string];
+        if (value) app.value?.provide(key, value);
       });
 
-      options?.onBeforeMount?.(app);
+      await options?.onBeforeMount?.(app.value);
 
-      const container = app.mount(document.createElement('div'));
-      options?.onMounted?.(
-        app,
+      const container = app.value.mount(document.createElement('div'));
+      await options?.onMounted?.(
+        app.value,
         container as NonNullable<
           UnwrappedInstance<QMessageBoxContainerInstance>
         >
@@ -90,5 +104,5 @@ export const createMessageBox = (
     });
   };
 
-  return messageBox;
+  return { messageBox, app };
 };

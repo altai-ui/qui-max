@@ -20,6 +20,7 @@
     position: absolute;
     top: 16px;
     right: 16px;
+    z-index: 2;
     padding: 0;
     font-size: 32px;
     color: var(--color-primary-blue);
@@ -34,7 +35,6 @@
 
   &__view {
     display: flex;
-    flex-direction: column;
   }
 
   &__body {

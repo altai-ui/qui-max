@@ -1,48 +1,49 @@
 <template>
-  <transition
-    name="q-fade-up"
-    @after-leave="handleAfterLeave"
-  >
-    <div
-      v-show="isShown"
-      ref="messageBox"
-      class="q-message-box-container"
-      :class="wrapClass"
-      :style="[wrapStyle, { zIndex }]"
-      tabindex="-1"
-      @keyup.esc="emitCloseEvent"
+  <teleport :to="teleportTo || 'body'">
+    <transition
+      name="q-fade-up"
+      @after-leave="afterLeave"
     >
-      <div class="q-message-box-container__shadow" />
-
-      <q-scrollbar
-        theme="secondary"
-        class="q-message-box-container__scrollbar"
-        view-class="q-message-box-container__view"
-        visible
+      <div
+        v-show="isShown"
+        ref="messageBox"
+        class="q-message-box-container"
+        :class="wrapClass"
+        :style="[wrapStyle, { zIndex }]"
+        tabindex="-1"
+        @keyup.esc="emitCloseEvent"
       >
-        <div
-          v-if="closeOnClickShadow"
-          class="q-message-box-container__clickable-shadow"
-          @click="emitCloseEvent"
-        />
+        <div class="q-message-box-container__shadow" />
 
-        <div class="q-message-box-container__container">
-          <button
-            type="button"
-            class="q-message-box-container__close q-icon-close"
+        <q-scrollbar
+          theme="secondary"
+          class="q-message-box-container__scrollbar"
+          view-class="q-message-box-container__view"
+          visible
+        >
+          <div
+            v-if="closeOnClickShadow"
+            class="q-message-box-container__clickable-shadow"
             @click="emitCloseEvent"
           />
 
-          <component
-            :is="preparedContent.component"
-            v-bind="preparedContent.props"
-            v-on="preparedContent.listeners"
-            @done="closeBox"
-          />
-        </div>
-      </q-scrollbar>
-    </div>
-  </transition>
+          <div class="q-message-box-container__container">
+            <button
+              type="button"
+              class="q-message-box-container__close q-icon-close"
+              @click="emitCloseEvent"
+            />
+
+            <component
+              :is="preparedContent.component"
+              v-bind="preparedContent.props"
+              v-on="preparedContent.listeners"
+            />
+          </div>
+        </q-scrollbar>
+      </div>
+    </transition>
+  </teleport>
 </template>
 
 <script lang="ts">
@@ -53,12 +54,15 @@ import {
   computed,
   onMounted,
   nextTick,
+  provide,
   onBeforeUnmount
 } from 'vue';
 import type { PropType } from 'vue';
 
 import QScrollbar from '@/qComponents/QScrollbar';
+import { isServer } from '@/qComponents/constants/isServer';
 import { getConfig } from '@/qComponents/config';
+
 import type { Nullable } from '#/helpers';
 
 import { QMessageBoxContent } from '../QMessageBoxContent';
@@ -71,12 +75,12 @@ import type {
   QMessageBoxContainerPropContent,
   QMessageBoxContainerPropWrapClass,
   QMessageBoxContainerPropWrapStyle,
+  QMessageBoxContainerPropBeforeClose,
+  QMessageBoxContainerPropTeleportTo,
   QMessageBoxContainerProps,
+  QMessageBoxContainerProvider,
   QMessageBoxContainerInstance
 } from './types';
-
-const REMOVE_EVENT = 'remove';
-const DONE_EVENT = 'done';
 
 export default defineComponent({
   name: 'QMessageBoxContainer',
@@ -106,6 +110,13 @@ export default defineComponent({
       default: false
     },
     /**
+     * cancel focus on document.activeElement after QDrawer was closed
+     */
+    preventFocusAfterClosing: {
+      type: Boolean,
+      default: false
+    },
+    /**
      * class list of the QMessageBox
      */
     wrapClass: {
@@ -126,25 +137,39 @@ export default defineComponent({
         Array
       ] as PropType<QMessageBoxContainerPropWrapStyle>,
       default: null
+    },
+    /**
+     * callback before QMessageBox closes, and it will prevent QMessageBox from closing
+     */
+    beforeClose: {
+      type: Function as unknown as PropType<QMessageBoxContainerPropBeforeClose>,
+      default: null
+    },
+    /**
+     * Specifies a target element where QMessageBox will be moved.
+     * (has to be a valid query selector, or an HTMLElement)
+     */
+    teleportTo: {
+      type: [
+        String,
+        isServer ? Object : HTMLElement
+      ] as PropType<QMessageBoxContainerPropTeleportTo>,
+      default: null
     }
   },
 
-  emits: [DONE_EVENT, REMOVE_EVENT],
+  emits: ['done', 'remove'],
 
   setup(props: QMessageBoxContainerProps, ctx): QMessageBoxContainerInstance {
     const instance = getCurrentInstance();
 
-    const isShown = ref<boolean>(false);
     const messageBox = ref<Nullable<HTMLElement>>(null);
+    const isShown = ref<boolean>(false);
     const zIndex = getConfig('nextZIndex');
 
     const preparedContent = computed<QMessageBoxComponent>(() => {
       if (isExternalComponent(props.content)) {
-        return {
-          props: {},
-          listeners: {},
-          ...props.content
-        };
+        return { props: {}, listeners: {}, ...props.content };
       }
 
       if (isInternalComponent(props.content)) {
@@ -155,19 +180,11 @@ export default defineComponent({
         };
       }
 
-      return {
-        component: props.content,
-        props: {},
-        listeners: {}
-      };
+      return { component: props.content, props: {}, listeners: {} };
     });
 
     const elementToFocusAfterClosing: Nullable<HTMLElement> =
       document.activeElement as Nullable<HTMLElement>;
-
-    const handleAfterLeave = (): void => {
-      ctx.emit(REMOVE_EVENT);
-    };
 
     const handleDocumentFocus = (e: FocusEvent): void => {
       const messageBoxValue = messageBox.value;
@@ -179,22 +196,35 @@ export default defineComponent({
       }
     };
 
-    const closeBox = async ({
+    const afterLeave = (): void => {
+      ctx.emit('remove');
+    };
+
+    const commitBeforeClose = async (
+      action: QMessageBoxAction
+    ): Promise<boolean> => {
+      let isReadyToClose = true;
+
+      if (typeof props.beforeClose === 'function') {
+        isReadyToClose = await props.beforeClose(action);
+      }
+
+      return isReadyToClose;
+    };
+
+    const emitDoneEvent = async ({
       action,
       payload = null
     }: QMessageBoxEvent): Promise<void> => {
-      ctx.emit(DONE_EVENT, { action, payload });
+      const isDone = await commitBeforeClose(action);
+
+      if (isDone) ctx.emit('done', { action, payload });
 
       isShown.value = false;
-
-      await nextTick();
-
-      document.removeEventListener('focus', handleDocumentFocus, true);
-      elementToFocusAfterClosing?.focus();
     };
 
     const emitCloseEvent = (): void => {
-      closeBox({
+      emitDoneEvent({
         action: props.distinguishCancelAndClose
           ? QMessageBoxAction.close
           : QMessageBoxAction.cancel
@@ -214,6 +244,13 @@ export default defineComponent({
 
     onBeforeUnmount(() => {
       document.documentElement.style.overflow = '';
+      document.removeEventListener('focus', handleDocumentFocus, true);
+      if (!props.preventFocusAfterClosing) elementToFocusAfterClosing?.focus();
+    });
+
+    provide<QMessageBoxContainerProvider>('qMessageBoxContainer', {
+      emitDoneEvent,
+      emitCloseEvent
     });
 
     return {
@@ -221,9 +258,8 @@ export default defineComponent({
       zIndex,
       isShown,
       preparedContent,
-      closeBox,
-      emitCloseEvent,
-      handleAfterLeave
+      afterLeave,
+      emitCloseEvent
     };
   }
 });

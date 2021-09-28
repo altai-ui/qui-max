@@ -10,20 +10,13 @@
         :style="dialogStyle"
       >
         <div
-          v-if="closeOnClickShadow"
-          class="q-dialog-container__clickable-shadow"
-          @click="emitCloseEvent"
-        />
-
-        <div
           ref="dialog"
           tabindex="-1"
-          :style="containerStyle"
-          class="q-dialog-container__container"
+          class="q-dialog-container__wrapper"
           :class="customClass"
           @keyup.esc="emitCloseEvent"
         >
-          <div class="q-dialog-container__inner">
+          <div class="q-dialog-container__content">
             <component
               :is="preparedContent.component"
               v-bind="preparedContent.props"
@@ -38,34 +31,32 @@
 
 <script lang="ts">
 import {
-  computed,
   defineComponent,
   getCurrentInstance,
-  nextTick,
-  onBeforeUnmount,
-  onMounted,
+  ref,
+  computed,
   provide,
-  ref
+  nextTick,
+  onMounted,
+  onBeforeUnmount
 } from 'vue';
 import type { PropType } from 'vue';
 
 import { isServer } from '@/qComponents/constants/isServer';
-
-import QScrollbar from '@/qComponents/QScrollbar';
 import { getConfig } from '@/qComponents/config';
+
 import type { Nullable } from '#/helpers';
 
 import { QDialogAction } from '../constants';
-import type { QDialogEvent } from '../types';
+import type { QDialogComponent, QDialogEvent } from '../types';
 
 import { isExternalComponent } from './utils';
 import type {
   QDialogContainerPropContent,
-  QDialogContainerPropTeleportTo,
   QDialogContainerPropBeforeClose,
+  QDialogContainerPropTeleportTo,
   QDialogContainerProps,
   QDialogContainerInstance,
-  QDialogComponent,
   QDialogContainerProvider
 } from './types';
 
@@ -73,19 +64,10 @@ export default defineComponent({
   name: 'QDialogContainer',
   componentName: 'QDialogContainer',
 
-  components: { QScrollbar },
-
   props: {
     content: {
       type: [Object, Function] as PropType<QDialogContainerPropContent>,
       required: true
-    },
-    /**
-     * width of QDialog
-     */
-    width: {
-      type: [String, Number],
-      default: null
     },
     /**
      * offset from top border of parent relative element
@@ -95,16 +77,16 @@ export default defineComponent({
       default: null
     },
     /**
-     * closes QDialog by click on shadow layer
-     */
-    closeOnClickShadow: {
-      type: Boolean,
-      default: true
-    },
-    /**
      * whether to distinguish canceling and closing the QDialog
      */
     distinguishCancelAndClose: {
+      type: Boolean,
+      default: false
+    },
+    /**
+     * cancel focus on document.activeElement after QDialog was closed
+     */
+    preventFocusAfterClosing: {
       type: Boolean,
       default: false
     },
@@ -113,6 +95,13 @@ export default defineComponent({
      */
     customClass: {
       type: String,
+      default: null
+    },
+    /**
+     * callback before QDialog closes, and it will prevent QDialog from closing
+     */
+    beforeClose: {
+      type: Function as unknown as PropType<QDialogContainerPropBeforeClose>,
       default: null
     },
     /**
@@ -125,31 +114,17 @@ export default defineComponent({
         isServer ? Object : HTMLElement
       ] as PropType<QDialogContainerPropTeleportTo>,
       default: null
-    },
-    /**
-     * callback before QDialog closes, and it will prevent QDialog from closing
-     */
-    beforeClose: {
-      type: Function as unknown as PropType<QDialogContainerPropBeforeClose>,
-      default: null
-    },
-    /**
-     * cancel focus on document.activeElement after QDialog was closed
-     */
-    preventFocusAfterClosing: {
-      type: Boolean,
-      default: false
     }
   },
 
-  emits: ['remove', 'done'],
+  emits: ['done', 'remove'],
 
   setup(props: QDialogContainerProps, ctx): QDialogContainerInstance {
     const instance = getCurrentInstance();
 
     const dialog = ref<Nullable<HTMLElement>>(null);
-    const zIndex = getConfig('nextZIndex');
     const isShown = ref<boolean>(false);
+    const zIndex = getConfig('nextZIndex');
 
     const dialogStyle = computed<Record<string, Nullable<number | string>>>(
       () => ({
@@ -160,26 +135,12 @@ export default defineComponent({
       })
     );
 
-    const containerStyle = computed<Record<string, Nullable<string | number>>>(
-      () => ({
-        width: Number(props.width) ? `${Number(props.width)}px` : props.width
-      })
-    );
-
     const preparedContent = computed<QDialogComponent>(() => {
       if (isExternalComponent(props.content)) {
-        return {
-          props: {},
-          listeners: {},
-          ...props.content
-        };
+        return { props: {}, listeners: {}, ...props.content };
       }
 
-      return {
-        component: props.content,
-        props: {},
-        listeners: {}
-      };
+      return { component: props.content, props: {}, listeners: {} };
     });
 
     const elementToFocusAfterClosing: Nullable<HTMLElement> =
@@ -209,7 +170,7 @@ export default defineComponent({
       return isReadyToClose;
     };
 
-    const closeDialog = async ({
+    const emitDoneEvent = async ({
       action,
       payload = null
     }: QDialogEvent): Promise<void> => {
@@ -221,7 +182,7 @@ export default defineComponent({
     };
 
     const emitCloseEvent = (): void => {
-      closeDialog({
+      emitDoneEvent({
         action: props.distinguishCancelAndClose
           ? QDialogAction.close
           : QDialogAction.cancel
@@ -232,8 +193,8 @@ export default defineComponent({
       document.body.appendChild(instance?.vnode.el as Node);
       document.body.style.overflow = 'hidden';
       document.addEventListener('focus', handleDocumentFocus, true);
-      await nextTick();
 
+      await nextTick();
       isShown.value = true;
       await nextTick();
       dialog.value?.focus();
@@ -246,7 +207,7 @@ export default defineComponent({
     });
 
     provide<QDialogContainerProvider>('qDialogContainer', {
-      emitDoneEvent: closeDialog,
+      emitDoneEvent,
       emitCloseEvent
     });
 
@@ -255,10 +216,8 @@ export default defineComponent({
       zIndex,
       isShown,
       dialogStyle,
-      containerStyle,
       preparedContent,
       afterLeave,
-      closeDialog,
       emitCloseEvent
     };
   }

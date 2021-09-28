@@ -475,13 +475,10 @@ export default defineComponent({
 
     const openDialog = async (): Promise<void> => {
       try {
-        const result = await dialog(
-          { component: MobilePanel },
-          {
-            teleportTo: props.teleportTo,
-            preventFocusAfterClosing: true
-          }
-        );
+        const result = await dialog(MobilePanel, {
+          teleportTo: props.teleportTo,
+          preventFocusAfterClosing: true
+        });
 
         emitChange(result.payload as QDatePickerPropModelValue);
       } catch {

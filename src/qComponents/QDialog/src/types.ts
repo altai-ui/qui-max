@@ -1,40 +1,46 @@
-import type { App, ComponentInternalInstance } from 'vue';
+import type { App, Component, ComponentInternalInstance } from 'vue';
 
 import type { Nullable, UnwrappedInstance } from '#/helpers';
 
-import type {
-  QDialogContainerPropContent,
-  QDialogContainerInstance,
-  QDialogContainerPropTeleportTo
-} from './QDialogContainer';
+import type { QDialogContainerInstance } from './QDialogContainer';
 import type { QDialogAction } from './constants';
-
-export type QDialogContent = QDialogContainerPropContent;
 
 export interface ComponentInternalInstanceWithProvides
   extends ComponentInternalInstance {
-  provides: Record<string | symbol, unknown>;
+  provides: Record<symbol | string, unknown>;
 }
+
+export interface QDialogComponent {
+  component: Component;
+  props?: { [propName: string]: unknown };
+  listeners?: { [listenerEvent: string]: (...args: unknown[]) => void };
+}
+
+export type QDialogContent = Component | QDialogComponent;
 
 export interface QDialogHookOptions {
   parentInstance?: Nullable<ComponentInternalInstance>;
 }
 
+export type QDialogOptionsBeforeClose = Nullable<
+  (action: QDialogAction) => Promise<boolean>
+>;
+export type QDialogOptionsTeleportTo = Nullable<string | HTMLElement>;
+
 export interface QDialogOptions {
-  parentInstance?: Nullable<ComponentInternalInstance>;
-  closeOnClickShadow?: Nullable<boolean>;
+  offsetTop?: Nullable<string | number>;
   distinguishCancelAndClose?: Nullable<boolean>;
-  onBeforeMount?: (app: App<Element>) => void;
+  preventFocusAfterClosing?: Nullable<boolean>;
+  customClass?: Nullable<string>;
+  beforeClose?: Nullable<QDialogOptionsBeforeClose>;
+  teleportTo?: QDialogOptionsTeleportTo;
+  parentInstance?: Nullable<ComponentInternalInstance>;
+  onBeforeMount?: (app: App<Element>) => Promise<void> | void;
   onMounted?: (
     app: App<Element>,
     container: NonNullable<UnwrappedInstance<QDialogContainerInstance>>
-  ) => void;
-  onUnmounted?: (app: App<Element>) => void;
-  width?: Nullable<string | number>;
-  offsetTop?: Nullable<string | number>;
-  customClass?: Nullable<string>;
-  teleportTo?: QDialogContainerPropTeleportTo;
-  preventFocusAfterClosing?: Nullable<boolean>;
+  ) => Promise<void> | void;
+  onUnmounted?: (app: App<Element>) => Promise<void> | void;
 }
 
 export interface QDialogEvent {
@@ -42,7 +48,7 @@ export interface QDialogEvent {
   payload?: unknown;
 }
 
-export interface QDialogPromise {
+export interface DialogPromise {
   resolve: (event: QDialogEvent) => void;
   reject: (event: QDialogEvent) => void;
 }

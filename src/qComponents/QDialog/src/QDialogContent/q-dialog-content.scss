@@ -3,7 +3,18 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  padding: 36px 32px 32px;
+  padding-top: 36px;
+
+  &__title {
+    margin-right: 104px;
+    margin-bottom: 24px;
+    margin-left: 32px;
+    font-size: 24px;
+    font-weight: 800;
+    line-height: 31px;
+    color: var(--color-primary-black);
+    word-break: break-word;
+  }
 
   &__close {
     position: absolute;
@@ -12,23 +23,13 @@
     z-index: 2;
   }
 
-  &__title {
-    padding-right: 104px;
-    margin-bottom: 24px;
-    font-size: 24px;
-    font-weight: 800;
-    line-height: 31px;
-    color: var(--color-primary-black);
-    word-break: break-word;
-  }
-
   &__view {
     display: flex;
-    padding-right: 20px;
   }
 
   &__body {
     flex: 1;
-    padding-bottom: 20px;
+    padding-right: 32px;
+    padding-left: 32px;
   }
 }

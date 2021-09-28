@@ -7,6 +7,7 @@
     icon="q-icon-close"
     @click="handleCloseBtnClick"
   />
+
   <component
     :is="panelComponent"
     :model-value="transformedToDate"

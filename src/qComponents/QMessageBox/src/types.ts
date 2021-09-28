@@ -8,7 +8,16 @@ import type {
 } from './QMessageBoxContainer';
 import type { QMessageBoxAction } from './constants';
 
+export interface ComponentInternalInstanceWithProvides
+  extends ComponentInternalInstance {
+  provides: Record<symbol | string, unknown>;
+}
+
 export type QMessageBoxContent = QMessageBoxContainerPropContent;
+
+export interface QMessageBoxHookOptions {
+  parentInstance?: Nullable<ComponentInternalInstance>;
+}
 
 type Classes = Record<string, boolean>;
 type Styles = Record<string, string | number>;
@@ -16,22 +25,19 @@ type Styles = Record<string, string | number>;
 export type QMessageBoxOptionWrapClass = Nullable<string | Classes | Classes[]>;
 export type QMessageBoxOptionWrapStyle = Nullable<string | Styles | Styles[]>;
 
-export interface QMessageBoxHookOptions {
-  parentInstance?: Nullable<ComponentInternalInstance>;
-}
-
 export interface QMessageBoxOptions {
-  parentInstance?: Nullable<ComponentInternalInstance>;
   closeOnClickShadow?: Nullable<boolean>;
   distinguishCancelAndClose?: Nullable<boolean>;
+  preventFocusAfterClosing?: Nullable<boolean>;
   wrapClass?: QMessageBoxOptionWrapClass;
   wrapStyle?: QMessageBoxOptionWrapStyle;
-  onBeforeMount?: (app: App<Element>) => void;
+  parentInstance?: Nullable<ComponentInternalInstance>;
+  onBeforeMount?: (app: App<Element>) => Promise<void> | void;
   onMounted?: (
     app: App<Element>,
     container: NonNullable<UnwrappedInstance<QMessageBoxContainerInstance>>
-  ) => void;
-  onUnmounted?: (app: App<Element>) => void;
+  ) => Promise<void> | void;
+  onUnmounted?: (app: App<Element>) => Promise<void> | void;
 }
 
 export interface QMessageBoxEvent {

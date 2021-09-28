@@ -1,62 +1,71 @@
-import { createApp, nextTick, Ref, ref } from 'vue';
-import type { App } from 'vue';
+import { createApp, ref, nextTick } from 'vue';
+import type { App, Ref } from 'vue';
 
 import { isServer } from '@/qComponents/constants/isServer';
-import type { UnwrappedInstance, Nullable } from '#/helpers';
+import type { Nullable, Nillable, UnwrappedInstance } from '#/helpers';
 
 import { QDialogContainer } from './QDialogContainer';
 import type { QDialogContainerInstance } from './QDialogContainer';
 import { QDialogAction } from './constants';
 import type {
+  DialogPromise,
+  ComponentInternalInstanceWithProvides,
   QDialogHookOptions,
   QDialogContent,
   QDialogOptions,
   QDialogEvent,
-  QDialogPromise,
-  QDialog,
-  ComponentInternalInstanceWithProvides
+  QDialog
 } from './types';
 
 export const createDialog = (
   config?: QDialogHookOptions
 ): { dialog: QDialog; app: Ref<Nullable<App<Element>>> } => {
+  let dialogPromise: Nullable<DialogPromise> = null;
   const app = ref<Nullable<App<Element>>>(null);
 
   const dialog = (
     content: QDialogContent,
     options?: QDialogOptions
   ): Promise<QDialogEvent> => {
-    let dialogPromise: QDialogPromise;
-
     const handleDone = ({ action, payload }: QDialogEvent): void => {
       if (action === QDialogAction.confirm) {
-        dialogPromise.resolve({ action, payload });
+        dialogPromise?.resolve({ action, payload });
       } else if (
         action === QDialogAction.cancel ||
         action === QDialogAction.close
       ) {
-        dialogPromise.reject({ action, payload });
+        dialogPromise?.reject({ action, payload });
       }
     };
 
-    const handleRemove = (): void => {
+    const handleRemove = async (): Promise<void> => {
       if (!app.value) return;
 
       app.value.unmount();
-      options?.onUnmounted?.(app.value);
+      await options?.onUnmounted?.(app.value);
+      await nextTick();
+      app.value = null;
     };
 
-    nextTick(() => {
+    nextTick(async () => {
       if (isServer) return;
 
       app.value = createApp(QDialogContainer, {
-        ...(options || {}),
         content,
+        offsetTop: options?.offsetTop,
+        distinguishCancelAndClose: options?.distinguishCancelAndClose,
+        preventFocusAfterClosing: options?.preventFocusAfterClosing,
+        customClass: options?.customClass,
+        beforeClose: options?.beforeClose,
+        teleportTo: options?.teleportTo,
         onDone: handleDone,
         onRemove: handleRemove
       });
 
-      const parentAppContext = config?.parentInstance?.appContext;
+      const parentInstance =
+        config?.parentInstance as Nillable<ComponentInternalInstanceWithProvides>;
+      const parentAppContext = parentInstance?.appContext;
+
       // Register a global components from main app instance
       const components = parentAppContext?.components ?? {};
       Object.entries(components).forEach(([key, value]) => {
@@ -65,10 +74,7 @@ export const createDialog = (
 
       // Reprovide a global provides from main app instance and provides from parentInstance
       const provides =
-        (config?.parentInstance as ComponentInternalInstanceWithProvides)
-          ?.provides ??
-        parentAppContext?.provides ??
-        {};
+        parentInstance?.provides ?? parentAppContext?.provides ?? {};
 
       const providerKeys = [
         ...Object.getOwnPropertySymbols(provides),
@@ -81,10 +87,10 @@ export const createDialog = (
         if (value) app.value?.provide(key, value);
       });
 
-      options?.onBeforeMount?.(app.value);
+      await options?.onBeforeMount?.(app.value);
 
       const container = app.value.mount(document.createElement('div'));
-      options?.onMounted?.(
+      await options?.onMounted?.(
         app.value,
         container as NonNullable<UnwrappedInstance<QDialogContainerInstance>>
       );

@@ -3,6 +3,7 @@
     <template
       #title
     >Morbi massa libero, vehicula nec consequat sed, porta a sem.</template>
+
     {{ someExternalProp }}
 
     <q-form :model="formModel">
@@ -19,9 +20,9 @@
     </q-form>
 
     <q-button
-      :loading="isSending"
-      @click="handleSendClick"
-    >Send</q-button>
+      :loading="isLoading"
+      @click="handleConfirmClick"
+    >Confirm</q-button>
 
     <q-button
       theme="secondary"
@@ -31,13 +32,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, reactive, ref } from 'vue';
+import { defineComponent, ref, reactive, inject } from 'vue';
 
-import {
-  QDialogAction,
-  QDialogContent,
-  QDialogContainerProvider
-} from '@/qComponents';
+import { QDialogAction, QDialogContent } from '@/qComponents';
+import type { QDialogContainerProvider } from '@/qComponents';
 
 export default defineComponent({
   name: 'DialogFormTest',
@@ -47,50 +45,47 @@ export default defineComponent({
   props: {
     someExternalProp: {
       type: String,
-      default: null
+      default: 'Default external prop'
     }
   },
 
   emits: ['name-input'],
 
   setup(_, ctx) {
-    const isSending = ref<boolean>(false);
-    const formModel = reactive({ name: 'Testname' });
-
     const qDialogContainer =
       inject<QDialogContainerProvider>('qDialogContainer');
+
+    const isLoading = ref<boolean>(false);
+    const formModel = reactive({ name: 'Testname' });
 
     const handleNameInput = (e: InputEvent): void => {
       ctx.emit('name-input', (e.target as HTMLInputElement).value);
     };
 
-    const handleCancelClick = (): void => {
-      qDialogContainer?.emitDoneEvent({ action: QDialogAction.cancel });
+    const commitBeforeClose = (): Promise<boolean> =>
+      new Promise(resolve => setTimeout(() => resolve(true), 1000));
+
+    const handleConfirmClick = async (): Promise<void> => {
+      isLoading.value = true;
+
+      const action = QDialogAction.confirm;
+      const isDone = await commitBeforeClose();
+
+      if (isDone) qDialogContainer?.emitDoneEvent({ action });
+
+      isLoading.value = false;
     };
 
-    const handleSendClick = async (): Promise<void> => {
-      isSending.value = true;
-
-      const promise = (): Promise<string> =>
-        new Promise(resolve => {
-          setTimeout(() => resolve('done'), 1000);
-        });
-
-      await promise();
-
-      await qDialogContainer?.emitDoneEvent({
-        action: QDialogAction.confirm,
-        payload: { test: true }
-      });
-
-      isSending.value = false;
+    const handleCancelClick = async (): Promise<void> => {
+      const action = QDialogAction.cancel;
+      qDialogContainer?.emitDoneEvent({ action });
     };
 
     return {
+      isLoading,
       formModel,
-      isSending,
       handleNameInput,
-      handleSendClick,
+      handleConfirmClick,
       handleCancelClick
     };
   }

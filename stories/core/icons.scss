@@ -1,0 +1,41 @@
+.q-icons {
+  display: flex;
+  flex-flow: row wrap;
+  width: 100%;
+  max-width: 1000px;
+
+  &__icon {
+    font-size: 32px;
+    color: var(--color-primary-black);
+
+    &-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      min-width: 40px;
+      height: 40px;
+      overflow: hidden;
+      background: #fff;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      border-radius: 4px;
+      box-shadow: rgba(0, 0, 0, 0.1) 0 1px 3px 0;
+    }
+
+    &-container {
+      display: inline-flex;
+      flex: 0 1 calc(20% - 10px);
+      flex-direction: row;
+      align-items: center;
+      min-width: 120px;
+      margin: 0 10px 30px 0;
+    }
+
+    &-class {
+      margin-left: 10px;
+      font-size: 14px;
+      line-height: 1.2;
+      color: #333;
+    }
+  }
+}

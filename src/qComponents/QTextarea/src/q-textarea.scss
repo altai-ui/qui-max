@@ -90,24 +90,16 @@
     }
   }
 
-  &_disabled {
-    &::after {
-      position: absolute;
-      top: 0;
-      right: 0;
-      width: 40px;
-      // stylelint-disable-next-line font-family-no-missing-generic-family-keyword
-      font-family: 'qicon';
-      font-size: 24px;
-      line-height: 40px;
-      text-align: center;
-      pointer-events: none;
-      cursor: not-allowed;
-    }
-  }
-
-  &__q-icon-lock::after {
-    content: '\e930';
+  .q-textarea__disabled-icon {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 40px;
+    font-size: 24px;
+    line-height: 40px;
+    text-align: center;
+    pointer-events: none;
+    cursor: not-allowed;
   }
 
   &__count {

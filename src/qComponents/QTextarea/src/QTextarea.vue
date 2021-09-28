@@ -1,6 +1,10 @@
 <template>
   <div :class="classes">
     <div
+      v-if="isDisabled"
+      class="q-textarea__disabled-icon q-icon-lock"
+    />
+    <div
       v-if="isSymbolLimitShown"
       class="q-textarea__count"
     >
@@ -155,7 +159,7 @@ export default defineComponent({
 
       return {
         [mainClass]: true,
-        [`${mainClass}_disabled ${mainClass}__q-icon-lock`]: isDisabled.value
+        [`${mainClass}_disabled`]: isDisabled.value
       };
     });
 

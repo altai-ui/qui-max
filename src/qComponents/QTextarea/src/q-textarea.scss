@@ -33,13 +33,10 @@
     display: block;
     width: 100%;
     height: 40px;
-    padding-top: 8px;
-    padding-right: 16px;
-    padding-bottom: 10px;
-    padding-left: 16px;
+    padding: 10px 16px 12px;
     font-size: var(--font-size-base);
     font-weight: var(--font-weight-base);
-    line-height: var(--line-height-base);
+    line-height: 18px;
     color: var(--field-color-base);
     text-overflow: ellipsis;
     resize: vertical;

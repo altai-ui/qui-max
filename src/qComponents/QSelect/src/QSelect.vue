@@ -300,7 +300,7 @@ export default defineComponent({
     });
 
     const preparedPlaceholder = computed<Nullable<string>>(() => {
-      return state.query || (props.multiple && props.modelValue)
+      return state.query || (props.multiple && (props.modelValue as [])?.length)
         ? ''
         : props.placeholder;
     });

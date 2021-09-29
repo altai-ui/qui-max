@@ -1,15 +1,15 @@
 <template>
   <div :class="classes">
     <div
-      v-if="isDisabled"
-      class="q-textarea__disabled-icon q-icon-lock"
-    />
-    <div
       v-if="isSymbolLimitShown"
       class="q-textarea__count"
     >
       {{ t('QTextarea.charNumber') }}: {{ textLength }}/{{ $attrs.maxlength }}
     </div>
+    <div
+      v-if="isDisabled"
+      class="q-textarea__disabled-icon q-icon-lock"
+    />
     <textarea
       v-bind="$attrs"
       ref="textarea"

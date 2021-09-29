@@ -1,42 +1,72 @@
 .q-icons {
   display: flex;
   flex-flow: row wrap;
+  justify-content: center;
   width: 100%;
   max-width: 1000px;
   margin-top: 50px;
 
-  &__icon {
+  &__preview {
     font-size: 32px;
     color: var(--color-primary-black);
+  }
 
-    &-wrapper {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 40px;
-      min-width: 40px;
-      height: 40px;
-      overflow: hidden;
-      background: #fff;
-      border: 1px solid rgba(0, 0, 0, 0.1);
-      border-radius: 4px;
-      box-shadow: rgba(0, 0, 0, 0.1) 0 1px 3px 0;
+  &__wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    min-height: 40px;
+    overflow: hidden;
+    cursor: pointer;
+    background: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0 1px 3px 0;
+
+    &:hover {
+      box-shadow: rgba(0, 0, 0, 0.1) 0 1px 5px 0;
     }
 
-    &-container {
-      display: inline-flex;
-      flex: 0 1 calc(20% - 10px);
-      flex-direction: row;
-      align-items: center;
-      min-width: 120px;
-      margin: 0 10px 30px 0;
+    &:active {
+      box-shadow: rgba(0, 0, 0, 0.1) 0 1px 1px 0;
     }
+  }
 
-    &-class {
-      margin-left: 10px;
-      font-size: 14px;
-      line-height: 1.2;
-      color: #333;
+  &__container {
+    position: relative;
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    min-width: 120px;
+    margin: 0 10px 30px 0;
+  }
+
+  &__name {
+    width: 140px;
+    margin-left: 10px;
+    font-size: 14px;
+    line-height: 1.2;
+    color: #333;
+  }
+
+  &__tooltip {
+    position: absolute;
+    top: 0;
+    pointer-events: none;
+    opacity: 0;
+    transform: translate(-10%, 0);
+    animation: show-tooltip 0.3s ease-in forwards;
+  }
+
+  @keyframes show-tooltip {
+    from {
+      opacity: 0;
+      transform: translate(-10%, 0);
+    }
+    to {
+      opacity: 1;
+      transform: translate(-10%, -100%);
     }
   }
 }

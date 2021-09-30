@@ -150,10 +150,8 @@ export default defineComponent({
     const dropdown = ref<Nullable<HTMLElement>>(null);
 
     const handleDocumentFocus = (event: FocusEvent): void => {
-      const refDropdown = dropdown.value;
-
-      if (refDropdown && !refDropdown.contains(event.target as HTMLElement)) {
-        refDropdown.focus();
+      if (dropdown.value?.contains(event.target as HTMLElement)) {
+        dropdown.value.focus();
       }
     };
 

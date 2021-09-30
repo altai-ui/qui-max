@@ -147,10 +147,8 @@ export default defineComponent({
       document.activeElement as Nullable<HTMLElement>;
 
     const handleDocumentFocus = (event: FocusEvent): void => {
-      const dialogValue = dialog.value;
-
-      if (dialogValue && !dialogValue.contains(event.target as HTMLElement)) {
-        dialogValue.focus();
+      if (dialog.value?.contains(event.target as HTMLElement)) {
+        dialog.value.focus();
       }
     };
 

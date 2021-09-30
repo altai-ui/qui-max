@@ -1,29 +1,22 @@
 <template>
   <teleport :to="teleportTo || 'body'">
     <transition
-      name="q-fade"
+      name="q-fade-up"
       @after-leave="afterLeave"
     >
       <div
         v-show="isShown"
-        class="q-drawer-container"
-        :style="{ zIndex }"
+        class="q-dialog-container"
+        :style="dialogStyle"
       >
         <div
-          v-if="closeOnClickShadow"
-          class="q-drawer-container__clickable-shadow"
-          @click="emitCloseEvent"
-        />
-
-        <div
-          ref="drawer"
+          ref="dialog"
           tabindex="-1"
-          class="q-drawer-container__wrapper"
-          :style="drawerStyle"
-          :class="[drawerClass, customClass]"
+          class="q-dialog-container__wrapper"
+          :class="customClass"
           @keyup.esc="emitCloseEvent"
         >
-          <div class="q-drawer-container__content">
+          <div class="q-dialog-container__content">
             <component
               :is="preparedContent.component"
               v-bind="preparedContent.props"
@@ -49,118 +42,100 @@ import {
 } from 'vue';
 import type { PropType } from 'vue';
 
-import { getConfig } from '@/qComponents/config';
 import { isServer } from '@/qComponents/constants/isServer';
-import { validateArray } from '@/qComponents/helpers';
+import { getConfig } from '@/qComponents/config';
 
 import type { Nullable } from '#/helpers';
 
-import { QDrawerAction } from '../constants';
-import type { QDrawerComponent, QDrawerEvent } from '../types';
+import { QDialogAction } from '../constants';
+import type { QDialogComponent, QDialogEvent } from '../types';
 
 import { isExternalComponent } from './utils';
 import type {
-  QDrawerContainerPropContent,
-  QDrawerContainerPropPosition,
-  QDrawerContainerPropBeforeClose,
-  QDrawerContainerPropTeleportTo,
-  QDrawerContainerProps,
-  QDrawerContainerInstance,
-  QDrawerContainerProvider
+  QDialogContainerPropContent,
+  QDialogContainerPropBeforeClose,
+  QDialogContainerPropTeleportTo,
+  QDialogContainerProps,
+  QDialogContainerInstance,
+  QDialogContainerProvider
 } from './types';
 
 export default defineComponent({
-  name: 'QDrawerContainer',
-  componentName: 'QDrawerContainer',
+  name: 'QDialogContainer',
+  componentName: 'QDialogContainer',
 
   props: {
     content: {
-      type: [Object, Function] as PropType<QDrawerContainerPropContent>,
+      type: [Object, Function] as PropType<QDialogContainerPropContent>,
       required: true
     },
     /**
-     * width of QDrawer
+     * offset from top border of parent relative element
      */
-    width: {
+    offsetTop: {
       type: [String, Number],
       default: null
     },
     /**
-     * closes QDrawer by click on shadow layer
-     */
-    closeOnClickShadow: {
-      type: Boolean,
-      default: true
-    },
-    /**
-     * whether to distinguish canceling and closing the QDrawer
+     * whether to distinguish canceling and closing the QDialog
      */
     distinguishCancelAndClose: {
       type: Boolean,
       default: false
     },
     /**
-     * cancel focus on document.activeElement after QDrawer was closed
+     * cancel focus on document.activeElement after QDialog was closed
      */
     preventFocusAfterClosing: {
       type: Boolean,
       default: false
     },
     /**
-     * Drawer's position
-     */
-    position: {
-      type: String as PropType<QDrawerContainerPropPosition>,
-      default: 'right',
-      validator: validateArray<QDrawerContainerPropPosition>(['left', 'right'])
-    },
-    /**
-     * Extra class names for Drawer's wrapper
+     * Extra class names for QDialog's wrapper
      */
     customClass: {
       type: String,
       default: null
     },
     /**
-     * callback before QDrawer closes, and it will prevent QDrawer from closing
+     * callback before QDialog closes, and it will prevent QDialog from closing
      */
     beforeClose: {
-      type: Function as unknown as PropType<QDrawerContainerPropBeforeClose>,
+      type: Function as unknown as PropType<QDialogContainerPropBeforeClose>,
       default: null
     },
     /**
-     * Specifies a target element where QDrawer will be moved.
+     * Specifies a target element where QDialog will be moved.
      * (has to be a valid query selector, or an HTMLElement)
      */
     teleportTo: {
       type: [
         String,
         isServer ? Object : HTMLElement
-      ] as PropType<QDrawerContainerPropTeleportTo>,
+      ] as PropType<QDialogContainerPropTeleportTo>,
       default: null
     }
   },
 
   emits: ['done', 'remove'],
 
-  setup(props: QDrawerContainerProps, ctx): QDrawerContainerInstance {
+  setup(props: QDialogContainerProps, ctx): QDialogContainerInstance {
     const instance = getCurrentInstance();
 
-    const drawer = ref<Nullable<HTMLElement>>(null);
+    const dialog = ref<Nullable<HTMLElement>>(null);
     const isShown = ref<boolean>(false);
     const zIndex = getConfig('nextZIndex');
 
-    const drawerStyle = computed<Record<string, Nullable<string | number>>>(
+    const dialogStyle = computed<Record<string, Nullable<number | string>>>(
       () => ({
-        width: Number(props.width) ? `${Number(props.width)}px` : props.width
+        zIndex,
+        top: Number(props.offsetTop)
+          ? `${Number(props.offsetTop)}px`
+          : props.offsetTop
       })
     );
 
-    const drawerClass = computed<string>(
-      () => `q-drawer-container__wrapper_${props.position}`
-    );
-
-    const preparedContent = computed<QDrawerComponent>(() => {
+    const preparedContent = computed<QDialogComponent>(() => {
       if (isExternalComponent(props.content)) {
         return { props: {}, listeners: {}, ...props.content };
       }
@@ -172,8 +147,8 @@ export default defineComponent({
       document.activeElement as Nullable<HTMLElement>;
 
     const handleDocumentFocus = (event: FocusEvent): void => {
-      if (drawer.value?.contains(event.target as HTMLElement)) {
-        drawer.value.focus();
+      if (dialog.value?.contains(event.target as HTMLElement)) {
+        dialog.value.focus();
       }
     };
 
@@ -182,7 +157,7 @@ export default defineComponent({
     };
 
     const commitBeforeClose = async (
-      action: QDrawerAction
+      action: QDialogAction
     ): Promise<boolean> => {
       let isReadyToClose = true;
 
@@ -196,7 +171,7 @@ export default defineComponent({
     const emitDoneEvent = async ({
       action,
       payload = null
-    }: QDrawerEvent): Promise<void> => {
+    }: QDialogEvent): Promise<void> => {
       const isDone = await commitBeforeClose(action);
 
       if (isDone) ctx.emit('done', { action, payload });
@@ -207,40 +182,39 @@ export default defineComponent({
     const emitCloseEvent = (): void => {
       emitDoneEvent({
         action: props.distinguishCancelAndClose
-          ? QDrawerAction.close
-          : QDrawerAction.cancel
+          ? QDialogAction.close
+          : QDialogAction.cancel
       });
     };
 
     onMounted(async () => {
       document.body.appendChild(instance?.vnode.el as Node);
-      document.documentElement.style.overflow = 'hidden';
+      document.body.style.overflow = 'hidden';
       document.addEventListener('focus', handleDocumentFocus, true);
 
       await nextTick();
       isShown.value = true;
       await nextTick();
-      drawer.value?.focus();
+      dialog.value?.focus();
     });
 
     onBeforeUnmount(() => {
-      document.documentElement.style.overflow = '';
+      document.body.style.overflow = '';
       document.removeEventListener('focus', handleDocumentFocus, true);
       if (!props.preventFocusAfterClosing) elementToFocusAfterClosing?.focus();
     });
 
-    provide<QDrawerContainerProvider>('qDrawerContainer', {
+    provide<QDialogContainerProvider>('qDialogContainer', {
       emitDoneEvent,
       emitCloseEvent
     });
 
     return {
-      drawer,
+      dialog,
       zIndex,
       isShown,
+      dialogStyle,
       preparedContent,
-      drawerStyle,
-      drawerClass,
       afterLeave,
       emitCloseEvent
     };

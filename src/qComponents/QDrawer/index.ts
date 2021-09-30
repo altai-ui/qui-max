@@ -26,4 +26,10 @@ export type {
   QDrawerContentInstance
 } from './src/QDrawerContent';
 export { QDrawerAction } from './src/constants';
-export type { QDrawer, QDrawerOptions } from './src/types';
+export type {
+  QDrawer,
+  QDrawerOptionsPosition,
+  QDrawerOptionsBeforeClose,
+  QDrawerOptionsTeleportTo,
+  QDrawerOptions
+} from './src/types';

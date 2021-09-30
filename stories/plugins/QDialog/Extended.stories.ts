@@ -1,33 +1,33 @@
-import type { Story, Meta } from '@storybook/vue3';
-import { defineComponent, defineAsyncComponent } from 'vue';
+import type { Meta, Story } from '@storybook/vue3';
+import { defineAsyncComponent, defineComponent } from 'vue';
 
-import { useMessageBox } from '@/qComponents';
-import { QMessageBoxContainer } from '@/qComponents/QMessageBox/src/QMessageBoxContainer';
-import type { QMessageBoxOptions } from '@/qComponents';
+import { useDialog } from '@/qComponents';
+import { QDialogContainer } from '@/qComponents/QDialog/src/QDialogContainer';
+import type { QDialogOptions } from '@/qComponents';
 
 const storyMetadata: Meta = {
-  title: 'Plugins/QMessageBox/Extended',
-  component: QMessageBoxContainer,
+  title: 'Plugins/QDialog/Extended',
+  component: QDialogContainer,
   argTypes: {
     content: { control: { type: 'none' } },
     teleportTo: { control: { type: 'none' } }
   }
 };
 
-const QMessageBoxExtendedStory: Story<QMessageBoxOptions> = args =>
+const QDialogExtendedStory: Story<QDialogOptions> = args =>
   defineComponent({
     setup() {
-      const messageBox = useMessageBox();
+      const dialog = useDialog();
 
       const handleClick = async (): Promise<void> => {
         try {
-          const result = await messageBox(
+          const result = await dialog(
             {
               component: defineAsyncComponent(
-                () => import('./MessageBoxFormTest.vue')
+                () => import('./DialogFormTest.vue')
               ),
               props: {
-                someExternalProp: 'some external prop here'
+                someExternalProp: 'Some value of some external component'
               },
               listeners: {
                 nameInput: (value: string) => {
@@ -49,10 +49,9 @@ const QMessageBoxExtendedStory: Story<QMessageBoxOptions> = args =>
 
       return { handleClick };
     },
-    template:
-      '<q-button @click="handleClick">Click to open message box</q-button>'
+    template: '<q-button @click="handleClick">Click to open dialog</q-button>'
   });
 
-export const Extended = QMessageBoxExtendedStory.bind({});
+export const Extended = QDialogExtendedStory.bind({});
 
 export default storyMetadata;

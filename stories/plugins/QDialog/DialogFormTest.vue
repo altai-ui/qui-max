@@ -1,5 +1,5 @@
 <template>
-  <q-drawer-content>
+  <q-dialog-content>
     <template
       #title
     >Morbi massa libero, vehicula nec consequat sed, porta a sem.</template>
@@ -28,19 +28,19 @@
       theme="secondary"
       @click="handleCancelClick"
     >Cancel</q-button>
-  </q-drawer-content>
+  </q-dialog-content>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref, reactive, inject } from 'vue';
 
-import { QDrawerContent, QDrawerAction } from '@/qComponents';
-import type { QDrawerContainerProvider } from '@/qComponents';
+import { QDialogAction, QDialogContent } from '@/qComponents';
+import type { QDialogContainerProvider } from '@/qComponents';
 
 export default defineComponent({
-  name: 'QDrawerSampleContent',
+  name: 'DialogFormTest',
 
-  components: { QDrawerContent },
+  components: { QDialogContent },
 
   props: {
     someExternalProp: {
@@ -52,8 +52,8 @@ export default defineComponent({
   emits: ['name-input'],
 
   setup(_, ctx) {
-    const qDrawerContainer =
-      inject<QDrawerContainerProvider>('qDrawerContainer');
+    const qDialogContainer =
+      inject<QDialogContainerProvider>('qDialogContainer');
 
     const isLoading = ref<boolean>(false);
     const formModel = reactive({ name: 'Testname' });
@@ -68,17 +68,17 @@ export default defineComponent({
     const handleConfirmClick = async (): Promise<void> => {
       isLoading.value = true;
 
-      const action = QDrawerAction.confirm;
+      const action = QDialogAction.confirm;
       const isDone = await commitBeforeClose();
 
-      if (isDone) qDrawerContainer?.emitDoneEvent({ action });
+      if (isDone) qDialogContainer?.emitDoneEvent({ action });
 
       isLoading.value = false;
     };
 
     const handleCancelClick = async (): Promise<void> => {
-      const action = QDrawerAction.cancel;
-      qDrawerContainer?.emitDoneEvent({ action });
+      const action = QDialogAction.cancel;
+      qDialogContainer?.emitDoneEvent({ action });
     };
 
     return {
@@ -91,11 +91,3 @@ export default defineComponent({
   }
 });
 </script>
-
-<style lang="scss" scoped>
-.q-drawer-sample-content {
-  &__externalprop {
-    padding-bottom: 24px;
-  }
-}
-</style>

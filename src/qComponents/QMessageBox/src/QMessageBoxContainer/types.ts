@@ -5,9 +5,9 @@ import type { Nullable } from '#/helpers';
 import type {
   QMessageBoxEvent,
   QMessageBoxOptionWrapClass,
-  QMessageBoxOptionWrapStyle,
-  QMessageBoxOptions
+  QMessageBoxOptionWrapStyle
 } from '../types';
+import type { QMessageBoxAction } from '../constants';
 
 export interface QMessageBoxParams {
   title: string;
@@ -28,11 +28,34 @@ export type QMessageBoxContainerPropContent =
   | Component
   | QMessageBoxComponent;
 
-export type QMessageBoxContainerPropWrapClass = QMessageBoxOptionWrapClass;
-export type QMessageBoxContainerPropWrapStyle = QMessageBoxOptionWrapStyle;
+type Classes = Record<string, boolean>;
+type Styles = Record<string, string | number>;
 
-export interface QMessageBoxContainerProps extends QMessageBoxOptions {
+export type QMessageBoxContainerPropWrapClass = Nullable<
+  string | Classes | Classes[]
+>;
+export type QMessageBoxContainerPropWrapStyle = Nullable<
+  string | Styles | Styles[]
+>;
+export type QMessageBoxContainerPropBeforeClose = Nullable<
+  (action: QMessageBoxAction) => Promise<boolean>
+>;
+export type QMessageBoxContainerPropTeleportTo = Nullable<string | HTMLElement>;
+
+export interface QMessageBoxContainerProps {
   content: QMessageBoxContainerPropContent;
+  closeOnClickShadow: Nullable<boolean>;
+  distinguishCancelAndClose: Nullable<boolean>;
+  preventFocusAfterClosing: Nullable<boolean>;
+  wrapClass: QMessageBoxOptionWrapClass;
+  wrapStyle: QMessageBoxOptionWrapStyle;
+  beforeClose: Nullable<QMessageBoxContainerPropBeforeClose>;
+  teleportTo: QMessageBoxContainerPropTeleportTo;
+}
+
+export interface QMessageBoxContainerProvider {
+  emitDoneEvent: (props: QMessageBoxEvent) => Promise<void>;
+  emitCloseEvent: () => void;
 }
 
 export interface QMessageBoxContainerInstance {
@@ -40,7 +63,6 @@ export interface QMessageBoxContainerInstance {
   zIndex: number;
   isShown: Ref<boolean>;
   preparedContent: ComputedRef<QMessageBoxComponent>;
-  closeBox: (event: QMessageBoxEvent) => Promise<void>;
+  afterLeave: () => void;
   emitCloseEvent: () => void;
-  handleAfterLeave: () => void;
 }

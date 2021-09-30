@@ -6,6 +6,10 @@
     >
       {{ t('QTextarea.charNumber') }}: {{ textLength }}/{{ $attrs.maxlength }}
     </div>
+    <div
+      v-if="isDisabled"
+      class="q-textarea__disabled-icon q-icon-lock"
+    />
     <textarea
       v-bind="$attrs"
       ref="textarea"

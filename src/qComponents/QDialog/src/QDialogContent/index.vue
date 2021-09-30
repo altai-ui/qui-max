@@ -1,21 +1,27 @@
 <template>
-  <div class="q-drawer-content">
+  <div class="q-dialog-content">
     <div
       v-if="title || $slots.title"
-      class="q-drawer-content__title"
+      class="q-dialog-content__title"
     >
       <slot name="title">{{ title }}</slot>
     </div>
 
-    <button
+    <q-button
       v-if="!hideCloseButton"
-      type="button"
-      class="q-drawer-content__close q-icon-close"
+      class="q-dialog-content__close"
+      circle
+      theme="secondary"
+      type="icon"
+      icon="q-icon-close"
       @click="handleCloseBtnClick"
     />
 
-    <q-scrollbar view-class="q-drawer-content__view">
-      <div class="q-drawer-content__body">
+    <q-scrollbar
+      theme="secondary"
+      view-class="q-dialog-content__view"
+    >
+      <div class="q-dialog-content__body">
         <slot />
       </div>
     </q-scrollbar>
@@ -26,21 +32,22 @@
 import { defineComponent, inject } from 'vue';
 
 import QScrollbar from '@/qComponents/QScrollbar';
+import QButton from '@/qComponents/QButton';
 
 import type { Nullable } from '#/helpers';
 
-import type { QDrawerContainerProvider } from '../QDrawerContainer';
-import type { QDrawerContentInstance, QDrawerContentProps } from './types';
+import type { QDialogContainerProvider } from '../QDialogContainer';
+import type { QDialogContentInstance, QDialogContentProps } from './types';
 
 export default defineComponent({
-  name: 'QDrawerContent',
-  componentName: 'QDrawerContent',
+  name: 'QDialogContent',
+  componentName: 'QDialogContent',
 
-  components: { QScrollbar },
+  components: { QScrollbar, QButton },
 
   props: {
     /**
-     * title of the QDrawer
+     * title of the QDialog
      */
     title: {
       type: String,
@@ -56,14 +63,14 @@ export default defineComponent({
   },
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  setup(props: QDrawerContentProps): QDrawerContentInstance {
-    const qDrawerContainer = inject<Nullable<QDrawerContainerProvider>>(
-      'qDrawerContainer',
+  setup(props: QDialogContentProps): QDialogContentInstance {
+    const qDialogContainer = inject<Nullable<QDialogContainerProvider>>(
+      'qDialogContainer',
       null
     );
 
     const handleCloseBtnClick = (): void => {
-      qDrawerContainer?.emitCloseEvent();
+      qDialogContainer?.emitCloseEvent();
     };
 
     return {

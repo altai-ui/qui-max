@@ -1,12 +1,12 @@
 .q-icons {
+  --font-size: 32px;
+
   display: flex;
   flex-flow: row wrap;
   justify-content: space-between;
   width: 100%;
   max-width: 900px;
   margin-top: 50px;
-
-  --font-size: 32px;
 
   &__container {
     position: relative;

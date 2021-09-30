@@ -24,12 +24,7 @@ const PlaygroundStory: Story = args =>
       };
     },
 
-    template: `
-          <span 
-            :class="icon"
-            :style="style"
-          />
-        `
+    template: '<span :class="icon" :style="style" />'
   });
 
 export const Playground = PlaygroundStory.bind({});

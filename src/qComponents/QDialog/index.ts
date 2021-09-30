@@ -19,7 +19,7 @@ const useDialog = (options?: QDialogHookOptions): QDialog => {
 };
 
 export { useDialog };
-export { QDialogContainerProvider } from './src/QDialogContainer';
+export type { QDialogContainerProvider } from './src/QDialogContainer';
 export { QDialogContent } from './src/QDialogContent';
 export type {
   QDialogContentProps,

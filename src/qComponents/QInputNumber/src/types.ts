@@ -1,4 +1,4 @@
-import type { ComputedRef } from 'vue';
+import type { Ref, ComputedRef } from 'vue';
 
 import type { Nullable } from '#/helpers';
 
@@ -58,7 +58,6 @@ export interface QInputNumberInstance {
   handleBlur: (event: FocusEvent) => void;
   handleFocus: (event: FocusEvent) => void;
   handleKeyDown: (event: KeyboardEvent) => void;
-  handleKeyPress: (event: KeyboardEvent) => void;
   handleDecreaseClick: () => void;
   handleIncreaseClick: () => void;
   inputRef: Ref<Nullable<HTMLElement>>;

@@ -30,23 +30,25 @@ const QInputNumberStory: Story<QInputNumberProps> = args =>
     },
 
     template: `
-      <q-input-number
-        v-model="numberValue"
-        :prefix="args.prefix"
-        :suffix="args.suffix"
-        :step="args.step"
-        :min="args.min"
-        :max="args.max"
-        :useGrouping="args.useGrouping"
-        :placeholder="args.placeholder"
-        :precision="args.precision"
-        :disabled="args.disabled"
-        :localization="args.localization"
-        :no-controls="args.noControls"
-        :validate-event="args.validateEvent"
-        @input="handleEmit($event, 'input')"
-        @change="handleEmit($event, 'change')"
-      />
+      <div style="width:300px">
+        <q-input-number
+          v-model="numberValue"
+          :prefix="args.prefix"
+          :suffix="args.suffix"
+          :step="args.step"
+          :min="args.min"
+          :max="args.max"
+          :useGrouping="args.useGrouping"
+          :placeholder="args.placeholder"
+          :precision="args.precision"
+          :disabled="args.disabled"
+          :localization="args.localization"
+          :no-controls="args.noControls"
+          :validate-event="args.validateEvent"
+          @input="handleEmit($event, 'input')"
+          @change="handleEmit($event, 'change')"
+        />
+      </div>
     `
   });
 

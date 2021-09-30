@@ -1,3 +1,4 @@
+import { Nullable } from '#/helpers';
 import type {
   Selections,
   AddittionsMatch,
@@ -14,15 +15,14 @@ const setCursorPosition = (
 
 const checkStringAdditions = (
   value: string,
-  additions: AddittionsMatch,
-  addition: string
+  addition: Nullable<string>
 ): boolean => {
-  if (!additions[addition]) return false;
+  if (!addition) return false;
 
-  const position = value.indexOf(additions[addition]);
+  const position = value.indexOf(addition);
 
   const expectedPosition =
-    addition === 'suffix' ? value.length - additions[addition].length : 0;
+    addition === 'suffix' ? value.length - addition.length : 0;
 
   return position === expectedPosition;
 };
@@ -44,10 +44,10 @@ const getValueWithoutAdditions = (
 
   let newValue = value;
 
-  if (prefix && checkStringAdditions(newValue, additions, 'prefix'))
+  if (prefix && checkStringAdditions(newValue, additions.prefix))
     newValue = newValue.replace(prefixReg, '');
 
-  if (suffix && checkStringAdditions(newValue, additions, 'suffix'))
+  if (suffix && checkStringAdditions(newValue, additions.suffix))
     newValue = newValue.replace(suffixReg, '');
 
   return newValue;
@@ -123,6 +123,7 @@ const setCaret = (
   selectionStart: number,
   selectionEnd: number,
   prefixLength: number,
+  suffixLength: number,
   localizationTag: string
 ): void => {
   if (prevPart === '-') {
@@ -142,6 +143,14 @@ const setCaret = (
     : 0;
 
   let newCaretPos = (newValue?.length || 0) - lastPart.length + selectionMove;
+
+  // ignore the suffix
+  if (newValue?.length && suffixLength > 0) {
+    if (newCaretPos > newValue.length - suffixLength) {
+      newCaretPos = newValue.length - suffixLength;
+    }
+  }
+
   const difference = (newValue?.length || 0) - lastPart.length || prefixLength;
 
   if (key === 'Backspace') {
@@ -214,6 +223,8 @@ const updateValue = ({
 };
 
 const insertText = (args: InsertedTextArgs): InsertedTextParts => {
+  console.log('insertText');
+
   const { target, key } = args;
   const { value, selectionStart, selectionEnd } = target;
 

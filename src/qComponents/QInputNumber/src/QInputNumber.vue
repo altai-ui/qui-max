@@ -24,8 +24,8 @@
       :validate-event="false"
       @blur="handleBlur"
       @focus="handleFocus"
-      @keypress.prevent="handleKeyPress"
       @keydown="handleKeyDown"
+      @keypress.prevent
       @paste.prevent="handlePaste"
       @click="handleClick"
     />
@@ -370,7 +370,17 @@ export default defineComponent({
         numberValueAsNumber <= (props.min ?? MIN_INTEGER)
       ) {
         changesEmmiter(numberValueAsNumber, 'input');
-        setCursorPosition(target, newValue.length);
+        let position = newValue.length;
+
+        if (suffixLength.value) {
+          position = newValue.length - suffixLength.value;
+        }
+
+        if (props.precision) {
+          position -= props.precision + 1;
+        }
+
+        setCursorPosition(target, position);
         return;
       }
 
@@ -387,6 +397,7 @@ export default defineComponent({
         selectionStart ?? 0,
         selectionEnd ?? 0,
         prefixLength.value,
+        suffixLength.value,
         localizationTag.value
       );
     };
@@ -415,39 +426,9 @@ export default defineComponent({
       ctx.emit('focus', event);
     };
 
-    const handleKeyPress = (event: KeyboardEvent): void => {
+    const handleKeyDown = (event: KeyboardEvent): void => {
       if (Number.isNaN(Number(event.key)) && event.key !== '-') return;
 
-      const target = event.target as HTMLInputElement;
-      const { value, selectionNewStart, selectionNewEnd } = getCleanSelections(
-        target,
-        additions.value
-      );
-
-      if (event.key === '-') {
-        if (
-          !formattedValue.value ||
-          selectionNewEnd - selectionNewStart === value.length
-        ) {
-          if (inputRef?.value?.input) inputRef.value.input.value = '-';
-        } else if (selectionNewStart === 0 && !value.includes('-')) {
-          updateInput(insertTextFn(target, event.key));
-        }
-
-        return;
-      }
-
-      if (
-        (value.length && selectionNewStart > value.length) ||
-        value[selectionNewStart] === '-'
-      ) {
-        return;
-      }
-
-      updateInput(insertTextFn(target, event.key));
-    };
-
-    const handleKeyDown = (event: KeyboardEvent): void => {
       const target = event.target as HTMLInputElement;
 
       const { value, selectionStart, selectionEnd } = target;
@@ -458,6 +439,21 @@ export default defineComponent({
       } = getCleanSelections(target, additions.value);
 
       switch (event.key) {
+        case ' ':
+          event.preventDefault();
+          break;
+        case '-':
+          event.preventDefault();
+          if (
+            !formattedValue.value ||
+            selectionNewEnd - selectionNewStart === cleanValue.length
+          ) {
+            if (inputRef?.value?.input) inputRef.value.input.value = '-';
+          } else if (selectionNewStart === 0 && !cleanValue.includes('-')) {
+            updateInput(insertTextFn(target, event.key));
+          }
+
+          break;
         case 'Backspace':
         case 'Delete':
           event.preventDefault();
@@ -512,8 +508,15 @@ export default defineComponent({
           event.preventDefault();
           setCursorPosition(target, value.length - suffixLength.value);
           break;
-        case ' ':
         default:
+          if (
+            (cleanValue.length && selectionNewStart > cleanValue.length) ||
+            cleanValue[selectionNewStart] === '-'
+          ) {
+            return;
+          }
+
+          updateInput(insertTextFn(target, event.key));
           break;
       }
     };
@@ -554,7 +557,6 @@ export default defineComponent({
       handleFocus,
       inputRef,
       handleKeyDown,
-      handleKeyPress,
       formattedValue,
       handleDecreaseClick,
       handleIncreaseClick,

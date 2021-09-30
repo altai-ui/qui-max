@@ -1,50 +1,59 @@
-import type { App, ComponentInternalInstance } from 'vue';
+import type { App, Component, ComponentInternalInstance } from 'vue';
 
 import type { Nullable, UnwrappedInstance } from '#/helpers';
 
-import type {
-  QDrawerContainerPropContent,
-  QDrawerContainerInstance,
-  QDrawerContainerPropPosition,
-  QDrawerContainerPropTeleportTo
-} from './QDrawerContainer';
+import type { QDrawerContainerInstance } from './QDrawerContainer';
 import type { QDrawerAction } from './constants';
-
-export interface DrawerPromise {
-  resolve: (event: QDrawerEvent) => void;
-  reject: (event: QDrawerEvent) => void;
-}
 
 export interface ComponentInternalInstanceWithProvides
   extends ComponentInternalInstance {
   provides: Record<symbol | string, unknown>;
 }
 
-export type QDrawerContent = QDrawerContainerPropContent;
+export interface QDrawerComponent {
+  component: Component;
+  props?: { [propName: string]: unknown };
+  listeners?: { [listenerEvent: string]: (...args: unknown[]) => void };
+}
+
+export type QDrawerContent = Component | QDrawerComponent;
 
 export interface QDrawerHookOptions {
   parentInstance?: Nullable<ComponentInternalInstance>;
 }
 
+export type QDrawerOptionsPosition = 'left' | 'right';
+export type QDrawerOptionsBeforeClose = Nullable<
+  (action: QDrawerAction) => Promise<boolean>
+>;
+export type QDrawerOptionsTeleportTo = Nullable<string | HTMLElement>;
+
 export interface QDrawerOptions {
   width?: Nullable<string | number>;
   closeOnClickShadow?: Nullable<boolean>;
   distinguishCancelAndClose?: Nullable<boolean>;
-  position?: QDrawerContainerPropPosition;
+  preventFocusAfterClosing?: Nullable<boolean>;
+  position?: QDrawerOptionsPosition;
   customClass?: Nullable<string>;
-  teleportTo?: QDrawerContainerPropTeleportTo;
+  beforeClose?: Nullable<QDrawerOptionsBeforeClose>;
+  teleportTo?: QDrawerOptionsTeleportTo;
   parentInstance?: Nullable<ComponentInternalInstance>;
-  onBeforeMount?: (app: App<Element>) => void | Promise<void>;
+  onBeforeMount?: (app: App<Element>) => Promise<void> | void;
   onMounted?: (
     app: App<Element>,
     container: NonNullable<UnwrappedInstance<QDrawerContainerInstance>>
-  ) => void | Promise<void>;
-  onUnmounted?: (app: App<Element>) => void | Promise<void>;
+  ) => Promise<void> | void;
+  onUnmounted?: (app: App<Element>) => Promise<void> | void;
 }
 
 export interface QDrawerEvent {
   action: QDrawerAction;
   payload?: unknown;
+}
+
+export interface DrawerPromise {
+  resolve: (event: QDrawerEvent) => void;
+  reject: (event: QDrawerEvent) => void;
 }
 
 export interface QDrawer {

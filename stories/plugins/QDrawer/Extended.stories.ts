@@ -31,8 +31,7 @@ const QDrawerStoryComponent: Story<QDrawerOptions> = args =>
                 () => import('./DrawerFormTest.vue')
               ),
               props: {
-                someExternalProp: 'Some external prop here',
-                title: 'Morbi massa libero.'
+                someExternalProp: 'Some external prop here'
               },
               listeners: {
                 nameInput: (value: string) => {
@@ -54,7 +53,7 @@ const QDrawerStoryComponent: Story<QDrawerOptions> = args =>
 
       return { handleClick };
     },
-    template: '<q-button @click="handleClick">Click to open</q-button>'
+    template: '<q-button @click="handleClick">Click to open drawer</q-button>'
   });
 
 export const Extended = QDrawerStoryComponent.bind({});

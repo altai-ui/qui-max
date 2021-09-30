@@ -69,9 +69,8 @@
     border: none;
 
     &:hover,
-    &:focus {
+    &.focus-visible {
       color: var(--color-primary-black);
-      outline: none;
     }
   }
 }

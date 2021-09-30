@@ -4,37 +4,37 @@ import type { App, Ref } from 'vue';
 import { isServer } from '@/qComponents/constants/isServer';
 import type { Nullable, Nillable, UnwrappedInstance } from '#/helpers';
 
-import { QDrawerContainer } from './QDrawerContainer';
-import type { QDrawerContainerInstance } from './QDrawerContainer';
-import { QDrawerAction } from './constants';
+import { QDialogContainer } from './QDialogContainer';
+import type { QDialogContainerInstance } from './QDialogContainer';
+import { QDialogAction } from './constants';
 import type {
-  DrawerPromise,
+  DialogPromise,
   ComponentInternalInstanceWithProvides,
-  QDrawerHookOptions,
-  QDrawerContent,
-  QDrawerOptions,
-  QDrawerEvent,
-  QDrawer
+  QDialogHookOptions,
+  QDialogContent,
+  QDialogOptions,
+  QDialogEvent,
+  QDialog
 } from './types';
 
-export const createDrawer = (
-  config?: QDrawerHookOptions
-): { drawer: QDrawer; app: Ref<Nullable<App<Element>>> } => {
-  let drawerPromise: Nullable<DrawerPromise> = null;
+export const createDialog = (
+  config?: QDialogHookOptions
+): { dialog: QDialog; app: Ref<Nullable<App<Element>>> } => {
+  let dialogPromise: Nullable<DialogPromise> = null;
   const app = ref<Nullable<App<Element>>>(null);
 
-  const drawer = (
-    content: QDrawerContent,
-    options?: QDrawerOptions
-  ): Promise<QDrawerEvent> => {
-    const handleDone = ({ action, payload }: QDrawerEvent): void => {
-      if (action === QDrawerAction.confirm) {
-        drawerPromise?.resolve({ action, payload });
+  const dialog = (
+    content: QDialogContent,
+    options?: QDialogOptions
+  ): Promise<QDialogEvent> => {
+    const handleDone = ({ action, payload }: QDialogEvent): void => {
+      if (action === QDialogAction.confirm) {
+        dialogPromise?.resolve({ action, payload });
       } else if (
-        action === QDrawerAction.cancel ||
-        action === QDrawerAction.close
+        action === QDialogAction.cancel ||
+        action === QDialogAction.close
       ) {
-        drawerPromise?.reject({ action, payload });
+        dialogPromise?.reject({ action, payload });
       }
     };
 
@@ -50,13 +50,11 @@ export const createDrawer = (
     nextTick(async () => {
       if (isServer) return;
 
-      app.value = createApp(QDrawerContainer, {
+      app.value = createApp(QDialogContainer, {
         content,
-        width: options?.width,
-        closeOnClickShadow: options?.closeOnClickShadow,
+        offsetTop: options?.offsetTop,
         distinguishCancelAndClose: options?.distinguishCancelAndClose,
         preventFocusAfterClosing: options?.preventFocusAfterClosing,
-        position: options?.position,
         customClass: options?.customClass,
         beforeClose: options?.beforeClose,
         teleportTo: options?.teleportTo,
@@ -68,6 +66,7 @@ export const createDrawer = (
         config?.parentInstance as Nillable<ComponentInternalInstanceWithProvides>;
       const parentAppContext = parentInstance?.appContext;
 
+      // Register a global components from main app instance
       const components = parentAppContext?.components ?? {};
       Object.entries(components).forEach(([key, value]) => {
         app.value?.component(key, value);
@@ -93,17 +92,17 @@ export const createDrawer = (
       const container = app.value.mount(document.createElement('div'));
       await options?.onMounted?.(
         app.value,
-        container as NonNullable<UnwrappedInstance<QDrawerContainerInstance>>
+        container as NonNullable<UnwrappedInstance<QDialogContainerInstance>>
       );
     });
 
     return new Promise((resolve, reject) => {
-      drawerPromise = {
+      dialogPromise = {
         resolve,
         reject
       };
     });
   };
 
-  return { drawer, app };
+  return { dialog, app };
 };

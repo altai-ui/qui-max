@@ -1,12 +1,13 @@
 .q-icons {
   display: flex;
   flex-flow: row wrap;
-  justify-content: center;
+  justify-content: space-between;
   width: 100%;
-  max-width: 1000px;
+  max-width: 900px;
   margin-top: 50px;
 
   &__preview {
+    padding: 4px;
     font-size: 32px;
     color: var(--color-primary-black);
   }

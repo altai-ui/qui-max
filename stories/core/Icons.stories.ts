@@ -1,10 +1,10 @@
 import type { Meta, Story } from '@storybook/vue3';
-import { computed, defineComponent, ref, watch } from 'vue';
+import { defineComponent, ref, watch } from 'vue';
+
+import { Nullable } from '#/helpers';
 
 import icons from './iconsList';
 import './icons.scss';
-
-import { Nullable } from '#/helpers';
 
 const storyMetadata: Meta = {
   title: 'Core/Icons/All',
@@ -16,52 +16,29 @@ const storyMetadata: Meta = {
 const IconsStory: Story = args =>
   defineComponent({
     setup() {
-      const visibleTooltip = ref<Nullable<string | undefined>>(null);
-      const timer = ref<Nullable<ReturnType<typeof setTimeout>>>(null);
+      const visibleTooltip = ref<Nullable<string>>(null);
+      let timer: Nullable<ReturnType<typeof setTimeout>>;
 
-      const fontSize = computed<{ fontSize: string }>(() => ({
-        fontSize: `${args.fontSize}px`
-      }));
-      const wrapperSizes = computed<{ minWidth: string; minHeight: string }>(
-        () => ({
-          minWidth: `${args.fontSize * 1.25}px`,
-          minHeight: `${args.fontSize * 1.25}px`
-        })
-      );
+      const fontSize = { fontSize: `${args.fontSize}px` };
 
-      const clickHandler = (e: MouseEvent): void => {
-        const name = (e.currentTarget as HTMLElement).querySelector(
-          '.q-icons__name'
-        );
-        const range = document.createRange();
-        const selection = window.getSelection();
-
-        if (name) range.selectNode(name);
-
-        selection?.removeAllRanges();
-        selection?.addRange(range);
-        visibleTooltip.value = selection?.toString().trim();
-
-        document.execCommand('copy');
-
-        selection?.empty();
+      const handleIconClick = async (name: string): Promise<void> => {
+        await navigator.clipboard.writeText(name);
+        visibleTooltip.value = name;
       };
 
       watch(visibleTooltip, () => {
-        if (visibleTooltip.value) {
-          if (timer.value) clearTimeout(timer.value);
-          timer.value = setTimeout(() => {
-            visibleTooltip.value = null;
-          }, 3000);
-        }
+        if (!visibleTooltip.value) return;
+        if (timer) clearTimeout(timer);
+        timer = setTimeout(() => {
+          visibleTooltip.value = null;
+        }, 3000);
       });
 
       return {
         icons,
-        clickHandler,
         visibleTooltip,
-        wrapperSizes,
-        fontSize
+        fontSize,
+        handleIconClick
       };
     },
 
@@ -71,14 +48,16 @@ const IconsStory: Story = args =>
           v-for="icon in icons" 
           :key="icon"
           class="q-icons__container"
-          @click="clickHandler"
         >
-          <transition name="q">
-            <span v-if="visibleTooltip === icon" class="q-icons__tooltip">Copied</span>
-          </transition>
-          <div 
-              :style="wrapperSizes"
+            <span 
+                v-if="visibleTooltip === icon" 
+                class="q-icons__tooltip"
+            >
+              Copied
+            </span>
+          <div
               class="q-icons__wrapper"
+              @click="handleIconClick(icon)"
           >
             <span
               class="q-icons__preview"

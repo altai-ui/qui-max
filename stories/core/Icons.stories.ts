@@ -1,7 +1,7 @@
 import type { Meta, Story } from '@storybook/vue3';
 import { defineComponent, ref, watch } from 'vue';
 
-import { Nullable } from '#/helpers';
+import type { Nullable } from '#/helpers';
 
 import icons from './iconsList';
 import './icons.scss';
@@ -19,7 +19,7 @@ const IconsStory: Story = args =>
       const visibleTooltip = ref<Nullable<string>>(null);
       let timer: Nullable<ReturnType<typeof setTimeout>>;
 
-      const fontSize = { fontSize: `${args.fontSize}px` };
+      const fontSize = { '--font-size': `${args.fontSize}px` };
 
       const handleIconClick = async (name: string): Promise<void> => {
         await navigator.clipboard.writeText(name);
@@ -43,26 +43,28 @@ const IconsStory: Story = args =>
     },
 
     template: `
-      <div class="q-icons">
+      <div 
+          class="q-icons"
+          :style="fontSize"
+      >
         <div 
           v-for="icon in icons" 
           :key="icon"
           class="q-icons__container"
         >
-            <span 
-                v-if="visibleTooltip === icon" 
-                class="q-icons__tooltip"
-            >
-              Copied
-            </span>
+          <span 
+            v-if="visibleTooltip === icon" 
+            class="q-icons__tooltip"
+          >
+            Copied
+          </span>
           <div
-              class="q-icons__wrapper"
-              @click="handleIconClick(icon)"
+            class="q-icons__wrapper"
+            @click="handleIconClick(icon)"
           >
             <span
               class="q-icons__preview"
               :class="icon"
-              :style="fontSize"
             />
           </div>
           <div class="q-icons__name">

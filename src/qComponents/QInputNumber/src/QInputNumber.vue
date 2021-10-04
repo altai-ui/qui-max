@@ -25,7 +25,6 @@
       @blur="handleBlur"
       @focus="handleFocus"
       @keydown="handleKeyDown"
-      @keypress.prevent
       @paste.prevent="handlePaste"
       @click="handleClick"
     />
@@ -427,14 +426,23 @@ export default defineComponent({
     };
 
     const handleKeyDown = async (event: KeyboardEvent): Promise<void> => {
-      const combinationKeys = ['a', 'c', 'v'].some(
+      const isCombinationKeys = ['a', 'c', 'v', 'x'].some(
         key => event.key === key && (event.metaKey || event.ctrlKey)
       );
 
+      const isArrow = ['ArrowLeft', 'ArrowRight'].includes(event.key);
+      const regExp = new RegExp(/[\D\d]/);
+      if (
+        event.key.length === 1 &&
+        regExp.test(event.key) &&
+        !isArrow &&
+        !isCombinationKeys
+      )
+        event.preventDefault();
       if (
         Number.isNaN(Number(event.key)) &&
         event.key !== '-' &&
-        !combinationKeys &&
+        !isCombinationKeys &&
         event.key !== '.'
       )
         return;
@@ -449,36 +457,9 @@ export default defineComponent({
 
       switch (event.key) {
         case 'c':
-          if (selectionEnd && selectionStart !== selectionEnd) {
-            await navigator.clipboard.writeText(
-              value.substring(Number(selectionStart), selectionEnd)
-            );
-          }
-          break;
-        case 'v': {
-          if (!navigator.clipboard.readText) return;
-
-          const textToPast = await navigator.clipboard.readText();
-          const numericText = textToPast.replace(/[^\d.-]/g, '');
-
-          if (Number.isNaN(Number(numericText))) return;
-
-          updateInput(
-            insertPasteText({
-              target,
-              key: numericText,
-              localizationTag: localizationTag.value,
-              minMax: {
-                min: props.min ?? MIN_INTEGER,
-                max: props.max ?? MAX_INTEGER
-              },
-              precision: props.precision ?? 0
-            })
-          );
-          break;
-        }
+        case 'v':
         case 'a':
-          target.select();
+        case 'x':
           break;
         case ' ':
           event.preventDefault();

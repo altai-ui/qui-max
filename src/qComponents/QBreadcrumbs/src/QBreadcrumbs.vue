@@ -55,7 +55,7 @@ export default defineComponent({
       default: null
     },
     /**
-     * Array of Objects, object must contain required fields: `path` - uses as route path, `name` - route name, `meta` - must contain `breadcrumb` - visible title
+     * **Array of Objects**, object must contain required fields: `path` - uses as route path, `name` - route name, `meta` - must contain `breadcrumb` - visible title
      */
     route: {
       type: Array as PropType<QBreadcrumbsPropRoute>,

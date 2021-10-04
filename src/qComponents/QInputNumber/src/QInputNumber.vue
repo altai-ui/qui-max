@@ -27,6 +27,7 @@
       @keydown="handleKeyDown"
       @paste.prevent="handlePaste"
       @click="handleClick"
+      @select="handleSelect"
     />
 
     <button
@@ -425,27 +426,34 @@ export default defineComponent({
       ctx.emit('focus', event);
     };
 
+    const handleSelect = (event: Event): void => {
+      const target = event.target as HTMLInputElement;
+      const { value, selectionStart, selectionEnd } = target;
+      target.selectionStart =
+        selectionStart !== null && selectionStart < prefixLength.value
+          ? prefixLength.value
+          : selectionStart;
+      target.selectionEnd =
+        selectionEnd && selectionEnd > value.length - suffixLength.value
+          ? value.length - suffixLength.value
+          : selectionEnd;
+    };
+
     const handleKeyDown = async (event: KeyboardEvent): Promise<void> => {
       const isCombinationKeys = ['a', 'c', 'v', 'x'].some(
         key => event.key === key && (event.metaKey || event.ctrlKey)
       );
-
-      const isArrow = ['ArrowLeft', 'ArrowRight'].includes(event.key);
       const regExp = new RegExp(/[\D\d]/);
+
       if (
         event.key.length === 1 &&
-        regExp.test(event.key) &&
-        !isArrow &&
+        regExp.test(event.key.trim()) &&
         !isCombinationKeys
       )
         event.preventDefault();
-      if (
-        Number.isNaN(Number(event.key)) &&
-        event.key !== '-' &&
-        !isCombinationKeys &&
-        event.key !== '.'
-      )
-        return;
+
+      if (isCombinationKeys) return;
+
       const target = event.target as HTMLInputElement;
 
       const { value, selectionStart, selectionEnd } = target;
@@ -454,7 +462,6 @@ export default defineComponent({
         selectionNewStart,
         selectionNewEnd
       } = getCleanSelections(target, additions.value);
-
       switch (event.key) {
         case 'c':
         case 'v':
@@ -466,6 +473,7 @@ export default defineComponent({
           break;
         case '-':
           event.preventDefault();
+
           if (
             !formattedValue.value ||
             selectionNewEnd - selectionNewStart === cleanValue.length
@@ -512,15 +520,8 @@ export default defineComponent({
 
           break;
         case 'ArrowRight':
-          if (
-            selectionNewEnd >= cleanValue.length &&
-            selectionStart !== selectionEnd
-          ) {
-            setCursorPosition(target, value.length - suffixLength.value);
-          }
-
-          if (selectionNewEnd >= cleanValue.length) event.preventDefault();
-
+          if (selectionEnd && selectionEnd >= value.length - prefixLength.value)
+            event.preventDefault();
           break;
         case 'ArrowUp':
           event.preventDefault();
@@ -588,7 +589,8 @@ export default defineComponent({
       handleDecreaseClick,
       handleIncreaseClick,
       handlePaste,
-      handleClick
+      handleClick,
+      handleSelect
     };
   }
 });

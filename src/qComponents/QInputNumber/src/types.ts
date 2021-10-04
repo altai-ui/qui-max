@@ -60,6 +60,7 @@ export interface QInputNumberInstance {
   handleBlur: (event: FocusEvent) => void;
   handleFocus: (event: FocusEvent) => void;
   handleKeyDown: (event: KeyboardEvent) => void;
+  handleSelect: (event: Event) => void;
   handleDecreaseClick: () => void;
   handleIncreaseClick: () => void;
   inputRef: Ref<Nullable<UnwrappedInstance<QInputInstance>>>;

@@ -27,41 +27,39 @@ const Template: Story<QBreadcrumbsProps> = args =>
   // eslint-disable-next-line vue/one-component-per-file
   defineComponent({
     setup() {
-      const isRouteArray = Array.isArray(args.route);
-
       const route = computed<QBreadcrumbsPropRoute>(() => {
-        return isRouteArray
-          ? args.route
-          : [
-              {
-                path: 'path-a',
-                name: 'ROUTE_A',
-                meta: {
-                  breadcrumb: t('qBreadcrumbsStories.routeA')
-                }
-              },
-              {
-                path: 'path-b',
-                name: 'ROUTE_b',
-                meta: {
-                  breadcrumb: t('qBreadcrumbsStories.routeB')
-                }
-              },
-              {
-                path: 'path-c',
-                name: 'ROUTE_c',
-                meta: {
-                  breadcrumb: t('qBreadcrumbsStories.routeC')
-                }
-              },
-              {
-                path: 'path-d',
-                name: 'ROUTE_d',
-                meta: {
-                  breadcrumb: t('qBreadcrumbsStories.routeD')
-                }
-              }
-            ];
+        if (Array.isArray(args.route)) return args.route;
+
+        return [
+          {
+            path: 'path-a',
+            name: 'ROUTE_A',
+            meta: {
+              breadcrumb: t('qBreadcrumbsStories.routeA')
+            }
+          },
+          {
+            path: 'path-b',
+            name: 'ROUTE_b',
+            meta: {
+              breadcrumb: t('qBreadcrumbsStories.routeB')
+            }
+          },
+          {
+            path: 'path-c',
+            name: 'ROUTE_c',
+            meta: {
+              breadcrumb: t('qBreadcrumbsStories.routeC')
+            }
+          },
+          {
+            path: 'path-d',
+            name: 'ROUTE_d',
+            meta: {
+              breadcrumb: t('qBreadcrumbsStories.routeD')
+            }
+          }
+        ];
       });
 
       return { args, route };

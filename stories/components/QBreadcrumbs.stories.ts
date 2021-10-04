@@ -27,11 +27,12 @@ const Template: Story<QBreadcrumbsProps> = args =>
   // eslint-disable-next-line vue/one-component-per-file
   defineComponent({
     setup() {
-      const isArrayRoute = Array.isArray(args.route);
+      const isRouteArray = Array.isArray(args.route);
 
       const route = computed<QBreadcrumbsPropRoute>(() => {
-        return !isArrayRoute || !args.route
-          ? [
+        return isRouteArray
+          ? args.route
+          : [
               {
                 path: 'path-a',
                 name: 'ROUTE_A',
@@ -60,8 +61,7 @@ const Template: Story<QBreadcrumbsProps> = args =>
                   breadcrumb: t('qBreadcrumbsStories.routeD')
                 }
               }
-            ]
-          : args.route;
+            ];
       });
 
       return { args, route };

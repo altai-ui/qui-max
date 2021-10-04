@@ -1,6 +1,8 @@
 import type { Ref, ComputedRef } from 'vue';
 
 import type { Nullable } from '#/helpers';
+import { UnwrappedInstance } from '#/helpers';
+import { QInputInstance } from '@/qComponents';
 
 export interface QInputNumberProps {
   precision: Nullable<number>;
@@ -60,7 +62,7 @@ export interface QInputNumberInstance {
   handleKeyDown: (event: KeyboardEvent) => void;
   handleDecreaseClick: () => void;
   handleIncreaseClick: () => void;
-  inputRef: Ref<Nullable<HTMLElement>>;
+  inputRef: Ref<Nullable<UnwrappedInstance<QInputInstance>>>;
   handlePaste: (event: ClipboardEvent) => void;
   handleClick: (event: MouseEvent) => void;
 }

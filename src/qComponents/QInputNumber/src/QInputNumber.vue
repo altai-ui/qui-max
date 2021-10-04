@@ -426,9 +426,18 @@ export default defineComponent({
       ctx.emit('focus', event);
     };
 
-    const handleKeyDown = (event: KeyboardEvent): void => {
-      if (Number.isNaN(Number(event.key)) && event.key !== '-') return;
+    const handleKeyDown = async (event: KeyboardEvent): Promise<void> => {
+      const combinationKeys = ['a', 'c', 'v'].some(
+        key => event.key === key && (event.metaKey || event.ctrlKey)
+      );
 
+      if (
+        Number.isNaN(Number(event.key)) &&
+        event.key !== '-' &&
+        !combinationKeys &&
+        event.key !== '.'
+      )
+        return;
       const target = event.target as HTMLInputElement;
 
       const { value, selectionStart, selectionEnd } = target;
@@ -439,6 +448,38 @@ export default defineComponent({
       } = getCleanSelections(target, additions.value);
 
       switch (event.key) {
+        case 'c':
+          if (selectionEnd && selectionStart !== selectionEnd) {
+            await navigator.clipboard.writeText(
+              value.substring(Number(selectionStart), selectionEnd)
+            );
+          }
+          break;
+        case 'v': {
+          if (!navigator.clipboard.readText) return;
+
+          const textToPast = await navigator.clipboard.readText();
+          const numericText = textToPast.replace(/[^\d.-]/g, '');
+
+          if (Number.isNaN(Number(numericText))) return;
+
+          updateInput(
+            insertPasteText({
+              target,
+              key: numericText,
+              localizationTag: localizationTag.value,
+              minMax: {
+                min: props.min ?? MIN_INTEGER,
+                max: props.max ?? MAX_INTEGER
+              },
+              precision: props.precision ?? 0
+            })
+          );
+          break;
+        }
+        case 'a':
+          target.select();
+          break;
         case ' ':
           event.preventDefault();
           break;
@@ -507,6 +548,11 @@ export default defineComponent({
         case 'ArrowDown':
           event.preventDefault();
           setCursorPosition(target, value.length - suffixLength.value);
+          break;
+        case '.':
+          event.preventDefault();
+          if (selectionEnd && value[selectionEnd] === '.')
+            setCursorPosition(target, selectionEnd + 1);
           break;
         default:
           if (

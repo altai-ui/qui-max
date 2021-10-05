@@ -5,7 +5,7 @@
       :key="crumb.name || crumb.path"
     >
       <component
-        :is="linkComponent"
+        :is="linkComponent || 'RouterLink'"
         :to="pushTo(crumb)"
         active-class="q-breadcrumbs__crumb_active"
         exact-active-class="q-breadcrumbs__crumb_exact-active"
@@ -26,7 +26,7 @@
 <script lang="ts">
 import { defineComponent, computed, PropType } from 'vue';
 
-import { Nullable, Optional } from '#/helpers';
+import { Optional } from '#/helpers';
 
 import type {
   QBreadcrumbsProps,
@@ -40,6 +40,13 @@ export default defineComponent({
   componentName: 'QBreadcrumbs',
 
   props: {
+    /**
+     * component name for link
+     */
+    linkComponent: {
+      type: String,
+      default: null
+    },
     /**
      * custom last crumb
      */
@@ -57,9 +64,6 @@ export default defineComponent({
   },
 
   setup(props: QBreadcrumbsProps): QBreadcrumbsInstance {
-    const linkComponent = computed<Nullable<string>>(
-      (value: string) => value || 'RouterLink'
-    );
     const crumbs = computed<RouteItem[]>(
       () => props.route?.filter(route => route.meta?.breadcrumb) ?? []
     );
@@ -88,7 +92,6 @@ export default defineComponent({
       name ? { name } : path;
 
     return {
-      linkComponent,
       pushTo,
       breadcrumbs,
       lastCrumb

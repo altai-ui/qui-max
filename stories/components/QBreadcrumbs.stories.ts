@@ -12,7 +12,12 @@ import type {
 
 const storyMetadata: Meta = {
   title: 'Components/QBreadcrumbs',
-  component: QBreadcrumbs
+  component: QBreadcrumbs,
+  argTypes: {
+    linkComponent: {
+      control: false
+    }
+  }
 };
 
 // eslint-disable-next-line vue/one-component-per-file

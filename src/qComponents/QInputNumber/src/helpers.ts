@@ -227,7 +227,10 @@ const insertText = (args: InsertedTextArgs): InsertedTextParts => {
   const { value, selectionStart, selectionEnd } = target;
 
   const passedData = { ...args };
-  passedData.insertedText = key;
+  const hasDecimal = value
+    .substring(selectionStart, selectionEnd)
+    .includes('.');
+  passedData.insertedText = hasDecimal ? `${key}.` : key;
 
   let correction = 0;
 

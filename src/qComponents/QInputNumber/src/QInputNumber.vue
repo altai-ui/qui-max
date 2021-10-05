@@ -443,9 +443,10 @@ export default defineComponent({
       const isCombinationKeys = ['a', 'c', 'v', 'x'].some(
         key => event.key === key && (event.metaKey || event.ctrlKey)
       );
-      const lettersReg = new RegExp(/^\D$/);
+      const lettersReg = new RegExp(/^[^-\d]$/);
       const numbersReg = new RegExp(/^\d$/);
       const lastBeforeMinus = new RegExp(/-\d$/);
+
       const isNumberOrLetter =
         lettersReg.test(event.key.trim()) || numbersReg.test(event.key.trim());
 
@@ -527,6 +528,11 @@ export default defineComponent({
 
           break;
         case 'ArrowLeft':
+          if (event.ctrlKey || event.metaKey) {
+            event.preventDefault();
+            setCursorPosition(target, prefixLength.value);
+            return;
+          }
           if (
             (selectionStart ?? 0) <= prefixLength.value &&
             selectionStart !== selectionEnd
@@ -539,6 +545,11 @@ export default defineComponent({
 
           break;
         case 'ArrowRight':
+          if (event.ctrlKey || event.metaKey) {
+            event.preventDefault();
+            setCursorPosition(target, value.length - suffixLength.value);
+            return;
+          }
           if (selectionStart !== selectionEnd && !event.shiftKey)
             target.selectionStart = selectionEnd;
           if (selectionEnd && selectionEnd >= value.length - prefixLength.value)

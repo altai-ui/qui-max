@@ -26,7 +26,7 @@
 <script lang="ts">
 import { defineComponent, computed, PropType } from 'vue';
 
-import { Optional } from '#/helpers';
+import type { Optional } from '#/helpers';
 
 import type {
   QBreadcrumbsProps,

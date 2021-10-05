@@ -14,9 +14,7 @@ const storyMetadata: Meta = {
   title: 'Components/QBreadcrumbs',
   component: QBreadcrumbs,
   argTypes: {
-    linkComponent: {
-      control: false
-    }
+    linkComponent: { control: { type: 'none' } }
   }
 };
 

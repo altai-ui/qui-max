@@ -443,14 +443,13 @@ export default defineComponent({
       const isCombinationKeys = ['a', 'c', 'v', 'x'].some(
         key => event.key === key && (event.metaKey || event.ctrlKey)
       );
-      const regExp = new RegExp(/[\D\d]/);
+      const lettersReg = new RegExp(/^\D$/);
+      const numbersReg = new RegExp(/^\d$/);
+      const lastBeforeMinus = new RegExp(/-\d$/);
+      const isNumberOrLetter =
+        lettersReg.test(event.key.trim()) || numbersReg.test(event.key.trim());
 
-      if (
-        event.key.length === 1 &&
-        regExp.test(event.key.trim()) &&
-        !isCombinationKeys
-      )
-        event.preventDefault();
+      if (isNumberOrLetter && !isCombinationKeys) event.preventDefault();
 
       if (isCombinationKeys) return;
 
@@ -462,11 +461,23 @@ export default defineComponent({
         selectionNewStart,
         selectionNewEnd
       } = getCleanSelections(target, additions.value);
+
+      if (
+        selectionStart !== selectionNewEnd &&
+        lettersReg.test(event.key) &&
+        !isCombinationKeys
+      )
+        return;
+
       switch (event.key) {
         case 'c':
         case 'v':
         case 'a':
         case 'x':
+        case 'Meta':
+        case 'Control':
+        case 'Shift':
+        case 'Enter':
           break;
         case ' ':
           event.preventDefault();
@@ -487,7 +498,16 @@ export default defineComponent({
         case 'Backspace':
         case 'Delete':
           event.preventDefault();
-
+          if (
+            (lastBeforeMinus.test(cleanValue) ||
+              (selectionNewEnd === cleanValue.length &&
+                selectionNewStart !== selectionNewEnd &&
+                cleanValue.slice(0, selectionNewStart) === '-')) &&
+            inputRef?.value?.input
+          ) {
+            inputRef.value.input.value = '-';
+            return;
+          }
           if (
             ((event.key === 'Backspace' && selectionNewStart === 0) ||
               (event.key === 'Delete' &&
@@ -495,7 +515,6 @@ export default defineComponent({
             selectionStart === selectionEnd
           )
             return;
-
           if (
             selectionNewEnd - selectionNewStart === cleanValue.length ||
             cleanValue === '-'
@@ -520,6 +539,8 @@ export default defineComponent({
 
           break;
         case 'ArrowRight':
+          if (selectionStart !== selectionEnd && !event.shiftKey)
+            target.selectionStart = selectionEnd;
           if (selectionEnd && selectionEnd >= value.length - prefixLength.value)
             event.preventDefault();
           break;
@@ -539,7 +560,8 @@ export default defineComponent({
         default:
           if (
             (cleanValue.length && selectionNewStart > cleanValue.length) ||
-            cleanValue[selectionNewStart] === '-'
+            (cleanValue[selectionNewStart] === '-' &&
+              selectionNewEnd !== cleanValue.length)
           ) {
             return;
           }

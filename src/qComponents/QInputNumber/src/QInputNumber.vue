@@ -332,8 +332,7 @@ export default defineComponent({
       lastPart,
       key
     }: InsertedTextParts): void => {
-      const { selectionStart, selectionEnd } = target;
-
+      const { value, selectionStart, selectionEnd } = target;
       if (numberValue === null) {
         const correction = key === 'Backspace' ? -1 : 1;
         setCursorPosition(target, (selectionStart || 0) + correction);
@@ -390,6 +389,7 @@ export default defineComponent({
 
       setCaret(
         target,
+        value,
         newValue,
         prevPart,
         lastPart,

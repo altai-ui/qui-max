@@ -116,6 +116,7 @@ const parseLocaleNumber = (
 
 const setCaret = (
   target: HTMLInputElement,
+  prevValue: Nullable<string>,
   newValue: Nullable<string>,
   prevPart: string,
   lastPart: string,
@@ -126,6 +127,16 @@ const setCaret = (
   suffixLength: number,
   localizationTag: string
 ): void => {
+  if (
+    prevValue?.length &&
+    newValue?.includes('.') &&
+    selectionEnd - selectionStart ===
+      prevValue.length - suffixLength - prefixLength
+  ) {
+    setCursorPosition(target, newValue?.indexOf('.'));
+    return;
+  }
+
   if (prevPart === '-') {
     setCursorPosition(target, prefixLength + key.length + 1);
     return;
@@ -206,7 +217,9 @@ const updateValue = ({
     return {
       target,
       key,
-      numberValue: numberValue > minMax.max ? minMax.max : minMax.min
+      numberValue: Number(numberValue) > minMax.max ? minMax.max : minMax.min,
+      prevPart,
+      lastPart
     };
   }
 

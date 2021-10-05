@@ -13,12 +13,12 @@ export interface RouteItem {
 export type QBreadcrumbsPropRoute = Nullable<RouteItem[]>;
 
 export interface QBreadcrumbsProps {
-  linkComponent: Nullable<string>;
   last: Nullable<string>;
   route: QBreadcrumbsPropRoute;
 }
 
 export interface QBreadcrumbsInstance {
+  linkComponent: ComputedRef<Nullable<string>>;
   pushTo: (arg0: {
     name?: string | symbol;
     path?: string;

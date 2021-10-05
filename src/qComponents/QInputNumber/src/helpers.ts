@@ -57,7 +57,10 @@ const getCleanSelections = (
   target: HTMLInputElement,
   additions: AddittionsMatch
 ): Selections => {
-  const { value, selectionStart, selectionEnd } = target;
+  const { value, selectionStart, selectionEnd } = target as HTMLInputElement & {
+    selectionStart: number;
+    selectionEnd: number;
+  };
 
   if (value === '-')
     return {
@@ -213,13 +216,13 @@ const updateValue = ({
     )
     .join('');
 
-  if (numberValue > minMax.max || numberValue < minMax.min) {
+  if (Number(numberValue) > minMax.max || Number(numberValue) < minMax.min) {
     return {
       target,
-      key,
       numberValue: Number(numberValue) > minMax.max ? minMax.max : minMax.min,
       prevPart,
-      lastPart
+      lastPart,
+      key
     };
   }
 
@@ -228,7 +231,7 @@ const updateValue = ({
 
   return {
     target,
-    numberValue: numberValue.match(reg)?.[0] || numberValue,
+    numberValue: Number(numberValue.match(reg)?.[0] || numberValue),
     prevPart,
     lastPart,
     key
@@ -237,9 +240,12 @@ const updateValue = ({
 
 const insertText = (args: InsertedTextArgs): InsertedTextParts => {
   const { target, key } = args;
-  const { value, selectionStart, selectionEnd } = target;
+  const { value, selectionStart, selectionEnd } = target as HTMLInputElement & {
+    selectionStart: number;
+    selectionEnd: number;
+  };
 
-  const passedData = { ...args };
+  const passedData = { ...args, insertedText: '' };
   const hasDecimal = value
     .substring(selectionStart, selectionEnd)
     .includes('.');
@@ -260,8 +266,10 @@ const insertText = (args: InsertedTextArgs): InsertedTextParts => {
     if (selectionEnd === selectionStart && isCharReadonly(deletedChar))
       return {
         target,
-        key,
-        numberValue: null
+        numberValue: null,
+        prevPart,
+        lastPart,
+        key
       };
 
     passedData.insertedText = '';
@@ -275,11 +283,14 @@ const insertText = (args: InsertedTextArgs): InsertedTextParts => {
 };
 
 const insertPasteText = (args: InsertedTextArgs): InsertedTextParts => {
-  const { value, selectionStart, selectionEnd } = args.target;
+  const { value, selectionStart, selectionEnd } =
+    args.target as HTMLInputElement & {
+      selectionStart: number;
+      selectionEnd: number;
+    };
 
   const prevPart = value.substring(0, selectionStart);
   const lastPart = value.substring(selectionEnd, value.length);
-
   return updateValue({ ...args, insertedText: args.key, prevPart, lastPart });
 };
 

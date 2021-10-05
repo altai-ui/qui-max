@@ -56,7 +56,8 @@ import type {
   QInputNumberState,
   QInputNumberInstance,
   AddittionsMatch,
-  InsertedTextParts
+  InsertedTextParts,
+  InputWithNumericSelections
 } from './types';
 
 import {
@@ -111,7 +112,7 @@ export default defineComponent({
       type: [String, Number],
       default: null,
       validator: (value: string | number): boolean =>
-        !Number.isNaN(Number(value)) || value === null
+        !Number.isNaN(Number(value)) || value == null
     },
     /** validate parent form if present */
     validateEvent: {
@@ -332,10 +333,11 @@ export default defineComponent({
       lastPart,
       key
     }: InsertedTextParts): void => {
-      const { value, selectionStart, selectionEnd } = target;
+      const { value, selectionStart, selectionEnd } =
+        target as InputWithNumericSelections;
       if (numberValue === null) {
         const correction = key === 'Backspace' ? -1 : 1;
-        setCursorPosition(target, (selectionStart || 0) + correction);
+        setCursorPosition(target, selectionStart + correction);
         return;
       }
 
@@ -354,13 +356,13 @@ export default defineComponent({
 
       const numberValueAsNumber = Number(numberValue);
 
-      const newForamttedValue = Intl.NumberFormat(localizationTag.value, {
+      const newFormattedValue = Intl.NumberFormat(localizationTag.value, {
         useGrouping: props.useGrouping ?? undefined,
         minimumFractionDigits: props.precision ?? undefined,
         maximumFractionDigits: props.precision ?? undefined
       }).format(numberValueAsNumber);
 
-      const newValue = `${props.prefix || ''}${newForamttedValue}${
+      const newValue = `${props.prefix || ''}${newFormattedValue}${
         props.suffix || ''
       }`;
 
@@ -394,8 +396,8 @@ export default defineComponent({
         prevPart,
         lastPart,
         key,
-        selectionStart ?? 0,
-        selectionEnd ?? 0,
+        selectionStart,
+        selectionEnd,
         prefixLength.value,
         suffixLength.value,
         localizationTag.value
@@ -428,13 +430,14 @@ export default defineComponent({
 
     const handleSelect = (event: Event): void => {
       const target = event.target as HTMLInputElement;
-      const { value, selectionStart, selectionEnd } = target;
+      const { value, selectionStart, selectionEnd } =
+        target as InputWithNumericSelections;
       target.selectionStart =
-        selectionStart !== null && selectionStart < prefixLength.value
+        selectionStart < prefixLength.value
           ? prefixLength.value
           : selectionStart;
       target.selectionEnd =
-        selectionEnd && selectionEnd > value.length - suffixLength.value
+        selectionEnd > value.length - suffixLength.value
           ? value.length - suffixLength.value
           : selectionEnd;
     };
@@ -443,7 +446,7 @@ export default defineComponent({
       const isCombinationKeys = ['a', 'c', 'v', 'x'].some(
         key => event.key === key && (event.metaKey || event.ctrlKey)
       );
-      const lettersReg = new RegExp(/^[^-\d]$/);
+      const lettersReg = new RegExp(/^[^-\d\\.]$/);
       const numbersReg = new RegExp(/^\d$/);
       const lastBeforeMinus = new RegExp(/-\d$/);
 
@@ -456,7 +459,8 @@ export default defineComponent({
 
       const target = event.target as HTMLInputElement;
 
-      const { value, selectionStart, selectionEnd } = target;
+      const { value, selectionStart, selectionEnd } =
+        target as InputWithNumericSelections;
       const {
         value: cleanValue,
         selectionNewStart,
@@ -534,13 +538,13 @@ export default defineComponent({
             return;
           }
           if (
-            (selectionStart ?? 0) <= prefixLength.value &&
+            selectionStart <= prefixLength.value &&
             selectionStart !== selectionEnd
           ) {
             setCursorPosition(target, prefixLength.value);
           }
 
-          if (props.prefix && (selectionStart ?? 0) <= prefixLength.value)
+          if (props.prefix && selectionStart <= prefixLength.value)
             event.preventDefault();
 
           break;
@@ -565,6 +569,7 @@ export default defineComponent({
           break;
         case '.':
           event.preventDefault();
+
           if (selectionEnd && value[selectionEnd] === '.')
             setCursorPosition(target, selectionEnd + 1);
           break;

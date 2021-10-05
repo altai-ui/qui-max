@@ -67,3 +67,8 @@ export interface QInputNumberInstance {
   handlePaste: (event: ClipboardEvent) => void;
   handleClick: (event: MouseEvent) => void;
 }
+
+export type InputWithNumericSelections = HTMLInputElement & {
+  selectionStart: number;
+  selectionEnd: number;
+};

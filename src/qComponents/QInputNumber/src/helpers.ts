@@ -3,7 +3,8 @@ import type {
   Selections,
   AddittionsMatch,
   InsertedTextParts,
-  InsertedTextArgs
+  InsertedTextArgs,
+  InputWithNumericSelections
 } from './types';
 
 const setCursorPosition = (
@@ -240,10 +241,8 @@ const updateValue = ({
 
 const insertText = (args: InsertedTextArgs): InsertedTextParts => {
   const { target, key } = args;
-  const { value, selectionStart, selectionEnd } = target as HTMLInputElement & {
-    selectionStart: number;
-    selectionEnd: number;
-  };
+  const { value, selectionStart, selectionEnd } =
+    target as InputWithNumericSelections;
 
   const passedData = { ...args, insertedText: '' };
   const hasDecimal = value

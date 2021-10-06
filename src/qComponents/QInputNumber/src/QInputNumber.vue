@@ -42,7 +42,14 @@
 </template>
 
 <script lang="ts">
-import { inject, computed, reactive, ref, defineComponent } from 'vue';
+import {
+  inject,
+  computed,
+  reactive,
+  ref,
+  defineComponent,
+  nextTick
+} from 'vue';
 
 import { getConfig } from '@/qComponents/config';
 
@@ -335,6 +342,14 @@ export default defineComponent({
     }: InsertedTextParts): void => {
       const { value, selectionStart, selectionEnd } =
         target as InputWithNumericSelections;
+
+      if (!value && numberValue === 0 && props.precision) {
+        changesEmmiter(numberValue, 'input');
+        nextTick(() => {
+          setCursorPosition(target, prefixLength.value + 2);
+        });
+        return;
+      }
       if (numberValue === null) {
         const correction = key === 'Backspace' ? -1 : 1;
         setCursorPosition(target, selectionStart + correction);
@@ -371,17 +386,12 @@ export default defineComponent({
         numberValueAsNumber <= (props.min ?? MIN_INTEGER)
       ) {
         changesEmmiter(numberValueAsNumber, 'input');
-        let position = newValue.length;
+        const position =
+          newValue.length - suffixLength.value - ((props.precision || 0) + 1);
 
-        if (suffixLength.value) {
-          position = newValue.length - suffixLength.value;
-        }
-
-        if (props.precision) {
-          position -= props.precision + 1;
-        }
-
-        setCursorPosition(target, position);
+        nextTick(() => {
+          setCursorPosition(target, position);
+        });
         return;
       }
 

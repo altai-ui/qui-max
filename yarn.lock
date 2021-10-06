@@ -12547,10 +12547,10 @@ vite-plugin-dts@^0.8.2:
     fs-extra "^10.0.0"
     ts-morph "^11.0.3"
 
-vite@^2.6.1:
-  version "2.6.1"
-  resolved "https://registry.yarnpkg.com/vite/-/vite-2.6.1.tgz#2e17908fa865d962d5fe33631df09c99e7ec486e"
-  integrity sha512-rYd+iGMQ+AytWfYBDhIz2upeiseuqrAMwmApJDR40wu12C9MqzemX449nM3FN1Z/FFSV+fMTFz7eMenngVSogA==
+vite@^2.6.3:
+  version "2.6.3"
+  resolved "https://registry.yarnpkg.com/vite/-/vite-2.6.3.tgz#5bbc1d3fcff6bfee9c5e3c0d0a689b18e5974b38"
+  integrity sha512-mLiN4WR8zpmn04khhBf7YvC3FHrGhZt9S6xm53uDWgtYcUVNtV5LXHLI2Sc4SpL8jd/dsSIHzRxj7JTIu+MTDQ==
   dependencies:
     esbuild "^0.13.2"
     postcss "^8.3.8"

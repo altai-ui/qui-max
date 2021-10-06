@@ -370,7 +370,11 @@ export default defineComponent({
         return;
       }
 
-      const numberValueAsNumber = Number(numberValue);
+      let numberValueAsNumber = Number(numberValue);
+      if (numberValueAsNumber > (props.max ?? MAX_INTEGER))
+        numberValueAsNumber = props.max ?? MAX_INTEGER;
+      if (numberValueAsNumber < (props.min ?? MIN_INTEGER))
+        numberValueAsNumber = props.min ?? MIN_INTEGER;
 
       const newFormattedValue = Intl.NumberFormat(localizationTag.value, {
         useGrouping: props.useGrouping ?? undefined,
@@ -604,7 +608,6 @@ export default defineComponent({
       const numericText = text.replace(/[^\d.-]/g, '');
 
       if (Number.isNaN(Number(numericText))) return;
-
       updateInput(
         insertPasteText({
           target,

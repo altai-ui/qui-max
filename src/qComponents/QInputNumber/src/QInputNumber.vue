@@ -343,10 +343,11 @@ export default defineComponent({
       const { value, selectionStart, selectionEnd } =
         target as InputWithNumericSelections;
 
-      if (!value && numberValue === 0 && props.precision) {
+      if ((!value || value === '-') && numberValue === 0 && props.precision) {
         changesEmmiter(numberValue, 'input');
+        const cursorCorrection = !value ? 2 : 3;
         nextTick(() => {
-          setCursorPosition(target, prefixLength.value + 2);
+          setCursorPosition(target, prefixLength.value + cursorCorrection);
         });
         return;
       }

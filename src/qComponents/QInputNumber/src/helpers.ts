@@ -151,11 +151,11 @@ const setCaret = (
     return;
   }
 
-  let selectionMove = prevPart.includes(
-    getLocaleSeparator('decimal', localizationTag)
-  )
-    ? 1
-    : 0;
+  let selectionMove =
+    prevPart.includes(getLocaleSeparator('decimal', localizationTag)) &&
+    selectionStart === selectionEnd
+      ? 1
+      : 0;
 
   let newCaretPos = (newValue?.length || 0) - lastPart.length + selectionMove;
 
@@ -253,7 +253,9 @@ const insertText = (args: InsertedTextArgs): InsertedTextParts => {
   let correction = 0;
 
   let prevPart = value.substring(0, selectionStart + correction);
-  let lastPart = value.substring(selectionEnd, value.length);
+  let lastPart = hasDecimal
+    ? value.substring(selectionEnd, value.length).replace(/\d/gi, '0')
+    : value.substring(selectionEnd, value.length);
 
   if (key === 'Backspace' || key === 'Delete') {
     const movedCaret = key === 'Delete' ? 1 : -1;

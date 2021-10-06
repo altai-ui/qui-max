@@ -174,7 +174,12 @@ const setCaret = (
     )
       ? (selectionEnd - selectionStart || 1) * -1
       : 0;
-    newCaretPos = (difference <= 0 ? 0 : difference) + selectionMove;
+    const correction =
+      prefixLength && lastPart[0] === ',' && selectionStart === prefixLength + 1
+        ? 1
+        : 0;
+    newCaretPos =
+      (difference <= 0 ? 0 : difference) + selectionMove + correction;
   }
 
   if (key === 'Delete') {

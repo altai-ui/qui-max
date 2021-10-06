@@ -183,7 +183,7 @@ const setCaret = (
     )
       ? -1
       : 0;
-    newCaretPos = difference + selectionMove;
+    newCaretPos = difference + selectionMove + (lastPart[0] === ',' ? 1 : 0);
   }
 
   setCursorPosition(target, newCaretPos);

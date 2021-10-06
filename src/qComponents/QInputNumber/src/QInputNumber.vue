@@ -388,7 +388,7 @@ export default defineComponent({
       ) {
         changesEmmiter(numberValueAsNumber, 'input');
         const position =
-          newValue.length - suffixLength.value - ((props.precision || 0) + 1);
+          newValue.length - suffixLength.value - ((props.precision || -1) + 1);
 
         nextTick(() => {
           setCursorPosition(target, position);

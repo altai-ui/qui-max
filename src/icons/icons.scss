@@ -316,6 +316,10 @@ $--base-path: '..' !default;
   content: '\e947';
 }
 
+.q-icon-database-arrow-left-fill::before {
+  content: '\e969';
+}
+
 .q-icon-database-arrow-down::before {
   content: '\e948';
 }
@@ -380,6 +384,10 @@ $--base-path: '..' !default;
   content: '\e957';
 }
 
+.q-icon-book-fill::before {
+  content: '\e96b';
+}
+
 .q-icon-bell::before {
   content: '\e958';
 }
@@ -414,6 +422,10 @@ $--base-path: '..' !default;
 
 .q-icon-alert-stroke::before {
   content: '\e960';
+}
+
+.q-icon-archive-fill::before {
+  content: '\e96a';
 }
 
 .q-icon-archive-arrow-down::before {

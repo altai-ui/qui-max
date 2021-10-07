@@ -12,7 +12,10 @@ import type {
 
 const storyMetadata: Meta = {
   title: 'Components/QBreadcrumbs',
-  component: QBreadcrumbs
+  component: QBreadcrumbs,
+  argTypes: {
+    linkComponent: { control: { type: 'none' } }
+  }
 };
 
 // eslint-disable-next-line vue/one-component-per-file
@@ -28,7 +31,7 @@ const Template: Story<QBreadcrumbsProps> = args =>
   defineComponent({
     setup() {
       const route = computed<QBreadcrumbsPropRoute>(() => {
-        if (args.route) return args.route;
+        if (Array.isArray(args.route)) return args.route;
 
         return [
           {

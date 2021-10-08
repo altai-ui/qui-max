@@ -156,7 +156,7 @@ export default defineComponent({
       default: false
     },
     /**
-     * Minimum allowed value
+     * Minimum allowed value. Min must be less than max
      */
     min: {
       type: Number,
@@ -164,7 +164,7 @@ export default defineComponent({
       validator: (val: number) => val >= MIN_INTEGER
     },
     /**
-     * Maximum allowed value
+     * Maximum allowed value.
      */
     max: {
       type: Number,
@@ -226,7 +226,7 @@ export default defineComponent({
       suffix: props.suffix
     }));
     const precision = computed<Nullable<number>>(() =>
-      props.precision && props.precision < 0 ? 0 : props.precision || 0
+      props.precision && props.precision < 0 ? 0 : props.precision
     );
 
     const formattedValue = computed<string>(() => {

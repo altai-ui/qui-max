@@ -77,7 +77,8 @@ import {
   insertText,
   insertPasteText,
   setCursorPosition,
-  setCaret
+  setCaret,
+  getLocaleSeparator
 } from './helpers';
 
 // to round to decimal, it must be multiplied by 100
@@ -214,6 +215,10 @@ export default defineComponent({
 
     const localizationTag = computed<string>(
       () => props.localization ?? getConfig('locale') ?? 'en'
+    );
+
+    const decimalSeparator = computed<string>(() =>
+      getLocaleSeparator('decimal', localizationTag.value)
     );
 
     const additions = computed<AddittionsMatch>(() => ({
@@ -358,8 +363,8 @@ export default defineComponent({
       }
 
       if (
-        (numberValue.toString().includes('.') ||
-          numberValue.toString().includes('-.') ||
+        (numberValue.toString().includes(decimalSeparator.value) ||
+          numberValue.toString().includes(`-${decimalSeparator.value}`) ||
           !numberValue) &&
         !Number(numberValue) &&
         inputRef?.value?.input
@@ -371,6 +376,7 @@ export default defineComponent({
       }
 
       let numberValueAsNumber = Number(numberValue);
+
       if (numberValueAsNumber > (props.max ?? MAX_INTEGER))
         numberValueAsNumber = props.max ?? MAX_INTEGER;
       if (numberValueAsNumber < (props.min ?? MIN_INTEGER))
@@ -461,7 +467,7 @@ export default defineComponent({
       const isCombinationKeys = ['a', 'c', 'v', 'x'].some(
         key => event.key === key && (event.metaKey || event.ctrlKey)
       );
-      const lettersReg = new RegExp(/^[^-\d\\.]$/);
+      const lettersReg = new RegExp(`^[^-\\d\\${decimalSeparator.value}]$`);
       const numbersReg = new RegExp(/^\d$/);
       const lastBeforeMinus = new RegExp(/-\d$/);
 
@@ -582,10 +588,10 @@ export default defineComponent({
           event.preventDefault();
           setCursorPosition(target, value.length - suffixLength.value);
           break;
-        case '.':
+        case decimalSeparator.value:
           event.preventDefault();
 
-          if (selectionEnd && value[selectionEnd] === '.')
+          if (value[selectionEnd] === decimalSeparator.value)
             setCursorPosition(target, selectionEnd + 1);
           break;
         default:

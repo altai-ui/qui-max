@@ -131,13 +131,14 @@ const setCaret = (
   suffixLength: number,
   localizationTag: string
 ): void => {
+  const decimalSeparator = getLocaleSeparator('decimal', localizationTag);
   if (
     prevValue?.length &&
-    newValue?.includes('.') &&
+    newValue?.includes(decimalSeparator) &&
     selectionEnd - selectionStart ===
       prevValue.length - suffixLength - prefixLength
   ) {
-    setCursorPosition(target, newValue?.indexOf('.'));
+    setCursorPosition(target, newValue?.indexOf(decimalSeparator));
     return;
   }
 
@@ -175,7 +176,9 @@ const setCaret = (
       ? (selectionEnd - selectionStart || 1) * -1
       : 0;
     const correction =
-      prefixLength && lastPart[0] === ',' && selectionStart === prefixLength + 1
+      prefixLength &&
+      lastPart[0] === getLocaleSeparator('group', localizationTag) &&
+      selectionStart === prefixLength + 1
         ? 1
         : 0;
     newCaretPos =
@@ -188,7 +191,10 @@ const setCaret = (
     )
       ? -1
       : 0;
-    newCaretPos = difference + selectionMove + (lastPart[0] === ',' ? 1 : 0);
+    newCaretPos =
+      difference +
+      selectionMove +
+      (lastPart[0] === getLocaleSeparator('group', localizationTag) ? 1 : 0);
   }
 
   setCursorPosition(target, newCaretPos);
@@ -216,9 +222,10 @@ const updateValue = ({
   const numberValue = [...`${prevPart}${insertedText}${lastPart}`]
     .filter(
       num =>
-        !Number.isNaN(Number(num)) ||
-        num === getLocaleSeparator('decimal', localizationTag) ||
-        num === '-'
+        num.trim() !== '' &&
+        (!Number.isNaN(Number(num)) ||
+          num === getLocaleSeparator('decimal', localizationTag) ||
+          num === '-')
     )
     .join('');
 
@@ -232,12 +239,20 @@ const updateValue = ({
     };
   }
 
-  const match = `^-?\\d+(?:\\.\\d{0,${precision}})?`;
+  const match = `^-?\\d+(?:\\${getLocaleSeparator(
+    'decimal',
+    localizationTag
+  )}\\d{0,${precision}})?`;
   const reg = new RegExp(match);
 
   return {
     target,
-    numberValue: Number(numberValue.match(reg)?.[0] || numberValue),
+    numberValue: Number(
+      numberValue
+        .match(reg)?.[0]
+        .replace(getLocaleSeparator('decimal', localizationTag), '.') ||
+        numberValue
+    ),
     prevPart,
     lastPart,
     key
@@ -245,15 +260,15 @@ const updateValue = ({
 };
 
 const insertText = (args: InsertedTextArgs): InsertedTextParts => {
-  const { target, key } = args;
+  const { target, key, localizationTag } = args;
   const { value, selectionStart, selectionEnd } =
     target as InputWithNumericSelections;
 
   const passedData = { ...args, insertedText: '' };
   const hasDecimal = value
     .substring(selectionStart, selectionEnd)
-    .includes('.');
-  passedData.insertedText = hasDecimal ? `${key}.` : key;
+    .includes(getLocaleSeparator('decimal', localizationTag));
+  passedData.insertedText = hasDecimal ? `${key}${localizationTag}` : key;
 
   let correction = 0;
 
@@ -297,6 +312,7 @@ const insertPasteText = (args: InsertedTextArgs): InsertedTextParts => {
 
   const prevPart = value.substring(0, selectionStart);
   const lastPart = value.substring(selectionEnd, value.length);
+
   return updateValue({ ...args, insertedText: args.key, prevPart, lastPart });
 };
 

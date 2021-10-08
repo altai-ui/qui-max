@@ -225,6 +225,9 @@ export default defineComponent({
       prefix: props.prefix,
       suffix: props.suffix
     }));
+    const precision = computed<Nullable<number>>(() =>
+      props.precision && props.precision < 0 ? 0 : props.precision || 0
+    );
 
     const formattedValue = computed<string>(() => {
       const prefix = props.prefix ?? '';
@@ -232,8 +235,8 @@ export default defineComponent({
 
       const value = Intl.NumberFormat(localizationTag.value, {
         useGrouping: props.useGrouping ?? undefined,
-        minimumFractionDigits: props.precision ?? undefined,
-        maximumFractionDigits: props.precision ?? undefined
+        minimumFractionDigits: precision.value ?? undefined,
+        maximumFractionDigits: precision.value ?? undefined
       }).format(Number(props.modelValue));
 
       return props.modelValue !== null ? `${prefix}${value}${suffix}` : '';
@@ -271,12 +274,12 @@ export default defineComponent({
       return (
         (!(props.step && props.step < 0) &&
           (number >= (props.max ?? MAX_INTEGER) ||
-            getIncreasedValue(number, props.step || 1, props.precision || 1) >
+            getIncreasedValue(number, props.step || 1, precision.value || 1) >
               (props.max ?? MAX_INTEGER))) ||
         (props.step &&
           props.step < 0 &&
           (number <= (props.min ?? MIN_INTEGER) ||
-            getDecreasedValue(number, props.step, props.precision || 1) <
+            getDecreasedValue(number, props.step, precision.value || 1) <
               (props.min ?? MIN_INTEGER))) ||
         false
       );
@@ -288,12 +291,12 @@ export default defineComponent({
       return (
         (!(props.step && props.step < 0) &&
           (number <= (props.min ?? MIN_INTEGER) ||
-            getDecreasedValue(number, props.step || 1, props.precision || 1) <
+            getDecreasedValue(number, props.step || 1, precision.value || 1) <
               (props.min ?? MIN_INTEGER))) ||
         (props.step &&
           props.step < 0 &&
           (number >= (props.max ?? MAX_INTEGER) ||
-            getDecreasedValue(number, props.step, props.precision || 1) >
+            getDecreasedValue(number, props.step, precision.value || 1) >
               (props.max ?? MAX_INTEGER))) ||
         false
       );
@@ -315,7 +318,7 @@ export default defineComponent({
           min: props.min ?? MIN_INTEGER,
           max: props.max ?? MAX_INTEGER
         },
-        precision: props.precision ?? 0
+        precision: precision.value ?? 0
       });
 
     const changesEmmiter = (value: Nullable<number>, type: string): void => {
@@ -338,7 +341,7 @@ export default defineComponent({
       const updatedNumber = getIncreasedValue(
         parsedNumber.value,
         step,
-        props.precision || 1
+        precision.value || 1
       );
 
       if (
@@ -368,7 +371,7 @@ export default defineComponent({
       const { value, selectionStart, selectionEnd } =
         target as InputWithNumericSelections;
 
-      if ((!value || value === '-') && numberValue === 0 && props.precision) {
+      if ((!value || value === '-') && numberValue === 0 && precision.value) {
         changesEmmiter(numberValue, 'input');
         const cursorCorrection = !value ? 2 : 3;
         nextTick(() => {
@@ -404,8 +407,8 @@ export default defineComponent({
 
       const newFormattedValue = Intl.NumberFormat(localizationTag.value, {
         useGrouping: props.useGrouping ?? undefined,
-        minimumFractionDigits: props.precision ?? undefined,
-        maximumFractionDigits: props.precision ?? undefined
+        minimumFractionDigits: precision.value ?? undefined,
+        maximumFractionDigits: precision.value ?? undefined
       }).format(numberValueAsNumber);
 
       const newValue = `${props.prefix || ''}${newFormattedValue}${
@@ -418,7 +421,7 @@ export default defineComponent({
       ) {
         changesEmmiter(numberValueAsNumber, 'input');
         const position =
-          newValue.length - suffixLength.value - ((props.precision || -1) + 1);
+          newValue.length - suffixLength.value - ((precision.value || -1) + 1);
 
         nextTick(() => {
           setCursorPosition(target, position);
@@ -643,7 +646,7 @@ export default defineComponent({
             min: props.min ?? MIN_INTEGER,
             max: props.max ?? MAX_INTEGER
           },
-          precision: props.precision ?? 0
+          precision: precision.value ?? 0
         })
       );
     };

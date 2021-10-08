@@ -13,6 +13,7 @@ const storyMetadata: Meta = {
     min: { control: { type: 'number' } },
     max: { control: { type: 'number' } },
     step: { control: { type: 'number' } },
+    precision: { control: { type: 'number', min: 0 } },
     localization: { control: { disable: true } }
   }
 };

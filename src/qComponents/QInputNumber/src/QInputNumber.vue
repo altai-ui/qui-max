@@ -269,8 +269,16 @@ export default defineComponent({
       const number = parsedNumber.value ?? 0;
 
       return (
-        number >= (props.max ?? MAX_INTEGER) ||
-        getIncreasedValue(number, props.step || 1) > (props.max ?? MAX_INTEGER)
+        (!(props.step && props.step < 0) &&
+          (number >= (props.max ?? MAX_INTEGER) ||
+            getIncreasedValue(number, props.step || 1) >
+              (props.max ?? MAX_INTEGER))) ||
+        (props.step &&
+          props.step < 0 &&
+          (number <= (props.min ?? MIN_INTEGER) ||
+            getDecreasedValue(number, props.step) <
+              (props.min ?? MIN_INTEGER))) ||
+        false
       );
     });
 
@@ -278,8 +286,16 @@ export default defineComponent({
       const number = parsedNumber.value ?? 0;
 
       return (
-        number <= (props.min ?? MIN_INTEGER) ||
-        getDecreasedValue(number, props.step || 1) < (props.min ?? MIN_INTEGER)
+        (!(props.step && props.step < 0) &&
+          (number <= (props.min ?? MIN_INTEGER) ||
+            getDecreasedValue(number, props.step || 1) <
+              (props.min ?? MIN_INTEGER))) ||
+        (props.step &&
+          props.step < 0 &&
+          (number >= (props.max ?? MAX_INTEGER) ||
+            getDecreasedValue(number, props.step) >
+              (props.max ?? MAX_INTEGER))) ||
+        false
       );
     });
 
@@ -322,7 +338,7 @@ export default defineComponent({
       const updatedNumber = getIncreasedValue(parsedNumber.value, step);
 
       if (
-        (isIncrease && updatedNumber > (props.max ?? MAX_INTEGER)) ||
+        updatedNumber > (props.max ?? MAX_INTEGER) ||
         updatedNumber < (props.min ?? MIN_INTEGER)
       )
         return;

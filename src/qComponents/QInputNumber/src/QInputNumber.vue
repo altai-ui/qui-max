@@ -271,12 +271,12 @@ export default defineComponent({
       return (
         (!(props.step && props.step < 0) &&
           (number >= (props.max ?? MAX_INTEGER) ||
-            getIncreasedValue(number, props.step || 1) >
+            getIncreasedValue(number, props.step || 1, props.precision || 1) >
               (props.max ?? MAX_INTEGER))) ||
         (props.step &&
           props.step < 0 &&
           (number <= (props.min ?? MIN_INTEGER) ||
-            getDecreasedValue(number, props.step) <
+            getDecreasedValue(number, props.step, props.precision || 1) <
               (props.min ?? MIN_INTEGER))) ||
         false
       );
@@ -288,12 +288,12 @@ export default defineComponent({
       return (
         (!(props.step && props.step < 0) &&
           (number <= (props.min ?? MIN_INTEGER) ||
-            getDecreasedValue(number, props.step || 1) <
+            getDecreasedValue(number, props.step || 1, props.precision || 1) <
               (props.min ?? MIN_INTEGER))) ||
         (props.step &&
           props.step < 0 &&
           (number >= (props.max ?? MAX_INTEGER) ||
-            getDecreasedValue(number, props.step) >
+            getDecreasedValue(number, props.step, props.precision || 1) >
               (props.max ?? MAX_INTEGER))) ||
         false
       );
@@ -335,7 +335,11 @@ export default defineComponent({
     const handleChangeNumberButtonClick = (isIncrease: boolean): void => {
       const step = isIncrease ? props.step || 1 : -(props.step || 1);
 
-      const updatedNumber = getIncreasedValue(parsedNumber.value, step);
+      const updatedNumber = getIncreasedValue(
+        parsedNumber.value,
+        step,
+        props.precision || 1
+      );
 
       if (
         updatedNumber > (props.max ?? MAX_INTEGER) ||

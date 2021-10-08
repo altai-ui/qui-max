@@ -91,11 +91,17 @@ const getCleanSelections = (
 const isCharReadonly = (char: string): boolean =>
   Number.isNaN(Number(char)) && char !== '-';
 
-const getIncreasedValue = (number: number, step: number): number =>
-  Math.round((number + step) * 100) / 100;
+const getIncreasedValue = (
+  number: number,
+  step: number,
+  precision: number
+): number => Math.round((number + step) * 10 ** precision) / 10 ** precision;
 
-const getDecreasedValue = (number: number, step: number): number =>
-  Math.round((number - step) * 100) / 100;
+const getDecreasedValue = (
+  number: number,
+  step: number,
+  precision: number
+): number => Math.round((number - step) * 10 ** precision) / 10 ** precision;
 
 const getLocaleSeparator = (type: string, localizationTag: string): string =>
   Intl.NumberFormat(localizationTag)

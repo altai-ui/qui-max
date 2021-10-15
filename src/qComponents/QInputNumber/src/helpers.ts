@@ -14,20 +14,6 @@ const setCursorPosition = (
   target.setSelectionRange(position, position);
 };
 
-const checkStringAdditions = (
-  value: string,
-  addition: Nullable<string>,
-  isSuffix?: boolean
-): boolean => {
-  if (!addition) return false;
-
-  const position = value.indexOf(addition);
-
-  const expectedPosition = isSuffix ? value.length - addition.length : 0;
-
-  return position === expectedPosition;
-};
-
 const escapeRegExp = (string: string): string => {
   return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 };
@@ -45,11 +31,8 @@ const getValueWithoutAdditions = (
 
   let newValue = value;
 
-  if (prefix && checkStringAdditions(newValue, additions.prefix))
-    newValue = newValue.replace(prefixReg, '');
-
-  if (suffix && checkStringAdditions(newValue, additions.suffix, true))
-    newValue = newValue.replace(suffixReg, '');
+  if (prefix) newValue = newValue.replace(prefixReg, '');
+  if (suffix) newValue = newValue.replace(suffixReg, '');
 
   return newValue;
 };

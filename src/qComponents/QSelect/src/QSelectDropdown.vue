@@ -206,7 +206,7 @@ export default defineComponent({
     };
 
     const handleSelectAllClick = (): void => {
-      const modelValue = qSelect.modelValue.value;
+      const modelValue = qSelect.modelValue.value || [];
       const valueKey = qSelect.valueKey.value ?? 'value';
 
       if (!Array.isArray(modelValue) || !qSelectState?.options) return;

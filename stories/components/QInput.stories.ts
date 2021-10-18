@@ -69,25 +69,27 @@ const QInputStory: Story<StoryArgs> = args =>
     },
 
     template: `
-      <q-input
-        v-model="data"
-        :suffix-icon="args.suffixIcon"
-        :show-symbol-limit="args.showSymbolLimit"
-        :password-switch="args.passwordSwitch"
-        :disabled="args.disabled"
-        :clearable="args.clearable"
-        :validate-event="args.validateEvent"
-        :autocomplete="args.autocomplete"
-        :placeholder="args.placeholder"
-        :maxlength="args.maxlength"
-        :type="args.type"
-        :readonly="args.readonly"
-        @blur="handleBlur"
-        @focus="handleFocus"
-        @input="handleInput"
-        @change="handleChange"
-        @clear="handleClear"
-      />
+      <div style="width: 300px">
+        <q-input
+          v-model="data"
+          :suffix-icon="args.suffixIcon"
+          :show-symbol-limit="args.showSymbolLimit"
+          :password-switch="args.passwordSwitch"
+          :disabled="args.disabled"
+          :clearable="args.clearable"
+          :validate-event="args.validateEvent"
+          :autocomplete="args.autocomplete"
+          :placeholder="args.placeholder"
+          :maxlength="args.maxlength"
+          :type="args.type"
+          :readonly="args.readonly"
+          @blur="handleBlur"
+          @focus="handleFocus"
+          @input="handleInput"
+          @change="handleChange"
+          @clear="handleClear"
+        />
+      </div>
     `
   });
 

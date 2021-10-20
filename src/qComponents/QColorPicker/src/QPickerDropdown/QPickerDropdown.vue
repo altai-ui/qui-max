@@ -153,7 +153,8 @@ export default defineComponent({
       const target = event.target as HTMLElement;
 
       if (dropdown.value?.contains(target)) {
-        if (target.tagName === 'INPUT') target.focus();
+        if (target.tagName === 'INPUT' || target.tagName === 'BUTTON')
+          target.focus();
         else dropdown.value.focus();
       }
     };
@@ -221,7 +222,7 @@ export default defineComponent({
         document.addEventListener('click', closeDropdown, true);
         document.addEventListener('focus', handleDocumentFocus, true);
 
-        if (props.color) updateHSVA(props.color);
+        updateHSVA(props.color ?? '#000000');
 
         tempColor.value = colorString.value;
         elementToFocusAfterClosing.value =

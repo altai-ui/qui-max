@@ -33,7 +33,6 @@ import { defineComponent, inject, computed } from 'vue';
 
 import QTag from '@/qComponents/QTag/src/QTag.vue';
 import findFullPath from '../helpers/findFullPath';
-import findLabel from '../helpers/findLabel';
 import type { QCascaderProvider } from '../types';
 
 import type { TagItem, QCascaderTagsInstance } from './types';
@@ -60,12 +59,15 @@ export default defineComponent({
 
       if (!Array.isArray(modelValue)) return [];
 
-      return modelValue.map(value => ({
-        value,
-        label: qCascader.allLevelsShown.value
-          ? findFullPath(qCascader.options.value, value)?.join(separator) ?? ''
-          : findLabel(qCascader.options.value, value) ?? ''
-      }));
+      return modelValue.map(value => {
+        const fullPath = findFullPath(qCascader.options.value, value);
+        return {
+          value,
+          label: qCascader.allLevelsShown.value
+            ? fullPath?.join(separator) ?? ''
+            : fullPath?.[fullPath?.length - 1] ?? ''
+        };
+      });
     });
 
     const handleTagClose = (value: string | number): void => {

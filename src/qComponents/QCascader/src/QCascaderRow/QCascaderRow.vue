@@ -144,7 +144,7 @@ export default defineComponent({
     const handleClick = (): void => {
       if (props.row.disabled) return;
 
-      if (!isMultiple.value && !props.row.children) {
+      if (!isMultiple.value && !props.row.children && !isCheckStrictly.value) {
         ctx.emit('check', props.row, isChecked.value);
       }
 

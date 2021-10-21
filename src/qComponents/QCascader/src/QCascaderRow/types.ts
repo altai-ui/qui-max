@@ -16,6 +16,7 @@ export interface QCascaderRowProps {
 export interface QCascaderRowInstance {
   rootClasses: ComputedRef<Record<string, boolean>>;
   isMultiple: ComputedRef<boolean>;
+  isCheckStrictly: ComputedRef<boolean>;
   isChecked: ComputedRef<boolean>;
   isIndeterminate: ComputedRef<boolean>;
   isIconShown: ComputedRef<boolean>;

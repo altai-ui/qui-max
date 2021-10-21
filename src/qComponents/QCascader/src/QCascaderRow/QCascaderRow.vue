@@ -9,7 +9,7 @@
     @keyup.enter="handleEnterKeyUp"
   >
     <div
-      v-if="isMultiple"
+      v-if="isMultiple || (!isMultiple && isCheckStrictly)"
       class="q-cascader-row__checkbox"
     >
       <q-checkbox
@@ -77,6 +77,10 @@ export default defineComponent({
 
     const isMultiple = computed<boolean>(
       () => qCascader.multiple.value ?? false
+    );
+
+    const isCheckStrictly = computed<boolean>(
+      () => qCascader.checkStrictly.value ?? false
     );
 
     const childStatuses = computed<boolean[]>(() => {
@@ -167,6 +171,7 @@ export default defineComponent({
     return {
       rootClasses,
       isMultiple,
+      isCheckStrictly,
       isChecked,
       isIndeterminate,
       isIconShown,

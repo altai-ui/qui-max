@@ -61,11 +61,13 @@ export default defineComponent({
 
       return modelValue.map(value => {
         const fullPath = findFullPath(qCascader.options.value, value);
+        const label = qCascader.allLevelsShown.value
+          ? fullPath?.join(separator)
+          : fullPath?.[fullPath?.length - 1];
+
         return {
           value,
-          label: qCascader.allLevelsShown.value
-            ? fullPath?.join(separator) ?? ''
-            : fullPath?.[fullPath?.length - 1] ?? ''
+          label: label ?? ''
         };
       });
     });

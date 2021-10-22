@@ -98,7 +98,12 @@ export default defineComponent({
       }
     });
 
-    return { root, rootStyles, cursorStyles };
+    return {
+      root,
+      rootStyles,
+      cursorStyles,
+      update
+    };
   }
 });
 </script>

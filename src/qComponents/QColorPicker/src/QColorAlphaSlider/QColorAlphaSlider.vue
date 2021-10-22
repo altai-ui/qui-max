@@ -125,7 +125,8 @@ export default defineComponent({
       bar,
       barStyles,
       thumbStyles,
-      handleBarClick
+      handleBarClick,
+      update
     };
   }
 });

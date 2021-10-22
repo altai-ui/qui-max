@@ -1,8 +1,11 @@
 import type { Ref, ComputedRef } from 'vue';
 
-import type { Nullable } from '#/helpers';
+import type { Nullable, UnwrappedInstance } from '#/helpers';
 
 import type { ColorFormat } from '../types';
+import type { QColorSvpanelInstance } from '../QColorSvpanel';
+import type { QColorHueSliderInstance } from '../QColorHueSlider';
+import type { QColorAlphaSliderInstance } from '../QColorAlphaSlider';
 
 export type QPickerDropdownPropColorFormat = ColorFormat;
 
@@ -24,6 +27,9 @@ export interface QPickerDropdownInstance {
   alpha: Ref<number>;
   tempColor: Ref<string>;
   rgbString: ComputedRef<string>;
+  refSv: Ref<Nullable<UnwrappedInstance<QColorSvpanelInstance>>>;
+  refHue: Ref<Nullable<UnwrappedInstance<QColorHueSliderInstance>>>;
+  refAlpha: Ref<Nullable<UnwrappedInstance<QColorAlphaSliderInstance>>>;
   updateHSVA: (newValue: string) => void;
   handleMouseDown: () => void;
   handleClearBtnClick: () => void;

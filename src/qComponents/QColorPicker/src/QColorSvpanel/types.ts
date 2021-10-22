@@ -12,4 +12,5 @@ export interface QColorSvpanelInstance {
   root: Ref<Nullable<HTMLElement>>;
   rootStyles: ComputedRef<Record<string, string>>;
   cursorStyles: ComputedRef<Record<string, string>>;
+  update: () => void;
 }

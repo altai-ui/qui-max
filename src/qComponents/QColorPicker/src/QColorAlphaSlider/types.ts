@@ -14,4 +14,5 @@ export interface QColorAlphaSliderInstance {
   barStyles: ComputedRef<Record<string, string>>;
   thumbStyles: ComputedRef<Record<string, string>>;
   handleBarClick: (event: MouseEvent) => void;
+  update: () => void;
 }

@@ -109,7 +109,8 @@ export default defineComponent({
       thumb,
       bar,
       thumbStyles,
-      handleBarClick
+      handleBarClick,
+      update
     };
   }
 });

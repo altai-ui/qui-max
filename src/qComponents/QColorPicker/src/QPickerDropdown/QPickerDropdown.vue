@@ -69,11 +69,14 @@ import { t } from '@/qComponents/locale';
 import { validateArray } from '@/qComponents/helpers';
 import QButton from '@/qComponents/QButton';
 import QInput from '@/qComponents/QInput';
-import type { Nullable } from '#/helpers';
+import type { Nullable, UnwrappedInstance } from '#/helpers';
 
 import QColorSvpanel from '../QColorSvpanel';
 import QColorAlphaSlider from '../QColorAlphaSlider';
 import QColorHueSlider from '../QColorHueSlider';
+import type { QColorSvpanelInstance } from '../QColorSvpanel';
+import type { QColorHueSliderInstance } from '../QColorHueSlider';
+import type { QColorAlphaSliderInstance } from '../QColorAlphaSlider';
 import type { QColorPickerProvider } from '../types';
 
 import type {
@@ -202,9 +205,11 @@ export default defineComponent({
       ctx.emit('pick', colorString.value);
     };
 
-    const refSv = ref<Nullable<typeof QColorSvpanel>>(null);
-    const refHue = ref<Nullable<typeof QColorHueSlider>>(null);
-    const refAlpha = ref<Nullable<typeof QColorAlphaSlider>>(null);
+    const refSv = ref<Nullable<UnwrappedInstance<QColorSvpanelInstance>>>(null);
+    const refHue =
+      ref<Nullable<UnwrappedInstance<QColorHueSliderInstance>>>(null);
+    const refAlpha =
+      ref<Nullable<UnwrappedInstance<QColorAlphaSliderInstance>>>(null);
 
     watch(
       () => props.isShown,
@@ -263,6 +268,9 @@ export default defineComponent({
       alpha,
       tempColor,
       rgbString,
+      refSv,
+      refHue,
+      refAlpha,
       updateHSVA,
       handleMouseDown,
       handleClearBtnClick,

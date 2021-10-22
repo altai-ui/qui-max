@@ -12,4 +12,5 @@ export interface QColorHueSliderInstance {
   bar: Ref<Nullable<HTMLElement>>;
   thumbStyles: ComputedRef<Record<string, string>>;
   handleBarClick: (event: MouseEvent) => void;
+  update: () => void;
 }

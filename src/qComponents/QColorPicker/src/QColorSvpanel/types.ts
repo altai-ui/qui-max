@@ -6,6 +6,7 @@ export interface QColorSvpanelProps {
   hue: number;
   saturation: number;
   value: number;
+  isCleared: boolean;
 }
 
 export interface QColorSvpanelInstance {

@@ -11,6 +11,7 @@
         ref="refSv"
         v-model:saturation="saturation"
         v-model:value="value"
+        :is-cleared="isCleared"
         :hue="hue"
       />
 
@@ -141,6 +142,8 @@ export default defineComponent({
       })
     );
 
+    const isCleared = computed<boolean>(() => tempColor.value === '');
+
     const rgbString = computed<string>(() => colorModel.value.toRgbString());
 
     const colorString = computed<string>(() => {
@@ -227,9 +230,11 @@ export default defineComponent({
         document.addEventListener('click', closeDropdown, true);
         document.addEventListener('focus', handleDocumentFocus, true);
 
-        updateHSVA(props.color ?? '#000000');
-
-        tempColor.value = colorString.value;
+        if (!props.color) tempColor.value = '';
+        else {
+          updateHSVA(props.color);
+          tempColor.value = colorString.value;
+        }
         elementToFocusAfterClosing.value =
           document.activeElement as HTMLElement;
 
@@ -264,6 +269,7 @@ export default defineComponent({
       dropdown,
       saturation,
       value,
+      isCleared,
       hue,
       alpha,
       tempColor,

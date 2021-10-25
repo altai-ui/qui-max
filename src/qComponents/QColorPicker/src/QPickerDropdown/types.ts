@@ -23,6 +23,7 @@ export interface QPickerDropdownInstance {
   dropdown: Ref<Nullable<HTMLElement>>;
   saturation: Ref<number>;
   value: Ref<number>;
+  isCleared: Ref<boolean>;
   hue: Ref<number>;
   alpha: Ref<number>;
   tempColor: Ref<string>;

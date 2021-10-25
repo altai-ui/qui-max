@@ -35,6 +35,9 @@ export default defineComponent({
     value: {
       type: Number,
       required: true
+    },
+    isCleared: {
+      type: Boolean
     }
   },
 
@@ -50,7 +53,8 @@ export default defineComponent({
 
     const cursorStyles = computed<Record<string, string>>(() => ({
       top: `${cursorTop.value}px`,
-      left: `${cursorLeft.value}px`
+      left: `${cursorLeft.value}px`,
+      opacity: `${props.isCleared ? 0 : 1}`
     }));
 
     const root = ref<Nullable<HTMLElement>>(null);

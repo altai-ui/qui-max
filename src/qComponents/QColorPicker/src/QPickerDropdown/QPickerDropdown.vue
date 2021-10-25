@@ -142,7 +142,7 @@ export default defineComponent({
       })
     );
 
-    const isCleared = computed<boolean>(() => tempColor.value === '');
+    const isCleared = ref<boolean>(false);
 
     const rgbString = computed<string>(() => colorModel.value.toRgbString());
 
@@ -230,9 +230,12 @@ export default defineComponent({
         document.addEventListener('click', closeDropdown, true);
         document.addEventListener('focus', handleDocumentFocus, true);
 
-        if (!props.color) tempColor.value = '';
-        else {
+        if (!props.color) {
+          tempColor.value = '';
+          isCleared.value = true;
+        } else {
           updateHSVA(props.color);
+          isCleared.value = false;
           tempColor.value = colorString.value;
         }
         elementToFocusAfterClosing.value =
@@ -258,6 +261,7 @@ export default defineComponent({
     watch(
       () => colorString.value,
       newValue => {
+        isCleared.value = false;
         tempColor.value = newValue;
       },
       { immediate: true }

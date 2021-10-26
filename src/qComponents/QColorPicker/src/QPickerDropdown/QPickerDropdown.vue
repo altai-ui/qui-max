@@ -132,11 +132,16 @@ export default defineComponent({
     const elementToFocusAfterClosing = ref<Nullable<HTMLElement>>(null);
     const shouldPreventCloseByClick = ref<boolean>(false);
 
+    const refSv = ref<UnwrappedInstance<QColorSvpanelInstance>>(null);
+    const refHue = ref<UnwrappedInstance<QColorHueSliderInstance>>(null);
+    const refAlpha = ref<UnwrappedInstance<QColorAlphaSliderInstance>>(null);
+
     const tempColor = ref<string>('');
     const hue = ref<number>(0);
     const saturation = ref<number>(100);
     const value = ref<number>(100);
     const alpha = ref<number>(100);
+
     const isValidTempColor = computed(() => {
       if (!tempColor.value) return false;
       return colord(tempColor.value).isValid();
@@ -215,10 +220,6 @@ export default defineComponent({
       ctx.emit('pick', colorString.value);
     };
 
-    const refSv = ref<UnwrappedInstance<QColorSvpanelInstance>>(null);
-    const refHue = ref<UnwrappedInstance<QColorHueSliderInstance>>(null);
-    const refAlpha = ref<UnwrappedInstance<QColorAlphaSliderInstance>>(null);
-
     watch(
       () => props.isShown,
       async newValue => {
@@ -261,6 +262,10 @@ export default defineComponent({
       () => colorString.value,
       newValue => {
         tempColor.value = newValue;
+        nextTick(() => {
+          refSv.value?.update();
+          refSv.value?.showCursor();
+        });
       },
       { immediate: true }
     );

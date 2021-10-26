@@ -65,6 +65,10 @@ export default defineComponent({
 
     const root = ref<Nullable<HTMLElement>>(null);
 
+    const showCursor = (): void => {
+      opacity.value = 1;
+    };
+
     const update = (): void => {
       if (!root.value) return;
 
@@ -115,7 +119,8 @@ export default defineComponent({
       root,
       rootStyles,
       cursorStyles,
-      update
+      update,
+      showCursor
     };
   }
 });

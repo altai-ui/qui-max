@@ -15,4 +15,5 @@ export interface QColorSvpanelInstance {
   rootStyles: ComputedRef<Record<string, string>>;
   cursorStyles: ComputedRef<Record<string, string | number>>;
   update: () => void;
+  showCursor: () => void;
 }

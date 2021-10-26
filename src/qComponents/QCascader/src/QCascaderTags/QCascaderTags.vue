@@ -59,11 +59,17 @@ export default defineComponent({
 
       if (!Array.isArray(modelValue)) return [];
 
-      return modelValue.map(value => ({
-        value,
-        label:
-          findFullPath(qCascader.options.value, value)?.join(separator) ?? ''
-      }));
+      return modelValue.map(value => {
+        const fullPath = findFullPath(qCascader.options.value, value);
+        const label = qCascader.allLevelsShown.value
+          ? fullPath?.join(separator)
+          : fullPath?.[fullPath?.length - 1];
+
+        return {
+          value,
+          label: label ?? ''
+        };
+      });
     });
 
     const handleTagClose = (value: string | number): void => {

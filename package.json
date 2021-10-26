@@ -1,6 +1,6 @@
 {
   "name": "@qvant/qui-max",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "private": false,
   "description": "A Vue 3 Design system for Web.",
   "author": {
@@ -21,7 +21,8 @@
     "prettier:fix": "prettier --write --ignore-unknown '**/*'",
     "prepare": "husky install",
     "docs:dev": "vuepress dev docs",
-    "docs:build": "vuepress build docs"
+    "docs:build": "vuepress build docs",
+    "release": "release-it"
   },
   "dependencies": {
     "@popperjs/core": "^2.10.2",
@@ -72,6 +73,7 @@
     "postcss": "^8.3.11",
     "postcss-loader": "^6.2.0",
     "prettier": "^2.4.1",
+    "release-it": "^14.11.6",
     "rollup-plugin-copy": "^3.4.0",
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "rollup-plugin-sass": "^1.2.9",
@@ -130,6 +132,10 @@
       "url": "https://github.com/ViZhe"
     }
   ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Qvant-lab/qui-max.git"

@@ -1,0 +1,16 @@
+{
+  "git": {
+    "commitMessage": "chore: release v${version}"
+  },
+  "github": {
+    "release": true,
+    "web": true
+  },
+  "npm": {
+    "publish": true
+  },
+  "hooks": {
+    "before:init": "yarn build",
+    "after:release": "echo Successfully released ${name} v${version} to ${repo.repository}."
+  }
+}

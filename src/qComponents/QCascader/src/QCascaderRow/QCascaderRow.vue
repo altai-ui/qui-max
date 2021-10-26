@@ -9,7 +9,7 @@
     @keyup.enter="handleEnterKeyUp"
   >
     <div
-      v-if="isMultiple"
+      v-if="isMultiple || (!isMultiple && isCheckStrictly)"
       class="q-cascader-row__checkbox"
     >
       <q-checkbox
@@ -79,6 +79,10 @@ export default defineComponent({
       () => qCascader.multiple.value ?? false
     );
 
+    const isCheckStrictly = computed<boolean>(
+      () => qCascader.checkStrictly.value ?? false
+    );
+
     const childStatuses = computed<boolean[]>(() => {
       if (!qCascader.multiple.value || qCascader.checkStrictly.value) return [];
       return getChildStatuses(props.row, qCascader.modelValue.value);
@@ -140,7 +144,7 @@ export default defineComponent({
     const handleClick = (): void => {
       if (props.row.disabled) return;
 
-      if (!isMultiple.value && !props.row.children) {
+      if (!isMultiple.value && !props.row.children && !isCheckStrictly.value) {
         ctx.emit('check', props.row, isChecked.value);
       }
 
@@ -167,6 +171,7 @@ export default defineComponent({
     return {
       rootClasses,
       isMultiple,
+      isCheckStrictly,
       isChecked,
       isIndeterminate,
       isIconShown,

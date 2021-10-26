@@ -6,12 +6,13 @@ export interface QColorSvpanelProps {
   hue: number;
   saturation: number;
   value: number;
-  isCleared: boolean;
+  alpha: number;
+  color: string;
 }
 
 export interface QColorSvpanelInstance {
   root: Ref<Nullable<HTMLElement>>;
   rootStyles: ComputedRef<Record<string, string>>;
-  cursorStyles: ComputedRef<Record<string, string>>;
+  cursorStyles: ComputedRef<Record<string, string | number>>;
   update: () => void;
 }

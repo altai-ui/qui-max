@@ -11,8 +11,9 @@
         ref="refSv"
         v-model:saturation="saturation"
         v-model:value="value"
-        :is-cleared="isCleared"
         :hue="hue"
+        :alpha="alpha"
+        :color="color"
       />
 
       <q-color-hue-slider
@@ -46,7 +47,10 @@
         {{ t('QColorPicker.clear') }}
       </q-button>
 
-      <q-button @click="handleConfirmBtnClick">
+      <q-button
+        :disabled="!isValidTempColor"
+        @click="handleConfirmBtnClick"
+      >
         {{ t('QColorPicker.confirm') }}
       </q-button>
     </div>
@@ -133,7 +137,10 @@ export default defineComponent({
     const saturation = ref<number>(100);
     const value = ref<number>(100);
     const alpha = ref<number>(100);
-
+    const isValidTempColor = computed(() => {
+      if (!tempColor.value) return false;
+      return colord(tempColor.value).isValid();
+    });
     const colorModel = computed<Colord>(() =>
       colord({
         h: hue.value,
@@ -141,8 +148,6 @@ export default defineComponent({
         v: value.value
       })
     );
-
-    const isCleared = ref<boolean>(false);
 
     const rgbString = computed<string>(() => colorModel.value.toRgbString());
 
@@ -170,6 +175,8 @@ export default defineComponent({
     };
 
     const updateHSVA = (newValue: string): void => {
+      if (!isValidTempColor.value) return;
+
       try {
         const color = colord(newValue).toHsv();
 
@@ -208,11 +215,9 @@ export default defineComponent({
       ctx.emit('pick', colorString.value);
     };
 
-    const refSv = ref<Nullable<UnwrappedInstance<QColorSvpanelInstance>>>(null);
-    const refHue =
-      ref<Nullable<UnwrappedInstance<QColorHueSliderInstance>>>(null);
-    const refAlpha =
-      ref<Nullable<UnwrappedInstance<QColorAlphaSliderInstance>>>(null);
+    const refSv = ref<UnwrappedInstance<QColorSvpanelInstance>>(null);
+    const refHue = ref<UnwrappedInstance<QColorHueSliderInstance>>(null);
+    const refAlpha = ref<UnwrappedInstance<QColorAlphaSliderInstance>>(null);
 
     watch(
       () => props.isShown,
@@ -230,14 +235,8 @@ export default defineComponent({
         document.addEventListener('click', closeDropdown, true);
         document.addEventListener('focus', handleDocumentFocus, true);
 
-        if (!props.color) {
-          tempColor.value = '';
-          isCleared.value = true;
-        } else {
-          updateHSVA(props.color);
-          isCleared.value = false;
-          tempColor.value = colorString.value;
-        }
+        if (props.color) updateHSVA(props.color);
+        tempColor.value = props.color ? colorString.value : '';
         elementToFocusAfterClosing.value =
           document.activeElement as HTMLElement;
 
@@ -261,7 +260,6 @@ export default defineComponent({
     watch(
       () => colorString.value,
       newValue => {
-        isCleared.value = false;
         tempColor.value = newValue;
       },
       { immediate: true }
@@ -273,10 +271,10 @@ export default defineComponent({
       dropdown,
       saturation,
       value,
-      isCleared,
       hue,
       alpha,
       tempColor,
+      isValidTempColor,
       rgbString,
       refSv,
       refHue,

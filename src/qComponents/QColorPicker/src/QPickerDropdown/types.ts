@@ -23,14 +23,14 @@ export interface QPickerDropdownInstance {
   dropdown: Ref<Nullable<HTMLElement>>;
   saturation: Ref<number>;
   value: Ref<number>;
-  isCleared: Ref<boolean>;
   hue: Ref<number>;
   alpha: Ref<number>;
   tempColor: Ref<string>;
+  isValidTempColor: ComputedRef<boolean>;
   rgbString: ComputedRef<string>;
-  refSv: Ref<Nullable<UnwrappedInstance<QColorSvpanelInstance>>>;
-  refHue: Ref<Nullable<UnwrappedInstance<QColorHueSliderInstance>>>;
-  refAlpha: Ref<Nullable<UnwrappedInstance<QColorAlphaSliderInstance>>>;
+  refSv: Ref<UnwrappedInstance<QColorSvpanelInstance>>;
+  refHue: Ref<UnwrappedInstance<QColorHueSliderInstance>>;
+  refAlpha: Ref<UnwrappedInstance<QColorAlphaSliderInstance>>;
   updateHSVA: (newValue: string) => void;
   handleMouseDown: () => void;
   handleClearBtnClick: () => void;

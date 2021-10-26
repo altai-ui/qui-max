@@ -36,8 +36,13 @@ export default defineComponent({
       type: Number,
       required: true
     },
-    isCleared: {
-      type: Boolean
+    alpha: {
+      type: Number,
+      required: true
+    },
+    color: {
+      type: String,
+      default: null
     }
   },
 
@@ -50,11 +55,12 @@ export default defineComponent({
 
     const cursorTop = ref<number>(0);
     const cursorLeft = ref<number>(0);
+    const opacity = ref<number>(0);
 
-    const cursorStyles = computed<Record<string, string>>(() => ({
+    const cursorStyles = computed<Record<string, string | number>>(() => ({
       top: `${cursorTop.value}px`,
       left: `${cursorLeft.value}px`,
-      opacity: `${props.isCleared ? 0 : 1}`
+      opacity: opacity.value
     }));
 
     const root = ref<Nullable<HTMLElement>>(null);
@@ -65,6 +71,7 @@ export default defineComponent({
       const { clientWidth: width, clientHeight: height } = root.value;
       cursorLeft.value = (props.saturation * width) / 100;
       cursorTop.value = ((100 - props.value) * height) / 100;
+      opacity.value = props.color ? 1 : 0;
     };
 
     const handleDrag = (event: MouseEvent): void => {
@@ -79,15 +86,17 @@ export default defineComponent({
 
       cursorLeft.value = left;
       cursorTop.value = top;
+      const saturation = Math.round((left / rect.width) * 100);
+      const value = Math.round(100 - (top / rect.height) * 100);
 
-      ctx.emit('update:saturation', Math.round((left / rect.width) * 100));
-      ctx.emit('update:value', 100 - Math.round((top / rect.height) * 100));
+      ctx.emit('update:saturation', saturation);
+      ctx.emit('update:value', value);
     };
 
     watch(
-      () => [props.saturation, props.value],
+      () => [props.saturation, props.value, props.hue, props.alpha],
       () => {
-        update();
+        opacity.value = 1;
       }
     );
 

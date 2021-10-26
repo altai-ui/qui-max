@@ -80,8 +80,8 @@ export default defineComponent({
       cursorLeft.value = left;
       cursorTop.value = top;
 
-      ctx.emit('update:saturation', (left / rect.width) * 100);
-      ctx.emit('update:value', 100 - (top / rect.height) * 100);
+      ctx.emit('update:saturation', Math.round((left / rect.width) * 100));
+      ctx.emit('update:value', 100 - Math.round((top / rect.height) * 100));
     };
 
     watch(

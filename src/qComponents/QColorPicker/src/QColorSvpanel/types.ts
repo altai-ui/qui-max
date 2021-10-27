@@ -6,8 +6,7 @@ export interface QColorSvpanelProps {
   hue: number;
   saturation: number;
   value: number;
-  alpha: number;
-  color: string;
+  isCursorShown: boolean;
 }
 
 export interface QColorSvpanelInstance {
@@ -15,5 +14,4 @@ export interface QColorSvpanelInstance {
   rootStyles: ComputedRef<Record<string, string>>;
   cursorStyles: ComputedRef<Record<string, string | number>>;
   update: () => void;
-  showCursor: () => void;
 }

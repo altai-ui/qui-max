@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, onMounted, watch } from 'vue';
+import { defineComponent, ref, computed, onMounted } from 'vue';
 
 import type { Nullable } from '#/helpers';
 
@@ -36,13 +36,8 @@ export default defineComponent({
       type: Number,
       required: true
     },
-    alpha: {
-      type: Number,
-      required: true
-    },
-    color: {
-      type: String,
-      default: null
+    isCursorShown: {
+      type: Boolean
     }
   },
 
@@ -55,19 +50,14 @@ export default defineComponent({
 
     const cursorTop = ref<number>(0);
     const cursorLeft = ref<number>(0);
-    const opacity = ref<number>(0);
 
     const cursorStyles = computed<Record<string, string | number>>(() => ({
       top: `${cursorTop.value}px`,
       left: `${cursorLeft.value}px`,
-      opacity: opacity.value
+      opacity: props.isCursorShown ? 1 : 0
     }));
 
     const root = ref<Nullable<HTMLElement>>(null);
-
-    const showCursor = (): void => {
-      opacity.value = 1;
-    };
 
     const update = (): void => {
       if (!root.value) return;
@@ -75,7 +65,6 @@ export default defineComponent({
       const { clientWidth: width, clientHeight: height } = root.value;
       cursorLeft.value = (props.saturation * width) / 100;
       cursorTop.value = ((100 - props.value) * height) / 100;
-      opacity.value = props.color ? 1 : 0;
     };
 
     const handleDrag = (event: MouseEvent): void => {
@@ -97,13 +86,6 @@ export default defineComponent({
       ctx.emit('update:value', value);
     };
 
-    watch(
-      () => [props.saturation, props.value, props.hue, props.alpha],
-      () => {
-        opacity.value = 1;
-      }
-    );
-
     onMounted(() => {
       if (root.value) {
         draggable(root.value, {
@@ -119,8 +101,7 @@ export default defineComponent({
       root,
       rootStyles,
       cursorStyles,
-      update,
-      showCursor
+      update
     };
   }
 });

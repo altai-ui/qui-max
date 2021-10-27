@@ -12,8 +12,7 @@
         v-model:saturation="saturation"
         v-model:value="value"
         :hue="hue"
-        :alpha="alpha"
-        :color="color"
+        :is-cursor-shown="isTempColorValid"
       />
 
       <q-color-hue-slider
@@ -34,8 +33,8 @@
         <q-input
           v-model="tempColor"
           :validate-event="false"
-          @keyup.enter="updateHSVA(tempColor)"
-          @blur="updateHSVA(tempColor)"
+          @keyup.enter="handleInputChange"
+          @blur="handleInputChange"
         />
       </div>
 
@@ -47,10 +46,7 @@
         {{ t('QColorPicker.clear') }}
       </q-button>
 
-      <q-button
-        :disabled="!isValidTempColor"
-        @click="handleConfirmBtnClick"
-      >
+      <q-button @click="handleConfirmBtnClick">
         {{ t('QColorPicker.confirm') }}
       </q-button>
     </div>
@@ -142,10 +138,10 @@ export default defineComponent({
     const value = ref<number>(100);
     const alpha = ref<number>(100);
 
-    const isValidTempColor = computed(() => {
-      if (!tempColor.value) return false;
-      return colord(tempColor.value).isValid();
+    const isTempColorValid = computed<boolean>(() => {
+      return colord(tempColor.value ?? '').isValid();
     });
+
     const colorModel = computed<Colord>(() =>
       colord({
         h: hue.value,
@@ -168,10 +164,8 @@ export default defineComponent({
     const handleDocumentFocus = (event: FocusEvent): void => {
       const target = event.target as HTMLElement;
 
-      if (dropdown.value?.contains(target)) {
-        if (target.tagName === 'INPUT' || target.tagName === 'BUTTON')
-          target.focus();
-        else dropdown.value.focus();
+      if (dropdown.value && !dropdown.value.contains(target)) {
+        dropdown.value.focus();
       }
     };
 
@@ -180,7 +174,7 @@ export default defineComponent({
     };
 
     const updateHSVA = (newValue: string): void => {
-      if (!isValidTempColor.value) return;
+      if (!isTempColorValid.value) return;
 
       try {
         const color = colord(newValue).toHsv();
@@ -212,12 +206,31 @@ export default defineComponent({
       shouldPreventCloseByClick.value = false;
     };
 
+    const clearColor = (): void => {
+      alpha.value = 100;
+      hue.value = 0;
+      saturation.value = 100;
+      value.value = 100;
+      nextTick(() => {
+        tempColor.value = '';
+      });
+    };
+
+    const handleInputChange = (): void => {
+      if (!tempColor.value) clearColor();
+      else updateHSVA(tempColor.value);
+    };
+
     const handleClearBtnClick = (): void => {
       ctx.emit('clear');
+      clearColor();
     };
 
     const handleConfirmBtnClick = (): void => {
-      ctx.emit('pick', colorString.value);
+      if (!tempColor.value) {
+        ctx.emit('clear');
+        clearColor();
+      } else ctx.emit('pick', colorString.value);
     };
 
     watch(
@@ -236,7 +249,8 @@ export default defineComponent({
         document.addEventListener('click', closeDropdown, true);
         document.addEventListener('focus', handleDocumentFocus, true);
 
-        if (props.color) updateHSVA(props.color);
+        if (!props.color) clearColor();
+        else updateHSVA(props.color);
         tempColor.value = props.color ? colorString.value : '';
         elementToFocusAfterClosing.value =
           document.activeElement as HTMLElement;
@@ -253,7 +267,10 @@ export default defineComponent({
     watch(
       () => props.color,
       newColor => {
-        if (newColor) updateHSVA(newColor);
+        if (newColor) {
+          tempColor.value = colorString.value;
+          updateHSVA(newColor);
+        }
       },
       { immediate: true }
     );
@@ -264,7 +281,6 @@ export default defineComponent({
         tempColor.value = newValue;
         nextTick(() => {
           refSv.value?.update();
-          refSv.value?.showCursor();
         });
       },
       { immediate: true }
@@ -279,12 +295,12 @@ export default defineComponent({
       hue,
       alpha,
       tempColor,
-      isValidTempColor,
+      isTempColorValid,
       rgbString,
       refSv,
       refHue,
       refAlpha,
-      updateHSVA,
+      handleInputChange,
       handleMouseDown,
       handleClearBtnClick,
       handleConfirmBtnClick,

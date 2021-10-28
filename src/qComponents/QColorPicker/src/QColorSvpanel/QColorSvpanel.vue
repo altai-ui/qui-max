@@ -37,7 +37,8 @@ export default defineComponent({
       required: true
     },
     isCursorShown: {
-      type: Boolean
+      type: Boolean,
+      required: true
     }
   },
 

@@ -33,8 +33,8 @@
         <q-input
           v-model="tempColor"
           :validate-event="false"
-          @keyup.enter="handleInputChange"
-          @blur="handleInputChange"
+          @keyup.enter="checkTempColor"
+          @blur="checkTempColor"
         />
       </div>
 
@@ -138,9 +138,9 @@ export default defineComponent({
     const value = ref<number>(100);
     const alpha = ref<number>(100);
 
-    const isTempColorValid = computed<boolean>(() => {
-      return colord(tempColor.value ?? '').isValid();
-    });
+    const isTempColorValid = computed<boolean>(() =>
+      colord(tempColor.value ?? '').isValid()
+    );
 
     const colorModel = computed<Colord>(() =>
       colord({
@@ -216,21 +216,18 @@ export default defineComponent({
       });
     };
 
-    const handleInputChange = (): void => {
+    const checkTempColor = (): void => {
       if (!tempColor.value) clearColor();
       else updateHSVA(tempColor.value);
     };
 
     const handleClearBtnClick = (): void => {
       ctx.emit('clear');
-      clearColor();
     };
 
     const handleConfirmBtnClick = (): void => {
-      if (!tempColor.value) {
-        ctx.emit('clear');
-        clearColor();
-      } else ctx.emit('pick', colorString.value);
+      if (!tempColor.value) ctx.emit('clear');
+      else ctx.emit('pick', colorString.value);
     };
 
     watch(
@@ -300,7 +297,7 @@ export default defineComponent({
       refSv,
       refHue,
       refAlpha,
-      handleInputChange,
+      checkTempColor,
       handleMouseDown,
       handleClearBtnClick,
       handleConfirmBtnClick,

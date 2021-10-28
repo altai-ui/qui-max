@@ -31,7 +31,7 @@ export interface QPickerDropdownInstance {
   refSv: Ref<UnwrappedInstance<QColorSvpanelInstance>>;
   refHue: Ref<UnwrappedInstance<QColorHueSliderInstance>>;
   refAlpha: Ref<UnwrappedInstance<QColorAlphaSliderInstance>>;
-  handleInputChange: () => void;
+  checkTempColor: () => void;
   handleMouseDown: () => void;
   handleClearBtnClick: () => void;
   handleConfirmBtnClick: () => void;

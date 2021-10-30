@@ -153,10 +153,14 @@ export default defineComponent({
     const rgbString = computed<string>(() => colorModel.value.toRgbString());
 
     const colorString = computed<string>(() => {
-      if (props.alphaShown || props.colorFormat === 'rgb') {
-        return colorModel.value.alpha(alpha.value / 100).toRgbString();
+      if (props.colorFormat === 'rgb') {
+        return props.alphaShown
+          ? colorModel.value.alpha(alpha.value / 100).toRgbString()
+          : colorModel.value.toRgbString();
       }
-      return colorModel.value.toHex();
+      return props.alphaShown
+        ? colorModel.value.alpha(alpha.value / 100).toHex()
+        : colorModel.value.toHex();
     });
 
     const dropdown = ref<Nullable<HTMLElement>>(null);

@@ -17,23 +17,28 @@ export interface QPickerDropdownProps {
   alphaShown: Nullable<boolean>;
 }
 
+export interface QPickerHSVAModel {
+  hue: number;
+  saturation: number;
+  value: number;
+  alpha: number;
+}
+
 export interface QPickerDropdownInstance {
   t: (key: string) => string;
   shouldPreventCloseByClick: Ref<boolean>;
   dropdown: Ref<Nullable<HTMLElement>>;
-  saturation: Ref<number>;
-  value: Ref<number>;
-  hue: Ref<number>;
-  alpha: Ref<number>;
+  hsvaModel: QPickerHSVAModel;
   tempColor: Ref<string>;
   isTempColorValid: ComputedRef<boolean>;
-  rgbString: ComputedRef<string>;
   refSv: Ref<UnwrappedInstance<QColorSvpanelInstance>>;
   refHue: Ref<UnwrappedInstance<QColorHueSliderInstance>>;
   refAlpha: Ref<UnwrappedInstance<QColorAlphaSliderInstance>>;
-  checkTempColor: () => void;
+  formatColor: () => void;
   handleMouseDown: () => void;
   handleClearBtnClick: () => void;
   handleConfirmBtnClick: () => void;
-  closeDropdown: (e: KeyboardEvent | MouseEvent) => void;
+  handleChange: (newModel: QPickerHSVAModel) => void;
+  handleInput: (event: InputEvent) => void;
+  closeDropdown: (event: KeyboardEvent | MouseEvent) => void;
 }

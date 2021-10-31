@@ -12,28 +12,25 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, onMounted } from 'vue';
+import { defineComponent, ref, computed, watch, onMounted } from 'vue';
+import type { PropType } from 'vue';
 
 import type { Nullable } from '#/helpers';
 
 import draggable from '../utils/draggable';
-import type { QColorSvpanelProps, QColorSvpanelInstance } from './types';
+import type {
+  QColorSvpanelPropHSVAModel,
+  QColorSvpanelProps,
+  QColorSvpanelInstance
+} from './types';
 
 export default defineComponent({
   name: 'QColorSvpanel',
   componentName: 'QColorSvpanel',
 
   props: {
-    hue: {
-      type: Number,
-      required: true
-    },
-    saturation: {
-      type: Number,
-      required: true
-    },
-    value: {
-      type: Number,
+    hsvaModel: {
+      type: Object as PropType<QColorSvpanelPropHSVAModel>,
       required: true
     },
     isCursorShown: {
@@ -42,11 +39,11 @@ export default defineComponent({
     }
   },
 
-  emits: ['update:saturation', 'update:value'],
+  emits: ['change'],
 
   setup(props: QColorSvpanelProps, ctx): QColorSvpanelInstance {
     const rootStyles = computed<Record<string, string>>(() => ({
-      backgroundColor: `hsl(${props.hue}, 100%, 50%)`
+      backgroundColor: `hsl(${props.hsvaModel.hue}, 100%, 50%)`
     }));
 
     const cursorTop = ref<number>(0);
@@ -64,8 +61,8 @@ export default defineComponent({
       if (!root.value) return;
 
       const { clientWidth: width, clientHeight: height } = root.value;
-      cursorLeft.value = (props.saturation * width) / 100;
-      cursorTop.value = ((100 - props.value) * height) / 100;
+      cursorLeft.value = (props.hsvaModel.saturation * width) / 100;
+      cursorTop.value = ((100 - props.hsvaModel.value) * height) / 100;
     };
 
     const handleDrag = (event: MouseEvent): void => {
@@ -83,9 +80,16 @@ export default defineComponent({
       const saturation = Math.round((left / rect.width) * 100);
       const value = Math.round(100 - (top / rect.height) * 100);
 
-      ctx.emit('update:saturation', saturation);
-      ctx.emit('update:value', value);
+      ctx.emit('change', { ...props.hsvaModel, saturation, value });
     };
+
+    watch(
+      () => [props.hsvaModel.saturation, props.hsvaModel.value],
+      () => {
+        update();
+      },
+      { immediate: true }
+    );
 
     onMounted(() => {
       if (root.value) {

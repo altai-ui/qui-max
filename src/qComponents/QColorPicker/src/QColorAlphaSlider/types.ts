@@ -2,9 +2,15 @@ import type { Ref, ComputedRef } from 'vue';
 
 import type { Nullable } from '#/helpers';
 
-export interface QColorAlphaSliderProps {
-  color: string;
+export interface QColorAlphaSliderPropHSVAModel {
+  hue: number;
+  saturation: number;
+  value: number;
   alpha: number;
+}
+
+export interface QColorAlphaSliderProps {
+  hsvaModel: QColorAlphaSliderPropHSVAModel;
 }
 
 export interface QColorAlphaSliderInstance {

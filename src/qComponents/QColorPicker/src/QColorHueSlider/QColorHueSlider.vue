@@ -18,24 +18,29 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed, onMounted, watch } from 'vue';
+import type { PropType } from 'vue';
 
 import type { Nullable } from '#/helpers';
 
 import draggable from '../utils/draggable';
-import type { QColorHueSliderProps, QColorHueSliderInstance } from './types';
+import type {
+  QColorHueSliderPropHSVAModel,
+  QColorHueSliderProps,
+  QColorHueSliderInstance
+} from './types';
 
 export default defineComponent({
   name: 'QColorHueSlider',
   componentName: 'QColorHueSlider',
 
   props: {
-    hue: {
-      type: Number,
+    hsvaModel: {
+      type: Object as PropType<QColorHueSliderPropHSVAModel>,
       required: true
     }
   },
 
-  emits: ['update:hue'],
+  emits: ['change'],
 
   setup(props: QColorHueSliderProps, ctx): QColorHueSliderInstance {
     const thumbTop = ref<number>(0);
@@ -62,7 +67,7 @@ export default defineComponent({
           360
       );
 
-      ctx.emit('update:hue', hue);
+      ctx.emit('change', { ...props.hsvaModel, hue });
     };
 
     const handleBarClick = (event: MouseEvent): void => {
@@ -75,7 +80,7 @@ export default defineComponent({
       if (!rootElement || !thumbElement) return 0;
 
       return Math.round(
-        (props.hue *
+        (props.hsvaModel.hue *
           (rootElement.offsetHeight - thumbElement.offsetHeight * 1.5)) /
           360
       );
@@ -86,7 +91,7 @@ export default defineComponent({
     };
 
     watch(
-      () => props.hue,
+      () => props.hsvaModel.hue,
       () => {
         update();
       },
@@ -96,10 +101,7 @@ export default defineComponent({
     onMounted(() => {
       if (!bar.value || !thumb.value) return;
 
-      const dragConfig = {
-        drag: handleDrag,
-        end: handleDrag
-      };
+      const dragConfig = { drag: handleDrag, end: handleDrag };
       draggable(bar.value, dragConfig);
       draggable(thumb.value, dragConfig);
     });

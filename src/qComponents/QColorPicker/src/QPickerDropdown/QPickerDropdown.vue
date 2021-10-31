@@ -9,32 +9,33 @@
     <div class="q-picker-dropdown__base">
       <q-color-svpanel
         ref="refSv"
-        v-model:saturation="saturation"
-        v-model:value="value"
-        :hue="hue"
+        :hsva-model="hsvaModel"
         :is-cursor-shown="isTempColorValid"
+        @change="handleChange"
       />
 
       <q-color-hue-slider
         ref="refHue"
-        v-model:hue="hue"
+        :hsva-model="hsvaModel"
+        @change="handleChange"
       />
     </div>
 
     <q-color-alpha-slider
       v-if="alphaShown"
       ref="refAlpha"
-      v-model:alpha="alpha"
-      :color="rgbString"
+      :hsva-model="hsvaModel"
+      @change="handleChange"
     />
 
     <div class="q-picker-dropdown__footer">
       <div class="q-picker-dropdown__input">
         <q-input
-          v-model="tempColor"
+          :model-value="tempColor"
           :validate-event="false"
-          @keyup.enter="checkTempColor"
-          @blur="checkTempColor"
+          @input="handleInput"
+          @keyup.enter="formatColor"
+          @blur="formatColor"
         />
       </div>
 
@@ -58,19 +59,21 @@ import {
   defineComponent,
   PropType,
   ref,
+  reactive,
   computed,
   watch,
   nextTick,
-  inject
+  inject,
+  onUnmounted
 } from 'vue';
 import { colord } from 'colord';
-import type { Colord } from 'colord';
+import type { HsvaColor } from 'colord';
 
 import { t } from '@/qComponents/locale';
 import { validateArray } from '@/qComponents/helpers';
 import QButton from '@/qComponents/QButton';
 import QInput from '@/qComponents/QInput';
-import type { Nullable, UnwrappedInstance } from '#/helpers';
+import type { Nillable, Nullable, UnwrappedInstance } from '#/helpers';
 
 import QColorSvpanel from '../QColorSvpanel';
 import QColorAlphaSlider from '../QColorAlphaSlider';
@@ -83,8 +86,14 @@ import type { QColorPickerProvider } from '../types';
 import type {
   QPickerDropdownProps,
   QPickerDropdownPropColorFormat,
+  QPickerHSVAModel,
   QPickerDropdownInstance
 } from './types';
+
+const DEFAULT_HUE = 0;
+const DEFAULT_SATURATION = 100;
+const DEFAULT_VALUE = 100;
+const DEFAULT_ALPHA = 100;
 
 export default defineComponent({
   name: 'QPickerDropdown',
@@ -133,35 +142,16 @@ export default defineComponent({
     const refAlpha = ref<UnwrappedInstance<QColorAlphaSliderInstance>>(null);
 
     const tempColor = ref<string>('');
-    const hue = ref<number>(0);
-    const saturation = ref<number>(100);
-    const value = ref<number>(100);
-    const alpha = ref<number>(100);
+    const hsvaModel = reactive<QPickerHSVAModel>({
+      hue: DEFAULT_HUE,
+      saturation: DEFAULT_SATURATION,
+      value: DEFAULT_VALUE,
+      alpha: DEFAULT_ALPHA
+    });
 
     const isTempColorValid = computed<boolean>(() =>
       colord(tempColor.value ?? '').isValid()
     );
-
-    const colorModel = computed<Colord>(() =>
-      colord({
-        h: hue.value,
-        s: saturation.value,
-        v: value.value
-      })
-    );
-
-    const rgbString = computed<string>(() => colorModel.value.toRgbString());
-
-    const colorString = computed<string>(() => {
-      if (props.colorFormat === 'rgb') {
-        return props.alphaShown
-          ? colorModel.value.alpha(alpha.value / 100).toRgbString()
-          : colorModel.value.toRgbString();
-      }
-      return props.alphaShown
-        ? colorModel.value.alpha(alpha.value / 100).toHex()
-        : colorModel.value.toHex();
-    });
 
     const dropdown = ref<Nullable<HTMLElement>>(null);
 
@@ -177,19 +167,23 @@ export default defineComponent({
       shouldPreventCloseByClick.value = true;
     };
 
-    const updateHSVA = (newValue: string): void => {
-      if (!isTempColorValid.value) return;
+    const updateHSVAModel = (newValue?: Nillable<string>): void => {
+      const colorModel = colord(newValue ?? '');
 
-      try {
-        const color = colord(newValue).toHsv();
-
-        hue.value = color.h;
-        saturation.value = color.s;
-        value.value = color.v;
-        alpha.value = color.a * 100;
-      } catch {
-        // do nothing
+      if (!colorModel.isValid()) {
+        hsvaModel.hue = DEFAULT_HUE;
+        hsvaModel.saturation = DEFAULT_SATURATION;
+        hsvaModel.value = DEFAULT_VALUE;
+        hsvaModel.alpha = DEFAULT_ALPHA;
+        return;
       }
+
+      const color = colorModel.toHsv();
+
+      hsvaModel.hue = color.h;
+      hsvaModel.saturation = color.s;
+      hsvaModel.value = color.v;
+      hsvaModel.alpha = color.a * 100;
     };
 
     const qColorPicker = inject<Nullable<QColorPickerProvider>>(
@@ -210,19 +204,39 @@ export default defineComponent({
       shouldPreventCloseByClick.value = false;
     };
 
-    const clearColor = (): void => {
-      alpha.value = 100;
-      hue.value = 0;
-      saturation.value = 100;
-      value.value = 100;
-      nextTick(() => {
-        tempColor.value = '';
-      });
+    const handleInput = (event: InputEvent): void => {
+      const inputValue = (event.target as HTMLInputElement).value;
+      tempColor.value = inputValue;
+
+      updateHSVAModel(inputValue);
     };
 
-    const checkTempColor = (): void => {
-      if (!tempColor.value) clearColor();
-      else updateHSVA(tempColor.value);
+    const prepareColor = (color: Nullable<string | HsvaColor>): string => {
+      const isColorValid = colord(color ?? '').isValid();
+      if (!color || !isColorValid) return '';
+
+      let model = colord(color);
+      if (!props.alphaShown) model = model.alpha(1);
+      if (props.colorFormat === 'rgb') return model.toRgbString();
+      return model.toHex();
+    };
+
+    const formatColor = (): void => {
+      tempColor.value = prepareColor(tempColor.value);
+    };
+
+    const handleChange = (newModel: QPickerHSVAModel): void => {
+      hsvaModel.hue = newModel.hue;
+      hsvaModel.saturation = newModel.saturation;
+      hsvaModel.value = newModel.value;
+      hsvaModel.alpha = newModel.alpha;
+
+      tempColor.value = prepareColor({
+        h: newModel.hue,
+        s: newModel.saturation,
+        v: newModel.value,
+        a: newModel.alpha / 100
+      });
     };
 
     const handleClearBtnClick = (): void => {
@@ -231,7 +245,7 @@ export default defineComponent({
 
     const handleConfirmBtnClick = (): void => {
       if (!tempColor.value) ctx.emit('clear');
-      else ctx.emit('pick', colorString.value);
+      else ctx.emit('pick', tempColor.value);
     };
 
     watch(
@@ -250,9 +264,8 @@ export default defineComponent({
         document.addEventListener('click', closeDropdown, true);
         document.addEventListener('focus', handleDocumentFocus, true);
 
-        if (!props.color) clearColor();
-        else updateHSVA(props.color);
-        tempColor.value = props.color ? colorString.value : '';
+        tempColor.value = prepareColor(props.color);
+        updateHSVAModel(props.color);
         elementToFocusAfterClosing.value =
           document.activeElement as HTMLElement;
 
@@ -268,43 +281,34 @@ export default defineComponent({
     watch(
       () => props.color,
       newColor => {
-        if (newColor) {
-          tempColor.value = colorString.value;
-          updateHSVA(newColor);
-        }
+        tempColor.value = newColor ?? '';
+        updateHSVAModel(newColor);
       },
       { immediate: true }
     );
 
-    watch(
-      () => colorString.value,
-      newValue => {
-        tempColor.value = newValue;
-        nextTick(() => {
-          refSv.value?.update();
-        });
-      },
-      { immediate: true }
-    );
+    onUnmounted(() => {
+      document.removeEventListener('keyup', closeDropdown, true);
+      document.removeEventListener('click', closeDropdown, true);
+      document.removeEventListener('focus', handleDocumentFocus, true);
+    });
 
     return {
       t,
       shouldPreventCloseByClick,
       dropdown,
-      saturation,
-      value,
-      hue,
-      alpha,
+      hsvaModel,
       tempColor,
       isTempColorValid,
-      rgbString,
       refSv,
       refHue,
       refAlpha,
-      checkTempColor,
       handleMouseDown,
       handleClearBtnClick,
       handleConfirmBtnClick,
+      handleInput,
+      formatColor,
+      handleChange,
       closeDropdown
     };
   }

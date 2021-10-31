@@ -19,11 +19,14 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed, onMounted, watch } from 'vue';
+import type { PropType } from 'vue';
+import { colord } from 'colord';
 
 import type { Nullable } from '#/helpers';
 
 import draggable from '../utils/draggable';
 import type {
+  QColorAlphaSliderPropHSVAModel,
   QColorAlphaSliderProps,
   QColorAlphaSliderInstance
 } from './types';
@@ -33,24 +36,28 @@ export default defineComponent({
   componentName: 'QColorAlphaSlider',
 
   props: {
-    color: {
-      type: String,
-      required: true
-    },
-    alpha: {
-      type: Number,
+    hsvaModel: {
+      type: Object as PropType<QColorAlphaSliderPropHSVAModel>,
       required: true
     }
   },
 
-  emits: ['update:alpha'],
+  emits: ['change'],
 
   setup(props: QColorAlphaSliderProps, ctx): QColorAlphaSliderInstance {
     const thumbLeft = ref<number>(0);
 
-    const barStyles = computed<Record<string, string>>(() => ({
-      backgroundImage: `linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, ${props.color})`
-    }));
+    const barStyles = computed<Record<string, string>>(() => {
+      const color = colord({
+        h: props.hsvaModel.hue,
+        s: props.hsvaModel.saturation,
+        v: props.hsvaModel.value
+      }).toRgbString();
+
+      return {
+        backgroundImage: `linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, ${color})`
+      };
+    });
 
     const thumbStyles = computed<Record<string, string>>(() => ({
       left: `${thumbLeft.value}px`
@@ -75,7 +82,7 @@ export default defineComponent({
           100
       );
 
-      ctx.emit('update:alpha', alpha);
+      ctx.emit('change', { ...props.hsvaModel, alpha });
     };
 
     const handleBarClick = (event: MouseEvent): void => {
@@ -90,7 +97,7 @@ export default defineComponent({
       if (!rootElement || !thumbElement) return 0;
 
       return Math.round(
-        (props.alpha *
+        (props.hsvaModel.alpha *
           (rootElement.offsetWidth - thumbElement.offsetWidth * 1.5)) /
           100
       );
@@ -101,7 +108,7 @@ export default defineComponent({
     };
 
     watch(
-      () => props.alpha,
+      () => props.hsvaModel.alpha,
       () => {
         update();
       },

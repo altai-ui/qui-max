@@ -179,21 +179,24 @@ export default defineComponent({
       hsvaModel.alpha = color.a * 100;
     };
 
-    const qColorPicker = inject<Nullable<QColorPickerProvider>>(
+    const qColorPicker = inject<QColorPickerProvider>(
       'qColorPicker',
-      null
+      {} as QColorPickerProvider
     );
 
     const closeDropdown = (e: KeyboardEvent | MouseEvent): void => {
+      const target = e.target as Nullable<HTMLElement>;
+
       if (
         (e.type === 'keyup' && (e as KeyboardEvent).key === 'Escape') ||
         (e.type === 'click' &&
-          !qColorPicker?.trigger.value?.contains(e.target as HTMLElement) &&
-          !dropdown.value?.contains(e.target as HTMLElement) &&
+          !qColorPicker.trigger.value?.contains(target) &&
+          !dropdown.value?.contains(target) &&
           shouldPreventCloseByClick.value === false)
       ) {
         ctx.emit('close');
       }
+
       shouldPreventCloseByClick.value = false;
     };
 
@@ -264,7 +267,7 @@ export default defineComponent({
         updateHSVAModel(props.color);
 
         elementToFocusAfterClosing.value =
-          document.activeElement as HTMLElement;
+          document.activeElement as Nullable<HTMLElement>;
       }
     );
 

@@ -60,6 +60,7 @@ import {
   ref,
   computed,
   watch,
+  nextTick,
   provide
 } from 'vue';
 import { createPopper, Instance, Options } from '@popperjs/core';
@@ -236,13 +237,14 @@ export default defineComponent({
     const trigger = ref<Nullable<HTMLElement>>(null);
     const dropdown = ref<UnwrappedInstance<QPickerDropdownInstance>>(null);
 
-    const createPopperJs = (): void => {
+    const createPopperJs = async (): Promise<void> => {
       if (popperJS.value?.destroy) {
         popperJS.value.destroy();
         popperJS.value = null;
       }
 
       if (!trigger.value || !dropdown.value) return;
+      await nextTick();
       popperJS.value = createPopper(
         trigger.value,
         dropdown.value.$el,

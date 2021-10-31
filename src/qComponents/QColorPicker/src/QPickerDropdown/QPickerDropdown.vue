@@ -1,6 +1,6 @@
 <template>
   <div
-    v-show="isShown"
+    v-if="isShown"
     ref="dropdown"
     class="q-picker-dropdown"
     tabindex="-1"
@@ -244,8 +244,7 @@ export default defineComponent({
     };
 
     const handleConfirmBtnClick = (): void => {
-      if (!tempColor.value) ctx.emit('clear');
-      else ctx.emit('pick', tempColor.value);
+      ctx.emit('pick', tempColor.value || null);
     };
 
     watch(
@@ -268,13 +267,6 @@ export default defineComponent({
         updateHSVAModel(props.color);
         elementToFocusAfterClosing.value =
           document.activeElement as HTMLElement;
-
-        await nextTick();
-
-        dropdown.value?.focus();
-        refSv.value?.update();
-        refHue.value?.update();
-        refAlpha.value?.update();
       }
     );
 

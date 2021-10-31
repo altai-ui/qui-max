@@ -18,7 +18,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, onMounted, watch } from 'vue';
+import {
+  defineComponent,
+  ref,
+  computed,
+  onMounted,
+  watch,
+  nextTick
+} from 'vue';
 import type { PropType } from 'vue';
 import { colord } from 'colord';
 
@@ -86,9 +93,7 @@ export default defineComponent({
     };
 
     const handleBarClick = (event: MouseEvent): void => {
-      if (event.target !== thumb.value) {
-        handleDrag(event);
-      }
+      if (event.target !== thumb.value) handleDrag(event);
     };
 
     const getThumbLeft = (): number => {
@@ -109,21 +114,17 @@ export default defineComponent({
 
     watch(
       () => props.hsvaModel.alpha,
-      () => {
+      async () => {
+        await nextTick();
         update();
       },
       { immediate: true }
     );
 
     onMounted(() => {
-      if (!bar.value || !thumb.value) return;
-
-      const dragConfig = {
-        drag: handleDrag,
-        end: handleDrag
-      };
-      draggable(bar.value, dragConfig);
-      draggable(thumb.value, dragConfig);
+      if (bar.value) {
+        draggable(bar.value, { drag: handleDrag, end: handleDrag });
+      }
     });
 
     return {

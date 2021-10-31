@@ -12,7 +12,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, watch, onMounted } from 'vue';
+import {
+  defineComponent,
+  ref,
+  computed,
+  watch,
+  onMounted,
+  nextTick
+} from 'vue';
 import type { PropType } from 'vue';
 
 import type { Nullable } from '#/helpers';
@@ -85,7 +92,8 @@ export default defineComponent({
 
     watch(
       () => [props.hsvaModel.saturation, props.hsvaModel.value],
-      () => {
+      async () => {
+        await nextTick();
         update();
       },
       { immediate: true }
@@ -93,12 +101,7 @@ export default defineComponent({
 
     onMounted(() => {
       if (root.value) {
-        draggable(root.value, {
-          drag: handleDrag,
-          end: handleDrag
-        });
-
-        update();
+        draggable(root.value, { drag: handleDrag, end: handleDrag });
       }
     });
 

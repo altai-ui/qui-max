@@ -18,48 +18,44 @@ import {
   computed,
   watch,
   onMounted,
-  nextTick
+  nextTick,
+  inject
 } from 'vue';
-import type { PropType } from 'vue';
+import { colord } from 'colord';
 
 import type { Nullable } from '#/helpers';
 
 import draggable from '../utils/draggable';
-import type {
-  QColorSvpanelPropHSVAModel,
-  QColorSvpanelProps,
-  QColorSvpanelInstance
-} from './types';
+import type { QPickerDropdownProvider } from '../QPickerDropdown';
+import type { QColorSvpanelInstance } from './types';
 
 export default defineComponent({
   name: 'QColorSvpanel',
   componentName: 'QColorSvpanel',
 
-  props: {
-    hsvaModel: {
-      type: Object as PropType<QColorSvpanelPropHSVAModel>,
-      required: true
-    },
-    isCursorShown: {
-      type: Boolean,
-      required: true
-    }
-  },
-
   emits: ['change'],
 
-  setup(props: QColorSvpanelProps, ctx): QColorSvpanelInstance {
+  setup(_, ctx): QColorSvpanelInstance {
+    const qPickerDropdown = inject<QPickerDropdownProvider>(
+      'qPickerDropdown',
+      {} as QPickerDropdownProvider
+    );
+
     const rootStyles = computed<Record<string, string>>(() => ({
-      backgroundColor: `hsl(${props.hsvaModel.hue}, 100%, 50%)`
+      backgroundColor: `hsl(${qPickerDropdown.hsvaModel.hue}, 100%, 50%)`
     }));
 
     const cursorTop = ref<number>(0);
     const cursorLeft = ref<number>(0);
 
-    const cursorStyles = computed<Record<string, string | number>>(() => ({
+    const isCursorShown = computed<boolean>(() =>
+      colord(qPickerDropdown.tempColor.value ?? '').isValid()
+    );
+
+    const cursorStyles = computed<Record<string, string>>(() => ({
       top: `${cursorTop.value}px`,
       left: `${cursorLeft.value}px`,
-      opacity: props.isCursorShown ? 1 : 0
+      opacity: isCursorShown.value ? '1' : '0'
     }));
 
     const root = ref<Nullable<HTMLElement>>(null);
@@ -68,8 +64,9 @@ export default defineComponent({
       if (!root.value) return;
 
       const { clientWidth: width, clientHeight: height } = root.value;
-      cursorLeft.value = (props.hsvaModel.saturation * width) / 100;
-      cursorTop.value = ((100 - props.hsvaModel.value) * height) / 100;
+      cursorLeft.value = (qPickerDropdown.hsvaModel.saturation * width) / 100;
+      cursorTop.value =
+        ((100 - qPickerDropdown.hsvaModel.value) * height) / 100;
     };
 
     const handleDrag = (event: MouseEvent): void => {
@@ -87,11 +84,14 @@ export default defineComponent({
       const saturation = Math.round((left / rect.width) * 100);
       const value = Math.round(100 - (top / rect.height) * 100);
 
-      ctx.emit('change', { ...props.hsvaModel, saturation, value });
+      ctx.emit('change', { ...qPickerDropdown.hsvaModel, saturation, value });
     };
 
     watch(
-      () => [props.hsvaModel.saturation, props.hsvaModel.value],
+      () => [
+        qPickerDropdown.hsvaModel.saturation,
+        qPickerDropdown.hsvaModel.value
+      ],
       async () => {
         await nextTick();
         update();

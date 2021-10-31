@@ -24,41 +24,37 @@ import {
   computed,
   onMounted,
   watch,
+  inject,
   nextTick
 } from 'vue';
-import type { PropType } from 'vue';
+
 import { colord } from 'colord';
 
 import type { Nullable } from '#/helpers';
 
 import draggable from '../utils/draggable';
-import type {
-  QColorAlphaSliderPropHSVAModel,
-  QColorAlphaSliderProps,
-  QColorAlphaSliderInstance
-} from './types';
+import type { QPickerDropdownProvider } from '../QPickerDropdown';
+import type { QColorAlphaSliderInstance } from './types';
 
 export default defineComponent({
   name: 'QColorAlphaSlider',
   componentName: 'QColorAlphaSlider',
 
-  props: {
-    hsvaModel: {
-      type: Object as PropType<QColorAlphaSliderPropHSVAModel>,
-      required: true
-    }
-  },
-
   emits: ['change'],
 
-  setup(props: QColorAlphaSliderProps, ctx): QColorAlphaSliderInstance {
+  setup(_, ctx): QColorAlphaSliderInstance {
+    const qPickerDropdown = inject<QPickerDropdownProvider>(
+      'qPickerDropdown',
+      {} as QPickerDropdownProvider
+    );
+
     const thumbLeft = ref<number>(0);
 
     const barStyles = computed<Record<string, string>>(() => {
       const color = colord({
-        h: props.hsvaModel.hue,
-        s: props.hsvaModel.saturation,
-        v: props.hsvaModel.value
+        h: qPickerDropdown.hsvaModel.hue,
+        s: qPickerDropdown.hsvaModel.saturation,
+        v: qPickerDropdown.hsvaModel.value
       }).toRgbString();
 
       return {
@@ -89,7 +85,7 @@ export default defineComponent({
           100
       );
 
-      ctx.emit('change', { ...props.hsvaModel, alpha });
+      ctx.emit('change', { ...qPickerDropdown.hsvaModel, alpha });
     };
 
     const handleBarClick = (event: MouseEvent): void => {
@@ -102,7 +98,7 @@ export default defineComponent({
       if (!rootElement || !thumbElement) return 0;
 
       return Math.round(
-        (props.hsvaModel.alpha *
+        (qPickerDropdown.hsvaModel.alpha *
           (rootElement.offsetWidth - thumbElement.offsetWidth * 1.5)) /
           100
       );
@@ -113,7 +109,7 @@ export default defineComponent({
     };
 
     watch(
-      () => props.hsvaModel.alpha,
+      () => qPickerDropdown.hsvaModel.alpha,
       async () => {
         await nextTick();
         update();

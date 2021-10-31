@@ -1,4 +1,4 @@
-import type { Ref, ComputedRef } from 'vue';
+import type { Ref } from 'vue';
 
 import type { Nullable, UnwrappedInstance } from '#/helpers';
 
@@ -24,13 +24,16 @@ export interface QPickerHSVAModel {
   alpha: number;
 }
 
+export interface QPickerDropdownProvider {
+  tempColor: Ref<string>;
+  hsvaModel: QPickerHSVAModel;
+}
+
 export interface QPickerDropdownInstance {
   t: (key: string) => string;
   shouldPreventCloseByClick: Ref<boolean>;
   dropdown: Ref<Nullable<HTMLElement>>;
-  hsvaModel: QPickerHSVAModel;
   tempColor: Ref<string>;
-  isTempColorValid: ComputedRef<boolean>;
   refSv: Ref<UnwrappedInstance<QColorSvpanelInstance>>;
   refHue: Ref<UnwrappedInstance<QColorHueSliderInstance>>;
   refAlpha: Ref<UnwrappedInstance<QColorAlphaSliderInstance>>;

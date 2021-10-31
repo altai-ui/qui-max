@@ -9,14 +9,11 @@
     <div class="q-picker-dropdown__base">
       <q-color-svpanel
         ref="refSv"
-        :hsva-model="hsvaModel"
-        :is-cursor-shown="isTempColorValid"
         @change="handleChange"
       />
 
       <q-color-hue-slider
         ref="refHue"
-        :hsva-model="hsvaModel"
         @change="handleChange"
       />
     </div>
@@ -24,7 +21,6 @@
     <q-color-alpha-slider
       v-if="alphaShown"
       ref="refAlpha"
-      :hsva-model="hsvaModel"
       @change="handleChange"
     />
 
@@ -60,11 +56,11 @@ import {
   PropType,
   ref,
   reactive,
-  computed,
   watch,
   nextTick,
   inject,
-  onUnmounted
+  onUnmounted,
+  provide
 } from 'vue';
 import { colord } from 'colord';
 import type { HsvaColor } from 'colord';
@@ -87,6 +83,7 @@ import type {
   QPickerDropdownProps,
   QPickerDropdownPropColorFormat,
   QPickerHSVAModel,
+  QPickerDropdownProvider,
   QPickerDropdownInstance
 } from './types';
 
@@ -148,10 +145,6 @@ export default defineComponent({
       value: DEFAULT_VALUE,
       alpha: DEFAULT_ALPHA
     });
-
-    const isTempColorValid = computed<boolean>(() =>
-      colord(tempColor.value ?? '').isValid()
-    );
 
     const dropdown = ref<Nullable<HTMLElement>>(null);
 
@@ -247,13 +240,17 @@ export default defineComponent({
       ctx.emit('pick', tempColor.value || null);
     };
 
+    const removeEventListeners = (): void => {
+      document.removeEventListener('keyup', closeDropdown, true);
+      document.removeEventListener('click', closeDropdown, true);
+      document.removeEventListener('focus', handleDocumentFocus, true);
+    };
+
     watch(
       () => props.isShown,
       async newValue => {
         if (!newValue) {
-          document.removeEventListener('keyup', closeDropdown, true);
-          document.removeEventListener('click', closeDropdown, true);
-          document.removeEventListener('focus', handleDocumentFocus, true);
+          removeEventListeners();
           await nextTick();
           elementToFocusAfterClosing.value?.focus();
           return;
@@ -265,6 +262,7 @@ export default defineComponent({
 
         tempColor.value = prepareColor(props.color);
         updateHSVAModel(props.color);
+
         elementToFocusAfterClosing.value =
           document.activeElement as HTMLElement;
       }
@@ -280,18 +278,19 @@ export default defineComponent({
     );
 
     onUnmounted(() => {
-      document.removeEventListener('keyup', closeDropdown, true);
-      document.removeEventListener('click', closeDropdown, true);
-      document.removeEventListener('focus', handleDocumentFocus, true);
+      removeEventListeners();
+    });
+
+    provide<QPickerDropdownProvider>('qPickerDropdown', {
+      tempColor,
+      hsvaModel
     });
 
     return {
       t,
       shouldPreventCloseByClick,
       dropdown,
-      hsvaModel,
       tempColor,
-      isTempColorValid,
       refSv,
       refHue,
       refAlpha,

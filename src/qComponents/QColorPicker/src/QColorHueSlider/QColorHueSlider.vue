@@ -23,33 +23,28 @@ import {
   computed,
   onMounted,
   watch,
-  nextTick
+  nextTick,
+  inject
 } from 'vue';
-import type { PropType } from 'vue';
 
 import type { Nullable } from '#/helpers';
 
 import draggable from '../utils/draggable';
-import type {
-  QColorHueSliderPropHSVAModel,
-  QColorHueSliderProps,
-  QColorHueSliderInstance
-} from './types';
+import type { QPickerDropdownProvider } from '../QPickerDropdown';
+import type { QColorHueSliderInstance } from './types';
 
 export default defineComponent({
   name: 'QColorHueSlider',
   componentName: 'QColorHueSlider',
 
-  props: {
-    hsvaModel: {
-      type: Object as PropType<QColorHueSliderPropHSVAModel>,
-      required: true
-    }
-  },
-
   emits: ['change'],
 
-  setup(props: QColorHueSliderProps, ctx): QColorHueSliderInstance {
+  setup(_, ctx): QColorHueSliderInstance {
+    const qPickerDropdown = inject<QPickerDropdownProvider>(
+      'qPickerDropdown',
+      {} as QPickerDropdownProvider
+    );
+
     const thumbTop = ref<number>(0);
     const thumbStyles = computed<Record<string, string>>(() => ({
       top: `${thumbTop.value}px`
@@ -74,7 +69,7 @@ export default defineComponent({
           360
       );
 
-      ctx.emit('change', { ...props.hsvaModel, hue });
+      ctx.emit('change', { ...qPickerDropdown.hsvaModel, hue });
     };
 
     const handleBarClick = (event: MouseEvent): void => {
@@ -87,7 +82,7 @@ export default defineComponent({
       if (!rootElement || !thumbElement) return 0;
 
       return Math.round(
-        (props.hsvaModel.hue *
+        (qPickerDropdown.hsvaModel.hue *
           (rootElement.offsetHeight - thumbElement.offsetHeight * 1.5)) /
           360
       );
@@ -98,7 +93,7 @@ export default defineComponent({
     };
 
     watch(
-      () => props.hsvaModel.hue,
+      () => qPickerDropdown.hsvaModel.hue,
       async () => {
         await nextTick();
         update();

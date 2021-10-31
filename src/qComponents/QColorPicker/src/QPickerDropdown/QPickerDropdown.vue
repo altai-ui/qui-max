@@ -128,11 +128,11 @@ export default defineComponent({
     }
   },
 
-  emits: ['close', 'clear', 'pick'],
+  emits: ['close', 'pick'],
 
   setup(props: QPickerDropdownProps, ctx): QPickerDropdownInstance {
-    const elementToFocusAfterClosing = ref<Nullable<HTMLElement>>(null);
-    const shouldPreventCloseByClick = ref<boolean>(false);
+    let elementToFocusAfterClosing: Nullable<HTMLElement> = null;
+    let shouldPreventCloseByClick = false;
 
     const refSv = ref<UnwrappedInstance<QColorSvpanelInstance>>(null);
     const refHue = ref<UnwrappedInstance<QColorHueSliderInstance>>(null);
@@ -157,7 +157,7 @@ export default defineComponent({
     };
 
     const handleMouseDown = (): void => {
-      shouldPreventCloseByClick.value = true;
+      shouldPreventCloseByClick = true;
     };
 
     const updateHSVAModel = (newValue?: Nillable<string>): void => {
@@ -192,12 +192,12 @@ export default defineComponent({
         (e.type === 'click' &&
           !qColorPicker.trigger.value?.contains(target) &&
           !dropdown.value?.contains(target) &&
-          shouldPreventCloseByClick.value === false)
+          shouldPreventCloseByClick === false)
       ) {
         ctx.emit('close');
       }
 
-      shouldPreventCloseByClick.value = false;
+      shouldPreventCloseByClick = false;
     };
 
     const handleInput = (event: InputEvent): void => {
@@ -236,7 +236,7 @@ export default defineComponent({
     };
 
     const handleClearBtnClick = (): void => {
-      ctx.emit('clear');
+      ctx.emit('pick', null);
     };
 
     const handleConfirmBtnClick = (): void => {
@@ -255,7 +255,7 @@ export default defineComponent({
         if (!newValue) {
           removeEventListeners();
           await nextTick();
-          elementToFocusAfterClosing.value?.focus();
+          elementToFocusAfterClosing?.focus();
           return;
         }
 
@@ -266,7 +266,7 @@ export default defineComponent({
         tempColor.value = prepareColor(props.color);
         updateHSVAModel(props.color);
 
-        elementToFocusAfterClosing.value =
+        elementToFocusAfterClosing =
           document.activeElement as Nullable<HTMLElement>;
       }
     );
@@ -291,7 +291,6 @@ export default defineComponent({
 
     return {
       t,
-      shouldPreventCloseByClick,
       dropdown,
       tempColor,
       refSv,

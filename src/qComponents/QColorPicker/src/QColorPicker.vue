@@ -44,7 +44,6 @@
           :style="{ zIndex }"
           @click.stop
           @close="handleClose"
-          @clear="handleClear"
           @pick="handlePick"
         />
       </transition>
@@ -191,14 +190,7 @@ export default defineComponent({
 
     const options = computed<Partial<Options>>(() => ({
       placement: props.placement,
-      modifiers: [
-        {
-          name: 'offset',
-          options: {
-            offset: [0, 16]
-          }
-        }
-      ],
+      modifiers: [{ name: 'offset', options: { offset: [0, 16] } }],
       ...props.popperOptions
     }));
 
@@ -212,18 +204,7 @@ export default defineComponent({
       isPickerShown.value = !isPickerShown.value;
     };
 
-    const handleClear = (): void => {
-      ctx.emit('update:modelValue', null);
-      ctx.emit('change', null);
-
-      if (props.modelValue !== null) {
-        qFormItem?.validateField('change');
-      }
-
-      isPickerShown.value = false;
-    };
-
-    const handlePick = (value: string): void => {
+    const handlePick = (value: Nullable<string>): void => {
       ctx.emit('update:modelValue', value);
       ctx.emit('change', value);
 
@@ -270,8 +251,7 @@ export default defineComponent({
       isPickerShown,
       handleClose,
       handleTriggerClick,
-      handlePick,
-      handleClear
+      handlePick
     };
   }
 });

@@ -31,7 +31,6 @@ export interface QPickerDropdownProvider {
 
 export interface QPickerDropdownInstance {
   t: (key: string) => string;
-  shouldPreventCloseByClick: Ref<boolean>;
   dropdown: Ref<Nullable<HTMLElement>>;
   tempColor: Ref<string>;
   refSv: Ref<UnwrappedInstance<QColorSvpanelInstance>>;

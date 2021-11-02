@@ -36,6 +36,5 @@ export interface QColorPickerInstance {
   isPickerShown: Ref<boolean>;
   handleClose: () => void;
   handleTriggerClick: () => void;
-  handlePick: (value: string) => void;
-  handleClear: () => void;
+  handlePick: (value: Nullable<string>) => void;
 }

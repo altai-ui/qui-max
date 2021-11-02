@@ -1,4 +1,8 @@
 import QPickerDropdown from './QPickerDropdown.vue';
 
 export default QPickerDropdown;
-export type { QPickerDropdownProps, QPickerDropdownInstance } from './types';
+export type {
+  QPickerDropdownProps,
+  QPickerDropdownProvider,
+  QPickerDropdownInstance
+} from './types';

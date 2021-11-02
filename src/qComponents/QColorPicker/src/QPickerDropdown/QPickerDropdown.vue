@@ -1,6 +1,6 @@
 <template>
   <div
-    v-show="isShown"
+    v-if="isShown"
     ref="dropdown"
     class="q-picker-dropdown"
     tabindex="-1"
@@ -9,31 +9,29 @@
     <div class="q-picker-dropdown__base">
       <q-color-svpanel
         ref="refSv"
-        v-model:saturation="saturation"
-        v-model:value="value"
-        :hue="hue"
+        @change="handleChange"
       />
 
       <q-color-hue-slider
         ref="refHue"
-        v-model:hue="hue"
+        @change="handleChange"
       />
     </div>
 
     <q-color-alpha-slider
       v-if="alphaShown"
       ref="refAlpha"
-      v-model:alpha="alpha"
-      :color="rgbString"
+      @change="handleChange"
     />
 
     <div class="q-picker-dropdown__footer">
       <div class="q-picker-dropdown__input">
         <q-input
-          v-model="tempColor"
+          :model-value="tempColor"
           :validate-event="false"
-          @keyup.enter="updateHSVA(tempColor)"
-          @blur="updateHSVA(tempColor)"
+          @input="handleInput"
+          @keyup.enter="formatColor"
+          @blur="formatColor"
         />
       </div>
 
@@ -57,30 +55,42 @@ import {
   defineComponent,
   PropType,
   ref,
-  computed,
+  reactive,
   watch,
   nextTick,
-  inject
+  inject,
+  onUnmounted,
+  provide
 } from 'vue';
 import { colord } from 'colord';
-import type { Colord } from 'colord';
+import type { HsvaColor } from 'colord';
 
 import { t } from '@/qComponents/locale';
 import { validateArray } from '@/qComponents/helpers';
 import QButton from '@/qComponents/QButton';
 import QInput from '@/qComponents/QInput';
-import type { Nullable } from '#/helpers';
+import type { Nillable, Nullable, UnwrappedInstance } from '#/helpers';
 
 import QColorSvpanel from '../QColorSvpanel';
 import QColorAlphaSlider from '../QColorAlphaSlider';
 import QColorHueSlider from '../QColorHueSlider';
+import type { QColorSvpanelInstance } from '../QColorSvpanel';
+import type { QColorHueSliderInstance } from '../QColorHueSlider';
+import type { QColorAlphaSliderInstance } from '../QColorAlphaSlider';
 import type { QColorPickerProvider } from '../types';
 
 import type {
   QPickerDropdownProps,
   QPickerDropdownPropColorFormat,
+  QPickerHSVAModel,
+  QPickerDropdownProvider,
   QPickerDropdownInstance
 } from './types';
+
+const DEFAULT_HUE = 0;
+const DEFAULT_SATURATION = 100;
+const DEFAULT_VALUE = 100;
+const DEFAULT_ALPHA = 100;
 
 export default defineComponent({
   name: 'QPickerDropdown',
@@ -118,99 +128,134 @@ export default defineComponent({
     }
   },
 
-  emits: ['close', 'clear', 'pick'],
+  emits: ['close', 'pick'],
 
   setup(props: QPickerDropdownProps, ctx): QPickerDropdownInstance {
-    const elementToFocusAfterClosing = ref<Nullable<HTMLElement>>(null);
-    const shouldPreventCloseByClick = ref<boolean>(false);
+    let elementToFocusAfterClosing: Nullable<HTMLElement> = null;
+    let shouldPreventCloseByClick = false;
+
+    const refSv = ref<UnwrappedInstance<QColorSvpanelInstance>>(null);
+    const refHue = ref<UnwrappedInstance<QColorHueSliderInstance>>(null);
+    const refAlpha = ref<UnwrappedInstance<QColorAlphaSliderInstance>>(null);
 
     const tempColor = ref<string>('');
-    const hue = ref<number>(0);
-    const saturation = ref<number>(100);
-    const value = ref<number>(100);
-    const alpha = ref<number>(100);
-
-    const colorModel = computed<Colord>(() =>
-      colord({
-        h: hue.value,
-        s: saturation.value,
-        v: value.value
-      })
-    );
-
-    const rgbString = computed<string>(() => colorModel.value.toRgbString());
-
-    const colorString = computed<string>(() => {
-      if (props.alphaShown || props.colorFormat === 'rgb') {
-        return colorModel.value.alpha(alpha.value / 100).toRgbString();
-      }
-      return colorModel.value.toHex();
+    const hsvaModel = reactive<QPickerHSVAModel>({
+      hue: DEFAULT_HUE,
+      saturation: DEFAULT_SATURATION,
+      value: DEFAULT_VALUE,
+      alpha: DEFAULT_ALPHA
     });
 
     const dropdown = ref<Nullable<HTMLElement>>(null);
 
     const handleDocumentFocus = (event: FocusEvent): void => {
-      if (dropdown.value?.contains(event.target as HTMLElement)) {
+      const target = event.target as HTMLElement;
+
+      if (dropdown.value && !dropdown.value.contains(target)) {
         dropdown.value.focus();
       }
     };
 
     const handleMouseDown = (): void => {
-      shouldPreventCloseByClick.value = true;
+      shouldPreventCloseByClick = true;
     };
 
-    const updateHSVA = (newValue: string): void => {
-      try {
-        const color = colord(newValue).toHsv();
+    const updateHSVAModel = (newValue?: Nillable<string>): void => {
+      const colorModel = colord(newValue ?? '');
 
-        hue.value = color.h;
-        saturation.value = color.s;
-        value.value = color.v;
-        alpha.value = color.a * 100;
-      } catch {
-        // do nothing
+      if (!colorModel.isValid()) {
+        hsvaModel.hue = DEFAULT_HUE;
+        hsvaModel.saturation = DEFAULT_SATURATION;
+        hsvaModel.value = DEFAULT_VALUE;
+        hsvaModel.alpha = DEFAULT_ALPHA;
+        return;
       }
+
+      const color = colorModel.toHsv();
+
+      hsvaModel.hue = color.h;
+      hsvaModel.saturation = color.s;
+      hsvaModel.value = color.v;
+      hsvaModel.alpha = color.a * 100;
     };
 
-    const qColorPicker = inject<Nullable<QColorPickerProvider>>(
+    const qColorPicker = inject<QColorPickerProvider>(
       'qColorPicker',
-      null
+      {} as QColorPickerProvider
     );
 
     const closeDropdown = (e: KeyboardEvent | MouseEvent): void => {
+      const target = e.target as Nullable<HTMLElement>;
+
       if (
         (e.type === 'keyup' && (e as KeyboardEvent).key === 'Escape') ||
         (e.type === 'click' &&
-          !qColorPicker?.trigger.value?.contains(e.target as HTMLElement) &&
-          !dropdown.value?.contains(e.target as HTMLElement) &&
-          shouldPreventCloseByClick.value === false)
+          !qColorPicker.trigger.value?.contains(target) &&
+          !dropdown.value?.contains(target) &&
+          shouldPreventCloseByClick === false)
       ) {
         ctx.emit('close');
       }
-      shouldPreventCloseByClick.value = false;
+
+      shouldPreventCloseByClick = false;
+    };
+
+    const handleInput = (event: InputEvent): void => {
+      const inputValue = (event.target as HTMLInputElement).value;
+      tempColor.value = inputValue;
+
+      updateHSVAModel(inputValue);
+    };
+
+    const prepareColor = (color: Nullable<string | HsvaColor>): string => {
+      const isColorValid = colord(color ?? '').isValid();
+      if (!color || !isColorValid) return '';
+
+      let model = colord(color);
+      if (!props.alphaShown) model = model.alpha(1);
+      if (props.colorFormat === 'rgb') return model.toRgbString();
+      return model.toHex();
+    };
+
+    const formatColor = (): void => {
+      tempColor.value = prepareColor(tempColor.value);
+    };
+
+    const handleChange = (newModel: QPickerHSVAModel): void => {
+      hsvaModel.hue = newModel.hue;
+      hsvaModel.saturation = newModel.saturation;
+      hsvaModel.value = newModel.value;
+      hsvaModel.alpha = newModel.alpha;
+
+      tempColor.value = prepareColor({
+        h: newModel.hue,
+        s: newModel.saturation,
+        v: newModel.value,
+        a: newModel.alpha / 100
+      });
     };
 
     const handleClearBtnClick = (): void => {
-      ctx.emit('clear');
+      ctx.emit('pick', null);
     };
 
     const handleConfirmBtnClick = (): void => {
-      ctx.emit('pick', colorString.value);
+      ctx.emit('pick', tempColor.value || null);
     };
 
-    const refSv = ref<Nullable<typeof QColorSvpanel>>(null);
-    const refHue = ref<Nullable<typeof QColorHueSlider>>(null);
-    const refAlpha = ref<Nullable<typeof QColorAlphaSlider>>(null);
+    const removeEventListeners = (): void => {
+      document.removeEventListener('keyup', closeDropdown, true);
+      document.removeEventListener('click', closeDropdown, true);
+      document.removeEventListener('focus', handleDocumentFocus, true);
+    };
 
     watch(
       () => props.isShown,
       async newValue => {
         if (!newValue) {
-          document.removeEventListener('keyup', closeDropdown, true);
-          document.removeEventListener('click', closeDropdown, true);
-          document.removeEventListener('focus', handleDocumentFocus, true);
+          removeEventListeners();
           await nextTick();
-          elementToFocusAfterClosing.value?.focus();
+          elementToFocusAfterClosing?.focus();
           return;
         }
 
@@ -218,51 +263,45 @@ export default defineComponent({
         document.addEventListener('click', closeDropdown, true);
         document.addEventListener('focus', handleDocumentFocus, true);
 
-        if (props.color) updateHSVA(props.color);
+        tempColor.value = prepareColor(props.color);
+        updateHSVAModel(props.color);
 
-        tempColor.value = colorString.value;
-        elementToFocusAfterClosing.value =
-          document.activeElement as HTMLElement;
-
-        await nextTick();
-
-        dropdown.value?.focus();
-        refSv.value?.update();
-        refHue.value?.update();
-        refAlpha.value?.update();
+        elementToFocusAfterClosing =
+          document.activeElement as Nullable<HTMLElement>;
       }
     );
 
     watch(
       () => props.color,
       newColor => {
-        if (newColor) updateHSVA(newColor);
+        tempColor.value = newColor ?? '';
+        updateHSVAModel(newColor);
       },
       { immediate: true }
     );
 
-    watch(
-      () => colorString.value,
-      newValue => {
-        tempColor.value = newValue;
-      },
-      { immediate: true }
-    );
+    onUnmounted(() => {
+      removeEventListeners();
+    });
+
+    provide<QPickerDropdownProvider>('qPickerDropdown', {
+      tempColor,
+      hsvaModel
+    });
 
     return {
       t,
-      shouldPreventCloseByClick,
       dropdown,
-      saturation,
-      value,
-      hue,
-      alpha,
       tempColor,
-      rgbString,
-      updateHSVA,
+      refSv,
+      refHue,
+      refAlpha,
       handleMouseDown,
       handleClearBtnClick,
       handleConfirmBtnClick,
+      handleInput,
+      formatColor,
+      handleChange,
       closeDropdown
     };
   }

@@ -17,27 +17,34 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, onMounted, watch } from 'vue';
+import {
+  defineComponent,
+  ref,
+  computed,
+  onMounted,
+  watch,
+  nextTick,
+  inject
+} from 'vue';
 
 import type { Nullable } from '#/helpers';
 
 import draggable from '../utils/draggable';
-import type { QColorHueSliderProps, QColorHueSliderInstance } from './types';
+import type { QPickerDropdownProvider } from '../QPickerDropdown';
+import type { QColorHueSliderInstance } from './types';
 
 export default defineComponent({
   name: 'QColorHueSlider',
   componentName: 'QColorHueSlider',
 
-  props: {
-    hue: {
-      type: Number,
-      required: true
-    }
-  },
+  emits: ['change'],
 
-  emits: ['update:hue'],
+  setup(_, ctx): QColorHueSliderInstance {
+    const qPickerDropdown = inject<QPickerDropdownProvider>(
+      'qPickerDropdown',
+      {} as QPickerDropdownProvider
+    );
 
-  setup(props: QColorHueSliderProps, ctx): QColorHueSliderInstance {
     const thumbTop = ref<number>(0);
     const thumbStyles = computed<Record<string, string>>(() => ({
       top: `${thumbTop.value}px`
@@ -62,7 +69,7 @@ export default defineComponent({
           360
       );
 
-      ctx.emit('update:hue', hue);
+      ctx.emit('change', { ...qPickerDropdown.hsvaModel, hue });
     };
 
     const handleBarClick = (event: MouseEvent): void => {
@@ -75,7 +82,7 @@ export default defineComponent({
       if (!rootElement || !thumbElement) return 0;
 
       return Math.round(
-        (props.hue *
+        (qPickerDropdown.hsvaModel.hue *
           (rootElement.offsetHeight - thumbElement.offsetHeight * 1.5)) /
           360
       );
@@ -86,22 +93,18 @@ export default defineComponent({
     };
 
     watch(
-      () => props.hue,
-      () => {
+      () => qPickerDropdown.hsvaModel.hue,
+      async () => {
+        await nextTick();
         update();
       },
       { immediate: true }
     );
 
     onMounted(() => {
-      if (!bar.value || !thumb.value) return;
-
-      const dragConfig = {
-        drag: handleDrag,
-        end: handleDrag
-      };
-      draggable(bar.value, dragConfig);
-      draggable(thumb.value, dragConfig);
+      if (bar.value) {
+        draggable(bar.value, { drag: handleDrag, end: handleDrag });
+      }
     });
 
     return {
@@ -109,7 +112,8 @@ export default defineComponent({
       thumb,
       bar,
       thumbStyles,
-      handleBarClick
+      handleBarClick,
+      update
     };
   }
 });

@@ -3,11 +3,6 @@
 /dist-ssr
 /node_modules
 
-# doc
-/docs/node_modules
-/docs/.temp
-/docs/.cache
-
 # Logs
 logs
 *.log

@@ -35,7 +35,6 @@ const QDrawerStoryComponent: Story<QDrawerOptions> = args =>
               },
               listeners: {
                 nameInput: (value: string) => {
-                  // eslint-disable-next-line no-console
                   console.log(`listeners - nameInput: ${value}`);
                 }
               }
@@ -43,10 +42,8 @@ const QDrawerStoryComponent: Story<QDrawerOptions> = args =>
             args
           );
 
-          // eslint-disable-next-line no-console
           console.log('resolve', result);
         } catch (result) {
-          // eslint-disable-next-line no-console
           console.log('reject', result);
         }
       };

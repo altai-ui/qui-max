@@ -69,7 +69,6 @@ const Template: Story<QSelectProps> = args =>
       );
 
       const handleSearch = (query: string): void => {
-        // eslint-disable-next-line no-console
         if (!args.remote) return;
 
         state.remoteLoading = true;

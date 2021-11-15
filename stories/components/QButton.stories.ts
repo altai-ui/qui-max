@@ -29,7 +29,6 @@ const Template: Story<StoryArgs> = args =>
   defineComponent({
     setup() {
       const handleClick = (event: MouseEvent): void => {
-        // eslint-disable-next-line no-console
         console.log('click', event);
       };
 

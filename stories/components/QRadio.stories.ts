@@ -21,7 +21,6 @@ const QRadioStory: Story<QRadioProps> = args =>
       const radio1 = ref<number>(1);
       const radio2 = ref<number>(1);
       const handleChange = (value: number): void => {
-        // eslint-disable-next-line no-console
         console.log(value, 'change');
         radio1.value = value;
       };

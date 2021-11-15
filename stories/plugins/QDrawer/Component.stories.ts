@@ -30,10 +30,8 @@ const QDrawerStoryComponent: Story<QDrawerOptions> = args =>
             args
           );
 
-          // eslint-disable-next-line no-console
           console.log('resolve', result);
         } catch (result) {
-          // eslint-disable-next-line no-console
           console.log('reject', result);
         }
       };

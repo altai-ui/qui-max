@@ -1,8 +1,6 @@
 <template>
   <q-drawer-content>
-    <template
-      #title
-    >Morbi massa libero, vehicula nec consequat sed, porta a sem.</template>
+    <template #title>Morbi massa libero, vehicula nec consequat sed, porta a sem.</template>
 
     {{ someExternalProp }}
 

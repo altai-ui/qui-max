@@ -1,7 +1,7 @@
 $--base-path: '..' !default;
 
 @font-face {
-  font-family: 'Gilroy';
+  font-family: Gilroy;
   font-style: normal;
   font-weight: 800;
   src: local('Gilroy ExtraBold'), local('Gilroy-ExtraBold'),
@@ -10,7 +10,7 @@ $--base-path: '..' !default;
 }
 
 @font-face {
-  font-family: 'Gilroy';
+  font-family: Gilroy;
   font-style: normal;
   font-weight: 600;
   src: local('Gilroy Bold'), local('Gilroy-Bold'),
@@ -19,7 +19,7 @@ $--base-path: '..' !default;
 }
 
 @font-face {
-  font-family: 'Gilroy';
+  font-family: Gilroy;
   font-style: normal;
   font-weight: 500;
   src: local('Gilroy Medium'), local('Gilroy-Medium'),
@@ -28,7 +28,7 @@ $--base-path: '..' !default;
 }
 
 @font-face {
-  font-family: 'Gilroy';
+  font-family: Gilroy;
   font-style: normal;
   font-weight: 400;
   src: local('Gilroy Regular'), local('Gilroy-Regular'),

@@ -36,11 +36,11 @@
     }
 
     &_secondary {
-      background-color: rgba(var(--color-rgb-gray), 0.16);
+      background-color: rgb(var(--color-rgb-gray) / 16%);
 
       &:hover,
       &:active {
-        background-color: rgba(var(--color-rgb-gray), 0.32);
+        background-color: rgb(var(--color-rgb-gray) / 32%);
       }
     }
   }
@@ -51,7 +51,7 @@
     bottom: 4px;
     z-index: 1;
     border-radius: var(--border-radius-base);
-    opacity: 0;
+    opacity: 0%;
     transition: opacity 120ms ease-out;
 
     &_vertical {
@@ -89,7 +89,7 @@
   &:focus >,
   &__wrap.focus-visible ~ {
     & .q-scrollbar__bar {
-      opacity: 1;
+      opacity: 100%;
       transition: opacity 340ms ease-out;
     }
   }

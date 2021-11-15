@@ -1,5 +1,5 @@
 .q-upload-file-multiple {
-  --text-color: rgba(var(--color-rgb-gray), 0.64);
+  --text-color: rgb(var(--color-rgb-gray) / 64%);
 
   position: absolute;
   right: 0;
@@ -13,13 +13,13 @@
   background-color: var(--color-tertiary-gray-light);
   border-radius: var(--border-radius-base);
   box-shadow: var(--box-shadow-secondary);
-  opacity: 0;
+  opacity: 0%;
   transition: visibility var(--transition-spline-base) 0.5s,
     opacity var(--transition-spline-base) 0.25s;
 
   &_shown {
     visibility: visible;
-    opacity: 1;
+    opacity: 100%;
     transition: visibility var(--transition-spline-base) 0.5s,
       opacity var(--transition-spline-base) 0.25s 0.25s;
   }
@@ -110,7 +110,7 @@
     left: 0;
     width: 100%;
     height: 2px;
-    background-color: rgba(var(--color-rgb-gray), 0.16);
+    background-color: rgb(var(--color-rgb-gray) / 16%);
   }
 
   &__bar {

@@ -1,19 +1,19 @@
-@import './panel/q-picker-panel.scss';
-@import './tables/DateTable/date-table.scss';
-@import './tables/period-table.scss';
-@import './mobile/q-dialog-mobile-panel.scss';
+@import './panel/q-picker-panel';
+@import './tables/DateTable/date-table';
+@import './tables/period-table';
+@import './mobile/q-dialog-mobile-panel';
 
 .q-date-picker {
   --field-icon-color-base: var(--color-primary-blue);
   --field-icon-color-hover: var(--color-primary-black);
-  --field-box-shadow-focus: -1px -1px 3px rgba(var(--color-rgb-white), 0.25),
-    1px 1px 3px rgba(var(--color-rgb-blue), 0.4),
-    inset -1px -1px 1px rgba(var(--color-rgb-white), 0.7),
-    inset 1px 1px 2px rgba(var(--color-rgb-blue), 0.2);
-  --field-box-shadow-hover: -1px -1px 4px rgba(var(--color-rgb-white), 0.25),
-    1px 1px 4px rgba(var(--color-rgb-blue), 0.4),
-    4px 4px 8px rgba(var(--color-rgb-blue), 0.4),
-    -4px -4px 8px rgba(var(--color-rgb-white), 0.8);
+  --field-box-shadow-focus: -1px -1px 3px rgb(var(--color-rgb-white) / 25%),
+    1px 1px 3px rgb(var(--color-rgb-blue) / 40%),
+    inset -1px -1px 1px rgb(var(--color-rgb-white) / 70%),
+    inset 1px 1px 2px rgb(var(--color-rgb-blue) / 20%);
+  --field-box-shadow-hover: -1px -1px 4px rgb(var(--color-rgb-white) / 25%),
+    1px 1px 4px rgb(var(--color-rgb-blue) / 40%),
+    4px 4px 8px rgb(var(--color-rgb-blue) / 40%),
+    -4px -4px 8px rgb(var(--color-rgb-white) / 80%);
 
   &__input {
     position: relative;
@@ -69,8 +69,8 @@
         appearance: none;
 
         &::placeholder {
-          color: rgba(var(--color-rgb-gray), 0.32);
-          opacity: 1;
+          color: rgb(var(--color-rgb-gray) / 32%);
+          opacity: 100%;
         }
       }
 
@@ -125,6 +125,7 @@
   .q-input__icon {
     margin-left: auto;
   }
+
   .q-form-item_is-error & {
     border: var(--border-error);
   }

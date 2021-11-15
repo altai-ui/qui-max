@@ -1,5 +1,5 @@
-@import './q-select-tags.scss';
-@import './q-select-dropdown.scss';
+@import './q-select-tags';
+@import './q-select-dropdown';
 
 .q-select {
   position: relative;
@@ -34,7 +34,7 @@
 
     &-enter-from,
     &-leave-to {
-      opacity: 0;
+      opacity: 0%;
 
       .q-select-dropdown__wrapper {
         margin-top: -8px;

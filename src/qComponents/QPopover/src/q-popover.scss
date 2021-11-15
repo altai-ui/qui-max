@@ -15,6 +15,7 @@
     margin-right: 16px;
     color: var(--color-tertiary-white);
     text-align: center;
+    // stylelint-disable-next-line property-no-vendor-prefix
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;

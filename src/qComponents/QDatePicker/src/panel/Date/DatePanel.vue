@@ -402,10 +402,10 @@ export default defineComponent({
       } else if (!isNil(state.lastFocusedCellIndex)) {
         if (nextNodeIndex > state.lastFocusedCellIndex) {
           handleNextMonthClick();
-          (state.dateCells?.[newIndex]).focus();
+          state.dateCells?.[newIndex]?.focus();
         } else if (nextNodeIndex < state.lastFocusedCellIndex) {
           handlePrevMonthClick();
-          (state.dateCells?.[DATE_CELLS_COUNT + newIndex]).focus();
+          state.dateCells?.[DATE_CELLS_COUNT + newIndex]?.focus();
         }
       }
     };

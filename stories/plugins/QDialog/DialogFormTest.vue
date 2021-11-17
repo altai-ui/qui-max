@@ -61,7 +61,9 @@ export default defineComponent({
     };
 
     const commitBeforeClose = (): Promise<boolean> =>
-      new Promise(resolve => setTimeout(() => resolve(true), 1000));
+      new Promise(resolve => {
+        setTimeout(() => resolve(true), 1000);
+      });
 
     const handleConfirmClick = async (): Promise<void> => {
       isLoading.value = true;

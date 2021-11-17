@@ -27,6 +27,10 @@ export default defineUserConfig<DefaultThemeOptions, ViteBundlerOptions>({
         text: 'Storybook',
         link: 'https://qui-max.netlify.app/',
       },
+      {
+        text: 'Github',
+        link: 'https://github.com/Qvant-lab/qui-max'
+      }
     ],
   },
 })

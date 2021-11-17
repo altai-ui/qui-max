@@ -31,9 +31,9 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
+
       - run: yarn --frozen-lockfile
       - run: yarn build-storybook
-      - run: yarn deploy-storybook -- --ci
         env:
           GH_TOKEN: Qvant-lab:${{ secrets.GITHUB_TOKEN }}
 

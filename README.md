@@ -9,6 +9,7 @@
   <img alt="npm bundle size" src="https://img.shields.io/bundlephobia/minzip/@qvant/qui-max?color=brightgreen">
   <span class="badge-npmversion"><a href="https://npmjs.org/package/@qvant/qui-max" title="View this project on NPM"><img src="https://img.shields.io/npm/v/@qvant/qui-max.svg" alt="NPM version" /></a></span>
   <span class="badge-npmdownloads"><a href="https://npmjs.org/package/@qvant/qui-max" title="View this project on NPM"><img src="https://img.shields.io/npm/dm/@qvant/qui-max.svg" alt="NPM downloads" /></a></span>
+  <span><a href="https://app.netlify.com/sites/qui-max/deploys"><img src="https://api.netlify.com/api/v1/badges/e2694a79-f584-4e05-9e5f-5a87d3d7c52b/deploy-status" /></a>
 </p>
 
 <p align="center" class="unchanged rich-diff-level-one">

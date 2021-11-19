@@ -1,0 +1,45 @@
+$--base-path: '/qui-max/fonts/' !default;
+
+@font-face {
+  font-family: 'Gilroy';
+  font-style: normal;
+  font-weight: 800;
+  src: local('Gilroy ExtraBold'), local('Gilroy-ExtraBold'),
+    url('#{$--base-path}/Gilroy-ExtraBold.woff?29042020') format('woff');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Gilroy';
+  font-style: normal;
+  font-weight: 600;
+  src: local('Gilroy Bold'), local('Gilroy-Bold'),
+    url('#{$--base-path}/Gilroy-Bold.woff?29042020') format('woff');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Gilroy';
+  font-style: normal;
+  font-weight: 500;
+  src: local('Gilroy Medium'), local('Gilroy-Medium'),
+    url('#{$--base-path}/Gilroy-Medium.woff?29042020') format('woff');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Gilroy';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Gilroy Regular'), local('Gilroy-Regular'),
+    url('#{$--base-path}/Gilroy-Regular.woff?29042020') format('woff');
+  font-display: swap;
+}
+
+body {
+  font-family: 'Gilroy', sans-serif;
+}
+
+iframe {
+  border-radius: 6px;
+}

@@ -4,11 +4,8 @@ Commonly used button. See props to configure `QButton`. Try a sandbox [story](ht
 
 ## Examples
 All kind of types:
-<iframe height="450" style="width: 100%;" scrolling="no" title="QButton" src="https://codepen.io/Tim152/embed/VwPEEPG?default-tab=result&editable=true" frameborder="no" loading="lazy" allowtransparency allowfullscreen>
-  See the Pen <a href="https://codepen.io/Tim152/pen/VwPEEPG">
-  QButton</a> by Timofey (<a href="https://codepen.io/Tim152">@Tim152</a>)
-  on <a href="https://codepen.io">CodePen</a>.
-</iframe>
+
+<iframe height="340" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QButton.html"></iframe>
 
 ## Props
 
@@ -27,12 +24,8 @@ Code Example:
   <q-button theme="link">Link</q-button>
 ```
 
-Live:
-<iframe height="300" style="width: 100%;" scrolling="no" title="QButton" src="https://codepen.io/Tim152/embed/RwZqrqw?default-tab=html%2Cresult&editable=true" frameborder="no" loading="lazy" allowtransparency="true" allowfullscreen="true">
-  See the Pen <a href="https://codepen.io/Tim152/pen/RwZqrqw">
-  QButton</a> by Timofey (<a href="https://codepen.io/Tim152">@Tim152</a>)
-  on <a href="https://codepen.io">CodePen</a>.
-</iframe>
+Result:
+<iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QButton[theme].html"></iframe>
 
 ### type
 - Type: `String`
@@ -45,14 +38,14 @@ You don't need add `type` prop, if you're going to use our icons.
 
 Code Example:
 ```vue
- <q-button type="icon"><svg ... /></q-button>
+<q-button type="icon">
+  <svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 94.926 94.926">
+    <path d="M55.931 47.463 94.306 9.09c.826-.827.826-2.167 0-2.994L88.833.62C88.436.224 87.896 0 87.335 0c-.562 0-1.101.224-1.498.62L47.463 38.994 9.089.62c-.795-.795-2.202-.794-2.995 0L.622 6.096c-.827.827-.827 2.167 0 2.994l38.374 38.373L.622 85.836c-.827.827-.827 2.167 0 2.994l5.473 5.476c.397.396.936.62 1.498.62s1.1-.224 1.497-.62l38.374-38.374 38.374 38.374c.397.396.937.62 1.498.62s1.101-.224 1.498-.62l5.473-5.476c.826-.827.826-2.167 0-2.994L55.931 47.463z"/>
+  </svg>
+</q-button>
 ```
-Live:
-<iframe height="300" style="width: 100%;" scrolling="no" title="QButton[type]" src="https://codepen.io/Tim152/embed/OJjaRGX?default-tab=html%2Cresult&editable=true" frameborder="no" loading="lazy" allowtransparency="true" allowfullscreen="true">
-  See the Pen <a href="https://codepen.io/Tim152/pen/OJjaRGX">
-  QButton[type]</a> by Timofey (<a href="https://codepen.io/Tim152">@Tim152</a>)
-  on <a href="https://codepen.io">CodePen</a>.
-</iframe>
+Result:
+<iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QButton[type].html"></iframe>
 
 ### icon
 
@@ -68,12 +61,8 @@ Code example:
   <q-button type="icon" icon="q-icon-question-mark"></q-button>
 ```
 
-Live:
-<iframe height="300" style="width: 100%;" scrolling="no" title="QButton[type]" src="https://codepen.io/Tim152/embed/yLoQQOW?default-tab=html%2Cresult&editable=true" frameborder="no" loading="lazy" allowtransparency="true" allowfullscreen="true">
-  See the Pen <a href="https://codepen.io/Tim152/pen/yLoQQOW">
-  QButton[type]</a> by Timofey (<a href="https://codepen.io/Tim152">@Tim152</a>)
-  on <a href="https://codepen.io">CodePen</a>.
-</iframe>
+Result:
+<iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QButton[icon].html"></iframe>
 
 ### size
 
@@ -87,12 +76,8 @@ Code example:
   <q-button size="small">Primary</q-button>
 ```
 
-Live:
-<iframe height="300" style="width: 100%;" scrolling="no" title="QButton[icon]" src="https://codepen.io/Tim152/embed/NWvEEwo?default-tab=html%2Cresult&editable=true" frameborder="no" loading="lazy" allowtransparency="true" allowfullscreen="true">
-  See the Pen <a href="https://codepen.io/Tim152/pen/NWvEEwo">
-  QButton[icon]</a> by Timofey (<a href="https://codepen.io/Tim152">@Tim152</a>)
-  on <a href="https://codepen.io">CodePen</a>.
-</iframe>
+Result:
+<iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QButton[size].html"></iframe>
 
 ### loading
 
@@ -106,12 +91,8 @@ Code example:
   <q-button loading>Primary</q-button>
 ```
 
-Live:
-<iframe height="300" style="width: 100%;" scrolling="no" title="QButton[size]" src="https://codepen.io/Tim152/embed/abyQQRJ?default-tab=html%2Cresult&editable=true" frameborder="no" loading="lazy" allowtransparency="true" allowfullscreen="true">
-  See the Pen <a href="https://codepen.io/Tim152/pen/abyQQRJ">
-  QButton[size]</a> by Timofey (<a href="https://codepen.io/Tim152">@Tim152</a>)
-  on <a href="https://codepen.io">CodePen</a>.
-</iframe>
+Result:
+<iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QButton[loading].html"></iframe>
 
 ### disabled
 
@@ -125,13 +106,8 @@ Code Example:
   <q-button disabled>Primary</q-button>
 ```
 
-Live:
-
-<iframe height="300" style="width: 100%;" scrolling="no" title="QButton[loading]" src="https://codepen.io/Tim152/embed/OJjaaYq?default-tab=html%2Cresult&editable=true" frameborder="no" loading="lazy" allowtransparency="true" allowfullscreen="true">
-  See the Pen <a href="https://codepen.io/Tim152/pen/OJjaaYq">
-  QButton[loading]</a> by Timofey (<a href="https://codepen.io/Tim152">@Tim152</a>)
-  on <a href="https://codepen.io">CodePen</a>.
-</iframe>
+Result:
+<iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QButton[disabled].html"></iframe>
 
 ### circle
 
@@ -145,12 +121,8 @@ Code sample:
   <q-button type="icon" icon="q-icon-bell" circle></q-button>
 ```
 
-Live:
-<iframe height="300" style="width: 100%;" scrolling="no" title="QButton[disabled]" src="https://codepen.io/Tim152/embed/ZEJmVXy?default-tab=html%2Cresult&editable=true" frameborder="no" loading="lazy" allowtransparency="true" allowfullscreen="true">
-  See the Pen <a href="https://codepen.io/Tim152/pen/ZEJmVXy">
-  QButton[disabled]</a> by Timofey (<a href="https://codepen.io/Tim152">@Tim152</a>)
-  on <a href="https://codepen.io">CodePen</a>.
-</iframe>
+Result:
+<iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QButton[circle].html"></iframe>
 
 ### fullWidth
 

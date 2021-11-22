@@ -21,7 +21,7 @@
     position: absolute;
     top: 0;
     pointer-events: none;
-    opacity: 0%;
+    opacity: 0;
     transform: translate(-10%, 0);
     animation: show-tooltip 0.3s ease-in forwards;
   }
@@ -64,12 +64,12 @@
 
   @keyframes show-tooltip {
     from {
-      opacity: 0%;
+      opacity: 0;
       transform: translate(-10%, 0);
     }
 
     to {
-      opacity: 100%;
+      opacity: 1;
       transform: translate(-10%, -100%);
     }
   }

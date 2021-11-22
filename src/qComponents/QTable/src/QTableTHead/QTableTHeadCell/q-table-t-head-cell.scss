@@ -118,7 +118,7 @@
     font-size: 24px;
     background-color: transparent;
     border: none;
-    opacity: 0%;
+    opacity: 0;
 
     &:focus {
       outline: none;
@@ -133,7 +133,7 @@
     .q-table-t-head-cell_sorted &,
     .q-table-t-head-cell_sortable:not(.q-table-t-head-cell_dragging):hover &,
     &.focus-visible {
-      opacity: 100%;
+      opacity: 1;
     }
   }
 

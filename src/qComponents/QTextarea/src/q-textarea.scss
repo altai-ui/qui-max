@@ -48,7 +48,7 @@
     &::placeholder {
       color: var(--field-color-placeholder);
       text-overflow: ellipsis;
-      opacity: 100%;
+      opacity: 1;
     }
 
     &::-webkit-scrollbar {

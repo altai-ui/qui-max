@@ -83,7 +83,7 @@
       background-color: var(--checkbox-background-color-checked);
 
       &::after {
-        opacity: 100%;
+        opacity: 1;
       }
     }
 
@@ -120,6 +120,6 @@
     z-index: -1;
     margin: 0;
     outline: none;
-    opacity: 0%;
+    opacity: 0;
   }
 }

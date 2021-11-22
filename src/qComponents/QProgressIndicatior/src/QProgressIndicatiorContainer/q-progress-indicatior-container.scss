@@ -15,13 +15,13 @@
     var(--color-primary-blue-aqua) 100%
   );
   background-size: 500% 100%;
-  opacity: 0%;
+  opacity: 0;
   transition: transform 0.4s, height 0.8s, opacity 0.8s;
   animation: gradient 8s linear infinite;
 
   &_shown {
     height: 2px;
-    opacity: 100%;
+    opacity: 1;
   }
 }
 

@@ -51,7 +51,7 @@
     bottom: 4px;
     z-index: 1;
     border-radius: var(--border-radius-base);
-    opacity: 0%;
+    opacity: 0;
     transition: opacity 120ms ease-out;
 
     &_vertical {
@@ -89,7 +89,7 @@
   &:focus >,
   &__wrap.focus-visible ~ {
     & .q-scrollbar__bar {
-      opacity: 100%;
+      opacity: 1;
       transition: opacity 340ms ease-out;
     }
   }

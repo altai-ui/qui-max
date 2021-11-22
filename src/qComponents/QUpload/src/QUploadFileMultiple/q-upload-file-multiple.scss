@@ -13,13 +13,13 @@
   background-color: var(--color-tertiary-gray-light);
   border-radius: var(--border-radius-base);
   box-shadow: var(--box-shadow-secondary);
-  opacity: 0%;
+  opacity: 0;
   transition: visibility var(--transition-spline-base) 0.5s,
     opacity var(--transition-spline-base) 0.25s;
 
   &_shown {
     visibility: visible;
-    opacity: 100%;
+    opacity: 1;
     transition: visibility var(--transition-spline-base) 0.5s,
       opacity var(--transition-spline-base) 0.25s 0.25s;
   }

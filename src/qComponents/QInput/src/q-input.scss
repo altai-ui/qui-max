@@ -54,7 +54,7 @@
     &:placeholder-shown {
       color: var(--field-color-placeholder);
       text-overflow: ellipsis;
-      opacity: 100%;
+      opacity: 1;
     }
 
     /** disable default clear on IE */

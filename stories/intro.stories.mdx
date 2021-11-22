@@ -13,12 +13,48 @@ import { Meta, Story } from '@storybook/addon-docs';
 
 <div style={{ marginTop: '16px' }}>
   <span class="badge-shields">
-  <span><img src="https://img.shields.io/badge/vue-3.x-brightgreen"/></span>
-  <span><img alt="npm type definitions" src="https://img.shields.io/npm/types/@qvant/qui-max"/></span>
-  <span><a href="https://github.com/storybooks/storybook" target="_blank"><img src="https://raw.githubusercontent.com/storybooks/brand/master/badge/badge-storybook.svg"/></a></span>
-  <span><img alt="npm bundle size" src="https://img.shields.io/bundlephobia/minzip/@qvant/qui-max?color=brightgreen"/></span>
-  <span class="badge-npmversion"><a href="https://npmjs.org/package/@qvant/qui-max" title="View this project on NPM"><img src="https://img.shields.io/npm/v/@qvant/qui-max.svg" alt="NPM version" /></a></span>
-  <span class="badge-npmdownloads"><a href="https://npmjs.org/package/@qvant/qui-max" title="View this project on NPM"><img src="https://img.shields.io/npm/dm/@qvant/qui-max.svg" alt="NPM downloads" /></a></span>
+    <span>
+      <img src="https://img.shields.io/badge/vue-3.x-brightgreen" />
+    </span>
+    <span>
+      <img
+        alt="npm type definitions"
+        src="https://img.shields.io/npm/types/@qvant/qui-max"
+      />
+    </span>
+    <span>
+      <a href="https://github.com/storybooks/storybook" target="_blank">
+        <img src="https://raw.githubusercontent.com/storybooks/brand/master/badge/badge-storybook.svg" />
+      </a>
+    </span>
+    <span>
+      <img
+        alt="npm bundle size"
+        src="https://img.shields.io/bundlephobia/minzip/@qvant/qui-max?color=brightgreen"
+      />
+    </span>
+    <span class="badge-npmversion">
+      <a
+        href="https://npmjs.org/package/@qvant/qui-max"
+        title="View this project on NPM"
+      >
+        <img
+          src="https://img.shields.io/npm/v/@qvant/qui-max.svg"
+          alt="NPM version"
+        />
+      </a>
+    </span>
+    <span class="badge-npmdownloads">
+      <a
+        href="https://npmjs.org/package/@qvant/qui-max"
+        title="View this project on NPM"
+      >
+        <img
+          src="https://img.shields.io/npm/dm/@qvant/qui-max.svg"
+          alt="NPM downloads"
+        />
+      </a>
+    </span>
   </span>
 </div>
 
@@ -95,7 +131,10 @@ export default {
 
 Configure setup:
 
-- import styles separately to avoid unused css
+- import styles separately to avoid unused cs
+
+  s
+
 - set customI18nMessages to support any language for components
 - set `localization.messages` to support any language for components
 - change zIndex of appeared components (e.g Dialogs, Notifications, Dropdowns etc.)
@@ -155,26 +194,27 @@ Please refer to each component's [Stories](https://qvant-lab.github.io/qui-max/)
 ## Using with Nuxt 3
 
 Create a file in your plugins folder:
+
 ```ts
 // plugins/qui.ts
-import { defineNuxtPlugin } from '#app'
-import Qui from '@qvant/qui-max'
+import { defineNuxtPlugin } from '#app';
+import Qui from '@qvant/qui-max';
 
 export default defineNuxtPlugin(nuxtApp => {
-  nuxtApp.vueApp.use(Qui)
+  nuxtApp.vueApp.use(Qui);
 });
 ```
 
 Add configuration to your `nuxt.config.ts` file:
 
 ```ts
-import { defineNuxtConfig } from 'nuxt3'
+import { defineNuxtConfig } from 'nuxt3';
 
 export default defineNuxtConfig({
-    css: ['@qvant/qui-max/styles'],
-    build: {
-        transpile: ['@qvant/qui-max']
-    }
+  css: ['@qvant/qui-max/styles'],
+  build: {
+    transpile: ['@qvant/qui-max']
+  }
 });
 ```
 

@@ -13,7 +13,7 @@ features:
   - title: 🔩 30+ Vue 3 components
     details: Very functional and easly configurable, written with style guide for Vue-specific code, as well as plugins, helpers & hooks.
   - title: 🔥 Composition API
-    details: A new way of creating Vue components allows us to extract repeatable parts of the interface coupled with its functionality into reusable pieces of code. 
+    details: A new way of creating Vue components allows us to extract repeatable parts of the interface coupled with its functionality into reusable pieces of code.
   - title: 🔑 Typescript
     details: Written on TypeScript. Furthermore types included, so you can import it in your projects from our lib.
   - title: 📦 Icons pack
@@ -30,10 +30,11 @@ footer: MIT Licensed | Qvant-lab
 <CodeGroup>
   <CodeGroupItem title="YARN" active>
 
-  ```bash
-  # install in your project
-  yarn add @qvant/qui-max
-  ```
+```bash
+# install in your project
+yarn add @qvant/qui-max
+```
+
   </CodeGroupItem>
   <CodeGroupItem title="NPM">
   

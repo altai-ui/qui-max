@@ -3,6 +3,7 @@
 Commonly used button. See props to configure `QButton`. Try a sandbox [story](https://qui-max.netlify.app/?path=/story/components-qbutton--theme-primary)
 
 ## Examples
+
 All kind of types:
 
 <iframe height="340" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QButton.html"></iframe>
@@ -10,24 +11,29 @@ All kind of types:
 ## Props
 
 ### theme
+
 - Type: `String`
 
 A `theme` prop defines how button appearence, can accept values:
+
 - `'primary'` - (default) button style, being used for primary actions
 - `'secondary'` - button style, being used for secondary actions
 - `'link'` - text button style
 
 Code Example:
+
 ```vue
-  <q-button>Primary</q-button>
-  <q-button theme="secondary">Secondary</q-button>
-  <q-button theme="link">Link</q-button>
+<q-button>Primary</q-button>
+<q-button theme="secondary">Secondary</q-button>
+<q-button theme="link">Link</q-button>
 ```
 
 Result:
+
 <iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QButton[theme].html"></iframe>
 
 ### type
+
 - Type: `String`
 
 Defines button type (not native)
@@ -37,6 +43,7 @@ Defines button type (not native)
 You don't need add `type` prop, if you're going to use our icons.
 
 Code Example:
+
 ```vue
 <q-button type="icon">
   <svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 94.926 94.926">
@@ -44,7 +51,9 @@ Code Example:
   </svg>
 </q-button>
 ```
+
 Result:
+
 <iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QButton[type].html"></iframe>
 
 ### icon
@@ -54,14 +63,16 @@ Result:
 - `'q-icon-*'` - class string, see full list [here](https://qui-max.netlify.app/?path=/story/core-icons-all--all)
 
 Code example:
+
 ```vue
-  <q-button type="icon" icon="q-icon-bell"></q-button>
-  <q-button type="icon" icon="q-icon-check"></q-button>
-  <q-button type="icon" icon="q-icon-comment"></q-button>
-  <q-button type="icon" icon="q-icon-question-mark"></q-button>
+<q-button type="icon" icon="q-icon-bell"></q-button>
+<q-button type="icon" icon="q-icon-check"></q-button>
+<q-button type="icon" icon="q-icon-comment"></q-button>
+<q-button type="icon" icon="q-icon-question-mark"></q-button>
 ```
 
 Result:
+
 <iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QButton[icon].html"></iframe>
 
 ### size
@@ -73,10 +84,11 @@ Changes button size. `medium` by default
 Code example:
 
 ```vue
-  <q-button size="small">Primary</q-button>
+<q-button size="small">Primary</q-button>
 ```
 
 Result:
+
 <iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QButton[size].html"></iframe>
 
 ### loading
@@ -88,10 +100,11 @@ Set loading animation inside button
 Code example:
 
 ```vue
-  <q-button loading>Primary</q-button>
+<q-button loading>Primary</q-button>
 ```
 
 Result:
+
 <iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QButton[loading].html"></iframe>
 
 ### disabled
@@ -103,10 +116,11 @@ Sets disabled button state
 Code Example:
 
 ```vue
-  <q-button disabled>Primary</q-button>
+<q-button disabled>Primary</q-button>
 ```
 
 Result:
+
 <iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QButton[disabled].html"></iframe>
 
 ### circle
@@ -118,10 +132,11 @@ Changes button's shape to circle (use with icon)
 Code sample:
 
 ```vue
-  <q-button type="icon" icon="q-icon-bell" circle></q-button>
+<q-button type="icon" icon="q-icon-bell" circle></q-button>
 ```
 
 Result:
+
 <iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QButton[circle].html"></iframe>
 
 ### fullWidth
@@ -147,5 +162,5 @@ As native button type
 There is only default slot exists. Just put your content between QButton tags. Inline text content recommended.
 
 ```vue
-  <q-button>Your text</q-button>
+<q-button>Your text</q-button>
 ```

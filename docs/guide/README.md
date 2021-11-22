@@ -8,5 +8,4 @@ This library written on Typescript for Vue 3 with Composition API. But also we h
 
 ## How It Works
 
-To use Qui Max you need to install it to your [Vue 3](https://v3.vuejs.org/) project via your preferred package manager. Let's check out how to [setup Qui Max](/guide/getting-started.html#quick-setup). 
-
+To use Qui Max you need to install it to your [Vue 3](https://v3.vuejs.org/) project via your preferred package manager. Let's check out how to [setup Qui Max](/guide/getting-started.html#quick-setup).

@@ -78,7 +78,10 @@ export default defineConfig({
                 fileDir = 'fonts';
               }
 
-              writeFileSync(`dist/${fileDir}/${fileName}`, styleNode?.content ?? '');
+              writeFileSync(
+                `dist/${fileDir}/${fileName}`,
+                styleNode?.content ?? ''
+              );
             });
           }
         }),

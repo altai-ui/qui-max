@@ -1,6 +1,6 @@
-import type { ViteBundlerOptions } from '@vuepress/bundler-vite'
-import { defineUserConfig } from '@vuepress/cli'
-import type { DefaultThemeOptions } from '@vuepress/theme-default'
+import type { ViteBundlerOptions } from '@vuepress/bundler-vite';
+import { defineUserConfig } from '@vuepress/cli';
+import type { DefaultThemeOptions } from '@vuepress/theme-default';
 
 export default defineUserConfig<DefaultThemeOptions, ViteBundlerOptions>({
   // The base URL the site will be deployed at:
@@ -17,20 +17,22 @@ export default defineUserConfig<DefaultThemeOptions, ViteBundlerOptions>({
       {
         text: 'Components',
         link: '/components/',
-        children: [{
-          text: 'QButton',
-          link: '/components/QButton'
-        }]
+        children: [
+          {
+            text: 'QButton',
+            link: '/components/QButton'
+          }
+        ]
       },
       // NavbarGroup
       {
         text: 'Storybook',
-        link: 'https://qui-max.netlify.app/',
+        link: 'https://qui-max.netlify.app/'
       },
       {
         text: 'Github',
         link: 'https://github.com/Qvant-lab/qui-max'
       }
-    ],
-  },
-})
+    ]
+  }
+});

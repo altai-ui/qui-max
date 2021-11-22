@@ -13,9 +13,8 @@
       width: 100%;
       height: 100%;
       content: '';
-      border-top-color: var(--group-color, var(--color-tertiary-gray-darker));
-      border-top-style: solid;
-      border-top-width: 4px;
+      border-top: 4px solid
+        var(--group-color, var(--color-tertiary-gray-darker));
     }
 
     &:not(.q-table-t-head-cell_sticked):first-child {
@@ -32,6 +31,7 @@
       }
     }
   }
+
   .q-table_has-color-groups
     .q-table-t_grided
     &:not(:last-child):not(.q-table-t-head-cell_sticked) {
@@ -96,6 +96,7 @@
     letter-spacing: var(--letter-spacing-base);
 
     &_ellipsis {
+      // stylelint-disable-next-line value-no-vendor-prefix
       display: -webkit-box;
       align-items: flex-end;
       width: auto;
@@ -188,6 +189,6 @@
     left: 0;
     z-index: 100;
     pointer-events: none;
-    background-color: rgba(var(--color-rgb-gray), 0.16);
+    background-color: rgb(var(--color-rgb-gray) / 16%);
   }
 }

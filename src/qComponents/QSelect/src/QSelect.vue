@@ -669,7 +669,7 @@ export default defineComponent({
     };
 
     const getValueIndex = (
-      arr = [] as QOptionPropValue[],
+      arr: QOptionPropValue[],
       optionValue: QOptionPropValue
     ): number => {
       if (isString(optionValue) || isNumber(optionValue))

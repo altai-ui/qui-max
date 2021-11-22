@@ -75,7 +75,7 @@ export default defineComponent({
       if (!qSelect?.state?.query && Array.isArray(qSelect?.state?.selected)) {
         ctx.emit(
           'remove-tag',
-          qSelect?.state?.selected[qSelect?.state.selected.length - 1]
+          qSelect?.state?.selected[qSelect.state.selected.length - 1]
         );
       }
     };

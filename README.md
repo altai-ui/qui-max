@@ -146,26 +146,27 @@ Please refer to each component's [Stories](https://qvant-lab.github.io/qui-max/)
 ## Using with Nuxt 3
 
 Create a file in your plugins folder:
+
 ```ts
 // plugins/qui.ts
-import { defineNuxtPlugin } from '#app'
-import Qui from '@qvant/qui-max'
+import { defineNuxtPlugin } from '#app';
+import Qui from '@qvant/qui-max';
 
 export default defineNuxtPlugin(nuxtApp => {
-  nuxtApp.vueApp.use(Qui)
+  nuxtApp.vueApp.use(Qui);
 });
 ```
 
 Add configuration to your `nuxt.config.ts` file:
 
 ```ts
-import { defineNuxtConfig } from 'nuxt3'
+import { defineNuxtConfig } from 'nuxt3';
 
 export default defineNuxtConfig({
-    css: ['@qvant/qui-max/styles'],
-    build: {
-        transpile: ['@qvant/qui-max']
-    }
+  css: ['@qvant/qui-max/styles'],
+  build: {
+    transpile: ['@qvant/qui-max']
+  }
 });
 ```
 

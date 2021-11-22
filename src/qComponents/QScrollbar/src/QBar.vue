@@ -114,7 +114,8 @@ export default defineComponent({
 
       const thumbClickPosition = thumb.value[bar.value.offset] - prevPage;
       const thumbPositionPercentage =
-        ((offset - thumbClickPosition) * 100) / root.value?.[bar.value.offset];
+        ((offset - thumbClickPosition) * 100) /
+        (root.value?.[bar.value.offset] ?? 1);
 
       scrollToPx(
         (thumbPositionPercentage * wrap.value[bar.value.scrollSize]) / 100

@@ -235,7 +235,7 @@ export default defineComponent({
       const multipleLimit = qSelect.multipleLimit ?? null;
 
       if (multipleLimit?.value) {
-        const availableQuantity = multipleLimit.value - modelValue?.length;
+        const availableQuantity = multipleLimit.value - modelValue.length;
 
         if (availableQuantity < newValue.length) {
           newValue = newValue.splice(0, availableQuantity);

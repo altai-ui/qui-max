@@ -1,19 +1,20 @@
-$--base-path: '..' !default;
+$-base-path: '..' !default;
 
 @font-face {
-  font-family: 'qicon';
+  font-family: qicon;
   font-style: normal;
   font-weight: 400;
-  src: url('#{$--base-path}/icons/qicon.woff?06092021') format('woff');
+  src: url('#{$-base-path}/icons/qicon.woff?06092021') format('woff');
   font-display: block;
 }
 
 [class^='q-icon-'],
 [class*=' q-icon-'] {
   display: inline-block;
+
   // use !important to prevent issues with browser extensions that change fonts
   // stylelint-disable-next-line font-family-no-missing-generic-family-keyword
-  font-family: 'qicon' !important;
+  font-family: qicon !important;
   font-style: normal;
   font-weight: 400;
   font-variant: normal;

@@ -24,7 +24,6 @@ const QRadioGroupStory: Story<QRadioGroupProps> = args =>
     setup() {
       const value = ref<number>(1);
       const handleChange = (modelValue: number): void => {
-        // eslint-disable-next-line no-console
         console.log(modelValue, 'change');
       };
 

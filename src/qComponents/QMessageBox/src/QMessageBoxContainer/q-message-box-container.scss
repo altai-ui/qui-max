@@ -33,7 +33,7 @@
   &__shadow {
     width: calc(100% + 20px);
     height: calc(100% + 20px);
-    background-color: rgba(var(--color-rgb-white), 0.7);
+    background-color: rgb(var(--color-rgb-white) / 70%);
   }
 
   &__clickable-shadow {
@@ -50,12 +50,12 @@
     margin-bottom: 80px;
     background-color: var(--color-tertiary-gray-ultra-light);
     border-radius: var(--border-radius-base);
-    box-shadow: 0 100px 384px rgba(var(--color-rgb-gray), 0.07),
-      0 41px 162px rgba(var(--color-rgb-gray), 0.05),
-      0 22px 85px rgba(var(--color-rgb-gray), 0.04),
-      0 12px 48px rgba(var(--color-rgb-gray), 0.03),
-      0 7px 25px rgba(var(--color-rgb-gray), 0.03),
-      0 3px 10px rgba(var(--color-rgb-gray), 0.02);
+    box-shadow: 0 100px 384px rgb(var(--color-rgb-gray) / 7%),
+      0 41px 162px rgb(var(--color-rgb-gray) / 5%),
+      0 22px 85px rgb(var(--color-rgb-gray) / 4%),
+      0 12px 48px rgb(var(--color-rgb-gray) / 3%),
+      0 7px 25px rgb(var(--color-rgb-gray) / 3%),
+      0 3px 10px rgb(var(--color-rgb-gray) / 2%);
   }
 
   &__close {

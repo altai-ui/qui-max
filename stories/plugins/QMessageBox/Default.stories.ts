@@ -47,20 +47,16 @@ const QMessageBoxStory: Story<QMessageBoxContentProps> = args =>
             },
             {
               onMounted: (app, container) => {
-                // eslint-disable-next-line no-console
                 console.log('onMounted', app, container);
               },
               onUnmounted: app => {
-                // eslint-disable-next-line no-console
                 console.log('onUnmounted', app);
               }
             }
           );
 
-          // eslint-disable-next-line no-console
           console.log('resolve', result);
         } catch (result) {
-          // eslint-disable-next-line no-console
           console.log('reject', result);
         }
       };

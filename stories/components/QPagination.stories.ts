@@ -16,7 +16,6 @@ const QPaginationStory: Story<QPaginationProps> = args =>
       const currentPage = ref<number>(args.currentPage);
 
       const handlePageChange = (value: number): void => {
-        // eslint-disable-next-line no-console
         console.log('current-change', value);
         currentPage.value = value;
       };

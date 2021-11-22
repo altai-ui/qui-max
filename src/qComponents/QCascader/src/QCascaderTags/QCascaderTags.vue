@@ -63,7 +63,7 @@ export default defineComponent({
         const fullPath = findFullPath(qCascader.options.value, value);
         const label = qCascader.allLevelsShown.value
           ? fullPath?.join(separator)
-          : fullPath?.[fullPath?.length - 1];
+          : fullPath?.[fullPath.length - 1];
 
         return {
           value,

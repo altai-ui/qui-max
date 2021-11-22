@@ -18,9 +18,9 @@
   --color-tertiary-gray-darker: #dadada;
   --color-tertiary-gray-ultra-dark: #c4c4c4;
   --color-tertiary-gray-ultra-darker: #adacae;
-  --color-rgb-white: 255, 255, 255;
-  --color-rgb-blue: 174, 174, 192;
-  --color-rgb-gray: 29, 28, 26;
+  --color-rgb-white: 255 255 255;
+  --color-rgb-blue: 174 174 192;
+  --color-rgb-gray: 29 28 26;
   --gradient-primary: linear-gradient(
     101.12deg,
     var(--color-primary) 0.76%,
@@ -31,22 +31,22 @@
     var(--color-primary) -27.44%,
     var(--color-primary-blue) 100.54%
   );
-  --box-shadow-primary: -1px -1px 3px rgba(var(--color-rgb-white), 0.25),
-    1px 1px 3px rgba(var(--color-rgb-blue), 0.4),
-    4px 4px 8px rgba(var(--color-rgb-blue), 0.4),
+  --box-shadow-primary: -1px -1px 3px rgb(var(--color-rgb-white) / 25%),
+    1px 1px 3px rgb(var(--color-rgb-blue) / 40%),
+    4px 4px 8px rgb(var(--color-rgb-blue) / 40%),
     -4px -4px 12px var(--color-tertiary-white);
   --box-shadow-secondary: -4px -4px 12px var(--color-tertiary-white),
-    4px 4px 8px rgba(var(--color-rgb-blue), 0.4),
-    1px 1px 3px rgba(var(--color-rgb-blue), 0.4),
-    -1px -1px 3px rgba(var(--color-rgb-white), 0.25);
-  --box-shadow-hover: -1px -1px 4px rgba(var(--color-rgb-white), 0.25),
-    1px 1px 4px rgba(var(--color-rgb-blue), 0.4),
-    4px 4px 8px rgba(var(--color-rgb-blue), 0.4),
-    -4px -4px 8px rgba(var(--color-rgb-white), 0.8);
-  --box-shadow-pressed: -1px -1px 3px rgba(var(--color-rgb-white), 0.25),
-    1px 1px 3px rgba(var(--color-rgb-blue), 0.4);
-  --box-shadow-focus: inset 2px 2px 3px rgba(var(--color-rgb-blue), 0.2),
-    inset -2px -2px 3px rgba(var(--color-rgb-white), 0.7);
+    4px 4px 8px rgb(var(--color-rgb-blue) / 40%),
+    1px 1px 3px rgb(var(--color-rgb-blue) / 40%),
+    -1px -1px 3px rgb(var(--color-rgb-white) / 25%);
+  --box-shadow-hover: -1px -1px 4px rgb(var(--color-rgb-white) / 25%),
+    1px 1px 4px rgb(var(--color-rgb-blue) / 40%),
+    4px 4px 8px rgb(var(--color-rgb-blue) / 40%),
+    -4px -4px 8px rgb(var(--color-rgb-white) / 80%);
+  --box-shadow-pressed: -1px -1px 3px rgb(var(--color-rgb-white) / 25%),
+    1px 1px 3px rgb(var(--color-rgb-blue) / 40%);
+  --box-shadow-focus: inset 2px 2px 3px rgb(var(--color-rgb-blue) / 20%),
+    inset -2px -2px 3px rgb(var(--color-rgb-white) / 70%);
   --border-error: 1px solid var(--color-secondary-orange);
   --border-radius-base: 4px;
 

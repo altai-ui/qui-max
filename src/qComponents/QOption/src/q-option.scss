@@ -7,7 +7,7 @@
   --option-color-base: var(--color-primary-blue);
   --option-color-hover: var(--color-primary-black);
   --option-color-selected: var(--color-primary-black);
-  --option-color-disabled: rgba(var(--color-rgb-gray), 0.64);
+  --option-color-disabled: rgb(var(--color-rgb-gray) / 64%);
 
   position: relative;
   display: flex;
@@ -18,8 +18,8 @@
   user-select: none;
   background-color: var(--option-background-color-base);
   outline: none;
-  box-shadow: -1px -1px 3px rgba(var(--color-rgb-white), 0.25),
-    1px 1px 3px rgba(var(--color-rgb-blue), 0.4);
+  box-shadow: -1px -1px 3px rgb(var(--color-rgb-white) / 25%),
+    1px 1px 3px rgb(var(--color-rgb-blue) / 40%);
 
   &:focus {
     outline: none;

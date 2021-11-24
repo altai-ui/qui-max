@@ -28,7 +28,7 @@
     }
 
     .q-notification-toast_type_info & {
-      color: rgba(var(--color-rgb-gray), 32);
+      color: rgb(var(--color-rgb-gray) / 32%);
     }
 
     .q-notification-toast_type_error & {

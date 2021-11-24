@@ -65,10 +65,10 @@ Result:
 Code example:
 
 ```vue
-<q-button type="icon" icon="q-icon-bell"></q-button>
-<q-button type="icon" icon="q-icon-check"></q-button>
-<q-button type="icon" icon="q-icon-comment"></q-button>
-<q-button type="icon" icon="q-icon-question-mark"></q-button>
+<q-button type="icon" icon="q-icon-bell" />
+<q-button type="icon" icon="q-icon-check" />
+<q-button type="icon" icon="q-icon-comment" />
+<q-button type="icon" icon="q-icon-question-mark" />
 ```
 
 Result:

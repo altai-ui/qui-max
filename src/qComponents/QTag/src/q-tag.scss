@@ -10,7 +10,7 @@
   margin-right: 4px;
   margin-bottom: 2px;
   line-height: 20px;
-  color: rgba(var(--color-rgb-gray), 0.64);
+  color: rgb(var(--color-rgb-gray) / 64%);
   background-color: var(--color-tertiary-gray-darker);
   border-radius: 2px;
 
@@ -19,6 +19,7 @@
   }
 
   &__text {
+    // stylelint-disable-next-line value-no-vendor-prefix
     display: -webkit-box;
     overflow: hidden;
     word-break: break-all;
@@ -33,7 +34,7 @@
     margin-left: 4px;
     font-size: 16px;
     line-height: 1;
-    color: rgba(var(--color-rgb-gray), 0.64);
+    color: rgb(var(--color-rgb-gray) / 64%);
     text-align: center;
     pointer-events: auto;
     cursor: pointer;

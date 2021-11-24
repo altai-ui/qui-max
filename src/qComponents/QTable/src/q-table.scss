@@ -1,18 +1,18 @@
-@import './QTableEmpty/q-table-empty.scss';
-@import './QTableContainer/q-table-container.scss';
-@import './QTableT/q-table-t.scss';
-@import './QTableTHead/q-table-t-head.scss';
-@import './QTableTHead/QTableTHeadCell/q-table-t-head-cell.scss';
-@import './QTableTTotal/q-table-t-total.scss';
-@import './QTableTTotal/QTableTTotalCell/q-table-t-total-cell.scss';
-@import './QTableTBody/q-table-t-body.scss';
-@import './QTableTBody/QTableTBodyCell/q-table-t-body-cell.scss';
-@import './QTableTBody/QTableTBodyRow/q-table-t-body-row.scss';
+@import './QTableEmpty/q-table-empty';
+@import './QTableContainer/q-table-container';
+@import './QTableT/q-table-t';
+@import './QTableTHead/q-table-t-head';
+@import './QTableTHead/QTableTHeadCell/q-table-t-head-cell';
+@import './QTableTTotal/q-table-t-total';
+@import './QTableTTotal/QTableTTotalCell/q-table-t-total-cell';
+@import './QTableTBody/q-table-t-body';
+@import './QTableTBody/QTableTBodyCell/q-table-t-body-cell';
+@import './QTableTBody/QTableTBodyRow/q-table-t-body-row';
 
 .q-table {
   --table-box-shadow-base: var(--box-shadow-pressed);
-  --table-box-shadow-inverted: 1px -1px 3px rgba(var(--color-rgb-white), 0.25),
-    -1px 1px 3px rgba(var(--color-rgb-blue), 0.4);
+  --table-box-shadow-inverted: 1px -1px 3px rgb(var(--color-rgb-white) / 25%),
+    -1px 1px 3px rgb(var(--color-rgb-blue) / 40%);
 
   text-align: left;
 }

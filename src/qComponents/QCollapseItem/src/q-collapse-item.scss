@@ -13,8 +13,8 @@
     border: none;
     border-radius: var(--border-radius-base);
     outline: none;
-    box-shadow: -1px -1px 3px rgba(var(--color-rgb-white), 0.25),
-      1px 1px 3px rgba(var(--color-rgb-blue), 0.4);
+    box-shadow: -1px -1px 3px rgb(var(--color-rgb-white) / 25%),
+      1px 1px 3px rgb(var(--color-rgb-blue) / 40%);
     transition: background-color 0.1s;
 
     .q-collapse-item_active & {
@@ -38,7 +38,7 @@
     font-size: 16px;
     font-weight: 600;
     line-height: 20px;
-    color: rgba(var(--color-rgb-gray), 0.64);
+    color: rgb(var(--color-rgb-gray) / 64%);
 
     .q-collapse-item_active > .q-collapse-item__header:not(:hover) &,
     .q-collapse-item_active > .q-collapse-item__header:not(:focus) & {
@@ -57,8 +57,8 @@
     margin-top: 1px;
     background-color: var(--color-tertiary-gray-light);
     border-radius: 0 0 var(--border-radius-base) var(--border-radius-base);
-    box-shadow: -1px -1px 3px rgba(var(--color-rgb-white), 0.25),
-      1px 1px 3px rgba(var(--color-rgb-blue), 0.4);
+    box-shadow: -1px -1px 3px rgb(var(--color-rgb-white) / 25%),
+      1px 1px 3px rgb(var(--color-rgb-blue) / 40%);
   }
 
   &__content {

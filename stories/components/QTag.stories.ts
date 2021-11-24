@@ -16,7 +16,6 @@ const QTagStory: Story<QTagProps> = args =>
       const tags = ref<string[]>(['Tag 1', 'Tag 2', 'Tag 3', 'Tag 4', 'Tag 5']);
 
       const handleCloseClick = (clickedTag: string): void => {
-        // eslint-disable-next-line no-console
         console.log('Close tag clicked');
         tags.value = tags.value.filter(tag => tag !== clickedTag);
       };

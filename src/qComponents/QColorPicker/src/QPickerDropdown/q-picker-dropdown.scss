@@ -3,8 +3,8 @@
   background-color: var(--color-tertiary-gray-ultra-light);
   border-radius: var(--border-radius-base);
   outline: none;
-  box-shadow: -1px -1px 3px rgba(var(--color-rgb-white), 0.25),
-    1px 1px 3px rgba(var(--color-rgb-blue), 0.4);
+  box-shadow: -1px -1px 3px rgb(var(--color-rgb-white) / 25%),
+    1px 1px 3px rgb(var(--color-rgb-blue) / 40%);
 
   &__base {
     display: flex;

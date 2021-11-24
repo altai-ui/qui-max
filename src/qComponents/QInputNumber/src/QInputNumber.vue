@@ -491,8 +491,8 @@ export default defineComponent({
         key => event.key === key && (event.metaKey || event.ctrlKey)
       );
       const lettersReg = new RegExp(`^[^-\\d\\${decimalSeparator.value}]$`);
-      const numbersReg = new RegExp(/^\d$/);
-      const lastBeforeMinus = new RegExp(/-\d$/);
+      const numbersReg = /^\d$/;
+      const lastBeforeMinus = /-\d$/;
 
       const isNumberOrLetter =
         lettersReg.test(event.key.trim()) || numbersReg.test(event.key.trim());

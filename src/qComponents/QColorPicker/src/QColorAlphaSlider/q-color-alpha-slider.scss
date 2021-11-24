@@ -29,7 +29,7 @@
   background-position: 8px 16px, -8px 8px, 16px 8px, -16px 0;
   background-size: 16px 16px;
   border-radius: var(--border-radius-base);
-  box-shadow: inset 2px 2px 4px rgba(var(--color-rgb-gray), 0.32);
+  box-shadow: inset 2px 2px 4px rgb(var(--color-rgb-gray) / 32%);
 
   &__bar {
     width: 100%;
@@ -46,7 +46,7 @@
     margin: 2px;
     background-color: var(--color-tertiary-white);
     border-radius: 2px;
-    box-shadow: -1px -1px 3px rgba(var(--color-rgb-white), 0.25),
-      1px 1px 3px rgba(var(--color-rgb-blue), 0.4);
+    box-shadow: -1px -1px 3px rgb(var(--color-rgb-white) / 25%),
+      1px 1px 3px rgb(var(--color-rgb-blue) / 40%);
   }
 }

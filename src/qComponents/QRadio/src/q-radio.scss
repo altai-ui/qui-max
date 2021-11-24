@@ -1,23 +1,23 @@
 .q-radio {
   --radio-color-base: var(--color-primary-black);
-  --radio-color-disabled: rgba(var(--color-rgb-gray), 0.64);
+  --radio-color-disabled: rgb(var(--color-rgb-gray) / 64%);
   --radio-background-color-base: var(--color-tertiary-gray-ultra-light);
   --radio-background-color-hover: var(--color-tertiary-gray);
   --radio-background-color-focus: var(--color-tertiary-gray-ultra-light);
   --radio-background-color-checked: var(--color-tertiary-gray-ultra-light);
   --radio-background-color-disabled: var(--color-tertiary-gray);
   --radio-dot-color-base: var(--color-primary-blue);
-  --radio-dot-color-disabled: rgba(var(--color-rgb-gray), 0.64);
-  --radio-box-shadow-base: -1px -1px 3px rgba(var(--color-rgb-white), 0.25),
-    1px 1px 3px rgba(var(--color-rgb-blue), 0.4),
-    inset -1px -1px 1px rgba(var(--color-rgb-white), 0.7),
-    inset 1px 1px 2px rgba(var(--color-rgb-blue), 0.2);
-  --radio-box-shadow-focus: -1px -1px 3px rgba(var(--color-rgb-white), 0.25),
-    1px 1px 3px rgba(var(--color-rgb-blue), 0.4),
-    4px 4px 10px rgba(var(--color-rgb-blue), 0.4),
-    -4px -4px 10px rgba(var(--color-rgb-white), 0.25),
-    inset -1px -1px 1px rgba(var(--color-rgb-white), 0.7),
-    inset 1px 1px 2px rgba(var(--color-rgb-blue), 0.2);
+  --radio-dot-color-disabled: rgb(var(--color-rgb-gray) / 64%);
+  --radio-box-shadow-base: -1px -1px 3px rgb(var(--color-rgb-white) / 25%),
+    1px 1px 3px rgb(var(--color-rgb-blue) / 40%),
+    inset -1px -1px 1px rgb(var(--color-rgb-white) / 70%),
+    inset 1px 1px 2px rgb(var(--color-rgb-blue) / 20%);
+  --radio-box-shadow-focus: -1px -1px 3px rgb(var(--color-rgb-white) / 25%),
+    1px 1px 3px rgb(var(--color-rgb-blue) / 40%),
+    4px 4px 10px rgb(var(--color-rgb-blue) / 40%),
+    -4px -4px 10px rgb(var(--color-rgb-white) / 25%),
+    inset -1px -1px 1px rgb(var(--color-rgb-white) / 70%),
+    inset 1px 1px 2px rgb(var(--color-rgb-blue) / 20%);
 
   position: relative;
   display: inline-flex;

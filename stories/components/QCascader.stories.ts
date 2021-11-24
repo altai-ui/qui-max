@@ -18,12 +18,10 @@ const Template: Story<QCascaderProps> = args =>
       const modelValue = ref(null);
 
       const handleDropdownExpand = (): void => {
-        // eslint-disable-next-line no-console
         console.log('dropdown-expand');
       };
 
       const handleDropdownClose = (): void => {
-        // eslint-disable-next-line no-console
         console.log('dropdown-close');
       };
 

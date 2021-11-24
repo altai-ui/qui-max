@@ -1,37 +1,37 @@
-$--base-path: '..' !default;
+$-base-path: '..' !default;
 
 @font-face {
-  font-family: 'Gilroy';
+  font-family: Gilroy;
   font-style: normal;
   font-weight: 800;
   src: local('Gilroy ExtraBold'), local('Gilroy-ExtraBold'),
-    url('#{$--base-path}/fonts/Gilroy-ExtraBold.woff?29042020') format('woff');
+    url('#{$-base-path}/fonts/Gilroy-ExtraBold.woff?29042020') format('woff');
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Gilroy';
+  font-family: Gilroy;
   font-style: normal;
   font-weight: 600;
   src: local('Gilroy Bold'), local('Gilroy-Bold'),
-    url('#{$--base-path}/fonts/Gilroy-Bold.woff?29042020') format('woff');
+    url('#{$-base-path}/fonts/Gilroy-Bold.woff?29042020') format('woff');
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Gilroy';
+  font-family: Gilroy;
   font-style: normal;
   font-weight: 500;
   src: local('Gilroy Medium'), local('Gilroy-Medium'),
-    url('#{$--base-path}/fonts/Gilroy-Medium.woff?29042020') format('woff');
+    url('#{$-base-path}/fonts/Gilroy-Medium.woff?29042020') format('woff');
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Gilroy';
+  font-family: Gilroy;
   font-style: normal;
   font-weight: 400;
   src: local('Gilroy Regular'), local('Gilroy-Regular'),
-    url('#{$--base-path}/fonts/Gilroy-Regular.woff?29042020') format('woff');
+    url('#{$-base-path}/fonts/Gilroy-Regular.woff?29042020') format('woff');
   font-display: swap;
 }

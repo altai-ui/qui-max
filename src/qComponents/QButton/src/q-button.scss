@@ -18,9 +18,9 @@
   border: none;
   border-radius: var(--border-radius-base);
   outline: none;
-  box-shadow: -1px -1px 3px rgba(var(--color-rgb-white), 0.25),
-    1px 1px 3px rgba(var(--color-rgb-blue), 0.4),
-    4px 4px 8px rgba(var(--color-rgb-blue), 0.4),
+  box-shadow: -1px -1px 3px rgb(var(--color-rgb-white) / 25%),
+    1px 1px 3px rgb(var(--color-rgb-blue) / 40%),
+    4px 4px 8px rgb(var(--color-rgb-blue) / 40%),
     -4px -4px 12px var(--color-tertiary-white);
   transition: background-color 0.1s;
   appearance: none;
@@ -40,10 +40,10 @@
   &:hover {
     background-color: var(--color-primary);
     background-image: none;
-    box-shadow: -1px -1px 4px rgba(var(--color-rgb-white), 0.25),
-      1px 1px 4px rgba(var(--color-rgb-blue), 0.4),
-      4px 4px 8px rgba(var(--color-rgb-blue), 0.4),
-      -4px -4px 8px rgba(var(--color-rgb-white), 0.8);
+    box-shadow: -1px -1px 4px rgb(var(--color-rgb-white) / 25%),
+      1px 1px 4px rgb(var(--color-rgb-blue) / 40%),
+      4px 4px 8px rgb(var(--color-rgb-blue) / 40%),
+      -4px -4px 8px rgb(var(--color-rgb-white) / 80%);
   }
 
   &:active {
@@ -152,10 +152,10 @@
   }
 
   &_disabled {
-    --color: rgba(var(--color-rgb-gray), 0.64);
+    --color: rgb(var(--color-rgb-gray) / 64%);
     --background-color: var(--color-tertiary-gray);
-    --box-shadow: 1px 1px 3px rgba(var(--color-rgb-blue), 0.4),
-      -1px -1px 3px rgba(var(--color-rgb-white), 0.25);
+    --box-shadow: 1px 1px 3px rgb(var(--color-rgb-blue) / 40%),
+      -1px -1px 3px rgb(var(--color-rgb-white) / 25%);
 
     color: var(--color);
     cursor: not-allowed;

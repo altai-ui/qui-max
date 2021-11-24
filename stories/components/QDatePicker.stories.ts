@@ -64,14 +64,12 @@ const Template: Story<QDatePickerProps> = args =>
       });
 
       const handleChange = (val: QDatePickerPropModelValue): void => {
-        // eslint-disable-next-line no-console
         console.log('handleChange', val);
       };
 
       const handleIntermediateChange = (
         val: QDatePickerPropModelValue
       ): void => {
-        // eslint-disable-next-line no-console
         console.log('handleIntermediateChange', val);
       };
 

@@ -25,6 +25,7 @@ export interface Column {
   };
   formatter?: (
     // TODO: TS generic?
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     value: any,
     row: Record<string, unknown>,
     column: Column

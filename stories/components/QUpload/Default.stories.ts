@@ -60,7 +60,6 @@ const QUploadStory: Story<QUploadProps> = args =>
       };
 
       const handleAbort = (): void => {
-        // eslint-disable-next-line no-console
         console.log('abort uploading');
       };
 

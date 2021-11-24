@@ -47,19 +47,15 @@ const QTextareaStory: Story<StoryArgs> = args =>
       const model = ref<string>('');
 
       const handleFocus = (event: Event): void => {
-        // eslint-disable-next-line no-console
         console.log('handleFocus', event);
       };
       const handleBlur = (event: Event): void => {
-        // eslint-disable-next-line no-console
         console.log('handleBlur', event);
       };
       const handleInput = (event: Event): void => {
-        // eslint-disable-next-line no-console
         console.log('handleInput', event);
       };
       const handleChange = (event: Event): void => {
-        // eslint-disable-next-line no-console
         console.log('handleChange', event);
       };
 

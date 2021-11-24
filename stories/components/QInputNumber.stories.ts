@@ -24,7 +24,6 @@ const QInputNumberStory: Story<QInputNumberProps> = args =>
       const numberValue = ref<string>('1234');
 
       const handleEmit = (value: number, type: string): void => {
-        // eslint-disable-next-line no-console
         console.log(value, type);
       };
 

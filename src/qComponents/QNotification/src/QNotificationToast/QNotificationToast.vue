@@ -113,8 +113,8 @@ export default defineComponent({
         case 'error':
           return 'q-icon-attention-mark';
 
-        default:
         case 'info':
+        default:
           return 'q-icon-info';
       }
     });

@@ -34,17 +34,17 @@
     min-height: 40px;
     overflow: hidden;
     cursor: pointer;
-    background: #fff;
-    border: 1px solid rgba(0, 0, 0, 0.1);
+    background-color: var(--color-tertiary-white);
+    border: 1px solid rgb(0 0 0 / 10%);
     border-radius: 4px;
-    box-shadow: rgba(0, 0, 0, 0.1) 0 1px 3px 0;
+    box-shadow: rgb(0 0 0 / 10%) 0 1px 3px 0;
 
     &:hover {
-      box-shadow: rgba(0, 0, 0, 0.1) 0 1px 5px 0;
+      box-shadow: rgb(0 0 0 / 10%) 0 1px 5px 0;
     }
 
     &:active {
-      box-shadow: rgba(0, 0, 0, 0.1) 0 1px 1px 0;
+      box-shadow: rgb(0 0 0 / 10%) 0 1px 1px 0;
     }
   }
 
@@ -67,6 +67,7 @@
       opacity: 0;
       transform: translate(-10%, 0);
     }
+
     to {
       opacity: 1;
       transform: translate(-10%, -100%);

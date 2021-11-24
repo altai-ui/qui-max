@@ -40,5 +40,11 @@
     "vue/html-indent": "warn",
 
     "@typescript-eslint/explicit-function-return-type": "error"
-  }
+  },
+  "overrides": [
+    {
+      "files": ["./stories/**/*"],
+      "rules": { "no-console": 0 }
+    }
+  ]
 }

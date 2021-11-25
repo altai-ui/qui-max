@@ -20,7 +20,9 @@
     "prettier": "prettier --check --ignore-unknown '**/*'",
     "prettier:fix": "prettier --write --ignore-unknown '**/*'",
     "prepare": "husky install",
-    "release": "release-it"
+    "release": "release-it",
+    "docs:dev": "vuepress dev docs",
+    "docs:build": "vuepress build docs"
   },
   "dependencies": {
     "@popperjs/core": "^2.10.2",
@@ -46,8 +48,7 @@
     "@storybook/builder-webpack5": "^6.3.12",
     "@storybook/manager-webpack5": "^6.3.12",
     "@storybook/preset-scss": "^1.0.3",
-    "@storybook/storybook-deployer": "^2.8.10",
-    "@storybook/vue3": "^6.3.12",
+    "@storybook/vue3": "^6.3.10",
     "@types/lodash-es": "^4.17.5",
     "@types/node": "^16.11.9",
     "@types/sass": "^1.43.0",
@@ -75,6 +76,7 @@
     "rollup-plugin-sass": "^1.2.9",
     "rollup-plugin-typescript2": "^0.31.0",
     "rollup-plugin-vue": "^6.0.0",
+    "vuepress-vite": "^2.0.0-beta.27",
     "sass": "^1.43.4",
     "sass-loader": "^12.3.0",
     "style-loader": "^3.3.1",

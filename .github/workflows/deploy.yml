@@ -1,31 +1,56 @@
-name: github pages
+name: docs
 
 on:
+  # trigger deployment on every push to main branch
   push:
-    branches:
-      - main
+    branches: [main, docs]
+  # trigger deployment manually
+  workflow_dispatch:
 
 jobs:
-  deploy:
-    runs-on: ubuntu-18.04
+  docs:
+    runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v2
+        with:
+          # fetch all commits to get last updated time or other git log info
+          fetch-depth: 0
 
-      - name: Setup Node
+      - name: Setup Node.js
         uses: actions/setup-node@v1
         with:
           node-version: '16.x'
 
+      # cache node_modules
       - name: Cache dependencies
         uses: actions/cache@v2
+        id: yarn-cache
         with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          path: |
+            **/node_modules
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
-            ${{ runner.os }}-node-
+            ${{ runner.os }}-yarn-
 
-      - run: yarn --frozen-lockfile
-      - run: yarn build-storybook
-      - run: yarn deploy-storybook -- --ci
+      # install dependencies if the cache did not hit
+      - name: Install dependencies
+        if: steps.yarn-cache.outputs.cache-hit != 'true'
+        run: yarn --frozen-lockfile
+
+      # run build script
+      - name: Build VuePress site
+        run: yarn docs:build
+
+      # please check out the docs of the workflow for more details
+      # @see https://github.com/crazy-max/ghaction-github-pages
+      - name: Deploy to GitHub Pages
+        uses: crazy-max/ghaction-github-pages@v2
+        with:
+          # deploy to gh-pages branch
+          target_branch: gh-pages
+          # deploy the default output dir of VuePress
+          build_dir: docs/.vuepress/dist
         env:
-          GH_TOKEN: Qvant-lab:${{ secrets.GITHUB_TOKEN }}
+          # @see https://docs.github.com/en/actions/reference/authentication-in-a-workflow#about-the-github_token-secret
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

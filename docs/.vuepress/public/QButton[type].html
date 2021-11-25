@@ -1,0 +1,48 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- import CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/@qvant/qui/dist/qui.css" />
+  </head>
+
+  <body>
+    <div id="app">
+      <div class="block">
+        <q-button theme="secondary" type="icon">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            xml:space="preserve"
+            viewBox="0 0 94.926 94.926"
+          >
+            <path
+              d="M55.931 47.463 94.306 9.09c.826-.827.826-2.167 0-2.994L88.833.62C88.436.224 87.896 0 87.335 0c-.562 0-1.101.224-1.498.62L47.463 38.994 9.089.62c-.795-.795-2.202-.794-2.995 0L.622 6.096c-.827.827-.827 2.167 0 2.994l38.374 38.373L.622 85.836c-.827.827-.827 2.167 0 2.994l5.473 5.476c.397.396.936.62 1.498.62s1.1-.224 1.497-.62l38.374-38.374 38.374 38.374c.397.396.937.62 1.498.62s1.101-.224 1.498-.62l5.473-5.476c.826-.827.826-2.167 0-2.994L55.931 47.463z"
+              fill="currentColor"
+            />
+          </svg>
+        </q-button>
+      </div>
+    </div>
+  </body>
+  <!-- import Vue before Qui -->
+  <script src="https://unpkg.com/vue@next"></script>
+  <!-- import JavaScript -->
+  <script src="https://unpkg.com/@qvant/qui-max@latest"></script>
+  <script>
+    const app = Vue.createApp({});
+    const Qui = window['qui-max'].default;
+    app.use(Qui);
+    app.mount('#app');
+  </script>
+  <style>
+    .block {
+      width: 200px;
+      margin: 20px 0 0 20px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .q-button svg {
+      width: 50%;
+    }
+  </style>
+</html>

@@ -1,3 +1,4 @@
 .nvmrc
 /public
 /dist
+/stories/intro.stories.mdx

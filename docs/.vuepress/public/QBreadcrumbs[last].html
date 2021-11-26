@@ -1,27 +1,25 @@
 <html>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- import CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/@qvant/qui/dist/qui.css" />
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <!-- import CSS -->
-  <link rel="stylesheet" href="https://unpkg.com/@qvant/qui/dist/qui.css" />
-</head>
-
-<body>
-  <div id="app">
-    <div class="block">
-      <q-breadcrumbs :route="route" last="Custom String" />
+  <body>
+    <div id="app">
+      <div class="block">
+        <q-breadcrumbs :route="route" last="Custom String" />
+      </div>
     </div>
-  </div>
-</body>
-<!-- import Vue before Qui -->
-<script src="https://unpkg.com/vue@next"></script>
-<!-- import JavaScript -->
-<script src="https://unpkg.com/@qvant/qui-max@latest"></script>
-<script>
-  const app = Vue.createApp({
-    setup() {
-      const route = Vue.computed(() => {
-        return [
+  </body>
+  <!-- import Vue before Qui -->
+  <script src="https://unpkg.com/vue@next"></script>
+  <!-- import JavaScript -->
+  <script src="https://unpkg.com/@qvant/qui-max@latest"></script>
+  <script>
+    const app = Vue.createApp({
+      setup() {
+        const route = [
           {
             path: 'path-a',
             name: 'ROUTE_A',
@@ -44,23 +42,21 @@
             }
           },
         ];
-      });
 
-      return { route }
+        return { route }
+      }
+    });
+
+    const Qui = window['qui-max'].default;
+    app.use(Qui);
+    app.mount('#app');
+  </script>
+  <style>
+    .block {
+      margin: 20px;
+      width: 450px;
+      display: flex;
+      flex-direction: column;
     }
-  });
-
-  const Qui = window['qui-max'].default;
-  app.use(Qui);
-  app.mount('#app');
-</script>
-<style>
-  .block {
-    margin: 20px;
-    width: 450px;
-    display: flex;
-    flex-direction: column;
-  }
-</style>
-
+  </style>
 </html>

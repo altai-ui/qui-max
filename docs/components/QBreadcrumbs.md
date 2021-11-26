@@ -120,4 +120,3 @@ Changes last crumb with custom string
 ```
 
 <iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QBreadcrumbs[last].html"></iframe>
- 

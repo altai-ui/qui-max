@@ -21,7 +21,7 @@ Written on TypeScript with Composition API 🔥
 A component's library helping us build great products for our customers.
 This library for Vue 3.x
 
-[Storybook (live demo)](https://qvant-lab.github.io/qui-max/)
+[Storybook (live demo)](https://qui-max.netlify.app/?path=/story/intro--page)
 
 Qui for Vue 2.x is [here](https://github.com/Qvant-lab/qui)!
 

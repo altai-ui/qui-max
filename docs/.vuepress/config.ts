@@ -21,6 +21,10 @@ export default defineUserConfig<DefaultThemeOptions, ViteBundlerOptions>({
           {
             text: 'QButton',
             link: '/components/QButton'
+          },
+          {
+            text: 'QBreadcrumbs',
+            link: '/components/QBreadcrumbs'
           }
         ]
       },

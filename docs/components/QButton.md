@@ -13,10 +13,11 @@ All kind of types:
 ### theme
 
 - Type: `String`
+- Default: `'primary'`
 
 A `theme` prop defines how button appearence, can accept values:
 
-- `'primary'` - (default) button style, being used for primary actions
+- `'primary'` - button style, being used for primary actions
 - `'secondary'` - button style, being used for secondary actions
 - `'link'` - text button style
 
@@ -78,8 +79,9 @@ Result:
 ### size
 
 - Type: `'medium'` | `'small'`
+- Default: `'medium'`
 
-Changes button size. `medium` by default
+Changes button size.
 
 Code example:
 
@@ -94,6 +96,7 @@ Result:
 ### loading
 
 - Type: `Boolean`
+- Default: `false`
 
 Set loading animation inside button
 
@@ -110,6 +113,7 @@ Result:
 ### disabled
 
 - Type: `Boolean`
+- Default: `false`
 
 Sets disabled button state
 
@@ -126,6 +130,7 @@ Result:
 ### circle
 
 - Type `Boolean`
+- Default: `false`
 
 Changes button's shape to circle (use with icon)
 
@@ -142,18 +147,21 @@ Result:
 ### fullWidth
 
 - Type: `Boolean`
+- Default: `false`
 
 Sets button width to 100%
 
 ### autofocus
 
 - Type: `Boolean`
+- Default: `false`
 
 As native autofocus
 
 ### nativeType
 
 - Type: `'submit' | 'reset' | 'button'`
+- Default: `'button'`
 
 As native button type
 

@@ -69,7 +69,7 @@
     "eslint-plugin-vue": "^8.1.1",
     "husky": "^7.0.4",
     "lint-staged": "^12.1.2",
-    "prettier": "^2.4.1",
+    "prettier": "^2.5.0",
     "release-it": "^14.11.8",
     "rollup-plugin-copy": "^3.4.0",
     "rollup-plugin-peer-deps-external": "^2.2.4",

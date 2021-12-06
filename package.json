@@ -76,7 +76,6 @@
     "rollup-plugin-sass": "^1.2.9",
     "rollup-plugin-typescript2": "^0.31.0",
     "rollup-plugin-vue": "^6.0.0",
-    "vuepress-vite": "^2.0.0-beta.27",
     "sass": "^1.43.4",
     "sass-loader": "^12.3.0",
     "style-loader": "^3.3.1",
@@ -85,9 +84,12 @@
     "vite": "^2.6.14",
     "vite-plugin-dts": "^0.9.5",
     "vue": "^3.2.23",
-    "vue-loader": "^15.9.8"
+    "vue-loader": "^15.9.8",
+    "vuepress-vite": "^2.0.0-beta.27"
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "main": "./dist/qui-max.umd.js",
   "module": "./dist/qui-max.es.js",
   "style": "./dist/style.css",

@@ -5,10 +5,7 @@
   >
     <button
       v-if="areControlsEnabled"
-      class="
-        q-input-number__button q-input-number__button_decrease
-        q-icon-minus
-      "
+      class="q-input-number__button q-input-number__button_decrease q-icon-minus"
       type="button"
       :disabled="isDisabled || isDecreaseDisabled"
       :class="isDecreaseDisabled && 'q-input-number__button_is-disabled'"

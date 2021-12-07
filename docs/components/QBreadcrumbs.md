@@ -11,76 +11,79 @@ Default view:
 Using in template:
 
 ```vue
-  <q-breadcrumbs :route="route" />
+<q-breadcrumbs :route="route" />
 ```
+
 Using in component instance:
+
 <CodeGroup>
   <CodeGroupItem title="JS" active>
 
-  ```js
-  setup() {
-    const route = [
-      {
-        path: 'path-a',
-        name: 'ROUTE_A',
-        meta: {
-          breadcrumb: 'First route'
-        }
-      },
-      {
-        path: 'path-b',
-        name: 'ROUTE_b',
-        meta: {
-          breadcrumb: 'Second route'
-        }
-      },
-      {
-        path: 'path-c',
-        name: 'ROUTE_c',
-        meta: {
-          breadcrumb: 'Third route'
-        }
-      },
-    ];
+```js
+setup() {
+  const route = [
+    {
+      path: 'path-a',
+      name: 'ROUTE_A',
+      meta: {
+        breadcrumb: 'First route'
+      }
+    },
+    {
+      path: 'path-b',
+      name: 'ROUTE_b',
+      meta: {
+        breadcrumb: 'Second route'
+      }
+    },
+    {
+      path: 'path-c',
+      name: 'ROUTE_c',
+      meta: {
+        breadcrumb: 'Third route'
+      }
+    },
+  ];
 
-    return { route }
-  }
-  ```
+  return { route }
+}
+```
+
   </CodeGroupItem>
-  
+
   <CodeGroupItem title="TS">
-  
-  ```ts
-  import type { QBreadcrumbsPropRoute } from '@qvant/qui-max';
 
-  setup() {
-    const route: QBreadcrumbsPropRoute = [
-      {
-        path: 'path-a',
-        name: 'ROUTE_A',
-        meta: {
-          breadcrumb: 'First route'
-        }
-      },
-      {
-        path: 'path-b',
-        name: 'ROUTE_b',
-        meta: {
-          breadcrumb: 'Second route'
-        }
-      },
-      {
-        path: 'path-c',
-        name: 'ROUTE_c',
-        meta: {
-          breadcrumb: 'Third route'
-        }
-      },
-    ];
+```ts
+import type { QBreadcrumbsPropRoute } from '@qvant/qui-max';
 
-    return { route };
-  }
-  ```
+setup() {
+  const route: QBreadcrumbsPropRoute = [
+    {
+      path: 'path-a',
+      name: 'ROUTE_A',
+      meta: {
+        breadcrumb: 'First route'
+      }
+    },
+    {
+      path: 'path-b',
+      name: 'ROUTE_b',
+      meta: {
+        breadcrumb: 'Second route'
+      }
+    },
+    {
+      path: 'path-c',
+      name: 'ROUTE_c',
+      meta: {
+        breadcrumb: 'Third route'
+      }
+    },
+  ];
+
+  return { route };
+}
+```
 
   </CodeGroupItem>
 </CodeGroup>
@@ -97,10 +100,11 @@ import type { QBreadcrumbsPropRoute } from '@qvant/qui-max';
 ```
 
 `route` MUST be an `Array` of `Object`s, each object MUST contain required fields:
-  - `path` - uses as route path
-  - `name` - route name
-  - `meta` - MUST contain:
-    - `breadcrumb` - visible title
+
+- `path` - uses as route path
+- `name` - route name
+- `meta` - MUST contain:
+  - `breadcrumb` - visible title
 
 ### linkComponent
 
@@ -116,7 +120,7 @@ The name of the component for enabling user navigation in a router-enabled app, 
 Changes last crumb with custom string
 
 ```vue
-  <q-breadcrumbs :route="route" last="Custom string" />
+<q-breadcrumbs :route="route" last="Custom string" />
 ```
 
 <iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QBreadcrumbs[last].html"></iframe>

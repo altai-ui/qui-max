@@ -25,6 +25,10 @@ export default defineUserConfig<DefaultThemeOptions, ViteBundlerOptions>({
           {
             text: 'QBreadcrumbs',
             link: '/components/QBreadcrumbs'
+          },
+          {
+            text: 'QCascader',
+            link: '/components/QCascader'
           }
         ]
       },
@@ -37,6 +41,25 @@ export default defineUserConfig<DefaultThemeOptions, ViteBundlerOptions>({
         text: 'Github',
         link: 'https://github.com/Qvant-lab/qui-max'
       }
-    ]
+    ],
+    sidebar: {
+      '/components/': [
+        {
+          text: 'Components',
+          children: [
+            '/components/README.md',
+            '/components/QButton.md',
+            '/components/QBreadcrumbs.md',
+            '/components/QCascader.md'
+          ]
+        }
+      ],
+      '/guide/': [
+        {
+          text: 'Guide',
+          children: ['/guide/README.md', '/guide/getting-started.md']
+        }
+      ]
+    }
   }
 });

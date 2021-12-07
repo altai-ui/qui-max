@@ -74,8 +74,8 @@ export const createDialog = (
 
       // Reprovide a global provides from main app instance and provides from parentInstance
       const provides = {
-        ...(parentInstance?.provides ?? {}),
-        ...(parentAppContext?.provides ?? {})
+        ...(parentAppContext?.provides ?? {}),
+        ...(parentInstance?.provides ?? {})
       };
 
       const providerKeys = [

@@ -91,9 +91,9 @@ export default defineComponent({
       const slotName = props.column.slots?.row ?? 'row';
       const currentSlot = qTable?.slots[slotName];
 
-      const value =
-        props.column.formatter?.(props.value, props.row, props.column) ??
-        props.value;
+      const value = props.column.formatter
+        ? props.column.formatter(props.value, props.row, props.column)
+        : props.value;
 
       if (!currentSlot) return String(value ?? '');
 

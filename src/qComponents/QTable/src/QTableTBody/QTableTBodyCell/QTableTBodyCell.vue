@@ -41,6 +41,7 @@ export default defineComponent({
       type: [
         String,
         Number,
+        Boolean,
         Array,
         Object
       ] as PropType<QTableTBodyCellPropValue>,

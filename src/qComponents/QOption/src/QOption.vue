@@ -14,7 +14,7 @@
   >
     <q-checkbox
       v-if="multiple"
-      v-model="isSelected"
+      :model-value="isSelected"
       root-tag="div"
       input-tab-index="-1"
       :disabled="isDisabled"

@@ -53,11 +53,7 @@ export type QTablePropTotal = Nullable<Record<string, unknown>>;
 export type QTablePropRows = Row[];
 export type QTablePropCheckedRows = Nullable<number[]>;
 export type QTablePropSortBy = Nullable<SortBy>;
-export type QTablePropCustomRowClass = Nullable<
-  (arg0: {
-    row: Row;
-    rowIndex: number;
-  }) => Nullable<string | string[] | Classes | Classes[]>
+export type QTablePropCustomRowClass = Nullable<(arg0: {row: Row; rowIndex: number;}) => Nullable<string | string[] | Classes | Classes[]>
 >;
 export type QTablePropCustomRowStyle = Nullable<
   (arg0: {

@@ -1,0 +1,28 @@
+.q-slider-captions {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  width: 100%;
+  min-height: 20px;
+  margin-top: 8px;
+
+  &__item {
+    //position: absolute;
+    //top: 0;
+    padding: 0;
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-base);
+    line-height: var(--line-height-base);
+    color: rgba(var(--color-rgb-gray), 0.32);
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    outline: 1px solid red;
+
+    &:focus,
+    &_selected {
+      color: var(--color-primary-black);
+    }
+  }
+}

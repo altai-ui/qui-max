@@ -48,7 +48,7 @@
     "@storybook/builder-webpack5": "^6.4.8",
     "@storybook/manager-webpack5": "^6.4.8",
     "@storybook/preset-scss": "^1.0.3",
-    "@storybook/vue3": "^6.4.8",
+    "@storybook/vue3": "^6.4.9",
     "@types/lodash-es": "^4.17.5",
     "@types/node": "^16.11.11",
     "@types/sass": "^1.43.1",

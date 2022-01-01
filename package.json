@@ -54,7 +54,7 @@
     "@types/sass": "^1.43.1",
     "@typescript-eslint/eslint-plugin": "^5.5.0",
     "@typescript-eslint/parser": "^5.5.0",
-    "@vitejs/plugin-vue": "^1.10.1",
+    "@vitejs/plugin-vue": "^1.10.2",
     "@vue/compiler-sfc": "^3.2.24",
     "@vue/eslint-config-typescript": "^9.1.0",
     "@vuedx/typescript-plugin-vue": "^0.7.4",

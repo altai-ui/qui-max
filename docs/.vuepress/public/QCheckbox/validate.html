@@ -1,0 +1,55 @@
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <!-- import CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/@qvant/qui/dist/qui.css" />
+</head>
+
+<body>
+<div id="app">
+  <q-form :model="model" :rules="rules">
+    <q-form-item prop="checkbox">
+      <q-checkbox
+        v-model="model.checkbox"
+        label="Required checkbox"
+        validate-event
+      />
+    </q-form-item>
+  </q-form>
+</div>
+</body>
+<!-- import Vue before Qui -->
+<script src="https://unpkg.com/vue@next"></script>
+<!-- import Qui-Max -->
+<script src="https://unpkg.com/@qvant/qui-max@latest"></script>
+<script>
+    const { createApp, reactive } = Vue;
+    const App = {
+        data() {
+            const rules = {
+                checkbox: {
+                    required: true,
+                    type: "enum",
+                    enum: [true],
+                    message: 'Please select checkbox',
+                    trigger: 'change'
+                }
+            };
+
+            const model = reactive({ checkbox: true });
+
+            return { model, rules }
+        },
+        methods: {}
+    };
+    const app = createApp(App);
+    const Qui = window.QuiMax.default;
+    app.use(Qui);
+    app.mount('#app');
+</script>
+<style>
+     .q-form {
+        padding: 25px;
+    }
+</style>
+</html>

@@ -25,6 +25,10 @@ export default defineUserConfig<DefaultThemeOptions, ViteBundlerOptions>({
           {
             text: 'QBreadcrumbs',
             link: '/components/QBreadcrumbs'
+          },
+          {
+            text: 'QCheckbox',
+            link: '/components/QCheckbox'
           }
         ]
       },

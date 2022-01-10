@@ -1,0 +1,39 @@
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <!-- import CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/@qvant/qui/dist/qui.css" />
+</head>
+
+<body>
+<div id="app">
+    <q-checkbox
+      label="Disabled"
+      disabled
+    />
+</div>
+</body>
+<!-- import Vue before Qui -->
+<script src="https://unpkg.com/vue@next"></script>
+<!-- import JavaScript -->
+<script src="https://unpkg.com/@qvant/qui-max@latest"></script>
+<script>
+    const App = {
+        data: () => ({}),
+        methods: {
+        }
+    };
+    const app = Vue.createApp(App);
+    const Qui = window.QuiMax.default;
+    app.use(Qui);
+    app.mount('#app');
+</script>
+<style>
+    #app {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 25px;
+    }
+</style>
+</html>

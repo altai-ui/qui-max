@@ -83,7 +83,7 @@
     "typescript": "^4.5.2",
     "vite": "^2.6.14",
     "vite-plugin-dts": "^0.9.6",
-    "vue": "^3.2.23",
+    "vue": "^3.2.26",
     "vue-loader": "^15.9.8",
     "vuepress-vite": "^2.0.0-beta.27"
   },

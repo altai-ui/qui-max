@@ -101,3 +101,55 @@ Code Example
 
 Result
 <iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QCheckbox/validate.html"></iframe>
+
+## Events
+
+### update:modelValue
+
+Triggers when model updates
+
+### change 
+
+Alias for [update:modelValue](#update-modelvalue)
+
+In template:
+```vue
+  <q-checkbox
+    v-model="model"
+    @change="changeHandler" 
+  />
+```
+
+In setup:
+
+:::: code-group
+::: code-group-item JS
+
+```js
+setup() {
+    const model = ref(false);
+    
+    const changeHandler = (value) => {
+        // do something with new value
+    }
+    
+    return { model, changeHandler }
+}
+```
+:::
+
+::: code-group-item TS 
+
+```ts
+setup() {
+    const model = ref<boolean>(false);
+    
+    const changeHandler = (value: boolean): void => {
+        // do something with new value
+    }
+    
+    return { model, changeHandler }
+}
+```
+:::
+::::

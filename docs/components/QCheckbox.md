@@ -14,7 +14,7 @@ Types:
 
 - type `string`
 
-Defines the text of the checkbox
+Defines the text of the checkbox. You could use default [slot](#slots) instead of the `label` prop as well.
 
 ```vue
 <q-checkbox label="Label" />
@@ -153,3 +153,15 @@ setup() {
 ```
 :::
 ::::
+
+## Slots
+
+### Default
+
+Defines the text of the checkbox label, like [label](#label) prop does it. Just put the label text between QCheckbox tags.
+
+```vue
+<q-checkbox>Label</q-checkbox>
+```
+
+<iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QCheckbox/label.html"></iframe>

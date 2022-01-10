@@ -139,7 +139,7 @@ export default defineComponent({
       cursorDown.value = true;
 
       document.addEventListener('mousemove', mouseMoveDocumentHandler, false);
-      document.addEventListener('mouseup', mouseMoveDocumentHandler, false);
+      document.addEventListener('mouseup', mouseUpDocumentHandler, false);
       document.onselectstart = (): boolean => false;
     };
 

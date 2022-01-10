@@ -23,29 +23,29 @@
 <!-- import Qui-Max -->
 <script src="https://unpkg.com/@qvant/qui-max@latest"></script>
 <script>
-    const { createApp, reactive } = Vue;
-    const App = {
-        data() {
-            const rules = {
-                checkbox: {
-                    required: true,
-                    type: "enum",
-                    enum: [true],
-                    message: 'Please select checkbox',
-                    trigger: 'change'
-                }
-            };
+  const { createApp, reactive } = Vue;
+  const App = {
+      data() {
+          const rules = {
+              checkbox: {
+                  required: true,
+                  type: "enum",
+                  enum: [true],
+                  message: 'Please select checkbox',
+                  trigger: 'change'
+              }
+          };
 
-            const model = reactive({ checkbox: true });
+          const model = reactive({ checkbox: true });
 
-            return { model, rules }
-        },
-        methods: {}
-    };
-    const app = createApp(App);
-    const Qui = window.QuiMax.default;
-    app.use(Qui);
-    app.mount('#app');
+          return { model, rules }
+      }
+  };
+
+  const app = createApp(App);
+  const Qui = window.QuiMax.default;
+  app.use(Qui);
+  app.mount('#app');
 </script>
 <style>
      .q-form {

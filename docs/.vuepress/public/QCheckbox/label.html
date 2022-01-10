@@ -15,21 +15,20 @@
 <!-- import JavaScript -->
 <script src="https://unpkg.com/@qvant/qui-max@latest"></script>
 <script>
-    const App = {
-        data() {
-            const { ref } = Vue;
+  const App = {
+      data() {
+          const { ref } = Vue;
 
-            const model = ref(true);
+          const model = ref(true);
 
-            return { model }
-        },
-        methods: {
-        }
-    };
-    const app = Vue.createApp(App);
-    const Qui = window.QuiMax.default;
-    app.use(Qui);
-    app.mount('#app');
+          return { model }
+      }
+  };
+
+  const app = Vue.createApp(App);
+  const Qui = window.QuiMax.default;
+  app.use(Qui);
+  app.mount('#app');
 </script>
 <style>
     #app {

@@ -18,15 +18,14 @@
 <!-- import JavaScript -->
 <script src="https://unpkg.com/@qvant/qui-max@latest"></script>
 <script>
-    const App = {
-        data: () => ({}),
-        methods: {
-        }
-    };
-    const app = Vue.createApp(App);
-    const Qui = window.QuiMax.default;
-    app.use(Qui);
-    app.mount('#app');
+  const App = {
+      data: () => ({}),
+  };
+
+  const app = Vue.createApp(App);
+  const Qui = window.QuiMax.default;
+  app.use(Qui);
+  app.mount('#app');
 </script>
 <style>
     #app {

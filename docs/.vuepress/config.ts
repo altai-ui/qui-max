@@ -18,18 +18,10 @@ export default defineUserConfig<DefaultThemeOptions, ViteBundlerOptions>({
         text: 'Components',
         link: '/components/',
         children: [
-          {
-            text: 'QButton',
-            link: '/components/QButton'
-          },
-          {
-            text: 'QBreadcrumbs',
-            link: '/components/QBreadcrumbs'
-          },
-          {
-            text: 'QCheckbox',
-            link: '/components/QCheckbox'
-          }
+          '/components/QButton.md',
+          '/components/QBreadcrumbs.md',
+          '/components/QCheckbox.md',
+          '/components/QCheckboxGroup.md'
         ]
       },
       // NavbarGroup

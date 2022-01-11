@@ -165,3 +165,7 @@ Defines the text of the checkbox label, like [label](#label) prop does it. Just 
 ```
 
 <iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QCheckbox/label.html"></iframe>
+
+## QCheckboxGroup
+
+You also could wrap a several QCheckboxes in a group using [QCheckboxGroup](/qui-max/components/QCheckboxGroup).

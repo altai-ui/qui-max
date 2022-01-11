@@ -14,7 +14,7 @@
     "build-storybook": "build-storybook",
     "deploy-storybook": "storybook-to-ghpages --source-branch main",
     "lint:js": "eslint '**/*.{vue,ts}'",
-    "lint:js:fix": "eslint --fix '**/*.{vue,ts}'",
+    "lint:js:fix": "eslint --fix '**/*.{vue,ts,html}'",
     "lint:style": "stylelint '**/*.{css,scss,vue}'",
     "lint:style:fix": "stylelint --fix '**/*.{css,scss,vue}'",
     "prettier": "prettier --check --ignore-unknown '**/*'",

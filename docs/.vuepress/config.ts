@@ -19,6 +19,10 @@ export default defineUserConfig<DefaultThemeOptions, ViteBundlerOptions>({
         link: '/components/',
         children: [
           {
+            text: 'Layout',
+            link: '/components/Layout'
+          },
+          {
             text: 'QButton',
             link: '/components/QButton'
           },

@@ -4,7 +4,7 @@ Allows to choose one or more options. Try a sandbox [story](https://qui-max.netl
 
 ## Examples
 
-Types: 
+Types:
 
 <iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QCheckbox/QCheckbox.html"></iframe>
 
@@ -43,10 +43,9 @@ Defines the checkbox indeterminacy
 <q-checkbox indeterminate />
 ```
 
-Result: 
+Result:
 
 <iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QCheckbox/indeterminate.html"></iframe>
-
 
 ### disabled
 
@@ -54,7 +53,6 @@ Result:
 - default `false`
 
 Sets disabled checkbox state
-
 
 ```vue
 <q-checkbox disabled />
@@ -75,7 +73,7 @@ Sets what the tag will be in root of the checkbox
 <q-checkbox root-tag="div" />
 ```
 
-### validateEvent 
+### validateEvent
 
 - type `boolean`
 - default `false`
@@ -85,10 +83,7 @@ If checkbox wrapped in `QFormItem`, prop `validateEvent` defines will checkbox e
 Code Example
 
 ```vue
-<q-form 
-    :model="model" 
-    :rules="rules"
->
+<q-form :model="model" :rules="rules">
   <q-form-item prop="checkbox">
     <q-checkbox
         v-model="model.checkbox"
@@ -100,6 +95,7 @@ Code Example
 ```
 
 Result
+
 <iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QCheckbox/validate.html"></iframe>
 
 ## Events
@@ -108,16 +104,14 @@ Result
 
 Triggers when model updates
 
-### change 
+### change
 
 Alias for [update:modelValue](#update-modelvalue)
 
 In template:
+
 ```vue
-  <q-checkbox
-    v-model="model"
-    @change="changeHandler" 
-  />
+<q-checkbox v-model="model" @change="changeHandler" />
 ```
 
 In setup:
@@ -128,29 +122,31 @@ In setup:
 ```js
 setup() {
     const model = ref(false);
-    
+
     const changeHandler = (value) => {
         // do something with new value
     }
-    
+
     return { model, changeHandler }
 }
 ```
+
 :::
 
-::: code-group-item TS 
+::: code-group-item TS
 
 ```ts
 setup() {
     const model = ref<boolean>(false);
-    
+
     const changeHandler = (value: boolean): void => {
         // do something with new value
     }
-    
+
     return { model, changeHandler }
 }
 ```
+
 :::
 ::::
 

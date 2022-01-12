@@ -7,23 +7,11 @@
 
   <body>
     <div id="app">
-      <h2 class="heading">Direction:</h2>
-      <q-tabs class="buttons" v-model="direction">
-        <q-tab-pane
-          name="vertical"
-          title="Vertical"
-          @change="handleDirectionChange('vertical')"
-        ></q-tab-pane>
-        <q-tab-pane
-          name="horizontal"
-          title="Horizontal"
-          @change="handleDirectionChange('horizontal')"
-        ></q-tab-pane>
-      </q-tabs>
+      <q-button class="button" @click="handleDirectionChange"
+        >switch to {{ buttonLabel }}</q-button
+      >
       <q-checkbox-group v-model="checkedCities" :direction="direction">
-        <q-checkbox v-for="city in cities" :key="city" :label="city"
-          >{{ city }}
-        </q-checkbox>
+        <q-checkbox v-for="city in cities" :key="city" :label="city" />
       </q-checkbox-group>
     </div>
   </body>
@@ -44,11 +32,21 @@
 
         const direction = Vue.ref('vertical');
 
-        const handleDirectionChange = dir => {
-          direction.value = dir;
+        const buttonLabel = Vue.computed(() =>
+          direction.value === 'vertical' ? 'horizontal' : 'vertical'
+        );
+
+        const handleDirectionChange = () => {
+          direction.value = buttonLabel.value;
         };
 
-        return { checkedCities, cities, direction, handleDirectionChange };
+        return {
+          checkedCities,
+          cities,
+          direction,
+          buttonLabel,
+          handleDirectionChange
+        };
       }
     };
 
@@ -61,14 +59,12 @@
     #app {
       display: flex;
       flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-start;
       padding: 25px;
     }
 
-    .heading {
-      margin-top: 0;
-    }
-
-    .buttons {
+    .button {
       margin-bottom: 25px;
     }
   </style>

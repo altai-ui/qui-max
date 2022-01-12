@@ -91,13 +91,12 @@ Used to define how many minimum checkboxes should be selected
 
 ```vue
 <q-checkbox-group v-model="checkedCities" :min="2">
-    <q-checkbox
-        v-for="city in cities"
-        :key="city"
-        :label="city"
-    >{{ city }}
-    </q-checkbox>
-  </q-checkbox-group>
+  <q-checkbox
+    v-for="city in cities"
+    :key="city"
+    :label="city"
+  /> 
+</q-checkbox-group>
 ```
 
 <iframe height="200" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QCheckboxGroup/min.html"></iframe>
@@ -110,13 +109,12 @@ Used to define how many maximum checkboxes can be selected
 
 ```vue
 <q-checkbox-group v-model="checkedCities" :max="3">
-    <q-checkbox
-        v-for="city in cities"
-        :key="city"
-        :label="city"
-    >{{ city }}
-    </q-checkbox>
-  </q-checkbox-group>
+  <q-checkbox
+    v-for="city in cities"
+    :key="city"
+    :label="city"
+  />
+</q-checkbox-group>
 ```
 
 <iframe height="200" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QCheckboxGroup/max.html"></iframe>
@@ -130,13 +128,12 @@ Allows to disable all inner QCheckboxes
 
 ```vue
 <q-checkbox-group v-model="checkedCities" disabled>
-    <q-checkbox
-        v-for="city in cities"
-        :key="city"
-        :label="city"
-    >{{ city }}
-    </q-checkbox>
-  </q-checkbox-group>
+  <q-checkbox
+    v-for="city in cities"
+    :key="city"
+    :label="city" 
+  />
+</q-checkbox-group>
 ```
 
 <iframe height="200" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QCheckboxGroup/disabled.html"></iframe>
@@ -150,13 +147,12 @@ Defines the direction of list: `vertical` or `horizontal`
 
 ```vue
 <q-checkbox-group v-model="checkedCities" direction="vertical">
-    <q-checkbox
-        v-for="city in cities"
-        :key="city"
-        :label="city"
-    >{{ city }}
-    </q-checkbox>
-  </q-checkbox-group>
+  <q-checkbox
+    v-for="city in cities"
+    :key="city"
+    :label="city"
+  />
+</q-checkbox-group>
 ```
 
 <iframe height="300" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QCheckboxGroup/direction.html"></iframe>
@@ -173,7 +169,7 @@ Alias for [update:modelValue](#update-modelvalue)
 
 In template:
 
-```vue {1}
+```vue {1, 8}
 <q-checkbox-group v-model="checkedCities" @change="changeHandler">
 <q-checkbox
     v-for="city in cities"
@@ -201,7 +197,7 @@ setup() {
 
     const changeHandler = (value) => {
         // do something with new value
-    }
+    };
 
     return { checkedCities, cities, changeHandler };
 }
@@ -223,7 +219,7 @@ setup() {
 
     const changeHandler = (value: string[]): void => {
         // do something with new value
-    }
+    };
 
     return { checkedCities, cities, changeHandler };
 }

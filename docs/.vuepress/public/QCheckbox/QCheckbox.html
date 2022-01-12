@@ -17,10 +17,10 @@
         <q-checkbox :model-value="false" label="Indeterminate" indeterminate />
       </div>
       <div class="block">
-        <q-checkbox :model-value="true" label="Default Disabled" disabled />
+        <q-checkbox :model-value="false" label="Default Disabled" disabled />
       </div>
       <div class="block">
-        <q-checkbox :model-value="false" label="Selected Disabled" disabled />
+        <q-checkbox :model-value="true" label="Selected Disabled" disabled />
       </div>
       <div class="block">
         <q-checkbox
@@ -37,9 +37,7 @@
   <!-- import JavaScript -->
   <script src="https://unpkg.com/@qvant/qui-max@latest"></script>
   <script>
-    const App = {};
-
-    const app = Vue.createApp(App);
+    const app = Vue.createApp({});
     const Qui = window.QuiMax.default;
     app.use(Qui);
     app.mount('#app');
@@ -47,9 +45,9 @@
   <style>
     #app {
       display: grid;
-      align-items: center;
       grid-template-columns: repeat(3, 1fr);
       gap: 20px;
+      align-items: center;
       padding: 25px;
     }
   </style>

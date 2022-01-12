@@ -8,16 +8,26 @@
   <body>
     <div id="app">
       <div class="block">
-        <q-checkbox v-model="model" label="Default" />
+        <q-checkbox :model-value="false" label="Default" />
       </div>
       <div class="block">
-        <q-checkbox :model-value="true" label="Disabled" disabled />
+        <q-checkbox :model-value="true" label="Selected" />
+      </div>
+      <div class="block">
+        <q-checkbox :model-value="false" label="Indeterminate" indeterminate />
+      </div>
+      <div class="block">
+        <q-checkbox :model-value="true" label="Default Disabled" disabled />
+      </div>
+      <div class="block">
+        <q-checkbox :model-value="false" label="Selected Disabled" disabled />
       </div>
       <div class="block">
         <q-checkbox
-          v-model="indeterminateModel"
-          label="Indeterminate"
-          :indeterminate="!indeterminateModel"
+          :model-value="false"
+          label="Indeterminate Disabled"
+          disabled
+          indeterminate
         />
       </div>
     </div>
@@ -27,17 +37,7 @@
   <!-- import JavaScript -->
   <script src="https://unpkg.com/@qvant/qui-max@latest"></script>
   <script>
-    const App = {
-      data() {
-        const { ref } = Vue;
-
-        const model = ref(true);
-
-        const indeterminateModel = ref(false);
-
-        return { model, indeterminateModel };
-      }
-    };
+    const App = {};
 
     const app = Vue.createApp(App);
     const Qui = window.QuiMax.default;
@@ -46,9 +46,10 @@
   </script>
   <style>
     #app {
-      display: flex;
+      display: grid;
       align-items: center;
-      justify-content: space-between;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
       padding: 25px;
     }
   </style>

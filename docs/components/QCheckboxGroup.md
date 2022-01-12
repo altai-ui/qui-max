@@ -78,9 +78,16 @@ Result:
 
 ### tag
 
-Defines the root tag. Default `div`
+- Type: `string`
+- Default: `div`
+
+Defines the root tag.
 
 ### min
+
+- Type: `number`
+
+Used to define how many minimum checkboxes should be selected
 
 ```vue
 <q-checkbox-group v-model="checkedCities" :min="2">
@@ -97,6 +104,10 @@ Defines the root tag. Default `div`
 
 ### max
 
+- Type: `number`
+
+Used to define how many maximum checkboxes can be selected
+
 ```vue
 <q-checkbox-group v-model="checkedCities" :max="3">
     <q-checkbox
@@ -111,6 +122,9 @@ Defines the root tag. Default `div`
 <iframe height="200" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QCheckboxGroup/max.html"></iframe>
 
 ### disabled
+
+- Type: `boolean`
+- Default: `false`
 
 Allows to disable all inner QCheckboxes
 
@@ -129,6 +143,9 @@ Allows to disable all inner QCheckboxes
 
 ### direction
 
+- Type: `'vertical' | 'horizontal'`
+- Default: `vertical`
+
 Defines the direction of list: `vertical` or `horizontal`
 
 ```vue
@@ -143,3 +160,74 @@ Defines the direction of list: `vertical` or `horizontal`
 ```
 
 <iframe height="300" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QCheckboxGroup/direction.html"></iframe>
+
+## Events
+
+### update:modelValue
+
+Triggers when model updates
+
+### change
+
+Alias for [update:modelValue](#update-modelvalue)
+
+In template:
+
+```vue {1}
+<q-checkbox-group v-model="checkedCities" @change="changeHandler">
+<q-checkbox
+    v-for="city in cities"
+    :key="city"
+    :label="city"
+>{{ city }}
+</q-checkbox>
+</q-checkbox-group>
+```
+
+In setup:
+
+:::: code-group
+::: code-group-item JS
+
+```js {10-12}
+setup() {
+    const checkedCities = ref(['Shanghai', 'Beijing']);
+    const cities = ref([
+        'Shanghai',
+        'Beijing',
+        'Guangzhou',
+        'Shenzhen'
+    ]);
+
+    const changeHandler = (value) => {
+        // do something with new value
+    }
+
+    return { checkedCities, cities, changeHandler };
+}
+```
+
+:::
+
+::: code-group-item TS
+
+```ts {10-12}
+setup() {
+    const checkedCities = ref<string[]>(['Shanghai', 'Beijing']);
+    const cities = ref<string[]>([
+        'Shanghai',
+        'Beijing',
+        'Guangzhou',
+        'Shenzhen'
+    ]);
+
+    const changeHandler = (value: string[]): void => {
+        // do something with new value
+    }
+
+    return { checkedCities, cities, changeHandler };
+}
+```
+
+:::
+::::

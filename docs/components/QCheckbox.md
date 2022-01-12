@@ -6,7 +6,7 @@ Allows to choose one or more options. Try a sandbox [story](https://qui-max.netl
 
 Types:
 
-<iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QCheckbox/QCheckbox.html"></iframe>
+<iframe height="150" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QCheckbox/QCheckbox.html"></iframe>
 
 ## Props
 
@@ -82,7 +82,7 @@ If checkbox wrapped in `QFormItem`, prop `validateEvent` defines will checkbox e
 
 Code Example
 
-```vue
+```vue {6}
 <q-form :model="model" :rules="rules">
   <q-form-item prop="checkbox">
     <q-checkbox

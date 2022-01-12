@@ -10,9 +10,7 @@ Used to wrap multiple [QCheckbox](/qui-max/components/QCheckbox)
 ```vue
 <template>
   <q-checkbox-group v-model="checkedCities">
-    <q-checkbox v-for="city in cities" :key="city" :label="city"
-      >{{ city }}
-    </q-checkbox>
+    <q-checkbox v-for="city in cities" :key="city" :label="city" />
   </q-checkbox-group>
 </template>
 
@@ -39,9 +37,7 @@ defineComponent({
 ```vue
 <template>
   <q-checkbox-group v-model="checkedCities">
-    <q-checkbox v-for="city in cities" :key="city" :label="city"
-      >{{ city }}
-    </q-checkbox>
+    <q-checkbox v-for="city in cities" :key="city" :label="city" />
   </q-checkbox-group>
 </template>
 
@@ -171,12 +167,7 @@ In template:
 
 ```vue {1, 8}
 <q-checkbox-group v-model="checkedCities" @change="changeHandler">
-<q-checkbox
-    v-for="city in cities"
-    :key="city"
-    :label="city"
->{{ city }}
-</q-checkbox>
+  <q-checkbox v-for="city in cities" :key="city" :label="city" />
 </q-checkbox-group>
 ```
 
@@ -187,19 +178,19 @@ In setup:
 
 ```js {10-12}
 setup() {
-    const checkedCities = ref(['Shanghai', 'Beijing']);
-    const cities = ref([
-        'Shanghai',
-        'Beijing',
-        'Guangzhou',
-        'Shenzhen'
+  const checkedCities = ref(['Shanghai', 'Beijing']);
+  const cities = ref([
+      'Shanghai',
+      'Beijing',
+      'Guangzhou',
+      'Shenzhen'
     ]);
 
-    const changeHandler = (value) => {
-        // do something with new value
-    };
+  const changeHandler = (value) => {
+      // do something with new value
+  };
 
-    return { checkedCities, cities, changeHandler };
+  return { checkedCities, cities, changeHandler };
 }
 ```
 
@@ -209,19 +200,19 @@ setup() {
 
 ```ts {10-12}
 setup() {
-    const checkedCities = ref<string[]>(['Shanghai', 'Beijing']);
-    const cities = ref<string[]>([
-        'Shanghai',
-        'Beijing',
-        'Guangzhou',
-        'Shenzhen'
-    ]);
+  const checkedCities = ref<string[]>(['Shanghai', 'Beijing']);
+  const cities = ref<string[]>([
+      'Shanghai',
+      'Beijing',
+      'Guangzhou',
+      'Shenzhen'
+  ]);
 
-    const changeHandler = (value: string[]): void => {
-        // do something with new value
-    };
+  const changeHandler = (value: string[]): void => {
+      // do something with new value
+  };
 
-    return { checkedCities, cities, changeHandler };
+  return { checkedCities, cities, changeHandler };
 }
 ```
 

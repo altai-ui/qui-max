@@ -8,9 +8,7 @@
   <body>
     <div id="app">
       <q-checkbox-group v-model="checkedCities" :min="2">
-        <q-checkbox v-for="city in cities" :key="city" :label="city"
-          >{{ city }}
-        </q-checkbox>
+        <q-checkbox v-for="city in cities" :key="city" :label="city" />
       </q-checkbox-group>
     </div>
   </body>

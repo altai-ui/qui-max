@@ -13,6 +13,7 @@ Types:
 ### label
 
 - type `string`
+- default `null`
 
 Defines the text of the checkbox. You could use default [slot](#slots) instead of the `label` prop as well.
 
@@ -25,6 +26,7 @@ Defines the text of the checkbox. You could use default [slot](#slots) instead o
 ### modelValue
 
 - type `boolean`
+- default `null`
 
 ```vue
 <q-checkbox v-model="model" />
@@ -67,7 +69,7 @@ Result:
 - type `string`
 - default `label`
 
-Sets what the tag will be in root of the checkbox
+Sets custom root tag
 
 ```vue
 <q-checkbox root-tag="div" />
@@ -78,7 +80,7 @@ Sets what the tag will be in root of the checkbox
 - type `boolean`
 - default `false`
 
-If checkbox wrapped in `QFormItem`, prop `validateEvent` defines will checkbox event be validated
+If checkbox wrapped in `QFormItem`, prop `validateEvent` defines if checkbox `change` event will be validated immediately
 
 Code Example
 
@@ -102,7 +104,7 @@ Result
 
 ### update:modelValue
 
-Triggers when model updates
+Triggers when the model is being updated
 
 ### change
 
@@ -154,7 +156,7 @@ setup() {
 
 ### Default
 
-Defines the text of the checkbox label, like [label](#label) prop does it. Just put the label text between QCheckbox tags.
+Defines the text of the checkbox label, like [label](#label) prop does. Just put the label text between QCheckbox tags.
 
 ```vue
 <q-checkbox>Label</q-checkbox>

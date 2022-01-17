@@ -1,6 +1,6 @@
 # QCheckboxGroup
 
-Used to wrap multiple [QCheckbox](/qui-max/components/QCheckbox)
+Is being used to wrap multiple [QCheckbox](/qui-max/components/QCheckbox)
 
 ## Examples
 
@@ -82,8 +82,9 @@ Defines the root tag.
 ### min
 
 - Type: `number`
+- default `0`
 
-Used to define how many minimum checkboxes should be selected
+Sets the minimum number of checkboxes, that can be selected
 
 ```vue
 <q-checkbox-group v-model="checkedCities" :min="2">
@@ -100,8 +101,9 @@ Used to define how many minimum checkboxes should be selected
 ### max
 
 - Type: `number`
+- default `Infinity`
 
-Used to define how many maximum checkboxes can be selected
+Sets the maximum number of checkboxes, that can be selected
 
 ```vue
 <q-checkbox-group v-model="checkedCities" :max="3">
@@ -157,7 +159,7 @@ Defines the direction of list: `vertical` or `horizontal`
 
 ### update:modelValue
 
-Triggers when model updates
+Triggers when the model is being updated
 
 ### change
 

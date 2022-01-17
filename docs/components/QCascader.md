@@ -1,85 +1,139 @@
 # QCascader
 
-Displays the location of the current page, shows all nested levels. Try a sandbox [story](https://qui-max.netlify.app/?path=/story/components-qbreadcrumbs--default)
+Cascade selection box. [Try story](https://qui-max.netlify.app/?path=/story/components-qcascader--default)
+
+## When to use
+
+- When you need to select from a set of associated data set. Such as province/city/district, company level, things classification.
+
+- When selecting from a large data set, with multi-stage classification separated for easy selection.
+
+- Chooses cascade items in one float layer for better user experience.
 
 ## Example
 
 Default view:
 
-<iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QBreadcrumbs.html"></iframe>
+<iframe height="250" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QCascader.html"></iframe>
 
 Using in template:
 
 ```vue
-  <q-breadcrumbs :route="route" />
+  <q-cascader
+    v-model="modelValue"
+    :options="options"
+  />
 ```
 Using in component instance:
 <CodeGroup>
   <CodeGroupItem title="JS" active>
 
   ```js
-  setup() {
-    const route = [
-      {
-        path: 'path-a',
-        name: 'ROUTE_A',
-        meta: {
-          breadcrumb: 'First route'
+    ...
+    setup() {
+      // options example
+      const options = [
+        {
+          value: 'guide',
+          label: 'Guide',
+          children: [
+            {
+              value: 'disciplines',
+              label: 'Disciplines',
+              children: [
+                {
+                  value: 'consistency',
+                  label: 'Consistency',
+                },
+              ]
+            },
+            {
+              value: 'alone',
+              label: 'Alone'
+            }
+          ]
+        },
+        {
+          value: 'disabled resource',
+          label: 'Disabled resource',
+          disabled: true,
+          children: [
+            {
+              value: 'some child',
+              label: 'Some child'
+            }
+          ]
+        },
+        {
+          value: 'resource',
+          label: 'Resource'
         }
-      },
-      {
-        path: 'path-b',
-        name: 'ROUTE_b',
-        meta: {
-          breadcrumb: 'Second route'
-        }
-      },
-      {
-        path: 'path-c',
-        name: 'ROUTE_c',
-        meta: {
-          breadcrumb: 'Third route'
-        }
-      },
-    ];
+      ];
 
-    return { route }
-  }
+      const modelValue = ref(null);
+
+      return {
+        options,
+        modelValue,
+      };
+    }
+  });
   ```
   </CodeGroupItem>
   
   <CodeGroupItem title="TS">
   
   ```ts
-  import type { QBreadcrumbsPropRoute } from '@qvant/qui-max';
+  import type { QCascaderPropOptions, QCascaderPropModelValue } from '@qvant/qui-max';
+    ...
+    setup() {
+      // options example
+      const options: QCascaderPropOptions = [
+        {
+          value: 'guide',
+          label: 'Guide',
+          children: [
+            {
+              value: 'disciplines',
+              label: 'Disciplines',
+              children: [
+                {
+                  value: 'consistency',
+                  label: 'Consistency',
+                },
+              ]
+            },
+            {
+              value: 'alone',
+              label: 'Alone'
+            }
+          ]
+        },
+        {
+          value: 'disabled resource',
+          label: 'Disabled resource',
+          disabled: true,
+          children: [
+            {
+              value: 'some child',
+              label: 'Some child'
+            }
+          ]
+        },
+        {
+          value: 'resource',
+          label: 'Resource'
+        }
+      ];
 
-  setup() {
-    const route: QBreadcrumbsPropRoute = [
-      {
-        path: 'path-a',
-        name: 'ROUTE_A',
-        meta: {
-          breadcrumb: 'First route'
-        }
-      },
-      {
-        path: 'path-b',
-        name: 'ROUTE_b',
-        meta: {
-          breadcrumb: 'Second route'
-        }
-      },
-      {
-        path: 'path-c',
-        name: 'ROUTE_c',
-        meta: {
-          breadcrumb: 'Third route'
-        }
-      },
-    ];
+      const modelValue: QCascaderPropModelValue = ref(null);
 
-    return { route };
-  }
+      return {
+        options,
+        modelValue,
+      };
+    }
+  });
   ```
 
   </CodeGroupItem>
@@ -87,36 +141,47 @@ Using in component instance:
 
 ## Props
 
-### route
+### options
 
-- Type: `Array`
+- Type: `Array`,
+- Default: `null`
+
+
+```ts
+// import type from lib
+import type { QCascaderPropOptions } from '@qvant/qui-max';
+```
+
+`options` MUST be an `Array` of `Object`s, each object MUST contain required fields:
+  - `value` - an option's value
+  - `label` - visible label
+  
+  Optional fields:
+  - `disabled` - disable an option
+  - `children` - child options
+```ts
+// option's type
+interface Option {
+  value: number | string;
+  label: string;
+  disabled?: boolean;
+  children?: Nullable<Option[]>;
+}
+```
+
+### modelValue
+
+- Type: `String, Number, Array`
 - Default: `null`
 
 ```ts
-import type { QBreadcrumbsPropRoute } from '@qvant/qui-max';
+// import type from lib
+import type { QCascaderPropModelValue } from '@qvant/qui-max';
+
+// TS type
+type QCascaderPropModelValue = Nullable<
+  number | string | (number | string)[]
+>;
+
 ```
 
-`route` MUST be an `Array` of `Object`s, each object MUST contain required fields:
-  - `path` - uses as route path
-  - `name` - route name
-  - `meta` - MUST contain:
-    - `breadcrumb` - visible title
-
-### linkComponent
-
-- Type: `String`
-- Default: `'RouterLink'`
-
-The name of the component for enabling user navigation in a router-enabled app, if you use [Vue Router](https://router.vuejs.org/), you don't need change this prop, `RouterLink` by default. With Nuxt change on `NuxtLink`
-
-### last
-
-- Type: `String`
-
-Changes last crumb with custom string
-
-```vue
-  <q-breadcrumbs :route="route" last="Custom string" />
-```
-
-<iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QBreadcrumbs[last].html"></iframe>

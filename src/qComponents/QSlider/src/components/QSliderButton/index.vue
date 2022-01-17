@@ -1,58 +1,94 @@
 <template>
   <button
     type="button"
-    :tabindex="tabIndex"
     class="q-slider-button"
-    :class="btnClasses"
+    :style="btnStyles"
+    @mousedown="handleBtnDown"
   >
     <div class="q-slider-button__target" />
-    <div
-      class="q-slider-button__tooltip"
-    >
-      50
-    </div>
   </button>
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, computed } from 'vue';
+import { defineComponent, reactive, computed, onBeforeUnmount } from 'vue';
 
-import type { State, BtnClasses } from './types';
+import type {
+  QSliderButtonProps,
+  QSliderButtonState,
+  BtnStyles,
+  QSliderButtonInstance
+} from './types';
 
 export default defineComponent({
   name: 'QSliderButton',
 
   props: {
-    modelValue: {
-      type: Number,
-      default: 0
+    position: {
+      type: String,
+      default: null
     },
 
-    position: {
+    pathLeft: {
       type: Number,
       default: null
     },
 
-    tabIndex: {
+    pathWidth: {
       type: Number,
-      default: 0
+      default: null
     }
   },
 
-  emits: ['update:modelValue'],
+  emits: ['update:position'],
 
-  setup() {
-    const state = reactive<State>({
-      isDragging: false,
+  setup(props: QSliderButtonProps, ctx): QSliderButtonInstance {
+    const state = reactive<QSliderButtonState>({
+      isDragging: false
     });
 
-    const btnClasses = computed<BtnClasses>(() => ({
-      'q-slider-button_show-tooltip': state.isDragging
+    const btnStyles = computed<BtnStyles>(() => ({
+      left: props.position
     }));
 
+    const handleDragging = ({ clientX }: MouseEvent): void => {
+      if (!state.isDragging) return;
+
+      let percent: number =
+        ((clientX - Number(props.pathLeft)) / Number(props.pathWidth)) * 100;
+
+      if (percent < 0) {
+        percent = 0;
+      } else if (percent > 100) {
+        percent = 100;
+      }
+
+      ctx.emit('update:position', percent);
+    };
+
+    const handleDragEnd = (): void => {
+      state.isDragging = false;
+    };
+
+    const handleBtnDown = (event: MouseEvent): void => {
+      event.preventDefault();
+
+      state.isDragging = true;
+
+      document.addEventListener('mousemove', handleDragging);
+      document.addEventListener('mouseup', handleDragEnd);
+      document.addEventListener('contextmenu', handleDragEnd);
+    };
+
+    onBeforeUnmount(() => {
+      document.removeEventListener('mousemove', handleDragging);
+      document.removeEventListener('mouseup', handleDragEnd);
+      document.removeEventListener('contextmenu', handleDragEnd);
+    });
+
     return {
-      btnClasses
-    }
+      btnStyles,
+      handleBtnDown
+    };
   }
 });
 </script>

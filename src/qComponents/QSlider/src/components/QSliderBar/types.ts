@@ -1,17 +1,12 @@
 import { ComputedRef } from 'vue';
 import type { Nullable } from '#/helpers';
 
-export interface QSliderBarInstance {
-  barStyle: ComputedRef<{
-    width?: string,
-    height?: string,
-    bottom?: string,
-    left?: string,
-  }>;
-}
+export type BarStyle = { width: Nullable<string> };
 
 export interface QSliderBarProps {
-  startValue: Nullable<number | Date>;
-  minValue: number;
-  maxValue: number;
+  size: Nullable<string>;
+}
+
+export interface QSliderBarInstance {
+  barStyle: ComputedRef<BarStyle>;
 }

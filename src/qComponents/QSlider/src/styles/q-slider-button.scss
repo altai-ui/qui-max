@@ -25,21 +25,6 @@
       -1px -1px 3px rgba(var(--color-rgb-white), 0.25);
   }
 
-  &__tooltip {
-    position: absolute;
-    bottom: calc(100% + 8px);
-    display: none;
-    min-width: 24px;
-    padding: 5px 4px;
-    font-weight: var(--font-weight-base);
-    color: var(--color-primary-black);
-    text-align: center;
-    white-space: nowrap;
-    background-color: var(--color-tertiary-gray-lighter);
-    border-radius: var(--border-radius-base);
-    box-shadow: var(--box-shadow-secondary);
-  }
-
   &:hover,
   &:focus,
   &_show-tooltip {
@@ -50,12 +35,6 @@
     .q-slider-button__target {
       background-color: var(--color-primary);
       box-shadow: none;
-    }
-
-    /* stylelint-disable-next-line */
-    .q-slider-button__tooltip {
-      z-index: 3;
-      display: block;
     }
   }
 }

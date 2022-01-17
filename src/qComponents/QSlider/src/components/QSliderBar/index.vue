@@ -6,35 +6,30 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, computed} from 'vue';
+import { defineComponent, computed } from 'vue';
 
-import type { QSliderBarInstance } from './types';
+import type { BarStyle, QSliderBarProps, QSliderBarInstance } from './types';
 
 export default defineComponent({
   name: 'QSliderBar',
 
   props: {
-    start: {
-      type: String,
-      default: null
-    },
     size: {
       type: String,
       default: null
     }
   },
 
-  setup(props): QSliderBarInstance {
-    const barStyle = computed(() => {
+  setup(props: QSliderBarProps): QSliderBarInstance {
+    const barStyle = computed<BarStyle>(() => {
       return {
-        left: props.start,
         width: props.size
       };
     });
 
     return {
       barStyle
-    }
+    };
   }
 });
 </script>

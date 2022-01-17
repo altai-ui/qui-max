@@ -8,20 +8,30 @@
   margin-top: 8px;
 
   &__item {
-    //position: absolute;
-    //top: 0;
     padding: 0;
     font-size: var(--font-size-base);
     font-weight: var(--font-weight-base);
     line-height: var(--line-height-base);
     color: rgba(var(--color-rgb-gray), 0.32);
+    text-align: center;
     cursor: pointer;
     background-color: transparent;
     border: none;
-    outline: 1px solid red;
+
+    &-inner {
+      display: inline-block;
+    }
+
+    &:first-child {
+      text-align: left;
+    }
+
+    &:last-child {
+      text-align: right;
+    }
 
     &:focus,
-    &_selected {
+    &_active {
       color: var(--color-primary-black);
     }
   }

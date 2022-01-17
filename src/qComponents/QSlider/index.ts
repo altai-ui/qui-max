@@ -8,4 +8,9 @@ QSlider.install = (app: App): void => {
   app.component(QSlider.name, QSlider);
 };
 
-export default QSlider as SFCWithInstall<App, typeof QSlider>
+export type {
+  QSliderProps,
+  QSliderPropModelValue,
+  QSliderDataRow
+} from './src/types';
+export default QSlider as SFCWithInstall<App, typeof QSlider>;

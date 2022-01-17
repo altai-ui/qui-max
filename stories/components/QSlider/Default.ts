@@ -4,7 +4,7 @@ import { defineComponent, ref } from 'vue';
 const QSliderStory: Story = args =>
   defineComponent({
     setup() {
-      const value = ref(50);
+      const value = ref<string>('easy');
 
       return {
         args,
@@ -16,43 +16,24 @@ const QSliderStory: Story = args =>
       <q-slider
         v-model="value"
         v-bind="args"
-      >
-        <template #caption="{ label, data }">
-          <h3 style="margin: 0;">{{ label }}</h3>
-          <div style="margin-top: 4px;">{{ data?.description }}</div>
-        </template>
-      </q-slider>
+      />
     `
   });
 
 QSliderStory.args = {
   data: [
     {
-      label: 'Валидные мак-адреса',
-      value: 'mac',
-      slotData: {
-        title: 'Валидные мак-адреса',
-        description: 'Данные пригодные для рекламы'
-      }
+      value: 'easy',
+      label: 'Легкий уровень'
     },
-
     {
-      label: 'Есть номер телефона',
-      value: 'phone',
-      slotData: {
-        title: 'Есть номер телефона',
-        description: 'Зарегистрирован в базе ГПМ Дата'
-      }
+      value: 'normal',
+      label: 'Средний уровень'
     },
-
     {
-      label: 'Есть разрешение на смс',
-      value: 'sms',
-      slotData: {
-        title: 'Есть разрешение на смс',
-        description: 'Подтвержденное согласие на рассылки'
-      }
-    },
+      value: 'hard',
+      label: 'Тяжелый уровень'
+    }
   ]
 };
 

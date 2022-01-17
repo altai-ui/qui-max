@@ -1,13 +1,13 @@
-import { ComputedRef } from "vue";
-import type { Nullable } from "#/helpers";
+import type { VNode } from 'vue';
 
-export interface CaptionItem {
-  value: number;
-  position: number;
-  label: string;
+import type {
+  QSliderPropModelValue,
+  QSliderDataRow
+} from '@/qComponents/QSlider/src/types';
+
+export interface QSliderCaptionsProps {
+  modelValue: QSliderPropModelValue;
+  data: QSliderDataRow[];
 }
 
-export interface GetBtnStylesInterface {
-  bottom?: string;
-  left?: string;
-}
+export type QSliderCaptionsInstance = () => VNode;

@@ -1,12 +1,21 @@
-import type { QSliderPropModelValue } from '@/qComponents/QSlider/src/types';
+import { ComputedRef } from 'vue';
+import { Nullable } from '#/helpers';
 
-export interface State {
+export interface QSliderButtonState {
   isDragging: boolean;
 }
 
-export type BtnClasses = Record<string, boolean>
+export interface BtnStyles {
+  left: Nullable<string>;
+}
 
-export interface BtnPositionStyles {
-  bottom?: string;
-  left?: string;
+export interface QSliderButtonProps {
+  position: Nullable<string>;
+  pathLeft: Nullable<number>;
+  pathWidth: Nullable<number>;
+}
+
+export interface QSliderButtonInstance {
+  btnStyles: ComputedRef<BtnStyles>;
+  handleBtnDown: (event: MouseEvent) => void;
 }

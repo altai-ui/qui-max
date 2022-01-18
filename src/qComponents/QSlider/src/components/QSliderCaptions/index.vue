@@ -41,13 +41,13 @@ export default defineComponent({
         : 'q-slider-captions__item';
     };
 
-    const preparedData = computed<QSliderDataRow[]>(() => {
+    const preparedData = computed<Record<string, unknown>[]>(() => {
       const currentSlot = qSlider?.slots.caption;
 
       if (currentSlot) {
         return props.data.map(item => ({
           value: item.value,
-          width: item.width,
+          style: item.style,
           slot: currentSlot({
             data: item.slotData ?? {},
             label: item.label,
@@ -58,29 +58,28 @@ export default defineComponent({
 
       return props.data.map(item => ({
         value: item.value,
-        label: item.label
+        label: item.label,
+        style: item.style
       }));
     });
 
     const captionSlotContent = computed<VNode[]>(() => {
-      return preparedData.value.map((item: QSliderDataRow) =>
+      return preparedData.value.map(item =>
         h(
           'div',
           {
-            className: getCaptionItemClasses(String(item.value)),
+            className: getCaptionItemClasses(item.value),
             style: {
               width: `${100 / props.data.length}%`
             },
-            onClick: () => handleCaptionClick(String(item.value))
+            onClick: () => handleCaptionClick(item.value)
           },
           [
             h(
               'div',
               {
                 className: 'q-slider-captions__item-inner',
-                style: {
-                  width: item.width
-                }
+                style: item.style
               },
               [item.slot]
             )
@@ -101,11 +100,11 @@ export default defineComponent({
         h(
           'div',
           {
-            className: getCaptionItemClasses(String(item.value)),
+            className: getCaptionItemClasses(item.value),
             style: {
               width: `${100 / props.data.length}%`
             },
-            onClick: () => handleCaptionClick(String(item.value))
+            onClick: () => handleCaptionClick(item.value)
           },
           [item.label]
         )

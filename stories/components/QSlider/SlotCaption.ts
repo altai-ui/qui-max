@@ -30,7 +30,9 @@ QSliderStory.args = {
     {
       value: 'mac',
       label: 'Валидные мак-адреса',
-      width: '100px',
+      style: {
+        width: '100px'
+      },
       slotData: {
         title: 'Валидные мак-адреса',
         description: 'Данные пригодные для рекламы'
@@ -40,7 +42,9 @@ QSliderStory.args = {
     {
       value: 'phone',
       label: 'Есть номер телефона',
-      width: '127px',
+      style: {
+        width: '127px'
+      },
       slotData: {
         title: 'Есть номер телефона',
         description: 'Зарегистрирован в базе ГПМ Дата'
@@ -50,7 +54,9 @@ QSliderStory.args = {
     {
       value: 'sms',
       label: 'Есть разрешение на смс',
-      width: '135px',
+      style: {
+        width: '135px'
+      },
       slotData: {
         title: 'Есть разрешение на смс',
         description: 'Подтвержденное согласие на рассылки'

@@ -6,18 +6,17 @@ export type QSliderPropModelValue = Nullable<string>;
 export type QSliderDataRow = Record<string, unknown>;
 
 export type RootClasses = Record<string, boolean>;
-export type RootStyles = { height?: Nullable<string> };
+
+export interface QSliderProps {
+  modelValue: QSliderPropModelValue;
+  data: QSliderDataRow[];
+  disabled: boolean;
+}
 
 export interface QSliderState {
   btnPosition: Nullable<string>;
   pathLeft: Nullable<number>;
   pathWidth: Nullable<number>;
-}
-
-export interface QSliderProps {
-  modelValue: QSliderPropModelValue;
-  disabled: boolean;
-  data: QSliderDataRow[];
 }
 
 export interface QSliderProvider {

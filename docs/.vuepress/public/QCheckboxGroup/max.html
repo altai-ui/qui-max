@@ -1,0 +1,48 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- import CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/@qvant/qui/dist/qui.css" />
+  </head>
+
+  <body>
+    <div id="app">
+      <q-checkbox-group v-model="checkedCities" :max="3">
+        <q-checkbox v-for="city in cities" :key="city" :label="city" />
+      </q-checkbox-group>
+    </div>
+  </body>
+  <!-- import Vue before Qui -->
+  <script src="https://unpkg.com/vue@next"></script>
+  <!-- import JavaScript -->
+  <script src="https://unpkg.com/@qvant/qui-max@latest"></script>
+  <script>
+    const App = {
+      data() {
+        const checkedCities = Vue.ref(['Shanghai', 'Guangzhou', 'Shenzhen']);
+
+        const cities = Vue.ref([
+          'Shanghai',
+          'Beijing',
+          'Guangzhou',
+          'Shenzhen'
+        ]);
+
+        return { checkedCities, cities };
+      }
+    };
+
+    const app = Vue.createApp(App);
+    const Qui = window.QuiMax.default;
+    app.use(Qui);
+    app.mount('#app');
+  </script>
+  <style>
+    #app {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 25px;
+    }
+  </style>
+</html>

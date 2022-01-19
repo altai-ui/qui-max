@@ -1,5 +1,6 @@
 import type { Story } from '@storybook/vue3';
 import { defineComponent, ref } from 'vue';
+import { t } from '@/qComponents/locale';
 
 const QSliderStory: Story = args =>
   defineComponent({
@@ -26,40 +27,38 @@ const QSliderStory: Story = args =>
   });
 
 QSliderStory.args = {
+  disabled: true,
   data: [
     {
       value: 'mac',
-      label: 'Валидные мак-адреса',
+      label: t('qSlider.easyLevel'),
       style: {
         width: '100px'
       },
       slotData: {
-        title: 'Валидные мак-адреса',
-        description: 'Данные пригодные для рекламы'
+        description: t('qSlider.captionDescription')
       }
     },
 
     {
       value: 'phone',
-      label: 'Есть номер телефона',
+      label: t('qSlider.mediumlevel'),
       style: {
         width: '127px'
       },
       slotData: {
-        title: 'Есть номер телефона',
-        description: 'Зарегистрирован в базе ГПМ Дата'
+        description: t('qSlider.captionDescription')
       }
     },
 
     {
       value: 'sms',
-      label: 'Есть разрешение на смс',
+      label: t('qSlider.hardLevel'),
       style: {
         width: '135px'
       },
       slotData: {
-        title: 'Есть разрешение на смс',
-        description: 'Подтвержденное согласие на рассылки'
+        description: t('qSlider.captionDescription')
       }
     }
   ]

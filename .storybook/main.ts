@@ -14,6 +14,7 @@ module.exports = {
   core: {
     builder: 'webpack5'
   },
+  // @ts-ignore
   webpackFinal: config => {
     config.resolve.alias['@'] = path.resolve(__dirname, '../src');
 

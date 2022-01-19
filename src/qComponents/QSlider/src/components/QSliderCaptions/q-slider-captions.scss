@@ -35,4 +35,12 @@
       color: var(--color-primary-black);
     }
   }
+
+  &_is-disabled {
+    cursor: not-allowed;
+
+    .q-slider-captions__item {
+      cursor: not-allowed;
+    }
+  }
 }

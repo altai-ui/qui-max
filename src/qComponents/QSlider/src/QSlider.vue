@@ -14,14 +14,15 @@
         v-model:position="state.btnPosition"
         :path-left="state.pathLeft"
         :path-width="state.pathWidth"
+        :disabled="disabled"
         @update:position="handleBtnPositionUpdate"
       />
 
-      <div class="q-slider-steps">
+      <div class="q-slider__steps">
         <div
           v-for="step in data.length"
           :key="step"
-          class="q-slider-steps__step"
+          class="q-slider__step"
         />
       </div>
     </div>
@@ -29,7 +30,8 @@
     <q-slider-captions
       :model-value="modelValue"
       :data="data"
-      @update:model-value="handleCaptionChange"
+      :disabled="disabled"
+      @update:modelValue="handleCaptionChange"
     />
   </div>
 </template>
@@ -37,7 +39,6 @@
 <script lang="ts">
 import {
   defineComponent,
-  PropType,
   reactive,
   ref,
   computed,
@@ -47,6 +48,7 @@ import {
   inject,
   watch
 } from 'vue';
+import type { PropType } from 'vue';
 
 import type { Nullable } from '#/helpers';
 
@@ -62,9 +64,9 @@ import type {
 
 import type { QFormProvider, QFormItemProvider } from '@/qComponents';
 
-import QSliderButton from '@/qComponents/QSlider/src/components/QSliderButton';
-import QSliderBar from '@/qComponents/QSlider/src/components/QSliderBar';
-import QSliderCaptions from '@/qComponents/QSlider/src/components/QSliderCaptions';
+import QSliderButton from './components/QSliderButton';
+import QSliderBar from './components/QSliderBar';
+import QSliderCaptions from './components/QSliderCaptions';
 
 export default defineComponent({
   name: 'QSlider',
@@ -80,22 +82,21 @@ export default defineComponent({
      * binding value
      */
     modelValue: {
-      type: String as PropType<QSliderPropModelValue>,
+      type: [String, Number, Boolean] as PropType<QSliderPropModelValue>,
       default: null
     },
 
     /**
      * array of objects with required fields, example:
-     * `{ value: 'test', label: 'text', width: '100px', slotData: {} }`
+     * `{ value: 'test', label: 'text', style: {}, slotData: {} }`
      */
     data: {
       type: Array as PropType<QSliderDataRow[]>,
-      required: true,
-      default: () => []
+      required: true
     },
 
     /**
-     * whether Radio is disabled
+     * whether Slider is disabled
      */
     disabled: {
       type: Boolean,
@@ -137,7 +138,7 @@ export default defineComponent({
     const handlePathClick = ({ clientX }: MouseEvent): void => {
       if (isDisabled.value || !path?.value) return;
 
-      const { width, left }: DOMRect = path?.value.getBoundingClientRect();
+      const { width, left }: DOMRect = path.value.getBoundingClientRect();
       const percent: number = ((clientX - left) / width) * 100;
 
       const index = Math.round((percent * (props.data.length - 1)) / 100);
@@ -171,7 +172,7 @@ export default defineComponent({
     const setupPathValues = (): void => {
       if (!path?.value) return;
 
-      const { width, left }: DOMRect = path?.value.getBoundingClientRect();
+      const { width, left }: DOMRect = path.value.getBoundingClientRect();
       state.pathLeft = left;
       state.pathWidth = width;
     };

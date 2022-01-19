@@ -1,6 +1,6 @@
 <template>
   <div
-    class="q-slider-bar"
+    class="q-slider__bar"
     :style="barStyle"
   />
 </template>
@@ -21,11 +21,9 @@ export default defineComponent({
   },
 
   setup(props: QSliderBarProps): QSliderBarInstance {
-    const barStyle = computed<BarStyle>(() => {
-      return {
-        width: props.size
-      };
-    });
+    const barStyle = computed<BarStyle>(() => ({
+      width: props.size
+    }));
 
     return {
       barStyle

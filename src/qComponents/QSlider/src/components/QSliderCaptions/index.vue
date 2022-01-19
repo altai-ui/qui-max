@@ -1,39 +1,53 @@
 <script lang="ts">
-import { defineComponent, PropType, computed, inject, h } from 'vue';
-import type { VNode } from 'vue';
+import { defineComponent, computed, inject, h } from 'vue';
+import type { PropType, VNode } from 'vue';
 
 import type {
   QSliderPropModelValue,
   QSliderDataRow,
   QSliderProvider
-} from '@/qComponents/QSlider/src/types';
+} from '../../types';
 
-import type { QSliderCaptionsProps, QSliderCaptionsInstance } from './types';
+import type {
+  QSliderCaptionsProps,
+  PreparedData,
+  QSliderCaptionsInstance
+} from './types';
 
 export default defineComponent({
   name: 'QSliderCaptions',
 
   props: {
     modelValue: {
-      type: String as PropType<QSliderPropModelValue>,
+      type: [String, Number, Boolean] as PropType<QSliderPropModelValue>,
       default: null
     },
 
     data: {
       type: Array as PropType<QSliderDataRow[]>,
-      required: true,
-      default: () => []
+      required: true
+    },
+
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
 
-  emits: ['update:model-value'],
+  emits: ['update:modelValue'],
 
   setup(props: QSliderCaptionsProps, ctx): QSliderCaptionsInstance {
     const qSlider = inject<QSliderProvider>('qSlider');
 
-    const handleCaptionClick = (value: string): void => {
-      ctx.emit('update:model-value', value);
-    };
+    const getCaptionClasses = computed<string>(() => {
+      const classes: string[] = ['q-slider-captions'];
+
+      if (props.disabled) {
+        classes.push('q-slider-captions_is-disabled');
+      }
+
+      return classes.join(' ');
+    });
 
     const getCaptionItemClasses = (value: QSliderPropModelValue): string => {
       return value === props.modelValue
@@ -41,78 +55,74 @@ export default defineComponent({
         : 'q-slider-captions__item';
     };
 
-    const preparedData = computed<Record<string, unknown>[]>(() => {
+    const handleCaptionClick = (value: QSliderPropModelValue): void => {
+      ctx.emit('update:modelValue', value);
+    };
+
+    const preparedData = computed<PreparedData[]>(() => {
       const currentSlot = qSlider?.slots.caption;
 
       if (currentSlot) {
-        return props.data.map(item => ({
-          value: item.value,
-          style: item.style,
+        return props.data.map(({ value, style, label, slotData }) => ({
+          value,
+          style,
           slot: currentSlot({
-            data: item.slotData ?? {},
-            label: item.label,
-            value: item.value
+            data: slotData ?? {},
+            label
           })
         }));
       }
 
-      return props.data.map(item => ({
-        value: item.value,
-        label: item.label,
-        style: item.style
+      return props.data.map(({ value, style, label }) => ({
+        value,
+        label,
+        style
       }));
     });
 
-    const captionSlotContent = computed<VNode[]>(() => {
-      return preparedData.value.map(item =>
-        h(
-          'div',
-          {
-            className: getCaptionItemClasses(item.value),
-            style: {
-              width: `${100 / props.data.length}%`
-            },
-            onClick: () => handleCaptionClick(item.value)
-          },
-          [
-            h(
-              'div',
-              {
-                className: 'q-slider-captions__item-inner',
-                style: item.style
+    const captionContent = computed<VNode[]>(() => {
+      if (qSlider?.slots.caption) {
+        return preparedData.value.map(({ value, style, slot }) =>
+          h(
+            'div',
+            {
+              className: getCaptionItemClasses(value),
+              style: {
+                width: `${100 / props.data.length}%`
               },
-              [item.slot]
-            )
-          ]
-        )
-      );
-    });
+              onClick: () => handleCaptionClick(value)
+            },
+            [
+              h(
+                'div',
+                {
+                  className: 'q-slider-captions__item-inner',
+                  style
+                },
+                [slot]
+              )
+            ]
+          )
+        );
+      }
 
-    if (qSlider?.slots.caption) {
-      return (): VNode =>
-        h('div', { className: 'q-slider-captions' }, [
-          captionSlotContent.value
-        ]);
-    }
-
-    const labelContent = computed<VNode[]>(() => {
-      return preparedData.value.map(item =>
+      return preparedData.value.map(({ value, label }) =>
         h(
           'div',
           {
-            className: getCaptionItemClasses(item.value),
+            className: getCaptionItemClasses(value),
             style: {
               width: `${100 / props.data.length}%`
             },
-            onClick: () => handleCaptionClick(item.value)
+            onClick: () => handleCaptionClick(value)
           },
-          [item.label]
+          [label]
         )
       );
     });
 
     return (): VNode =>
-      h('div', { className: 'q-slider-captions' }, [labelContent.value]);
+      h('div', { className: getCaptionClasses.value }, [captionContent.value]);
   }
 });
 </script>

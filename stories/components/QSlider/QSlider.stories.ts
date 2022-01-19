@@ -10,7 +10,7 @@ const storyMetadata: Meta = {
   component: QSlider,
   decorators: [
     (): Record<'template', string> => ({
-      template: `<div style="width: 50vw;"><story /></div>`
+      template: '<div style="width: 50vw;"><story /></div>'
     })
   ]
 };

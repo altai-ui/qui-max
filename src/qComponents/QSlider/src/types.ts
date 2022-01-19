@@ -2,8 +2,13 @@ import type { Ref, Slots, ComputedRef } from 'vue';
 
 import type { Nullable } from '#/helpers';
 
-export type QSliderPropModelValue = Nullable<string>;
-export type QSliderDataRow = Record<string, unknown>;
+export type QSliderPropModelValue = Nullable<string | number | boolean>;
+export interface QSliderDataRow {
+  value: string | number | boolean;
+  label: string;
+  style: Record<string, Nullable<string | number>>;
+  slotData: Record<string, unknown>;
+}
 
 export type RootClasses = Record<string, boolean>;
 

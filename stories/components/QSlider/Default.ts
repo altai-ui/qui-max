@@ -1,5 +1,6 @@
 import type { Story } from '@storybook/vue3';
 import { defineComponent, ref } from 'vue';
+import { t } from '@/qComponents/locale';
 
 const QSliderStory: Story = args =>
   defineComponent({
@@ -24,15 +25,15 @@ QSliderStory.args = {
   data: [
     {
       value: 'easy',
-      label: 'Легкий уровень'
+      label: t('qSlider.easyLevel')
     },
     {
       value: 'normal',
-      label: 'Средний уровень'
+      label: t('qSlider.mediumlevel')
     },
     {
       value: 'hard',
-      label: 'Тяжелый уровень'
+      label: t('qSlider.hardLevel')
     }
   ]
 };

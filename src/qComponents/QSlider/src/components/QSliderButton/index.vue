@@ -2,6 +2,7 @@
   <button
     type="button"
     class="q-slider-button"
+    :class="btnClasses"
     :style="btnStyles"
     @mousedown="handleBtnDown"
   >
@@ -15,6 +16,7 @@ import { defineComponent, reactive, computed, onBeforeUnmount } from 'vue';
 import type {
   QSliderButtonProps,
   QSliderButtonState,
+  BtnClasses,
   BtnStyles,
   QSliderButtonInstance
 } from './types';
@@ -36,6 +38,11 @@ export default defineComponent({
     pathWidth: {
       type: Number,
       default: null
+    },
+
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -46,14 +53,18 @@ export default defineComponent({
       isDragging: false
     });
 
+    const btnClasses = computed<BtnClasses>(() => ({
+      'q-slider-button_is-disabled': props.disabled
+    }));
+
     const btnStyles = computed<BtnStyles>(() => ({
       left: props.position
     }));
 
     const handleDragging = ({ clientX }: MouseEvent): void => {
-      if (!state.isDragging) return;
+      if (!state.isDragging || props.disabled) return;
 
-      let percent: number =
+      let percent =
         ((clientX - Number(props.pathLeft)) / Number(props.pathWidth)) * 100;
 
       if (percent < 0) {
@@ -86,6 +97,7 @@ export default defineComponent({
     });
 
     return {
+      btnClasses,
       btnStyles,
       handleBtnDown
     };

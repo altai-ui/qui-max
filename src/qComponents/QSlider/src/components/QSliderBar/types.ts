@@ -1,4 +1,4 @@
-import { ComputedRef } from 'vue';
+import type { ComputedRef } from 'vue';
 import type { Nullable } from '#/helpers';
 
 export type BarStyle = { width: Nullable<string> };

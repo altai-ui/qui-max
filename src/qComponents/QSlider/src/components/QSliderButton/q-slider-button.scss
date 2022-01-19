@@ -25,13 +25,27 @@
       -1px -1px 3px rgba(var(--color-rgb-white), 0.25);
   }
 
+  &_is-disabled {
+    .q-slider-button__target {
+      background-color: var(--color-primary);
+    }
+
+    &:focus {
+      .q-slider-button__target {
+        box-shadow: var(--box-shadow-hover);
+      }
+    }
+
+    &:hover {
+      cursor: not-allowed;
+    }
+  }
+
   &:hover,
-  &:focus,
-  &_show-tooltip {
+  &:focus {
     z-index: 3;
     outline: none;
 
-    /* stylelint-disable-next-line */
     .q-slider-button__target {
       background-color: var(--color-primary);
       box-shadow: none;

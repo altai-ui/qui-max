@@ -1,0 +1,62 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- import CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/@qvant/qui/dist/qui.css" />
+  </head>
+
+  <body>
+    <div id="app">
+      <div class="block">
+        <q-breadcrumbs :route="route" />
+      </div>
+    </div>
+  </body>
+  <!-- import Vue before Qui -->
+  <script src="https://unpkg.com/vue@next"></script>
+  <!-- import JavaScript -->
+  <script src="https://unpkg.com/@qvant/qui-max@latest"></script>
+  <script>
+    const app = Vue.createApp({
+      setup() {
+        const route = [
+          {
+            path: 'path-a',
+            name: 'ROUTE_A',
+            meta: {
+              breadcrumb: 'First route'
+            }
+          },
+          {
+            path: 'path-b',
+            name: 'ROUTE_b',
+            meta: {
+              breadcrumb: 'Second route'
+            }
+          },
+          {
+            path: 'path-c',
+            name: 'ROUTE_c',
+            meta: {
+              breadcrumb: 'Third route'
+            }
+          }
+        ];
+
+        return { route };
+      }
+    });
+
+    const Qui = window['qui-max'].default;
+    app.use(Qui);
+    app.mount('#app');
+  </script>
+  <style>
+    .block {
+      margin: 20px;
+      width: 450px;
+      display: flex;
+      flex-direction: column;
+    }
+  </style>
+</html>

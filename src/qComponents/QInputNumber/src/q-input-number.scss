@@ -5,7 +5,7 @@
   line-height: 40px;
 
   &_with-controls {
-    width: 160px;
+    min-width: 160px;
 
     & .q-input__inner {
       box-sizing: border-box;
@@ -22,7 +22,7 @@
     width: 32px;
     height: 40px;
     font-size: 16px;
-    color: rgba(var(--color-rgb-gray), 0.64);
+    color: rgb(var(--color-rgb-gray) / 64%);
     cursor: pointer;
     background-color: transparent;
     border: none;
@@ -37,7 +37,7 @@
     &:enabled:not(.q-input-number__button_is-disabled) {
       &:hover::before,
       &:focus::before {
-        background-color: rgba(var(--color-rgb-gray), 0.16);
+        background-color: rgb(var(--color-rgb-gray) / 16%);
         border-radius: 16px;
         outline: none;
       }
@@ -52,7 +52,7 @@
     }
 
     &_is-disabled {
-      color: rgba(var(--color-rgb-gray), 0.16);
+      color: rgb(var(--color-rgb-gray) / 16%);
       cursor: not-allowed;
     }
   }

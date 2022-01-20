@@ -1,0 +1,76 @@
+.q-icons {
+  --font-size: 32px;
+
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 900px;
+  margin-top: 50px;
+
+  &__container {
+    position: relative;
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    min-width: 120px;
+    margin: 0 10px 30px 0;
+  }
+
+  &__tooltip {
+    position: absolute;
+    top: 0;
+    pointer-events: none;
+    opacity: 0;
+    transform: translate(-10%, 0);
+    animation: show-tooltip 0.3s ease-in forwards;
+  }
+
+  &__wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    min-height: 40px;
+    overflow: hidden;
+    cursor: pointer;
+    background-color: var(--color-tertiary-white);
+    border: 1px solid rgb(0 0 0 / 10%);
+    border-radius: 4px;
+    box-shadow: rgb(0 0 0 / 10%) 0 1px 3px 0;
+
+    &:hover {
+      box-shadow: rgb(0 0 0 / 10%) 0 1px 5px 0;
+    }
+
+    &:active {
+      box-shadow: rgb(0 0 0 / 10%) 0 1px 1px 0;
+    }
+  }
+
+  &__preview {
+    padding: 4px;
+    font-size: var(--font-size);
+    color: var(--color-primary-black);
+  }
+
+  &__name {
+    width: 140px;
+    margin-left: 10px;
+    font-size: 14px;
+    line-height: 1.2;
+    color: #333;
+  }
+
+  @keyframes show-tooltip {
+    from {
+      opacity: 0;
+      transform: translate(-10%, 0);
+    }
+
+    to {
+      opacity: 1;
+      transform: translate(-10%, -100%);
+    }
+  }
+}

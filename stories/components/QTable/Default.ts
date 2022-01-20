@@ -25,7 +25,6 @@ const QTableStory: Story<QTableProps> = args =>
       );
 
       const handleRowClick = (row: unknown, rowIndex: number): void => {
-        // eslint-disable-next-line no-console
         console.log(rowIndex, row);
       };
 

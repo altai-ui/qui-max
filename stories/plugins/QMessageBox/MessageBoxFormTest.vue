@@ -1,8 +1,6 @@
 <template>
   <q-message-box-content>
-    <template
-      #title
-    >Morbi massa libero, vehicula nec consequat sed, porta a sem.</template>
+    <template #title>Morbi massa libero, vehicula nec consequat sed, porta a sem.</template>
 
     <template #content>
       {{ someExternalProp }}
@@ -36,25 +34,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, reactive } from 'vue';
+import { defineComponent, ref, reactive, inject } from 'vue';
 
-import { QForm, QFormItem, QInput, QButton } from '@/qComponents';
-import {
-  QMessageBoxContent,
-  QMessageBoxAction
-} from '@/qComponents/QMessageBox';
-
-const DONE_EVENT = 'done';
-const NAME_INPUT_EVENT = 'name-input';
+import { QMessageBoxContent, QMessageBoxAction } from '@/qComponents';
+import type { QMessageBoxContainerProvider } from '@/qComponents';
 
 export default defineComponent({
   name: 'MessageBoxFormTest',
 
   components: {
-    QForm,
-    QFormItem,
-    QInput,
-    QButton,
     QMessageBoxContent
   },
 
@@ -65,18 +53,24 @@ export default defineComponent({
     }
   },
 
-  emits: [NAME_INPUT_EVENT, DONE_EVENT],
+  emits: ['name-input'],
 
   setup(_, ctx) {
+    const qMessageBoxContainer = inject<QMessageBoxContainerProvider>(
+      'qMessageBoxContainer'
+    );
+
     const isSending = ref<boolean>(false);
     const formModel = reactive({ name: 'Testname' });
 
     const handleNameInput = (e: InputEvent): void => {
-      ctx.emit(NAME_INPUT_EVENT, (e.target as HTMLInputElement).value);
+      ctx.emit('name-input', (e.target as HTMLInputElement).value);
     };
 
     const handleCancelClick = (): void => {
-      ctx.emit(DONE_EVENT, { action: QMessageBoxAction.cancel });
+      qMessageBoxContainer?.emitDoneEvent({
+        action: QMessageBoxAction.cancel
+      });
     };
 
     const handleSendClick = async (): Promise<void> => {
@@ -89,7 +83,7 @@ export default defineComponent({
 
       await promise();
 
-      ctx.emit(DONE_EVENT, {
+      qMessageBoxContainer?.emitDoneEvent({
         action: QMessageBoxAction.confirm,
         payload: { test: true }
       });

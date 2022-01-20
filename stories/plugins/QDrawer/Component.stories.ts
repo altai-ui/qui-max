@@ -29,20 +29,20 @@ const QDrawerStoryComponent: Story<QDrawerOptions> = args =>
             defineAsyncComponent(() => import('./DrawerFormTest.vue')),
             args
           );
-          // eslint-disable-next-line no-console
+
           console.log('resolve', result);
         } catch (result) {
-          // eslint-disable-next-line no-console
           console.log('reject', result);
         }
       };
 
-      return {
-        handleClick
-      };
+      return { handleClick };
     },
-    template: '<q-button @click="handleClick">Click to open</q-button>'
+    template: '<q-button @click="handleClick">Click to open drawer</q-button>'
   });
 
 export const Component = QDrawerStoryComponent.bind({});
+Component.args = {
+  width: 350
+};
 export default storyMetadata;

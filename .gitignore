@@ -36,3 +36,8 @@ lerna-debug.log*
 !.vscode/extensions.json
 
 *.local
+
+# VuePress files
+/docs/.vuepress/.temp/
+/docs/.vuepress/.cache/
+/docs/.vuepress/dist/

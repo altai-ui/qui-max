@@ -106,7 +106,7 @@
     font-size: var(--font-size-base);
     font-weight: var(--font-weight-base);
     line-height: var(--line-height-base);
-    color: rgba(var(--color-rgb-gray), 0.64);
+    color: rgb(var(--color-rgb-gray) / 64%);
     letter-spacing: var(--letter-spacing-base);
   }
 }

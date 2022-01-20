@@ -50,7 +50,7 @@ const QFormStory: Story<QFormProps> = args =>
         const valid = await form?.value?.validate();
         if (valid) {
           const { isValid, invalidFields } = valid;
-          // eslint-disable-next-line no-console
+
           console.log('QForm | validate', isValid, invalidFields);
           if (isValid) {
             // eslint-disable-next-line no-alert

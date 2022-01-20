@@ -31,12 +31,10 @@ const QDrawerStoryComponent: Story<QDrawerOptions> = args =>
                 () => import('./DrawerFormTest.vue')
               ),
               props: {
-                someExternalProp: 'Some external prop here',
-                title: 'Morbi massa libero.'
+                someExternalProp: 'Some external prop here'
               },
               listeners: {
                 nameInput: (value: string) => {
-                  // eslint-disable-next-line no-console
                   console.log(`listeners - nameInput: ${value}`);
                 }
               }
@@ -44,17 +42,15 @@ const QDrawerStoryComponent: Story<QDrawerOptions> = args =>
             args
           );
 
-          // eslint-disable-next-line no-console
           console.log('resolve', result);
         } catch (result) {
-          // eslint-disable-next-line no-console
           console.log('reject', result);
         }
       };
 
       return { handleClick };
     },
-    template: '<q-button @click="handleClick">Click to open</q-button>'
+    template: '<q-button @click="handleClick">Click to open drawer</q-button>'
   });
 
 export const Extended = QDrawerStoryComponent.bind({});

@@ -16,14 +16,14 @@
 
   @for $i from 1 through 12 {
     &_size_#{$i} {
-      flex: 0 0 percentage(math.div($i, 12));
-      max-width: percentage(math.div($i, 12));
+      flex: 0 0 math.percentage(math.div($i, 12));
+      max-width: math.percentage(math.div($i, 12));
     }
   }
 
   @for $i from 0 through 11 {
     &_offset_#{$i} {
-      margin-left: percentage(math.div($i, 12));
+      margin-left: math.percentage(math.div($i, 12));
     }
   }
 }

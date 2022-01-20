@@ -1,0 +1,34 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- import CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/@qvant/qui/dist/qui.css" />
+  </head>
+
+  <body>
+    <div id="app">
+      <div class="block">
+        <q-button>Primary</q-button>
+        <q-button theme="secondary">Secondary</q-button>
+        <q-button theme="link">Link</q-button>
+      </div>
+    </div>
+  </body>
+  <!-- import Vue before Qui -->
+  <script src="https://unpkg.com/vue@next"></script>
+  <!-- import JavaScript -->
+  <script src="https://unpkg.com/@qvant/qui-max@latest"></script>
+  <script>
+    const app = Vue.createApp({});
+    const Qui = window['qui-max'].default;
+    app.use(Qui);
+    app.mount('#app');
+  </script>
+  <style>
+    .block {
+      width: 200px;
+      margin: 20px 0 0 20px;
+      display: flex;
+    }
+  </style>
+</html>

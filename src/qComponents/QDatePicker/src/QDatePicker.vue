@@ -76,22 +76,8 @@
       :to="teleportTo || 'body'"
       :disabled="!teleportTo"
     >
-      <q-dialog
-        v-if="isMobileView"
-        v-model:visible="state.pickerVisible"
-        prevent-focus-after-closing
-        @close="closePicker"
-      >
-        <component
-          :is="panelComponent"
-          ref="panel"
-          v-model="transformedToDate"
-          class="q-picker-panel__dialog-view"
-          @pick="handlePickClick"
-        />
-      </q-dialog>
       <transition
-        v-else
+        v-if="!isMobileView"
         name="q-picker-panel-animation"
         @after-leave="destroyPopper"
         @before-enter="popperInit"
@@ -100,7 +86,7 @@
           :is="panelComponent"
           v-show="state.pickerVisible"
           ref="panel"
-          v-model="transformedToDate"
+          :model-value="transformedToDate"
           @pick="handlePickClick"
         />
       </transition>
@@ -139,7 +125,7 @@ import { t } from '@/qComponents/locale';
 import { notNull, validateArray } from '@/qComponents/helpers';
 import { useMediaQuery } from '@/qComponents/hooks';
 import QInput from '@/qComponents/QInput';
-import QDialog from '@/qComponents/QDialog';
+import { useDialog } from '@/qComponents/QDialog';
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QInputInstance } from '@/qComponents/QInput';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
@@ -149,6 +135,7 @@ import DatePanel from './panel/Date/DatePanel.vue';
 import DateRangePanel from './panel/DateRange/DateRange.vue';
 import MonthRangePanel from './panel/MonthRange/MonthRange.vue';
 import YearRangePanel from './panel/YearRange/YearRange.vue';
+import MobilePanel from './mobile/MobilePanel.vue';
 import type { DatePanelInstance } from './panel/Date/types';
 import {
   calcInputData,
@@ -168,11 +155,12 @@ import type {
   QDatePickerState,
   QDatePickerInstance
 } from './types';
+import { QDatePickerPanelComponent } from './types';
 
 export default defineComponent({
   name: 'QDatePicker',
   componentName: 'QDatePicker',
-  components: { QInput, QDialog },
+  components: { QInput },
   props: {
     /**
      * one of sugested types
@@ -327,6 +315,8 @@ export default defineComponent({
   ],
 
   setup(props: QDatePickerProps, ctx): QDatePickerInstance {
+    const dialog = useDialog();
+
     const root = ref<Nullable<HTMLElement>>(null);
     const panel = ref<UnwrappedInstance<DatePanelInstance>>(null);
     const qForm = inject<Nullable<QFormProvider>>('qForm', null);
@@ -381,12 +371,7 @@ export default defineComponent({
 
     const isRanged = computed<boolean>(() => props.type.includes('range'));
 
-    const panelComponent = computed<
-      | typeof DateRangePanel
-      | typeof MonthRangePanel
-      | typeof YearRangePanel
-      | typeof DatePanel
-    >(() => {
+    const panelComponent = computed<QDatePickerPanelComponent>(() => {
       switch (props.type) {
         case 'daterange':
           return DateRangePanel;
@@ -486,6 +471,21 @@ export default defineComponent({
     ): void => {
       state.pickerVisible = !hidePicker;
       emitChange(val);
+    };
+
+    const openDialog = async (): Promise<void> => {
+      try {
+        const result = await dialog(MobilePanel, {
+          teleportTo: props.teleportTo,
+          preventFocusAfterClosing: true
+        });
+
+        emitChange(result.payload as QDatePickerPropModelValue);
+      } catch {
+        // do nothing
+      } finally {
+        state.pickerVisible = false;
+      }
     };
 
     const handleInputDateChange = (): void => {
@@ -708,6 +708,7 @@ export default defineComponent({
         if (!val) {
           state.userInput = null;
         }
+        if (val && isMobileView.value) openDialog();
       }
     );
 
@@ -736,7 +737,9 @@ export default defineComponent({
       handlePickClick,
       type: toRef(props, 'type'),
       disabledValues: toRef(props, 'disabledValues'),
-      shortcuts: toRef(props, 'shortcuts')
+      shortcuts: toRef(props, 'shortcuts'),
+      transformedToDate,
+      panelComponent
     });
 
     return {

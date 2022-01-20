@@ -1,0 +1,22 @@
+.q-dialog-container {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+
+  &__wrapper {
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: var(--color-tertiary-gray-ultra-light);
+  }
+
+  &__content {
+    width: 100%;
+    height: 100%;
+  }
+}

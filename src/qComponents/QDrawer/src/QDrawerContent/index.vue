@@ -39,10 +39,16 @@ export default defineComponent({
   components: { QScrollbar },
 
   props: {
+    /**
+     * title of the QDrawer
+     */
     title: {
       type: String,
       default: null
     },
+    /**
+     * whether to hide close button
+     */
     hideCloseButton: {
       type: Boolean,
       default: false
@@ -51,13 +57,13 @@ export default defineComponent({
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   setup(props: QDrawerContentProps): QDrawerContentInstance {
-    const QDrawerContainer = inject<Nullable<QDrawerContainerProvider>>(
+    const qDrawerContainer = inject<Nullable<QDrawerContainerProvider>>(
       'qDrawerContainer',
       null
     );
 
     const handleCloseBtnClick = (): void => {
-      QDrawerContainer?.emitCloseEvent();
+      qDrawerContainer?.emitCloseEvent();
     };
 
     return {

@@ -1,0 +1,163 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- import CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/@qvant/qui/dist/qui.css" />
+  </head>
+
+  <body>
+    <div id="app">
+      <div class="header">
+        <span>Regular</span>
+      </div>
+      <div class="block">
+        <q-button>Primary</q-button>
+        <q-button type="icon" icon="q-icon-bell"></q-button>
+        <q-button type="icon" icon="q-icon-bell" circle></q-button>
+        <q-button theme="secondary">Secondary</q-button>
+        <q-button
+          type="icon"
+          theme="secondary"
+          icon="q-icon-question"
+        ></q-button>
+        <q-button
+          type="icon"
+          theme="secondary"
+          icon="q-icon-question"
+          circle
+        ></q-button>
+        <q-button theme="link">Link</q-button>
+      </div>
+      <div class="header">
+        <span>Disabled</span>
+      </div>
+      <div class="block">
+        <q-button disabled>Primary</q-button>
+        <q-button type="icon" icon="q-icon-bell" disabled></q-button>
+        <q-button type="icon" icon="q-icon-bell" circle disabled></q-button>
+        <q-button theme="secondary" disabled>Secondary</q-button>
+        <q-button
+          type="icon"
+          theme="secondary"
+          icon="q-icon-question"
+          disabled
+        ></q-button>
+        <q-button
+          type="icon"
+          theme="secondary"
+          icon="q-icon-question"
+          disabled
+          circle
+        ></q-button>
+        <q-button theme="link" disabled>Link</q-button>
+      </div>
+      <div class="header">
+        <span>Loading</span>
+      </div>
+      <div class="block">
+        <q-button @click="handleStartLoadingClick" :loading="loading"
+          >Primary</q-button
+        >
+        <q-button
+          @click="handleStartLoadingClick"
+          type="icon"
+          icon="q-icon-bell"
+          :loading="loading"
+        ></q-button>
+        <q-button
+          @click="handleStartLoadingClick"
+          type="icon"
+          icon="q-icon-bell"
+          circle
+          :loading="loading"
+        ></q-button>
+        <q-button
+          @click="handleStartLoadingClick"
+          theme="secondary"
+          :loading="loading"
+          >Secondary</q-button
+        >
+        <q-button
+          @click="handleStartLoadingClick"
+          type="icon"
+          theme="secondary"
+          icon="q-icon-question"
+          :loading="loading"
+        ></q-button>
+        <q-button
+          @click="handleStartLoadingClick"
+          type="icon"
+          theme="secondary"
+          icon="q-icon-question"
+          circle
+          :loading="loading"
+        ></q-button>
+        <q-button
+          @click="handleStartLoadingClick"
+          theme="link"
+          :loading="loading"
+          >Link</q-button
+        >
+      </div>
+      <div class="header">
+        <span>Small</span>
+      </div>
+      <div class="block">
+        <q-button size="small">Primary</q-button>
+        <q-button type="icon" icon="q-icon-bell" size="small"></q-button>
+        <q-button type="icon" icon="q-icon-bell" size="small" circle></q-button>
+        <q-button theme="secondary" size="small">Secondary</q-button>
+        <q-button
+          type="icon"
+          theme="secondary"
+          icon="q-icon-question"
+          size="small"
+        ></q-button>
+        <q-button
+          type="icon"
+          theme="secondary"
+          icon="q-icon-question"
+          size="small"
+          circle
+        ></q-button>
+        <q-button theme="link" size="small">Link</q-button>
+      </div>
+    </div>
+  </body>
+  <!-- import Vue before Qui -->
+  <script src="https://unpkg.com/vue@next"></script>
+  <!-- import JavaScript -->
+  <script src="https://unpkg.com/@qvant/qui-max@latest"></script>
+  <script>
+    const App = {
+      data() {
+        return {
+          loading: false
+        };
+      },
+      methods: {
+        handleStartLoadingClick() {
+          this.loading = true;
+          setTimeout(() => {
+            this.loading = false;
+          }, 1000);
+        }
+      }
+    };
+    const app = Vue.createApp(App);
+    const Qui = window['qui-max'].default;
+    app.use(Qui);
+    app.mount('#app');
+  </script>
+  <style>
+    .block {
+      margin: 5px 0 0 20px;
+      display: flex;
+    }
+
+    .header {
+      margin: 10px 0 0 20px;
+      display: flex;
+    }
+  </style>
+</html>

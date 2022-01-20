@@ -53,11 +53,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed } from 'vue';
+import { defineComponent, ref, computed, inject } from 'vue';
 import type { PropType } from 'vue';
 
 import QButton from '@/qComponents/QButton';
 
+import { Nullable } from '#/helpers';
+import type { QMessageBoxContainerProvider } from '../QMessageBoxContainer';
 import { QMessageBoxAction } from '../constants';
 
 import type {
@@ -116,14 +118,12 @@ export default defineComponent({
     }
   },
 
-  emits: [
-    /**
-     * triggers when confirm/cancel action happens
-     */
-    'done'
-  ],
+  setup(props: QMessageBoxContentProps): QMessageBoxContentInstance {
+    const qMessageBoxContainer = inject<Nullable<QMessageBoxContainerProvider>>(
+      'qMessageBoxContainer',
+      null
+    );
 
-  setup(props: QMessageBoxContentProps, ctx): QMessageBoxContentInstance {
     const isConfirmBtnLoading = ref<boolean>(false);
     const isCancelBtnLoading = ref<boolean>(false);
 
@@ -149,7 +149,7 @@ export default defineComponent({
       const isDone = await commitBeforeClose(action);
       isConfirmBtnLoading.value = false;
 
-      if (isDone) ctx.emit('done', { action });
+      if (isDone) qMessageBoxContainer?.emitDoneEvent({ action });
     };
 
     const handleCancelBtnClick = async (): Promise<void> => {
@@ -158,7 +158,7 @@ export default defineComponent({
       const isDone = await commitBeforeClose(action);
       isCancelBtnLoading.value = false;
 
-      if (isDone) ctx.emit('done', { action });
+      if (isDone) qMessageBoxContainer?.emitDoneEvent({ action });
     };
 
     return {

@@ -14,7 +14,9 @@ module.exports = {
   core: {
     builder: 'webpack5'
   },
-  webpackFinal: config => {
+  webpackFinal: (config: any) => {
+    if (!config.resolve?.alias) return config;
+
     config.resolve.alias['@'] = path.resolve(__dirname, '../src');
 
     return config;

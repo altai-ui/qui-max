@@ -300,7 +300,10 @@ export default defineComponent({
     });
 
     const preparedPlaceholder = computed<Nullable<string>>(() => {
-      return state.query || (props.multiple && props.modelValue)
+      return state.query ||
+        (props.multiple &&
+          Array.isArray(props.modelValue) &&
+          props.modelValue.length)
         ? ''
         : props.placeholder;
     });
@@ -666,7 +669,7 @@ export default defineComponent({
     };
 
     const getValueIndex = (
-      arr = [] as QOptionPropValue[],
+      arr: QOptionPropValue[],
       optionValue: QOptionPropValue
     ): number => {
       if (isString(optionValue) || isNumber(optionValue))

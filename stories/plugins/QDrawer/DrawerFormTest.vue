@@ -1,10 +1,8 @@
 <template>
   <q-drawer-content>
-    <template #title>{{ title }}</template>
+    <template #title>Morbi massa libero, vehicula nec consequat sed, porta a sem.</template>
 
-    <div class="q-drawer-sample-content__externalprop">
-      {{ someExternalProp }}
-    </div>
+    {{ someExternalProp }}
 
     <q-form :model="formModel">
       <q-form-item
@@ -19,17 +17,15 @@
       </q-form-item>
     </q-form>
 
-    <div class="q-drawer-sample-content__actions">
-      <q-button
-        :loading="isLoading"
-        @click="handleConfirmClick"
-      >Confirm</q-button>
+    <q-button
+      :loading="isLoading"
+      @click="handleConfirmClick"
+    >Confirm</q-button>
 
-      <q-button
-        theme="secondary"
-        @click="handleCancelClick"
-      >Cancel</q-button>
-    </div>
+    <q-button
+      theme="secondary"
+      @click="handleCancelClick"
+    >Cancel</q-button>
   </q-drawer-content>
 </template>
 
@@ -45,11 +41,6 @@ export default defineComponent({
   components: { QDrawerContent },
 
   props: {
-    title: {
-      type: String,
-      default: 'What is Lorem Ipsum?'
-    },
-
     someExternalProp: {
       type: String,
       default: 'Default external prop'
@@ -70,7 +61,9 @@ export default defineComponent({
     };
 
     const commitBeforeClose = (): Promise<boolean> =>
-      new Promise(resolve => setTimeout(() => resolve(true), 1000));
+      new Promise(resolve => {
+        setTimeout(() => resolve(true), 1000);
+      });
 
     const handleConfirmClick = async (): Promise<void> => {
       isLoading.value = true;
@@ -85,7 +78,6 @@ export default defineComponent({
 
     const handleCancelClick = async (): Promise<void> => {
       const action = QDrawerAction.cancel;
-
       qDrawerContainer?.emitDoneEvent({ action });
     };
 

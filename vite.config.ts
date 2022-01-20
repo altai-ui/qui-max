@@ -10,6 +10,8 @@ import vue from '@vitejs/plugin-vue';
 import dts from 'vite-plugin-dts';
 /* eslint-enable import/no-extraneous-dependencies */
 
+import type { IdAndContentObject } from 'rollup-plugin-sass/dist/types';
+
 // https://vitejs.dev/config/
 export default defineConfig({
   resolve: {
@@ -38,7 +40,7 @@ export default defineConfig({
     sourcemap: true,
     lib: {
       entry: resolve(__dirname, 'src/qComponents/index.ts'),
-      name: 'qui-max'
+      name: 'QuiMax'
     },
     rollupOptions: {
       // make sure to externalize deps that shouldn't be bundled
@@ -56,9 +58,9 @@ export default defineConfig({
       plugins: [
         sassPlugin({
           runtime: sass,
-          output(_: string, styleNodes: [{ id: string; content: string }]) {
+          output(_: string, styleNodes: IdAndContentObject[]) {
             styleNodes.forEach(styleNode => {
-              const splittedPath = styleNode.id.split('/');
+              const splittedPath = styleNode.id?.split('/') ?? [];
               const fileName = splittedPath[splittedPath.length - 1].replace(
                 '.scss',
                 '.css'
@@ -76,7 +78,10 @@ export default defineConfig({
                 fileDir = 'fonts';
               }
 
-              writeFileSync(`dist/${fileDir}/${fileName}`, styleNode.content);
+              writeFileSync(
+                `dist/${fileDir}/${fileName}`,
+                styleNode?.content ?? ''
+              );
             });
           }
         }),

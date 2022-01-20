@@ -36,11 +36,11 @@
     }
 
     &_secondary {
-      background-color: rgba(var(--color-rgb-gray), 0.16);
+      background-color: rgb(var(--color-rgb-gray) / 16%);
 
       &:hover,
       &:active {
-        background-color: rgba(var(--color-rgb-gray), 0.32);
+        background-color: rgb(var(--color-rgb-gray) / 32%);
       }
     }
   }

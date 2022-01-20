@@ -314,18 +314,17 @@ export default defineComponent({
       if (!reference.value || !popover.value) return;
 
       switch (props.trigger) {
-        default:
-        case 'click':
-          reference.value.addEventListener('click', togglePopover, false);
-          document.addEventListener('click', handleDocumentClick, false);
-          break;
-
         case 'hover':
           reference.value.addEventListener('mouseover', handleMouseOver, false);
           reference.value.addEventListener('mouseout', onMouseOut, false);
           popover.value.addEventListener('mouseover', handleMouseOver, false);
           popover.value.addEventListener('mouseout', onMouseOut, false);
+          break;
 
+        case 'click':
+        default:
+          reference.value.addEventListener('click', togglePopover, false);
+          document.addEventListener('click', handleDocumentClick, false);
           break;
       }
     });

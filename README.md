@@ -9,6 +9,7 @@
   <img alt="npm bundle size" src="https://img.shields.io/bundlephobia/minzip/@qvant/qui-max?color=brightgreen">
   <span class="badge-npmversion"><a href="https://npmjs.org/package/@qvant/qui-max" title="View this project on NPM"><img src="https://img.shields.io/npm/v/@qvant/qui-max.svg" alt="NPM version" /></a></span>
   <span class="badge-npmdownloads"><a href="https://npmjs.org/package/@qvant/qui-max" title="View this project on NPM"><img src="https://img.shields.io/npm/dm/@qvant/qui-max.svg" alt="NPM downloads" /></a></span>
+  <span><a href="https://app.netlify.com/sites/qui-max/deploys"><img src="https://api.netlify.com/api/v1/badges/e2694a79-f584-4e05-9e5f-5a87d3d7c52b/deploy-status" /></a>
 </p>
 
 <p align="center" class="unchanged rich-diff-level-one">
@@ -20,7 +21,7 @@ Written on TypeScript with Composition API 🔥
 A component's library helping us build great products for our customers.
 This library for Vue 3.x
 
-[Storybook (live demo)](https://qvant-lab.github.io/qui-max/)
+[Storybook (live demo)](https://qui-max.netlify.app/?path=/story/intro--page)
 
 Qui for Vue 2.x is [here](https://github.com/Qvant-lab/qui)!
 
@@ -141,6 +142,33 @@ Please refer to each component's [Stories](https://qvant-lab.github.io/qui-max/)
 - Russian ✅
 - English ✅
 - Also you can use any language by setting texts for components via `localization.messages` property in the Qui instance. See the example above.
+
+## Using with Nuxt 3
+
+Create a file in your plugins folder:
+
+```ts
+// plugins/qui.ts
+import { defineNuxtPlugin } from '#app';
+import Qui from '@qvant/qui-max';
+
+export default defineNuxtPlugin(nuxtApp => {
+  nuxtApp.vueApp.use(Qui);
+});
+```
+
+Add configuration to your `nuxt.config.ts` file:
+
+```ts
+import { defineNuxtConfig } from 'nuxt3';
+
+export default defineNuxtConfig({
+  css: ['@qvant/qui-max/styles'],
+  build: {
+    transpile: ['@qvant/qui-max']
+  }
+});
+```
 
 ## Browser Support
 

@@ -44,7 +44,6 @@
           :style="{ zIndex }"
           @click.stop
           @close="handleClose"
-          @clear="handleClear"
           @pick="handlePick"
         />
       </transition>
@@ -60,6 +59,7 @@ import {
   ref,
   computed,
   watch,
+  nextTick,
   provide
 } from 'vue';
 import { createPopper, Instance, Options } from '@popperjs/core';
@@ -190,14 +190,7 @@ export default defineComponent({
 
     const options = computed<Partial<Options>>(() => ({
       placement: props.placement,
-      modifiers: [
-        {
-          name: 'offset',
-          options: {
-            offset: [0, 16]
-          }
-        }
-      ],
+      modifiers: [{ name: 'offset', options: { offset: [0, 16] } }],
       ...props.popperOptions
     }));
 
@@ -211,18 +204,7 @@ export default defineComponent({
       isPickerShown.value = !isPickerShown.value;
     };
 
-    const handleClear = (): void => {
-      ctx.emit('update:modelValue', null);
-      ctx.emit('change', null);
-
-      if (props.modelValue !== null) {
-        qFormItem?.validateField('change');
-      }
-
-      isPickerShown.value = false;
-    };
-
-    const handlePick = (value: string): void => {
+    const handlePick = (value: Nullable<string>): void => {
       ctx.emit('update:modelValue', value);
       ctx.emit('change', value);
 
@@ -236,13 +218,14 @@ export default defineComponent({
     const trigger = ref<Nullable<HTMLElement>>(null);
     const dropdown = ref<UnwrappedInstance<QPickerDropdownInstance>>(null);
 
-    const createPopperJs = (): void => {
+    const createPopperJs = async (): Promise<void> => {
       if (popperJS.value?.destroy) {
         popperJS.value.destroy();
         popperJS.value = null;
       }
 
       if (!trigger.value || !dropdown.value) return;
+      await nextTick();
       popperJS.value = createPopper(
         trigger.value,
         dropdown.value.$el,
@@ -268,8 +251,7 @@ export default defineComponent({
       isPickerShown,
       handleClose,
       handleTriggerClick,
-      handlePick,
-      handleClear
+      handlePick
     };
   }
 });

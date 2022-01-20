@@ -1,4 +1,4 @@
-import { Nullable } from '#/helpers';
+import type { Nullable } from '#/helpers';
 
 export interface QDrawerContentProps {
   title: Nullable<string>;

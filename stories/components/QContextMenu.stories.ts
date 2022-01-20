@@ -16,7 +16,6 @@ const QContextMenuStory: Story<QContextMenuProps> = args =>
   defineComponent({
     setup() {
       const handleAction = (action: string): void => {
-        // eslint-disable-next-line no-console
         console.log(action);
       };
 

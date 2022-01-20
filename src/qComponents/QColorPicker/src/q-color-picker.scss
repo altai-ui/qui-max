@@ -1,7 +1,7 @@
-@import './QPickerDropdown/q-picker-dropdown.scss';
-@import './QColorSvpanel/q-color-svpanel.scss';
-@import './QColorHueSlider/q-color-hue-slider.scss';
-@import './QColorAlphaSlider/q-color-alpha-slider.scss';
+@import './QPickerDropdown/q-picker-dropdown';
+@import './QColorSvpanel/q-color-svpanel';
+@import './QColorHueSlider/q-color-hue-slider';
+@import './QColorAlphaSlider/q-color-alpha-slider';
 
 .q-color-picker {
   &-trigger {
@@ -18,22 +18,22 @@
       cursor: inherit;
       border: none;
       border-radius: var(--border-radius-base);
-      box-shadow: -1px -1px 3px rgba(var(--color-rgb-white), 0.25),
-        1px 1px 3px rgba(var(--color-rgb-blue), 0.4),
-        4px 4px 8px rgba(var(--color-rgb-blue), 0.4),
+      box-shadow: -1px -1px 3px rgb(var(--color-rgb-white) / 25%),
+        1px 1px 3px rgb(var(--color-rgb-blue) / 40%),
+        4px 4px 8px rgb(var(--color-rgb-blue) / 40%),
         -4px -4px 12px var(--color-tertiary-white);
 
       &:hover {
-        box-shadow: -1px -1px 4px rgba(var(--color-rgb-white), 0.25),
-          1px 1px 4px rgba(var(--color-rgb-blue), 0.4),
-          4px 4px 8px rgba(var(--color-rgb-blue), 0.4),
-          -4px -4px 8px rgba(var(--color-rgb-white), 0.8);
+        box-shadow: -1px -1px 4px rgb(var(--color-rgb-white) / 25%),
+          1px 1px 4px rgb(var(--color-rgb-blue) / 40%),
+          4px 4px 8px rgb(var(--color-rgb-blue) / 40%),
+          -4px -4px 8px rgb(var(--color-rgb-white) / 80%);
       }
 
       &:focus {
         outline: none;
-        box-shadow: -1px -1px 3px rgba(var(--color-rgb-white), 0.25),
-          1px 1px 3px rgba(var(--color-rgb-blue), 0.4);
+        box-shadow: -1px -1px 3px rgb(var(--color-rgb-white) / 25%),
+          1px 1px 3px rgb(var(--color-rgb-blue) / 40%);
       }
 
       &::before {
@@ -72,8 +72,8 @@
       .q-color-picker-trigger_is-disabled & {
         cursor: not-allowed;
         background-color: var(--color-tertiary-gray);
-        box-shadow: -1px -1px 3px rgba(var(--color-rgb-white), 0.25),
-          1px 1px 3px rgba(var(--color-rgb-blue), 0.4);
+        box-shadow: -1px -1px 3px rgb(var(--color-rgb-white) / 25%),
+          1px 1px 3px rgb(var(--color-rgb-blue) / 40%);
 
         &::before {
           display: none;
@@ -105,14 +105,14 @@
 
       .q-color-picker-trigger__default:focus & {
         &::before {
-          background-color: rgba(var(--color-rgb-white), 0.1);
+          background-color: rgb(var(--color-rgb-white) / 10%);
           opacity: 1;
         }
       }
 
       .q-color-picker-trigger__default:hover & {
         &::before {
-          background-color: rgba(var(--color-rgb-gray), 0.1);
+          background-color: rgb(var(--color-rgb-gray) / 10%);
           opacity: 1;
         }
 
@@ -136,14 +136,14 @@
       }
 
       .q-color-picker-trigger_is-disabled & {
-        color: rgba(var(--color-rgb-gray), 0.64);
+        color: rgb(var(--color-rgb-gray) / 64%);
       }
 
       &_light {
         color: var(--color-tertiary-white);
 
         .q-color-picker-trigger_is-disabled & {
-          color: rgba(var(--color-rgb-white), 0.64);
+          color: rgb(var(--color-rgb-white) / 64%);
         }
       }
     }

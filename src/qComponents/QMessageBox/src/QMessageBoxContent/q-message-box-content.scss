@@ -32,7 +32,7 @@
 
   &__submessage {
     margin-top: 24px;
-    color: rgba(var(--color-rgb-gray), 0.64);
+    color: rgb(var(--color-rgb-gray) / 64%);
   }
 
   &__actions {

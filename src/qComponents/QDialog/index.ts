@@ -1,13 +1,34 @@
-import type { App } from 'vue';
+import { getCurrentInstance, onUnmounted } from 'vue';
 
-import type { SFCWithInstall } from '#/helpers';
+import { createDialog } from './src';
+import type { QDialog, QDialogHookOptions } from './src/types';
 
-import QDialog from './src/QDialog.vue';
+const useDialog = (options?: QDialogHookOptions): QDialog => {
+  const parentInstance = getCurrentInstance();
 
-/* istanbul ignore next */
-QDialog.install = (app: App): void => {
-  app.component(QDialog.name, QDialog);
+  const { dialog, app } = createDialog({
+    parentInstance,
+    ...options
+  });
+
+  onUnmounted(() => {
+    app.value?.unmount();
+  });
+
+  return dialog;
 };
 
-export type { QDialogProps, QDialogInstance } from './src/types';
-export default QDialog as SFCWithInstall<App, typeof QDialog>;
+export { useDialog };
+export type { QDialogContainerProvider } from './src/QDialogContainer';
+export { QDialogContent } from './src/QDialogContent';
+export type {
+  QDialogContentProps,
+  QDialogContentInstance
+} from './src/QDialogContent';
+export { QDialogAction } from './src/constants';
+export type {
+  QDialog,
+  QDialogOptionsBeforeClose,
+  QDialogOptionsTeleportTo,
+  QDialogOptions
+} from './src/types';

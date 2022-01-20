@@ -1,2 +1,6 @@
 .nvmrc
 /public
+/dist
+/stories/intro.stories.mdx
+/docs/.vuepress/.temp
+/docs/.vuepress/.cache

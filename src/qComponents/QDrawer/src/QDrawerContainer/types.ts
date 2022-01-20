@@ -1,26 +1,26 @@
-import type { Component, Ref, ComputedRef } from 'vue';
+import type { Ref, ComputedRef } from 'vue';
 
 import type { Nullable } from '#/helpers';
 
-import type { QDrawerEvent } from '../types';
+import type { QDrawerComponent, QDrawerContent, QDrawerEvent } from '../types';
+import type { QDrawerAction } from '../constants';
 
-export interface QDrawerComponent {
-  component: Component;
-  props?: { [propName: string]: unknown };
-  listeners?: { [listenerEvent: string]: (...args: unknown[]) => void };
-}
-
-export type QDrawerContainerPropContent = Component | QDrawerComponent;
-export type QDrawerContainerPropTeleportTo = Nullable<string | HTMLElement>;
+export type QDrawerContainerPropContent = QDrawerContent;
 export type QDrawerContainerPropPosition = 'left' | 'right';
+export type QDrawerContainerPropBeforeClose = Nullable<
+  (action: QDrawerAction) => Promise<boolean>
+>;
+export type QDrawerContainerPropTeleportTo = Nullable<string | HTMLElement>;
 
 export interface QDrawerContainerProps {
   content: QDrawerContainerPropContent;
   width: Nullable<string | number>;
   closeOnClickShadow: Nullable<boolean>;
   distinguishCancelAndClose: Nullable<boolean>;
+  preventFocusAfterClosing: Nullable<boolean>;
   position: QDrawerContainerPropPosition;
   customClass: Nullable<string>;
+  beforeClose: Nullable<QDrawerContainerPropBeforeClose>;
   teleportTo: QDrawerContainerPropTeleportTo;
 }
 
@@ -36,7 +36,6 @@ export interface QDrawerContainerInstance {
   drawerStyle: ComputedRef<Record<string, Nullable<string | number>>>;
   drawerClass: ComputedRef<string>;
   preparedContent: ComputedRef<QDrawerComponent>;
-  handleAfterLeave: () => void;
-  emitDoneEvent: (event: QDrawerEvent) => Promise<void>;
+  afterLeave: () => void;
   emitCloseEvent: () => void;
 }

@@ -29,8 +29,8 @@ export interface QSliderProvider {
 }
 
 export interface QSliderInstance {
-  state: QSliderState;
   path: Ref<Nullable<HTMLElement>>;
+  state: QSliderState;
   rootClasses: ComputedRef<RootClasses>;
   handlePathClick: (event: MouseEvent) => void;
   handleBtnPositionUpdate: (value: number) => void;

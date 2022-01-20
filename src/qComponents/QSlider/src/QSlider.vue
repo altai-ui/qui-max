@@ -43,7 +43,6 @@ import {
   ref,
   computed,
   onMounted,
-  onBeforeUnmount,
   provide,
   inject,
   watch
@@ -51,6 +50,9 @@ import {
 import type { PropType } from 'vue';
 
 import type { Nullable } from '#/helpers';
+import type { QFormProvider, QFormItemProvider } from '@/qComponents';
+
+import { useElementBounding } from '@/qComponents/hooks';
 
 import type {
   QSliderPropModelValue,
@@ -61,8 +63,6 @@ import type {
   QSliderProps,
   QSliderInstance
 } from './types';
-
-import type { QFormProvider, QFormItemProvider } from '@/qComponents';
 
 import QSliderButton from './components/QSliderButton';
 import QSliderBar from './components/QSliderBar';
@@ -172,7 +172,7 @@ export default defineComponent({
     const setupPathValues = (): void => {
       if (!path?.value) return;
 
-      const { width, left }: DOMRect = path.value.getBoundingClientRect();
+      const { left, width } = useElementBounding(path.value);
       state.pathLeft = left;
       state.pathWidth = width;
     };
@@ -187,12 +187,6 @@ export default defineComponent({
     onMounted(() => {
       setupValue();
       setupPathValues();
-
-      window.addEventListener('resize', setupPathValues);
-    });
-
-    onBeforeUnmount(() => {
-      window.removeEventListener('resize', setupPathValues);
     });
 
     provide<QSliderProvider>('qSlider', {
@@ -200,8 +194,8 @@ export default defineComponent({
     });
 
     return {
-      state,
       path,
+      state,
       rootClasses,
       handlePathClick,
       handleBtnPositionUpdate,

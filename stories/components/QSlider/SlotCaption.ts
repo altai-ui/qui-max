@@ -5,7 +5,7 @@ import { t } from '@/qComponents/locale';
 const QSliderStory: Story = args =>
   defineComponent({
     setup() {
-      const value = ref<string>('mac');
+      const value = ref<string>('easy');
 
       return {
         args,
@@ -19,8 +19,8 @@ const QSliderStory: Story = args =>
         v-bind="args"
       >
         <template #caption="{ label, data }">
-					<div style="margin: 0; font-size: 14px; line-height: 18px;">{{ label }}</div>
-					<div style="margin-top: 4px; font-size: 10px; line-height: 12px;">{{ data?.description }}</div>
+          <div style="margin: 0; font-size: 14px; line-height: 18px;">{{ label }}</div>
+          <div style="margin-top: 4px; font-size: 10px; line-height: 12px;">{{ data?.description }}</div>
         </template>
       </q-slider>
     `
@@ -30,7 +30,7 @@ QSliderStory.args = {
   disabled: true,
   data: [
     {
-      value: 'mac',
+      value: 'easy',
       label: t('qSlider.easyLevel'),
       style: {
         width: '100px'
@@ -41,7 +41,7 @@ QSliderStory.args = {
     },
 
     {
-      value: 'phone',
+      value: 'normal',
       label: t('qSlider.mediumlevel'),
       style: {
         width: '127px'
@@ -52,7 +52,7 @@ QSliderStory.args = {
     },
 
     {
-      value: 'sms',
+      value: 'hard',
       label: t('qSlider.hardLevel'),
       style: {
         width: '135px'

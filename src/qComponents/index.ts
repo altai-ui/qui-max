@@ -30,9 +30,9 @@ import QProgressIndicatior from './QProgressIndicatior';
 import QRadio from './QRadio';
 import QRadioGroup from './QRadioGroup';
 import QRow from './QRow';
+import QScrollbar from './QScrollbar';
 import QSelect from './QSelect';
 import QSlider from './QSlider';
-import QScrollbar from './QScrollbar';
 import QTable from './QTable';
 import QTabPane from './QTabPane';
 import QTabs from './QTabs';
@@ -181,6 +181,7 @@ export {
   QRow,
   QScrollbar,
   QSelect,
+  QSlider,
   QTable,
   QTabPane,
   QTabs,
@@ -217,8 +218,9 @@ export * from './QProgressIndicatior';
 export * from './QRadio';
 export * from './QRadioGroup';
 export * from './QRow';
-export * from './QSelect';
 export * from './QScrollbar';
+export * from './QSelect';
+export * from './QSlider';
 export * from './QTable';
 export * from './QTabPane';
 export * from './QTabs';

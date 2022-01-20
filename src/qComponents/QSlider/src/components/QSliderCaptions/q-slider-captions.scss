@@ -30,7 +30,7 @@
       text-align: right;
     }
 
-    &:focus,
+    &:focus-visible,
     &_active {
       color: var(--color-primary-black);
     }

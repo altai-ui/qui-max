@@ -4,7 +4,7 @@ import type { PropType, VNode } from 'vue';
 
 import type {
   QSliderPropModelValue,
-  QSliderDataRow,
+  QSliderPropData,
   QSliderProvider
 } from '../../types';
 
@@ -24,7 +24,7 @@ export default defineComponent({
     },
 
     data: {
-      type: Array as PropType<QSliderDataRow[]>,
+      type: Array as PropType<QSliderPropData[]>,
       required: true
     },
 
@@ -39,21 +39,17 @@ export default defineComponent({
   setup(props: QSliderCaptionsProps, ctx): QSliderCaptionsInstance {
     const qSlider = inject<QSliderProvider>('qSlider');
 
-    const getCaptionClasses = computed<string>(() => {
-      const classes: string[] = ['q-slider-captions'];
+    const captionClasses = computed<Record<string, boolean>>(() => ({
+      'q-slider-captions': true,
+      'q-slider-captions_is-disabled': props.disabled
+    }));
 
-      if (props.disabled) {
-        classes.push('q-slider-captions_is-disabled');
-      }
-
-      return classes.join(' ');
+    const getCaptionItemClasses = (
+      value: QSliderPropModelValue
+    ): Record<string, boolean> => ({
+      'q-slider-captions__item': true,
+      'q-slider-captions__item_active': value === props.modelValue
     });
-
-    const getCaptionItemClasses = (value: QSliderPropModelValue): string => {
-      return value === props.modelValue
-        ? 'q-slider-captions__item q-slider-captions__item_active'
-        : 'q-slider-captions__item';
-    };
 
     const handleCaptionClick = (value: QSliderPropModelValue): void => {
       ctx.emit('update:modelValue', value);
@@ -81,48 +77,48 @@ export default defineComponent({
     });
 
     const captionContent = computed<VNode[]>(() => {
-      if (qSlider?.slots.caption) {
-        return preparedData.value.map(({ value, style, slot }) =>
+      if (!qSlider?.slots.caption) {
+        return preparedData.value.map(({ value, label }) =>
           h(
             'div',
             {
-              className: getCaptionItemClasses(value),
+              class: getCaptionItemClasses(value),
               style: {
                 width: `${100 / props.data.length}%`
               },
               onClick: () => handleCaptionClick(value)
             },
-            [
-              h(
-                'div',
-                {
-                  className: 'q-slider-captions__item-inner',
-                  style
-                },
-                [slot]
-              )
-            ]
+            [label]
           )
         );
       }
 
-      return preparedData.value.map(({ value, label }) =>
+      return preparedData.value.map(({ value, style, slot }) =>
         h(
           'div',
           {
-            className: getCaptionItemClasses(value),
+            class: getCaptionItemClasses(value),
             style: {
               width: `${100 / props.data.length}%`
             },
             onClick: () => handleCaptionClick(value)
           },
-          [label]
+          [
+            h(
+              'div',
+              {
+                class: 'q-slider-captions__item-inner',
+                style
+              },
+              [slot]
+            )
+          ]
         )
       );
     });
 
     return (): VNode =>
-      h('div', { className: getCaptionClasses.value }, [captionContent.value]);
+      h('div', { class: captionClasses.value }, [captionContent.value]);
   }
 });
 </script>

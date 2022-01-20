@@ -14,7 +14,8 @@
         v-model:position="state.btnPosition"
         :path-left="state.pathLeft"
         :path-width="state.pathWidth"
-        :disabled="disabled"
+        :disabled="isDisabled"
+        @drag-start="setupPathValues"
         @update:position="handleBtnPositionUpdate"
       />
 
@@ -30,7 +31,7 @@
     <q-slider-captions
       :model-value="modelValue"
       :data="data"
-      :disabled="disabled"
+      :disabled="isDisabled"
       @update:modelValue="handleCaptionChange"
     />
   </div>
@@ -52,21 +53,19 @@ import type { PropType } from 'vue';
 import type { Nullable } from '#/helpers';
 import type { QFormProvider, QFormItemProvider } from '@/qComponents';
 
-import { useElementBounding } from '@/qComponents/hooks';
+import QSliderButton from './components/QSliderButton';
+import QSliderBar from './components/QSliderBar';
+import QSliderCaptions from './components/QSliderCaptions';
 
 import type {
   QSliderPropModelValue,
-  QSliderDataRow,
+  QSliderPropData,
   QSliderState,
   QSliderProvider,
   RootClasses,
   QSliderProps,
   QSliderInstance
 } from './types';
-
-import QSliderButton from './components/QSliderButton';
-import QSliderBar from './components/QSliderBar';
-import QSliderCaptions from './components/QSliderCaptions';
 
 export default defineComponent({
   name: 'QSlider',
@@ -91,7 +90,7 @@ export default defineComponent({
      * `{ value: 'test', label: 'text', style: {}, slotData: {} }`
      */
     data: {
-      type: Array as PropType<QSliderDataRow[]>,
+      type: Array as PropType<QSliderPropData[]>,
       required: true
     },
 
@@ -172,7 +171,7 @@ export default defineComponent({
     const setupPathValues = (): void => {
       if (!path?.value) return;
 
-      const { left, width } = useElementBounding(path.value);
+      const { width, left }: DOMRect = path.value.getBoundingClientRect();
       state.pathLeft = left;
       state.pathWidth = width;
     };
@@ -197,8 +196,10 @@ export default defineComponent({
       path,
       state,
       rootClasses,
+      isDisabled,
       handlePathClick,
       handleBtnPositionUpdate,
+      setupPathValues,
       handleCaptionChange
     };
   }

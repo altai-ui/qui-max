@@ -1,11 +1,11 @@
 import type { VNode } from 'vue';
 import type { Nullable } from '#/helpers';
 
-import type { QSliderPropModelValue, QSliderDataRow } from '../../types';
+import type { QSliderPropModelValue, QSliderPropData } from '../../types';
 
 export interface QSliderCaptionsProps {
   modelValue: QSliderPropModelValue;
-  data: QSliderDataRow[];
+  data: QSliderPropData[];
   disabled: boolean;
 }
 

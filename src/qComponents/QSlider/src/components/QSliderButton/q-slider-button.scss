@@ -30,7 +30,7 @@
       background-color: var(--color-primary);
     }
 
-    &:focus {
+    &:focus-visible {
       .q-slider-button__target {
         box-shadow: var(--box-shadow-hover);
       }
@@ -42,7 +42,7 @@
   }
 
   &:hover,
-  &:focus {
+  &:focus-visible {
     z-index: 3;
     outline: none;
 

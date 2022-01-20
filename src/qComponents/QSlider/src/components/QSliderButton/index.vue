@@ -11,11 +11,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, computed, onBeforeUnmount } from 'vue';
+import { defineComponent, ref, computed, onBeforeUnmount } from 'vue';
 
 import type {
   QSliderButtonProps,
-  QSliderButtonState,
   BtnClasses,
   BtnStyles,
   QSliderButtonInstance
@@ -42,16 +41,15 @@ export default defineComponent({
 
     disabled: {
       type: Boolean,
+      required: true,
       default: false
     }
   },
 
-  emits: ['update:position'],
+  emits: ['update:position', 'drag-start'],
 
   setup(props: QSliderButtonProps, ctx): QSliderButtonInstance {
-    const state = reactive<QSliderButtonState>({
-      isDragging: false
-    });
+    const isDragging = ref<boolean>(false);
 
     const btnClasses = computed<BtnClasses>(() => ({
       'q-slider-button_is-disabled': props.disabled
@@ -62,7 +60,7 @@ export default defineComponent({
     }));
 
     const handleDragging = ({ clientX }: MouseEvent): void => {
-      if (!state.isDragging || props.disabled) return;
+      if (!isDragging.value || props.disabled) return;
 
       let percent =
         ((clientX - Number(props.pathLeft)) / Number(props.pathWidth)) * 100;
@@ -77,13 +75,14 @@ export default defineComponent({
     };
 
     const handleDragEnd = (): void => {
-      state.isDragging = false;
+      isDragging.value = false;
     };
 
     const handleBtnDown = (event: MouseEvent): void => {
+      ctx.emit('drag-start');
       event.preventDefault();
 
-      state.isDragging = true;
+      isDragging.value = true;
 
       document.addEventListener('mousemove', handleDragging);
       document.addEventListener('mouseup', handleDragEnd);

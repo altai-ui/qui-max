@@ -1,10 +1,6 @@
 import type { ComputedRef } from 'vue';
 import type { Nullable } from '#/helpers';
 
-export interface QSliderButtonState {
-  isDragging: boolean;
-}
-
 export type BtnClasses = Record<string, boolean>;
 
 export interface BtnStyles {

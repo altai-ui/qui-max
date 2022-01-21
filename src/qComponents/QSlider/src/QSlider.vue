@@ -131,7 +131,7 @@ export default defineComponent({
     }));
 
     const setBtnPosition = (index: number): void => {
-      if (index < 1) {
+      if (index < 1 || props.data.length < 2) {
         state.btnPosition = '0%';
         return;
       }

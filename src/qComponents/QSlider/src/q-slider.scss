@@ -1,9 +1,9 @@
-@import './components/QSliderButton/q-slider-button.scss';
-@import './components/QSliderCaptions/q-slider-captions.scss';
+@import './components/QSliderButton/q-slider-button';
+@import './components/QSliderCaptions/q-slider-captions';
 
 .q-slider {
-  --box-shadow-line: inset 1px 1px 2px rgba(var(--color-rgb-blue), 0.2),
-    inset -1px -1px 1px rgba(var(--color-rgb-white), 0.7);
+  --box-shadow-line: inset 1px 1px 2px rgb(var(--color-rgb-blue) / 20%),
+    inset -1px -1px 1px rgb(var(--color-rgb-white) / 70%);
 
   position: relative;
   width: 100%;
@@ -23,7 +23,7 @@
     left: 0;
     z-index: 1;
     height: 8px;
-    background-color: rgba(var(--color-rgb-red), 0.32);
+    background-color: rgb(var(--color-rgb-red) / 32%);
     border-radius: 3px;
   }
 
@@ -41,8 +41,8 @@
     width: 4px;
     height: 8px;
     background-color: var(--color-tertiary-gray-light);
-    box-shadow: 1px 0 1px rgba(174, 174, 192, 0.2),
-      -1px 0 1px rgba(255, 255, 255, 0.7);
+    box-shadow: 1px 0 1px rgb(var(--color-rgb-blue) / 20%),
+      -1px 0 1px rgb(var(--color-rgb-white) / 70%);
 
     &:first-child,
     &:last-child {
@@ -56,7 +56,7 @@
     }
 
     .q-slider__bar {
-      background-color: rgba(var(--color-rgb-gray), 0.32);
+      background-color: rgb(var(--color-rgb-gray) / 32%);
     }
   }
 }

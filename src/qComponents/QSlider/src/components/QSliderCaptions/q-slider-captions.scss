@@ -12,7 +12,7 @@
     font-size: var(--font-size-base);
     font-weight: var(--font-weight-base);
     line-height: var(--line-height-base);
-    color: rgba(var(--color-rgb-gray), 0.32);
+    color: rgb(var(--color-rgb-gray) / 32%);
     text-align: center;
     cursor: pointer;
     background-color: transparent;

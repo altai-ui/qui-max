@@ -27,7 +27,7 @@ const QSliderStory: Story = args =>
   });
 
 QSliderStory.args = {
-  disabled: true,
+  disabled: false,
   data: [
     {
       value: 'easy',

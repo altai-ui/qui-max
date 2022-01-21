@@ -163,7 +163,7 @@ export default defineComponent({
 
     const setupValue = (): void => {
       const index = props.data.findIndex(
-        item => item.value === props.modelValue
+        ({ value }) => value === props.modelValue
       );
       setBtnPosition(index === -1 ? 0 : index);
     };

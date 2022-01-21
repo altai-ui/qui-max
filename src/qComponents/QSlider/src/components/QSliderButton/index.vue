@@ -52,7 +52,8 @@ export default defineComponent({
     const isDragging = ref<boolean>(false);
 
     const btnClasses = computed<BtnClasses>(() => ({
-      'q-slider-button_is-disabled': props.disabled
+      'q-slider-button_is-disabled': props.disabled,
+      'q-slider-button_is-dragging': isDragging.value
     }));
 
     const btnStyles = computed<BtnStyles>(() => ({

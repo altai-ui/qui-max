@@ -47,8 +47,8 @@ export default defineComponent({
     const getCaptionItemClasses = (
       value: QSliderPropModelValue
     ): Record<string, boolean> => ({
-      'q-slider-captions__item': true,
-      'q-slider-captions__item_active': value === props.modelValue
+      'q-slider-captions__caption': true,
+      'q-slider-captions__caption_active': value === props.modelValue
     });
 
     const handleCaptionClick = (value: QSliderPropModelValue): void => {
@@ -107,7 +107,7 @@ export default defineComponent({
             h(
               'div',
               {
-                class: 'q-slider-captions__item-inner',
+                class: 'q-slider-captions__slot',
                 style
               },
               [slot]

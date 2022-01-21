@@ -25,12 +25,19 @@
       -1px -1px 3px rgb(var(--color-rgb-white) / 25%);
   }
 
+  &_is-dragging {
+    .q-slider-button__target {
+      background-color: var(--color-primary);
+      box-shadow: none;
+    }
+  }
+
   &_is-disabled {
     .q-slider-button__target {
       background-color: var(--color-primary);
     }
 
-    &:focus-visible {
+    &.focus-visible {
       .q-slider-button__target {
         box-shadow: var(--box-shadow-hover);
       }
@@ -42,7 +49,7 @@
   }
 
   &:hover,
-  &:focus-visible {
+  &.focus-visible {
     z-index: 3;
     outline: none;
 

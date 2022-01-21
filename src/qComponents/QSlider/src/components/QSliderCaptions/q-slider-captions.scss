@@ -7,7 +7,7 @@
   min-height: 20px;
   margin-top: 8px;
 
-  &__item {
+  &__caption {
     padding: 0;
     font-size: var(--font-size-base);
     font-weight: var(--font-weight-base);
@@ -18,10 +18,6 @@
     background-color: transparent;
     border: none;
 
-    &-inner {
-      display: inline-block;
-    }
-
     &:first-child {
       text-align: left;
     }
@@ -30,10 +26,14 @@
       text-align: right;
     }
 
-    &:focus-visible,
+    &.focus-visible,
     &_active {
       color: var(--color-primary-black);
     }
+  }
+
+  &__slot {
+    display: inline-block;
   }
 
   &_is-disabled {

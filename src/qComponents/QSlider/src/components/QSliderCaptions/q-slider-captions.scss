@@ -18,12 +18,12 @@
     background-color: transparent;
     border: none;
 
-    &:first-child {
-      text-align: left;
-    }
-
     &:last-child {
       text-align: right;
+    }
+
+    &:first-child {
+      text-align: left;
     }
 
     &.focus-visible,

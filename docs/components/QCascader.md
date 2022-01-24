@@ -14,7 +14,7 @@ Cascade selection box. [Try story](https://qui-max.netlify.app/?path=/story/comp
 
 Default view:
 
-<iframe height="250" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QCascader.html"></iframe>
+<iframe height="250" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QCascader/main.html"></iframe>
 
 Using in template:
 
@@ -184,4 +184,152 @@ type QCascaderPropModelValue = Nullable<
 >;
 
 ```
+Use: 
+- `String` or `Number` for single value (`multiple` prop is `false`).
+- `Array` for several values (`multiple` prop is `true`).
 
+if you want to set `modelValue` in advance, make sure your `value` (or values) exists in `options`.
+
+### allLevelsShown
+
+- Type `Boolean`
+- Default: `true`
+
+Whether all path to value in tags is shown.
+
+Using in template:
+
+```vue {4}
+  <q-cascader
+    v-model="modelValue"
+    :options="options"
+    :all-levels-shown="false"
+  />
+```
+
+<iframe height="250" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QCascader/allLevelsShown.html"></iframe>
+
+### separator
+
+- Type `String`
+- Default: ` / `
+
+The separator symbol in the selected value.
+
+Using in template:
+
+```vue {4}
+  <q-cascader
+    v-model="modelValue"
+    :options="options"
+    separator=" | "
+  />
+```
+
+<iframe height="250" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QCascader/separator.html"></iframe>
+
+### multiple
+
+- Type `Boolean`
+- Default: `false`
+
+Whether QCascader accepts multiple values. Pass array as `modelValue`.
+
+```vue {4}
+  <q-cascader
+    v-model="modelValue"
+    :options="options"
+    multiple
+  />
+```
+
+<iframe height="250" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QCascader/multiple.html"></iframe>
+
+### clearable
+
+- Type `Boolean`
+- Default: `false`
+
+Whether QCascader is clearable.
+
+```vue {4}
+  <q-cascader
+    v-model="modelValue"
+    :options="options"
+    clearable
+  />
+```
+
+### disabled
+
+- Type `Boolean`
+- Default: `false`
+
+Whether QCascader is disabled.
+
+```vue {4}
+  <q-cascader
+    v-model="modelValue"
+    :options="options"
+    disabled
+  />
+```
+
+### checkStrictly
+
+- Type `Boolean`
+- Default: `false`
+
+Checks each value as independent. Use for selecting category as value instead of it's children.
+
+```vue {4}
+  <q-cascader
+    v-model="modelValue"
+    :options="options"
+    check-strictly
+  />
+```
+
+<iframe height="250" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QCascader/checkStrictly.html"></iframe>
+
+### collapseTags
+
+- Type `Boolean`
+- Default: `false`
+- Required props:
+  - `multiple="true"`
+
+Hide tags in counter.
+
+```vue {4,5}
+  <q-cascader
+    v-model="modelValue"
+    :options="options"
+    collapse-tags
+    multiple
+  />
+```
+
+<iframe height="250" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QCascader/collapseTags.html"></iframe>
+
+### placeholder
+
+- Type `String`
+- Default: `null`
+
+As native placeholder.
+
+### teleportTo
+
+- Type `String, HTMLElement`
+- Default: `null`
+
+Specifies a target element where QCascader will be moved from original layout place. (has to be a valid query selector, or an HTMLElement).
+
+```vue {4}
+  <q-cascader
+    v-model="modelValue"
+    :options="options"
+    teleport-to="body"
+  />
+```

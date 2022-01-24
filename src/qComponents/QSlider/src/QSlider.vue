@@ -51,7 +51,8 @@ import {
 import type { PropType } from 'vue';
 
 import type { Nullable } from '#/helpers';
-import type { QFormProvider, QFormItemProvider } from '@/qComponents';
+import type { QFormProvider } from '@/qComponents/QForm';
+import type { QFormItemProvider } from '@/qComponents/QFormItem';
 
 import QSliderButton from './components/QSliderButton';
 import QSliderBar from './components/QSliderBar';

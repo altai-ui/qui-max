@@ -41,8 +41,7 @@ export default defineComponent({
 
     disabled: {
       type: Boolean,
-      required: true,
-      default: false
+      required: true
     }
   },
 

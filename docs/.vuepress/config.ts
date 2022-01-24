@@ -40,10 +40,11 @@ export default defineUserConfig<DefaultThemeOptions, ViteBundlerOptions>({
         {
           text: 'Components',
           children: [
-            '/components/README.md',
             '/components/QButton.md',
             '/components/QBreadcrumbs.md',
-            '/components/QCascader.md'
+            '/components/QCascader.md',
+            '/components/QCheckbox.md',
+            '/components/QCheckboxGroup.md'
           ]
         }
       ],

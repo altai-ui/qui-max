@@ -1,0 +1,46 @@
+.q-slider-captions {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  width: 100%;
+  min-height: 20px;
+  margin-top: 8px;
+
+  &__caption {
+    padding: 0;
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-base);
+    line-height: var(--line-height-base);
+    color: rgb(var(--color-rgb-gray) / 32%);
+    text-align: center;
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+
+    &:last-child {
+      text-align: right;
+    }
+
+    &:first-child {
+      text-align: left;
+    }
+
+    &.focus-visible,
+    &_active {
+      color: var(--color-primary-black);
+    }
+  }
+
+  &__slot {
+    display: inline-block;
+  }
+
+  &_is-disabled {
+    cursor: not-allowed;
+
+    .q-slider-captions__item {
+      cursor: not-allowed;
+    }
+  }
+}

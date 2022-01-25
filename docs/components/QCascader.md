@@ -19,66 +19,65 @@ Default view:
 Using in template:
 
 ```vue
-  <q-cascader
-    v-model="modelValue"
-    :options="options"
-  />
+<q-cascader v-model="modelValue" :options="options" />
 ```
+
 Using in component instance:
 <CodeGroup>
-  <CodeGroupItem title="JS" active>
+<CodeGroupItem title="JS" active>
 
-  ```js
-    ...
-    setup() {
-      // options example
-      const options = [
-        {
-          value: 'guide',
-          label: 'Guide',
-          children: [
-            {
-              value: 'disciplines',
-              label: 'Disciplines',
-              children: [
-                {
-                  value: 'consistency',
-                  label: 'Consistency',
-                },
-              ]
-            },
-            {
-              value: 'alone',
-              label: 'Alone'
-            }
-          ]
-        },
-        {
-          value: 'disabled resource',
-          label: 'Disabled resource',
-          disabled: true,
-          children: [
-            {
-              value: 'some child',
-              label: 'Some child'
-            }
-          ]
-        },
-        {
-          value: 'resource',
-          label: 'Resource'
-        }
-      ];
+```js
+  ...
+  setup() {
+    // options example
+    const options = [
+      {
+        value: 'guide',
+        label: 'Guide',
+        children: [
+          {
+            value: 'disciplines',
+            label: 'Disciplines',
+            children: [
+              {
+                value: 'consistency',
+                label: 'Consistency',
+              },
+            ]
+          },
+          {
+            value: 'alone',
+            label: 'Alone'
+          }
+        ]
+      },
+      {
+        value: 'disabled resource',
+        label: 'Disabled resource',
+        disabled: true,
+        children: [
+          {
+            value: 'some child',
+            label: 'Some child'
+          }
+        ]
+      },
+      {
+        value: 'resource',
+        label: 'Resource'
+      }
+    ];
 
-      const modelValue = ref(null);
+    const modelValue = ref(null);
 
-      return {
-        options,
-        modelValue,
-      };
-    }
-  });
-  ```
+    return {
+      options,
+      modelValue,
+    };
+  }
+});
+```
+
   </CodeGroupItem>
   
   <CodeGroupItem title="TS">
@@ -133,32 +132,37 @@ Using in component instance:
         modelValue,
       };
     }
-  });
-  ```
 
-  </CodeGroupItem>
+});
+
+````
+
+</CodeGroupItem>
 </CodeGroup>
 
 ## Props
 
 ### options
 
-- Type: `Array`,
+- Type: `Array`
 - Default: `null`
 
 
 ```ts
 // import type from lib
 import type { QCascaderPropOptions } from '@qvant/qui-max';
-```
+````
 
 `options` MUST be an `Array` of `Object`s, each object MUST contain required fields:
-  - `value` - an option's value
-  - `label` - visible label
-  
-  Optional fields:
-  - `disabled` - disable an option
-  - `children` - child options
+
+- `value` - an option's value
+- `label` - visible label
+
+Optional fields:
+
+- `disabled` - disable an option
+- `children` - child options
+
 ```ts
 // option's type
 interface Option {
@@ -179,12 +183,11 @@ interface Option {
 import type { QCascaderPropModelValue } from '@qvant/qui-max';
 
 // TS type
-type QCascaderPropModelValue = Nullable<
-  number | string | (number | string)[]
->;
-
+type QCascaderPropModelValue = Nullable<number | string | (number | string)[]>;
 ```
-Use: 
+
+Use:
+
 - `String` or `Number` for single value (`multiple` prop is `false`).
 - `Array` for several values (`multiple` prop is `true`).
 
@@ -200,11 +203,7 @@ Whether all path to value in tags is shown.
 Using in template:
 
 ```vue {4}
-  <q-cascader
-    v-model="modelValue"
-    :options="options"
-    :all-levels-shown="false"
-  />
+<q-cascader v-model="modelValue" :options="options" :all-levels-shown="false" />
 ```
 
 <iframe height="250" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QCascader/allLevelsShown.html"></iframe>
@@ -212,18 +211,14 @@ Using in template:
 ### separator
 
 - Type `String`
-- Default: ` / `
+- Default: `/`
 
 The separator symbol in the selected value.
 
 Using in template:
 
 ```vue {4}
-  <q-cascader
-    v-model="modelValue"
-    :options="options"
-    separator=" | "
-  />
+<q-cascader v-model="modelValue" :options="options" separator=" | " />
 ```
 
 <iframe height="250" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QCascader/separator.html"></iframe>
@@ -236,11 +231,7 @@ Using in template:
 Whether QCascader accepts multiple values. Pass array as `modelValue`.
 
 ```vue {4}
-  <q-cascader
-    v-model="modelValue"
-    :options="options"
-    multiple
-  />
+<q-cascader v-model="modelValue" :options="options" multiple />
 ```
 
 <iframe height="250" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QCascader/multiple.html"></iframe>
@@ -253,11 +244,7 @@ Whether QCascader accepts multiple values. Pass array as `modelValue`.
 Whether QCascader is clearable.
 
 ```vue {4}
-  <q-cascader
-    v-model="modelValue"
-    :options="options"
-    clearable
-  />
+<q-cascader v-model="modelValue" :options="options" clearable />
 ```
 
 ### disabled
@@ -268,11 +255,7 @@ Whether QCascader is clearable.
 Whether QCascader is disabled.
 
 ```vue {4}
-  <q-cascader
-    v-model="modelValue"
-    :options="options"
-    disabled
-  />
+<q-cascader v-model="modelValue" :options="options" disabled />
 ```
 
 ### checkStrictly
@@ -283,11 +266,7 @@ Whether QCascader is disabled.
 Checks each value as independent. Use for selecting category as value instead of it's children.
 
 ```vue {4}
-  <q-cascader
-    v-model="modelValue"
-    :options="options"
-    check-strictly
-  />
+<q-cascader v-model="modelValue" :options="options" check-strictly />
 ```
 
 <iframe height="250" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QCascader/checkStrictly.html"></iframe>
@@ -302,12 +281,7 @@ Checks each value as independent. Use for selecting category as value instead of
 Hide tags in counter.
 
 ```vue {4,5}
-  <q-cascader
-    v-model="modelValue"
-    :options="options"
-    collapse-tags
-    multiple
-  />
+<q-cascader v-model="modelValue" :options="options" collapse-tags multiple />
 ```
 
 <iframe height="250" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QCascader/collapseTags.html"></iframe>
@@ -327,9 +301,5 @@ As native placeholder.
 Specifies a target element where QCascader will be moved from original layout place. (has to be a valid query selector, or an HTMLElement).
 
 ```vue {4}
-  <q-cascader
-    v-model="modelValue"
-    :options="options"
-    teleport-to="body"
-  />
+<q-cascader v-model="modelValue" :options="options" teleport-to="body" />
 ```

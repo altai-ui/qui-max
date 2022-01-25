@@ -2,7 +2,10 @@
   <head>
     <meta charset="UTF-8" />
     <!-- import CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/@qvant/qui/dist/qui.css" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/@qvant/qui-max/dist/style.css"
+    />
   </head>
 
   <body>
@@ -145,19 +148,18 @@
       }
     };
     const app = Vue.createApp(App);
-    const Qui = window['qui-max'].default;
-    app.use(Qui);
+    app.use(QuiMax.default);
     app.mount('#app');
   </script>
   <style>
     .block {
-      margin: 5px 0 0 20px;
       display: flex;
+      margin: 5px 0 0 20px;
     }
 
     .header {
-      margin: 10px 0 0 20px;
       display: flex;
+      margin: 10px 0 0 20px;
     }
   </style>
 </html>

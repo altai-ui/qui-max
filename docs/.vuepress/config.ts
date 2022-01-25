@@ -20,6 +20,7 @@ export default defineUserConfig<DefaultThemeOptions, ViteBundlerOptions>({
         children: [
           '/components/QButton.md',
           '/components/QBreadcrumbs.md',
+          '/components/QCascader.md',
           '/components/QCheckbox.md',
           '/components/QCheckboxGroup.md'
         ]
@@ -33,6 +34,26 @@ export default defineUserConfig<DefaultThemeOptions, ViteBundlerOptions>({
         text: 'Github',
         link: 'https://github.com/Qvant-lab/qui-max'
       }
-    ]
+    ],
+    sidebar: {
+      '/components/': [
+        {
+          text: 'Components',
+          children: [
+            '/components/QButton.md',
+            '/components/QBreadcrumbs.md',
+            '/components/QCascader.md',
+            '/components/QCheckbox.md',
+            '/components/QCheckboxGroup.md'
+          ]
+        }
+      ],
+      '/guide/': [
+        {
+          text: 'Guide',
+          children: ['/guide/README.md', '/guide/getting-started.md']
+        }
+      ]
+    }
   }
 });

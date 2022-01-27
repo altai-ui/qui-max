@@ -2,7 +2,10 @@
   <head>
     <meta charset="UTF-8" />
     <!-- import CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/@qvant/qui/dist/qui.css" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/@qvant/qui-max/dist/style.css"
+    />
   </head>
 
   <body>
@@ -29,16 +32,15 @@
   <script src="https://unpkg.com/@qvant/qui-max@latest"></script>
   <script>
     const app = Vue.createApp({});
-    const Qui = window['qui-max'].default;
-    app.use(Qui);
+    app.use(QuiMax.default);
     app.mount('#app');
   </script>
   <style>
     .block {
-      width: 200px;
-      margin: 20px 0 0 20px;
       display: flex;
       flex-direction: column;
+      width: 200px;
+      margin: 20px 0 0 20px;
     }
 
     .q-button svg {

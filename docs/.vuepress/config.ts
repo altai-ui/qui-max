@@ -18,18 +18,12 @@ export default defineUserConfig<DefaultThemeOptions, ViteBundlerOptions>({
         text: 'Components',
         link: '/components/',
         children: [
-          {
-            text: 'Layout',
-            link: '/components/Layout'
-          },
-          {
-            text: 'QButton',
-            link: '/components/QButton'
-          },
-          {
-            text: 'QBreadcrumbs',
-            link: '/components/QBreadcrumbs'
-          }
+          '/components/QButton.md',
+          '/components/QBreadcrumbs.md',
+          '/components/QCascader.md',
+          '/components/QCheckbox.md',
+          '/components/QCheckboxGroup.md',
+          '/components/Layout.md'
         ]
       },
       // NavbarGroup
@@ -41,6 +35,27 @@ export default defineUserConfig<DefaultThemeOptions, ViteBundlerOptions>({
         text: 'Github',
         link: 'https://github.com/Qvant-lab/qui-max'
       }
-    ]
+    ],
+    sidebar: {
+      '/components/': [
+        {
+          text: 'Components',
+          children: [
+            '/components/QButton.md',
+            '/components/QBreadcrumbs.md',
+            '/components/QCascader.md',
+            '/components/QCheckbox.md',
+            '/components/QCheckboxGroup.md',
+            '/components/Layout.md'
+          ]
+        }
+      ],
+      '/guide/': [
+        {
+          text: 'Guide',
+          children: ['/guide/README.md', '/guide/getting-started.md']
+        }
+      ]
+    }
   }
 });

@@ -29,8 +29,9 @@ import QProgressIndicatior from './QProgressIndicatior';
 import QRadio from './QRadio';
 import QRadioGroup from './QRadioGroup';
 import QRow from './QRow';
-import QSelect from './QSelect';
 import QScrollbar from './QScrollbar';
+import QSelect from './QSelect';
+import QSlider from './QSlider';
 import QTable from './QTable';
 import QTabPane from './QTabPane';
 import QTabs from './QTabs';
@@ -70,6 +71,7 @@ import './QRadioGroup/src/q-radio-group.scss';
 import './QRow/src/q-row.scss';
 import './QScrollbar/src/q-scrollbar.scss';
 import './QSelect/src/q-select.scss';
+import './QSlider/src/q-slider.scss';
 import './QTable/src/q-table.scss';
 import './QTabPane/src/q-tab-pane.scss';
 import './QTabs/src/q-tabs.scss';
@@ -137,6 +139,7 @@ const install = (app: App, config?: ConfigOptions): void => {
   app.use(QRow);
   app.use(QScrollbar);
   app.use(QSelect);
+  app.use(QSlider);
   app.use(QTable);
   app.use(QTabPane);
   app.use(QTabs);
@@ -175,6 +178,7 @@ export {
   QRow,
   QScrollbar,
   QSelect,
+  QSlider,
   QTable,
   QTabPane,
   QTabs,
@@ -211,8 +215,9 @@ export * from './QProgressIndicatior';
 export * from './QRadio';
 export * from './QRadioGroup';
 export * from './QRow';
-export * from './QSelect';
 export * from './QScrollbar';
+export * from './QSelect';
+export * from './QSlider';
 export * from './QTable';
 export * from './QTabPane';
 export * from './QTabs';

@@ -6,8 +6,8 @@ actions:
   - text: Get Started
     link: /guide/getting-started.html
     type: primary
-  - text: Introduction
-    link: /guide/
+  - text: Components
+    link: /components/QButton.html
     type: secondary
 features:
   - title: 🔩 30+ Vue 3 components

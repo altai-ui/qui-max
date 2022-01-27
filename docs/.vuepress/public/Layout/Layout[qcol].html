@@ -2,7 +2,10 @@
   <head>
     <meta charset="UTF-8" />
     <!-- import CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/@qvant/qui/dist/qui.css" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/@qvant/qui-max/dist/style.css"
+    />
   </head>
   <body>
     <div id="app">
@@ -33,8 +36,8 @@
   <!-- import Qui-Max -->
   <script src="https://unpkg.com/@qvant/qui-max@latest"></script>
   <script>
-    const App = {
-      data() {
+    const app = Vue.createApp({
+      setup() {
         const args = {
           cols: 4,
           offset: 3
@@ -42,12 +45,10 @@
         return {
           args
         };
-      },
-      methods: {}
-    };
-    const app = Vue.createApp(App);
-    const Qui = window.QuiMax.default;
-    app.use(Qui);
+      }
+    });
+
+    app.use(QuiMax.default);
     app.mount('#app');
   </script>
 </html>

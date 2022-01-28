@@ -54,9 +54,9 @@ import type { Nullable } from '#/helpers';
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
 
-import QSliderButton from './components/QSliderButton';
-import QSliderBar from './components/QSliderBar';
-import QSliderCaptions from './components/QSliderCaptions';
+import QSliderButton from './components/QSliderButton.vue';
+import QSliderBar from './components/QSliderBar.vue';
+import QSliderCaptions from './components/QSliderCaptions.vue';
 
 import type {
   QSliderPropModelValue,

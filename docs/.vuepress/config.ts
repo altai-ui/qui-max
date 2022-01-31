@@ -22,7 +22,8 @@ export default defineUserConfig<DefaultThemeOptions, ViteBundlerOptions>({
           '/components/QBreadcrumbs.md',
           '/components/QCascader.md',
           '/components/QCheckbox.md',
-          '/components/QCheckboxGroup.md'
+          '/components/QCheckboxGroup.md',
+          '/components/Layout.md'
         ]
       },
       // NavbarGroup
@@ -44,7 +45,8 @@ export default defineUserConfig<DefaultThemeOptions, ViteBundlerOptions>({
             '/components/QBreadcrumbs.md',
             '/components/QCascader.md',
             '/components/QCheckbox.md',
-            '/components/QCheckboxGroup.md'
+            '/components/QCheckboxGroup.md',
+            '/components/Layout.md'
           ]
         }
       ],

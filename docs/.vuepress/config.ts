@@ -18,12 +18,13 @@ export default defineUserConfig<DefaultThemeOptions, ViteBundlerOptions>({
         text: 'Components',
         link: '/components/',
         children: [
+          '/components/Layout.md',
           '/components/QButton.md',
           '/components/QBreadcrumbs.md',
           '/components/QCascader.md',
           '/components/QCheckbox.md',
           '/components/QCheckboxGroup.md',
-          '/components/Layout.md'
+          '/components/QCollapse.md'
         ]
       },
       // NavbarGroup
@@ -41,12 +42,13 @@ export default defineUserConfig<DefaultThemeOptions, ViteBundlerOptions>({
         {
           text: 'Components',
           children: [
+            '/components/Layout.md',
             '/components/QButton.md',
             '/components/QBreadcrumbs.md',
             '/components/QCascader.md',
             '/components/QCheckbox.md',
             '/components/QCheckboxGroup.md',
-            '/components/Layout.md'
+            '/components/QCollapse.md'
           ]
         }
       ],

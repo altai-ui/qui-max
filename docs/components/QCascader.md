@@ -303,3 +303,50 @@ Specifies a target element where QCascader will be moved from original layout pl
 ```vue {4}
 <q-cascader v-model="modelValue" :options="options" teleport-to="body" />
 ```
+
+## Events
+
+### update:modelValue
+
+Triggers when model updates.
+
+### change
+
+Alias for update:modelValue.
+
+### dropdown-close
+
+Triggers when dropdown closes.
+
+### dropdown-expand
+
+Triggers when dropdown expands.
+
+```vue
+  <q-cascader
+    v-model="modelValue"
+    :options="options"
+    @update:modelValue="handleValueUpdate"
+    @change="handleValueUpdate"
+    @dropdown-close="handleDropdownClose"
+    @dropdown-expand="handleDropdownExpand"
+  />
+```
+
+```js
+  setup() {
+    const handleValueUpdate = () => {
+      ...
+    }
+
+    const handleDropdownClose = () => {
+      ...
+    }
+
+    const handleDropdownExpand = () => {
+      ...
+    }
+
+    return { handleValueUpdate, handleDropdownClose, handleDropdownExpand }
+  }
+```

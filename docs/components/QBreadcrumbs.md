@@ -2,11 +2,17 @@
 
 Displays the location of the current page, shows all nested levels. Try a sandbox [story](https://qui-max.netlify.app/?path=/story/components-qbreadcrumbs--default)
 
+## When to use
+
+- When the system has more than two layers in a hierarchy.
+- When you need to inform the user of where they are.
+- When the user may need to navigate back to a higher level.
+
 ## Example
 
 Default view:
 
-<iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QBreadcrumbs.html"></iframe>
+<iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QBreadcrumbs/main.html"></iframe>
 
 Using in template:
 
@@ -123,4 +129,4 @@ Changes last crumb with custom string
 <q-breadcrumbs :route="route" last="Custom string" />
 ```
 
-<iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QBreadcrumbs[last].html"></iframe>
+<iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QBreadcrumbs/last.html"></iframe>

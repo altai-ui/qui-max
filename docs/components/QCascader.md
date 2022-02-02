@@ -79,63 +79,65 @@ Using in component instance:
 ```
 
   </CodeGroupItem>
-  
+
   <CodeGroupItem title="TS">
-  
-  ```ts
-  import type { QCascaderPropOptions, QCascaderPropModelValue } from '@qvant/qui-max';
-    ...
-    setup() {
-      // options example
-      const options: QCascaderPropOptions = [
-        {
-          value: 'guide',
-          label: 'Guide',
-          children: [
-            {
-              value: 'disciplines',
-              label: 'Disciplines',
-              children: [
-                {
-                  value: 'consistency',
-                  label: 'Consistency',
-                },
-              ]
-            },
-            {
-              value: 'alone',
-              label: 'Alone'
-            }
-          ]
-        },
-        {
-          value: 'disabled resource',
-          label: 'Disabled resource',
-          disabled: true,
-          children: [
-            {
-              value: 'some child',
-              label: 'Some child'
-            }
-          ]
-        },
-        {
-          value: 'resource',
-          label: 'Resource'
-        }
-      ];
 
-      const modelValue: QCascaderPropModelValue = ref(null);
+```ts
+import type {
+  QCascaderPropOptions,
+  QCascaderPropModelValue
+} from '@qvant/qui-max';
 
-      return {
-        options,
-        modelValue,
-      };
-    }
+export default defineComponent({
+  setup() {
+    // options example
+    const options: QCascaderPropOptions = [
+      {
+        value: 'guide',
+        label: 'Guide',
+        children: [
+          {
+            value: 'disciplines',
+            label: 'Disciplines',
+            children: [
+              {
+                value: 'consistency',
+                label: 'Consistency'
+              }
+            ]
+          },
+          {
+            value: 'alone',
+            label: 'Alone'
+          }
+        ]
+      },
+      {
+        value: 'disabled resource',
+        label: 'Disabled resource',
+        disabled: true,
+        children: [
+          {
+            value: 'some child',
+            label: 'Some child'
+          }
+        ]
+      },
+      {
+        value: 'resource',
+        label: 'Resource'
+      }
+    ];
 
+    const modelValue: QCascaderPropModelValue = ref(null);
+
+    return {
+      options,
+      modelValue
+    };
+  }
 });
-
-````
+```
 
 </CodeGroupItem>
 </CodeGroup>
@@ -147,11 +149,10 @@ Using in component instance:
 - Type: `Array`
 - Default: `null`
 
-
 ```ts
 // import type from lib
 import type { QCascaderPropOptions } from '@qvant/qui-max';
-````
+```
 
 `options` MUST be an `Array` of `Object`s, each object MUST contain required fields:
 
@@ -202,9 +203,15 @@ Whether all path to value in tags is shown.
 
 Using in template:
 
+<!-- prettier-ignore-start -->
 ```vue {4}
-<q-cascader v-model="modelValue" :options="options" :all-levels-shown="false" />
+<q-cascader
+  v-model="modelValue"
+  :options="options"
+  :all-levels-shown="false"
+/>
 ```
+<!-- prettier-ignore-end -->
 
 <iframe height="250" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QCascader/allLevelsShown.html"></iframe>
 
@@ -217,9 +224,15 @@ The separator symbol in the selected value.
 
 Using in template:
 
+<!-- prettier-ignore-start -->
 ```vue {4}
-<q-cascader v-model="modelValue" :options="options" separator=" | " />
+<q-cascader
+  v-model="modelValue"
+  :options="options"
+  separator=" | "
+/>
 ```
+<!-- prettier-ignore-end -->
 
 <iframe height="250" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QCascader/separator.html"></iframe>
 
@@ -230,9 +243,15 @@ Using in template:
 
 Whether QCascader accepts multiple values. Pass array as `modelValue`.
 
+<!-- prettier-ignore-start -->
 ```vue {4}
-<q-cascader v-model="modelValue" :options="options" multiple />
+<q-cascader
+  v-model="modelValue"
+  :options="options"
+  multiple
+/>
 ```
+<!-- prettier-ignore-end -->
 
 <iframe height="250" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QCascader/multiple.html"></iframe>
 
@@ -243,9 +262,15 @@ Whether QCascader accepts multiple values. Pass array as `modelValue`.
 
 Whether QCascader is clearable.
 
+<!-- prettier-ignore-start -->
 ```vue {4}
-<q-cascader v-model="modelValue" :options="options" clearable />
+<q-cascader
+  v-model="modelValue"
+  :options="options"
+  clearable
+/>
 ```
+<!-- prettier-ignore-end -->
 
 ### disabled
 
@@ -254,9 +279,15 @@ Whether QCascader is clearable.
 
 Whether QCascader is disabled.
 
+<!-- prettier-ignore-start -->
 ```vue {4}
-<q-cascader v-model="modelValue" :options="options" disabled />
+<q-cascader
+  v-model="modelValue"
+  :options="options"
+  disabled
+/>
 ```
+<!-- prettier-ignore-end -->
 
 ### checkStrictly
 
@@ -265,9 +296,15 @@ Whether QCascader is disabled.
 
 Checks each value as independent. Use for selecting category as value instead of it's children.
 
+<!-- prettier-ignore-start -->
 ```vue {4}
-<q-cascader v-model="modelValue" :options="options" check-strictly />
+<q-cascader
+  v-model="modelValue"
+  :options="options"
+  check-strictly
+/>
 ```
+<!-- prettier-ignore-end -->
 
 <iframe height="250" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QCascader/checkStrictly.html"></iframe>
 
@@ -280,9 +317,15 @@ Checks each value as independent. Use for selecting category as value instead of
 
 Hide tags in counter.
 
+<!-- prettier-ignore-start -->
 ```vue {4,5}
-<q-cascader v-model="modelValue" :options="options" collapse-tags multiple />
+<q-cascader
+  v-model="modelValue"
+  :options="options"
+  collapse-tags multiple
+/>
 ```
+<!-- prettier-ignore-end -->
 
 <iframe height="250" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QCascader/collapseTags.html"></iframe>
 
@@ -300,9 +343,15 @@ As native placeholder.
 
 Specifies a target element where QCascader will be moved from original layout place. (has to be a valid query selector, or an HTMLElement).
 
+<!-- prettier-ignore-start -->
 ```vue {4}
-<q-cascader v-model="modelValue" :options="options" teleport-to="body" />
+<q-cascader
+  v-model="modelValue"
+  :options="options"
+  teleport-to="body"
+/>
 ```
+<!-- prettier-ignore-end -->
 
 ## Events
 

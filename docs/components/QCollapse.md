@@ -16,40 +16,40 @@ Using in template:
 
 ```vue
 <q-collapse v-model="activeNames">
-      <q-collapse-item title="Consistency" name="consistency">
-        <div>
-          Consistent with real life: in line with the process and logic of real
-          life, and comply with languages and habits that the users are used to;
-        </div>
-        <div>
-          Consistent within interface: all elements should be consistent, such as:
-          design style, icons and texts, position of elements, etc.
-        </div>
-      </q-collapse-item>
-      <q-collapse-item title="Efficiency">
-        <div>
-          Simplify the process: keep operating process simple and intuitive;
-        </div>
-        <div>
-          Definite and clear: enunciate your intentions clearly so that the users
-          can quickly understand and make decisions;
-        </div>
-        <div>
-          Easy to identify: the interface should be straightforward, which helps
-          the users to identify and frees them from memorizing and recalling.
-        </div>
-      </q-collapse-item>
-      <q-collapse-item title="Controllability">
-        <div>
-          Decision making: giving advices about operations is acceptable, but do
-          not make decisions for the users;
-        </div>
-        <div>
-          Controlled consequences: users should be granted the freedom to operate,
-          including canceling, aborting or terminating current operation.
-        </div>
-      </q-collapse-item>
-    </q-collapse>
+  <q-collapse-item title="Consistency" name="consistency">
+    <div>
+      Consistent with real life: in line with the process and logic of real
+      life, and comply with languages and habits that the users are used to;
+    </div>
+    <div>
+      Consistent within interface: all elements should be consistent, such as:
+      design style, icons and texts, position of elements, etc.
+    </div>
+  </q-collapse-item>
+  <q-collapse-item title="Efficiency">
+    <div>
+      Simplify the process: keep operating process simple and intuitive;
+    </div>
+    <div>
+      Definite and clear: enunciate your intentions clearly so that the users
+      can quickly understand and make decisions;
+    </div>
+    <div>
+      Easy to identify: the interface should be straightforward, which helps
+      the users to identify and frees them from memorizing and recalling.
+    </div>
+  </q-collapse-item>
+  <q-collapse-item title="Controllability">
+    <div>
+      Decision making: giving advices about operations is acceptable, but do
+      not make decisions for the users;
+    </div>
+    <div>
+      Controlled consequences: users should be granted the freedom to operate,
+      including canceling, aborting or terminating current operation.
+    </div>
+  </q-collapse-item>
+</q-collapse>
 ```
 
 Using in component instance:
@@ -91,8 +91,8 @@ Using in template:
 
 ```vue
 <q-collapse v-model="activeNames" accordion>
-    ...
-  </q-collapse>
+  ...
+</q-collapse>
 ```
 
 <iframe height="450" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QCollapse/accordion.html"></iframe>
@@ -113,8 +113,8 @@ Alias for update:modelValue
   @update:modelValue="handleValueUpdate"
   @change="handleValueUpdate"
 >
-    ...
-  </q-collapse>
+  ...
+</q-collapse>
 ```
 
 ```js

@@ -88,9 +88,9 @@ Code Example
 <q-form :model="model" :rules="rules">
   <q-form-item prop="checkbox">
     <q-checkbox
-        v-model="model.checkbox"
-        label="Required checkbox"
-        validate-event
+      v-model="model.checkbox"
+      label="Required checkbox"
+      validate-event
     />
   </q-form-item>
 </q-form>

@@ -92,7 +92,7 @@ Sets the minimum number of checkboxes, that can be selected
     v-for="city in cities"
     :key="city"
     :label="city"
-  /> 
+  />
 </q-checkbox-group>
 ```
 
@@ -129,7 +129,7 @@ Allows to disable all inner QCheckboxes
   <q-checkbox
     v-for="city in cities"
     :key="city"
-    :label="city" 
+    :label="city"
   />
 </q-checkbox-group>
 ```
@@ -167,11 +167,20 @@ Alias for [update:modelValue](#update-modelvalue)
 
 In template:
 
+<!-- prettier-ignore-start -->
 ```vue {1, 8}
-<q-checkbox-group v-model="checkedCities" @change="changeHandler">
-  <q-checkbox v-for="city in cities" :key="city" :label="city" />
+<q-checkbox-group
+  v-model="checkedCities"
+  @change="changeHandler"
+>
+  <q-checkbox
+    v-for="city in cities"
+    :key="city"
+    :label="city"
+  />
 </q-checkbox-group>
 ```
+<!-- prettier-ignore-end -->
 
 In setup:
 

@@ -32,7 +32,7 @@
       :model-value="modelValue"
       :data="data"
       :disabled="isDisabled"
-      @update:modelValue="handleCaptionChange"
+      @update:model-value="handleCaptionChange"
     />
   </div>
 </template>

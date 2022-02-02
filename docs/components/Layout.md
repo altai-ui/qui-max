@@ -43,25 +43,25 @@ Default view code example below:
 
 ```ts
 const args = {
-    tag: 'div',
-    cols: 4,
-    offset: 3
+  tag: 'div',
+  cols: 4,
+  offset: 3
 };
 ```
 
 <iframe height="340" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/Layout/Layout[qcol].html"></iframe>
 
 ```vue
-  <q-row class="block__row">
-    <q-col
-        class="block__col"
-        :tag="args.tag"
-        :cols="args.cols"
-        :offset="args.offset"
-    >
-      <div class="block__content">Lorem ipsum dolor</div>
-    </q-col>
-  </q-row>
+<q-row class="block__row">
+  <q-col
+      class="block__col"
+      :tag="args.tag"
+      :cols="args.cols"
+      :offset="args.offset"
+  >
+    <div class="block__content">Lorem ipsum dolor</div>
+  </q-col>
+</q-row>
 ```
 
 ### tag
@@ -94,24 +94,24 @@ Columns count for the left margin of the current element.
 `QRow` uses these props
 
 ```vue
-  <q-row
-    class="block__row"
-    :align-v="args.alignV"
-    :align-h="args.alignH"
-    :tag="args.tag"
-  >
-    <q-col class="block-col" cols="2">
-      <div class="block__content">2</div>
-    </q-col>
+<q-row
+  class="block__row"
+  :align-v="args.alignV"
+  :align-h="args.alignH"
+  :tag="args.tag"
+>
+  <q-col class="block-col" cols="2">
+    <div class="block__content">2</div>
+  </q-col>
 
-    <q-col class="block__col" cols="4">
-      <div class="block__content">4</div>
-    </q-col>
+  <q-col class="block__col" cols="4">
+    <div class="block__content">4</div>
+  </q-col>
 
-    <q-col class="block__col" cols="2">
-      <div class="block__content">2</div>
-    </q-col>
-  </q-row>
+  <q-col class="block__col" cols="2">
+    <div class="block__content">2</div>
+  </q-col>
+</q-row>
 ```
 
 ### tag

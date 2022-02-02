@@ -6,7 +6,6 @@ Collapse groups a collection of contents in tabs.
 
 - Can be used to show or hide content to keep the page clean.
 
-
 ## Example
 
 Default view:
@@ -16,7 +15,7 @@ Default view:
 Using in template:
 
 ```vue
-    <q-collapse v-model="activeNames">
+<q-collapse v-model="activeNames">
       <q-collapse-item title="Consistency" name="consistency">
         <div>
           Consistent with real life: in line with the process and logic of real
@@ -91,10 +90,7 @@ Shrink all panels, except the last selected.
 Using in template:
 
 ```vue
-  <q-collapse
-    v-model="activeNames"
-    accordion
-  >
+<q-collapse v-model="activeNames" accordion>
     ...
   </q-collapse>
 ```
@@ -112,11 +108,11 @@ Triggers when model updates.
 Alias for update:modelValue
 
 ```vue
-  <q-collapse
-    v-model="activeNames"
-    @update:modelValue="handleValueUpdate"
-    @change="handleValueUpdate"
-  >
+<q-collapse
+  v-model="activeNames"
+  @update:modelValue="handleValueUpdate"
+  @change="handleValueUpdate"
+>
     ...
   </q-collapse>
 ```

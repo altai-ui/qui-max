@@ -6,7 +6,6 @@ Being used to pick color value.
 
 - When you need to pick a color as value.
 
-
 ## Example
 
 Default view:
@@ -16,7 +15,7 @@ Default view:
 Using in template:
 
 ```vue
-  <q-color-picker v-model="color" />
+<q-color-picker v-model="color" />
 ```
 
 Using in component instance:
@@ -57,10 +56,10 @@ We use Popper.js to show tooltips & popovers. See full options guide [here](http
 export type QColorPickerPropPopperOptions = Nullable<Partial<Options>>;
 
 export declare type Options = {
-    placement: Placement;
-    modifiers: Array<Partial<Modifier<any, any>>>;
-    strategy: PositioningStrategy;
-    onFirstUpdate?: (arg0: Partial<State>) => void;
+  placement: Placement;
+  modifiers: Array<Partial<Modifier<any, any>>>;
+  strategy: PositioningStrategy;
+  onFirstUpdate?: (arg0: Partial<State>) => void;
 };
 ```
 
@@ -72,10 +71,7 @@ export declare type Options = {
 Whether to disable the ColorPicker.
 
 ```vue {3}
-  <q-color-picker
-    v-model="color"
-    disabled
-  />
+<q-color-picker v-model="color" disabled />
 ```
 
 ### clearable
@@ -86,10 +82,7 @@ Whether to disable the ColorPicker.
 Whether to show clear button.
 
 ```vue {3}
-  <q-color-picker
-    v-model="color"
-    clearable
-  />
+<q-color-picker v-model="color" clearable />
 ```
 
 ### alphaShown
@@ -100,10 +93,7 @@ Whether to show clear button.
 Whether to display the alpha slider.
 
 ```vue {3}
-  <q-color-picker
-    v-model="color"
-    alpha-shown
-  />
+<q-color-picker v-model="color" alpha-shown />
 ```
 
 <iframe height="350" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QColorpicker/alpha-shown.html"></iframe>
@@ -116,10 +106,7 @@ Whether to display the alpha slider.
 Output color format.
 
 ```vue {3}
-  <q-color-picker
-    v-model="color"
-    color-format="rgb"
-  />
+<q-color-picker v-model="color" color-format="rgb" />
 ```
 
 ### placement
@@ -130,18 +117,23 @@ Output color format.
 Sets picker placement around the button.
 
 ```vue {3}
-  <q-color-picker
-    v-model="color"
-    placement="bottom"
-  />
+<q-color-picker v-model="color" placement="bottom" />
 ```
 
 ```ts
 // ts type
 type Placement = AutoPlacement | BasePlacement | VariationPlacement;
-type AutoPlacement = "auto" | "auto-start" | "auto-end";
-type BasePlacement = "top" | "bottom" | "right" | "left";
-type VariationPlacement = "top-start" | "top-end" | "bottom-start" | "bottom-end" | "right-start" | "right-end" | "left-start" | "left-end";
+type AutoPlacement = 'auto' | 'auto-start' | 'auto-end';
+type BasePlacement = 'top' | 'bottom' | 'right' | 'left';
+type VariationPlacement =
+  | 'top-start'
+  | 'top-end'
+  | 'bottom-start'
+  | 'bottom-end'
+  | 'right-start'
+  | 'right-end'
+  | 'left-start'
+  | 'left-end';
 ```
 
 ### teleportTo
@@ -172,10 +164,11 @@ Alias for update:modelValue.
 Optional. HTML element that triggers dropdown
 
 ```vue
-  <q-color-picker v-model="color">
+<q-color-picker v-model="color">
     <template v-slot:trigger>
       <q-button size="small">Custom trigger</q-button>
     </template>
   </q-color-picker>
 ```
+
 <iframe height="350" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QColorpicker/trigger.html"></iframe>

@@ -323,14 +323,14 @@ Triggers when dropdown closes.
 Triggers when dropdown expands.
 
 ```vue
-  <q-cascader
-    v-model="modelValue"
-    :options="options"
-    @update:modelValue="handleValueUpdate"
-    @change="handleValueUpdate"
-    @dropdown-close="handleDropdownClose"
-    @dropdown-expand="handleDropdownExpand"
-  />
+<q-cascader
+  v-model="modelValue"
+  :options="options"
+  @update:modelValue="handleValueUpdate"
+  @change="handleValueUpdate"
+  @dropdown-close="handleDropdownClose"
+  @dropdown-expand="handleDropdownExpand"
+/>
 ```
 
 ```js

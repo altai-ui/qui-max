@@ -145,6 +145,10 @@ $-base-path: '..' !default;
   content: '\e91c';
 }
 
+.q-icon-refresh-fill::before {
+  content: '\e96c';
+}
+
 .q-icon-question::before {
   content: '\e91d';
 }

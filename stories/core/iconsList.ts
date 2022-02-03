@@ -78,6 +78,7 @@ export default [
   'q-icon-proceed-2',
   'q-icon-question-mark',
   'q-icon-question',
+  'q-icon-refresh-fill',
   'q-icon-reverse',
   'q-icon-router-arrow-down',
   'q-icon-router',

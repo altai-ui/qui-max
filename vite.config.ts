@@ -89,10 +89,10 @@ export default defineConfig({
           targets: [
             {
               src: [
-                'src/fonts/Gilroy-Bold.woff',
-                'src/fonts/Gilroy-ExtraBold.woff',
-                'src/fonts/Gilroy-Medium.woff',
-                'src/fonts/Gilroy-Regular.woff'
+                'src/fonts/Urbanist-Bold.woff2',
+                'src/fonts/Urbanist-ExtraBold.woff2',
+                'src/fonts/Urbanist-Medium.woff2',
+                'src/fonts/Urbanist-Regular.woff2'
               ],
               dest: 'dist/fonts'
             },

@@ -6,7 +6,6 @@ Being used to pick color value.
 
 - When you need to pick a color as value.
 
-
 ## Example
 
 Default view:
@@ -16,7 +15,7 @@ Default view:
 Using in template:
 
 ```vue
-  <q-color-picker v-model="color" />
+<q-color-picker v-model="color" />
 ```
 
 Using in component instance:
@@ -57,10 +56,10 @@ We use Popper.js to show tooltips & popovers. See full options guide [here](http
 export type QColorPickerPropPopperOptions = Nullable<Partial<Options>>;
 
 export declare type Options = {
-    placement: Placement;
-    modifiers: Array<Partial<Modifier<any, any>>>;
-    strategy: PositioningStrategy;
-    onFirstUpdate?: (arg0: Partial<State>) => void;
+  placement: Placement;
+  modifiers: Array<Partial<Modifier<any, any>>>;
+  strategy: PositioningStrategy;
+  onFirstUpdate?: (arg0: Partial<State>) => void;
 };
 ```
 
@@ -71,12 +70,14 @@ export declare type Options = {
 
 Whether to disable the ColorPicker.
 
+<!-- prettier-ignore-start -->
 ```vue {3}
-  <q-color-picker
-    v-model="color"
-    disabled
-  />
+<q-color-picker
+  v-model="color"
+  disabled
+/>
 ```
+<!-- prettier-ignore-end -->
 
 ### clearable
 
@@ -85,12 +86,14 @@ Whether to disable the ColorPicker.
 
 Whether to show clear button.
 
+<!-- prettier-ignore-start -->
 ```vue {3}
-  <q-color-picker
-    v-model="color"
-    clearable
-  />
+<q-color-picker
+  v-model="color"
+  clearable
+/>
 ```
+<!-- prettier-ignore-end -->
 
 ### alphaShown
 
@@ -99,12 +102,14 @@ Whether to show clear button.
 
 Whether to display the alpha slider.
 
+<!-- prettier-ignore-start -->
 ```vue {3}
-  <q-color-picker
-    v-model="color"
-    alpha-shown
-  />
+<q-color-picker
+  v-model="color"
+  alpha-shown
+/>
 ```
+<!-- prettier-ignore-end -->
 
 <iframe height="350" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QColorpicker/alpha-shown.html"></iframe>
 
@@ -115,12 +120,14 @@ Whether to display the alpha slider.
 
 Output color format.
 
+<!-- prettier-ignore-start -->
 ```vue {3}
-  <q-color-picker
-    v-model="color"
-    color-format="rgb"
-  />
+<q-color-picker
+  v-model="color"
+  color-format="rgb"
+/>
 ```
+<!-- prettier-ignore-end -->
 
 ### placement
 
@@ -129,19 +136,29 @@ Output color format.
 
 Sets picker placement around the button.
 
+<!-- prettier-ignore-start -->
 ```vue {3}
-  <q-color-picker
-    v-model="color"
-    placement="bottom"
-  />
+<q-color-picker
+  v-model="color"
+  placement="bottom"
+/>
 ```
+<!-- prettier-ignore-end -->
 
 ```ts
 // ts type
 type Placement = AutoPlacement | BasePlacement | VariationPlacement;
-type AutoPlacement = "auto" | "auto-start" | "auto-end";
-type BasePlacement = "top" | "bottom" | "right" | "left";
-type VariationPlacement = "top-start" | "top-end" | "bottom-start" | "bottom-end" | "right-start" | "right-end" | "left-start" | "left-end";
+type AutoPlacement = 'auto' | 'auto-start' | 'auto-end';
+type BasePlacement = 'top' | 'bottom' | 'right' | 'left';
+type VariationPlacement =
+  | 'top-start'
+  | 'top-end'
+  | 'bottom-start'
+  | 'bottom-end'
+  | 'right-start'
+  | 'right-end'
+  | 'left-start'
+  | 'left-end';
 ```
 
 ### teleportTo
@@ -151,9 +168,14 @@ type VariationPlacement = "top-start" | "top-end" | "bottom-start" | "bottom-end
 
 Specifies a target element where QColorpicker will be moved from original layout place. (has to be a valid query selector, or an HTMLElement).
 
+<!-- prettier-ignore-start -->
 ```vue {4}
-<q-color-picker v-model="modelValue" teleport-to="body" />
+<q-color-picker
+  v-model="modelValue"
+  teleport-to="body"
+/>
 ```
+<!-- prettier-ignore-end -->
 
 ## Events
 
@@ -172,10 +194,11 @@ Alias for update:modelValue.
 Optional. HTML element that triggers dropdown
 
 ```vue
-  <q-color-picker v-model="color">
-    <template v-slot:trigger>
-      <q-button size="small">Custom trigger</q-button>
-    </template>
-  </q-color-picker>
+<q-color-picker v-model="color">
+  <template v-slot:trigger>
+    <q-button size="small">Custom trigger</q-button>
+  </template>
+</q-color-picker>
 ```
+
 <iframe height="350" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QColorpicker/trigger.html"></iframe>

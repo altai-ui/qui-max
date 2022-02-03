@@ -685,7 +685,7 @@ export default defineComponent({
      * @public
      */
     const toggleOptionSelection = (option: QOptionModel): void => {
-      if (!option.value) return;
+      if (isNil(option.value)) return;
       if (props.multiple) {
         if (Array.isArray(props.modelValue)) {
           const value = [...props.modelValue];

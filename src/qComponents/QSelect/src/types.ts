@@ -39,7 +39,7 @@ interface QSelectInstance {
   handleBlur: (event: MouseEvent) => void;
   clearSelected: () => void;
   getValueIndex: (
-    arr: Optional<(string | number | QOptionPropValue)[]>,
+    arr: (string | number | QOptionPropValue)[],
     optionValue: string | number | QOptionPropValue
   ) => number;
   toggleOptionSelection: (option: QOptionModel) => void;

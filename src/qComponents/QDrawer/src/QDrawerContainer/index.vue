@@ -172,8 +172,9 @@ export default defineComponent({
       document.activeElement as Nullable<HTMLElement>;
 
     const handleDocumentFocus = (event: FocusEvent): void => {
-      if (drawer.value?.contains(event.target as HTMLElement)) {
-        drawer.value.focus();
+      const drawerValue = drawer.value;
+      if (drawerValue && !drawerValue.contains(event.target as HTMLElement)) {
+        drawerValue.focus();
       }
     };
 

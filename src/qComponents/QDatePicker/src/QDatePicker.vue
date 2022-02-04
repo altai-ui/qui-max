@@ -595,6 +595,8 @@ export default defineComponent({
         referenceEl = rangedReference.value;
       }
 
+      if (!panelEl) return;
+
       state.popper = createPopper(referenceEl, panelEl, {
         modifiers: [
           {

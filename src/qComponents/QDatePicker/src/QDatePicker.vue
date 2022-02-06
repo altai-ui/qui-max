@@ -589,13 +589,14 @@ export default defineComponent({
     };
 
     const popperInit = (): void => {
-      const panelEl = panel.value?.$el ?? null;
+      const panelEl = panel.value?.$el;
+
+      if (!panelEl) return;
+
       let referenceEl = reference.value?.$el;
       if (isRanged.value) {
         referenceEl = rangedReference.value;
       }
-
-      if (!panelEl) return;
 
       state.popper = createPopper(referenceEl, panelEl, {
         modifiers: [

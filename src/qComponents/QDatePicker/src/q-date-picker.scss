@@ -119,14 +119,14 @@
           cursor: not-allowed;
         }
       }
+
+      .q-form-item_is-error & {
+        border: var(--border-error);
+      }
     }
   }
 
   .q-input__icon {
     margin-left: auto;
-  }
-
-  .q-form-item_is-error & {
-    border: var(--border-error);
   }
 }

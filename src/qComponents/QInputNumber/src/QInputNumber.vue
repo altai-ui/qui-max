@@ -328,7 +328,6 @@ export default defineComponent({
       }
 
       ctx.emit('input', value);
-      ctx.emit('change', value);
       if (props.validateEvent) qFormItem?.validateField('input');
     };
 

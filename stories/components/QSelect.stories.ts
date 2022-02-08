@@ -17,12 +17,12 @@ const storyMetadata: Meta = {
 
 const options = [
   {
-    value: 'value1',
-    label: 'Option 1'
+    value: 0,
+    label: 'Option Zero'
   },
   {
-    value: 2,
-    label: 'Option 2'
+    value: 'value1',
+    label: 'Option 1'
   },
   {
     value: 'value3',

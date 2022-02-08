@@ -234,14 +234,16 @@ const updateValue = ({
   )}\\d{0,${precision}})?`;
   const reg = new RegExp(match);
 
+  const preparedNumberValue =
+    numberValue
+      .match(reg)?.[0]
+      .replace(getLocaleSeparator('decimal', localizationTag), '.') ||
+    numberValue;
+
   return {
     target,
-    numberValue: Number(
-      numberValue
-        .match(reg)?.[0]
-        .replace(getLocaleSeparator('decimal', localizationTag), '.') ||
-        numberValue
-    ),
+    numberValue:
+      preparedNumberValue === '' ? null : Number(preparedNumberValue),
     prevPart,
     lastPart,
     key
@@ -273,7 +275,10 @@ const insertText = (args: InsertedTextArgs): InsertedTextParts => {
     const deletedChar =
       key === 'Delete' ? value[selectionStart] : value[selectionStart - 1];
 
-    if (selectionEnd === selectionStart && isCharReadonly(deletedChar))
+    if (
+      selectionEnd === selectionStart &&
+      (isCharReadonly(deletedChar) || deletedChar === '0')
+    )
       return {
         target,
         numberValue: null,

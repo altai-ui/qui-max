@@ -222,6 +222,7 @@ export default defineComponent({
       prefix: props.prefix,
       suffix: props.suffix
     }));
+
     const precision = computed<Nullable<number>>(() =>
       props.precision && props.precision < 0 ? 0 : props.precision
     );
@@ -376,17 +377,20 @@ export default defineComponent({
         });
         return;
       }
+
       if (numberValue === null) {
+        changesEmmiter(numberValue, 'input');
         const correction = key === 'Backspace' ? -1 : 1;
-        setCursorPosition(target, selectionStart + correction);
+        nextTick(() => {
+          setCursorPosition(target, selectionStart + correction);
+        });
         return;
       }
 
       if (
         (numberValue.toString().includes(decimalSeparator.value) ||
-          numberValue.toString().includes(`-${decimalSeparator.value}`) ||
-          !numberValue) &&
-        !Number(numberValue) &&
+          numberValue.toString().includes(`-${decimalSeparator.value}`)) &&
+        numberValue === null &&
         inputRef?.value?.input
       ) {
         inputRef.value.input.value = '';
@@ -544,6 +548,7 @@ export default defineComponent({
         case 'Backspace':
         case 'Delete':
           event.preventDefault();
+
           if (
             (lastBeforeMinus.test(cleanValue) ||
               (selectionNewEnd === cleanValue.length &&
@@ -554,6 +559,7 @@ export default defineComponent({
             inputRef.value.input.value = '-';
             return;
           }
+
           if (
             ((event.key === 'Backspace' && selectionNewStart === 0) ||
               (event.key === 'Delete' &&
@@ -561,6 +567,7 @@ export default defineComponent({
             selectionStart === selectionEnd
           )
             return;
+
           if (
             selectionNewEnd - selectionNewStart === cleanValue.length ||
             cleanValue === '-'

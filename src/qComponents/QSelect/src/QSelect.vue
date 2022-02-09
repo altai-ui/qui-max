@@ -98,7 +98,6 @@ import {
   onBeforeUnmount,
   nextTick,
   provide,
-  PropType,
   toRefs,
   toRef
 } from 'vue';
@@ -113,6 +112,7 @@ import {
   isNumber
 } from 'lodash-es';
 import { createPopper } from '@popperjs/core';
+import type { PropType } from 'vue';
 
 import { t } from '@/qComponents/locale';
 import { isServer } from '@/qComponents/constants/isServer';
@@ -547,11 +547,15 @@ export default defineComponent({
     watch(
       () => props.modelValue,
       (val, oldVal) => {
-        setSelected();
+        nextTick(() => {
+          setSelected();
+        });
+
         if (!isEqual(val, oldVal)) {
           qFormItem?.validateField('change');
         }
-      }
+      },
+      { deep: true }
     );
 
     watch(

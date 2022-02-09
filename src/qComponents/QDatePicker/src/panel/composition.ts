@@ -2,6 +2,8 @@ import {
   addYears,
   endOfDay,
   endOfDecade,
+  endOfMonth,
+  endOfYear,
   startOfDecade,
   subYears
 } from 'date-fns';
@@ -10,7 +12,7 @@ import { isDate } from 'lodash-es';
 import { getConfig } from '@/qComponents/config';
 import type { Nullable } from '#/helpers';
 
-import type { RangePickValue, RangeState } from '../commonTypes';
+import type { RangePickValue, RangeState, RangeType } from '../commonTypes';
 import {
   CELLS_COUNT_IN_YEAR_RANGE,
   LEFT_PERIOD_PANEL_START_INDEX,
@@ -122,16 +124,37 @@ const getPeriodNextNodeIndex = (
 
 const getRangeChangedState = (
   newValue: RangePickValue,
-  currentRangeState: RangeState
+  currentRangeState: RangeState,
+  type: RangeType
 ): {
   maxDate: Nullable<Date>;
   minDate: Nullable<Date>;
   rangeState: RangeState;
-} => ({
-  maxDate: newValue.maxDate ? endOfDay(newValue.maxDate) : newValue.maxDate,
-  minDate: newValue.minDate,
-  rangeState: newValue.rangeState ? newValue.rangeState : currentRangeState
-});
+} => {
+  let maxDate = null;
+
+  if (newValue.maxDate) {
+    switch (type) {
+      case 'yearrange':
+        maxDate = endOfYear(newValue.maxDate);
+        break;
+      case 'monthrange':
+        maxDate = endOfMonth(newValue.maxDate);
+        break;
+      case 'daterange':
+        maxDate = endOfDay(newValue.maxDate);
+        break;
+      default:
+        maxDate = newValue.maxDate;
+    }
+  }
+
+  return {
+    maxDate: maxDate ?? newValue.maxDate,
+    minDate: newValue.minDate,
+    rangeState: newValue.rangeState ? newValue.rangeState : currentRangeState
+  };
+};
 
 export {
   leftYearComposable,

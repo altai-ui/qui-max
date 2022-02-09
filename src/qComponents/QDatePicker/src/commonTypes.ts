@@ -12,6 +12,8 @@ type RangePickValue = {
   rangeState: RangeState;
 };
 
+type RangeType = 'daterange' | 'monthrange' | 'yearrange';
+
 interface DateCellModel {
   row: number;
   column: number;
@@ -40,5 +42,6 @@ export {
   RangeState,
   DateCellModel,
   TableProps,
-  TablePropSelectionMode
+  TablePropSelectionMode,
+  RangeType
 };

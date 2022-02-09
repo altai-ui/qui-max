@@ -150,7 +150,7 @@ const getRangeChangedState = (
   }
 
   return {
-    maxDate: maxDate ?? newValue.maxDate,
+    maxDate,
     minDate: newValue.minDate,
     rangeState: newValue.rangeState ? newValue.rangeState : currentRangeState
   };

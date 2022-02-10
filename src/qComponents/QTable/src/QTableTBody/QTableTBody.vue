@@ -2,7 +2,7 @@
   <tbody class="q-table-t-body">
     <q-table-t-body-row
       v-for="(row, index) in rowsList"
-      :key="randId(`body-row-${index}-`)"
+      :key="`body-row-${getHash(row)}-${index}`"
       :row="row"
       :row-index="index"
     />
@@ -11,6 +11,7 @@
 
 <script lang="ts">
 import { defineComponent, computed, inject } from 'vue';
+import getHash from 'object-hash';
 
 import { randId } from '@/qComponents/helpers';
 
@@ -40,7 +41,8 @@ export default defineComponent({
 
     return {
       randId,
-      rowsList
+      rowsList,
+      getHash
     };
   }
 });

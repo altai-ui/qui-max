@@ -90,8 +90,8 @@ The dropdown's position around the trigger button.
 ```vue {4}
 <q-context-menu
   :menu-items="menuItems"
-  @action="handleAction"
   position="right"
+  @action="handleAction"
 />
 ```
 <!-- prettier-ignore-end -->
@@ -109,8 +109,8 @@ Specifies a target element where QColorpicker will be moved from original layout
 ```vue {4}
 <q-context-menu
   :menu-items="menuItems"
-  @action="handleAction"
   teleport-to="body"
+  @action="handleAction"
 />
 ```
 <!-- prettier-ignore-end -->

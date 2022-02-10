@@ -1,0 +1,67 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- import CSS -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/@qvant/qui-max/dist/style.css"
+    />
+  </head>
+
+  <body>
+    <div id="app">
+      <div class="block" style="width: 130px; margin: 20px auto">
+        <q-context-menu :menu-items="menuItems" @action="handleAction">
+          <template v-slot>
+            <q-button size="small">Custom trigger</q-button>
+          </template>
+        </q-context-menu>
+      </div>
+    </div>
+  </body>
+  <!-- import Vue before Qui -->
+  <script src="https://unpkg.com/vue@next"></script>
+  <!-- import JavaScript -->
+  <script src="https://unpkg.com/@qvant/qui-max@latest"></script>
+  <script>
+    const app = Vue.createApp({
+      setup() {
+        const menuItems = [
+          {
+            action: 'action1',
+            name: 'Menu item 1',
+            icon: 'q-icon-account'
+          },
+          {
+            action: 'action2',
+            name: 'Menu item 2',
+            icon: 'q-icon-bell'
+          },
+          {
+            action: 'action3',
+            name: 'Menu item 3',
+            icon: 'q-icon-pic'
+          }
+        ];
+
+        const handleAction = action => {
+          const notify = QuiMax.useNotify();
+          notify(action, { type: 'success', icon: 'q-icon-check' });
+        };
+
+        return { menuItems, handleAction };
+      }
+    });
+
+    app.use(QuiMax.default);
+    app.mount('#app');
+  </script>
+  <style>
+    .block {
+      display: flex;
+      flex-direction: column;
+      width: 450px;
+      margin: 20px;
+    }
+  </style>
+</html>

@@ -1,0 +1,14 @@
+# Settings in the [build] context are global and are applied to 
+# all contexts unless otherwise overridden by more specific contexts.
+[build]
+  command = "yarn docs:build"
+  publish = "docs/.vuepress/dist"  
+
+[[plugins]]
+  # Installs the Lighthouse Build Plugin for all deploy contexts
+  package = "@netlify/plugin-lighthouse"
+
+# Deploy Preview context: all deploys generated from
+# a pull/merge request will inherit these settings.
+[context.deploy-preview]
+  publish = ".vuepress/dist/"

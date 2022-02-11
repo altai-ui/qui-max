@@ -1,0 +1,34 @@
+{
+  "name": "qui-max-docs",
+  "version": "0.1.0",
+  "private": false,
+  "description": "Qui Max Docs",
+  "author": {
+    "name": "Qvant Frontend team"
+  },
+  "scripts": {
+    "docs:dev": "vuepress dev docs",
+    "docs:build": "vuepress build docs"
+  },
+  "peerDependencies": {
+    "vue": "^3.2.23"
+  },
+  "devDependencies": {
+    "vuepress-vite": "^2.0.0-beta.27"
+  },
+  "license": "MIT",
+  "maintainers": [
+    {
+      "name": "Tim Bochkarev",
+      "url": "https://github.com/Tim152"
+    },
+    {
+      "name": "Viktor Zheleztsov",
+      "url": "https://github.com/ViZhe"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Qvant-lab/qui-max.git"
+  }
+}

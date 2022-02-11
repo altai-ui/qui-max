@@ -20,9 +20,3 @@
 # a pull/merge request will inherit these settings.
 [context.deploy-preview]
   publish = "storybook-static/"
-
-# For contexts of branches with special characters, 
-# enclose the branch name with quotes.
-[context."docs-*"]
-  command = "yarn docs:build"
-  publish = "docs/.vuepress/dist"  

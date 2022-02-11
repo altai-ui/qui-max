@@ -2,7 +2,7 @@
 # all contexts unless otherwise overridden by more specific contexts.
 [build]
   command = "yarn docs:build"
-  publish = "docs/.vuepress/dist"  
+  publish = "docs/.vuepress/dist"
 
 [[plugins]]
   # Installs the Lighthouse Build Plugin for all deploy contexts

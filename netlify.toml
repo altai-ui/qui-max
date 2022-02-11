@@ -7,7 +7,7 @@
   # a base has not been set. This sample publishes the directory 
   # located at the absolute path "root/project/build-output"
   
-  publish = "dist/"
+  publish = "storybook-static/"
 
   # Default build command.
   command = "yarn build-storybook"
@@ -19,7 +19,7 @@
 # Deploy Preview context: all deploys generated from
 # a pull/merge request will inherit these settings.
 [context.deploy-preview]
-  publish = "dist/"
+  publish = "storybook-static/"
 
 # For contexts of branches with special characters, 
 # enclose the branch name with quotes.

@@ -169,7 +169,7 @@ type VariationPlacement =
 Specifies a target element where QColorpicker will be moved from original layout place. (has to be a valid query selector, or an HTMLElement).
 
 <!-- prettier-ignore-start -->
-```vue {4}
+```vue {3}
 <q-color-picker
   v-model="modelValue"
   teleport-to="body"
@@ -193,7 +193,7 @@ Alias for update:modelValue.
 
 Optional. HTML element that triggers dropdown
 
-```vue
+```vue {2-4}
 <q-color-picker v-model="color">
   <template v-slot:trigger>
     <q-button size="small">Custom trigger</q-button>

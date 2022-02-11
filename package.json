@@ -12,7 +12,6 @@
     "serve": "vite preview",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "deploy-storybook": "storybook-to-ghpages --source-branch main",
     "lint:js": "eslint '**/*.{vue,ts}'",
     "lint:js:fix": "eslint --fix '**/*.{vue,ts,html}'",
     "lint:style": "stylelint '**/*.{css,scss,vue}'",

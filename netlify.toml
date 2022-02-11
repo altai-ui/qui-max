@@ -23,6 +23,6 @@
 
 # For contexts of branches with special characters, 
 # enclose the branch name with quotes.
-[context."docs/*"]
+[context."docs-*"]
   command = "yarn docs:build"
   publish = "docs/.vuepress/dist"  

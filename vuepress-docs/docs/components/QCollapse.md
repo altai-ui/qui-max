@@ -10,7 +10,7 @@ Collapse groups a collection of contents in tabs.
 
 Default view:
 
-<iframe height="450" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QCollapse/main.html"></iframe>
+<iframe height="450" style="width: 100%;" scrolling="no" frameborder="no" src="/QCollapse/main.html"></iframe>
 
 Using in template:
 
@@ -72,7 +72,7 @@ Binding value.
 
 ```ts
 // import type from lib
-import type { QCollapsePropModelValue } from '@qvant/qui-max';
+import type { QCollapsePropModelValue } from '@qvant';
 
 // TS type
 export type QCollapsePropModelValue = Nullable<
@@ -95,7 +95,7 @@ Using in template:
 </q-collapse>
 ```
 
-<iframe height="450" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QCollapse/accordion.html"></iframe>
+<iframe height="450" style="width: 100%;" scrolling="no" frameborder="no" src="/QCollapse/accordion.html"></iframe>
 
 ## Events
 

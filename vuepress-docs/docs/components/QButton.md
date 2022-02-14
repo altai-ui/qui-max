@@ -6,7 +6,7 @@ Commonly used button. See props to configure `QButton`. Try a sandbox [story](ht
 
 All kind of types:
 
-<iframe height="340" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QButton/main.html"></iframe>
+<iframe height="340" style="width: 100%;" scrolling="no" frameborder="no" src="/QButton/main.html"></iframe>
 
 ## Props
 
@@ -31,7 +31,7 @@ Code Example:
 
 Result:
 
-<iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QButton/theme.html"></iframe>
+<iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/QButton/theme.html"></iframe>
 
 ### type
 
@@ -55,7 +55,7 @@ Code Example:
 
 Result:
 
-<iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QButton/type.html"></iframe>
+<iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/QButton/type.html"></iframe>
 
 ### icon
 
@@ -74,7 +74,7 @@ Code example:
 
 Result:
 
-<iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QButton/icon.html"></iframe>
+<iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/QButton/icon.html"></iframe>
 
 ### size
 
@@ -91,7 +91,7 @@ Code example:
 
 Result:
 
-<iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QButton/size.html"></iframe>
+<iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/QButton/size.html"></iframe>
 
 ### loading
 
@@ -108,7 +108,7 @@ Code example:
 
 Result:
 
-<iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QButton/loading.html"></iframe>
+<iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/QButton/loading.html"></iframe>
 
 ### disabled
 
@@ -125,7 +125,7 @@ Code Example:
 
 Result:
 
-<iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QButton/disabled.html"></iframe>
+<iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/QButton/disabled.html"></iframe>
 
 ### circle
 
@@ -142,7 +142,7 @@ Code sample:
 
 Result:
 
-<iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QButton/circle.html"></iframe>
+<iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/QButton/circle.html"></iframe>
 
 ### fullWidth
 

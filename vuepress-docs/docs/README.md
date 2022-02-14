@@ -2,6 +2,7 @@
 home: true
 title: Home
 heroImage: /qui-logo.svg
+tagline: 'Neumorphic design system for Web.'
 actions:
   - text: Get Started
     link: /guide/getting-started.html
@@ -22,8 +23,12 @@ features:
     details: Neumorphism is a new take on skeuomorphic design. It's all about subtle contrast and solid colors.
   - title: 📚 Storybook sandbox
     details: Play with isolated components, try different states on live.
-footer: MIT Licensed | Qvant-lab
+footer: MIT Licensed | Qvant-lab <br><br><a class="netlify-link" href="https://www.netlify.com"><img src="https://www.netlify.com/img/global/badges/netlify-color-accent.svg"] alt="Deploys by Netlify" /></a>
+footerHtml: true
 ---
+
+## Note:
+This documentation is under development!
 
 ## Quick setup
 

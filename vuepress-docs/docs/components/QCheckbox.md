@@ -6,7 +6,7 @@ Allows to choose one or more options. Try a sandbox [story](https://qui-max.netl
 
 Types:
 
-<iframe height="150" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QCheckbox/QCheckbox.html"></iframe>
+<iframe height="150" style="width: 100%;" scrolling="no" frameborder="no" src="/QCheckbox/QCheckbox.html"></iframe>
 
 ## Props
 
@@ -21,7 +21,7 @@ Defines the text of the checkbox. You could use default [slot](#slots) instead o
 <q-checkbox label="Label" />
 ```
 
-<iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QCheckbox/label.html"></iframe>
+<iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/QCheckbox/label.html"></iframe>
 
 ### modelValue
 
@@ -32,7 +32,7 @@ Defines the text of the checkbox. You could use default [slot](#slots) instead o
 <q-checkbox v-model="model" />
 ```
 
-<iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QCheckbox/model.html"></iframe>
+<iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/QCheckbox/model.html"></iframe>
 
 ### indeterminate
 
@@ -47,7 +47,7 @@ Defines the checkbox indeterminacy
 
 Result:
 
-<iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QCheckbox/indeterminate.html"></iframe>
+<iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/QCheckbox/indeterminate.html"></iframe>
 
 ### disabled
 
@@ -62,7 +62,7 @@ Sets disabled checkbox state
 
 Result:
 
-<iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QCheckbox/disabled.html"></iframe>
+<iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/QCheckbox/disabled.html"></iframe>
 
 ### rootTag
 
@@ -98,7 +98,7 @@ Code Example
 
 Result
 
-<iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QCheckbox/validate.html"></iframe>
+<iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/QCheckbox/validate.html"></iframe>
 
 ## Events
 
@@ -162,7 +162,7 @@ Defines the text of the checkbox label, like [label](#label) prop does. Just put
 <q-checkbox>Label</q-checkbox>
 ```
 
-<iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QCheckbox/label.html"></iframe>
+<iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/QCheckbox/label.html"></iframe>
 
 ## QCheckboxGroup
 

@@ -38,6 +38,7 @@ lerna-debug.log*
 *.local
 
 # VuePress files
-/docs/.vuepress/.temp/
-/docs/.vuepress/.cache/
-/docs/.vuepress/dist/
+/vuepress-docs/docs/.vuepress/.temp/
+/vuepress-docs/docs/.vuepress/.cache/
+/vuepress-docs/docs/.vuepress/dist/
+/vuepress-docs/node_modules

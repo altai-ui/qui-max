@@ -10,7 +10,7 @@ Being used to pick color value.
 
 Default view:
 
-<iframe height="350" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QColorpicker/main.html"></iframe>
+<iframe height="350" style="width: 100%;" scrolling="no" frameborder="no" src="/QColorpicker/main.html"></iframe>
 
 Using in template:
 
@@ -111,7 +111,7 @@ Whether to display the alpha slider.
 ```
 <!-- prettier-ignore-end -->
 
-<iframe height="350" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QColorpicker/alpha-shown.html"></iframe>
+<iframe height="350" style="width: 100%;" scrolling="no" frameborder="no" src="/QColorpicker/alpha-shown.html"></iframe>
 
 ### colorFormat
 
@@ -201,4 +201,4 @@ Optional. HTML element that triggers dropdown
 </q-color-picker>
 ```
 
-<iframe height="350" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QColorpicker/trigger.html"></iframe>
+<iframe height="350" style="width: 100%;" scrolling="no" frameborder="no" src="/QColorpicker/trigger.html"></iframe>

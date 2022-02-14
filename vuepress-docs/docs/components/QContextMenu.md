@@ -10,7 +10,7 @@ Contextual menus are displayed on demand and contain a small set of relevant act
 
 Default view:
 
-<iframe height="200" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QContextMenu/main.html"></iframe>
+<iframe height="200" style="width: 100%;" scrolling="no" frameborder="no" src="/QContextMenu/main.html"></iframe>
 
 Using in template:
 
@@ -96,7 +96,7 @@ The dropdown's position around the trigger button.
 ```
 <!-- prettier-ignore-end -->
 
-<iframe height="200" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QContextMenu/position.html"></iframe>
+<iframe height="200" style="width: 100%;" scrolling="no" frameborder="no" src="/QContextMenu/position.html"></iframe>
 
 ### teleportTo
 
@@ -159,4 +159,4 @@ Optional. HTML element that triggers dropdown
 </q-context-menu>
 ```
 
-<iframe height="200" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QContextMenu/slot.html"></iframe>
+<iframe height="200" style="width: 100%;" scrolling="no" frameborder="no" src="/QContextMenu/slot.html"></iframe>

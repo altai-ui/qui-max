@@ -68,7 +68,7 @@ defineComponent({
 
 Result:
 
-<iframe height="200" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QCheckboxGroup/QCheckboxGroup.html"></iframe>
+<iframe height="200" style="width: 100%;" scrolling="no" frameborder="no" src="/QCheckboxGroup/QCheckboxGroup.html"></iframe>
 
 ## Props
 
@@ -96,7 +96,7 @@ Sets the minimum number of checkboxes, that can be selected
 </q-checkbox-group>
 ```
 
-<iframe height="200" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QCheckboxGroup/min.html"></iframe>
+<iframe height="200" style="width: 100%;" scrolling="no" frameborder="no" src="/QCheckboxGroup/min.html"></iframe>
 
 ### max
 
@@ -115,7 +115,7 @@ Sets the maximum number of checkboxes, that can be selected
 </q-checkbox-group>
 ```
 
-<iframe height="200" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QCheckboxGroup/max.html"></iframe>
+<iframe height="200" style="width: 100%;" scrolling="no" frameborder="no" src="/QCheckboxGroup/max.html"></iframe>
 
 ### disabled
 
@@ -134,7 +134,7 @@ Allows to disable all inner QCheckboxes
 </q-checkbox-group>
 ```
 
-<iframe height="200" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QCheckboxGroup/disabled.html"></iframe>
+<iframe height="200" style="width: 100%;" scrolling="no" frameborder="no" src="/QCheckboxGroup/disabled.html"></iframe>
 
 ### direction
 
@@ -153,7 +153,7 @@ Defines the direction of list: `vertical` or `horizontal`
 </q-checkbox-group>
 ```
 
-<iframe height="300" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QCheckboxGroup/direction.html"></iframe>
+<iframe height="300" style="width: 100%;" scrolling="no" frameborder="no" src="/QCheckboxGroup/direction.html"></iframe>
 
 ## Events
 

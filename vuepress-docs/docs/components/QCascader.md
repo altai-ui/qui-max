@@ -14,7 +14,7 @@ Cascade selection box. [Try story](https://qui-max.netlify.app/?path=/story/comp
 
 Default view:
 
-<iframe height="250" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QCascader/main.html"></iframe>
+<iframe height="250" style="width: 100%;" scrolling="no" frameborder="no" src="/QCascader/main.html"></iframe>
 
 Using in template:
 
@@ -213,7 +213,7 @@ Using in template:
 ```
 <!-- prettier-ignore-end -->
 
-<iframe height="250" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QCascader/allLevelsShown.html"></iframe>
+<iframe height="250" style="width: 100%;" scrolling="no" frameborder="no" src="/QCascader/allLevelsShown.html"></iframe>
 
 ### separator
 
@@ -234,7 +234,7 @@ Using in template:
 ```
 <!-- prettier-ignore-end -->
 
-<iframe height="250" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QCascader/separator.html"></iframe>
+<iframe height="250" style="width: 100%;" scrolling="no" frameborder="no" src="/QCascader/separator.html"></iframe>
 
 ### multiple
 
@@ -253,7 +253,7 @@ Whether QCascader accepts multiple values. Pass array as `modelValue`.
 ```
 <!-- prettier-ignore-end -->
 
-<iframe height="250" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QCascader/multiple.html"></iframe>
+<iframe height="250" style="width: 100%;" scrolling="no" frameborder="no" src="/QCascader/multiple.html"></iframe>
 
 ### clearable
 
@@ -306,7 +306,7 @@ Checks each value as independent. Use for selecting category as value instead of
 ```
 <!-- prettier-ignore-end -->
 
-<iframe height="250" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QCascader/checkStrictly.html"></iframe>
+<iframe height="250" style="width: 100%;" scrolling="no" frameborder="no" src="/QCascader/checkStrictly.html"></iframe>
 
 ### collapseTags
 
@@ -327,7 +327,7 @@ Hide tags in counter.
 ```
 <!-- prettier-ignore-end -->
 
-<iframe height="250" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QCascader/collapseTags.html"></iframe>
+<iframe height="250" style="width: 100%;" scrolling="no" frameborder="no" src="/QCascader/collapseTags.html"></iframe>
 
 ### placeholder
 

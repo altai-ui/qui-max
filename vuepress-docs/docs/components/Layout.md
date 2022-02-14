@@ -5,7 +5,7 @@ You can try it out in a sandbox [story](https://qui-max.netlify.app/?path=/story
 
 Default view:
 
-<iframe height="340" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/Layout/Layout.html"></iframe>
+<iframe height="340" style="width: 100%;" scrolling="no" frameborder="no" src="/Layout/Layout.html"></iframe>
 
 ## Examples
 
@@ -49,7 +49,7 @@ const args = {
 };
 ```
 
-<iframe height="340" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/Layout/Layout[qcol].html"></iframe>
+<iframe height="340" style="width: 100%;" scrolling="no" frameborder="no" src="/Layout/Layout[qcol].html"></iframe>
 
 ```vue
 <q-row class="block__row">

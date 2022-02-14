@@ -12,7 +12,7 @@ Displays the location of the current page, shows all nested levels. Try a sandbo
 
 Default view:
 
-<iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QBreadcrumbs/main.html"></iframe>
+<iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/QBreadcrumbs/main.html"></iframe>
 
 Using in template:
 
@@ -129,4 +129,4 @@ Changes last crumb with custom string
 <q-breadcrumbs :route="route" last="Custom string" />
 ```
 
-<iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/qui-max/QBreadcrumbs/last.html"></iframe>
+<iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/QBreadcrumbs/last.html"></iframe>

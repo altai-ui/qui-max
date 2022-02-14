@@ -1,5 +1,5 @@
 /src/normalize.scss
-/docs/docs/.vuepress/.temp/
-/docs/docs/.vuepress/.cache/
-/docs/docs/.vuepress/dist/
 /dist
+/vuepress-docs/.vuepress/.temp/
+/vuepress-docs/.vuepress/.cache/
+/vuepress-docs/.vuepress/dist/

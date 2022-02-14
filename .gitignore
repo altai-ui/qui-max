@@ -2,7 +2,6 @@
 /dist
 /dist-ssr
 /node_modules
-/docs/node_modules
 
 # Logs
 logs
@@ -11,7 +10,6 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
-/docs/yarn.lock
 
 # OS
 .DS_Store
@@ -40,6 +38,8 @@ lerna-debug.log*
 *.local
 
 # VuePress files
-/docs/.vuepress/.temp/
-/docs/.vuepress/.cache/
-/docs/.vuepress/dist/
+/vuepress-docs/docs/.vuepress/.temp/
+/vuepress-docs/docs/.vuepress/.cache/
+/vuepress-docs/docs/.vuepress/dist/
+/vuepress-docs/yarn.lock
+/vuepress-docs/node_modules

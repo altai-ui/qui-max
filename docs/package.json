@@ -14,6 +14,7 @@
     "vue": "^3.2.23"
   },
   "devDependencies": {
+    "vuepress": "^2.0.0-beta.35",
     "vuepress-vite": "^2.0.0-beta.27"
   },
   "license": "MIT",

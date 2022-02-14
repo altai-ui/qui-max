@@ -41,5 +41,4 @@ lerna-debug.log*
 /vuepress-docs/docs/.vuepress/.temp/
 /vuepress-docs/docs/.vuepress/.cache/
 /vuepress-docs/docs/.vuepress/dist/
-/vuepress-docs/yarn.lock
 /vuepress-docs/node_modules

@@ -1,0 +1,71 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- import CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/@qvant/qui/dist/qui.css" />
+  </head>
+
+  <body>
+    <div id="app">
+      <q-button class="button" @click="handleDirectionChange"
+        >switch to {{ buttonLabel }}</q-button
+      >
+      <q-checkbox-group v-model="checkedCities" :direction="direction">
+        <q-checkbox v-for="city in cities" :key="city" :label="city" />
+      </q-checkbox-group>
+    </div>
+  </body>
+  <!-- import Vue before Qui -->
+  <script src="https://unpkg.com/vue@latest"></script>
+  <!-- import JavaScript -->
+  <script src="https://unpkg.com/@qvant/qui-max@latest"></script>
+  <script>
+    const App = {
+      data() {
+        const checkedCities = Vue.ref(['Guangzhou', 'Beijing']);
+        const cities = Vue.ref([
+          'Shanghai',
+          'Beijing',
+          'Guangzhou',
+          'Shenzhen'
+        ]);
+
+        const direction = Vue.ref('vertical');
+
+        const buttonLabel = Vue.computed(() =>
+          direction.value === 'vertical' ? 'horizontal' : 'vertical'
+        );
+
+        const handleDirectionChange = () => {
+          direction.value = buttonLabel.value;
+        };
+
+        return {
+          checkedCities,
+          cities,
+          direction,
+          buttonLabel,
+          handleDirectionChange
+        };
+      }
+    };
+
+    const app = Vue.createApp(App);
+    const Qui = window.QuiMax.default;
+    app.use(Qui);
+    app.mount('#app');
+  </script>
+  <style>
+    #app {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-start;
+      padding: 25px;
+    }
+
+    .button {
+      margin-bottom: 25px;
+    }
+  </style>
+</html>

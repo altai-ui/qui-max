@@ -1,0 +1,46 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- import CSS -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/@qvant/qui-max/dist/style.css"
+    />
+  </head>
+  <body>
+    <div id="app">
+      <div class="block">
+        <q-color-picker v-model="color" alpha-shown ref="picker" />
+      </div>
+    </div>
+  </body>
+  <!-- import Vue before Qui -->
+  <script src="https://unpkg.com/vue@latest"></script>
+  <!-- import JavaScript -->
+  <script src="https://unpkg.com/@qvant/qui-max@latest"></script>
+  <script>
+    const app = Vue.createApp({
+      setup() {
+        const color = Vue.ref('#f25');
+        const picker = Vue.ref(null);
+
+        Vue.onMounted(() => {
+          picker.value.handleTriggerClick();
+        });
+
+        return { color, picker };
+      }
+    });
+
+    app.use(QuiMax.default);
+    app.mount('#app');
+  </script>
+  <style>
+    .block {
+      display: flex;
+      flex-direction: column;
+      width: 450px;
+      margin: 20px;
+    }
+  </style>
+</html>

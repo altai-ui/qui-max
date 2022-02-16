@@ -164,15 +164,15 @@ Year.args = {
 Shortcuts.args = {
   shortcuts: [
     {
-      text: 'Сегодня',
+      text: 'Today',
       value: now
     },
     {
-      text: 'Вчера',
+      text: 'Yesterday',
       value: startOfYesterday()
     },
     {
-      text: 'Неделю назад',
+      text: 'A week ago',
       value: subWeeks(now, 1)
     }
   ]

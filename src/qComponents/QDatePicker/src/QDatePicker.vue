@@ -6,6 +6,7 @@
   >
     <div
       v-if="!isRanged"
+      class="q-date-picker__wrapper"
       @mouseenter="handleMouseEnter"
       @mouseleave="state.showCloseIcon = false"
     >

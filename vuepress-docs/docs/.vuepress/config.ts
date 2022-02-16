@@ -26,7 +26,8 @@ export default defineUserConfig<DefaultThemeOptions, ViteBundlerOptions>({
           '/components/QCheckboxGroup.md',
           '/components/QCollapse.md',
           '/components/QColorpicker.md',
-          '/components/QContextMenu.md'
+          '/components/QContextMenu.md',
+          '/components/QDatepicker.md'
         ]
       },
       // NavbarGroup
@@ -52,7 +53,8 @@ export default defineUserConfig<DefaultThemeOptions, ViteBundlerOptions>({
             '/components/QCheckboxGroup.md',
             '/components/QCollapse.md',
             '/components/QColorpicker.md',
-            '/components/QContextMenu.md'
+            '/components/QContextMenu.md',
+            '/components/QDatepicker.md'
           ]
         }
       ],

@@ -155,12 +155,12 @@ export default defineComponent({
     });
 
     const handleOptionClick = (): void => {
-      if (props.disabled || !qSelect) return;
+      if (isDisabled.value || !qSelect) return;
       qSelect.toggleOptionSelection(self);
     };
 
     const handleMouseEnter = (): void => {
-      if (props.disabled || qSelect === null) return;
+      if (isDisabled.value || !qSelect) return;
       const index = qSelectState?.options?.indexOf(self);
       if (index) {
         qSelect?.updateHoverIndex(index);

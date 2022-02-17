@@ -137,6 +137,9 @@ console.log(value) // Wed Feb 16 2022 18:43:46 GMT+0300 (Moscow Standard Time)
 
 As native input placeholder. Use this prop for single types: `date`, `week`, `month`, `year`.
 
+- Type `String`
+- Default: `null`
+
 ```vue {3}
 <q-date-picker
   v-model="value"
@@ -148,6 +151,9 @@ As native input placeholder. Use this prop for single types: `date`, `week`, `mo
 
 The ranged datepickers have two inputs, so `startPlaceholder` and `endPlaceholder` define their placeholders. Use this props for ranged types: `daterange`, `monthrange`, `yearrange`.
 
+- Type `String`
+- Default: `null`
+
 ```vue {3,4}
 <q-date-picker
   v-model="value"
@@ -157,4 +163,98 @@ The ranged datepickers have two inputs, so `startPlaceholder` and `endPlaceholde
 ```
 
 ### shortcuts
-...
+
+Defines date shortcuts, set any date to be able to select it faster.
+
+- Type `Array`
+- Default `null`
+
+The `shortcuts` MUST be an `Array` of `Object`s, each object MUST contain:
+- `text` - shortcut's label (e.g `Today`, `Yestarday`, `A week ago`, etc.)
+- `value` - a shortcut's value as a `Date` 
+
+```ts
+// import type from lib
+import { QDatePickerPropShortcuts } from '@qvant/qui-max';
+
+// TS type
+type QDatePickerPropShortcuts = {
+  text: string;
+  value: Date;
+}[];
+```
+
+```vue {3}
+<q-date-picker
+  v-model="value"
+  :shortcuts="shortcuts"
+/>
+```
+
+```js
+export default defineComponent({
+  setup() {
+    const value = ref(null);
+    const shortcuts = [
+      {
+        text: 'Today',
+        value: new Date()
+      },
+      {
+        text: 'Yesterday',
+        value: new Date(Date.now() - 3600 * 24 * 1000)
+      },
+      {
+        text: 'A week ago',
+        value: new Date(Date.now() - 3600 * 24 * 1000 * 7)
+      }
+    ];
+
+    return { value, shortcuts };
+  }
+})
+```
+
+See [example](./QDatepicker/#example) above.
+
+### firstDayOfWeek
+
+Defines the first day of the week. Sunday by default.
+
+- Type: `0 | 1 | 2 | 3 | 4 | 5 | 6`
+- Default: `0`
+
+Each `number` correspondes a week day:
+- `0` - `monday`
+- `1` - `tuesday`
+- `2` - `wednesday` 
+- `3` - `thursday`
+- `4` - `friday`
+- `5` - `saturday`
+- `6` - `sunday`
+
+```vue {4}
+// start with monday
+<q-date-picker
+  v-model="value"
+  :first-day-of-week="1" 
+/>
+```
+
+<iframe style="height: 367px; width: 769px" scrolling="no" frameborder="no" src="/QDatepicker/firstDayOfWeek.html"></iframe>
+
+### disabled
+
+Whether QDatePicker is disabled.
+
+- Type: `Boolean`
+- Default: `false`
+
+<iframe style="height: 367px; width: 100%" scrolling="no" frameborder="no" src="/QDatepicker/disabled.html"></iframe>
+
+### name
+
+As native name for input
+
+- Type: `String`
+- Default: `''`

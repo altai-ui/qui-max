@@ -271,7 +271,8 @@ export default defineComponent({
     const handleRangePick = (val: RangePickValue, close = true): void => {
       const { maxDate, minDate, rangeState } = getRangeChangedState(
         val,
-        state.rangeState
+        state.rangeState,
+        'daterange'
       );
       state.maxDate = maxDate;
       state.minDate = minDate;

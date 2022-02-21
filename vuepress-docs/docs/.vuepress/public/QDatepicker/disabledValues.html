@@ -1,0 +1,64 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- import CSS -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/@qvant/qui-max/dist/style.css"
+    />
+  </head>
+
+  <body>
+    <div id="app">
+      <div class="block">
+        <q-row>
+          <q-col cols="6">
+            <p>disable due today</p>
+            <q-date-picker v-model="value" :disabled-values="disabledValues" />
+          </q-col>
+          <q-col cols="6">
+            <p>disable range - tree days in two days from today</p>
+            <q-date-picker
+              v-model="valueRanges"
+              :disabled-values="disabledValuesRanges"
+            />
+          </q-col>
+        </q-row>
+      </div>
+    </div>
+  </body>
+  <!-- import Vue before Qui -->
+  <script src="https://unpkg.com/vue@latest"></script>
+  <!-- import JavaScript -->
+  <script src="https://unpkg.com/@qvant/qui-max@latest"></script>
+  <script>
+    const app = Vue.createApp({
+      setup() {
+        const value = Vue.ref(null);
+        const valueRanges = Vue.ref(null);
+        const disabledValues = {
+          to: new Date()
+        };
+
+        const disabledValuesRanges = {
+          ranges: [
+            {
+              start: new Date(Date.now() + 48 * 3600 * 1000),
+              end: new Date(Date.now() + 120 * 3600 * 1000)
+            }
+          ]
+        };
+
+        return { value, valueRanges, disabledValues, disabledValuesRanges };
+      }
+    });
+
+    app.use(QuiMax.default);
+    app.mount('#app');
+  </script>
+  <style>
+    .block {
+      margin: 20px;
+    }
+  </style>
+</html>

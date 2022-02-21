@@ -82,7 +82,7 @@
         color: var(--color-primary);
       }
 
-      &.cell_current,
+      &.cell_current:not(.cell_disabled),
       &.cell_in-range:not(.cell_prev-month),
       &.cell_in-range:not(.cell_next-month) {
         color: var(--color-tertiary-white);

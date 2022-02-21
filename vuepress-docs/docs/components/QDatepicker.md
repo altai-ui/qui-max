@@ -250,7 +250,95 @@ Whether QDatePicker is disabled.
 - Type: `Boolean`
 - Default: `false`
 
-<iframe style="height: 367px; width: 100%" scrolling="no" frameborder="no" src="/QDatepicker/disabled.html"></iframe>
+<iframe style="height: 150px; width: 100%" scrolling="no" frameborder="no" src="/QDatepicker/disabled.html"></iframe>
+
+### clearable
+
+Shows an icon button, that resets a value.
+
+- Type: `Boolean`
+- Default: `true`
+
+### editable
+
+Whether DatePicker is editable, for type is `date` only.
+
+- Type: `Boolean`
+- Default: `true`
+
+### rangeSeparator
+
+Separator symbol in the middle of the ranged types.
+
+- Type: `String`
+- Default: `'-'`
+
+### disabledValues
+
+- Type: `Object`
+- Default: `null`
+
+The values that should be disabled for choosing. There are three fields:
+- `to` - disable all before this date
+- `from` - disable all after this date
+- `ranges` - array of dateranges, each daterange is object and MUST has `start` and `end` field.
+
+Any field is optional.
+
+```ts
+// import type from lib
+import { QDatePickerPropDisabledValues } from '@qvant/qui-max';
+
+// TS type
+type QDatePickerPropDisabledValues = Nullable<{
+  to?: Date;
+  from?: Date;
+  ranges?: {
+    start: Date;
+    end: Date;
+  }[];
+}>;
+```
+
+```vue {3}
+<q-date-picker
+  v-model="value"
+  :disabled-values="disabledValues"
+/>
+```
+
+```js
+export default defineComponent({
+  setup() {
+    const value = ref(null);
+    const valueRanges = ref(null)
+    // disable values due today
+    const disabledValues = {
+      to: new Date(),
+    }
+    // disable range - tree days in two days from today
+    const disabledValuesRanges = {
+      ranges: [
+        {
+          start: new Date(Date.now() + 48 * 3600 * 1000),
+          end: new Date(Date.now() + 120 * 3600 * 1000)
+        }
+      ]
+    }
+
+    return { value, valueRanges, disabledValues, disabledValuesRanges };
+  }
+})
+```
+
+<iframe style="height: 367px; width: 769px" scrolling="no" frameborder="no" src="/QDatepicker/disabledValues.html"></iframe>
+
+### validateEvent
+
+- type `Boolean`
+- default `false`
+
+If `QDatePicker` wrapped in `QFormItem`, this prop defines if datepicker's input `change` event will be validated immediately
 
 ### name
 
@@ -258,3 +346,40 @@ As native name for input
 
 - Type: `String`
 - Default: `''`
+
+### teleportTo
+
+- Type `String, HTMLElement`
+- Default: `null`
+
+Specifies a target element where QDatePicker will be moved from original layout place. (has to be a valid query selector, or an HTMLElement).
+
+## Events
+
+### update:modelValue
+
+Triggers when model updates.
+
+### change
+
+Alias for update:modelValue.
+
+### focus
+
+Triggers when the QDatePicker gets focus
+
+### input
+
+Triggers when native input event fires
+
+### intermediateChange
+
+Triggers when start date in range picks
+
+- For `daterange`, `monthrange`, `yearrange` types only
+
+## Slots
+
+### range-separator
+
+Set any content as `rangeSeparator` by slot.

@@ -1,6 +1,6 @@
 import type { ComputedRef } from 'vue';
 
-import type { Nullable } from '#/helpers';
+import type { Optional, Nullable } from '#/helpers';
 
 export interface QTabPaneProps {
   name: string;
@@ -12,7 +12,7 @@ export interface QTabPaneProps {
 
 export interface QTabPaneInstance {
   isDisabled: ComputedRef<boolean>;
-  tabWidthStyle: ComputedRef<Record<string, string>>;
+  tabWidthStyle: ComputedRef<Record<string, Optional<string>>>;
   tabBtnClasses: ComputedRef<Record<string, boolean>>;
   handleTabClick: () => void;
 }

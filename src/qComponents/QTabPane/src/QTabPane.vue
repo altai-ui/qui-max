@@ -29,6 +29,8 @@
 import { defineComponent, inject, computed } from 'vue';
 
 import type { QTabsProvider } from '@/qComponents/QTabs';
+import type { Optional } from '#/helpers';
+
 import type { QTabPaneProps, QTabPaneInstance } from './types';
 
 export default defineComponent({
@@ -80,13 +82,15 @@ export default defineComponent({
       () => props.disabled || Boolean(qTabs?.disabled.value)
     );
 
-    const tabWidthStyle = computed<Record<string, string>>(() => {
+    const tabWidthStyle = computed<Record<string, Optional<string>>>(() => {
       const width = props.width ?? qTabs?.tabWidth.value ?? '';
+
+      if (!width) return {};
 
       return {
         '--tab-pane-width': Number.isNaN(Number(width))
-          ? `${Number(width)}px`
-          : String(width)
+          ? String(width)
+          : `${Number(width)}px`
       };
     });
 

@@ -52,6 +52,7 @@
 
       &:hover {
         background-color: var(--color-tertiary-gray);
+        box-shadow: var(--field-box-shadow-hover);
       }
 
       .q-date-picker__input {
@@ -117,6 +118,10 @@
         cursor: not-allowed;
         background-color: var(--color-tertiary-gray);
         box-shadow: var(--box-shadow-pressed);
+
+        &:hover {
+          box-shadow: var(--box-shadow-pressed);
+        }
 
         .q-date-picker__range-separator,
         .q-date-picker__input {

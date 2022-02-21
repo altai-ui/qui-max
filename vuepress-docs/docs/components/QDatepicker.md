@@ -55,7 +55,7 @@ Binding value.
 import type { QDatePickerPropModelValue } from '@qvant/qui-max';
 
 // TS type
-type QDatePickerPropModelValue = Nullable<string | Date | string[] | Date[]>;
+type QDatePickerPropModelValue = Nullable<string | Date | [string, string] | [Date, Date]>;
 ```
 
 ### type

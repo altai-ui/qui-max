@@ -11,7 +11,9 @@ import type YearRangePanel from './panel/YearRange/YearRange.vue';
 
 import type { DatePanelInstance } from './panel/Date/types';
 
-type QDatePickerPropModelValue = Nullable<string | Date | string[] | Date[]>;
+type QDatePickerPropModelValue = Nullable<
+  string | Date | [string, string] | [Date, Date]
+>;
 type QDatePickerPropOutputFormat = 'date' | 'iso';
 type QDatePickerPropType =
   | 'date'

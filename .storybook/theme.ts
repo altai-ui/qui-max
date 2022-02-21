@@ -6,6 +6,6 @@ export default create({
   base: 'light',
 
   brandTitle: 'QUI-MAX',
-  brandUrl: 'https://qvant-lab.github.io/qui-max/',
+  brandUrl: 'https://qui-max.netlify.app',
   brandImage: logo
 });

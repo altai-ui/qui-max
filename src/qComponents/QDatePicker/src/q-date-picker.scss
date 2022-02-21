@@ -15,6 +15,10 @@
     4px 4px 8px rgb(var(--color-rgb-blue) / 40%),
     -4px -4px 8px rgb(var(--color-rgb-white) / 80%);
 
+  &__wrapper {
+    height: 40px;
+  }
+
   &__input {
     position: relative;
     display: inline-block;
@@ -114,6 +118,10 @@
         cursor: not-allowed;
         background-color: var(--color-tertiary-gray);
         box-shadow: var(--box-shadow-pressed);
+
+        &:hover {
+          box-shadow: var(--box-shadow-pressed);
+        }
 
         .q-date-picker__range-separator,
         .q-date-picker__input {

@@ -16,7 +16,7 @@
 
 # Qui is Neumorphic design system for Web
 
-Written on TypeScript with Composition API 🔥
+Written in TypeScript with Composition API 🔥
 
 A component's library helping us build great products for our customers.
 This library for Vue 3.x

@@ -2,7 +2,7 @@
 
 `QForm` keeps the form model, manages validation rules and provides context to form elements.
 
-- `QFormItem` being used as additional component to wrap each form element (input, select, checkbox etc.) to control the validation.
+`QFormItem` being used as additional component to wrap each form element (input, select, checkbox etc.) to control the validation.
 
 ## When to use
 
@@ -209,7 +209,7 @@ Whether required fields should have a red asterisk (star) beside their labels.
   ref="form"
   :model="formModel"
   :rules="rules"
-  hideRequiredAsterisk
+  hide-required-asterisk
 >
 ...
 </q-form>

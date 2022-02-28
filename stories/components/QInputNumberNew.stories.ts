@@ -12,8 +12,7 @@ const storyMetadata: Meta = {
     placeholder: { control: { type: 'text' } },
     min: { control: { type: 'number' } },
     max: { control: { type: 'number' } },
-    precision: { control: { type: 'number', min: 0 } },
-    localization: { control: { disable: true } }
+    precision: { control: { type: 'number', min: 0 } }
   }
 };
 

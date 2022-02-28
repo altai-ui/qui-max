@@ -4,28 +4,27 @@
       <input
         v-bind="$attrs"
         ref="inputRef"
-        :value="modelValue"
         :disabled="isDisabled"
         type="text"
         inputmode="numeric"
         class="q-input__inner"
         @input="handleInput"
-        @keydown="handleKeyDown"
+        @paste="handleInput"
+        @blur="handleBlur"
       />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, inject, ref } from 'vue';
-import { Nullable, UnwrappedInstance } from '#/helpers';
+import { computed, defineComponent, inject, onMounted, ref } from 'vue';
+import { Nullable } from '#/helpers';
 import { QFormItemProvider } from '@/qComponents/QFormItem';
 import { QFormProvider } from '@/qComponents/QForm';
-import { getConfig } from '@/qComponents/config';
-import { getLocaleSeparator } from '@/qComponents/QInputNumber/src/helpers';
+import { QInputNumberNewInstance, QInputNumberNewProps } from '@/qComponents';
 
-const MIN_INTEGER = parseInt((Number.MIN_SAFE_INTEGER / 100).toString(), 10);
-const MAX_INTEGER = parseInt((Number.MAX_SAFE_INTEGER / 100).toString(), 10);
+const MIN_INTEGER = Number(String(Number.MIN_SAFE_INTEGER).slice(0, -2));
+const MAX_INTEGER = Number(String(Number.MAX_SAFE_INTEGER).slice(0, -2));
 
 export default defineComponent({
   name: 'QInputNumberNew',
@@ -35,14 +34,14 @@ export default defineComponent({
   props: {
     /** Input value */
     modelValue: {
-      type: String,
+      type: [String, Number],
       default: null
     },
 
-    /** BCP47 language identifier */
-    localization: {
-      type: String,
-      default: null
+    /** validate parent form if present */
+    validateEvent: {
+      type: Boolean,
+      default: true
     },
 
     /** Number of digits after decimal separator */
@@ -83,90 +82,73 @@ export default defineComponent({
     'update:modelValue'
   ],
 
-  setup(props, ctx) {
+  setup(props: QInputNumberNewProps, ctx): QInputNumberNewInstance {
     const qFormItem = inject<Nullable<QFormItemProvider>>('qFormItem', null);
     const qForm = inject<Nullable<QFormProvider>>('qForm', null);
-
-    const inputRef = ref<UnwrappedInstance<HTMLInputElement>>(null);
-
-    const localizationTag = computed<string>(
-      () => props.localization ?? getConfig('locale') ?? 'en'
-    );
-
-    const decimalSeparator = computed<string>(() =>
-      getLocaleSeparator('decimal', localizationTag.value)
-    );
+    const inputRef = ref<Nullable<HTMLInputElement>>(null);
+    let internalValue = '';
 
     const precision = computed<number>(() => Math.max(props.precision ?? 0, 0));
-
-    if (props.modelValue) {
-      ctx.emit(
-        'update:modelValue',
-        parseFloat(props.modelValue).toFixed(precision.value)
-      );
-    }
 
     const isDisabled = computed<boolean>(
       () => props.disabled || (qForm?.disabled.value ?? false)
     );
 
-    const updateModel = (event: Event): void => {
-      const target = event.target as HTMLInputElement;
-      ctx.emit('update:modelValue', target.value ?? '');
+    const getFormattedValue = (value: string | number): string => {
+      return Number(value).toFixed(precision.value);
     };
 
-    const handleKeyDown = (event: KeyboardEvent): void => {
+    const matchNumber = (value: string): Nullable<string[]> => {
+      // FIXME: double minus at the beginning of string
+      const valueRegExp = new RegExp(`^-?\\d*[.,]?\\d{0,${precision.value}}`);
+      return value.match(valueRegExp);
+    };
+
+    onMounted(() => {
+      const input = inputRef.value;
+      const initialValue = props.modelValue;
+      if (input && initialValue) {
+        input.value = getFormattedValue(initialValue);
+        internalValue = input.value;
+      }
+    });
+
+    const handleInput = (event: KeyboardEvent | ClipboardEvent): void => {
+      const target = event.target as HTMLInputElement;
+
+      const clipboardData = (event as ClipboardEvent).clipboardData;
+      const clipboardValue = clipboardData?.getData('text/plain');
+      const valueMatches = matchNumber(clipboardValue ?? target.value);
+      if (valueMatches) {
+        // TODO: validate against min and max values
+
+        target.value = valueMatches[0];
+        internalValue = target.value;
+      }
+
+      target.value = internalValue;
+
+      ctx.emit('input', target.value);
+      ctx.emit('update:modelValue', target.value);
+
+      if (props.validateEvent) qFormItem?.validateField('input');
+    };
+
+    const handleBlur = (event: Event): void => {
       const target = event.target as HTMLInputElement;
       const value = target.value;
-      const curPos = target.selectionStart;
-      const separator = decimalSeparator.value;
+      target.value = getFormattedValue(value);
 
-      const isAllowedKey = [
-        'Backspace',
-        'Delete',
-        'Home',
-        'End',
-        'ArrowLeft',
-        'ArrowRight'
-      ].includes(event.code);
-
-      const isAllowedCombination =
-        (event.metaKey || event.ctrlKey) &&
-        ['KeyA', 'KeyX', 'KeyC', 'KeyV'].includes(event.code);
-
-      const isAllowedSymbol = event.key.match(
-        new RegExp(`[-0-9${decimalSeparator.value}]`)
-      );
-
-      if (!isAllowedKey && !isAllowedSymbol && !isAllowedCombination) {
-        event.preventDefault();
-      }
-
-      // prevent entering 'minus' if it already exists or cursor is not at the start of the string
-      if (event.key === '-' && (curPos !== 0 || value.includes('-'))) {
-        event.preventDefault();
-      }
-
-      // prevent entering decimal separator if it already exists or disabled
-      if (
-        event.key === separator &&
-        (!precision.value || value.includes(separator))
-      ) {
-        event.preventDefault();
-      }
-
-      // TODO handle numbers with delimiter (change, delete)
+      if (props.validateEvent) qFormItem?.validateField('blur');
     };
 
-    const handleInput = (event: InputEvent): void => {
-      ctx.emit('input', event);
-      updateModel(event);
-    };
+    // TODO: add handlers for other events
 
     return {
+      inputRef,
       isDisabled,
       handleInput,
-      handleKeyDown
+      handleBlur
     };
   }
 });

@@ -1,0 +1,129 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- import CSS -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/@qvant/qui-max/dist/style.css"
+    />
+  </head>
+
+  <body>
+    <div id="app">
+      <div class="block">
+        <q-row>
+          <q-col cols="6">
+            <q-form ref="form" :model="formModel" :rules="rules" disabled>
+              <q-form-item label="Name" prop="name">
+                <q-input v-model="formModel.name" type="text" />
+              </q-form-item>
+
+              <q-form-item label="Intro" prop="intro">
+                <q-input v-model="formModel.intro" type="text" />
+              </q-form-item>
+
+              <q-button @click="handleSubmitClick">Create</q-button>
+              <q-button @click="handleResetClick" theme="secondary"
+                >Reset</q-button
+              >
+              <br /><br />
+              <q-button @click="handleRule" theme="secondary"
+                >Make Intro required</q-button
+              >
+            </q-form>
+          </q-col>
+          <q-col cols="6">
+            <b>formModel:</b>
+            <div>{{ formModel }}</div>
+            <br />
+            <b>rules:</b>
+            <div>{{ rules }}</div>
+          </q-col>
+        </q-row>
+      </div>
+    </div>
+  </body>
+  <!-- import Vue before Qui -->
+  <script src="https://unpkg.com/vue@latest"></script>
+  <!-- import JavaScript -->
+  <script src="https://unpkg.com/@qvant/qui-max@latest"></script>
+  <script>
+    const model = {
+      name: '',
+      intro: ''
+    };
+
+    const rules = {
+      name: [
+        { required: true },
+        {
+          min: 3,
+          max: 10,
+          message: 'Length should be 3 to 10',
+          trigger: 'blur'
+        }
+      ],
+      intro: {
+        required: false,
+        message: 'Please input introtext',
+        trigger: 'change'
+      }
+    };
+
+    const app = Vue.createApp({
+      setup() {
+        const form = Vue.ref(null);
+
+        const formModel = Vue.reactive(model);
+        const rules = Vue.reactive(rules);
+
+        const handleSubmitClick = async () => {
+          const valid = await form?.value?.validate();
+          if (valid) {
+            const { isValid, invalidFields } = valid;
+
+            console.log('QForm | validate', isValid, invalidFields);
+            if (isValid) {
+              // eslint-disable-next-line no-alert
+              alert('Success');
+            }
+          }
+        };
+
+        const handleResetClick = () => {
+          form?.value?.resetFields();
+        };
+
+        const handleRule = () => {
+          rules.intro = {
+            required: true,
+            message: 'Please input name',
+            trigger: 'blur'
+          };
+        };
+
+        return {
+          form,
+          formModel,
+          rules,
+          handleRule,
+          handleSubmitClick,
+          handleResetClick
+        };
+      }
+    });
+
+    app.use(QuiMax.default);
+    app.mount('#app');
+  </script>
+  <style>
+    .block {
+      margin: 20px;
+    }
+
+    /* remove after next release */
+    .q-input {
+      height: 40px;
+    }
+  </style>
+</html>

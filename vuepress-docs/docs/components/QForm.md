@@ -40,7 +40,7 @@ const model = {
   intro: ''
 };
 
-const INITIAL_RULES = {
+const rules = {
   name: [
     { required: false },
     { min: 3, max: 10, message: 'Length should be 3 to 10', trigger: 'blur' }
@@ -57,7 +57,7 @@ export default defineComponent({
     const form = ref(null);
 
     const formModel = reactive(model);
-    const rules = reactive(INITIAL_RULES);
+    const rules = reactive(rules);
 
     const handleSubmitClick = async () => {
       const valid = await form?.value?.validate();

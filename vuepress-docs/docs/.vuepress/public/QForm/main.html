@@ -53,7 +53,7 @@
       intro: ''
     };
 
-    const rules = {
+    const initialRules = {
       name: [
         { required: true },
         {
@@ -75,7 +75,7 @@
         const form = Vue.ref(null);
 
         const formModel = Vue.reactive(model);
-        const rules = Vue.reactive(rules);
+        const rules = Vue.reactive(initialRules);
 
         const handleSubmitClick = async () => {
           const valid = await form?.value?.validate();

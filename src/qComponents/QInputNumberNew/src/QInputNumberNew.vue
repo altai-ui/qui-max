@@ -8,9 +8,12 @@
         type="text"
         inputmode="numeric"
         class="q-input__inner"
+        @keydown="handleKeyDown"
         @input="handleInput"
         @paste="handleInput"
-        @blur="handleBlur"
+        @change="handleEvent"
+        @focus="handleEvent"
+        @blur="handleEvent"
       />
     </div>
   </div>
@@ -73,13 +76,19 @@ export default defineComponent({
 
   emits: [
     /** triggers when model updates */
+    'update:modelValue',
+
+    /** triggers when model updates */
     'change',
 
     /** triggers when native input event fires */
     'input',
 
-    /** triggers when model updates */
-    'update:modelValue'
+    /** triggers when input is focused */
+    'focus',
+
+    /** triggers when input lose focus */
+    'blur'
   ],
 
   setup(props: QInputNumberNewProps, ctx): QInputNumberNewInstance {
@@ -99,7 +108,6 @@ export default defineComponent({
     };
 
     const matchNumber = (value: string): Nullable<string[]> => {
-      // FIXME: double minus at the beginning of string
       const valueRegExp = new RegExp(`^-?\\d*[.,]?\\d{0,${precision.value}}`);
       return value.match(valueRegExp);
     };
@@ -113,6 +121,26 @@ export default defineComponent({
       }
     });
 
+    const changesEmitter = (
+      type: 'input' | 'change' | 'focus' | 'blur',
+      value: string
+    ): void => {
+      ctx.emit('update:modelValue', value);
+      ctx.emit(type, value);
+      if (props.validateEvent) qFormItem?.validateField(type);
+    };
+
+    const handleKeyDown = (event: KeyboardEvent): void => {
+      const target = event.target as HTMLInputElement;
+      const separatorRegExp = /[.,]/;
+      if (
+        (event.key === '-' && target.value.includes('-')) ||
+        (separatorRegExp.test(event.key) && separatorRegExp.test(target.value))
+      ) {
+        event.preventDefault();
+      }
+    };
+
     const handleInput = (event: KeyboardEvent | ClipboardEvent): void => {
       const target = event.target as HTMLInputElement;
 
@@ -120,35 +148,36 @@ export default defineComponent({
       const clipboardValue = clipboardData?.getData('text/plain');
       const valueMatches = matchNumber(clipboardValue ?? target.value);
       if (valueMatches) {
-        // TODO: validate against min and max values
+        let currentValue = valueMatches[0];
 
-        target.value = valueMatches[0];
+        if (props.min && Number(currentValue) < MIN_INTEGER) {
+          currentValue = MIN_INTEGER.toFixed(precision.value);
+        }
+        if (props.max && Number(currentValue) > MAX_INTEGER) {
+          currentValue = MAX_INTEGER.toFixed(precision.value);
+        }
+
+        target.value = currentValue;
         internalValue = target.value;
       }
 
       target.value = internalValue;
 
-      ctx.emit('input', target.value);
-      ctx.emit('update:modelValue', target.value);
-
-      if (props.validateEvent) qFormItem?.validateField('input');
+      changesEmitter('input', target.value);
     };
 
-    const handleBlur = (event: Event): void => {
+    const handleEvent = (event: Event): void => {
       const target = event.target as HTMLInputElement;
-      const value = target.value;
-      target.value = getFormattedValue(value);
-
-      if (props.validateEvent) qFormItem?.validateField('blur');
+      target.value = getFormattedValue(target.value);
+      changesEmitter(event.type as 'change' | 'focus' | 'blur', target.value);
     };
-
-    // TODO: add handlers for other events
 
     return {
       inputRef,
       isDisabled,
+      handleKeyDown,
       handleInput,
-      handleBlur
+      handleEvent
     };
   }
 });

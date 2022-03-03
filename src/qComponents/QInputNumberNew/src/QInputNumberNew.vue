@@ -8,10 +8,9 @@
         type="text"
         inputmode="numeric"
         class="q-input__inner"
-        @keydown="handleKeyDown"
         @input="handleInput"
         @paste="handleInput"
-        @change="handleEvent"
+        @change="handleChange"
         @focus="handleEvent"
         @blur="handleEvent"
       />
@@ -20,11 +19,14 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, inject, onMounted, ref } from 'vue';
-import { Nullable } from '#/helpers';
-import { QFormItemProvider } from '@/qComponents/QFormItem';
-import { QFormProvider } from '@/qComponents/QForm';
-import { QInputNumberNewInstance, QInputNumberNewProps } from '@/qComponents';
+import { computed, defineComponent, inject, nextTick, ref, watch } from 'vue';
+import { isNil } from 'lodash-es';
+
+import type { QFormItemProvider } from '@/qComponents/QFormItem';
+import type { QFormProvider } from '@/qComponents/QForm';
+import type { Nillable, Nullable } from '#/helpers';
+
+import type { QInputNumberNewInstance, QInputNumberNewProps } from './types';
 
 const MIN_INTEGER = Number(String(Number.MIN_SAFE_INTEGER).slice(0, -2));
 const MAX_INTEGER = Number(String(Number.MAX_SAFE_INTEGER).slice(0, -2));
@@ -37,7 +39,7 @@ export default defineComponent({
   props: {
     /** Input value */
     modelValue: {
-      type: [String, Number],
+      type: Number,
       default: null
     },
 
@@ -92,10 +94,9 @@ export default defineComponent({
   ],
 
   setup(props: QInputNumberNewProps, ctx): QInputNumberNewInstance {
-    const qFormItem = inject<Nullable<QFormItemProvider>>('qFormItem', null);
     const qForm = inject<Nullable<QFormProvider>>('qForm', null);
+    const qFormItem = inject<Nullable<QFormItemProvider>>('qFormItem', null);
     const inputRef = ref<Nullable<HTMLInputElement>>(null);
-    let internalValue = '';
 
     const precision = computed<number>(() => Math.max(props.precision ?? 0, 0));
 
@@ -103,42 +104,27 @@ export default defineComponent({
       () => props.disabled || (qForm?.disabled.value ?? false)
     );
 
-    const getFormattedValue = (value: string | number): string => {
-      return Number(value).toFixed(precision.value);
+    const getFormattedValue = (value: Nillable<string | number>): string => {
+      const val = Number(value);
+      if (isNil(value) || Number.isNaN(val)) return '';
+      return val.toFixed(precision.value);
     };
 
-    const matchNumber = (value: string): Nullable<string[]> => {
-      const valueRegExp = new RegExp(`^-?\\d*[.,]?\\d{0,${precision.value}}`);
-      return value.match(valueRegExp);
+    const matchNumber = (value: string): Nullable<string> => {
+      const valueRegExp = new RegExp(
+        `^-?(?=0?[.,]|[1-9])(0(?=[.,])|[1-9]\\d*)?([.,](?=\\d)\\d{0,${precision.value})?`
+      );
+      const match = value.match(valueRegExp);
+      return match ? match[0] : null;
     };
-
-    onMounted(() => {
-      const input = inputRef.value;
-      const initialValue = props.modelValue;
-      if (input && initialValue) {
-        input.value = getFormattedValue(initialValue);
-        internalValue = input.value;
-      }
-    });
 
     const changesEmitter = (
       type: 'input' | 'change' | 'focus' | 'blur',
       value: string
     ): void => {
-      ctx.emit('update:modelValue', value);
-      ctx.emit(type, value);
+      ctx.emit('update:modelValue', Number(value));
+      ctx.emit(type, Number(value));
       if (props.validateEvent) qFormItem?.validateField(type);
-    };
-
-    const handleKeyDown = (event: KeyboardEvent): void => {
-      const target = event.target as HTMLInputElement;
-      const separatorRegExp = /[.,]/;
-      if (
-        (event.key === '-' && target.value.includes('-')) ||
-        (separatorRegExp.test(event.key) && separatorRegExp.test(target.value))
-      ) {
-        event.preventDefault();
-      }
     };
 
     const handleInput = (event: KeyboardEvent | ClipboardEvent): void => {
@@ -146,37 +132,55 @@ export default defineComponent({
 
       const clipboardData = (event as ClipboardEvent).clipboardData;
       const clipboardValue = clipboardData?.getData('text/plain');
-      const valueMatches = matchNumber(clipboardValue ?? target.value);
-      if (valueMatches) {
-        let currentValue = valueMatches[0];
-
-        if (props.min && Number(currentValue) < MIN_INTEGER) {
-          currentValue = MIN_INTEGER.toFixed(precision.value);
+      let valueMatch = matchNumber(clipboardValue ?? target.value);
+      if (valueMatch) {
+        if (props.min && Number(valueMatch) < MIN_INTEGER) {
+          valueMatch = MIN_INTEGER.toFixed(precision.value);
         }
-        if (props.max && Number(currentValue) > MAX_INTEGER) {
-          currentValue = MAX_INTEGER.toFixed(precision.value);
+        if (props.max && Number(valueMatch) > MAX_INTEGER) {
+          valueMatch = MAX_INTEGER.toFixed(precision.value);
         }
 
-        target.value = currentValue;
-        internalValue = target.value;
+        target.value = valueMatch;
+
+        return;
       }
 
-      target.value = internalValue;
-
+      target.value = String(props.modelValue);
       changesEmitter('input', target.value);
+    };
+
+    const handleChange = (event: Event): void => {
+      const target = event.target as HTMLInputElement;
+      target.value = getFormattedValue(target.value);
+      changesEmitter('change', target.value);
     };
 
     const handleEvent = (event: Event): void => {
       const target = event.target as HTMLInputElement;
-      target.value = getFormattedValue(target.value);
-      changesEmitter(event.type as 'change' | 'focus' | 'blur', target.value);
+      changesEmitter(event.type as 'focus' | 'blur', target.value);
     };
+
+    watch(
+      () => props.modelValue,
+      value => {
+        nextTick(() => {
+          const input = inputRef.value;
+          if (input && !isNil(value)) {
+            input.value = getFormattedValue(value);
+          }
+        });
+      },
+      {
+        immediate: true
+      }
+    );
 
     return {
       inputRef,
       isDisabled,
-      handleKeyDown,
       handleInput,
+      handleChange,
       handleEvent
     };
   }

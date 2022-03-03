@@ -111,8 +111,9 @@ export default defineComponent({
     };
 
     const matchNumber = (value: string): Nullable<string> => {
+      // https://regex101.com/r/qWswxg/3
       const valueRegExp = new RegExp(
-        `^-?(?=0?[.,]|[1-9])(0(?=[.,])|[1-9]\\d*)?([.,](?=\\d)\\d{0,${precision.value})?`
+        `^-?(?=0?[.,]|[1-9])(0(?=[.,])|[1-9]\\d*)?[.,]?\\d{0,${precision.value}}`
       );
       const match = value.match(valueRegExp);
       return match ? match[0] : null;
@@ -146,7 +147,7 @@ export default defineComponent({
         return;
       }
 
-      target.value = String(props.modelValue);
+      target.value = target.value ? String(props.modelValue) : '';
       changesEmitter('input', target.value);
     };
 

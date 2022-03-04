@@ -248,6 +248,9 @@ As native `for` `<label>` attribute.
 
 A key of QForm's model. Used to connect a field value with validation methods.
 
+- Type : `String`
+- Default: `null`
+
 ```vue
 ...
 <q-form-item prop="name">
@@ -261,3 +264,45 @@ const formModel = reactive({
 });
 ```
 
+### label
+
+A form item's label.
+
+- Type: `String`
+- Default: `null`
+
+```vue
+...
+<q-form-item label="name">
+...
+```
+
+### sublabel 
+
+The sublabel is similar to `label`, but on the right side ans smalier.
+
+- Type: `String`
+- Default: `null`
+
+```vue
+...
+<q-form-item sublabel="name">
+...
+```
+
+<iframe style="width: 100%; height: 120px" scrolling="no" frameborder="no" src="/QForm/[QFormItem]sublabel.html"></iframe>
+
+### error
+
+Field error message, set the value and the field will validate error and show this message immediately
+
+- Type: `String`
+- Default: `null`
+
+```vue
+...
+<q-form-item label="name" error="We do not like you">
+...
+```
+
+<iframe style="width: 100%; height: 120px" scrolling="no" frameborder="no" src="/QForm/[QFormItem]error.html"></iframe>

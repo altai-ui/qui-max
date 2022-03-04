@@ -227,7 +227,7 @@ Whether to show the error message.
 Whether to trigger validation when the `rules` prop is changed.
 
 - Type: `Boolean`
-- Default: `false`
+- Default: `true`
 
 ## Slot
 

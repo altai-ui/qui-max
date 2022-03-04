@@ -3,7 +3,7 @@ import type { ComputedRef, Ref } from 'vue';
 import type { Nullable } from '#/helpers';
 
 export interface QInputNumberNewProps {
-  modelValue: Nullable<number>;
+  modelValue: Nullable<number | string>;
   validateEvent: Nullable<boolean>;
   disabled: Nullable<boolean>;
   precision: Nullable<number>;

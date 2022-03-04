@@ -24,7 +24,7 @@ import { isNil } from 'lodash-es';
 
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
 import type { QFormProvider } from '@/qComponents/QForm';
-import type { Nillable, Nullable } from '#/helpers';
+import type { Nullable } from '#/helpers';
 
 import type { QInputNumberNewInstance, QInputNumberNewProps } from './types';
 
@@ -39,7 +39,7 @@ export default defineComponent({
   props: {
     /** Input value */
     modelValue: {
-      type: Number,
+      type: [String, Number],
       default: null
     },
 
@@ -104,28 +104,39 @@ export default defineComponent({
       () => props.disabled || (qForm?.disabled.value ?? false)
     );
 
-    const getFormattedValue = (value: Nillable<string | number>): string => {
-      const val = Number(value);
-      if (isNil(value) || Number.isNaN(val)) return '';
-      return val.toFixed(precision.value);
+    const changesEmitter = (
+      type: 'input' | 'change' | 'focus' | 'blur',
+      value: string
+    ): void => {
+      ctx.emit('update:modelValue', value);
+      ctx.emit(type, value);
+      if (props.validateEvent) qFormItem?.validateField(type);
     };
 
     const matchNumber = (value: string): Nullable<string> => {
       // https://regex101.com/r/qWswxg/3
+      const signPattern =
+        props.min ?? MIN_INTEGER < 0 ? '-?(?=0?[.,]|[1-9])' : '';
+      const integerPattern = '(0?(?=[.,])|[1-9][0-9]*)';
+      const fractionPattern =
+        precision.value > 0 ? `[.,]?[0-9]{0,${precision.value}}` : '';
       const valueRegExp = new RegExp(
-        `^-?(?=0?[.,]|[1-9])(0(?=[.,])|[1-9]\\d*)?[.,]?\\d{0,${precision.value}}`
+        `^${signPattern}${integerPattern}${fractionPattern}`
       );
       const match = value.match(valueRegExp);
       return match ? match[0] : null;
     };
 
-    const changesEmitter = (
-      type: 'input' | 'change' | 'focus' | 'blur',
-      value: string
-    ): void => {
-      ctx.emit('update:modelValue', Number(value));
-      ctx.emit(type, Number(value));
-      if (props.validateEvent) qFormItem?.validateField(type);
+    const testNumber = (value: string): boolean => {
+      const signPattern = props.min ?? MIN_INTEGER < 0 ? '-?' : '';
+      const integerPattern = '[0-9]*';
+      const fractionPattern =
+        precision.value > 0 ? `[.,]?[0-9]{0,${precision.value}}` : '';
+
+      const valueRegExp = new RegExp(
+        `^${signPattern}${integerPattern}${fractionPattern}$`
+      );
+      return valueRegExp.test(value);
     };
 
     const handleInput = (event: KeyboardEvent | ClipboardEvent): void => {
@@ -133,7 +144,14 @@ export default defineComponent({
 
       const clipboardData = (event as ClipboardEvent).clipboardData;
       const clipboardValue = clipboardData?.getData('text/plain');
-      let valueMatch = matchNumber(clipboardValue ?? target.value);
+      let valueMatch: Nullable<string> = null;
+
+      if (clipboardValue) {
+        valueMatch = matchNumber(clipboardValue);
+      } else if (testNumber(target.value)) {
+        valueMatch = target.value;
+      }
+
       if (valueMatch) {
         if (props.min && Number(valueMatch) < MIN_INTEGER) {
           valueMatch = MIN_INTEGER.toFixed(precision.value);
@@ -143,17 +161,16 @@ export default defineComponent({
         }
 
         target.value = valueMatch;
-
-        return;
+      } else {
+        target.value = target.value ? String(props.modelValue) : '';
       }
 
-      target.value = target.value ? String(props.modelValue) : '';
       changesEmitter('input', target.value);
     };
 
     const handleChange = (event: Event): void => {
       const target = event.target as HTMLInputElement;
-      target.value = getFormattedValue(target.value);
+      target.value = matchNumber(target.value) ?? '';
       changesEmitter('change', target.value);
     };
 
@@ -168,7 +185,7 @@ export default defineComponent({
         nextTick(() => {
           const input = inputRef.value;
           if (input && !isNil(value)) {
-            input.value = getFormattedValue(value);
+            input.value = matchNumber(String(value)) ?? '';
           }
         });
       },

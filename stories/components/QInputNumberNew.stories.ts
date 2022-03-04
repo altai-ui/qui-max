@@ -19,9 +19,9 @@ const storyMetadata: Meta = {
 const QInputNumberNewStory: Story<QInputNumberNewProps> = args =>
   defineComponent({
     setup() {
-      const numberValue = ref<number>(1234);
+      const numberValue = ref<string>('1234');
 
-      const handleEmit = (value: number, type: string): void => {
+      const handleEmit = (value: string, type: string): void => {
         console.log(value, type);
       };
 

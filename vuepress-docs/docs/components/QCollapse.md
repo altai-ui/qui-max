@@ -1,4 +1,4 @@
-# QCollapse
+# QCollapse 🪗
 
 Collapse groups a collection of contents in tabs.
 

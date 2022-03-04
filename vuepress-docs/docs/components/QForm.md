@@ -1,8 +1,6 @@
-# QForm
+# QForm ✉️
 
 `QForm` keeps the form model, manages validation rules and provides context to form elements.
-
-`QFormItem` being used as additional component to wrap each form element (input, select, checkbox etc.) to control the validation.
 
 ## When to use
 
@@ -232,4 +230,34 @@ Whether to trigger validation when the `rules` prop is changed.
 ## Slot
 
 Only default slot is existed. Put the form content inside.
+
+## QFormItem 🌯
+
+`QFormItem` is being used as additional component to wrap each form element (input, select, checkbox etc.) to control the validation. Also, it's included the `<label>` and styles rules for inner elements.
+
+## QFormItem props
+
+### for
+
+As native `for` `<label>` attribute.
+
+- Type: `String`
+- Default: `null`
+
+### prop
+
+A key of QForm's model. Used to connect a field value with validation methods.
+
+```vue
+...
+<q-form-item prop="name">
+...
+```
+
+```js {2}
+const formModel = reactive({
+  name: '',
+  intro: ''
+});
+```
 

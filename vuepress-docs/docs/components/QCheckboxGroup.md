@@ -1,4 +1,4 @@
-# QCheckboxGroup
+# QCheckboxGroup ✔️✔️✔️
 
 Is being used to wrap multiple [QCheckbox](/qui-max/components/QCheckbox)
 

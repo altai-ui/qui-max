@@ -1,4 +1,4 @@
-# QCheckbox
+# QCheckbox ✔️
 
 Allows to choose one or more options. Try a sandbox [story](https://qui-max.netlify.app/?path=/story/components-qcheckbox--default)
 

@@ -100,6 +100,15 @@ export default defineComponent({
 
     const precision = computed<number>(() => Math.max(props.precision ?? 0, 0));
 
+    const valueMatchPattern = computed<string>(() => {
+      const signPattern = props.min ?? MIN_INTEGER < 0 ? '-?' : '';
+      const integerPattern = '[0-9]*';
+      const fractionPattern =
+        precision.value > 0 ? `[.,]?[0-9]{0,${precision.value}}` : '';
+
+      return `^${signPattern}${integerPattern}${fractionPattern}`;
+    });
+
     const isDisabled = computed<boolean>(
       () => props.disabled || (qForm?.disabled.value ?? false)
     );
@@ -114,29 +123,17 @@ export default defineComponent({
     };
 
     const matchNumber = (value: string): Nullable<string> => {
-      // https://regex101.com/r/qWswxg/3
-      const signPattern =
-        props.min ?? MIN_INTEGER < 0 ? '-?(?=0?[.,]|[1-9])' : '';
-      const integerPattern = '(0?(?=[.,])|[1-9][0-9]*)';
-      const fractionPattern =
-        precision.value > 0 ? `[.,]?[0-9]{0,${precision.value}}` : '';
-      const valueRegExp = new RegExp(
-        `^${signPattern}${integerPattern}${fractionPattern}`
-      );
+      const valueRegExp = new RegExp(valueMatchPattern.value); // match without line end
       const match = value.match(valueRegExp);
+
       return match ? match[0] : null;
     };
 
     const testNumber = (value: string): boolean => {
-      const signPattern = props.min ?? MIN_INTEGER < 0 ? '-?' : '';
-      const integerPattern = '[0-9]*';
-      const fractionPattern =
-        precision.value > 0 ? `[.,]?[0-9]{0,${precision.value}}` : '';
+      const hasIncorrectCombination = /^-?(0{2,}|0[1-9])/.test(value);
+      const valueRegExp = new RegExp(`${valueMatchPattern.value}$`); // match with line end
 
-      const valueRegExp = new RegExp(
-        `^${signPattern}${integerPattern}${fractionPattern}$`
-      );
-      return valueRegExp.test(value);
+      return !hasIncorrectCombination && valueRegExp.test(value);
     };
 
     const handleInput = (event: KeyboardEvent | ClipboardEvent): void => {

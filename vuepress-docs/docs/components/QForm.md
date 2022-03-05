@@ -306,3 +306,14 @@ Field error message, set the value and the field will validate error and show th
 ```
 
 <iframe style="width: 100%; height: 120px" scrolling="no" frameborder="no" src="/QForm/[QFormItem]error.html"></iframe>
+
+### rules
+
+The same as [QForm rules](/components/QForm.html#rules).
+
+### showErrorMessage
+
+Whether to show the error message after validation.
+
+- Type: `Boolean`
+- Default: `true`

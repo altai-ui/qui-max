@@ -301,11 +301,11 @@ Field error message, set the value and the field will validate error and show th
 
 ```vue
 ...
-<q-form-item label="name" error="We do not like you">
+<q-form-item label="name" :error="error">
 ...
 ```
 
-<iframe style="width: 100%; height: 120px" scrolling="no" frameborder="no" src="/QForm/[QFormItem]error.html"></iframe>
+<iframe style="width: 100%; height: 180px" scrolling="no" frameborder="no" src="/QForm/[QFormItem]error.html"></iframe>
 
 ### rules
 
@@ -317,3 +317,33 @@ Whether to show the error message after validation.
 
 - Type: `Boolean`
 - Default: `true`
+
+## QFormItem slots
+
+### default 
+
+Put content inside form item's body.
+
+### label
+
+Put your custom content as a label.
+
+### error
+
+Put your custom content as a error.
+
+Examples:
+
+```vue {2-7}
+<q-form-item prop="name">
+  <template v-slot:label>
+    label slot
+  </template>
+  <template v-slot:error>
+    error slot
+  </template>
+  <q-input v-model="formModel.name" type="text" />
+</q-form-item>
+```
+
+<iframe style="width: 100%; height: 140px" scrolling="no" frameborder="no" src="/QForm/[QFormItem]slots.html"></iframe>

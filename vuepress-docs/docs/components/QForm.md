@@ -328,16 +328,23 @@ Put content inside form item's body.
 
 Put your custom content as a label.
 
+### sublabel
+
+Put your custom content as a sublabel.
+
 ### error
 
 Put your custom content as a error.
 
 Examples:
 
-```vue {2-7}
+```vue {2-10}
 <q-form-item prop="name">
   <template v-slot:label>
     label slot
+  </template>
+  <template v-slot:sublabel>
+    sublabel slot
   </template>
   <template v-slot:error>
     error slot

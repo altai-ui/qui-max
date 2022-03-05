@@ -1,4 +1,4 @@
-# QDatepicker
+# QDatepicker 📅
 
 To select or input a date. We support default type `Date` and `ISO`.
 

@@ -1,4 +1,4 @@
-# QCascader
+# QCascader 🪜
 
 Cascade selection box. [Try story](https://qui-max.netlify.app/?path=/story/components-qcascader--default)
 

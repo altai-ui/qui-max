@@ -1,4 +1,4 @@
-# QContextMenu
+# QContextMenu 📎
 
 Contextual menus are displayed on demand and contain a small set of relevant actions, related to a control, a piece of content, a view in an app, or an area of the UI. When designed right, they deliver relevant tools for completing tasks without adding clutter to the interface.
 

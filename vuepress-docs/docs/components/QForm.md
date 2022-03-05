@@ -1,8 +1,6 @@
-# QForm
+# QForm ✉️
 
 `QForm` keeps the form model, manages validation rules and provides context to form elements.
-
-`QFormItem` being used as additional component to wrap each form element (input, select, checkbox etc.) to control the validation.
 
 ## When to use
 
@@ -233,3 +231,126 @@ Whether to trigger validation when the `rules` prop is changed.
 
 Only default slot is existed. Put the form content inside.
 
+## QFormItem 🌯
+
+`QFormItem` is being used as additional component to wrap each form element (input, select, checkbox etc.) to control the validation. Also, it's included the `<label>` and styles rules for inner elements.
+
+## QFormItem props
+
+### for
+
+As native `for` `<label>` attribute.
+
+- Type: `String`
+- Default: `null`
+
+### prop
+
+A key of QForm's model. Used to connect a field value with validation methods.
+
+- Type : `String`
+- Default: `null`
+
+```vue
+...
+<q-form-item prop="name">
+...
+```
+
+```js {2}
+const formModel = reactive({
+  name: '',
+  intro: ''
+});
+```
+
+### label
+
+A form item's label.
+
+- Type: `String`
+- Default: `null`
+
+```vue
+...
+<q-form-item label="name">
+...
+```
+
+### sublabel 
+
+The sublabel is similar to `label`, but on the right side ans smaller.
+
+- Type: `String`
+- Default: `null`
+
+```vue
+...
+<q-form-item sublabel="name">
+...
+```
+
+<iframe style="width: 100%; height: 120px" scrolling="no" frameborder="no" src="/QForm/[QFormItem]sublabel.html"></iframe>
+
+### error
+
+Field error message, set the value and the field will validate error and show this message immediately
+
+- Type: `String`
+- Default: `null`
+
+```vue
+...
+<q-form-item label="name" :error="error">
+...
+```
+
+<iframe style="width: 100%; height: 180px" scrolling="no" frameborder="no" src="/QForm/[QFormItem]error.html"></iframe>
+
+### rules
+
+The same as [QForm rules](/components/QForm.html#rules).
+
+### showErrorMessage
+
+Whether to show the error message after validation.
+
+- Type: `Boolean`
+- Default: `true`
+
+## QFormItem slots
+
+### default 
+
+Put content inside form item's body.
+
+### label
+
+Put your custom content as a label.
+
+### sublabel
+
+Put your custom content as a sublabel.
+
+### error
+
+Put your custom content as an error.
+
+Examples:
+
+```vue {2-10}
+<q-form-item prop="name">
+  <template v-slot:label>
+    label slot
+  </template>
+  <template v-slot:sublabel>
+    sublabel slot
+  </template>
+  <template v-slot:error>
+    error slot
+  </template>
+  <q-input v-model="formModel.name" type="text" />
+</q-form-item>
+```
+
+<iframe style="width: 100%; height: 140px" scrolling="no" frameborder="no" src="/QForm/[QFormItem]slots.html"></iframe>

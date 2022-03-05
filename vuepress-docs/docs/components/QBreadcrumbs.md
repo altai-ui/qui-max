@@ -1,4 +1,4 @@
-# QBreadcrumbs
+# QBreadcrumbs 🍞
 
 Displays the location of the current page, shows all nested levels. Try a sandbox [story](https://qui-max.netlify.app/?path=/story/components-qbreadcrumbs--default)
 

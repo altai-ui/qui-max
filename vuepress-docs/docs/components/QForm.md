@@ -279,7 +279,7 @@ A form item's label.
 
 ### sublabel 
 
-The sublabel is similar to `label`, but on the right side ans smalier.
+The sublabel is similar to `label`, but on the right side ans smaller.
 
 - Type: `String`
 - Default: `null`
@@ -334,7 +334,7 @@ Put your custom content as a sublabel.
 
 ### error
 
-Put your custom content as a error.
+Put your custom content as an error.
 
 Examples:
 

@@ -1,20 +1,17 @@
 <template>
-  <div class="q-input-number">
-    <div class="q-input">
-      <input
-        v-bind="$attrs"
-        ref="inputRef"
-        :disabled="isDisabled"
-        type="text"
-        inputmode="numeric"
-        class="q-input__inner"
-        @input="handleInput"
-        @paste="handleInput"
-        @change="handleChange"
-        @focus="handleEvent"
-        @blur="handleEvent"
-      />
-    </div>
+  <div class="q-input-number-new">
+    <input
+      v-bind="$attrs"
+      ref="inputRef"
+      :disabled="isDisabled"
+      type="text"
+      inputMode="numeric"
+      class="q-input-number-new__inner"
+      @input="handleInput"
+      @change="handleChange"
+      @focus="handleFocus"
+      @blur="handleFocus"
+    />
   </div>
 </template>
 
@@ -39,7 +36,7 @@ export default defineComponent({
   props: {
     /** Input value */
     modelValue: {
-      type: [String, Number],
+      type: Number,
       default: null
     },
 
@@ -100,67 +97,69 @@ export default defineComponent({
 
     const precision = computed<number>(() => Math.max(props.precision ?? 0, 0));
 
-    const valueMatchPattern = computed<string>(() => {
+    const isDisabled = computed<boolean>(
+      () => props.disabled || (qForm?.disabled.value ?? false)
+    );
+
+    const changesEmitter = (type: string, value: string): void => {
+      const emitValue = value === '' ? null : Number(value);
+
+      ctx.emit('update:modelValue', emitValue);
+      if (type === 'input' || type === 'change') ctx.emit(type, emitValue);
+      if (props.validateEvent) qFormItem?.validateField(type);
+    };
+
+    const getValueMatchRegExp = (matchEnd: boolean): RegExp => {
       const signPattern = props.min ?? MIN_INTEGER < 0 ? '-?' : '';
       const integerPattern = '[0-9]*';
       const fractionPattern =
         precision.value > 0 ? `[.,]?[0-9]{0,${precision.value}}` : '';
 
-      return `^${signPattern}${integerPattern}${fractionPattern}`;
-    });
-
-    const isDisabled = computed<boolean>(
-      () => props.disabled || (qForm?.disabled.value ?? false)
-    );
-
-    const changesEmitter = (
-      type: 'input' | 'change' | 'focus' | 'blur',
-      value: string
-    ): void => {
-      ctx.emit('update:modelValue', value);
-      ctx.emit(type, value);
-      if (props.validateEvent) qFormItem?.validateField(type);
+      return new RegExp(
+        `^${signPattern}${integerPattern}${fractionPattern}${
+          matchEnd ? '$' : ''
+        }`
+      );
     };
 
     const matchNumber = (value: string): Nullable<string> => {
-      const valueRegExp = new RegExp(valueMatchPattern.value); // match without line end
-      const match = value.match(valueRegExp);
+      const match = value.match(getValueMatchRegExp(false));
 
       return match ? match[0] : null;
     };
 
     const testNumber = (value: string): boolean => {
       const hasIncorrectCombination = /^-?(0{2,}|0[1-9])/.test(value);
-      const valueRegExp = new RegExp(`${valueMatchPattern.value}$`); // match with line end
 
-      return !hasIncorrectCombination && valueRegExp.test(value);
+      return !hasIncorrectCombination && getValueMatchRegExp(true).test(value);
     };
 
-    const handleInput = (event: KeyboardEvent | ClipboardEvent): void => {
+    const handleInput = (event: InputEvent): void => {
       const target = event.target as HTMLInputElement;
+      const value = target.value;
 
-      const clipboardData = (event as ClipboardEvent).clipboardData;
-      const clipboardValue = clipboardData?.getData('text/plain');
       let valueMatch: Nullable<string> = null;
 
-      if (clipboardValue) {
-        valueMatch = matchNumber(clipboardValue);
-      } else if (testNumber(target.value)) {
-        valueMatch = target.value;
+      if (event.inputType === 'insertFromPaste') {
+        valueMatch = matchNumber(value);
+      } else if (testNumber(value)) {
+        valueMatch = value;
       }
 
       if (valueMatch) {
         if (props.min && Number(valueMatch) < MIN_INTEGER) {
-          valueMatch = MIN_INTEGER.toFixed(precision.value);
+          valueMatch = String(MIN_INTEGER);
         }
         if (props.max && Number(valueMatch) > MAX_INTEGER) {
-          valueMatch = MAX_INTEGER.toFixed(precision.value);
+          valueMatch = String(MAX_INTEGER);
         }
 
         target.value = valueMatch;
       } else {
-        target.value = target.value ? String(props.modelValue) : '';
+        target.value = value ? String(props.modelValue) : '';
       }
+
+      if (Number.isNaN(Number(target.value))) return;
 
       changesEmitter('input', target.value);
     };
@@ -171,24 +170,28 @@ export default defineComponent({
       changesEmitter('change', target.value);
     };
 
-    const handleEvent = (event: Event): void => {
-      const target = event.target as HTMLInputElement;
-      changesEmitter(event.type as 'focus' | 'blur', target.value);
+    const handleFocus = (event: FocusEvent): void => {
+      const type = event.type;
+      if (type === 'focus' || type === 'blur') ctx.emit(type, event);
+      if (props.validateEvent) qFormItem?.validateField(event.type);
     };
 
     watch(
       () => props.modelValue,
-      value => {
-        nextTick(() => {
-          const input = inputRef.value;
-          if (input && !isNil(value)) {
-            input.value = matchNumber(String(value)) ?? '';
-          }
-        });
+      async value => {
+        await nextTick();
+
+        const input = inputRef.value;
+        if (!input) return;
+
+        if (isNil(value)) {
+          input.value = '';
+          return;
+        }
+
+        input.value = matchNumber(String(value)) ?? '';
       },
-      {
-        immediate: true
-      }
+      { immediate: true }
     );
 
     return {
@@ -196,7 +199,7 @@ export default defineComponent({
       isDisabled,
       handleInput,
       handleChange,
-      handleEvent
+      handleFocus
     };
   }
 });

@@ -17,4 +17,5 @@ export interface QInputNumberNewInstance {
   handleInput: (event: InputEvent) => void;
   handleChange: (event: Event) => void;
   handleFocus: (event: FocusEvent) => void;
+  handleBlur: (event: FocusEvent) => void;
 }

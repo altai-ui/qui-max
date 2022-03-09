@@ -10,7 +10,7 @@
       @input="handleInput"
       @change="handleChange"
       @focus="handleFocus"
-      @blur="handleFocus"
+      @blur="handleBlur"
     />
   </div>
 </template>
@@ -147,11 +147,11 @@ export default defineComponent({
       }
 
       if (valueMatch) {
-        if (props.min && Number(valueMatch) < MIN_INTEGER) {
-          valueMatch = String(MIN_INTEGER);
+        if (props.min && Number(valueMatch) < props.min) {
+          valueMatch = String(props.min);
         }
-        if (props.max && Number(valueMatch) > MAX_INTEGER) {
-          valueMatch = String(MAX_INTEGER);
+        if (props.max && Number(valueMatch) > props.max) {
+          valueMatch = String(props.max);
         }
 
         target.value = valueMatch;
@@ -171,9 +171,13 @@ export default defineComponent({
     };
 
     const handleFocus = (event: FocusEvent): void => {
-      const type = event.type;
-      if (type === 'focus' || type === 'blur') ctx.emit(type, event);
-      if (props.validateEvent) qFormItem?.validateField(event.type);
+      ctx.emit('focus', event);
+      if (props.validateEvent) qFormItem?.validateField('focus');
+    };
+
+    const handleBlur = (event: FocusEvent): void => {
+      ctx.emit('blur', event);
+      if (props.validateEvent) qFormItem?.validateField('blur');
     };
 
     watch(
@@ -199,7 +203,8 @@ export default defineComponent({
       isDisabled,
       handleInput,
       handleChange,
-      handleFocus
+      handleFocus,
+      handleBlur
     };
   }
 });

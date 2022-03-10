@@ -102,61 +102,50 @@ export default defineComponent({
     );
 
     const changesEmitter = (type: string, value: string): void => {
-      const emitValue = value === '' ? null : Number(value);
+      const emitValue =
+        value && !Number.isNaN(Number(value)) ? Number(value) : null;
 
       ctx.emit('update:modelValue', emitValue);
       if (type === 'input' || type === 'change') ctx.emit(type, emitValue);
       if (props.validateEvent) qFormItem?.validateField(type);
     };
 
-    const getValueMatchRegExp = (matchEnd: boolean): RegExp => {
-      const signPattern = props.min ?? MIN_INTEGER < 0 ? '-?' : '';
+    const getValueMatchRegExp = (): RegExp => {
+      const signPattern = '-?';
       const integerPattern = '[0-9]*';
       const fractionPattern =
         precision.value > 0 ? `[.,]?[0-9]{0,${precision.value}}` : '';
 
-      return new RegExp(
-        `^${signPattern}${integerPattern}${fractionPattern}${
-          matchEnd ? '$' : ''
-        }`
-      );
+      return new RegExp(`^${signPattern}${integerPattern}${fractionPattern}`);
     };
 
     const matchNumber = (value: string): Nullable<string> => {
-      const match = value.match(getValueMatchRegExp(false));
+      if (/^-?(0{2,}|0[1-9])/.test(value)) return null;
+
+      const match = value.match(getValueMatchRegExp());
 
       return match ? match[0] : null;
     };
 
-    const testNumber = (value: string): boolean => {
-      const hasIncorrectCombination = /^-?(0{2,}|0[1-9])/.test(value);
-
-      return !hasIncorrectCombination && getValueMatchRegExp(true).test(value);
+    const getClampedNumber = (value: number): number => {
+      const min = props.min ?? MIN_INTEGER;
+      const max = props.max ?? MAX_INTEGER;
+      return Math.min(Math.max(value, min), max);
     };
 
     const handleInput = (event: InputEvent): void => {
       const target = event.target as HTMLInputElement;
       const value = target.value;
 
-      let valueMatch: Nullable<string> = null;
-
-      if (event.inputType === 'insertFromPaste') {
-        valueMatch = matchNumber(value);
-      } else if (testNumber(value)) {
-        valueMatch = value;
-      }
+      let valueMatch = matchNumber(value);
 
       if (valueMatch) {
-        if (props.min && Number(valueMatch) < props.min) {
-          valueMatch = String(props.min);
+        if (!Number.isNaN(Number(valueMatch))) {
+          valueMatch = String(getClampedNumber(Number(valueMatch)));
         }
-        if (props.max && Number(valueMatch) > props.max) {
-          valueMatch = String(props.max);
-        }
-
         target.value = valueMatch;
       } else {
-        target.value = value ? String(props.modelValue) : '';
+        target.value = value ? matchNumber(String(props.modelValue)) ?? '' : '';
       }
 
       if (Number.isNaN(Number(target.value))) return;
@@ -193,7 +182,7 @@ export default defineComponent({
           return;
         }
 
-        input.value = matchNumber(String(value)) ?? '';
+        input.value = matchNumber(String(getClampedNumber(value))) ?? '';
       },
       { immediate: true }
     );

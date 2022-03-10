@@ -16,10 +16,10 @@ const storyMetadata: Meta = {
   }
 };
 
-const QInputNumberNewStory: Story<QInputNumberNewProps> = args =>
+const Template: Story<QInputNumberNewProps> = args =>
   defineComponent({
     setup() {
-      const numberValue = ref<number>(1234);
+      const numberValue = ref<number>(-1234.56);
 
       const handleEmit = (value: string, type: string): void => {
         console.log(value, type);
@@ -45,5 +45,23 @@ const QInputNumberNewStory: Story<QInputNumberNewProps> = args =>
     `
   });
 
-export const Default = QInputNumberNewStory.bind({});
+export const Default = Template.bind({});
+export const Disabled = Template.bind({});
+export const PositiveOnly = Template.bind({});
+export const HasPrecision = Template.bind({});
+
+Default.args = {};
+
+Disabled.args = {
+  disabled: true
+};
+
+PositiveOnly.args = {
+  min: 0
+};
+
+HasPrecision.args = {
+  precision: 2
+};
+
 export default storyMetadata;

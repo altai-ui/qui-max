@@ -101,6 +101,8 @@ export default defineComponent({
       () => props.disabled || (qForm?.disabled.value ?? false)
     );
 
+    let internalValue: Nullable<string> = null;
+
     const changesEmitter = (type: string, value: string): void => {
       const emitValue =
         value && !Number.isNaN(Number(value)) ? Number(value) : null;
@@ -110,21 +112,29 @@ export default defineComponent({
       if (props.validateEvent) qFormItem?.validateField(type);
     };
 
-    const getValueMatchRegExp = (): RegExp => {
-      const signPattern = '-?';
+    const getValueMatchRegExp = (matchEnd: boolean): RegExp => {
+      const signPattern = props.min ?? MIN_INTEGER < 0 ? '-?' : '';
       const integerPattern = '[0-9]*';
       const fractionPattern =
         precision.value > 0 ? `[.,]?[0-9]{0,${precision.value}}` : '';
 
-      return new RegExp(`^${signPattern}${integerPattern}${fractionPattern}`);
+      return new RegExp(
+        `^${signPattern}${integerPattern}${fractionPattern}${
+          matchEnd ? '$' : ''
+        }`
+      );
     };
 
     const matchNumber = (value: string): Nullable<string> => {
-      if (/^-?(0{2,}|0[1-9])/.test(value)) return null;
-
-      const match = value.match(getValueMatchRegExp());
+      const match = value.match(getValueMatchRegExp(false));
 
       return match ? match[0] : null;
+    };
+
+    const testNumber = (value: string): boolean => {
+      const hasIncorrectCombination = /^(--|(-?(0{2,}|0[1-9])))/.test(value);
+
+      return !hasIncorrectCombination && getValueMatchRegExp(true).test(value);
     };
 
     const getClampedNumber = (value: number): number => {
@@ -137,16 +147,28 @@ export default defineComponent({
       const target = event.target as HTMLInputElement;
       const value = target.value;
 
-      let valueMatch = matchNumber(value);
+      let valueMatch: Nullable<string> = null;
+
+      if (event.inputType === 'insertFromPaste') {
+        valueMatch = matchNumber(value);
+      } else {
+        // put back previous valid value if current input is invalid
+        valueMatch = testNumber(value) ? value : internalValue;
+      }
 
       if (valueMatch) {
-        if (!Number.isNaN(Number(valueMatch))) {
-          valueMatch = String(getClampedNumber(Number(valueMatch)));
+        if (props.min && Number(valueMatch) < props.min) {
+          valueMatch = String(props.min);
+        }
+        if (props.max && Number(valueMatch) > props.max) {
+          valueMatch = String(props.max);
         }
         target.value = valueMatch;
       } else {
-        target.value = value ? matchNumber(String(props.modelValue)) ?? '' : '';
+        target.value = value ? internalValue ?? '' : '';
       }
+
+      internalValue = target.value;
 
       if (Number.isNaN(Number(target.value))) return;
 
@@ -160,11 +182,13 @@ export default defineComponent({
     };
 
     const handleFocus = (event: FocusEvent): void => {
+      internalValue = (event.target as HTMLInputElement).value;
       ctx.emit('focus', event);
       if (props.validateEvent) qFormItem?.validateField('focus');
     };
 
     const handleBlur = (event: FocusEvent): void => {
+      internalValue = null;
       ctx.emit('blur', event);
       if (props.validateEvent) qFormItem?.validateField('blur');
     };
@@ -183,6 +207,7 @@ export default defineComponent({
         }
 
         input.value = matchNumber(String(getClampedNumber(value))) ?? '';
+        internalValue = input.value;
       },
       { immediate: true }
     );

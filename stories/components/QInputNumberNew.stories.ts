@@ -48,7 +48,7 @@ const Template: Story<QInputNumberNewProps> = args =>
 export const Default = Template.bind({});
 export const Disabled = Template.bind({});
 export const PositiveOnly = Template.bind({});
-export const HasPrecision = Template.bind({});
+export const WithPrecision = Template.bind({});
 
 Default.args = {};
 
@@ -60,7 +60,7 @@ PositiveOnly.args = {
   min: 0
 };
 
-HasPrecision.args = {
+WithPrecision.args = {
   precision: 2
 };
 

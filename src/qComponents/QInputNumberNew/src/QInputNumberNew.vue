@@ -143,6 +143,10 @@ export default defineComponent({
       return Math.min(Math.max(value, min), max);
     };
 
+    const formatValue = (value: string): string => {
+      return value ? String(Number(value)) : '';
+    };
+
     const handleInput = (event: InputEvent): void => {
       const target = event.target as HTMLInputElement;
       const value = target.value;
@@ -151,6 +155,9 @@ export default defineComponent({
 
       if (event.inputType === 'insertFromPaste') {
         valueMatch = matchNumber(value);
+        if (valueMatch) {
+          valueMatch = formatValue(valueMatch);
+        }
       } else {
         // put back previous valid value if current input is invalid
         valueMatch = testNumber(value) ? value : internalValue;
@@ -177,7 +184,8 @@ export default defineComponent({
 
     const handleChange = (event: Event): void => {
       const target = event.target as HTMLInputElement;
-      target.value = matchNumber(target.value) ?? '';
+      const value = matchNumber(target.value) ?? '';
+      target.value = formatValue(value);
       changesEmitter('change', target.value);
     };
 
@@ -206,8 +214,14 @@ export default defineComponent({
           return;
         }
 
-        input.value = matchNumber(String(getClampedNumber(value))) ?? '';
-        internalValue = input.value;
+        if (
+          !Number.isNaN(value) &&
+          !Number.isNaN(internalValue) &&
+          value !== Number(internalValue)
+        ) {
+          input.value = matchNumber(String(getClampedNumber(value))) ?? '';
+          internalValue = input.value;
+        }
       },
       { immediate: true }
     );

@@ -214,11 +214,7 @@ export default defineComponent({
           return;
         }
 
-        if (
-          !Number.isNaN(value) &&
-          !Number.isNaN(internalValue) &&
-          value !== Number(internalValue)
-        ) {
+        if (value !== Number(internalValue)) {
           input.value = matchNumber(String(getClampedNumber(value))) ?? '';
           internalValue = input.value;
         }

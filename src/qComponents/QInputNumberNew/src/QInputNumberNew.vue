@@ -7,7 +7,7 @@
       type="text"
       inputMode="numeric"
       class="q-input-number-new__inner"
-      @input="handleInput"
+      @input="handleInputCommon"
       @change="handleChange"
       @focus="handleFocus"
       @blur="handleBlur"
@@ -40,12 +40,6 @@ export default defineComponent({
       default: null
     },
 
-    /** validate parent form if present */
-    validateEvent: {
-      type: Boolean,
-      default: true
-    },
-
     /** Number of digits after decimal separator */
     precision: {
       type: Number,
@@ -70,6 +64,12 @@ export default defineComponent({
       type: Number,
       default: MAX_INTEGER,
       validator: (val: number) => val <= MAX_INTEGER
+    },
+
+    /** validate parent form if present */
+    validateEvent: {
+      type: Boolean,
+      default: true
     }
   },
 
@@ -103,79 +103,86 @@ export default defineComponent({
 
     let internalValue: Nullable<string> = null;
 
-    const changesEmitter = (type: string, value: string): void => {
-      const emitValue =
+    const changesEmitter = (type: 'input' | 'change', value: string): void => {
+      const emittedValue =
         value && !Number.isNaN(Number(value)) ? Number(value) : null;
 
-      ctx.emit('update:modelValue', emitValue);
-      if (type === 'input' || type === 'change') ctx.emit(type, emitValue);
+      if (props.modelValue === emittedValue) return;
+
+      ctx.emit('update:modelValue', emittedValue);
+      ctx.emit(type, emittedValue);
       if (props.validateEvent) qFormItem?.validateField(type);
     };
 
-    const getValueMatchRegExp = (matchEnd: boolean): RegExp => {
-      const signPattern = props.min ?? MIN_INTEGER < 0 ? '-?' : '';
+    const getValueMatchRegExp = ({
+      matchEnd
+    }: {
+      matchEnd: boolean;
+    }): RegExp => {
+      const signPattern = (props.min ?? MIN_INTEGER) < 0 ? '-?' : '';
       const integerPattern = '[0-9]*';
       const fractionPattern =
         precision.value > 0 ? `[.,]?[0-9]{0,${precision.value}}` : '';
+      const endPattern = matchEnd ? '$' : '';
 
       return new RegExp(
-        `^${signPattern}${integerPattern}${fractionPattern}${
-          matchEnd ? '$' : ''
-        }`
+        `^${signPattern}${integerPattern}${fractionPattern}${endPattern}`
       );
     };
 
-    const matchNumber = (value: string): Nullable<string> => {
-      const match = value.match(getValueMatchRegExp(false));
+    const matchValue = (value: string): string => {
+      const cleanValue = value
+        .replace(/[^0-9,.-]/g, '')
+        .replace(/-{2,}/g, '-')
+        .replace(',', '.');
+      const match = cleanValue.match(getValueMatchRegExp({ matchEnd: false }));
 
-      return match ? match[0] : null;
+      return cleanValue && match ? String(Number(match[0])) : '';
     };
 
-    const testNumber = (value: string): boolean => {
+    const testValue = (value: string): boolean => {
       const hasIncorrectCombination = /^(--|(-?(0{2,}|0[1-9])))/.test(value);
 
-      return !hasIncorrectCombination && getValueMatchRegExp(true).test(value);
+      return (
+        !hasIncorrectCombination &&
+        getValueMatchRegExp({ matchEnd: true }).test(value)
+      );
     };
 
-    const getClampedNumber = (value: number): number => {
+    const getClampedValue = (value: string): string => {
       const min = props.min ?? MIN_INTEGER;
       const max = props.max ?? MAX_INTEGER;
-      return Math.min(Math.max(value, min), max);
+
+      if (!value) return '';
+      if (Number(value) < min) return String(min);
+      if (Number(value) > max) return String(max);
+      return value;
     };
 
-    const formatValue = (value: string): string => {
-      return value ? String(Number(value)) : '';
+    const handlePaste = (event: InputEvent): void => {
+      const target = event.target as HTMLInputElement;
+
+      internalValue = getClampedValue(matchValue(target.value));
+      target.value = internalValue;
     };
 
     const handleInput = (event: InputEvent): void => {
       const target = event.target as HTMLInputElement;
-      const value = target.value;
 
-      let valueMatch: Nullable<string> = null;
+      if (testValue(target.value)) {
+        internalValue = getClampedValue(target.value);
+      }
+      target.value = internalValue ?? '';
+    };
+
+    const handleInputCommon = (event: InputEvent): void => {
+      const target = event.target as HTMLInputElement;
 
       if (event.inputType === 'insertFromPaste') {
-        valueMatch = matchNumber(value);
-        if (valueMatch) {
-          valueMatch = formatValue(valueMatch);
-        }
+        handlePaste(event);
       } else {
-        // put back previous valid value if current input is invalid
-        valueMatch = testNumber(value) ? value : internalValue;
+        handleInput(event);
       }
-
-      if (valueMatch) {
-        if (props.min && Number(valueMatch) < props.min) {
-          valueMatch = String(props.min);
-        }
-        if (props.max && Number(valueMatch) > props.max) {
-          valueMatch = String(props.max);
-        }
-        target.value = valueMatch;
-      } else {
-        target.value = value ? internalValue ?? '' : '';
-      }
-
-      internalValue = target.value;
 
       if (Number.isNaN(Number(target.value))) return;
 
@@ -184,8 +191,7 @@ export default defineComponent({
 
     const handleChange = (event: Event): void => {
       const target = event.target as HTMLInputElement;
-      const value = matchNumber(target.value) ?? '';
-      target.value = formatValue(value);
+      target.value = matchValue(target.value);
       changesEmitter('change', target.value);
     };
 
@@ -210,13 +216,14 @@ export default defineComponent({
         if (!input) return;
 
         if (isNil(value)) {
-          input.value = '';
+          internalValue = '';
+          input.value = internalValue;
           return;
         }
 
         if (value !== Number(internalValue)) {
-          input.value = matchNumber(String(getClampedNumber(value))) ?? '';
-          internalValue = input.value;
+          internalValue = getClampedValue(matchValue(String(value)));
+          input.value = internalValue;
         }
       },
       { immediate: true }
@@ -225,7 +232,7 @@ export default defineComponent({
     return {
       inputRef,
       isDisabled,
-      handleInput,
+      handleInputCommon,
       handleChange,
       handleFocus,
       handleBlur

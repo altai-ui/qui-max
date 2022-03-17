@@ -1,0 +1,77 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- import CSS -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/@qvant/qui-max/dist/style.css"
+    />
+  </head>
+
+  <body>
+    <div id="app">
+      <div class="block">
+        <q-row>
+          <q-col cols="6">
+            <q-form ref="form" :model="formModel" :rules="rules">
+              <q-form-item label="Name" prop="name" :error="error">
+                <q-input v-model="formModel.name" type="text" />
+              </q-form-item>
+              <q-button @click="handleBtnClick">Set Error</q-button>
+              <q-button theme="secondary" @click="handleBtnClearClick"
+                >Clear Error</q-button
+              >
+            </q-form>
+          </q-col>
+        </q-row>
+      </div>
+    </div>
+  </body>
+  <!-- import Vue before Qui -->
+  <script src="https://unpkg.com/vue@latest"></script>
+  <!-- import JavaScript -->
+  <script src="https://unpkg.com/@qvant/qui-max@latest"></script>
+  <script>
+    const model = {
+      name: ''
+    };
+
+    const app = Vue.createApp({
+      setup() {
+        const form = Vue.ref(null);
+        const error = Vue.ref(null);
+
+        const formModel = Vue.reactive(model);
+
+        const handleBtnClick = () => {
+          error.value = 'We do not like you';
+        };
+
+        const handleBtnClearClick = () => {
+          error.value = null;
+        };
+
+        return {
+          form,
+          error,
+          formModel,
+          handleBtnClick,
+          handleBtnClearClick
+        };
+      }
+    });
+
+    app.use(QuiMax.default);
+    app.mount('#app');
+  </script>
+  <style>
+    .block {
+      margin: 20px;
+    }
+
+    /* remove after next release */
+    .q-input {
+      height: 40px;
+    }
+  </style>
+</html>

@@ -1,0 +1,76 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- import CSS -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/@qvant/qui-max/dist/style.css"
+    />
+  </head>
+
+  <body>
+    <div id="app">
+      <div class="block">
+        <q-row>
+          <q-col cols="6">
+            <p>Default</p>
+            <q-input v-model="value"></q-input>
+            <p>Show symbol limit</p>
+            <q-input
+              v-model="value2"
+              maxlength="20"
+              show-symbol-limit
+            ></q-input>
+            <p>Disabled</p>
+            <q-input v-model="value3" disabled></q-input>
+          </q-col>
+          <q-col cols="6">
+            <p>Clearable with icon</p>
+            <q-input
+              v-model="value4"
+              clearable
+              suffix-icon="q-icon-account"
+            ></q-input>
+            <p>Password</p>
+            <q-input v-model="value5" type="password" password-switch></q-input>
+          </q-col>
+        </q-row>
+      </div>
+    </div>
+  </body>
+  <!-- import Vue before Qui -->
+  <script src="https://unpkg.com/vue@latest"></script>
+  <!-- import JavaScript -->
+  <script src="https://unpkg.com/@qvant/qui-max@latest"></script>
+  <script>
+    const app = Vue.createApp({
+      setup() {
+        const value = Vue.ref('');
+        const value2 = Vue.ref('');
+        const value3 = Vue.ref('');
+        const value4 = Vue.ref('');
+        const value5 = Vue.ref('');
+        return {
+          value,
+          value2,
+          value3,
+          value4,
+          value5
+        };
+      }
+    });
+
+    app.use(QuiMax.default);
+    app.mount('#app');
+  </script>
+  <style>
+    .block {
+      margin: 20px;
+    }
+
+    /* remove after next release */
+    .q-input {
+      height: 40px;
+    }
+  </style>
+</html>

@@ -1,0 +1,63 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- import CSS -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/@qvant/qui-max/dist/style.css"
+    />
+  </head>
+
+  <body>
+    <div id="app">
+      <div class="block">
+        <q-row>
+          <q-col cols="6">
+            <q-form ref="form" :model="formModel" :rules="rules">
+              <q-form-item label="Name" prop="name">
+                <template v-slot:label> label slot </template>
+                <template v-slot:sublabel> sublabel slot </template>
+                <template v-slot:error> error slot </template>
+                <q-input v-model="formModel.name" type="text" />
+              </q-form-item>
+            </q-form>
+          </q-col>
+        </q-row>
+      </div>
+    </div>
+  </body>
+  <!-- import Vue before Qui -->
+  <script src="https://unpkg.com/vue@latest"></script>
+  <!-- import JavaScript -->
+  <script src="https://unpkg.com/@qvant/qui-max@latest"></script>
+  <script>
+    const model = {
+      name: ''
+    };
+
+    const app = Vue.createApp({
+      setup() {
+        const form = Vue.ref(null);
+        const formModel = Vue.reactive(model);
+
+        return {
+          form,
+          formModel
+        };
+      }
+    });
+
+    app.use(QuiMax.default);
+    app.mount('#app');
+  </script>
+  <style>
+    .block {
+      margin: 20px;
+    }
+
+    /* remove after next release */
+    .q-input {
+      height: 40px;
+    }
+  </style>
+</html>

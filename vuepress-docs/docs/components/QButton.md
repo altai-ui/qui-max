@@ -1,4 +1,4 @@
-# QButton
+# QButton 🆗
 
 Commonly used button. See props to configure `QButton`. Try a sandbox [story](https://qui-max.netlify.app/?path=/story/components-qbutton--theme-primary)
 

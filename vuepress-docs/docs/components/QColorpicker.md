@@ -1,4 +1,4 @@
-# QColorpicker
+# QColorpicker 🎨
 
 Being used to pick color value.
 

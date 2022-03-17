@@ -7,7 +7,7 @@
       type="text"
       inputMode="numeric"
       class="q-input-number__inner"
-      @input="handleInputCommon"
+      @input="handleInput"
       @change="handleChange"
       @focus="handleFocus"
       @blur="handleBlur"
@@ -159,7 +159,7 @@ export default defineComponent({
       return value;
     };
 
-    const handleInputCommon = (event: Event): void => {
+    const handleInput = (event: Event): void => {
       const target = event.target as HTMLInputElement;
 
       if (
@@ -223,7 +223,7 @@ export default defineComponent({
     return {
       inputRef,
       isDisabled,
-      handleInputCommon,
+      handleInput,
       handleChange,
       handleFocus,
       handleBlur

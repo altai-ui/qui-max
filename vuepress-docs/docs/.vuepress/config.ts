@@ -28,7 +28,7 @@ export default defineUserConfig<DefaultThemeOptions, ViteBundlerOptions>({
           '/components/QColorpicker.md',
           '/components/QContextMenu.md',
           '/components/QDatepicker.md',
-          '/components/QInputNumberNew.md'
+          '/components/QInputNumber.md'
         ]
       },
       // NavbarGroup
@@ -56,7 +56,7 @@ export default defineUserConfig<DefaultThemeOptions, ViteBundlerOptions>({
             '/components/QColorpicker.md',
             '/components/QContextMenu.md',
             '/components/QDatepicker.md',
-            '/components/QInputNumberNew.md'
+            '/components/QInputNumber.md'
           ]
         }
       ],

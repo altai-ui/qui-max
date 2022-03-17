@@ -1,65 +1,98 @@
 .q-input-number {
+  --field-color-base: var(--color-primary-black);
+  --field-color-placeholder: rgb(var(--color-rgb-gray) / 32%);
+  --field-color-disabled: rgb(var(--color-rgb-gray) / 64%);
+  --field-icon-color-base: var(--color-primary-blue);
+  --field-icon-color-hover: var(--color-primary-black);
+  --field-icon-color-inactive: rgb(var(--color-rgb-gray) / 64%);
+  --field-background-color-base: var(--color-tertiary-gray-light);
+  --field-background-color-hover: var(--color-tertiary-gray);
+  --field-background-color-focus: var(--color-tertiary-gray-ultra-light);
+  --field-background-color-disabled: var(--color-tertiary-gray);
+  --field-box-shadow-base: -1px -1px 3px rgb(var(--color-rgb-white) / 25%),
+    1px 1px 3px rgb(var(--color-rgb-blue) / 40%),
+    4px 4px 8px rgb(var(--color-rgb-blue) / 40%),
+    -4px -4px 12px var(--color-tertiary-white);
+  --field-box-shadow-hover: -1px -1px 4px rgb(var(--color-rgb-white) / 25%),
+    1px 1px 4px rgb(var(--color-rgb-blue) / 40%),
+    4px 4px 8px rgb(var(--color-rgb-blue) / 40%),
+    -4px -4px 8px rgb(var(--color-rgb-white) / 80%);
+  --field-box-shadow-focus: -1px -1px 3px rgb(var(--color-rgb-white) / 25%),
+    1px 1px 3px rgb(var(--color-rgb-blue) / 40%),
+    inset -1px -1px 1px rgb(var(--color-rgb-white) / 70%),
+    inset 1px 1px 2px rgb(var(--color-rgb-blue) / 20%);
+  --field-box-shadow-disabled: -1px -1px 3px rgb(var(--color-rgb-white) / 25%),
+    1px 1px 3px rgb(var(--color-rgb-blue) / 40%);
+
   position: relative;
   display: inline-block;
   width: 100%;
   line-height: 40px;
 
-  &_with-controls {
-    min-width: 160px;
-
-    & .q-input__inner {
-      box-sizing: border-box;
-      padding: 0 34px;
-      text-align: center;
-    }
-  }
-
-  &__button {
-    position: absolute;
-    top: 0;
-    right: 0;
-    z-index: 1;
-    width: 32px;
+  &__inner {
+    display: inline-block;
+    width: 100%;
     height: 40px;
-    font-size: 16px;
-    color: rgb(var(--color-rgb-gray) / 64%);
-    cursor: pointer;
-    background-color: transparent;
+    padding: 0 16px;
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-base);
+    line-height: var(--line-height-base);
+    color: var(--field-color-base);
+    background-color: var(--field-background-color-base);
     border: none;
     border-radius: var(--border-radius-base);
-    outline: none;
+    box-shadow: var(--field-box-shadow-base);
+    appearance: textfield;
 
-    &_decrease {
-      right: auto;
-      left: 0;
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      margin: 0;
+      appearance: none;
     }
 
-    &:enabled:not(.q-input-number__button_is-disabled) {
-      &:hover::before,
-      &:focus::before {
-        background-color: rgb(var(--color-rgb-gray) / 16%);
-        border-radius: 16px;
-        outline: none;
-      }
-
-      &:focus::before {
-        color: var(--color-primary-black);
-      }
+    &::placeholder,
+    &:placeholder-shown {
+      color: var(--field-color-placeholder);
+      text-overflow: ellipsis;
+      opacity: 1;
     }
 
-    &[disabled]:hover {
-      cursor: not-allowed;
-    }
-
-    &_is-disabled {
-      color: rgb(var(--color-rgb-gray) / 16%);
-      cursor: not-allowed;
-    }
-  }
-
-  &__input {
-    &.q-input_disabled::after {
+    /** disable default clear on IE */
+    &::-ms-reveal,
+    &::-ms-clear {
       display: none;
+      width: 0;
+      height: 0;
+    }
+
+    &:focus {
+      outline: none;
+    }
+
+    &.focus-visible {
+      background-color: var(--field-background-color-focus);
+      box-shadow: var(--field-box-shadow-focus);
+    }
+
+    &:hover {
+      background-color: var(--field-background-color-hover);
+      box-shadow: var(--field-box-shadow-hover);
+    }
+
+    &:disabled {
+      padding-right: 40px;
+      color: var(--field-color-disabled);
+      cursor: not-allowed;
+      background-color: var(--field-background-color-disabled);
+      box-shadow: var(--field-box-shadow-disabled);
+    }
+
+    .q-form-item_is-error & {
+      &,
+      &.focus-visible {
+        padding-left: 15px;
+        border: var(--border-error);
+      }
     }
   }
 }

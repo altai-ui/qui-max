@@ -21,7 +21,6 @@ import QForm from './QForm';
 import QFormItem from './QFormItem';
 import QInput from './QInput';
 import QInputNumber from './QInputNumber';
-import QInputNumberNew from './QInputNumberNew';
 import QNotification from './QNotification';
 import QOption from './QOption';
 import QPagination from './QPagination';
@@ -61,7 +60,6 @@ import './QDrawer/src/q-drawer.scss';
 import './QFormItem/src/q-form-item.scss';
 import './QInput/src/q-input.scss';
 import './QInputNumber/src/q-input-number.scss';
-import './QInputNumberNew/src/q-input-number-new.scss';
 import './QMessageBox/src/q-message-box.scss';
 import './QNotification/src/q-notification.scss';
 import './QOption/src/q-option.scss';
@@ -131,7 +129,6 @@ const install = (app: App, config?: ConfigOptions): void => {
   app.use(QFormItem);
   app.use(QInput);
   app.use(QInputNumber);
-  app.use(QInputNumberNew);
   app.use(QNotification);
   app.use(QOption);
   app.use(QPagination);
@@ -171,7 +168,6 @@ export {
   QFormItem,
   QInput,
   QInputNumber,
-  QInputNumberNew,
   QNotification,
   QOption,
   QPagination,
@@ -210,7 +206,6 @@ export * from './QForm';
 export * from './QFormItem';
 export * from './QInput';
 export * from './QInputNumber';
-export * from './QInputNumberNew';
 export * from './QMessageBox';
 export * from './QNotification';
 export * from './QOption';

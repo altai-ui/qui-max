@@ -12,18 +12,16 @@ const storyMetadata: Meta = {
     placeholder: { control: { type: 'text' } },
     min: { control: { type: 'number' } },
     max: { control: { type: 'number' } },
-    step: { control: { type: 'number' } },
-    precision: { control: { type: 'number', min: 0 } },
-    localization: { control: { disable: true } }
+    precision: { control: { type: 'number', min: 0 } }
   }
 };
 
-const QInputNumberStory: Story<QInputNumberProps> = args =>
+const Template: Story<QInputNumberProps> = args =>
   defineComponent({
     setup() {
-      const numberValue = ref<string>('1234');
+      const numberValue = ref<number>(-1234.56);
 
-      const handleEmit = (value: number, type: string): void => {
+      const handleEmit = (value: string, type: string): void => {
         console.log(value, type);
       };
 
@@ -34,17 +32,11 @@ const QInputNumberStory: Story<QInputNumberProps> = args =>
       <div style="width:300px">
         <q-input-number
           v-model="numberValue"
-          :prefix="args.prefix"
-          :suffix="args.suffix"
-          :step="args.step"
           :min="args.min"
           :max="args.max"
-          :useGrouping="args.useGrouping"
           :placeholder="args.placeholder"
           :precision="args.precision"
           :disabled="args.disabled"
-          :localization="args.localization"
-          :no-controls="args.noControls"
           :validate-event="args.validateEvent"
           @input="handleEmit($event, 'input')"
           @change="handleEmit($event, 'change')"
@@ -53,5 +45,23 @@ const QInputNumberStory: Story<QInputNumberProps> = args =>
     `
   });
 
-export const Default = QInputNumberStory.bind({});
+export const Default = Template.bind({});
+export const Disabled = Template.bind({});
+export const PositiveOnly = Template.bind({});
+export const WithPrecision = Template.bind({});
+
+Default.args = {};
+
+Disabled.args = {
+  disabled: true
+};
+
+PositiveOnly.args = {
+  min: 0
+};
+
+WithPrecision.args = {
+  precision: 2
+};
+
 export default storyMetadata;

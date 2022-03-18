@@ -33,24 +33,6 @@ setup() {
 
 Binding value
 
-### validateEvent
-
-- Type: `Boolean`
-- Default: `null`
-
-If input is wrapped in `QFormItem`, prop `validateEvent` defines if bound events will be validated immediately
-
-```vue
-<q-form :model="model" :rules="rules">
-  <q-form-item prop="value">
-    <q-input-number 
-      v-model="model.value" 
-      validate-event 
-    />
-  </q-form-item>
-</q-form>
-```
-
 ### precision
 
 - Type: `Number`
@@ -102,6 +84,24 @@ Result:
 - Default: `null`
 
 Maximum allowed value. Must be higher than minimum value.
+
+### validateEvent
+
+- Type: `Boolean`
+- Default: `null`
+
+If input is wrapped in `QFormItem`, prop `validateEvent` defines if bound events will be validated immediately
+
+```vue
+<q-form :model="model" :rules="rules">
+  <q-form-item prop="value">
+    <q-input-number 
+      v-model="model.value" 
+      validate-event 
+    />
+  </q-form-item>
+</q-form>
+```
 
 ## Events
 

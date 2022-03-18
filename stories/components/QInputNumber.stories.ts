@@ -19,7 +19,7 @@ const storyMetadata: Meta = {
 const Template: Story<QInputNumberProps> = args =>
   defineComponent({
     setup() {
-      const numberValue = ref<number>(-1234.56);
+      const numberValue = ref<number>(1234.56);
 
       const handleEmit = (value: string, type: string): void => {
         console.log(value, type);

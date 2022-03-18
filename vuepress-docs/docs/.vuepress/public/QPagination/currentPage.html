@@ -11,16 +11,12 @@
   <body>
     <div id="app">
       <div class="block">
-        <q-row>
-          <q-col cols="6">
-            <q-pagination
-              :total="200"
-              :page-size="10"
-              :current-page="currentPage"
-              @current-change="handlePageChange"
-            />
-          </q-col>
-        </q-row>
+        <q-pagination
+          :total="200"
+          :page-size="10"
+          :current-page="currentPage"
+          @current-change="handlePageChange"
+        />
       </div>
     </div>
   </body>

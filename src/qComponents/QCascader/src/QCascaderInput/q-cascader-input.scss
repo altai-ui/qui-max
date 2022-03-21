@@ -5,11 +5,15 @@
   width: 100%;
   height: 100%;
 
-  .q-input__inner {
-    height: 100%;
-    padding-right: 40px;
-    text-overflow: ellipsis;
-    user-select: none;
+  .q-input {
+    height: inherit;
+
+    &__inner {
+      height: 100%;
+      padding-right: 40px;
+      text-overflow: ellipsis;
+      user-select: none;
+    }
   }
 
   .q-cascader:not(.q-cascader_disabled) & {

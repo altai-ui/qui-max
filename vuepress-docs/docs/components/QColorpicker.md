@@ -50,7 +50,7 @@ type QDatePickerPropModelValue = Nullable<string | Date | string[] | Date[]>;
 - Type: `Object`
 - Default: `null`
 
-We use Popper.js to show tooltips & popovers. See full options guide [here](https://www.youtube.com/watch?v=4AqCLUumv2w)
+We use Popper.js to show tooltips & popovers. See full options guide [here](https://popper.js.org/docs/v2/constructors/#options)
 
 ```ts
 export type QColorPickerPropPopperOptions = Nullable<Partial<Options>>;

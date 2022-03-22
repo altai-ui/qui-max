@@ -54,13 +54,7 @@
   <!-- import JavaScript -->
   <script src="https://unpkg.com/@qvant/qui-max@latest"></script>
   <script>
-    const app = Vue.createApp({
-      setup() {
-        const title = Vue.ref('Title');
-
-        return { title };
-      }
-    });
+    const app = Vue.createApp({});
 
     app.use(QuiMax.default);
     app.mount('#app');

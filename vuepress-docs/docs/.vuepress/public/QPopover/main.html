@@ -1,0 +1,71 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- import CSS -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/@qvant/qui-max/dist/style.css"
+    />
+  </head>
+
+  <body>
+    <div id="app">
+      <div class="block">
+        <div>
+          <span class="label">Click trigger</span>
+          <q-popover :title="title" icon="q-icon-question">
+            <template #reference>
+              <q-button
+                circle
+                type="icon"
+                theme="secondary"
+                size="small"
+                icon="q-icon-question-mark"
+              />
+            </template>
+
+            Lorem Ipsum is simply dummy text of the printing and typesetting
+            industry.
+          </q-popover>
+        </div>
+        <br />
+        <div>
+          <span class="label">Hover trigger</span>
+          <q-popover :title="title" icon="q-icon-question" trigger="hover">
+            <template #reference>
+              <q-button
+                circle
+                type="icon"
+                theme="secondary"
+                size="small"
+                icon="q-icon-question-mark"
+              />
+            </template>
+
+            Lorem Ipsum is simply dummy text of the printing and typesetting
+            industry.
+          </q-popover>
+        </div>
+      </div>
+    </div>
+  </body>
+  <!-- import Vue before Qui -->
+  <script src="https://unpkg.com/vue@latest"></script>
+  <!-- import JavaScript -->
+  <script src="https://unpkg.com/@qvant/qui-max@latest"></script>
+  <script>
+    const app = Vue.createApp({});
+
+    app.use(QuiMax.default);
+    app.mount('#app');
+  </script>
+  <style>
+    .block {
+      margin: 20px;
+    }
+
+    .label {
+      padding-right: 8px;
+    }
+  </style>
+</html>

@@ -212,7 +212,7 @@ export default defineComponent({
           return;
         }
 
-        if (value !== Number(internalValue)) {
+        if (!internalValue || value !== Number(internalValue)) {
           internalValue = getClampedValue(matchValue(String(value)));
           input.value = internalValue;
         }

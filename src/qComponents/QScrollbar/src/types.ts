@@ -46,6 +46,8 @@ export type Styles = Record<string, string | number>;
 export type QScrollbarPropScrollTo = Nullable<HTMLElement>;
 export type QScrollbarPropTheme = 'primary' | 'secondary';
 export type QScrollbarPropWrapClass = Nullable<string | Classes | Classes[]>;
+export type QScrollbarPropViewClass = Nullable<string | Classes | Classes[]>;
+export type QScrollbarPropViewStyle = Nullable<string | Styles | Styles[]>;
 
 export interface QScrollbarProps {
   scrollTo: QScrollbarPropScrollTo;
@@ -53,8 +55,8 @@ export interface QScrollbarProps {
   theme: QScrollbarPropTheme;
   wrapClass: QScrollbarPropWrapClass;
   viewTag: Nullable<string>;
-  viewClass: Nullable<string | Classes | Classes[]>;
-  viewStyle: Nullable<string | Styles | Styles[]>;
+  viewClass: QScrollbarPropViewClass;
+  viewStyle: QScrollbarPropViewStyle;
   noresize: Nullable<boolean>;
 }
 

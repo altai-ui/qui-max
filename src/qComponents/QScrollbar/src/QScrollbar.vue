@@ -63,6 +63,8 @@ import type {
   QScrollbarPropScrollTo,
   QScrollbarPropTheme,
   QScrollbarPropWrapClass,
+  QScrollbarPropViewClass,
+  QScrollbarPropViewStyle,
   QScrollbarProvider,
   QBarInstance
 } from './types';
@@ -100,7 +102,10 @@ export default defineComponent({
     /**
      * custom wrapper content class (it helps you to style content)
      */
-    wrapClass: { type: [Object, String, Array], default: null },
+    wrapClass: {
+      type: [Object, String, Array] as PropType<QScrollbarPropWrapClass>,
+      default: null
+    },
     /**
      * custom inner content tag
      */
@@ -111,11 +116,17 @@ export default defineComponent({
     /**
      * custom inner content class
      */
-    viewClass: { type: [Object, String, Array], default: null },
+    viewClass: {
+      type: [Object, String, Array] as PropType<QScrollbarPropViewClass>,
+      default: null
+    },
     /**
      * custom inner content class
      */
-    viewStyle: { type: [Object, String, Array], default: null },
+    viewStyle: {
+      type: [Object, String, Array] as PropType<QScrollbarPropViewStyle>,
+      default: null
+    },
     /**
      * whether is resizeListener will watch for parent
      */

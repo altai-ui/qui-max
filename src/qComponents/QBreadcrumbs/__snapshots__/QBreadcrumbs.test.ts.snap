@@ -1,0 +1,13 @@
+// Vitest Snapshot v1
+
+exports[`QBreadcrumbs > element should match snapshot 1`] = `
+<div
+  class="q-breadcrumbs"
+>
+  
+  
+  <div
+    class="q-breadcrumbs__crumb q-breadcrumbs__crumb_last"
+  />
+</div>
+`;

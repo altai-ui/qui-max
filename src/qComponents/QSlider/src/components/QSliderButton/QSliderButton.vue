@@ -12,6 +12,9 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed, onBeforeUnmount } from 'vue';
+import type { PropType } from 'vue';
+
+import type { Nullable } from '#/helpers';
 
 import type {
   QSliderButtonProps,
@@ -25,17 +28,17 @@ export default defineComponent({
 
   props: {
     position: {
-      type: String,
+      type: String as PropType<Nullable<string>>,
       default: null
     },
 
     pathLeft: {
-      type: Number,
+      type: Number as PropType<Nullable<number>>,
       default: null
     },
 
     pathWidth: {
-      type: Number,
+      type: Number as PropType<Nullable<number>>,
       default: null
     },
 

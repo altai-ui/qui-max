@@ -7,15 +7,17 @@
 
 <script lang="ts">
 import { defineComponent, computed } from 'vue';
+import type { PropType } from 'vue';
 
 import type { BarStyle, QSliderBarProps, QSliderBarInstance } from './types';
+import type { Nullable } from '#/helpers';
 
 export default defineComponent({
   name: 'QSliderBar',
 
   props: {
     size: {
-      type: String,
+      type: String as PropType<Nullable<string>>,
       default: null
     }
   },

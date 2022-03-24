@@ -3,9 +3,7 @@ import type { Nullable } from '#/helpers';
 
 export type BtnClasses = Record<string, boolean>;
 
-export interface BtnStyles {
-  left: Nullable<string>;
-}
+export type BtnStyles = Record<string, Nullable<string | number>>;
 
 export interface QSliderButtonProps {
   position: Nullable<string>;

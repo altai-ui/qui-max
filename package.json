@@ -88,7 +88,7 @@
     "vite": "^2.7.13",
     "vite-plugin-dts": "^0.9.9",
     "vitest": "^0.7.10",
-    "vue": "^3.2.26",
+    "vue": "^3.2.31",
     "vue-loader": "^15.9.8"
   },
   "files": ["dist"],

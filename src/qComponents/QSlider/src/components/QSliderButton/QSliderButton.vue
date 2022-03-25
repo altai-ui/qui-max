@@ -14,9 +14,10 @@
 import { defineComponent, ref, computed, onBeforeUnmount } from 'vue';
 import type { PropType } from 'vue';
 
-import type { Nullable } from '#/helpers';
-
 import type {
+  QSliderButtonPropPosition,
+  QSliderButtonPropPathLeft,
+  QSliderButtonPropPathWidth,
   QSliderButtonProps,
   BtnClasses,
   BtnStyles,
@@ -28,17 +29,17 @@ export default defineComponent({
 
   props: {
     position: {
-      type: String as PropType<Nullable<string>>,
+      type: String as PropType<QSliderButtonPropPosition>,
       default: null
     },
 
     pathLeft: {
-      type: Number as PropType<Nullable<number>>,
+      type: Number as PropType<QSliderButtonPropPathLeft>,
       default: null
     },
 
     pathWidth: {
-      type: Number as PropType<Nullable<number>>,
+      type: Number as PropType<QSliderButtonPropPathWidth>,
       default: null
     },
 
@@ -59,7 +60,7 @@ export default defineComponent({
     }));
 
     const btnStyles = computed<BtnStyles>(() => ({
-      left: props.position
+      left: props.position ?? undefined
     }));
 
     const handleDragging = ({ clientX }: MouseEvent): void => {

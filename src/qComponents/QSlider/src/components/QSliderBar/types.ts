@@ -1,10 +1,16 @@
-import type { ComputedRef } from 'vue';
+import type { ComputedRef, CSSProperties } from 'vue';
 import type { Nullable } from '#/helpers';
 
-export type BarStyle = Record<string, Nullable<string>>;
+type CssPropertyWidth = CSSProperties['width'];
+
+export type QSliderBarPropWidth = Nullable<CssPropertyWidth>;
 
 export interface QSliderBarProps {
-  size: Nullable<string>;
+  width: QSliderBarPropWidth;
+}
+
+export interface BarStyle {
+  width: CssPropertyWidth;
 }
 
 export interface QSliderBarInstance {

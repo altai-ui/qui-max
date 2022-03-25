@@ -14,6 +14,8 @@ import type {
   QSliderCaptionsInstance
 } from './types';
 
+type Classes = Record<string, boolean>;
+
 export default defineComponent({
   name: 'QSliderCaptions',
 
@@ -39,14 +41,12 @@ export default defineComponent({
   setup(props: QSliderCaptionsProps, ctx): QSliderCaptionsInstance {
     const qSlider = inject<QSliderProvider>('qSlider');
 
-    const captionClasses = computed<Record<string, boolean>>(() => ({
+    const captionClasses = computed<Classes>(() => ({
       'q-slider-captions': true,
       'q-slider-captions_is-disabled': props.disabled
     }));
 
-    const getCaptionItemClasses = (
-      value: QSliderPropModelValue
-    ): Record<string, boolean> => ({
+    const getCaptionItemClasses = (value: QSliderPropModelValue): Classes => ({
       'q-slider-captions__caption': true,
       'q-slider-captions__caption_active': value === props.modelValue
     });

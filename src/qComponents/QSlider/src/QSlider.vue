@@ -8,7 +8,7 @@
       class="q-slider__path"
       @click="handlePathClick"
     >
-      <q-slider-bar :size="state.btnPosition" />
+      <q-slider-bar :width="state.btnPosition" />
 
       <q-slider-button
         v-model:position="state.btnPosition"

@@ -1,16 +1,17 @@
-import type { Ref, Slots, ComputedRef } from 'vue';
+import type { Ref, Slots, ComputedRef, StyleValue } from 'vue';
 
 import type { Nullable } from '#/helpers';
 
-export type QSliderPropModelValue = Nullable<string | number | boolean>;
-export interface QSliderPropData {
-  value: string | number | boolean;
-  label: string;
-  style: Record<string, Nullable<string | number>>;
-  slotData: Record<string, unknown>;
-}
+type ModelValue = string | number | boolean;
 
-export type RootClasses = Record<string, boolean>;
+export type QSliderPropModelValue = Nullable<ModelValue>;
+
+export interface QSliderPropData {
+  value: ModelValue;
+  label: string;
+  style?: StyleValue;
+  slotData?: Record<string, unknown>;
+}
 
 export interface QSliderProps {
   modelValue: QSliderPropModelValue;
@@ -27,6 +28,8 @@ export interface QSliderState {
 export interface QSliderProvider {
   slots: Readonly<Slots>;
 }
+
+export type RootClasses = Record<string, boolean>;
 
 export interface QSliderInstance {
   path: Ref<Nullable<HTMLElement>>;

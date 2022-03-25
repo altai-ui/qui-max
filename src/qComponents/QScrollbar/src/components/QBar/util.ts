@@ -1,4 +1,5 @@
-import type { BarMapItem, Styles } from './types';
+import type { CSSProperties } from 'vue';
+import type { BarMapItem } from './types';
 
 export const BAR_MAP: Record<'vertical' | 'horizontal', BarMapItem> = {
   vertical: {
@@ -27,14 +28,15 @@ export const renderThumbStyle = (
   move: number,
   size: string,
   bar: BarMapItem
-): Styles => {
-  const style: Styles = {};
+): CSSProperties => {
+  const style: CSSProperties = {};
 
   style[bar.size] = size;
+
   const translate = `translate${bar.axis}(${move}%)`;
   style.transform = translate;
-  style.msTransform = translate;
-  style.webkitTransform = translate;
+  style['-ms-transform'] = translate;
+  style['-webkit-transform'] = translate;
 
   return style;
 };

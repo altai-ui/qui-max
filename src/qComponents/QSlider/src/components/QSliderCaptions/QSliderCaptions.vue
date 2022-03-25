@@ -11,10 +11,9 @@ import type {
 import type {
   QSliderCaptionsProps,
   PreparedData,
+  Classes,
   QSliderCaptionsInstance
 } from './types';
-
-type Classes = Record<string, boolean>;
 
 export default defineComponent({
   name: 'QSliderCaptions',

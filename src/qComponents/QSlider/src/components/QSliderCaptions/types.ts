@@ -15,4 +15,6 @@ export interface PreparedData {
   slot?: VNode[];
 }
 
+export type Classes = Record<string, boolean>;
+
 export type QSliderCaptionsInstance = () => VNode;

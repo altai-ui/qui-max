@@ -121,7 +121,7 @@ As you're not to be able to use `QRadio` in isolation (if you're making great UX
 ```
 
 ```js
-export default defineComponent({
+export default {
   setup() {
     const value = ref(1);
     const handleChange = (newValue) => {
@@ -129,7 +129,7 @@ export default defineComponent({
     }
     return { value, handleChange }
   }
-})
+}
 ```
 
 ## QRadioGroup props
@@ -153,7 +153,7 @@ The binding value.
 - Type: `'vertical' | 'horizontal'`
 - Default: `'vertical'`
 
-If `vertical` set, `QRadio`'s is in column, `horizontal` is in row.
+Defines the direction. Whether radio buttons are in the row or column.
 
 ```vue {3}
 <q-radio-group

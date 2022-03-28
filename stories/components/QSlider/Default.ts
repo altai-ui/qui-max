@@ -25,7 +25,7 @@ const QSliderStory: Story = args =>
     `
   });
 
-const data: QSliderPropData[] = [
+const data: QSliderPropData = [
   {
     value: 'easy',
     label: t('qSlider.easyLevel')

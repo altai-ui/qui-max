@@ -3,10 +3,8 @@ import type { Ref, Slots, ComputedRef, StyleValue } from 'vue';
 import type { Classes } from '@/qComponents/types';
 import type { Nullable } from '#/helpers';
 
-export type QSliderPropModelValue = Nullable<string | number | boolean>;
-// export type QSliderPropModelValue<
-//   T extends Nullable<string | number | boolean> = Nullable<string | number | boolean>
-// > = T;
+type ModelValue = Nullable<string | number | boolean>;
+export type QSliderPropModelValue<T extends ModelValue = ModelValue> = T;
 
 interface QSliderData {
   value: QSliderPropModelValue;

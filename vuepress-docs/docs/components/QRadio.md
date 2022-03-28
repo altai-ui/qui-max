@@ -12,7 +12,7 @@ Default view:
 
 ### value
 
-- Type: `String, Number, Boolean`
+- Type: `String | Number | Boolean`
 - Default: `null`
 
 Binding value.

@@ -103,7 +103,7 @@ The dropdown's position around the trigger button.
 - Type `String, HTMLElement`
 - Default: `null`
 
-Specifies a target element where QColorpicker will be moved from original layout place. (has to be a valid query selector, or an HTMLElement).
+Specifies a target element where `QContextMenu` will be moved from original layout place. (has to be a valid query selector, or an HTMLElement).
 
 <!-- prettier-ignore-start -->
 ```vue {4}

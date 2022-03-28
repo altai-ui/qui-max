@@ -55,6 +55,9 @@ export default defineComponent({
      * binding value
      */
     value: { type: [String, Number, Boolean], default: null },
+    /**
+     * whether Radio is checked
+     */
     checked: { type: Boolean, default: false },
     /**
      * whether Radio is disabled

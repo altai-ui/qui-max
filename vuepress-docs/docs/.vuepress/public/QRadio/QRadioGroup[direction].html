@@ -1,0 +1,67 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- import CSS -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/@qvant/qui-max/dist/style.css"
+    />
+  </head>
+
+  <body>
+    <div id="app">
+      <div class="block">
+        <q-row>
+          <q-col cols="3">
+            <div class="label">vertical:</div>
+            <q-radio-group v-model="value" @change="handleChange">
+              <q-radio :value="1" label="Option A"></q-radio>
+              <q-radio :value="2" label="Option B"></q-radio>
+              <q-radio :value="3" label="Option C"></q-radio>
+            </q-radio-group>
+          </q-col>
+          <q-col cols="8">
+            <div class="label">horizontal:</div>
+            <q-radio-group
+              v-model="value2"
+              direction="horizontal"
+              @change="handleChange"
+            >
+              <q-radio :value="1" label="Option A"></q-radio>
+              <q-radio :value="2" label="Option B"></q-radio>
+              <q-radio :value="3" label="Option C"></q-radio>
+            </q-radio-group>
+          </q-col>
+        </q-row>
+      </div>
+    </div>
+  </body>
+  <!-- import Vue before Qui -->
+  <script src="https://unpkg.com/vue@latest"></script>
+  <!-- import JavaScript -->
+  <script src="https://unpkg.com/@qvant/qui-max@latest"></script>
+  <script>
+    const app = Vue.createApp({
+      setup() {
+        const value = Vue.ref(1);
+        const value2 = Vue.ref(1);
+        const handleChange = newValue => {
+          console.log(newValue);
+        };
+        return { value, value2, handleChange };
+      }
+    });
+
+    app.use(QuiMax.default);
+    app.mount('#app');
+  </script>
+  <style>
+    .block {
+      margin: 20px;
+    }
+
+    .label {
+      padding-bottom: 15px;
+    }
+  </style>
+</html>

@@ -40,6 +40,9 @@ export default defineComponent({
   componentName: 'QRadioGroup',
 
   props: {
+    /**
+     * the binding value
+     */
     modelValue: { type: [String, Number, Boolean], default: null },
     /**
      * whether Radio is disabled
@@ -49,6 +52,9 @@ export default defineComponent({
      * custom element tag
      */
     tag: { type: String, default: 'div' },
+    /**
+     * defines the direction, whether radio buttons are in the row or column.
+     */
     direction: {
       type: String as PropType<QRadioGroupPropDirection>,
       default: 'vertical',

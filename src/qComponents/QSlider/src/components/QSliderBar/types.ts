@@ -3,10 +3,10 @@ import type { Nullable } from '#/helpers';
 
 type CssPropertyWidth = CSSProperties['width'];
 
-export type QSliderBarPropWidth = Nullable<CssPropertyWidth>;
+export type QSliderBarPropSize = Nullable<CssPropertyWidth>;
 
 export interface QSliderBarProps {
-  width: QSliderBarPropWidth;
+  size: QSliderBarPropSize;
 }
 
 export interface BarStyle {

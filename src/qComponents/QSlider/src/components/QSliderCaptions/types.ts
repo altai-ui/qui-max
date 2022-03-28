@@ -4,7 +4,7 @@ import type { QSliderPropModelValue, QSliderPropData } from '../../types';
 
 export interface QSliderCaptionsProps {
   modelValue: QSliderPropModelValue;
-  data: QSliderPropData[];
+  data: QSliderPropData;
   disabled: boolean;
 }
 
@@ -14,7 +14,5 @@ export interface PreparedData {
   style?: StyleValue;
   slot?: VNode[];
 }
-
-export type Classes = Record<string, boolean>;
 
 export type QSliderCaptionsInstance = () => VNode;

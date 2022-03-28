@@ -8,7 +8,7 @@
       class="q-slider__path"
       @click="handlePathClick"
     >
-      <q-slider-bar :width="state.btnPosition" />
+      <q-slider-bar :size="state.btnPosition" />
 
       <q-slider-button
         v-model:position="state.btnPosition"
@@ -91,7 +91,7 @@ export default defineComponent({
      * `{ value: 'test', label: 'text', style: {}, slotData: {} }`
      */
     data: {
-      type: Array as PropType<QSliderPropData[]>,
+      type: Array as PropType<QSliderPropData>,
       required: true
     },
 

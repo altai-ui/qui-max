@@ -1,4 +1,7 @@
 import type { ComputedRef, CSSProperties } from 'vue';
+
+import type { Classes } from '@/qComponents/types';
+
 import type { Nullable } from '#/helpers';
 
 type CssPropertyLeft = CSSProperties['left'];
@@ -14,7 +17,7 @@ export interface QSliderButtonProps {
   disabled: boolean;
 }
 
-export type BtnClasses = Record<string, boolean>;
+export type BtnClasses = Classes;
 
 export interface BtnStyles {
   left: CssPropertyLeft;

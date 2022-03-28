@@ -2,6 +2,8 @@
 import { defineComponent, computed, inject, h } from 'vue';
 import type { PropType, VNode } from 'vue';
 
+import type { Classes } from '@/qComponents/types';
+
 import type {
   QSliderPropModelValue,
   QSliderPropData,
@@ -11,7 +13,6 @@ import type {
 import type {
   QSliderCaptionsProps,
   PreparedData,
-  Classes,
   QSliderCaptionsInstance
 } from './types';
 
@@ -25,7 +26,7 @@ export default defineComponent({
     },
 
     data: {
-      type: Array as PropType<QSliderPropData[]>,
+      type: Array as PropType<QSliderPropData>,
       required: true
     },
 

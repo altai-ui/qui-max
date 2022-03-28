@@ -11,3 +11,5 @@ export interface ConfigOptions {
   zIndexCounter?: number;
   useAllComponents?: boolean;
 }
+
+export type Classes = Record<string, boolean>;

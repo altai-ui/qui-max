@@ -1,8 +1,6 @@
 import type { ComputedRef, CSSProperties } from 'vue';
 
-import type { Classes } from '@/qComponents/types';
-
-import type { Nullable } from '#/helpers';
+import type { Nullable, Classes } from '#/helpers';
 
 type CssPropertyLeft = CSSProperties['left'];
 

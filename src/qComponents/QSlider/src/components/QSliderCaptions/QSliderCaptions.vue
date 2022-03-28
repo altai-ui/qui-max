@@ -2,7 +2,7 @@
 import { defineComponent, computed, inject, h } from 'vue';
 import type { PropType, VNode } from 'vue';
 
-import type { Classes } from '@/qComponents/types';
+import type { Classes } from '#/helpers';
 
 import type {
   QSliderPropModelValue,

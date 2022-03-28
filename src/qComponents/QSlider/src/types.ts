@@ -1,7 +1,6 @@
 import type { Ref, Slots, ComputedRef, StyleValue } from 'vue';
 
-import type { Classes } from '@/qComponents/types';
-import type { Nullable } from '#/helpers';
+import type { Nullable, Classes } from '#/helpers';
 
 type ModelValue = Nullable<string | number | boolean>;
 export type QSliderPropModelValue<T extends ModelValue = ModelValue> = T;

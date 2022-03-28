@@ -41,7 +41,7 @@ export default defineComponent({
 
   props: {
     /**
-     * The binding value
+     * the binding value
      */
     modelValue: { type: [String, Number, Boolean], default: null },
     /**
@@ -53,7 +53,7 @@ export default defineComponent({
      */
     tag: { type: String, default: 'div' },
     /**
-     * If vertical set, QRadio's is in column, horizontal is in row.
+     * defines the direction, whether radio buttons are in the row or column.
      */
     direction: {
       type: String as PropType<QRadioGroupPropDirection>,

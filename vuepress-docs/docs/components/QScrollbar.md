@@ -6,7 +6,7 @@ QScrollbar allows you to move the window viewing area.
 
 Types: 
 
-<iframe height="250" style="width: 100%;" scrolling="no" frameborder="no" src="/QScrollbar/default.html"></iframe>
+<iframe height="400" style="width: 100%;" scrolling="no" frameborder="no" src="/QScrollbar/default.html"></iframe>
 
 ## Props
 

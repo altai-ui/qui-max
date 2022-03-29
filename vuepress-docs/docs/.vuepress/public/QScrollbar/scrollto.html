@@ -11,9 +11,12 @@
   <body>
     <div id="app">
       <div class="block">
-        <q-scrollbar theme="secondary" visible>
+        <q-button @click="handleButtonClick" class="button"
+          >{{ buttonText }}</q-button
+        >
+        <q-scrollbar theme="primary" :scroll-to="scrollTo" visible>
           <div>
-            <p><strong>Always visible</strong></p>
+            <p ref="start"><strong>Primary</strong></p>
             <p>
               "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
               eiusmod tempor incididunt ut labore et dolore magna aliqua.
@@ -46,6 +49,7 @@
               Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
               officia deserunt mollit anim id est laborum."
             </p>
+            <p ref="end">This is the end</p>
           </div>
         </q-scrollbar>
       </div>
@@ -56,17 +60,51 @@
   <!-- import JavaScript -->
   <script src="https://unpkg.com/@qvant/qui-max@latest"></script>
   <script>
-    const app = Vue.createApp({});
+    const App = {
+      data() {
+        const start = Vue.ref(null);
+        const end = Vue.ref(null);
+        const scrollTo = Vue.ref(null);
+
+        const buttonText = Vue.computed(() =>
+          scrollTo.value === this.$refs.end
+            ? 'Scroll to start'
+            : 'Scroll to end'
+        );
+
+        const handleButtonClick = () => {
+          scrollTo.value =
+            scrollTo.value === this.$refs.end
+              ? (scrollTo.value = this.$refs.start)
+              : this.$refs.end;
+        };
+
+        return {
+          buttonText,
+          start,
+          end,
+          scrollTo,
+          handleButtonClick
+        };
+      }
+    };
+
+    const app = Vue.createApp(App);
     app.use(QuiMax.default);
     app.mount('#app');
   </script>
   <style>
     .block {
       display: flex;
+      flex-direction: column;
+      row-gap: 20px;
       width: 100%;
-      height: 150px;
+      height: 250px;
       padding: 10px;
-      column-gap: 5%;
+    }
+
+    .button {
+      width: fit-content;
     }
   </style>
 </html>

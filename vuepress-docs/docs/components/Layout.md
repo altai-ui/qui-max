@@ -54,10 +54,10 @@ const args = {
 ```vue
 <q-row class="block__row">
   <q-col
-      class="block__col"
-      :tag="args.tag"
-      :cols="args.cols"
-      :offset="args.offset"
+    class="block__col"
+    :tag="args.tag"
+    :cols="args.cols"
+    :offset="args.offset"
   >
     <div class="block__content">Lorem ipsum dolor</div>
   </q-col>

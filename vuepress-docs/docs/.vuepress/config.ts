@@ -33,7 +33,8 @@ export default defineUserConfig<DefaultThemeOptions, ViteBundlerOptions>({
           '/components/QInput.md',
           '/components/QPagination.md',
           '/components/QPopover.md',
-          '/components/QScrollbar'
+          '/components/QRadio.md',
+          '/components/QScrollbar.md'
         ]
       },
       // NavbarGroup
@@ -66,7 +67,8 @@ export default defineUserConfig<DefaultThemeOptions, ViteBundlerOptions>({
             '/components/QInput.md',
             '/components/QPagination.md',
             '/components/QPopover.md',
-            '/components/QScrollbar'
+            '/components/QRadio.md',
+            '/components/QScrollbar.md'
           ]
         }
       ],

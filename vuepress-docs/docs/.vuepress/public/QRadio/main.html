@@ -1,0 +1,54 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- import CSS -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/@qvant/qui-max/dist/style.css"
+    />
+  </head>
+
+  <body>
+    <div id="app">
+      <div class="block">
+        <q-row>
+          <q-col class="wrapper" cols="2">
+            <div class="label">Default:</div>
+            <q-radio :checked="false" :value="1" label="Option" />
+          </q-col>
+          <q-col cols="2">
+            <div class="label">Checked:</div>
+            <q-radio :checked="true" :value="1" label="Option" />
+          </q-col>
+          <q-col cols="2">
+            <div class="label">Disabled:</div>
+            <q-radio :checked="false" :value="1" label="Option" disabled />
+          </q-col>
+          <q-col cols="3">
+            <div class="label">Checked & Disabled:</div>
+            <q-radio :checked="true" :value="1" label="Option" disabled />
+          </q-col>
+        </q-row>
+      </div>
+    </div>
+  </body>
+  <!-- import Vue before Qui -->
+  <script src="https://unpkg.com/vue@latest"></script>
+  <!-- import JavaScript -->
+  <script src="https://unpkg.com/@qvant/qui-max@latest"></script>
+  <script>
+    const app = Vue.createApp({});
+
+    app.use(QuiMax.default);
+    app.mount('#app');
+  </script>
+  <style>
+    .block {
+      margin: 20px;
+    }
+
+    .label {
+      padding-bottom: 5px;
+    }
+  </style>
+</html>

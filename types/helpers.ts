@@ -8,4 +8,5 @@ export type UnwrappedInstance<T> = Nullable<
   ComponentPublicInstance<UnwrapRef<T>>
 >;
 
-export type Classes = Record<string, boolean>;
+type Classes = Record<string, boolean>;
+export type ClassValue = string | string[] | Classes | Classes[];

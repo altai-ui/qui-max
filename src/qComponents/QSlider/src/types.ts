@@ -5,14 +5,19 @@ import type { Nullable, ClassValue } from '#/helpers';
 type ModelValue = Nullable<string | number | boolean>;
 export type QSliderPropModelValue<T extends ModelValue = ModelValue> = T;
 
-interface QSliderData {
-  value: QSliderPropModelValue;
+type SlotData = Record<string | number, unknown>;
+
+interface QSliderData<T, S> {
+  value: T;
   label?: string;
   style?: StyleValue;
-  slotData?: Record<string, unknown>;
+  slotData?: S;
 }
 
-export type QSliderPropData = QSliderData[];
+export type QSliderPropData<
+  T extends ModelValue = ModelValue,
+  S = SlotData
+> = QSliderData<T, keyof S extends string | number ? S : never>[];
 
 export interface QSliderProps {
   modelValue: QSliderPropModelValue;

@@ -1,6 +1,6 @@
 import type { Ref, ComputedRef, StyleValue } from 'vue';
 
-import type { Nullable, UnwrappedInstance } from '#/helpers';
+import type { Nullable, UnwrappedInstance, ClassValue } from '#/helpers';
 
 import type { QBarInstance } from './components/QBar/types';
 
@@ -10,12 +10,10 @@ export interface QScrollbarProvider {
   moveXInPx: Ref<number>;
 }
 
-export type Classes = Record<string, boolean>;
-
 export type QScrollbarPropScrollTo = Nullable<HTMLElement>;
 export type QScrollbarPropTheme = 'primary' | 'secondary';
-export type QScrollbarPropWrapClass = Nullable<string | Classes | Classes[]>;
-export type QScrollbarPropViewClass = Nullable<string | Classes | Classes[]>;
+export type QScrollbarPropWrapClass = Nullable<ClassValue>;
+export type QScrollbarPropViewClass = Nullable<ClassValue>;
 export type QScrollbarPropViewStyle = Nullable<StyleValue>;
 
 export interface QScrollbarProps {
@@ -40,7 +38,7 @@ export interface QScrollbarInstance {
   isYBarShown: ComputedRef<boolean>;
   moveX: Ref<number>;
   moveY: Ref<number>;
-  rootClasses: ComputedRef<Classes>;
+  rootClasses: ComputedRef<ClassValue>;
   wrapClasses: ComputedRef<QScrollbarPropWrapClass[]>;
   handleScroll: () => void;
   update: () => void;

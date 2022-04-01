@@ -6,12 +6,12 @@ import type {
   QSliderPropData
 } from '@/qComponents/QSlider';
 
-type ModelValue = 'easy' | 'normal' | 'hard';
+type ModelValue = QSliderPropModelValue<'easy' | 'normal' | 'hard'>;
 
 const QSliderStory: Story = args =>
   defineComponent({
     setup() {
-      const value = ref<QSliderPropModelValue<ModelValue>>('easy');
+      const value = ref<ModelValue>('easy');
 
       return {
         args,
@@ -27,7 +27,7 @@ const QSliderStory: Story = args =>
     `
   });
 
-const data: QSliderPropData = [
+const data: QSliderPropData<ModelValue> = [
   {
     value: 'easy',
     label: t('qSlider.easyLevel')

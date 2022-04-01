@@ -1,6 +1,6 @@
-# QTabPane
+# QTabPane 1️⃣
 
-QTabPane is a single tab that used in QTabs.
+QTabPane is a tab that used in [QTabs](/components/QTabs)
 
 ## Examples
 
@@ -42,3 +42,24 @@ Allows to configure the custom width of QTabPane
 - Default: `false`
 
 Sets disabled QTabPane state
+
+
+## Slots 
+
+### content
+
+Slot for QTabPane content
+
+```vue {6-8}
+<q-tabs v-model="activeTab">
+  <q-tab-pane 
+      name="tab"
+      title="Tab"
+  >
+    <template #content>
+       <div>This is content of the QTabPane</div>
+    </template>
+</q-tabs>
+```
+
+<iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/QTabPane/content.html"></iframe>

@@ -1,0 +1,44 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- import CSS -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/@qvant/qui-max/dist/style.css"
+    />
+  </head>
+
+  <body>
+    <div id="app">
+      <div class="block">
+        <q-tabs>
+          <q-tab-pane name="tab" title="Tab">
+            <template #content>
+              <div>This is content of the QTabPane</div>
+            </template>
+          </q-tab-pane>
+        </q-tabs>
+      </div>
+    </div>
+  </body>
+  <!-- import Vue before Qui -->
+  <script src="https://unpkg.com/vue@latest"></script>
+  <!-- import JavaScript -->
+  <script src="https://unpkg.com/@qvant/qui-max@latest"></script>
+  <script>
+    const app = Vue.createApp({});
+    app.use(QuiMax.default);
+    app.mount('#app');
+  </script>
+  <style>
+    .block {
+      display: flex;
+      flex-direction: column;
+      row-gap: 20px;
+      align-items: start;
+      justify-content: center;
+      width: 100%;
+      padding: 10px;
+    }
+  </style>
+</html>

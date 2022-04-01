@@ -1,4 +1,4 @@
-# QInputNumber
+# QInputNumber 🔢
 
 Provides an input field accepting only numbers. Try a sandbox [story](https://qui-max.netlify.app/?path=/story/components-qinputnumber--default)
 
@@ -124,3 +124,11 @@ Triggers when input gets focus
 ### blur
 
 Triggers when input loses focus
+
+## Slots
+
+### suffix
+
+Set your custom content as a suffix.
+
+<iframe style="width: 100%; height: 85px" scrolling="no" frameborder="no" src="/QInputNumber/suffix.html"></iframe>

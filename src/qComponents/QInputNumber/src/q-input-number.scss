@@ -95,4 +95,22 @@
       }
     }
   }
+
+  &__suffix {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 40px;
+    height: 100%;
+    text-align: center;
+    pointer-events: none;
+  }
+
+  &__icon {
+    width: 40px;
+    font-size: 24px;
+    line-height: 40px;
+    color: var(--field-icon-color-inactive);
+    text-align: center;
+  }
 }

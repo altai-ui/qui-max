@@ -12,6 +12,20 @@
       @focus="handleFocus"
       @blur="handleBlur"
     />
+
+    <div
+      v-if="isSuffixVisible"
+      class="q-input-number__suffix"
+    >
+      <span
+        v-if="isDisabled"
+        class="q-input-number__icon q-icon-lock"
+      />
+      <slot
+        v-else
+        name="suffix"
+      />
+    </div>
   </div>
 </template>
 
@@ -99,6 +113,10 @@ export default defineComponent({
 
     const isDisabled = computed<boolean>(
       () => props.disabled || (qForm?.disabled.value ?? false)
+    );
+
+    const isSuffixVisible = computed<boolean>(() =>
+      Boolean(isDisabled.value || ctx.slots.suffix)
     );
 
     let internalValue: Nullable<string> = null;
@@ -223,6 +241,7 @@ export default defineComponent({
     return {
       inputRef,
       isDisabled,
+      isSuffixVisible,
       handleInput,
       handleChange,
       handleFocus,

@@ -14,6 +14,7 @@ export interface QInputNumberProps {
 export interface QInputNumberInstance {
   inputRef: Ref<Nullable<HTMLInputElement>>;
   isDisabled: ComputedRef<boolean>;
+  isSuffixVisible: ComputedRef<boolean>;
   handleInput: (event: Event) => void;
   handleChange: (event: Event) => void;
   handleFocus: (event: FocusEvent) => void;

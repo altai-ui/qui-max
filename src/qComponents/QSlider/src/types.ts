@@ -1,23 +1,26 @@
 import type { Ref, Slots, ComputedRef, StyleValue } from 'vue';
 
-import type { Nullable, ClassValue } from '#/helpers';
+import type { Nullable, Optional, ClassValue } from '#/helpers';
 
 type ModelValue = Nullable<string | number | boolean>;
 export type QSliderPropModelValue<T extends ModelValue = ModelValue> = T;
 
-type SlotData = Record<string | number, unknown>;
+type SlotData = Optional<Record<string | number, unknown>>;
 
-interface QSliderData<T, S> {
+type QSliderData<T> = {
   value: T;
   label?: string;
   style?: StyleValue;
-  slotData?: S;
-}
+};
 
 export type QSliderPropData<
   T extends ModelValue = ModelValue,
-  S = SlotData
-> = QSliderData<T, keyof S extends string | number ? S : never>[];
+  S extends SlotData = undefined
+> = (S extends SlotData
+  ? S extends undefined
+    ? QSliderData<T>
+    : QSliderData<T> & { slotData: S }
+  : QSliderData<T>)[];
 
 export interface QSliderProps {
   modelValue: QSliderPropModelValue;

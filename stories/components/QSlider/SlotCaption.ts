@@ -8,9 +8,10 @@ import type {
 
 type ModelValue = 'easy' | 'normal' | 'hard';
 
-interface SlotData {
+type SlotDataTest = {
   description: string;
-}
+  [key: number]: number;
+};
 
 const QSliderStory: Story = args =>
   defineComponent({
@@ -36,7 +37,7 @@ const QSliderStory: Story = args =>
     `
   });
 
-const data: QSliderPropData<ModelValue, SlotData> = [
+const data: QSliderPropData<ModelValue, SlotDataTest> = [
   {
     value: 'easy',
     label: t('qSlider.easyLevel'),

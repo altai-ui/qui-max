@@ -33,10 +33,7 @@ export const renderThumbStyle = (
 
   style[bar.size] = size;
 
-  const translate = `translate${bar.axis}(${move}%)`;
-  style.transform = translate;
-  style['-ms-transform'] = translate;
-  style['-webkit-transform'] = translate;
+  style.transform = `translate${bar.axis}(${move}%)`;
 
   return style;
 };

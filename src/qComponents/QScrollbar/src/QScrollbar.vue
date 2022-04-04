@@ -97,7 +97,10 @@ export default defineComponent({
     /**
      * whether scrollbar is always visible
      */
-    visible: { type: Boolean, default: false },
+    visible: {
+      type: Boolean as PropType<boolean>,
+      default: false
+    },
     /**
      * changes style
      */
@@ -117,7 +120,7 @@ export default defineComponent({
      * custom inner content tag
      */
     viewTag: {
-      type: String,
+      type: String as PropType<string>,
       default: 'div'
     },
     /**
@@ -137,7 +140,10 @@ export default defineComponent({
     /**
      * whether is resizeListener will watch for parent
      */
-    noresize: { type: Boolean, default: false }
+    noresize: {
+      type: Boolean as PropType<boolean>,
+      default: false
+    }
   },
 
   setup(props: QScrollbarProps): QScrollbarInstance {

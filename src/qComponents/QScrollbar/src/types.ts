@@ -4,12 +4,6 @@ import type { Nullable, UnwrappedInstance, ClassValue } from '#/helpers';
 
 import type { QBarInstance } from './components/QBar/types';
 
-export interface QScrollbarProvider {
-  wrap: Ref<Nullable<HTMLElement>>;
-  sizeWidth: Ref<string>;
-  moveXInPx: Ref<number>;
-}
-
 export type QScrollbarPropScrollTo = Nullable<HTMLElement>;
 export type QScrollbarPropTheme = 'primary' | 'secondary';
 export type QScrollbarPropWrapClass = Nullable<ClassValue>;
@@ -25,6 +19,12 @@ export interface QScrollbarProps {
   viewClass: QScrollbarPropViewClass;
   viewStyle: QScrollbarPropViewStyle;
   noresize: boolean;
+}
+
+export interface QScrollbarProvider {
+  wrap: Ref<Nullable<HTMLElement>>;
+  sizeWidth: Ref<string>;
+  moveXInPx: Ref<number>;
 }
 
 export interface QScrollbarInstance {

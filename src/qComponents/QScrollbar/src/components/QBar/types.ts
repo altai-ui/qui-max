@@ -1,6 +1,6 @@
 import type { Ref, ComputedRef, CSSProperties } from 'vue';
 
-import type { Nullable } from '#/helpers';
+import type { Nullable, ClassValue } from '#/helpers';
 
 export interface BarMapItem {
   offset: 'offsetHeight' | 'offsetWidth';
@@ -26,16 +26,13 @@ export interface QBarProps {
   move: QBarPropMove;
 }
 
-export type Classes = Record<string, boolean>;
-export type Styles = CSSProperties;
-
 export interface QBarInstance {
   root: Ref<Nullable<HTMLElement>>;
   bar: ComputedRef<BarMapItem>;
   thumb: Ref<Nullable<HTMLElement>>;
-  rootClasses: ComputedRef<Classes>;
-  thumbClasses: ComputedRef<Classes>;
-  thumbStyles: ComputedRef<Styles>;
+  rootClasses: ComputedRef<ClassValue>;
+  thumbClasses: ComputedRef<ClassValue>;
+  thumbStyles: ComputedRef<CSSProperties>;
   handleThumbClick: (e: MouseEvent) => void;
   handleTrackerClick: (e: MouseEvent) => void;
   scrollToPx: (px: number) => void;

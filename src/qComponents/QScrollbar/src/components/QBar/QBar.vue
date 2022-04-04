@@ -16,11 +16,11 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed, onUnmounted, inject } from 'vue';
-import type { PropType } from 'vue';
+import type { PropType, CSSProperties } from 'vue';
 
 import { validateArray } from '@/qComponents/helpers';
 
-import type { Nullable } from '#/helpers';
+import type { Nullable, ClassValue } from '#/helpers';
 
 import { renderThumbStyle, BAR_MAP } from './util';
 
@@ -31,8 +31,6 @@ import type {
   QBarPropType,
   QBarPropTheme,
   QBarPropMove,
-  Classes,
-  Styles,
   BarMapItem,
   QBarInstance
 } from './types';
@@ -53,7 +51,7 @@ export default defineComponent({
       default: null
     },
     size: {
-      type: String,
+      type: String as PropType<string>,
       default: '0'
     },
     move: {
@@ -73,16 +71,16 @@ export default defineComponent({
 
     const bar = computed<BarMapItem>(() => BAR_MAP[props.type]);
 
-    const thumbStyles = computed<Styles>(() =>
+    const thumbStyles = computed<CSSProperties>(() =>
       renderThumbStyle(props.move ?? 0, props.size ?? '0', bar.value)
     );
 
-    const thumbClasses = computed<Classes>(() => ({
+    const thumbClasses = computed<ClassValue>(() => ({
       'q-scrollbar__thumb': true,
       'q-scrollbar__thumb_secondary': props?.theme === 'secondary'
     }));
 
-    const rootClasses = computed<Classes>(() => ({
+    const rootClasses = computed<ClassValue>(() => ({
       [`q-scrollbar__bar_${bar.value.key}`]: true,
       'q-scrollbar__bar_secondary': props?.theme === 'secondary'
     }));

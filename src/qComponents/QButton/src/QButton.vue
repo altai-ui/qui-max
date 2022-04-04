@@ -24,23 +24,27 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, computed, inject } from 'vue';
+import { defineComponent, computed, inject } from 'vue';
+import type { PropType } from 'vue';
 
 import { validateArray } from '@/qComponents/helpers';
 import type { QFormProvider } from '@/qComponents/QForm';
 
-import type { Nullable } from '#/helpers';
+import type { Nullable, ClassValue } from '#/helpers';
 
 import type {
   QButtonProps,
   QButtonPropType,
   QButtonPropTheme,
   QButtonPropSize,
+  QButtonPropIcon,
+  QButtonPropNativeType,
   QButtonInstance
 } from './types';
 
 export default defineComponent({
   name: 'QButton',
+
   componentName: 'QButton',
 
   props: {
@@ -49,6 +53,7 @@ export default defineComponent({
       default: 'default',
       validator: validateArray<QButtonPropType>(['default', 'icon'])
     },
+
     theme: {
       type: String as PropType<QButtonPropTheme>,
       default: 'primary',
@@ -58,58 +63,66 @@ export default defineComponent({
         'link'
       ])
     },
+
     size: {
       type: String as PropType<QButtonPropSize>,
       default: 'medium',
       validator: validateArray<QButtonPropSize>(['small', 'medium'])
     },
+
     /**
      * any q-icon
      */
     icon: {
-      type: String,
+      type: String as PropType<QButtonPropIcon>,
       default: null
     },
+
     /**
      * as native button type
      */
     nativeType: {
-      type: String,
+      type: String as PropType<QButtonPropNativeType>,
       default: 'button'
     },
+
     /**
      * whether to show loader inside button
      */
     loading: {
-      type: Boolean,
+      type: Boolean as PropType<boolean>,
       default: false
     },
+
     /**
      * whether the button is disabled
      */
     disabled: {
-      type: Boolean,
+      type: Boolean as PropType<boolean>,
       default: false
     },
+
     /**
      * as native button autofocus
      */
     autofocus: {
-      type: Boolean,
+      type: Boolean as PropType<boolean>,
       default: false
     },
+
     /**
      * change button's shape to circle (use with type icon)
      */
     circle: {
-      type: Boolean,
+      type: Boolean as PropType<boolean>,
       default: false
     },
+
     /**
      * sets button width to 100%
      */
     fullWidth: {
-      type: Boolean,
+      type: Boolean as PropType<boolean>,
       default: false
     }
   },
@@ -121,8 +134,8 @@ export default defineComponent({
       () => props.disabled || (qForm?.disabled.value ?? false)
     );
 
-    const classList = computed<(string | Record<string, boolean>)[]>(() => {
-      const classes: (string | Record<string, boolean>)[] = Object.entries({
+    const classList = computed<ClassValue[]>(() => {
+      const classes: ClassValue[] = Object.entries({
         theme: props.theme,
         type: props.type,
         size: props.size

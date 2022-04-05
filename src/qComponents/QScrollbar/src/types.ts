@@ -5,20 +5,22 @@ import type { Nullable, UnwrappedInstance, ClassValue } from '#/helpers';
 import type { QBarInstance } from './components/QBar/types';
 
 export type QScrollbarPropScrollTo = Nullable<HTMLElement>;
+export type QScrollbarPropVisible = Nullable<boolean>;
 export type QScrollbarPropTheme = 'primary' | 'secondary';
 export type QScrollbarPropWrapClass = Nullable<ClassValue>;
 export type QScrollbarPropViewClass = Nullable<ClassValue>;
 export type QScrollbarPropViewStyle = Nullable<StyleValue>;
+export type QScrollbarPropNoResize = Nullable<boolean>;
 
 export interface QScrollbarProps {
   scrollTo: QScrollbarPropScrollTo;
-  visible: boolean;
+  visible: QScrollbarPropVisible;
   theme: QScrollbarPropTheme;
   wrapClass: QScrollbarPropWrapClass;
   viewTag: string;
   viewClass: QScrollbarPropViewClass;
   viewStyle: QScrollbarPropViewStyle;
-  noresize: boolean;
+  noresize: QScrollbarPropNoResize;
 }
 
 export interface QScrollbarProvider {

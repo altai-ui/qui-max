@@ -5,7 +5,7 @@ import type { Nullable, Optional, ClassValue } from '#/helpers';
 export type QButtonPropType = 'default' | 'icon';
 export type QButtonPropTheme = 'primary' | 'secondary' | 'link';
 export type QButtonPropSize = 'small' | 'medium';
-export type QButtonPropIcon = Nullable<string>;
+export type QButtonPropIcon = Nullable<ClassValue>;
 export type QButtonPropNativeType = Optional<'button' | 'submit' | 'reset'>;
 
 export interface QButtonProps {

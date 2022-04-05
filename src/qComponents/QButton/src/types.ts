@@ -6,7 +6,7 @@ export type QButtonPropType = 'default' | 'icon';
 export type QButtonPropTheme = 'primary' | 'secondary' | 'link';
 export type QButtonPropSize = 'small' | 'medium';
 export type QButtonPropIcon = Nullable<ClassValue>;
-export type QButtonPropNativeType = Optional<'button' | 'submit' | 'reset'>;
+export type QButtonPropNativeType = 'button' | 'submit' | 'reset';
 
 export interface QButtonProps {
   type: QButtonPropType;

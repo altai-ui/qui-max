@@ -1,6 +1,6 @@
 import type { ComputedRef } from 'vue';
 
-import type { Nullable, Optional, ClassValue } from '#/helpers';
+import type { Nullable, ClassValue } from '#/helpers';
 
 export type QButtonPropType = 'default' | 'icon';
 export type QButtonPropTheme = 'primary' | 'secondary' | 'link';
@@ -14,11 +14,11 @@ export interface QButtonProps {
   size: QButtonPropSize;
   icon: QButtonPropIcon;
   nativeType: QButtonPropNativeType;
-  loading: boolean;
-  disabled: boolean;
-  autofocus: boolean;
-  circle: boolean;
-  fullWidth: boolean;
+  loading: Nullable<boolean>;
+  disabled: Nullable<boolean>;
+  autofocus: Nullable<boolean>;
+  circle: Nullable<boolean>;
+  fullWidth: Nullable<boolean>;
 }
 
 export interface QButtonInstance {

@@ -2,11 +2,16 @@ import type { ComputedRef } from 'vue';
 
 import type { Nullable, ClassValue } from '#/helpers';
 
-export type QButtonPropType = 'default' | 'icon';
-export type QButtonPropTheme = 'primary' | 'secondary' | 'link';
-export type QButtonPropSize = 'small' | 'medium';
+export type QButtonPropType = Nullable<'default' | 'icon'>;
+export type QButtonPropTheme = Nullable<'primary' | 'secondary' | 'link'>;
+export type QButtonPropSize = Nullable<'small' | 'medium'>;
 export type QButtonPropIcon = Nullable<ClassValue>;
-export type QButtonPropNativeType = 'button' | 'submit' | 'reset';
+export type QButtonPropNativeType = Nullable<'button' | 'submit' | 'reset'>;
+export type QButtonPropLoading = Nullable<boolean>;
+export type QButtonPropDisabled = Nullable<boolean>;
+export type QButtonPropAutofocus = Nullable<boolean>;
+export type QButtonPropCircle = Nullable<boolean>;
+export type QButtonPropFullWidth = Nullable<boolean>;
 
 export interface QButtonProps {
   type: QButtonPropType;
@@ -14,11 +19,11 @@ export interface QButtonProps {
   size: QButtonPropSize;
   icon: QButtonPropIcon;
   nativeType: QButtonPropNativeType;
-  loading: Nullable<boolean>;
-  disabled: Nullable<boolean>;
-  autofocus: Nullable<boolean>;
-  circle: Nullable<boolean>;
-  fullWidth: Nullable<boolean>;
+  loading: QButtonPropLoading;
+  disabled: QButtonPropDisabled;
+  autofocus: QButtonPropAutofocus;
+  circle: QButtonPropCircle;
+  fullWidth: QButtonPropFullWidth;
 }
 
 export interface QButtonInstance {

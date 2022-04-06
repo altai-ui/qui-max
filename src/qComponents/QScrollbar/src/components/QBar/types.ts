@@ -15,14 +15,15 @@ export interface BarMapItem {
 
 export type Types = 'vertical' | 'horizontal';
 
-export type QBarPropType = Types;
+export type QBarPropType = Nullable<Types>;
 export type QBarPropTheme = Nullable<string>;
+export type QBarPropSize = Nullable<string>;
 export type QBarPropMove = Nullable<number>;
 
 export interface QBarProps {
   type: QBarPropType;
   theme: QBarPropTheme;
-  size: string;
+  size: QBarPropSize;
   move: QBarPropMove;
 }
 

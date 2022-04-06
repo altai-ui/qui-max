@@ -6,8 +6,9 @@ import type { QBarInstance } from './components/QBar/types';
 
 export type QScrollbarPropScrollTo = Nullable<HTMLElement>;
 export type QScrollbarPropVisible = Nullable<boolean>;
-export type QScrollbarPropTheme = 'primary' | 'secondary';
+export type QScrollbarPropTheme = Nullable<'primary' | 'secondary'>;
 export type QScrollbarPropWrapClass = Nullable<ClassValue>;
+export type QScrollbarPropViewTag = Nullable<string>;
 export type QScrollbarPropViewClass = Nullable<ClassValue>;
 export type QScrollbarPropViewStyle = Nullable<StyleValue>;
 export type QScrollbarPropNoResize = Nullable<boolean>;
@@ -17,7 +18,7 @@ export interface QScrollbarProps {
   visible: QScrollbarPropVisible;
   theme: QScrollbarPropTheme;
   wrapClass: QScrollbarPropWrapClass;
-  viewTag: string;
+  viewTag: QScrollbarPropViewTag;
   viewClass: QScrollbarPropViewClass;
   viewStyle: QScrollbarPropViewStyle;
   noresize: QScrollbarPropNoResize;

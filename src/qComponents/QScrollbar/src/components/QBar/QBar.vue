@@ -30,6 +30,7 @@ import type {
   QBarProps,
   QBarPropType,
   QBarPropTheme,
+  QBarPropSize,
   QBarPropMove,
   BarMapItem,
   QBarInstance
@@ -46,14 +47,17 @@ export default defineComponent({
       default: 'horizontal',
       validator: validateArray<QBarPropType>(['horizontal', 'vertical'])
     },
+
     theme: {
       type: String as PropType<QBarPropTheme>,
       default: null
     },
+
     size: {
-      type: String as PropType<string>,
+      type: String as PropType<QBarPropSize>,
       default: '0'
     },
+
     move: {
       type: Number as PropType<QBarPropMove>,
       default: null
@@ -69,7 +73,11 @@ export default defineComponent({
 
     let axis = 0;
 
-    const bar = computed<BarMapItem>(() => BAR_MAP[props.type]);
+    const bar = computed<BarMapItem>(() => {
+      if (!props.type) return BAR_MAP.horizontal;
+
+      return BAR_MAP[props.type];
+    });
 
     const thumbStyles = computed<CSSProperties>(() =>
       renderThumbStyle(props.move ?? 0, props.size ?? '0', bar.value)

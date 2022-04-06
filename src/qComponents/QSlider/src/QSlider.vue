@@ -91,7 +91,7 @@ export default defineComponent({
      * `{ value: 'test', label: 'text', style: {}, slotData: {} }`
      */
     data: {
-      type: Array as PropType<QSliderPropData[]>,
+      type: Array as PropType<QSliderPropData>,
       required: true
     },
 

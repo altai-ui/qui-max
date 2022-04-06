@@ -1,11 +1,17 @@
 import type { Story } from '@storybook/vue3';
 import { defineComponent, ref } from 'vue';
 import { t } from '@/qComponents/locale';
+import type {
+  QSliderPropModelValue,
+  QSliderPropData
+} from '@/qComponents/QSlider';
+
+type ModelValue = QSliderPropModelValue<'easy' | 'normal' | 'hard'>;
 
 const QSliderStory: Story = args =>
   defineComponent({
     setup() {
-      const value = ref<string>('easy');
+      const value = ref<ModelValue>('easy');
 
       return {
         args,
@@ -21,21 +27,23 @@ const QSliderStory: Story = args =>
     `
   });
 
+const data: QSliderPropData<ModelValue> = [
+  {
+    value: 'easy',
+    label: t('qSlider.easyLevel')
+  },
+  {
+    value: 'normal',
+    label: t('qSlider.mediumlevel')
+  },
+  {
+    value: 'hard',
+    label: t('qSlider.hardLevel')
+  }
+];
+
 QSliderStory.args = {
-  data: [
-    {
-      value: 'easy',
-      label: t('qSlider.easyLevel')
-    },
-    {
-      value: 'normal',
-      label: t('qSlider.mediumlevel')
-    },
-    {
-      value: 'hard',
-      label: t('qSlider.hardLevel')
-    }
-  ]
+  data
 };
 
 export default QSliderStory;

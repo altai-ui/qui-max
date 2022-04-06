@@ -7,3 +7,8 @@ export type SFCWithInstall<R, T> = T & { install(app: R): void };
 export type UnwrappedInstance<T> = Nullable<
   ComponentPublicInstance<UnwrapRef<T>>
 >;
+export type Enumerable<T> = T | T[];
+
+export type ClassValue =
+  | Enumerable<string>
+  | Enumerable<Record<string, boolean>>;

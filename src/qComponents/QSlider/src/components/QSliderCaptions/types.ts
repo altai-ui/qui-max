@@ -1,18 +1,17 @@
-import type { VNode } from 'vue';
-import type { Nullable } from '#/helpers';
+import type { VNode, StyleValue } from 'vue';
 
 import type { QSliderPropModelValue, QSliderPropData } from '../../types';
 
 export interface QSliderCaptionsProps {
   modelValue: QSliderPropModelValue;
-  data: QSliderPropData[];
+  data: QSliderPropData;
   disabled: boolean;
 }
 
 export interface PreparedData {
-  value: string | number | boolean;
+  value: QSliderPropModelValue;
   label?: string;
-  style?: Record<string, Nullable<string | number>>;
+  style?: StyleValue;
   slot?: VNode[];
 }
 

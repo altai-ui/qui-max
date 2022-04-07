@@ -12,9 +12,19 @@
     <div id="app">
       <div class="block">
         <div class="input-wrapper">
-          <q-input-number v-model="width" :max="200"></q-input-number>
+          <q-button class="decrease" @click="decrease" :disabled="!width"
+            >-</q-button
+          >
+          <q-input-number
+            v-model="width"
+            :max="200"
+            placeholder="Try to enter tab width"
+          ></q-input-number>
+          <q-button class="increase" @click="increase" :disabled="width === 200"
+            >+</q-button
+          >
         </div>
-        <q-tabs v-model="activeTab" :tab-width="width">
+        <q-tabs v-model="activeTab" :tab-width="width ?? 100">
           <q-tab-pane name="tab" title="First tab"></q-tab-pane>
           <q-tab-pane name="tab_two" title="Second tab"></q-tab-pane>
           <q-tab-pane name="tab_three" title="Third tab"></q-tab-pane>
@@ -30,9 +40,18 @@
     const App = {
       data() {
         const activeTab = Vue.ref('tab');
-        const width = Vue.ref(100);
+        const width = Vue.ref(null);
 
-        return { activeTab, width };
+        const increase = () => {
+          width.value = (width.value ?? 100) + 10;
+        };
+
+        const decrease = () => {
+          if (!width.value) return;
+          width.value = width.value - 10;
+        };
+
+        return { activeTab, width, increase, decrease };
       }
     };
 
@@ -48,7 +67,13 @@
       align-items: start;
       justify-content: center;
       width: 100%;
-      padding: 10px;
+      height: 100%;
+      padding-left: 10px;
+    }
+
+    .input-wrapper {
+      display: flex;
+      column-gap: 20px;
     }
   </style>
 </html>

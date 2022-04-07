@@ -35,7 +35,6 @@ export default defineUserConfig<DefaultThemeOptions, ViteBundlerOptions>({
           '/components/QPopover.md',
           '/components/QRadio.md',
           '/components/QScrollbar.md',
-          '/components/QTabPane.md',
           '/components/QTabs.md'
         ]
       },
@@ -71,7 +70,6 @@ export default defineUserConfig<DefaultThemeOptions, ViteBundlerOptions>({
             '/components/QPopover.md',
             '/components/QRadio.md',
             '/components/QScrollbar.md',
-            '/components/QTabPane.md',
             '/components/QTabs.md'
           ]
         }

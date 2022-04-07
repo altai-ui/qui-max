@@ -12,9 +12,25 @@
     <div id="app">
       <div class="block">
         <q-tabs>
-          <q-tab-pane name="tab" title="Tab">
+          <q-tab-pane name="tab" title="Tab"></q-tab-pane>
+          <q-tab-pane name="tab2" title="Tab two"></q-tab-pane>
+          <q-tab-pane name="tab_tip" title="Tab with slot">
             <template #content>
-              <div>This is content of the QTabPane</div>
+              <q-popover :title="title" icon="q-icon-question">
+                <template #reference>
+                  <q-button
+                    class="button"
+                    circle
+                    type="icon"
+                    theme="secondary"
+                    size="small"
+                    icon="q-icon-question-mark"
+                  />
+                </template>
+
+                Lorem Ipsum is simply dummy text of the printing and typesetting
+                industry.
+              </q-popover>
             </template>
           </q-tab-pane>
         </q-tabs>
@@ -35,10 +51,15 @@
       display: flex;
       flex-direction: column;
       row-gap: 20px;
-      align-items: start;
+      align-items: center;
       justify-content: center;
       width: 100%;
-      padding: 10px;
+      height: 200px;
+      padding: 40px;
+    }
+
+    .button {
+      margin-left: 20px;
     }
   </style>
 </html>

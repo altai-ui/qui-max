@@ -1,0 +1,124 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- import CSS -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/@qvant/qui-max/dist/style.css"
+    />
+  </head>
+  <body>
+    <div id="app">
+      <div class="block">
+        <q-row>
+          <q-col cols="5">
+            <div class="label">Remote search:</div>
+            <q-select
+              v-model="valueSearch"
+              remote
+              filterable
+              :loading="isLoading"
+              @search="handleSearch"
+              :can-load-more="canLoadMore"
+              load-more-text="Too many results, specify search"
+              placeholder="Search by label"
+            >
+              <q-option
+                v-for="item in options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+                :disabled="item.disabled"
+              />
+            </q-select>
+          </q-col>
+          <q-col cols="7">
+            <pre>
+    const optionsFromServer = [
+      {
+        value: 'value0',
+        label: 'Option Zero'
+      },
+      {
+        value: 'value1',
+        label: 'Option 1'
+      },
+      {
+        value: 'value3',
+        label:
+        'Lorem Ipsum is simply dummy...'
+      },
+    ];
+            </pre>
+          </q-col>
+        </q-row>
+      </div>
+    </div>
+  </body>
+  <!-- import Vue before Qui -->
+  <script src="https://unpkg.com/vue@latest"></script>
+  <!-- import JavaScript -->
+  <script src="https://unpkg.com/@qvant/qui-max@latest"></script>
+  <script>
+    const app = Vue.createApp({
+      setup() {
+        const valueSearch = Vue.ref(null);
+        const isLoading = Vue.ref(false);
+        const options = Vue.ref([]);
+
+        const optionsServer = [
+          {
+            value: 'value0',
+            label: 'Option Zero'
+          },
+          {
+            value: 'value1',
+            label: 'Option 1'
+          },
+          {
+            value: 'value3',
+            label:
+              'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
+          }
+        ];
+
+        const canLoadMore = Vue.ref(false);
+
+        const handleSearch = query => {
+          options.value = [];
+          isLoading.value = true;
+
+          // request imitation
+          setTimeout(() => {
+            options.value = optionsServer.filter(
+              option =>
+                option.label.toLowerCase().search(query.toLowerCase()) !== -1
+            );
+            isLoading.value = false;
+            canLoadMore.value = true;
+          }, 1000);
+        };
+
+        return {
+          options,
+          valueSearch,
+          handleSearch,
+          isLoading,
+          canLoadMore
+        };
+      }
+    });
+
+    app.use(QuiMax.default);
+    app.mount('#app');
+  </script>
+  <style>
+    .block {
+      margin: 20px;
+    }
+
+    .label {
+      padding-bottom: 5px;
+    }
+  </style>
+</html>

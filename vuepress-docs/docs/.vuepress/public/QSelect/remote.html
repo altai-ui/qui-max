@@ -20,6 +20,7 @@
               :loading="isLoading"
               @search="handleSearch"
               :can-load-more="canLoadMore"
+              loading-text="Searching options..."
               load-more-text="Too many results, specify search"
               placeholder="Search by label"
             >
@@ -95,7 +96,7 @@
                 option.label.toLowerCase().search(query.toLowerCase()) !== -1
             );
             isLoading.value = false;
-            canLoadMore.value = true;
+            canLoadMore.value = optionsServer.length === options.value.length;
           }, 1000);
         };
 

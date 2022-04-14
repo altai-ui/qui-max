@@ -119,19 +119,6 @@
             </q-select>
           </q-col>
         </q-row>
-        <q-row>
-          <q-col cols="4">
-            <div class="label">Array options:</div>
-            <q-select v-model="valueObject" placeholder="Pick an option">
-              <q-option
-                v-for="item in options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              />
-            </q-select>
-          </q-col>
-        </q-row>
       </div>
     </div>
   </body>
@@ -210,8 +197,7 @@
           isLoading,
           optionsServer,
           arrayOptions,
-          valueArray,
-          valueObject
+          valueArray
         };
       }
     });

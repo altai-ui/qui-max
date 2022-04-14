@@ -12,62 +12,33 @@
     <div id="app">
       <div class="block">
         <q-row>
-          <q-col cols="4">
-            <div class="label">Default:</div>
-            <q-select v-model="value" placeholder="Pick an option" multiple>
+          <q-col cols="6">
+            <div class="label">Multiple</div>
+            <q-select
+              v-model="valueMultiple"
+              placeholder="Pick an option"
+              allow-create
+              filterable
+              multiple
+            >
+              <q-option
+                v-for="item in optionsMultiple"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              />
+            </q-select>
+          </q-col>
+          <q-col cols="6">
+            <div class="label">Single</div>
+            <q-select
+              v-model="value"
+              placeholder="Pick an option"
+              allow-create
+              filterable
+            >
               <q-option
                 v-for="item in options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              />
-            </q-select>
-          </q-col>
-          <q-col cols="4">
-            <div class="label">multipleLimit: 2</div>
-            <q-select
-              v-model="valueLimit"
-              placeholder="Pick an option"
-              multiple
-              :multiple-limit="2"
-            >
-              <q-option
-                v-for="item in optionsLimit"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              />
-            </q-select>
-          </q-col>
-        </q-row>
-        <br />
-        <q-row>
-          <q-col cols="4">
-            <div class="label">selectAllShown: true</div>
-            <q-select
-              v-model="valueSelectAll"
-              placeholder="Pick an option"
-              multiple
-              select-all-shown
-            >
-              <q-option
-                v-for="item in optionsSelectAll"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              />
-            </q-select>
-          </q-col>
-          <q-col cols="4">
-            <div class="label">collapseTags: true</div>
-            <q-select
-              v-model="valueTags"
-              placeholder="Pick an option"
-              multiple
-              collapse-tags
-            >
-              <q-option
-                v-for="item in optionsTags"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value"
@@ -116,23 +87,15 @@
           }
         ];
 
-        const optionsLimit = [...options];
-        const optionsSelectAll = [...options];
-        const optionsTags = [...options];
+        const valueMultiple = Vue.ref(null);
         const value = Vue.ref(null);
-        const valueLimit = Vue.ref(null);
-        const valueSelectAll = Vue.ref(null);
-        const valueTags = Vue.ref(null);
+        const optionsMultiple = [...options];
 
         return {
           options,
-          optionsLimit,
-          optionsSelectAll,
-          optionsTags,
-          value,
-          valueLimit,
-          valueSelectAll,
-          valueTags
+          optionsMultiple,
+          valueMultiple,
+          value
         };
       }
     });

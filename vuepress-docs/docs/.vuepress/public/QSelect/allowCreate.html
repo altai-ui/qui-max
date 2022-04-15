@@ -22,7 +22,7 @@
               multiple
             >
               <q-option
-                v-for="item in optionsMultiple"
+                v-for="item in options"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value"
@@ -32,7 +32,7 @@
           <q-col cols="6">
             <div class="label">Single</div>
             <q-select
-              v-model="value"
+              v-model="valueSingle"
               placeholder="Pick an option"
               allow-create
               filterable
@@ -88,14 +88,12 @@
         ];
 
         const valueMultiple = Vue.ref(null);
-        const value = Vue.ref(null);
-        const optionsMultiple = [...options];
+        const valueSingle = Vue.ref(null);
 
         return {
           options,
-          optionsMultiple,
           valueMultiple,
-          value
+          valueSingle
         };
       }
     });

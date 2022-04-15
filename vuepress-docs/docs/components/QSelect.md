@@ -12,7 +12,7 @@ A few scenarios:
 
 ### modelValue
 
-- Type: `String, Number, Array, Object`,
+- Type: `String` | `Number` | `Array` | `Object`,
 - Default: `null`
 
 The binding value. As you can see there are a lot of types supported, `Array` is being used for a `multiple` mode - to choose several values. Let's check the types:

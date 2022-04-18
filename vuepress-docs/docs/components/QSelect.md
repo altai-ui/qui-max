@@ -182,7 +182,7 @@ Template:
   <q-select
     multiple
     collapse-tags
-    multiple-limit="2"
+    :multiple-limit="2"
     select-all-text="Select all cities"
     ...
   >

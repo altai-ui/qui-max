@@ -87,7 +87,7 @@ export default {
 </script>
 ```
 
-Configure setup:
+## Configure setup:
 
 - import styles separately to avoid unused css
 - set `localization.messages` to support any language for components
@@ -174,7 +174,7 @@ export default defineNuxtConfig({
 
 ## Browser Support
 
-Modern browsers are recomended
+Modern browsers are recomended:
 
 - safari: >11
 - chrome: >=61

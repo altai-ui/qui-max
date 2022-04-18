@@ -37,16 +37,16 @@
       />
 
       <span
-        v-else-if="isClearButtonShown"
-        class="q-input__icon q-icon-close"
-        @click="handleClearClick"
-      />
-
-      <span
         v-else-if="isPasswordSwitchShown"
         class="q-input__icon"
         :class="state.isPasswordVisible ? 'q-icon-eye' : 'q-icon-eye-close'"
         @click="handlePasswordVisible"
+      />
+
+      <span
+        v-else-if="isClearButtonShown"
+        class="q-input__icon q-icon-close"
+        @click="handleClearClick"
       />
 
       <span

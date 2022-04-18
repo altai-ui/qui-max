@@ -68,7 +68,7 @@ Template:
   <q-select v-model="modelValue">
     <q-option
       v-for="item in options"
-      :key="item"
+      :key="item.value"
       :label="item"
       :value="item"
     />

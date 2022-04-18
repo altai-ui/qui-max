@@ -69,7 +69,7 @@ Template:
     <q-option
       v-for="item in options"
       :key="item.value"
-      :label="item"
+      :label="item.label"
       :value="item"
     />
   </q-select>

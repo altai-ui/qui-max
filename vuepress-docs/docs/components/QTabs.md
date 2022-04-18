@@ -1,60 +1,110 @@
-# QTabs 1️⃣2️⃣3️⃣
+# QTabs 🗂️
 
-Wrapper used for [QTabPanes](#qtabpane-1️⃣)
+Use `QTabs` to alternate between views within the same context, not to navigate to different areas. This is the single most important point, because staying in place while alternating views is the reason we have tabs in the first place. [QTabPane](#qtabpane) is just a tab wrapper.
 
 ## Examples
-```vue {1,14}
-<q-tabs v-model="activeTab">
-  <q-tab-pane 
-    name="first"
-    title="First tab"
-  />
-  <q-tab-pane
-    name="second"
-    title="Second tab"
-  />
-  <q-tab-pane
-    name="third"
-    title="Third tab"
-  />
-</q-tabs>
-```
-<iframe height="100" style="width: 100%;" scrolling="no" frameborder="no" src="/QTabs/example.html"></iframe>
 
-## props
+All kind of types:
+
+<iframe height="200" style="width: 100%;" scrolling="no" frameborder="no" src="/QTabs/example.html"></iframe>
+
+Template:
+
+```vue
+<template>
+  <q-tabs v-model="activeTab">
+    <q-tab-pane 
+      name="first"
+      title="First tab"
+    />
+    <q-tab-pane
+      name="second"
+      title="Second tab"
+    />
+    <q-tab-pane
+      name="third"
+      title="Third tab"
+    />
+  </q-tabs>
+</template>
+```
+
+Instance:
+```js
+export default {
+  setup() {
+    const activeTab = ref('first');
+    const activeTab1 = ref('first');
+
+    return { activeTab, activeTab1 };
+  }
+}
+```
+
+## Props
 
 ### modelValue
 
 - Type: `String`
 - Default: `null`
 
-Binding value.
+The binding value.
+
+::: tip NOTE:
+The `modelValue` MUST match one of `<q-tab-pane>` name prop to set it active.
+:::
+
+```vue {3,6}
+<template>
+  <q-tabs
+    v-model="activeTab"
+  >
+    <q-tab-pane
+      name="first"
+      ...
+    >
+  ...
+</template>
+```
+```js {3}
+export default {
+  setup() {
+    const activeTab = ref('first');
+
+    return { activeTab };
+  }
+}
+```
 
 
 ### tabWidth
 
-- Type: `'String' | 'Number'`
+- Type: `String | Number`
 - Default: `null`
 
-Defines a width of QTabPanes
+Defines a width for all `QTabPane`s.
 
-```vue {1}
-<q-tabs tab-width="100">
-  <q-tab-pane 
-    name="first"
-    title="First tab"
-  />
-  <q-tab-pane
-    name="second"
-    title="Second tab"
-  />
-  <q-tab-pane
-    name="third"
-    title="Third tab"
-  />
-</q-tabs>
+```vue {3}
+<template>
+  <q-tabs
+    tab-width="100"
+  >
+    <q-tab-pane 
+      name="first"
+      title="First tab"
+    />
+    <q-tab-pane
+      name="second"
+      title="Second tab"
+    />
+    <q-tab-pane
+      name="third"
+      title="Third tab"
+    />
+  </q-tabs>
+</template>
 ```
-
+Live demo:
 <iframe height="160" style="width: 100%;" scrolling="no" frameborder="no" src="/QTabs/width.html"></iframe>
 
 ### disabled
@@ -62,43 +112,46 @@ Defines a width of QTabPanes
 - Type: `Boolean`
 - Default: `false`
 
-Sets disabled QTabPanes state
+Whether `QTabs` is disabled
 
-```vue {1}
-<q-tabs disabled>
-  <q-tab-pane 
-    name="first"
-    title="First tab"
-  />
-  <q-tab-pane
-    name="second"
-    title="Second tab"
-  />
-  <q-tab-pane
-    name="third"
-    title="Third tab"
-  />
-</q-tabs>
+```vue {3}
+<template>
+  <q-tabs
+    disabled
+  >
+    <q-tab-pane 
+      name="first"
+      title="First tab"
+    />
+    <q-tab-pane
+      name="second"
+      title="Second tab"
+    />
+    <q-tab-pane
+      name="third"
+      title="Third tab"
+    />
+  </q-tabs>
+</template>
 ```
-
-<iframe height="160" style="width: 100%;" scrolling="no" frameborder="no" src="/QTabs/disabled.html"></iframe>
+<iframe height="85" style="width: 100%;" scrolling="no" frameborder="no" src="/QTabs/disabled.html"></iframe>
 
 
 ## Events
 
 ### update:modelValue
 
-Triggers when model updates
+Triggers when the `modelValue` updates
 
 ### change
 
-Alias for update:modelValue
+Alias for `update:modelValue`
 
 ## Slots 
 
 ### default 
 
-QTabs main content (used to pass QTabPanes)
+`QTabs` main content (used to pass `QTabPane`s)
 
 ```vue
 <q-tabs>
@@ -106,40 +159,46 @@ QTabs main content (used to pass QTabPanes)
 </q-tabs>
 ```
 
-## QTabPane 1️⃣
+## QTabPane 🌯
 
-QTabPane is a tab that used in [QTabs](#qtabs-1️⃣2️⃣3️⃣)
-
-## QTabPane Examples
-
-<iframe height="160" style="width: 100%;" scrolling="no" frameborder="no" src="/QTabPane/example.html"></iframe>
+QTabPane is the wrapper for the tab.
 
 ## QTabPane Props
 
 ### name
 
 - Type: `String`
-- Default: `null`
+- Required: `true`
 
-Required prop that defines a key of QTabPane
+The key that compares with QTabs `modelValue` to define it's state. (active or not)
 
-```vue
-<q-tabs>
-  <q-tab-pane name="tab_name" />
-</q-tabs>
+```vue {4}
+<template>
+  <q-tabs>
+    <q-tab-pane
+      name="tab_name"
+      ...
+    />
+  </q-tabs>
+</template>
 ```
 
 ### title
 
 - Type: `String`
-- Default: `null`
+- Required: `true`
 
-Required prop that defines a QTabPane text
+The tab title.
 
-```vue
-<q-tabs>
-  <q-tab-pane title="Tab title" />
-</q-tabs>
+```vue {4}
+<template>
+  <q-tabs>
+    <q-tab-pane
+      title="Tab title"
+      ...
+    />
+  </q-tabs>
+</template>
 ```
 
 ### description
@@ -147,25 +206,35 @@ Required prop that defines a QTabPane text
 - Type: `String`,
 - Default: `null`
 
-Defines description of QTabPane
+The tab description. (The text below)
 
-```vue
-<q-tabs>
-  <q-tab-pane description="Some description of the tab" />
-</q-tabs>
+```vue {4}
+<template>
+  <q-tabs>
+    <q-tab-pane
+      description="The text below"
+      ...
+    />
+  </q-tabs>
+</template>
 ```
 
 ### width
 
-- Type: `'String' | 'Number'`
+- Type: `String | Number`
 - Default: `null`
 
-Allows to configure the custom width of QTabPane
+Allows to set custom width of each `QTabPane`
 
-```vue
-<q-tabs>
-  <q-tab-pane width="200" />
-</q-tabs>
+```vue {4}
+<template>
+  <q-tabs>
+    <q-tab-pane
+      width="200"
+      ...
+    />
+  </q-tabs>
+</template>
 ```
 
 ### disabled
@@ -173,12 +242,17 @@ Allows to configure the custom width of QTabPane
 - Type: `Boolean`
 - Default: `false`
 
-Sets disabled QTabPane state
+Whether `QTabPane` is disabled.
 
-```vue
-<q-tabs>
-  <q-tab-pane disabled />
-</q-tabs>
+```vue {4}
+<template>
+  <q-tabs>
+    <q-tab-pane
+      disabled
+      ...
+    />
+  </q-tabs>
+</template>
 ```
 
 ## QTabPane Slots
@@ -187,18 +261,32 @@ Sets disabled QTabPane state
 
 Slot for QTabPane content
 
-```vue {6-8}
-<q-tabs v-model="activeTab">
-  <q-tab-pane 
-    name="tab"
-    title="Tab"
-  >
-    <template #content>
-      <div>This is content of the QTabPane</div>
-    </template>
-</q-tabs>
+```vue {5-20}
+<template>
+  <q-tabs v-model="activeTab">
+    ...
+    <q-tab-pane name="tab_tip" title="Tab with slot">
+      <template #content>
+        <q-popover title="title" icon="q-icon-question">
+          <template #reference>
+            <q-button
+              class="button"
+              circle
+              type="icon"
+              theme="secondary"
+              size="small"
+              icon="q-icon-question-mark"
+            />
+          </template>
+
+          Content
+        </q-popover>
+      </template>
+    </q-tab-pane>
+  </q-tabs>
+</template>
 ```
 
-<iframe height="250" style="width: 100%;" scrolling="no" frameborder="no" src="/QTabPane/content.html"></iframe>
+<iframe height="85" style="width: 100%;" scrolling="no" frameborder="no" src="/QTabPane/content.html"></iframe>
 
 

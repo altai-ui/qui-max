@@ -12,17 +12,28 @@
     <div id="app">
       <div class="block">
         <div class="input-wrapper">
-          <q-button class="decrease" @click="decrease" :disabled="!width"
-            >-</q-button
+          <q-button
+            type="icon"
+            icon="q-icon-minus"
+            @click="decrease"
+            :disabled="!width"
+            size="small"
+            circle
           >
+          </q-button>
           <q-input-number
             v-model="width"
             :max="200"
-            placeholder="Try to enter tab width"
+            placeholder="Set width"
           ></q-input-number>
-          <q-button class="increase" @click="increase" :disabled="width === 200"
-            >+</q-button
-          >
+          <q-button
+            type="icon"
+            icon="q-icon-plus"
+            @click="increase"
+            :disabled="width === 200"
+            size="small"
+            circle
+          ></q-button>
         </div>
         <q-tabs v-model="activeTab" :tab-width="width ?? 100">
           <q-tab-pane name="tab" title="First tab"></q-tab-pane>
@@ -61,19 +72,20 @@
   </script>
   <style>
     .block {
-      display: flex;
-      flex-direction: column;
-      row-gap: 20px;
-      align-items: start;
-      justify-content: center;
-      width: 100%;
-      height: 100%;
-      padding-left: 10px;
+      margin: 20px;
     }
 
     .input-wrapper {
       display: flex;
+      align-items: center;
+      width: 200px;
+      margin-bottom: 20px;
       column-gap: 20px;
+    }
+
+    /* remove after v0.11.1 */
+    .q-button {
+      flex-shrink: 0;
     }
   </style>
 </html>

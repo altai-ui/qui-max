@@ -12,9 +12,28 @@
     <div id="app">
       <div class="block">
         <q-tabs v-model="activeTab">
-          <q-tab-pane name="tab" title="First tab"></q-tab-pane>
-          <q-tab-pane name="tab_two" title="Second tab"></q-tab-pane>
-          <q-tab-pane name="tab_three" title="Third tab"></q-tab-pane>
+          <q-tab-pane name="first" title="First tab"></q-tab-pane>
+          <q-tab-pane name="second" title="Second tab"></q-tab-pane>
+          <q-tab-pane name="third" title="Third tab"></q-tab-pane>
+        </q-tabs>
+      </div>
+      <div class="block">
+        <q-tabs v-model="activeTab1">
+          <q-tab-pane
+            name="first"
+            title="Tab pane"
+            description="Lorem Ipsum is simply dummy text of the printing and typesetting industry."
+          ></q-tab-pane>
+          <q-tab-pane
+            name="second"
+            title="Disabled tab pane"
+            disabled
+          ></q-tab-pane>
+          <q-tab-pane
+            name="third"
+            title="Tab pane with custom width"
+            width="200px"
+          ></q-tab-pane>
         </q-tabs>
       </div>
     </div>
@@ -24,15 +43,15 @@
   <!-- import JavaScript -->
   <script src="https://unpkg.com/@qvant/qui-max@latest"></script>
   <script>
-    const App = {
-      data() {
-        const activeTab = Vue.ref('tab');
+    const app = Vue.createApp({
+      setup() {
+        const activeTab = Vue.ref('first');
+        const activeTab1 = Vue.ref('first');
 
-        return { activeTab };
+        return { activeTab, activeTab1 };
       }
-    };
+    });
 
-    const app = Vue.createApp(App);
     app.use(QuiMax.default);
     app.mount('#app');
   </script>

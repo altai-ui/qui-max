@@ -11,10 +11,7 @@
   <body>
     <div id="app">
       <div class="block">
-        <div class="button-wrapper">
-          <q-button @click="handleButtonClick">{{ state }}</q-button>
-        </div>
-        <q-tabs v-model="activeTab" :disabled="state === 'Disabled'">
+        <q-tabs modelValue="tab" disabled>
           <q-tab-pane name="tab" title="First tab"></q-tab-pane>
           <q-tab-pane name="tab_two" title="Second tab"></q-tab-pane>
           <q-tab-pane name="tab_three" title="Third tab"></q-tab-pane>
@@ -27,37 +24,13 @@
   <!-- import JavaScript -->
   <script src="https://unpkg.com/@qvant/qui-max@latest"></script>
   <script>
-    const App = {
-      data() {
-        const activeTab = Vue.ref('tab');
-        const state = Vue.ref('Enabled');
-
-        const handleButtonClick = () => {
-          if (state.value === 'Enabled') {
-            state.value = 'Disabled';
-            return;
-          }
-
-          state.value = 'Enabled';
-        };
-
-        return { activeTab, state, handleButtonClick };
-      }
-    };
-
-    const app = Vue.createApp(App);
+    const app = Vue.createApp({});
     app.use(QuiMax.default);
     app.mount('#app');
   </script>
   <style>
     .block {
-      display: flex;
-      flex-direction: column;
-      row-gap: 20px;
-      align-items: start;
-      justify-content: center;
-      width: 100%;
-      padding: 25px 10px 10px;
+      margin: 20px;
     }
   </style>
 </html>

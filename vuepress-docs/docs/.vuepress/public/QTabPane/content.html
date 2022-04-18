@@ -16,7 +16,7 @@
           <q-tab-pane name="tab2" title="Tab two"></q-tab-pane>
           <q-tab-pane name="tab_tip" title="Tab with slot">
             <template #content>
-              <q-popover :title="title" icon="q-icon-question">
+              <q-popover title="title" icon="q-icon-question">
                 <template #reference>
                   <q-button
                     class="button"
@@ -48,14 +48,7 @@
   </script>
   <style>
     .block {
-      display: flex;
-      flex-direction: column;
-      row-gap: 20px;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      height: 200px;
-      padding: 40px;
+      margin: 20px;
     }
 
     .button {

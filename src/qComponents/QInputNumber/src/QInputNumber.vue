@@ -38,6 +38,7 @@ import type { QFormProvider } from '@/qComponents/QForm';
 import type { Nullable } from '#/helpers';
 
 import type { QInputNumberInstance, QInputNumberProps } from './types';
+import { getConfig } from '@/qComponents/config';
 
 const MIN_INTEGER = Number(String(Number.MIN_SAFE_INTEGER).slice(0, -2));
 const MAX_INTEGER = Number(String(Number.MAX_SAFE_INTEGER).slice(0, -2));
@@ -122,7 +123,13 @@ export default defineComponent({
     let internalValue: Nullable<string> = null;
 
     const formatNumber = (num: string): string => {
-      return num.replace(/(.)(?=(\d{3})+\b)/g, '$1 ');
+      if (!num) return '';
+
+      const locale = getConfig('locale');
+
+      return Number(num).toLocaleString(locale, {
+        maximumFractionDigits: precision.value
+      });
     };
 
     const changesEmitter = (type: 'input' | 'change', value: string): void => {
@@ -210,7 +217,7 @@ export default defineComponent({
 
     const handleFocus = (event: FocusEvent): void => {
       const target = event.target as HTMLInputElement;
-      internalValue = target.value.replaceAll(' ', '');
+      internalValue = props.modelValue?.toString() ?? target.value;
       target.value = internalValue;
       ctx.emit('focus', event);
       if (props.validateEvent) qFormItem?.validateField('focus');

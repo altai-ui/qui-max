@@ -139,15 +139,15 @@ export default {
     });
 
     const options = [
-    {
-      id: 'value1',
-      label: 'Option 1'
-    },
-    {
-      id: 'value2',
-      label:
-        'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
-    }];
+      {
+        id: 'value1',
+        label: 'Option 1'
+      },
+      {
+        id: 'value2',
+        label: 'Option 2'
+      }
+    ];
 
     return { modelValue, ... }
   }

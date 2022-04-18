@@ -1,0 +1,152 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- import CSS -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/@qvant/qui-max/dist/style.css"
+    />
+  </head>
+
+  <body>
+    <div id="app">
+      <div class="block">
+        <q-row>
+          <q-col cols="4">
+            <div class="label">Default:</div>
+            <q-select v-model="value" placeholder="Pick an option" multiple>
+              <q-option
+                v-for="item in options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              />
+            </q-select>
+          </q-col>
+          <q-col cols="4">
+            <div class="label">multipleLimit: 2</div>
+            <q-select
+              v-model="valueLimit"
+              placeholder="Pick an option"
+              multiple
+              :multiple-limit="2"
+            >
+              <q-option
+                v-for="item in optionsLimit"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              />
+            </q-select>
+          </q-col>
+        </q-row>
+        <br />
+        <q-row>
+          <q-col cols="4">
+            <div class="label">selectAllShown: true</div>
+            <q-select
+              v-model="valueSelectAll"
+              placeholder="Pick an option"
+              multiple
+              select-all-shown
+            >
+              <q-option
+                v-for="item in optionsSelectAll"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              />
+            </q-select>
+          </q-col>
+          <q-col cols="4">
+            <div class="label">collapseTags: true</div>
+            <q-select
+              v-model="valueTags"
+              placeholder="Pick an option"
+              multiple
+              collapse-tags
+            >
+              <q-option
+                v-for="item in optionsTags"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              />
+            </q-select>
+          </q-col>
+        </q-row>
+      </div>
+    </div>
+  </body>
+  <!-- import Vue before Qui -->
+  <script src="https://unpkg.com/vue@latest"></script>
+  <!-- import JavaScript -->
+  <script src="https://unpkg.com/@qvant/qui-max@latest"></script>
+  <script>
+    const app = Vue.createApp({
+      setup() {
+        const options = [
+          {
+            value: 0,
+            label: 'Option Zero'
+          },
+          {
+            value: 'value1',
+            label: 'Option 1'
+          },
+          {
+            value: 'value3',
+            label:
+              'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
+          },
+          {
+            value: 'value4',
+            label: 'Option 4',
+            disabled: true
+          },
+          {
+            value: 'value5',
+            label:
+              'Sed sit amet nibh consequat, pellentesque arcu ut, congue lorem.',
+            disabled: true
+          },
+          {
+            value: 'value6',
+            label: 'Option 6'
+          }
+        ];
+
+        const optionsLimit = [...options];
+        const optionsSelectAll = [...options];
+        const optionsTags = [...options];
+        const value = Vue.ref(null);
+        const valueLimit = Vue.ref(null);
+        const valueSelectAll = Vue.ref(null);
+        const valueTags = Vue.ref(null);
+
+        return {
+          options,
+          optionsLimit,
+          optionsSelectAll,
+          optionsTags,
+          value,
+          valueLimit,
+          valueSelectAll,
+          valueTags
+        };
+      }
+    });
+
+    app.use(QuiMax.default);
+    app.mount('#app');
+  </script>
+  <style>
+    .block {
+      margin: 20px;
+    }
+
+    .label {
+      padding-bottom: 5px;
+    }
+  </style>
+</html>

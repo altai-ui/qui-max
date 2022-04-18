@@ -58,7 +58,8 @@ export default defineComponent({
     /** Number of digits after decimal separator */
     precision: {
       type: Number,
-      default: null
+      default: null,
+      validator: (val: number) => val >= 0 && val <= 20
     },
 
     /** Disabled status */
@@ -122,12 +123,12 @@ export default defineComponent({
 
     let internalValue: Nullable<string> = null;
 
-    const formatNumber = (num: string): string => {
-      if (!num) return '';
+    const formatNumber = (value: string): string => {
+      if (!value) return '';
 
       const locale = getConfig('locale');
 
-      return Number(num).toLocaleString(locale, {
+      return Number(value).toLocaleString(locale, {
         maximumFractionDigits: precision.value
       });
     };
@@ -217,7 +218,9 @@ export default defineComponent({
 
     const handleFocus = (event: FocusEvent): void => {
       const target = event.target as HTMLInputElement;
-      internalValue = props.modelValue?.toString() ?? target.value;
+      internalValue = isNil(props.modelValue)
+        ? target.value
+        : getClampedValue(matchValue(String(props.modelValue)));
       target.value = internalValue;
       ctx.emit('focus', event);
       if (props.validateEvent) qFormItem?.validateField('focus');

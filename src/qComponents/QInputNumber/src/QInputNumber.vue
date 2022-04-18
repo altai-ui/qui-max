@@ -121,6 +121,10 @@ export default defineComponent({
 
     let internalValue: Nullable<string> = null;
 
+    const formatNumber = (num: string): string => {
+      return num.replace(/(.)(?=(\d{3})+\b)/g, '$1 ');
+    };
+
     const changesEmitter = (type: 'input' | 'change', value: string): void => {
       const emittedValue =
         value && !Number.isNaN(Number(value)) ? Number(value) : null;
@@ -205,12 +209,16 @@ export default defineComponent({
     };
 
     const handleFocus = (event: FocusEvent): void => {
-      internalValue = (event.target as HTMLInputElement).value;
+      const target = event.target as HTMLInputElement;
+      internalValue = target.value.replaceAll(' ', '');
+      target.value = internalValue;
       ctx.emit('focus', event);
       if (props.validateEvent) qFormItem?.validateField('focus');
     };
 
     const handleBlur = (event: FocusEvent): void => {
+      const target = event.target as HTMLInputElement;
+      target.value = formatNumber(target.value);
       internalValue = null;
       ctx.emit('blur', event);
       if (props.validateEvent) qFormItem?.validateField('blur');
@@ -232,7 +240,7 @@ export default defineComponent({
 
         if (!internalValue || value !== Number(internalValue)) {
           internalValue = getClampedValue(matchValue(String(value)));
-          input.value = internalValue;
+          input.value = formatNumber(internalValue);
         }
       },
       { immediate: true }

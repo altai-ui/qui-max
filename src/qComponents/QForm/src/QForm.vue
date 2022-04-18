@@ -151,7 +151,7 @@ export default defineComponent({
           if (!errors || !fields) return;
 
           isValid = false;
-          invalidFields = { ...fields };
+          invalidFields = { ...invalidFields, ...fields };
         })
       );
 

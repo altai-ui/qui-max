@@ -1,17 +1,24 @@
-import type { ComputedRef } from 'vue';
-import type { Nullable } from '#/helpers';
+import type { ComputedRef, CSSProperties } from 'vue';
 
-export type BtnClasses = Record<string, boolean>;
+import type { Nullable, ClassValue } from '#/helpers';
 
-export interface BtnStyles {
-  left: Nullable<string>;
-}
+type CssPropertyLeft = CSSProperties['left'];
+
+export type QSliderButtonPropPosition = Nullable<CssPropertyLeft>;
+export type QSliderButtonPropPathLeft = Nullable<number>;
+export type QSliderButtonPropPathWidth = Nullable<number>;
 
 export interface QSliderButtonProps {
-  position: Nullable<string>;
-  pathLeft: Nullable<number>;
-  pathWidth: Nullable<number>;
+  position: QSliderButtonPropPosition;
+  pathLeft: QSliderButtonPropPathLeft;
+  pathWidth: QSliderButtonPropPathWidth;
   disabled: boolean;
+}
+
+export type BtnClasses = ClassValue;
+
+export interface BtnStyles {
+  left: CssPropertyLeft;
 }
 
 export interface QSliderButtonInstance {

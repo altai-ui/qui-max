@@ -1,11 +1,21 @@
 import type { Story } from '@storybook/vue3';
 import { defineComponent, ref } from 'vue';
 import { t } from '@/qComponents/locale';
+import type {
+  QSliderPropModelValue,
+  QSliderPropData
+} from '@/qComponents/QSlider';
+
+type ModelValue = QSliderPropModelValue<'easy' | 'normal' | 'hard'>;
+
+type SlotDataTest = {
+  description: string;
+};
 
 const QSliderStory: Story = args =>
   defineComponent({
     setup() {
-      const value = ref<string>('easy');
+      const value = ref<ModelValue>('easy');
 
       return {
         args,
@@ -26,42 +36,42 @@ const QSliderStory: Story = args =>
     `
   });
 
+const data: QSliderPropData<ModelValue, SlotDataTest> = [
+  {
+    value: 'easy',
+    label: t('qSlider.easyLevel'),
+    style: {
+      width: '100px'
+    },
+    slotData: {
+      description: t('qSlider.captionDescription')
+    }
+  },
+
+  {
+    value: 'normal',
+    label: t('qSlider.mediumlevel'),
+    style: "width: '127px'",
+    slotData: {
+      description: t('qSlider.captionDescription')
+    }
+  },
+
+  {
+    value: 'hard',
+    label: t('qSlider.hardLevel'),
+    style: {
+      width: '135px'
+    },
+    slotData: {
+      description: t('qSlider.captionDescription')
+    }
+  }
+];
+
 QSliderStory.args = {
   disabled: false,
-  data: [
-    {
-      value: 'easy',
-      label: t('qSlider.easyLevel'),
-      style: {
-        width: '100px'
-      },
-      slotData: {
-        description: t('qSlider.captionDescription')
-      }
-    },
-
-    {
-      value: 'normal',
-      label: t('qSlider.mediumlevel'),
-      style: {
-        width: '127px'
-      },
-      slotData: {
-        description: t('qSlider.captionDescription')
-      }
-    },
-
-    {
-      value: 'hard',
-      label: t('qSlider.hardLevel'),
-      style: {
-        width: '135px'
-      },
-      slotData: {
-        description: t('qSlider.captionDescription')
-      }
-    }
-  ]
+  data
 };
 
 export default QSliderStory;

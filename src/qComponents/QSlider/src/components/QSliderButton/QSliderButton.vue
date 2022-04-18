@@ -12,8 +12,12 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed, onBeforeUnmount } from 'vue';
+import type { PropType } from 'vue';
 
 import type {
+  QSliderButtonPropPosition,
+  QSliderButtonPropPathLeft,
+  QSliderButtonPropPathWidth,
   QSliderButtonProps,
   BtnClasses,
   BtnStyles,
@@ -25,17 +29,17 @@ export default defineComponent({
 
   props: {
     position: {
-      type: String,
+      type: String as PropType<QSliderButtonPropPosition>,
       default: null
     },
 
     pathLeft: {
-      type: Number,
+      type: Number as PropType<QSliderButtonPropPathLeft>,
       default: null
     },
 
     pathWidth: {
-      type: Number,
+      type: Number as PropType<QSliderButtonPropPathWidth>,
       default: null
     },
 
@@ -56,7 +60,7 @@ export default defineComponent({
     }));
 
     const btnStyles = computed<BtnStyles>(() => ({
-      left: props.position
+      left: props.position ?? undefined
     }));
 
     const handleDragging = ({ clientX }: MouseEvent): void => {

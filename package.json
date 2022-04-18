@@ -1,6 +1,6 @@
 {
   "name": "@qvant/qui-max",
-  "version": "0.10.1",
+  "version": "0.11.0",
   "private": false,
   "description": "A Vue 3 Design system for Web.",
   "author": {
@@ -53,7 +53,7 @@
     "@types/node": "^17.0.14",
     "@types/object-hash": "^2.2.1",
     "@types/sass": "^1.43.1",
-    "@typescript-eslint/eslint-plugin": "^5.10.2",
+    "@typescript-eslint/eslint-plugin": "^5.17.0",
     "@typescript-eslint/parser": "^5.10.2",
     "@vitejs/plugin-vue": "^2.1.0",
     "@vue/compiler-sfc": "^3.2.29",
@@ -88,7 +88,7 @@
     "vite": "^2.7.13",
     "vite-plugin-dts": "^0.9.9",
     "vitest": "^0.7.10",
-    "vue": "^3.2.26",
+    "vue": "^3.2.31",
     "vue-loader": "^15.9.8"
   },
   "files": ["dist"],

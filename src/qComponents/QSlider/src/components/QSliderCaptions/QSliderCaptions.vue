@@ -2,6 +2,8 @@
 import { defineComponent, computed, inject, h } from 'vue';
 import type { PropType, VNode } from 'vue';
 
+import type { ClassValue } from '#/helpers';
+
 import type {
   QSliderPropModelValue,
   QSliderPropData,
@@ -24,7 +26,7 @@ export default defineComponent({
     },
 
     data: {
-      type: Array as PropType<QSliderPropData[]>,
+      type: Array as PropType<QSliderPropData>,
       required: true
     },
 
@@ -39,14 +41,14 @@ export default defineComponent({
   setup(props: QSliderCaptionsProps, ctx): QSliderCaptionsInstance {
     const qSlider = inject<QSliderProvider>('qSlider');
 
-    const captionClasses = computed<Record<string, boolean>>(() => ({
+    const captionClasses = computed<ClassValue>(() => ({
       'q-slider-captions': true,
       'q-slider-captions_is-disabled': props.disabled
     }));
 
     const getCaptionItemClasses = (
       value: QSliderPropModelValue
-    ): Record<string, boolean> => ({
+    ): ClassValue => ({
       'q-slider-captions__caption': true,
       'q-slider-captions__caption_active': value === props.modelValue
     });

@@ -102,6 +102,7 @@ export default {
 
 ::: tip OPTIONS
 The `modelValue` syncs with `options` by the `value` prop. So don't forget to pass a `value` in `<q-option>` 
+<br />
 [Learn more](#qoption) about `<q-option>`
 :::
 

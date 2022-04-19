@@ -1,8 +1,11 @@
 .q-tab-pane {
-  --tab-pane-width: 200px;
+  --tab-pane-width: auto;
+  --shadow-small: 1px 1px 3px rgb(var(--color-rgb-blue) / 40%);
+  --shadow-large: 4px 4px 8px rgb(var(--color-rgb-blue) / 40%),
+    1px 1px 4px rgb(var(--color-rgb-blue) / 40%);
 
   &:not(:last-child) {
-    margin-right: 8px;
+    margin-right: 1px;
   }
 
   &__inner {
@@ -11,53 +14,66 @@
   }
 
   &__btn {
+    flex-grow: 1;
     width: var(--tab-pane-width);
-    padding: 11px 0;
+    padding: 11px 24px;
     font-size: var(--font-size-base);
     font-weight: var(--font-weight-base);
     line-height: 18px;
     color: var(--color-primary-blue);
     text-align: center;
-    letter-spacing: 0.2px;
+    letter-spacing: 0.03em;
     cursor: pointer;
     background-color: var(--color-tertiary-gray-light);
     border: none;
-    border-radius: var(--border-radius-base);
     outline: none;
-    box-shadow: var(--box-shadow-primary);
+    box-shadow: var(--shadow-small);
 
     &:hover {
       color: var(--color-primary-black);
       background-color: var(--color-tertiary-gray);
+      box-shadow: var(--shadow-large);
     }
 
-    &:focus {
+    &.focus-visible {
       color: var(--color-primary-black);
-      background-color: var(--color-tertiary-gray-dark);
-      outline: none;
+      background-color: var(--color-tertiary-gray-light);
+      outline: 1px solid var(--color-primary-blue);
+      box-shadow: var(--shadow-large);
     }
 
     &_active {
-      color: var(--color-primary-black);
-      background-color: var(--color-tertiary-gray-ultra-light);
+      box-shadow: var(--shadow-small);
 
-      &:hover {
+      &,
+      &:hover,
+      &.focus-visible {
         color: var(--color-primary-black);
         background-color: var(--color-tertiary-gray-ultra-light);
       }
     }
 
     &_disabled {
-      color: rgb(var(--color-rgb-gray) / 64%);
       cursor: not-allowed;
-      background-color: var(--color-tertiary-gray);
 
-      &:focus,
-      &:hover {
+      &,
+      &:hover,
+      &.focus-visible {
         color: rgb(var(--color-rgb-gray) / 64%);
         background-color: var(--color-tertiary-gray);
+        box-shadow: var(--shadow-small);
       }
     }
+  }
+
+  &:first-child &__btn {
+    border-top-left-radius: 24px;
+    border-bottom-left-radius: 24px;
+  }
+
+  &:last-child &__btn {
+    border-top-right-radius: 24px;
+    border-bottom-right-radius: 24px;
   }
 
   &__description {

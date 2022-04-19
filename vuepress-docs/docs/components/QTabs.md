@@ -79,7 +79,7 @@ export default {
 
 ### tabWidth
 
-- Type: `String | Number`
+- Type: `String` | `Number`
 - Default: `null`
 
 Defines a width for all `QTabPane`s.
@@ -221,7 +221,7 @@ The tab description. (The text below)
 
 ### width
 
-- Type: `String | Number`
+- Type: `String` | `Number`
 - Default: `null`
 
 Allows to set custom width of each `QTabPane`

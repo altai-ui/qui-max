@@ -1,6 +1,7 @@
 .q-button {
   box-sizing: border-box;
   display: inline-block;
+  flex-shrink: 0;
   max-height: 40px;
   padding: 12px 40px;
   font-size: 12px;

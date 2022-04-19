@@ -1,0 +1,91 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- import CSS -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/@qvant/qui-max/dist/style.css"
+    />
+  </head>
+
+  <body>
+    <div id="app">
+      <div class="block">
+        <div class="input-wrapper">
+          <q-button
+            type="icon"
+            icon="q-icon-minus"
+            @click="decrease"
+            :disabled="!width"
+            size="small"
+            circle
+          >
+          </q-button>
+          <q-input-number
+            v-model="width"
+            :max="200"
+            placeholder="Set width"
+          ></q-input-number>
+          <q-button
+            type="icon"
+            icon="q-icon-plus"
+            @click="increase"
+            :disabled="width === 200"
+            size="small"
+            circle
+          ></q-button>
+        </div>
+        <q-tabs v-model="activeTab" :tab-width="width ?? 100">
+          <q-tab-pane name="tab" title="First tab"></q-tab-pane>
+          <q-tab-pane name="tab_two" title="Second tab"></q-tab-pane>
+          <q-tab-pane name="tab_three" title="Third tab"></q-tab-pane>
+        </q-tabs>
+      </div>
+    </div>
+  </body>
+  <!-- import Vue before Qui -->
+  <script src="https://unpkg.com/vue@latest"></script>
+  <!-- import JavaScript -->
+  <script src="https://unpkg.com/@qvant/qui-max@latest"></script>
+  <script>
+    const App = {
+      data() {
+        const activeTab = Vue.ref('tab');
+        const width = Vue.ref(null);
+
+        const increase = () => {
+          width.value = (width.value ?? 100) + 10;
+        };
+
+        const decrease = () => {
+          if (!width.value) return;
+          width.value = width.value - 10;
+        };
+
+        return { activeTab, width, increase, decrease };
+      }
+    };
+
+    const app = Vue.createApp(App);
+    app.use(QuiMax.default);
+    app.mount('#app');
+  </script>
+  <style>
+    .block {
+      margin: 20px;
+    }
+
+    .input-wrapper {
+      display: flex;
+      align-items: center;
+      width: 200px;
+      margin-bottom: 20px;
+      column-gap: 20px;
+    }
+
+    /* remove after v0.11.1 */
+    .q-button {
+      flex-shrink: 0;
+    }
+  </style>
+</html>

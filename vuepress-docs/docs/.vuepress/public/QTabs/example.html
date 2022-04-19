@@ -1,0 +1,67 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- import CSS -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/@qvant/qui-max/dist/style.css"
+    />
+  </head>
+
+  <body>
+    <div id="app">
+      <div class="block">
+        <q-tabs v-model="activeTab">
+          <q-tab-pane name="first" title="First tab"></q-tab-pane>
+          <q-tab-pane name="second" title="Second tab"></q-tab-pane>
+          <q-tab-pane name="third" title="Third tab"></q-tab-pane>
+        </q-tabs>
+      </div>
+      <div class="block">
+        <q-tabs v-model="activeTab1">
+          <q-tab-pane
+            name="first"
+            title="Tab pane"
+            description="Lorem Ipsum is simply dummy text of the printing and typesetting industry."
+          ></q-tab-pane>
+          <q-tab-pane
+            name="second"
+            title="Disabled tab pane"
+            disabled
+          ></q-tab-pane>
+          <q-tab-pane
+            name="third"
+            title="Tab pane with custom width"
+            width="200px"
+          ></q-tab-pane>
+        </q-tabs>
+      </div>
+    </div>
+  </body>
+  <!-- import Vue before Qui -->
+  <script src="https://unpkg.com/vue@latest"></script>
+  <!-- import JavaScript -->
+  <script src="https://unpkg.com/@qvant/qui-max@latest"></script>
+  <script>
+    const app = Vue.createApp({
+      setup() {
+        const activeTab = Vue.ref('first');
+        const activeTab1 = Vue.ref('first');
+
+        return { activeTab, activeTab1 };
+      }
+    });
+
+    app.use(QuiMax.default);
+    app.mount('#app');
+  </script>
+  <style>
+    .block {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 30px 10px 10px;
+    }
+  </style>
+</html>

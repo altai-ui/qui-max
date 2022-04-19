@@ -287,6 +287,6 @@ Slot for QTabPane content
 </template>
 ```
 
-<iframe height="85" style="width: 100%;" scrolling="no" frameborder="no" src="/QTabPane/content.html"></iframe>
+<iframe height="185" style="width: 100%;" scrolling="no" frameborder="no" src="/QTabPane/content.html"></iframe>
 
 

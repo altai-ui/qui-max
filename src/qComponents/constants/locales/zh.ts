@@ -19,7 +19,7 @@ export default {
     prevYear: '前一年',
     nextYear: '后一年',
     prevMonth: '前一月',
-    nextMonth: '前一月',
+    nextMonth: '后一月',
     timeFrom: '从',
     timeTo: '至'
   },

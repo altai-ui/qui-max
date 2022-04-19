@@ -33,12 +33,12 @@
 import { computed, defineComponent, inject, nextTick, ref, watch } from 'vue';
 import { isNil } from 'lodash-es';
 
+import { getConfig } from '@/qComponents/config';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { Nullable } from '#/helpers';
 
 import type { QInputNumberInstance, QInputNumberProps } from './types';
-import { getConfig } from '@/qComponents/config';
 
 const MIN_INTEGER = Number(String(Number.MIN_SAFE_INTEGER).slice(0, -2));
 const MAX_INTEGER = Number(String(Number.MAX_SAFE_INTEGER).slice(0, -2));

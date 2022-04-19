@@ -33,6 +33,7 @@
 import { computed, defineComponent, inject, nextTick, ref, watch } from 'vue';
 import { isNil } from 'lodash-es';
 
+import { getConfig } from '@/qComponents/config';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { Nullable } from '#/helpers';
@@ -57,7 +58,8 @@ export default defineComponent({
     /** Number of digits after decimal separator */
     precision: {
       type: Number,
-      default: null
+      default: null,
+      validator: (val: number) => val >= 0 && val <= 20
     },
 
     /** Disabled status */
@@ -120,6 +122,16 @@ export default defineComponent({
     );
 
     let internalValue: Nullable<string> = null;
+
+    const formatNumber = (value: string): string => {
+      if (!value) return '';
+
+      const locale = getConfig('locale');
+
+      return Number(value).toLocaleString(locale, {
+        maximumFractionDigits: precision.value
+      });
+    };
 
     const changesEmitter = (type: 'input' | 'change', value: string): void => {
       const emittedValue =
@@ -205,12 +217,18 @@ export default defineComponent({
     };
 
     const handleFocus = (event: FocusEvent): void => {
-      internalValue = (event.target as HTMLInputElement).value;
+      const target = event.target as HTMLInputElement;
+      internalValue = isNil(props.modelValue)
+        ? target.value
+        : getClampedValue(matchValue(String(props.modelValue)));
+      target.value = internalValue;
       ctx.emit('focus', event);
       if (props.validateEvent) qFormItem?.validateField('focus');
     };
 
     const handleBlur = (event: FocusEvent): void => {
+      const target = event.target as HTMLInputElement;
+      target.value = formatNumber(target.value);
       internalValue = null;
       ctx.emit('blur', event);
       if (props.validateEvent) qFormItem?.validateField('blur');
@@ -232,7 +250,7 @@ export default defineComponent({
 
         if (!internalValue || value !== Number(internalValue)) {
           internalValue = getClampedValue(matchValue(String(value)));
-          input.value = internalValue;
+          input.value = formatNumber(internalValue);
         }
       },
       { immediate: true }

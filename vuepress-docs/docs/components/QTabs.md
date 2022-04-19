@@ -221,7 +221,7 @@ The tab description. (The text below)
 
 ### width
 
-- Type: `String | Number`
+- Type: `String` | `Number`
 - Default: `null`
 
 Allows to set custom width of each `QTabPane`

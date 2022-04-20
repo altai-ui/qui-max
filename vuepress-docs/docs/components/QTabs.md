@@ -10,15 +10,26 @@ All kind of types:
 
 Template:
 
+<!-- prettier-ignore-start -->
 ```vue
 <template>
   <q-tabs v-model="activeTab">
-    <q-tab-pane name="first" title="First tab" />
-    <q-tab-pane name="second" title="Second tab" />
-    <q-tab-pane name="third" title="Third tab" />
+    <q-tab-pane 
+      name="first"
+      title="First tab"
+    />
+    <q-tab-pane
+      name="second"
+      title="Second tab"
+    />
+    <q-tab-pane
+      name="third"
+      title="Third tab"
+    />
   </q-tabs>
 </template>
 ```
+<!-- prettier-ignore-end -->
 
 Instance:
 
@@ -46,6 +57,7 @@ The binding value.
 The `modelValue` MUST match one of `<q-tab-pane>` name prop to set it active.
 :::
 
+<!-- prettier-ignore-start -->
 ```vue {3,6}
 <template>
   <q-tabs
@@ -58,6 +70,7 @@ The `modelValue` MUST match one of `<q-tab-pane>` name prop to set it active.
   ...
 </template>
 ```
+<!-- prettier-ignore-end -->
 
 ```js {3}
 export default {
@@ -76,15 +89,28 @@ export default {
 
 Defines a width for all `QTabPane`s.
 
+<!-- prettier-ignore-start -->
 ```vue {3}
 <template>
-  <q-tabs tab-width="100">
-    <q-tab-pane name="first" title="First tab" />
-    <q-tab-pane name="second" title="Second tab" />
-    <q-tab-pane name="third" title="Third tab" />
+  <q-tabs
+    tab-width="100"
+  >
+    <q-tab-pane 
+      name="first"
+      title="First tab"
+    />
+    <q-tab-pane
+      name="second"
+      title="Second tab"
+    />
+    <q-tab-pane
+      name="third"
+      title="Third tab"
+    />
   </q-tabs>
 </template>
 ```
+<!-- prettier-ignore-end -->
 
 Live demo:
 
@@ -97,15 +123,28 @@ Live demo:
 
 Whether `QTabs` is disabled
 
+<!-- prettier-ignore-start -->
 ```vue {3}
 <template>
-  <q-tabs disabled>
-    <q-tab-pane name="first" title="First tab" />
-    <q-tab-pane name="second" title="Second tab" />
-    <q-tab-pane name="third" title="Third tab" />
+  <q-tabs
+    disabled
+  >
+    <q-tab-pane 
+      name="first"
+      title="First tab"
+    />
+    <q-tab-pane
+      name="second"
+      title="Second tab"
+    />
+    <q-tab-pane
+      name="third"
+      title="Third tab"
+    />
   </q-tabs>
 </template>
 ```
+<!-- prettier-ignore-end -->
 
 <iframe height="85" style="width: 100%;" scrolling="no" frameborder="no" src="/QTabs/disabled.html"></iframe>
 
@@ -144,13 +183,18 @@ QTabPane is the wrapper for the tab.
 
 The key that compares with QTabs `modelValue` to define it's state. (active or not)
 
+<!-- prettier-ignore-start -->
 ```vue {4}
 <template>
   <q-tabs>
-    <q-tab-pane name="tab_name" ... />
+    <q-tab-pane
+      name="tab_name"
+      ...
+    />
   </q-tabs>
 </template>
 ```
+<!-- prettier-ignore-end -->
 
 ### title
 
@@ -159,13 +203,18 @@ The key that compares with QTabs `modelValue` to define it's state. (active or n
 
 The tab title.
 
+<!-- prettier-ignore-start -->
 ```vue {4}
 <template>
   <q-tabs>
-    <q-tab-pane title="Tab title" ... />
+    <q-tab-pane
+      title="Tab title"
+      ...
+    />
   </q-tabs>
 </template>
 ```
+<!-- prettier-ignore-end -->
 
 ### width
 
@@ -174,13 +223,18 @@ The tab title.
 
 Allows to set custom width of each `QTabPane`
 
+<!-- prettier-ignore-start -->
 ```vue {4}
 <template>
   <q-tabs>
-    <q-tab-pane width="200" ... />
+    <q-tab-pane
+      width="200"
+      ...
+    />
   </q-tabs>
 </template>
 ```
+<!-- prettier-ignore-end -->
 
 ### disabled
 
@@ -189,13 +243,18 @@ Allows to set custom width of each `QTabPane`
 
 Whether `QTabPane` is disabled.
 
+<!-- prettier-ignore-start -->
 ```vue {4}
 <template>
   <q-tabs>
-    <q-tab-pane disabled ... />
+    <q-tab-pane
+      disabled
+      ...
+    />
   </q-tabs>
 </template>
 ```
+<!-- prettier-ignore-end -->
 
 ## QTabPane Slots
 
@@ -203,6 +262,7 @@ Whether `QTabPane` is disabled.
 
 Slot for QTabPane content
 
+<!-- prettier-ignore-start -->
 ```vue {5-20}
 <template>
   <q-tabs v-model="activeTab">
@@ -228,5 +288,6 @@ Slot for QTabPane content
   </q-tabs>
 </template>
 ```
+<!-- prettier-ignore-end -->
 
 <iframe height="185" style="width: 100%;" scrolling="no" frameborder="no" src="/QTabPane/content.html"></iframe>

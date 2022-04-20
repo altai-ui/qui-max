@@ -1,8 +1,8 @@
 .q-tab-pane {
   --tab-pane-width: auto;
-  --shadow-small: 1px 1px 3px rgb(var(--color-rgb-blue) / 40%);
-  --shadow-large: 4px 4px 8px rgb(var(--color-rgb-blue) / 40%),
-    1px 1px 4px rgb(var(--color-rgb-blue) / 40%);
+  --shadow-default: 4px 4px 8px rgb(var(--color-rgb-blue) / 40%),
+    1px 1px 3px rgb(var(--color-rgb-blue) / 40%);
+  --shadow-pressed: 1px 1px 3px rgb(var(--color-rgb-blue) / 40%);
 
   &:not(:last-child) {
     margin-right: 1px;
@@ -27,29 +27,19 @@
     background-color: var(--color-tertiary-gray-light);
     border: 1px solid transparent;
     outline: none;
-    box-shadow: var(--shadow-small);
+    box-shadow: var(--shadow-default);
 
     &:hover {
       color: var(--color-primary-black);
       background-color: var(--color-tertiary-gray);
-      box-shadow: var(--shadow-large);
+      box-shadow: var(--shadow-default);
     }
 
     &.focus-visible {
       color: var(--color-primary-blue);
       background-color: var(--color-tertiary-gray-light);
       border-color: var(--color-primary-blue);
-      box-shadow: var(--shadow-large);
-    }
-
-    &_active {
-      &,
-      &:hover,
-      &.focus-visible {
-        color: var(--color-primary-black);
-        background-color: var(--color-tertiary-gray-ultra-light);
-        box-shadow: var(--shadow-small);
-      }
+      box-shadow: var(--shadow-default);
     }
 
     &_disabled {
@@ -60,7 +50,19 @@
       &.focus-visible {
         color: rgb(var(--color-rgb-gray) / 64%);
         background-color: var(--color-tertiary-gray);
-        box-shadow: var(--shadow-small);
+        box-shadow: var(--shadow-pressed);
+      }
+    }
+
+    &_active {
+      cursor: default;
+
+      &,
+      &:hover,
+      &.focus-visible {
+        color: var(--color-primary-black);
+        background-color: var(--color-tertiary-gray-ultra-light);
+        box-shadow: var(--shadow-pressed);
       }
     }
 

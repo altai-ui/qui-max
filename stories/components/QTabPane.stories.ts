@@ -28,7 +28,6 @@ const QTabPaneStory: Story<QTabPaneProps> = args =>
           :width="args.width"
           :name="args.name"
           :title="args.title"
-          :description="args.description"
           :disabled="args.disabled"
         />
         <q-tab-pane
@@ -46,9 +45,7 @@ const QTabPaneStory: Story<QTabPaneProps> = args =>
 export const Default = QTabPaneStory.bind({});
 Default.args = {
   name: 'first_tab',
-  title: 'First tab',
-  description:
-    'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
+  title: 'First tab'
 };
 
 export default storyMetadata;

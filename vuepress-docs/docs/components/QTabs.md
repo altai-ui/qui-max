@@ -13,23 +13,15 @@ Template:
 ```vue
 <template>
   <q-tabs v-model="activeTab">
-    <q-tab-pane 
-      name="first"
-      title="First tab"
-    />
-    <q-tab-pane
-      name="second"
-      title="Second tab"
-    />
-    <q-tab-pane
-      name="third"
-      title="Third tab"
-    />
+    <q-tab-pane name="first" title="First tab" />
+    <q-tab-pane name="second" title="Second tab" />
+    <q-tab-pane name="third" title="Third tab" />
   </q-tabs>
 </template>
 ```
 
 Instance:
+
 ```js
 export default {
   setup() {
@@ -38,7 +30,7 @@ export default {
 
     return { activeTab, activeTab1 };
   }
-}
+};
 ```
 
 ## Props
@@ -66,6 +58,7 @@ The `modelValue` MUST match one of `<q-tab-pane>` name prop to set it active.
   ...
 </template>
 ```
+
 ```js {3}
 export default {
   setup() {
@@ -73,9 +66,8 @@ export default {
 
     return { activeTab };
   }
-}
+};
 ```
-
 
 ### tabWidth
 
@@ -86,25 +78,16 @@ Defines a width for all `QTabPane`s.
 
 ```vue {3}
 <template>
-  <q-tabs
-    tab-width="100"
-  >
-    <q-tab-pane 
-      name="first"
-      title="First tab"
-    />
-    <q-tab-pane
-      name="second"
-      title="Second tab"
-    />
-    <q-tab-pane
-      name="third"
-      title="Third tab"
-    />
+  <q-tabs tab-width="100">
+    <q-tab-pane name="first" title="First tab" />
+    <q-tab-pane name="second" title="Second tab" />
+    <q-tab-pane name="third" title="Third tab" />
   </q-tabs>
 </template>
 ```
+
 Live demo:
+
 <iframe height="160" style="width: 100%;" scrolling="no" frameborder="no" src="/QTabs/width.html"></iframe>
 
 ### disabled
@@ -116,26 +99,15 @@ Whether `QTabs` is disabled
 
 ```vue {3}
 <template>
-  <q-tabs
-    disabled
-  >
-    <q-tab-pane 
-      name="first"
-      title="First tab"
-    />
-    <q-tab-pane
-      name="second"
-      title="Second tab"
-    />
-    <q-tab-pane
-      name="third"
-      title="Third tab"
-    />
+  <q-tabs disabled>
+    <q-tab-pane name="first" title="First tab" />
+    <q-tab-pane name="second" title="Second tab" />
+    <q-tab-pane name="third" title="Third tab" />
   </q-tabs>
 </template>
 ```
-<iframe height="85" style="width: 100%;" scrolling="no" frameborder="no" src="/QTabs/disabled.html"></iframe>
 
+<iframe height="85" style="width: 100%;" scrolling="no" frameborder="no" src="/QTabs/disabled.html"></iframe>
 
 ## Events
 
@@ -147,9 +119,9 @@ Triggers when the `modelValue` updates
 
 Alias for `update:modelValue`
 
-## Slots 
+## Slots
 
-### default 
+### default
 
 `QTabs` main content (used to pass `QTabPane`s)
 
@@ -175,10 +147,7 @@ The key that compares with QTabs `modelValue` to define it's state. (active or n
 ```vue {4}
 <template>
   <q-tabs>
-    <q-tab-pane
-      name="tab_name"
-      ...
-    />
+    <q-tab-pane name="tab_name" ... />
   </q-tabs>
 </template>
 ```
@@ -193,28 +162,7 @@ The tab title.
 ```vue {4}
 <template>
   <q-tabs>
-    <q-tab-pane
-      title="Tab title"
-      ...
-    />
-  </q-tabs>
-</template>
-```
-
-### description
-
-- Type: `String`,
-- Default: `null`
-
-The tab description. (The text below)
-
-```vue {4}
-<template>
-  <q-tabs>
-    <q-tab-pane
-      description="The text below"
-      ...
-    />
+    <q-tab-pane title="Tab title" ... />
   </q-tabs>
 </template>
 ```
@@ -229,10 +177,7 @@ Allows to set custom width of each `QTabPane`
 ```vue {4}
 <template>
   <q-tabs>
-    <q-tab-pane
-      width="200"
-      ...
-    />
+    <q-tab-pane width="200" ... />
   </q-tabs>
 </template>
 ```
@@ -247,10 +192,7 @@ Whether `QTabPane` is disabled.
 ```vue {4}
 <template>
   <q-tabs>
-    <q-tab-pane
-      disabled
-      ...
-    />
+    <q-tab-pane disabled ... />
   </q-tabs>
 </template>
 ```
@@ -288,5 +230,3 @@ Slot for QTabPane content
 ```
 
 <iframe height="185" style="width: 100%;" scrolling="no" frameborder="no" src="/QTabPane/content.html"></iframe>
-
-

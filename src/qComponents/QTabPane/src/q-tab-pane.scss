@@ -16,16 +16,16 @@
   &__btn {
     flex-grow: 1;
     width: var(--tab-pane-width);
-    padding: 11px 24px;
+    padding: 10px 23px;
     font-size: var(--font-size-base);
     font-weight: var(--font-weight-base);
     line-height: 18px;
     color: var(--color-primary-blue);
     text-align: center;
-    letter-spacing: 0.03em;
+    letter-spacing: var(--letter-spacing-base);
     cursor: pointer;
     background-color: var(--color-tertiary-gray-light);
-    border: none;
+    border: 1px solid transparent;
     outline: none;
     box-shadow: var(--shadow-small);
 
@@ -36,20 +36,19 @@
     }
 
     &.focus-visible {
-      color: var(--color-primary-black);
+      color: var(--color-primary-blue);
       background-color: var(--color-tertiary-gray-light);
-      outline: 1px solid var(--color-primary-blue);
+      border-color: var(--color-primary-blue);
       box-shadow: var(--shadow-large);
     }
 
     &_active {
-      box-shadow: var(--shadow-small);
-
       &,
       &:hover,
       &.focus-visible {
         color: var(--color-primary-black);
         background-color: var(--color-tertiary-gray-ultra-light);
+        box-shadow: var(--shadow-small);
       }
     }
 
@@ -64,16 +63,16 @@
         box-shadow: var(--shadow-small);
       }
     }
-  }
 
-  &:first-child &__btn {
-    border-top-left-radius: 24px;
-    border-bottom-left-radius: 24px;
-  }
+    .q-tab-pane:first-child & {
+      border-top-left-radius: 24px;
+      border-bottom-left-radius: 24px;
+    }
 
-  &:last-child &__btn {
-    border-top-right-radius: 24px;
-    border-bottom-right-radius: 24px;
+    .q-tab-pane:last-child & {
+      border-top-right-radius: 24px;
+      border-bottom-right-radius: 24px;
+    }
   }
 
   &__description {

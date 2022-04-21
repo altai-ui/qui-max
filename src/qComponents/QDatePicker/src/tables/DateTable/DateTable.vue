@@ -56,7 +56,7 @@ import {
   Locale
 } from 'date-fns';
 import { throttle } from 'lodash-es';
-import { ru, enGB as en } from 'date-fns/locale';
+import { ru, enGB as en, zhHK as zh } from 'date-fns/locale';
 
 import { getConfig } from '@/qComponents/config';
 import { notNull } from '@/qComponents/helpers';
@@ -73,7 +73,7 @@ import {
 import type { DateTableInterface, DateTableState } from './types';
 import checkDisabled from './checkDisabled';
 
-const locales: Record<string, Locale> = { ru, en };
+const locales: Record<string, Locale> = { ru, en, zh };
 
 export default defineComponent({
   name: 'QDatePickerDateTable',

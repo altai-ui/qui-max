@@ -16,12 +16,6 @@
 
       <slot name="content" />
     </div>
-    <div
-      v-if="description"
-      class="q-tab-pane__description"
-    >
-      {{ description }}
-    </div>
   </div>
 </template>
 
@@ -53,13 +47,6 @@ export default defineComponent({
       required: true
     },
     /**
-     * description of QTabPane
-     */
-    description: {
-      type: String,
-      default: null
-    },
-    /**
      * width of QTabPane
      */
     width: {
@@ -78,8 +65,12 @@ export default defineComponent({
   setup(props: QTabPaneProps): QTabPaneInstance {
     const qTabs = inject<QTabsProvider>('qTabs');
 
+    const isActive = computed<boolean>(() => {
+      return qTabs?.currentName.value === props.name;
+    });
+
     const isDisabled = computed<boolean>(
-      () => props.disabled || Boolean(qTabs?.disabled.value)
+      () => props.disabled || Boolean(qTabs?.disabled.value) || isActive.value
     );
 
     const tabWidthStyle = computed<Record<string, Optional<string>>>(() => {
@@ -95,7 +86,7 @@ export default defineComponent({
     });
 
     const tabBtnClasses = computed<Record<string, boolean>>(() => ({
-      'q-tab-pane__btn_active': qTabs?.currentName.value === props.name,
+      'q-tab-pane__btn_active': isActive.value,
       'q-tab-pane__btn_disabled': isDisabled.value
     }));
 

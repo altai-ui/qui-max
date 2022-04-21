@@ -10,6 +10,7 @@ All kind of types:
 
 Template:
 
+<!-- prettier-ignore-start -->
 ```vue
 <template>
   <q-tabs v-model="activeTab">
@@ -28,8 +29,10 @@ Template:
   </q-tabs>
 </template>
 ```
+<!-- prettier-ignore-end -->
 
 Instance:
+
 ```js
 export default {
   setup() {
@@ -38,7 +41,7 @@ export default {
 
     return { activeTab, activeTab1 };
   }
-}
+};
 ```
 
 ## Props
@@ -54,6 +57,7 @@ The binding value.
 The `modelValue` MUST match one of `<q-tab-pane>` name prop to set it active.
 :::
 
+<!-- prettier-ignore-start -->
 ```vue {3,6}
 <template>
   <q-tabs
@@ -66,6 +70,8 @@ The `modelValue` MUST match one of `<q-tab-pane>` name prop to set it active.
   ...
 </template>
 ```
+<!-- prettier-ignore-end -->
+
 ```js {3}
 export default {
   setup() {
@@ -73,9 +79,8 @@ export default {
 
     return { activeTab };
   }
-}
+};
 ```
-
 
 ### tabWidth
 
@@ -84,6 +89,7 @@ export default {
 
 Defines a width for all `QTabPane`s.
 
+<!-- prettier-ignore-start -->
 ```vue {3}
 <template>
   <q-tabs
@@ -104,7 +110,10 @@ Defines a width for all `QTabPane`s.
   </q-tabs>
 </template>
 ```
+<!-- prettier-ignore-end -->
+
 Live demo:
+
 <iframe height="160" style="width: 100%;" scrolling="no" frameborder="no" src="/QTabs/width.html"></iframe>
 
 ### disabled
@@ -114,6 +123,7 @@ Live demo:
 
 Whether `QTabs` is disabled
 
+<!-- prettier-ignore-start -->
 ```vue {3}
 <template>
   <q-tabs
@@ -134,8 +144,9 @@ Whether `QTabs` is disabled
   </q-tabs>
 </template>
 ```
-<iframe height="85" style="width: 100%;" scrolling="no" frameborder="no" src="/QTabs/disabled.html"></iframe>
+<!-- prettier-ignore-end -->
 
+<iframe height="85" style="width: 100%;" scrolling="no" frameborder="no" src="/QTabs/disabled.html"></iframe>
 
 ## Events
 
@@ -147,9 +158,9 @@ Triggers when the `modelValue` updates
 
 Alias for `update:modelValue`
 
-## Slots 
+## Slots
 
-### default 
+### default
 
 `QTabs` main content (used to pass `QTabPane`s)
 
@@ -172,6 +183,7 @@ QTabPane is the wrapper for the tab.
 
 The key that compares with QTabs `modelValue` to define it's state. (active or not)
 
+<!-- prettier-ignore-start -->
 ```vue {4}
 <template>
   <q-tabs>
@@ -182,6 +194,7 @@ The key that compares with QTabs `modelValue` to define it's state. (active or n
   </q-tabs>
 </template>
 ```
+<!-- prettier-ignore-end -->
 
 ### title
 
@@ -190,6 +203,7 @@ The key that compares with QTabs `modelValue` to define it's state. (active or n
 
 The tab title.
 
+<!-- prettier-ignore-start -->
 ```vue {4}
 <template>
   <q-tabs>
@@ -200,24 +214,7 @@ The tab title.
   </q-tabs>
 </template>
 ```
-
-### description
-
-- Type: `String`,
-- Default: `null`
-
-The tab description. (The text below)
-
-```vue {4}
-<template>
-  <q-tabs>
-    <q-tab-pane
-      description="The text below"
-      ...
-    />
-  </q-tabs>
-</template>
-```
+<!-- prettier-ignore-end -->
 
 ### width
 
@@ -226,6 +223,7 @@ The tab description. (The text below)
 
 Allows to set custom width of each `QTabPane`
 
+<!-- prettier-ignore-start -->
 ```vue {4}
 <template>
   <q-tabs>
@@ -236,6 +234,7 @@ Allows to set custom width of each `QTabPane`
   </q-tabs>
 </template>
 ```
+<!-- prettier-ignore-end -->
 
 ### disabled
 
@@ -244,6 +243,7 @@ Allows to set custom width of each `QTabPane`
 
 Whether `QTabPane` is disabled.
 
+<!-- prettier-ignore-start -->
 ```vue {4}
 <template>
   <q-tabs>
@@ -254,6 +254,7 @@ Whether `QTabPane` is disabled.
   </q-tabs>
 </template>
 ```
+<!-- prettier-ignore-end -->
 
 ## QTabPane Slots
 
@@ -261,6 +262,7 @@ Whether `QTabPane` is disabled.
 
 Slot for QTabPane content
 
+<!-- prettier-ignore-start -->
 ```vue {5-20}
 <template>
   <q-tabs v-model="activeTab">
@@ -286,7 +288,6 @@ Slot for QTabPane content
   </q-tabs>
 </template>
 ```
+<!-- prettier-ignore-end -->
 
 <iframe height="185" style="width: 100%;" scrolling="no" frameborder="no" src="/QTabPane/content.html"></iframe>
-
-

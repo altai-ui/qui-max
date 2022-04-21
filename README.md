@@ -98,7 +98,12 @@ In main.js:
 
 ```js
 import { createApp } from 'vue';
-import { createQui, QButton, QProgressIndicatior } from '@qvant/qui-max';
+import {
+  createQui,
+  QButton,
+  QProgressIndicatior,
+  localeRu, // import default messages for different locales
+} from '@qvant/qui-max';
 
 // import required styles
 import '@qvant/qui-max/css/main';
@@ -111,13 +116,16 @@ import '@qvant/qui-max/css/q-progress-indicatior';
 
 const Qui = createQui({
   localization: {
-    // Russian language by default, you can set `en` for English
-    locale: 'en',
+    // English language by default, but we have two more locales out-of-the-box: 'ru' | 'zh'
+    // set 'ru' - for Russian, set 'zh' - for Chinese
+    locale: 'ru',
     messages: {
-      // rewrite default texts, see the source: src/qComponents/constants/locales
-      en: {
+      ru: {
+        // import and merge default messages for different locale
+        ...localeRu,
+        // rewrite default texts, see the source: src/qComponents/constants/locales or set your custom messages
         QDatepicker: {
-          placeholder: 'Pick your birthday!'
+          placeholder: 'Выберите дату рождения'
         }
       }
     },

@@ -109,10 +109,7 @@ const createQui = (config?: ConfigOptions): Plugin => ({
 
 // install
 const install = (app: App, config?: ConfigOptions): void => {
-  const messages = merge(
-    { en: localeEn, ru: localeRu, zh: localeZh },
-    config?.localization?.messages
-  );
+  const messages = merge({ en: localeEn }, config?.localization?.messages);
   setupQui({
     ...(config ?? {}),
     localization: {

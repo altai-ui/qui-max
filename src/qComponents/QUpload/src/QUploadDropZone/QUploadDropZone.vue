@@ -77,6 +77,8 @@ export default defineComponent({
     const text = computed<string>(() => {
       if (props.isLoading) return props.textLoadingFile ?? t('QUpload.loading');
 
+      console.log(t('QUpload.uploadFile'));
+
       const textUploadFile = props.textUploadFile ?? t('QUpload.uploadFile');
       if (props.isMultiple) return textUploadFile;
 

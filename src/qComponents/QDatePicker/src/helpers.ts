@@ -6,7 +6,7 @@ import {
   isAfter,
   isBefore
 } from 'date-fns';
-import { ru, enGB as en } from 'date-fns/locale';
+import { ru, enGB as en, zhHK as zh } from 'date-fns/locale';
 import { isString } from 'lodash-es';
 
 import type { Nullable } from '#/helpers';
@@ -46,7 +46,7 @@ const checkDisabled = (
   return disabled.some(Boolean);
 };
 
-const locales: Record<string, Locale> = { ru, en };
+const locales: Record<string, Locale> = { ru, en, zh };
 
 const formatToLocalReadableString = (
   value: Date,

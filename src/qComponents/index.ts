@@ -5,7 +5,11 @@ import 'focus-visible';
 
 import { setMessages, setI18n } from './locale';
 import { setConfig } from './config';
-import { en as localeEn, ru as localeRu } from './constants/locales';
+import {
+  en as localeEn,
+  ru as localeRu,
+  zh as localeZh
+} from './constants/locales';
 import QBreadcrumbs from './QBreadcrumbs';
 import QButton from './QButton';
 import QCascader from './QCascader';
@@ -105,7 +109,10 @@ const createQui = (config?: ConfigOptions): Plugin => ({
 
 // install
 const install = (app: App, config?: ConfigOptions): void => {
-  const messages = merge({ en: localeEn }, config?.localization?.messages);
+  const messages = merge(
+    { en: localeEn, ru: localeRu, zh: localeZh },
+    config?.localization?.messages
+  );
   setupQui({
     ...(config ?? {}),
     localization: {
@@ -186,7 +193,8 @@ export {
   QTextarea,
   QUpload,
   localeEn,
-  localeRu
+  localeRu,
+  localeZh
 };
 
 export * from './QBreadcrumbs';

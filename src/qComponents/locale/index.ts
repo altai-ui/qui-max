@@ -15,7 +15,6 @@ export const t = (key: string, ...args: unknown[]): string => {
   if (i18nHandler) return i18nHandler(key, ...args);
 
   const locale = getConfig('locale');
-
   const text = get(currentMessages, `${locale}.${key}`);
 
   return isString(text) ? text : '';

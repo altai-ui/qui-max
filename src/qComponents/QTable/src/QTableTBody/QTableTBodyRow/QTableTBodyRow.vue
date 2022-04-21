@@ -26,6 +26,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType, computed, inject } from 'vue';
+import { get } from 'lodash-es';
 
 import { randId } from '@/qComponents/helpers';
 import type { Nullable } from '#/helpers';
@@ -117,7 +118,7 @@ export default defineComponent({
     );
 
     const getRowValue = (key: string): Nullable<unknown> =>
-      props.row[key] ?? null;
+      get(props.row, key, null);
 
     const handleCheckboxChange = (): void => {
       if (!qTable) return;

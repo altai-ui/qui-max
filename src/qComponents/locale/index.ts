@@ -15,7 +15,6 @@ export const t = (key: string, ...args: unknown[]): string => {
   if (i18nHandler) return i18nHandler(key, ...args);
 
   const locale = getConfig('locale');
-  console.log(locale, `${locale}.${key}`, currentMessages);
 
   const text = get(currentMessages, `${locale}.${key}`);
 

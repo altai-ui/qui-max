@@ -23,7 +23,7 @@ import { t } from '@/qComponents/locale';
 import image from '@/assets/empty-table-v2.svg';
 import type { QTableEmptyProps, QTableEmptyInstance } from './types';
 
-export default defineComponent({
+export default /* #__PURE__ */ defineComponent({
   name: 'QTableEmpty',
   componentName: ' QTableEmpty',
 

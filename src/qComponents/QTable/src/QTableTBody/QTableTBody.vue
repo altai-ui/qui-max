@@ -20,7 +20,7 @@ import type { QTableProvider } from '../types';
 import QTableTBodyRow from './QTableTBodyRow/QTableTBodyRow.vue';
 import type { QTableTBodyInstance } from './types';
 
-export default defineComponent({
+export default /* #__PURE__ */ defineComponent({
   name: 'QTableTBody',
   componentName: ' QTableTBody',
 

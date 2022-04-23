@@ -1,7 +1,7 @@
 import type { Meta, Story } from '@storybook/vue3';
 import { defineComponent } from 'vue';
 
-import QButton from '@/qComponents/QButton';
+import { QButton } from '@/qComponents/QButton';
 import type { QButtonProps } from '@/qComponents/QButton';
 
 const storyMetadata: Meta = {

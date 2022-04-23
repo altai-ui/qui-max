@@ -68,7 +68,7 @@ import type {
 
 const OFFSET = -10;
 
-export default defineComponent({
+export default /* #__PURE__ */ defineComponent({
   name: 'QScrollbar',
   componentName: 'QScrollbar',
 

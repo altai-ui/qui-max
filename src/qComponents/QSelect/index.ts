@@ -1,12 +1,8 @@
-import type { App } from 'vue';
+import { withInstall } from '../helpers';
 
-import type { SFCWithInstall } from '#/helpers';
+import Select from './src/QSelect.vue';
 
-import QSelect from './src/QSelect.vue';
-
-QSelect.install = (app: App): void => {
-  app.component(QSelect.name, QSelect);
-};
+export const QSelect = /* #__PURE__ */ withInstall(Select);
 
 export type {
   QSelectPropModelValue,
@@ -15,4 +11,3 @@ export type {
   QSelectState,
   QSelectProps
 } from './src/types';
-export default QSelect as SFCWithInstall<App, typeof QSelect>;

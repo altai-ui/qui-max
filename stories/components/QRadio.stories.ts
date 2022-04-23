@@ -1,7 +1,7 @@
 import type { Meta, Story } from '@storybook/vue3';
 import { defineComponent, ref } from 'vue';
 
-import QRadio from '@/qComponents/QRadio';
+import { QRadio } from '@/qComponents/QRadio';
 import type { QRadioProps } from '@/qComponents/QRadio';
 
 const storyMetadata: Meta = {

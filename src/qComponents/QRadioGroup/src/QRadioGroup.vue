@@ -35,7 +35,7 @@ import type {
   QRadioGroupInstance
 } from './types';
 
-export default defineComponent({
+export default /* #__PURE__ */ defineComponent({
   name: 'QRadioGroup',
   componentName: 'QRadioGroup',
 

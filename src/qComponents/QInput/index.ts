@@ -1,13 +1,7 @@
-import type { App } from 'vue';
+import { withInstall } from '../helpers';
 
-import type { SFCWithInstall } from '#/helpers';
+import Input from './src/QInput.vue';
 
-import QInput from './src/QInput.vue';
-
-/* istanbul ignore next */
-QInput.install = (app: App): void => {
-  app.component(QInput.name, QInput);
-};
+export const QInput = /* #__PURE__ */ withInstall(Input);
 
 export type { QInputProps, QInputInstance } from './src/types';
-export default QInput as SFCWithInstall<App, typeof QInput>;

@@ -1,13 +1,8 @@
-import type { App } from 'vue';
+import { withInstall } from '../helpers';
 
-import type { SFCWithInstall } from '#/helpers';
+import Form from './src/QForm.vue';
 
-import QForm from './src/QForm.vue';
-
-/* istanbul ignore next */
-QForm.install = (app: App): void => {
-  app.component(QForm.name, QForm);
-};
+export const QForm = /* #__PURE__ */ withInstall(Form);
 
 export type {
   QFormProps,
@@ -16,4 +11,3 @@ export type {
   QFormProvider,
   QFormInstance
 } from './src/types';
-export default QForm as SFCWithInstall<App, typeof QForm>;

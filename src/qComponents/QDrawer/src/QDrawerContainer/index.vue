@@ -69,7 +69,7 @@ import type {
   QDrawerContainerProvider
 } from './types';
 
-export default defineComponent({
+export default /* #__PURE__ */ defineComponent({
   name: 'QDrawerContainer',
   componentName: 'QDrawerContainer',
 

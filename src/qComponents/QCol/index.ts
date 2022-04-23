@@ -1,13 +1,7 @@
-import type { App } from 'vue';
+import { withInstall } from '../helpers';
 
-import type { SFCWithInstall } from '#/helpers';
+import Col from './src/QCol.vue';
 
-import QCol from './src/QCol.vue';
-
-/* istanbul ignore next */
-QCol.install = (app: App): void => {
-  app.component(QCol.name, QCol);
-};
+export const QCol = /* #__PURE__ */ withInstall(Col);
 
 export type { QColProps, QColInstance } from './src/types';
-export default QCol as SFCWithInstall<App, typeof QCol>;

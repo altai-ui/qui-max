@@ -11,7 +11,7 @@ import type { ExtendedColumn } from '../../QTableContainer/types';
 
 import type { QTableTTotalCellProps, QTableTTotalCellInstance } from './types';
 
-export default defineComponent({
+export default /* #__PURE__ */ defineComponent({
   name: 'QTableTTotalCell',
   componentName: ' QTableTTotalCell',
 

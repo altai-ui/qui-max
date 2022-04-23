@@ -1,17 +1,11 @@
-import type { App } from 'vue';
+import { withInstall } from '../helpers';
 
-import type { SFCWithInstall } from '#/helpers';
+import RadioGroup from './src/QRadioGroup.vue';
 
-import QRadioGroup from './src/QRadioGroup.vue';
-
-/* istanbul ignore next */
-QRadioGroup.install = (app: App): void => {
-  app.component(QRadioGroup.name, QRadioGroup);
-};
+export const QRadioGroup = /* #__PURE__ */ withInstall(RadioGroup);
 
 export type {
   QRadioGroupProps,
   QRadioGroupProvider,
   QRadioGroupInstance
 } from './src/types';
-export default QRadioGroup as SFCWithInstall<App, typeof QRadioGroup>;

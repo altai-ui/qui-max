@@ -1,13 +1,7 @@
-import type { App } from 'vue';
+import { withInstall } from '../helpers';
 
-import type { SFCWithInstall } from '#/helpers';
+import ColorPicker from './src/QColorPicker.vue';
 
-import QColorPicker from './src/QColorPicker.vue';
-
-/* istanbul ignore next */
-QColorPicker.install = (app: App): void => {
-  app.component(QColorPicker.name, QColorPicker);
-};
+export const QColorPicker = /* #__PURE__ */ withInstall(ColorPicker);
 
 export type { QColorPickerProps, QColorPickerInstance } from './src/types';
-export default QColorPicker as SFCWithInstall<App, typeof QColorPicker>;

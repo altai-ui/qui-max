@@ -33,7 +33,7 @@ import type {
  * Form consists of `input`, `radio`, `select`, `checkbox` and so on.
  * With form, you can collect, verify and submit data. You must use QFormItem inside QForm
  */
-export default defineComponent({
+export default /* #__PURE__ */ defineComponent({
   name: 'QForm',
   componentName: 'QForm',
 

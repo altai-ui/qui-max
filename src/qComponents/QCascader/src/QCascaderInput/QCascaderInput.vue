@@ -30,7 +30,7 @@ import { defineComponent, inject, computed } from 'vue';
 import { isNumber, isEmpty } from 'lodash-es';
 
 import { t } from '@/qComponents/locale';
-import QInput from '@/qComponents/QInput';
+import { QInput } from '@/qComponents/QInput';
 import type { Nullable } from '#/helpers';
 
 import findFullPath from '../helpers/findFullPath';
@@ -38,7 +38,7 @@ import type { QCascaderProvider } from '../types';
 
 import type { QCascaderInputInstance } from './types';
 
-export default defineComponent({
+export default /* #__PURE__ */ defineComponent({
   name: 'QCascaderInput',
   components: { QInput },
   componentName: 'QCascaderInput',

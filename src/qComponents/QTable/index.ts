@@ -1,13 +1,8 @@
-import type { App } from 'vue';
+import { withInstall } from '../helpers';
 
-import type { SFCWithInstall } from '#/helpers';
+import Table from './src/QTable.vue';
 
-import QTable from './src/QTable.vue';
-
-/* istanbul ignore next */
-QTable.install = (app: App): void => {
-  app.component(QTable.name, QTable);
-};
+export const QTable = /* #__PURE__ */ withInstall(Table);
 
 export type {
   QTableProps,
@@ -16,4 +11,3 @@ export type {
   QTablePropSortBy,
   QTableInstance
 } from './src/types';
-export default QTable as SFCWithInstall<App, typeof QTable>;

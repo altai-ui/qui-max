@@ -1,13 +1,7 @@
-import type { App } from 'vue';
+import { withInstall } from '../helpers';
 
-import type { SFCWithInstall } from '#/helpers';
+import Checkbox from './src/QCheckbox.vue';
 
-import QCheckbox from './src/QCheckbox.vue';
-
-/* istanbul ignore next */
-QCheckbox.install = (app: App): void => {
-  app.component(QCheckbox.name, QCheckbox);
-};
+export const QCheckbox = /* #__PURE__ */ withInstall(Checkbox);
 
 export type { QCheckboxProps, QCheckboxInstance } from './src/types';
-export default QCheckbox as SFCWithInstall<App, typeof QCheckbox>;

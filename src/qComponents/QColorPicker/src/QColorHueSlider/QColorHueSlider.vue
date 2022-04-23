@@ -33,7 +33,7 @@ import draggable from '../utils/draggable';
 import type { QPickerDropdownProvider } from '../QPickerDropdown';
 import type { QColorHueSliderInstance } from './types';
 
-export default defineComponent({
+export default /* #__PURE__ */ defineComponent({
   name: 'QColorHueSlider',
   componentName: 'QColorHueSlider',
 

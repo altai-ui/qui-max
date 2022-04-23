@@ -41,7 +41,7 @@ import { defineComponent, ref, reactive, inject } from 'vue';
 import { QDialogAction, QDialogContent } from '@/qComponents';
 import type { QDialogContainerProvider } from '@/qComponents';
 
-export default defineComponent({
+export default /* #__PURE__ */ defineComponent({
   name: 'DialogFormTest',
 
   components: { QDialogContent },

@@ -21,7 +21,7 @@ import type {
   QTableCellCheckboxInstance
 } from './types';
 
-export default defineComponent({
+export default /* #__PURE__ */ defineComponent({
   name: 'QTableCellCheckbox',
   componentName: ' QTableCellCheckbox',
 

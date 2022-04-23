@@ -60,7 +60,7 @@ import type {
   QDialogContainerProvider
 } from './types';
 
-export default defineComponent({
+export default /* #__PURE__ */ defineComponent({
   name: 'QDialogContainer',
   componentName: 'QDialogContainer',
 

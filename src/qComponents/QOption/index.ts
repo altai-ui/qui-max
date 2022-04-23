@@ -1,13 +1,8 @@
-import type { App } from 'vue';
+import { withInstall } from '../helpers';
 
-import type { SFCWithInstall } from '#/helpers';
+import Option from './src/QOption.vue';
 
-import QOption from './src/QOption.vue';
-
-/* istanbul ignore next */
-QOption.install = (app: App): void => {
-  app.component(QOption.name, QOption);
-};
+export const QOption = /* #__PURE__ */ withInstall(Option);
 
 export type {
   QOptionInstance,
@@ -15,4 +10,3 @@ export type {
   QOptionModel,
   QOptionProps
 } from './src/types';
-export default QOption as SFCWithInstall<App, typeof QOption>;

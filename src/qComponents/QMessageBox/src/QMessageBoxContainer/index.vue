@@ -59,7 +59,7 @@ import {
 } from 'vue';
 import type { PropType } from 'vue';
 
-import QScrollbar from '@/qComponents/QScrollbar';
+import { QScrollbar } from '@/qComponents/QScrollbar';
 import { isServer } from '@/qComponents/constants/isServer';
 import { getConfig } from '@/qComponents/config';
 
@@ -82,7 +82,7 @@ import type {
   QMessageBoxContainerInstance
 } from './types';
 
-export default defineComponent({
+export default /* #__PURE__ */ defineComponent({
   name: 'QMessageBoxContainer',
   componentName: 'QMessageBoxContainer',
 

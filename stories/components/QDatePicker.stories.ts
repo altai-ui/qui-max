@@ -2,7 +2,7 @@ import { defineComponent, reactive, watch } from 'vue';
 import type { Meta, Story } from '@storybook/vue3';
 import { addMonths, startOfYesterday, subMonths, subWeeks } from 'date-fns';
 
-import QDatePicker from '@/qComponents/QDatePicker';
+import { QDatePicker } from '@/qComponents/QDatePicker';
 import type {
   QDatePickerPropModelValue,
   QDatePickerProps

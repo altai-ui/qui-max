@@ -1,8 +1,8 @@
 import type { Story, Meta } from '@storybook/vue3';
 import { defineComponent, reactive } from 'vue';
 
+import { QUpload } from '@/qComponents/QUpload';
 import type { QUploadProps, QUploadFile } from '@/qComponents/QUpload';
-import QUpload from '@/qComponents/QUpload';
 import type { Nullable } from '#/helpers';
 
 interface FormModelFile extends QUploadFile {

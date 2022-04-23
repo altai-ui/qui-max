@@ -1,13 +1,8 @@
-import type { App } from 'vue';
+import { withInstall } from '../helpers';
 
-import type { SFCWithInstall } from '#/helpers';
+import FormItem from './src/QFormItem.vue';
 
-import QFormItem from './src/QFormItem.vue';
-
-/* istanbul ignore next */
-QFormItem.install = (app: App): void => {
-  app.component(QFormItem.name, QFormItem);
-};
+export const QFormItem = /* #__PURE__ */ withInstall(FormItem);
 
 export type {
   QFormItemProps,
@@ -16,4 +11,3 @@ export type {
   QFormItemProvider,
   QFormItemInstance
 } from './src/types';
-export default QFormItem as SFCWithInstall<App, typeof QFormItem>;

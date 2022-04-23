@@ -125,7 +125,7 @@ import { getConfig } from '@/qComponents/config';
 import { t } from '@/qComponents/locale';
 import { notNull, validateArray } from '@/qComponents/helpers';
 import { useMediaQuery } from '@/qComponents/hooks';
-import QInput from '@/qComponents/QInput';
+import { QInput } from '@/qComponents/QInput';
 import { useDialog } from '@/qComponents/QDialog';
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QInputInstance } from '@/qComponents/QInput';
@@ -158,7 +158,7 @@ import type {
 } from './types';
 import { QDatePickerPanelComponent } from './types';
 
-export default defineComponent({
+export default /* #__PURE__ */ defineComponent({
   name: 'QDatePicker',
   componentName: 'QDatePicker',
   components: { QInput },

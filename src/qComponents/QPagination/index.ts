@@ -1,13 +1,7 @@
-import type { App } from 'vue';
+import { withInstall } from '../helpers';
 
-import type { SFCWithInstall } from '#/helpers';
+import Pagination from './src/QPagination.vue';
 
-import QPagination from './src/QPagination.vue';
-
-/* istanbul ignore next */
-QPagination.install = (app: App): void => {
-  app.component(QPagination.name, QPagination);
-};
+export const QPagination = /* #__PURE__ */ withInstall(Pagination);
 
 export type { QPaginationProps, QPaginationInstance } from './src/types';
-export default QPagination as SFCWithInstall<App, typeof QPagination>;

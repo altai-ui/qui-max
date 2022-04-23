@@ -1,7 +1,7 @@
 import type { Meta, Story } from '@storybook/vue3';
 import { defineComponent, ref } from 'vue';
 
-import QTag from '@/qComponents/QTag';
+import { QTag } from '@/qComponents/QTag';
 import type { QTagProps } from '@/qComponents/QTag';
 
 const storyMetadata: Meta = {

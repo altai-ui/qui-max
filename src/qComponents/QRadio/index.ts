@@ -1,13 +1,7 @@
-import type { App } from 'vue';
+import { withInstall } from '../helpers';
 
-import type { SFCWithInstall } from '#/helpers';
+import Radio from './src/QRadio.vue';
 
-import QRadio from './src/QRadio.vue';
-
-/* istanbul ignore next */
-QRadio.install = (app: App): void => {
-  app.component(QRadio.name, QRadio);
-};
+export const QRadio = /* #__PURE__ */ withInstall(Radio);
 
 export type { QRadioProps, QRadioInstance } from './src/types';
-export default QRadio as SFCWithInstall<App, typeof QRadio>;

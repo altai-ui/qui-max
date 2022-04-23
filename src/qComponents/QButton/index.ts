@@ -1,13 +1,7 @@
-import type { App } from 'vue';
+import { withInstall } from '../helpers';
 
-import type { SFCWithInstall } from '#/helpers';
+import Button from './src/QButton.vue';
 
-import QButton from './src/QButton.vue';
-
-/* istanbul ignore next */
-QButton.install = (app: App): void => {
-  app.component(QButton.name, QButton);
-};
+export const QButton = /* #__PURE__ */ withInstall(Button);
 
 export type { QButtonProps, QButtonInstance } from './src/types';
-export default QButton as SFCWithInstall<App, typeof QButton>;

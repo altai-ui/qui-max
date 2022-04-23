@@ -1,13 +1,7 @@
-import type { App } from 'vue';
+import { withInstall } from '../helpers';
 
-import type { SFCWithInstall } from '#/helpers';
+import DatePicker from './src/QDatePicker.vue';
 
-import QDatePicker from './src/QDatePicker.vue';
-
-/* istanbul ignore next */
-QDatePicker.install = (app: App): void => {
-  app.component(QDatePicker.name, QDatePicker);
-};
+export const QDatePicker = /* #__PURE__ */ withInstall(DatePicker);
 
 export type { QDatePickerPropModelValue, QDatePickerProps } from './src/types';
-export default QDatePicker as SFCWithInstall<App, typeof QDatePicker>;

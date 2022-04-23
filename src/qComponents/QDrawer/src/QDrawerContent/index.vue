@@ -25,14 +25,14 @@
 <script lang="ts">
 import { defineComponent, inject } from 'vue';
 
-import QScrollbar from '@/qComponents/QScrollbar';
+import { QScrollbar } from '@/qComponents/QScrollbar';
 
 import type { Nullable } from '#/helpers';
 
 import type { QDrawerContainerProvider } from '../QDrawerContainer';
 import type { QDrawerContentInstance, QDrawerContentProps } from './types';
 
-export default defineComponent({
+export default /* #__PURE__ */ defineComponent({
   name: 'QDrawerContent',
   componentName: 'QDrawerContent',
 

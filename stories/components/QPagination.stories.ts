@@ -1,7 +1,7 @@
 import type { Meta, Story } from '@storybook/vue3';
 import { defineComponent, ref } from 'vue';
 
-import QPagination from '@/qComponents/QPagination';
+import { QPagination } from '@/qComponents/QPagination';
 import type { QPaginationProps } from '@/qComponents/QPagination';
 
 const storyMetadata: Meta = {

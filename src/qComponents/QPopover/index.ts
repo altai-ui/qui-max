@@ -1,13 +1,7 @@
-import type { App } from 'vue';
+import { withInstall } from '../helpers';
 
-import type { SFCWithInstall } from '#/helpers';
+import Popover from './src/QPopover.vue';
 
-import QPopover from './src/QPopover.vue';
-
-/* istanbul ignore next */
-QPopover.install = (app: App): void => {
-  app.component(QPopover.name, QPopover);
-};
+export const QPopover = /* #__PURE__ */ withInstall(Popover);
 
 export type { QPopoverProps, QPopoveInstance } from './src/types';
-export default QPopover as SFCWithInstall<App, typeof QPopover>;

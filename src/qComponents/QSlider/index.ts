@@ -1,16 +1,11 @@
-import type { App } from 'vue';
+import { withInstall } from '../helpers';
 
-import type { SFCWithInstall } from '#/helpers';
+import Slider from './src/QSlider.vue';
 
-import QSlider from './src/QSlider.vue';
-
-QSlider.install = (app: App): void => {
-  app.component(QSlider.name, QSlider);
-};
+export const QSlider = /* #__PURE__ */ withInstall(Slider);
 
 export type {
   QSliderProps,
   QSliderPropModelValue,
   QSliderPropData
 } from './src/types';
-export default QSlider as SFCWithInstall<App, typeof QSlider>;

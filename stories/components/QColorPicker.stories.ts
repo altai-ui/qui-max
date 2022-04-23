@@ -2,7 +2,7 @@ import type { Meta, Story } from '@storybook/vue3';
 import { defineComponent, ref } from 'vue';
 import { placements } from '@popperjs/core/lib/enums';
 
-import QColorPicker from '@/qComponents/QColorPicker';
+import { QColorPicker } from '@/qComponents/QColorPicker';
 import type { QColorPickerProps } from '@/qComponents/QColorPicker';
 
 const storyMetadata: Meta = {

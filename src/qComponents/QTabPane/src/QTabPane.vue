@@ -27,7 +27,7 @@ import type { Optional } from '#/helpers';
 
 import type { QTabPaneProps, QTabPaneInstance } from './types';
 
-export default defineComponent({
+export default /* #__PURE__ */ defineComponent({
   name: 'QTabPane',
   componentName: 'QTabPane',
 

@@ -1,8 +1,8 @@
 import { defineComponent, watch, reactive } from 'vue';
 import type { Meta, Story } from '@storybook/vue3';
 
-import QSelect from '@/qComponents/QSelect';
-import QOption from '@/qComponents/QOption';
+import { QSelect } from '@/qComponents/QSelect';
+import { QOption } from '@/qComponents/QOption';
 import type { QSelectProps } from '@/qComponents/QSelect';
 
 const storyMetadata: Meta = {

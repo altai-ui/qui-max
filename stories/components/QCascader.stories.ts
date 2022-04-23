@@ -1,7 +1,7 @@
 import type { Meta, Story } from '@storybook/vue3';
 import { defineComponent, ref } from 'vue';
 
-import QCascader from '@/qComponents/QCascader';
+import { QCascader } from '@/qComponents/QCascader';
 import type { QCascaderProps } from '@/qComponents/QCascader';
 
 const storyMetadata: Meta = {

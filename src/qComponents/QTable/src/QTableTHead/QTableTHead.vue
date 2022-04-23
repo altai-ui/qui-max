@@ -39,7 +39,7 @@ import type {
 import QTableTHeadCell from './QTableTHeadCell/QTableTHeadCell.vue';
 import type { QTableTHeadInstance } from './types';
 
-export default defineComponent({
+export default /* #__PURE__ */ defineComponent({
   name: 'QTableTHead',
   componentName: ' QTableTHead',
 

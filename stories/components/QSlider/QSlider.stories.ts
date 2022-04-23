@@ -1,6 +1,6 @@
 import type { Meta } from '@storybook/vue3';
 
-import QSlider from '@/qComponents/QSlider';
+import { QSlider } from '@/qComponents/QSlider';
 
 import Default from './Default';
 import SlotCaption from './SlotCaption';

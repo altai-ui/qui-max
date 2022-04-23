@@ -40,7 +40,7 @@ import type { Nullable } from '#/helpers';
 
 import type { QRadioProps, QRadioInstance } from './types';
 
-export default defineComponent({
+export default /* #__PURE__ */ defineComponent({
   name: 'QRadio',
   componentName: 'QRadio',
 

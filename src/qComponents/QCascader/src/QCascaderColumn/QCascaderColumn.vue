@@ -37,7 +37,7 @@ import {
   watch
 } from 'vue';
 
-import QScrollbar from '@/qComponents/QScrollbar';
+import { QScrollbar } from '@/qComponents/QScrollbar';
 import type { Nullable } from '#/helpers';
 
 import findAllLeaves from '../helpers/findAllLeaves';
@@ -54,7 +54,7 @@ import type {
 
 const EXPAND_EVENT = 'expand';
 
-export default defineComponent({
+export default /* #__PURE__ */ defineComponent({
   name: 'QCascaderColumn',
   componentName: 'QCascaderColumn',
 

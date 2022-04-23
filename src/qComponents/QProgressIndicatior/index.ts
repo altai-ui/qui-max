@@ -27,6 +27,8 @@ const useProgressIndicatior = (): Nillable<QProgressIndicatior> => {
     : progressIndicatior;
 };
 
-export { useProgressIndicatior };
+export {
+  QProgressIndicatiorPlugin as QProgressIndicatior,
+  useProgressIndicatior
+};
 export type { QProgressIndicatiorPluginOptions };
-export default QProgressIndicatiorPlugin;

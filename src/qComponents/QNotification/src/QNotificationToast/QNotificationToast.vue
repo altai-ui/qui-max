@@ -43,7 +43,7 @@ import type {
   QNotificationToastInstance
 } from './types';
 
-export default defineComponent({
+export default /* #__PURE__ */ defineComponent({
   name: 'QNotificationToast',
   componentName: 'QNotificationToast',
 

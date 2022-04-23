@@ -14,7 +14,11 @@
         <q-row>
           <q-col cols="4">
             <div class="label">Default:</div>
-            <q-select v-model="value" placeholder="Pick an option" clearable>
+            <q-select
+              v-model="value"
+              placeholder="Pick an option"
+              clearable
+            >
               <q-option
                 v-for="item in options"
                 :key="item.value"

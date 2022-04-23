@@ -14,10 +14,22 @@
         <q-row>
           <q-col cols="3">
             <div class="label">vertical:</div>
-            <q-radio-group v-model="value" @change="handleChange">
-              <q-radio :value="1" label="Option A"></q-radio>
-              <q-radio :value="2" label="Option B"></q-radio>
-              <q-radio :value="3" label="Option C"></q-radio>
+            <q-radio-group
+              v-model="value"
+              @change="handleChange"
+            >
+              <q-radio
+                :value="1"
+                label="Option A"
+              ></q-radio>
+              <q-radio
+                :value="2"
+                label="Option B"
+              ></q-radio>
+              <q-radio
+                :value="3"
+                label="Option C"
+              ></q-radio>
             </q-radio-group>
           </q-col>
           <q-col cols="8">
@@ -27,9 +39,18 @@
               direction="horizontal"
               @change="handleChange"
             >
-              <q-radio :value="1" label="Option A"></q-radio>
-              <q-radio :value="2" label="Option B"></q-radio>
-              <q-radio :value="3" label="Option C"></q-radio>
+              <q-radio
+                :value="1"
+                label="Option A"
+              ></q-radio>
+              <q-radio
+                :value="2"
+                label="Option B"
+              ></q-radio>
+              <q-radio
+                :value="3"
+                label="Option C"
+              ></q-radio>
             </q-radio-group>
           </q-col>
         </q-row>

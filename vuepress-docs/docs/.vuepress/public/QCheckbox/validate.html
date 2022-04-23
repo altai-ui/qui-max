@@ -10,7 +10,10 @@
 
   <body>
     <div id="app">
-      <q-form :model="model" :rules="rules">
+      <q-form
+        :model="model"
+        :rules="rules"
+      >
         <q-form-item prop="checkbox">
           <q-checkbox
             v-model="model.checkbox"

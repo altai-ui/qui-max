@@ -2,13 +2,23 @@
   <head>
     <meta charset="UTF-8" />
     <!-- import CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/@qvant/qui/dist/qui.css" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/@qvant/qui/dist/qui.css"
+    />
   </head>
 
   <body>
     <div id="app">
-      <q-checkbox-group v-model="checkedCities" disabled>
-        <q-checkbox v-for="city in cities" :key="city" :label="city" />
+      <q-checkbox-group
+        v-model="checkedCities"
+        disabled
+      >
+        <q-checkbox
+          v-for="city in cities"
+          :key="city"
+          :label="city"
+        />
       </q-checkbox-group>
     </div>
   </body>

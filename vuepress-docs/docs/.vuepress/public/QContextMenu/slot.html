@@ -10,8 +10,14 @@
 
   <body>
     <div id="app">
-      <div class="block" style="width: 130px; margin: 20px auto">
-        <q-context-menu :menu-items="menuItems" @action="handleAction">
+      <div
+        class="block"
+        style="width: 130px; margin: 20px auto"
+      >
+        <q-context-menu
+          :menu-items="menuItems"
+          @action="handleAction"
+        >
           <template v-slot>
             <q-button size="small">Custom trigger</q-button>
           </template>

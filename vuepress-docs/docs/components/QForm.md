@@ -15,7 +15,11 @@ Default view:
 Using in template:
 
 ```vue
-  <q-form ref="form" :model="formModel" :rules="rules">
+<q-form
+  ref="form"
+  :model="formModel"
+  :rules="rules"
+>
     <q-form-item label="Name" prop="name">
       <q-input v-model="formModel.name" type="text" />
     </q-form-item>
@@ -139,7 +143,9 @@ const rules = reactive({
   }
 });
 ```
+
 Types:
+
 ```ts
 // import type from lib
 import { QFormPropRules } from '@qvant/qui-max';
@@ -173,6 +179,7 @@ export interface RuleItem {
 }
 ...
 ```
+
 All nested types [here](https://github.com/Qvant-lab/qui-max/blob/main/src/qComponents/QFormItem/src/types.ts)
 
 ### disabled
@@ -192,7 +199,9 @@ Whether are all components in this form disabled. If set to true, it cannot be o
 ...
 </q-form>
 ```
+
 `disabled` affects on all form controls.
+
 <iframe style="width: 100%; height: 340px" scrolling="no" frameborder="no" src="/QForm/disabled.html"></iframe>
 
 ### hideRequiredAsterisk
@@ -277,7 +286,7 @@ A form item's label.
 ...
 ```
 
-### sublabel 
+### sublabel
 
 The sublabel is similar to `label`, but on the right side ans smaller.
 
@@ -320,7 +329,7 @@ Whether to show the error message after validation.
 
 ## QFormItem slots
 
-### default 
+### default
 
 Put content inside form item's body.
 

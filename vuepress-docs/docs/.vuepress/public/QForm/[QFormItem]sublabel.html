@@ -13,9 +13,20 @@
       <div class="block">
         <q-row>
           <q-col cols="6">
-            <q-form ref="form" :model="formModel" :rules="rules">
-              <q-form-item label="Name" prop="name" sublabel="Full Name">
-                <q-input v-model="formModel.name" type="text" />
+            <q-form
+              ref="form"
+              :model="formModel"
+              :rules="rules"
+            >
+              <q-form-item
+                label="Name"
+                prop="name"
+                sublabel="Full Name"
+              >
+                <q-input
+                  v-model="formModel.name"
+                  type="text"
+                />
               </q-form-item>
             </q-form>
           </q-col>

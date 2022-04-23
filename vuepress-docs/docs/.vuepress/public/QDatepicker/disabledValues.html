@@ -14,7 +14,10 @@
         <q-row>
           <q-col cols="6">
             <p>disable due today</p>
-            <q-date-picker v-model="value" :disabled-values="disabledValues" />
+            <q-date-picker
+              v-model="value"
+              :disabled-values="disabledValues"
+            />
           </q-col>
           <q-col cols="6">
             <p>disable range - tree days in two days from today</p>

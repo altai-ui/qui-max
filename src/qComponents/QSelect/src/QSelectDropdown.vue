@@ -47,7 +47,9 @@
         <div
           v-else
           class="q-select-dropdown__empty"
-        >{{ emptyText }}</div>
+        >
+          {{ emptyText }}
+        </div>
       </template>
 
       <div

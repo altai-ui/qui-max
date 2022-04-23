@@ -61,6 +61,7 @@ setup() {
 Array of item's settings.
 
 `menuItems` MUST be an `Array` of `Object`s, each object MUST contain:
+
 - `action` - an item's value (will be passed to handler)
 - `name` - a button label
 - `icon` - a button prefix icon
@@ -86,7 +87,6 @@ interface MenuItem {
 
 The dropdown's position around the trigger button.
 
-<!-- prettier-ignore-start -->
 ```vue {4}
 <q-context-menu
   :menu-items="menuItems"
@@ -94,7 +94,6 @@ The dropdown's position around the trigger button.
   @action="handleAction"
 />
 ```
-<!-- prettier-ignore-end -->
 
 <iframe height="200" style="width: 100%;" scrolling="no" frameborder="no" src="/QContextMenu/position.html"></iframe>
 
@@ -105,7 +104,6 @@ The dropdown's position around the trigger button.
 
 Specifies a target element where `QContextMenu` will be moved from original layout place. (has to be a valid query selector, or an HTMLElement).
 
-<!-- prettier-ignore-start -->
 ```vue {4}
 <q-context-menu
   :menu-items="menuItems"
@@ -113,7 +111,6 @@ Specifies a target element where `QContextMenu` will be moved from original layo
   @action="handleAction"
 />
 ```
-<!-- prettier-ignore-end -->
 
 ## Events
 
@@ -121,7 +118,6 @@ Specifies a target element where `QContextMenu` will be moved from original layo
 
 Handle click on menu item.
 
-<!-- prettier-ignore-start -->
 ```vue {3}
 <q-context-menu
   :menu-items="menuItems"
@@ -140,7 +136,6 @@ setup() {
   return { handleAction };
 }
 ```
-<!-- prettier-ignore-end -->
 
 ## Slots
 

@@ -19,7 +19,10 @@ Default view:
 Using in template:
 
 ```vue
-<q-cascader v-model="modelValue" :options="options" />
+<q-cascader
+  v-model="modelValue"
+  :options="options"
+/>
 ```
 
 Using in component instance:
@@ -203,7 +206,6 @@ Whether all path to value in tags is shown.
 
 Using in template:
 
-<!-- prettier-ignore-start -->
 ```vue {4}
 <q-cascader
   v-model="modelValue"
@@ -211,7 +213,6 @@ Using in template:
   :all-levels-shown="false"
 />
 ```
-<!-- prettier-ignore-end -->
 
 <iframe height="250" style="width: 100%;" scrolling="no" frameborder="no" src="/QCascader/allLevelsShown.html"></iframe>
 
@@ -224,7 +225,6 @@ The separator symbol in the selected value.
 
 Using in template:
 
-<!-- prettier-ignore-start -->
 ```vue {4}
 <q-cascader
   v-model="modelValue"
@@ -232,7 +232,6 @@ Using in template:
   separator=" | "
 />
 ```
-<!-- prettier-ignore-end -->
 
 <iframe height="250" style="width: 100%;" scrolling="no" frameborder="no" src="/QCascader/separator.html"></iframe>
 
@@ -243,7 +242,6 @@ Using in template:
 
 Whether QCascader accepts multiple values. Pass array as `modelValue`.
 
-<!-- prettier-ignore-start -->
 ```vue {4}
 <q-cascader
   v-model="modelValue"
@@ -251,7 +249,6 @@ Whether QCascader accepts multiple values. Pass array as `modelValue`.
   multiple
 />
 ```
-<!-- prettier-ignore-end -->
 
 <iframe height="250" style="width: 100%;" scrolling="no" frameborder="no" src="/QCascader/multiple.html"></iframe>
 
@@ -262,7 +259,6 @@ Whether QCascader accepts multiple values. Pass array as `modelValue`.
 
 Whether QCascader is clearable.
 
-<!-- prettier-ignore-start -->
 ```vue {4}
 <q-cascader
   v-model="modelValue"
@@ -270,7 +266,6 @@ Whether QCascader is clearable.
   clearable
 />
 ```
-<!-- prettier-ignore-end -->
 
 ### disabled
 
@@ -279,7 +274,6 @@ Whether QCascader is clearable.
 
 Whether QCascader is disabled.
 
-<!-- prettier-ignore-start -->
 ```vue {4}
 <q-cascader
   v-model="modelValue"
@@ -287,7 +281,6 @@ Whether QCascader is disabled.
   disabled
 />
 ```
-<!-- prettier-ignore-end -->
 
 ### checkStrictly
 
@@ -296,7 +289,6 @@ Whether QCascader is disabled.
 
 Checks each value as independent. Use for selecting category as value instead of it's children.
 
-<!-- prettier-ignore-start -->
 ```vue {4}
 <q-cascader
   v-model="modelValue"
@@ -304,7 +296,6 @@ Checks each value as independent. Use for selecting category as value instead of
   check-strictly
 />
 ```
-<!-- prettier-ignore-end -->
 
 <iframe height="250" style="width: 100%;" scrolling="no" frameborder="no" src="/QCascader/checkStrictly.html"></iframe>
 
@@ -317,15 +308,14 @@ Checks each value as independent. Use for selecting category as value instead of
 
 Hide tags in counter.
 
-<!-- prettier-ignore-start -->
 ```vue {4,5}
 <q-cascader
   v-model="modelValue"
   :options="options"
-  collapse-tags multiple
+  collapse-tags
+  multiple
 />
 ```
-<!-- prettier-ignore-end -->
 
 <iframe height="250" style="width: 100%;" scrolling="no" frameborder="no" src="/QCascader/collapseTags.html"></iframe>
 
@@ -343,7 +333,6 @@ As native placeholder.
 
 Specifies a target element where QCascader will be moved from original layout place. (has to be a valid query selector, or an HTMLElement).
 
-<!-- prettier-ignore-start -->
 ```vue {4}
 <q-cascader
   v-model="modelValue"
@@ -351,7 +340,6 @@ Specifies a target element where QCascader will be moved from original layout pl
   teleport-to="body"
 />
 ```
-<!-- prettier-ignore-end -->
 
 ## Events
 

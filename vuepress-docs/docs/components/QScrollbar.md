@@ -4,7 +4,7 @@ QScrollbar allows you to move the window viewing area.
 
 ## Examples
 
-Types: 
+Types:
 
 <iframe height="400" style="width: 100%;" scrolling="no" frameborder="no" src="/QScrollbar/default.html"></iframe>
 
@@ -38,7 +38,10 @@ Defines permanent visibility.
 Code example:
 
 ```vue
-<q-scrollbar theme="secondary" visible>Lorem ipsum dolor...</q-scrollbar>
+<q-scrollbar
+  theme="secondary"
+  visible
+>Lorem ipsum dolor...</q-scrollbar>
 ```
 
 Result:
@@ -85,7 +88,7 @@ Example:
 </template>
 ```
 
-Result: 
+Result:
 
 <iframe height="250" style="width: 100%;" scrolling="no" frameborder="no" src="/QScrollbar/scrollto.html"></iframe>
 

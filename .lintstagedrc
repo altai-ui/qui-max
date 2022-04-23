@@ -3,5 +3,6 @@
   "*.scss": ["stylelint --fix", "prettier --write"],
   "*.{vue,html}": ["stylelint --fix", "prettier --write", "eslint --fix"],
   "{*.json,.*rc}": ["prettier --parser json --write"],
-  "*.{yaml,yml}": ["prettier --parser yaml --write"]
+  "*.{yaml,yml}": ["prettier --parser yaml --write"],
+  "*.md": ["prettier --write"]
 }

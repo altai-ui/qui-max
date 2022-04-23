@@ -85,7 +85,10 @@ If checkbox wrapped in `QFormItem`, prop `validateEvent` defines if checkbox `ch
 Code Example
 
 ```vue {6}
-<q-form :model="model" :rules="rules">
+<q-form
+  :model="model"
+  :rules="rules"
+>
   <q-form-item prop="checkbox">
     <q-checkbox
       v-model="model.checkbox"
@@ -113,7 +116,10 @@ Alias for [update:modelValue](#update-modelvalue)
 In template:
 
 ```vue
-<q-checkbox v-model="model" @change="changeHandler" />
+<q-checkbox
+  v-model="model"
+  @change="changeHandler"
+/>
 ```
 
 In setup:

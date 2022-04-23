@@ -21,9 +21,9 @@ Written in TypeScript with Composition API 🔥
 A component's library helping us build great products for our customers.
 This library for Vue 3.x
 
-🏓  [Storybook (live demo)](https://qui-max.netlify.app/?path=/story/intro--page)
-  
-📚  [Documentation (New!)](https://qui-docs.netlify.app/)
+🏓 [Storybook (live demo)](https://qui-max.netlify.app/?path=/story/intro--page)
+
+📚 [Documentation (New!)](https://qui-docs.netlify.app/)
 
 Qui for Vue 2.x is [here](https://github.com/Qvant-lab/qui)!
 
@@ -102,7 +102,8 @@ import {
   createQui,
   QButton,
   QProgressIndicatior,
-  localeRu, // import default messages for different locales
+  // import default messages for different locales
+  localeRu
 } from '@qvant/qui-max';
 
 // import required styles

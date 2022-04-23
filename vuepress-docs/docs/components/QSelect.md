@@ -29,11 +29,10 @@ type QOptionPropValue = string | number | Record<string, unknown>;
 `modelValue` as `String`:
 
 Template:
+
 ```vue {3}
 <template>
-  <q-select
-    v-model="value"
-  >
+  <q-select v-model="value">
     <q-option
       v-for="item in options"
       :key="item"
@@ -43,26 +42,30 @@ Template:
   </q-select>
 </template>
 ```
+
 Component instance:
+
 ```js {4}
 export default {
   setup() {
     const options = ['value', 'value2'];
     const value = ref('value');
-    return { value }
+    return { value };
   }
-}
+};
 ```
+
 `modelValue` as `Object`:
 
 ::: tip NOTE
-  The `modelValue` as `Object` MUST be used with one of requirements:
+The `modelValue` as `Object` MUST be used with one of requirements:
 :::
 
 - the `modelValue` `MUST` contain the `value` field.
 - set your custom [value-key](#valuekey) to `<q-select value-key="...">` to bind you `value` with options.
 
 Template:
+
 ```vue {7}
 <template>
   <q-select v-model="modelValue">
@@ -75,7 +78,9 @@ Template:
   </q-select>
 </template>
 ```
+
 Component instance:
+
 ```js {5}
 export default {
   setup() {
@@ -86,22 +91,23 @@ export default {
     });
 
     const options = [
-    {
-      value: 'value1',
-      label: 'Option 1'
-    },
-    {
-      value: 'value2',
-      label: 'Option 2'
-    }];
+      {
+        value: 'value1',
+        label: 'Option 1'
+      },
+      {
+        value: 'value2',
+        label: 'Option 2'
+      }
+    ];
 
-    return { modelValue, options }
+    return { modelValue, options };
   }
-}
+};
 ```
 
 ::: tip OPTIONS
-The `modelValue` syncs with `options` by the `value` prop. So don't forget to pass a `value` in `<q-option>` 
+The `modelValue` syncs with `options` by the `value` prop. So don't forget to pass a `value` in `<q-option>`
 <br />
 [Learn more](#qoption) about `<q-option>`
 :::
@@ -114,6 +120,7 @@ The `modelValue` syncs with `options` by the `value` prop. So don't forget to pa
 Custom key name for `value` when the `modelValue` is object.
 
 Template:
+
 ```vue {4}
 <template>
   <q-select
@@ -129,7 +136,9 @@ Template:
   </q-select>
 </template>
 ```
+
 Component instance:
+
 ```js {5,11,15}
 export default {
   setup() {
@@ -155,7 +164,6 @@ export default {
 }
 ```
 
-
 ### multiple
 
 - Type: `Boolean`
@@ -165,14 +173,15 @@ You can think `multiple` is a mode allows you to select several values. There ar
 
 #### multiple additional props
 
-| Prop            | Type          | Default        | Description                               |
-| --------------- |:-------------:| --------------:|:-----------------------------------------:|
-| `multipleLimit` | `Number`      | `0`            | Maximum number of options user can select when `multiple` is true. No limit when set to `0` number.
-| `selectAllShown`| `Boolean`     | `false`        | Whether `Select all` button is shown      |
-| `selectAllText` | `String`      | `null`         | Custom `Select all` button text           |
-| `collapseTags`  | `Boolean`     | `false`        | Only `1` choosen option is shown inside input, the rest is hidden by counter
+| Prop             |   Type    | Default |                                             Description                                             |
+| ---------------- | :-------: | ------: | :-------------------------------------------------------------------------------------------------: |
+| `multipleLimit`  | `Number`  |     `0` | Maximum number of options user can select when `multiple` is true. No limit when set to `0` number. |
+| `selectAllShown` | `Boolean` | `false` |                                Whether `Select all` button is shown                                 |
+| `selectAllText`  | `String`  |  `null` |                                   Custom `Select all` button text                                   |
+| `collapseTags`   | `Boolean` | `false` |            Only `1` choosen option is shown inside input, the rest is hidden by counter             |
 
 #### multiple mode examples:
+
 <br />
 <iframe style="width: 100%; height: 500px" scrolling="no" frameborder="no" src="/QSelect/multiple.html"></iframe>
 
@@ -251,20 +260,22 @@ You can think `remote` is a mode, so there are a few additional props to customi
 
 #### remote additional props
 
-| Prop          | Type          | Default        | Description                               |
-| ------------- |:-------------:| --------------:|:-----------------------------------------:|
-| `loading`     | `Boolean`     | `false`        | Whether `QSelect` is loading.             |
-| `loadingText` | `String`      | `null`         | Text that is shown when `loading` is true.|
-| `loadMoreText`| `String`      | `null`         | Additional text in the end of options list is being shown when `canLoadMore` is `true`. Inform users you have more options on server and ask specify the query string. Use with `canLoadMore`:
-| `canLoadMore` | `Boolean`     | `false`        | Whether `loadMoreText` is shown.          |
-| `noMatchText` | `String`      | `null`         | When no matching happend                  |
-| `noDataText`  | `String`      | `null`         | When no options got                       |
+| Prop           |   Type    | Default |                                                                                          Description                                                                                           |
+| -------------- | :-------: | ------: | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
+| `loading`      | `Boolean` | `false` |                                                                                 Whether `QSelect` is loading.                                                                                  |
+| `loadingText`  | `String`  |  `null` |                                                                           Text that is shown when `loading` is true.                                                                           |
+| `loadMoreText` | `String`  |  `null` | Additional text in the end of options list is being shown when `canLoadMore` is `true`. Inform users you have more options on server and ask specify the query string. Use with `canLoadMore`: |
+| `canLoadMore`  | `Boolean` | `false` |                                                                                Whether `loadMoreText` is shown.                                                                                |
+| `noMatchText`  | `String`  |  `null` |                                                                                    When no matching happend                                                                                    |
+| `noDataText`   | `String`  |  `null` |                                                                                      When no options got                                                                                       |
 
 #### remote mode example:
+
 <br />
 <iframe style="width: 100%; height: 400px" scrolling="no" frameborder="no" src="/QSelect/remote.html"></iframe>
 
 Template:
+
 ```vue
 <template>
   <q-select
@@ -286,7 +297,9 @@ Template:
   </q-select>
 </template>
 ```
+
 Component instance:
+
 ```js
 export default {
   setup() {
@@ -307,7 +320,7 @@ export default {
         value: 'value3',
         label:
           'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
-      },
+      }
     ];
 
     const canLoadMore = Vue.ref(false);
@@ -335,7 +348,7 @@ export default {
       canLoadMore
     };
   }
-}
+};
 ```
 
 ### allowCreate
@@ -343,7 +356,7 @@ export default {
 - Type `Boolean`
 - Default: `false`
 
-Whether creating new items is allowed. 
+Whether creating new items is allowed.
 
 ::: warning
 To use allowCreate, `filterable` must be `true`.
@@ -386,7 +399,6 @@ As native [autocomplete](https://developer.mozilla.org/en-US/docs/Web/HTML/Attri
 
 Specifies a target element where `QSelect` will be moved from original layout place. (has to be a valid query selector, or an HTMLElement).
 
-<!-- prettier-ignore-start -->
 ```vue {4}
 <template>
   <q-select
@@ -395,7 +407,6 @@ Specifies a target element where `QSelect` will be moved from original layout pl
   />
 </template>
 ```
-<!-- prettier-ignore-end -->
 
 ## Events
 
@@ -531,6 +542,7 @@ Do not set any another content into default slot.
 ### empty
 
 Used to put your custom content istead of `<q-options>`
+
 ```vue {6-10}
 <template>
   <q-select
@@ -538,9 +550,7 @@ Used to put your custom content istead of `<q-options>`
     placeholder="Open to see the magic"
   >
     <template #empty>
-      <div class="block">
-        Magic! Your custom content
-      </div>
+      <div class="block">Magic! Your custom content</div>
     </template>
   </q-select>
 </template>
@@ -554,9 +564,7 @@ Used to put your custom content istead of `<q-options>`
 
 ```vue {5-10}
 <template>
-  <q-select
-    v-model="value"
-  >
+  <q-select v-model="value">
     <q-option
       v-for="item in options"
       :key="item.value"
@@ -580,10 +588,11 @@ export default {
   }
 }
 ```
-An Option's list MUST be an `Array` of `Strings`, `Numbers` or on `Objects`: 
+
+An Option's list MUST be an `Array` of `Strings`, `Numbers` or on `Objects`:
 
 ```ts
-type Options = (string | number | Option)[]
+type Options = (string | number | Option)[];
 
 interface Option {
   value: Nullable<QOptionPropValue>;
@@ -629,7 +638,7 @@ Whether option is disabled.
     v-model="value"
     placeholder="Pick an option"
   >
-    <q-option 
+    <q-option
       v-for="item in options"
       :key="item.value"
       :label="item.label"
@@ -661,3 +670,4 @@ export default {
     return { options, ... }
   }
 }
+```

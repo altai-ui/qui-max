@@ -9,11 +9,13 @@ To select or input a date. We support default type `Date` and `ISO`.
 ## Example
 
 Default view (Desktop):
+
 - viewport width > 768px
 
 <iframe style="width: 769px; height: 750px" scrolling="no" frameborder="no" src="/QDatepicker/main.html"></iframe>
 
 Default view (Mobile):
+
 - if width < 769px QDatepicker opens on popup
 - Example for iPhone SE's dimensions: (375 x 667)px
 
@@ -34,7 +36,7 @@ export default defineComponent({
 
     return { value };
   }
-})
+});
 ```
 
 ## Props
@@ -46,7 +48,8 @@ export default defineComponent({
 
 Binding value.
 
-`modelValue` depends on `type` prop. 
+`modelValue` depends on `type` prop.
+
 - For type `date`, `week`, `month`, `year` it MUST be a single value - `String` (ISO) or `Date`.
 - For type `daterange`, `monthrange`, `yearrange` it MUST be an `Array` of `String`'s (ISO) or `Date`'s
 
@@ -55,7 +58,9 @@ Binding value.
 import type { QDatePickerPropModelValue } from '@qvant/qui-max';
 
 // TS type
-type QDatePickerPropModelValue = Nullable<string | Date | [string, string] | [Date, Date]>;
+type QDatePickerPropModelValue = Nullable<
+  string | Date | [string, string] | [Date, Date]
+>;
 ```
 
 ### type
@@ -78,16 +83,14 @@ type QDatePickerPropType =
   | 'daterange'
   | 'monthrange'
   | 'yearrange';
-  ```
+```
 
-<!-- prettier-ignore-start -->
 ```vue {3}
 <q-date-picker
   v-model="value"
   type="date"
 />
 ```
-<!-- prettier-ignore-end -->
 
 See [example](./QDatepicker/#example) above.
 
@@ -98,23 +101,21 @@ See [example](./QDatepicker/#example) above.
 
 Sets custom date formatting in the input. We use `date-fns` formatting, so you should use their [config](https://date-fns.org/v2.28.0/docs/format)
 
-<!-- prettier-ignore-start -->
 ```vue {3}
 <q-date-picker
   v-model="value"
   format="yyyy/MM/dd"
 />
 ```
-<!-- prettier-ignore-end -->
 
 <iframe style="height: 367px; width: 769px" scrolling="no" frameborder="no" src="/QDatepicker/format.html"></iframe>
-
 
 ### outputFormat
 
 Defines output date format (what exactly will be as a `value`).
 
-There is only two options available: 
+There is only two options available:
+
 - Type `'date' | 'iso'`
 - Default: `'date'`
 
@@ -170,8 +171,9 @@ Defines date shortcuts, set any date to be able to select it faster.
 - Default `null`
 
 The `shortcuts` MUST be an `Array` of `Object`s, each object MUST contain:
+
 - `text` - shortcut's label (e.g `Today`, `Yestarday`, `A week ago`, etc.)
-- `value` - a shortcut's value as a `Date` 
+- `value` - a shortcut's value as a `Date`
 
 ```ts
 // import type from lib
@@ -212,7 +214,7 @@ export default defineComponent({
 
     return { value, shortcuts };
   }
-})
+});
 ```
 
 See [example](./QDatepicker/#example) above.
@@ -225,9 +227,10 @@ Defines the first day of the week. Sunday by default.
 - Default: `0`
 
 Each `number` correspondes a week day:
+
 - `0` - `monday`
 - `1` - `tuesday`
-- `2` - `wednesday` 
+- `2` - `wednesday`
 - `3` - `thursday`
 - `4` - `friday`
 - `5` - `saturday`
@@ -237,7 +240,7 @@ Each `number` correspondes a week day:
 // start with monday
 <q-date-picker
   v-model="value"
-  :first-day-of-week="1" 
+  :first-day-of-week="1"
 />
 ```
 
@@ -279,6 +282,7 @@ Separator symbol in the middle of the ranged types.
 - Default: `null`
 
 The values that should be disabled for choosing. There are three fields:
+
 - `to` - disable all before this date
 - `from` - disable all after this date
 - `ranges` - array of dateranges, each daterange is object and MUST has `start` and `end` field.
@@ -311,11 +315,11 @@ type QDatePickerPropDisabledValues = Nullable<{
 export default defineComponent({
   setup() {
     const value = ref(null);
-    const valueRanges = ref(null)
+    const valueRanges = ref(null);
     // disable values due today
     const disabledValues = {
-      to: new Date(),
-    }
+      to: new Date()
+    };
     // disable range - tree days in two days from today
     const disabledValuesRanges = {
       ranges: [
@@ -324,11 +328,11 @@ export default defineComponent({
           end: new Date(Date.now() + 120 * 3600 * 1000)
         }
       ]
-    }
+    };
 
     return { value, valueRanges, disabledValues, disabledValuesRanges };
   }
-})
+});
 ```
 
 <iframe style="height: 367px; width: 769px" scrolling="no" frameborder="no" src="/QDatepicker/disabledValues.html"></iframe>

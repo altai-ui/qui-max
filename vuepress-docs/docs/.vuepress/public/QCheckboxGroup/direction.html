@@ -2,16 +2,28 @@
   <head>
     <meta charset="UTF-8" />
     <!-- import CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/@qvant/qui/dist/qui.css" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/@qvant/qui/dist/qui.css"
+    />
   </head>
 
   <body>
     <div id="app">
-      <q-button class="button" @click="handleDirectionChange"
+      <q-button
+        class="button"
+        @click="handleDirectionChange"
         >switch to {{ buttonLabel }}</q-button
       >
-      <q-checkbox-group v-model="checkedCities" :direction="direction">
-        <q-checkbox v-for="city in cities" :key="city" :label="city" />
+      <q-checkbox-group
+        v-model="checkedCities"
+        :direction="direction"
+      >
+        <q-checkbox
+          v-for="city in cities"
+          :key="city"
+          :label="city"
+        />
       </q-checkbox-group>
     </div>
   </body>

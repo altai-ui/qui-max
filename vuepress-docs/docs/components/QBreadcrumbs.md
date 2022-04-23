@@ -126,7 +126,10 @@ The name of the component for enabling user navigation in a router-enabled app, 
 Changes last crumb with custom string
 
 ```vue
-<q-breadcrumbs :route="route" last="Custom string" />
+<q-breadcrumbs
+  :route="route"
+  last="Custom string"
+/>
 ```
 
 <iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/QBreadcrumbs/last.html"></iframe>

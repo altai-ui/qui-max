@@ -55,7 +55,9 @@ const QNotificationStory: Story<QNotificationToastProps> = args =>
       <q-button
         theme="secondary"
         @click="handleCloseAllClick"
-      >Close all</q-button>
+      >
+        Close all
+      </q-button>
     `
   });
 

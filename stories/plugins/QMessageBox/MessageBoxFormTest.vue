@@ -1,6 +1,8 @@
 <template>
   <q-message-box-content>
-    <template #title>Morbi massa libero, vehicula nec consequat sed, porta a sem.</template>
+    <template #title>
+      Morbi massa libero, vehicula nec consequat sed, porta a sem.
+    </template>
 
     <template #content>
       {{ someExternalProp }}
@@ -23,12 +25,16 @@
       <q-button
         :loading="isSending"
         @click="handleSendClick"
-      >Send</q-button>
+      >
+        Send
+      </q-button>
 
       <q-button
         theme="secondary"
         @click="handleCancelClick"
-      >Cancel</q-button>
+      >
+        Cancel
+      </q-button>
     </template>
   </q-message-box-content>
 </template>

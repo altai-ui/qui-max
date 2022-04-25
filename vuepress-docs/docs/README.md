@@ -27,7 +27,8 @@ footer: MIT Licensed | Qvant-lab <br><br><a class="netlify-link" href="https://w
 footerHtml: true
 ---
 
-## Note:
+## Note
+
 This documentation is under development!
 
 ## Quick setup
@@ -42,11 +43,12 @@ yarn add @qvant/qui-max
 
   </CodeGroupItem>
   <CodeGroupItem title="NPM">
-  
-  ```bash
-  # install in your project
-  npm install @qvant/qui-max -S
-  ```
+
+```bash
+# install in your project
+npm install @qvant/qui-max -S
+```
+
   </CodeGroupItem>
 </CodeGroup>
 

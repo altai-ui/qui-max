@@ -11,7 +11,7 @@ Popular `input` cases:
 Using in template:
 
 ```vue
-  <q-input v-model="value" />
+<q-input v-model="value" />
 ```
 
 Using in component instance:
@@ -21,9 +21,9 @@ export default defineComponent({
   setup() {
     const value = ref('');
 
-    return { 
+    return {
       value
-    }
+    };
   }
 });
 ```
@@ -49,7 +49,10 @@ Binding value.
 Whether input is disabled.
 
 ```vue
-<q-input v-model="value" disabled />
+<q-input
+  v-model="value"
+  disabled
+/>
 ```
 
 ### showSymbolLimit
@@ -60,7 +63,11 @@ Whether input is disabled.
 Whether to show symbol limit counter. NOTE: make sure to set `maxlength` attr as well.
 
 ```vue
-<q-input v-model="value" show-symbol-limit maxlength="20" />
+<q-input
+  v-model="value"
+  show-symbol-limit
+  maxlength="20"
+/>
 ```
 
 <iframe style="width: 100%; height: 140px" scrolling="no" frameborder="no" src="/QInput/showSymbolLimit.html"></iframe>
@@ -80,7 +87,10 @@ If input wrapped in `QFormItem`, prop `validateEvent` defines if input `change` 
 `'q-icon-*'` - class string, see full list [here](https://qui-max.netlify.app/?path=/story/core-icons-all--all)
 
 ```vue
-<q-input v-model="value" suffix-icon="q-icon-account" />
+<q-input
+  v-model="value"
+  suffix-icon="q-icon-account"
+/>
 ```
 
 <iframe style="width: 100%; height: 140px" scrolling="no" frameborder="no" src="/QInput/suffixIcon.html"></iframe>
@@ -93,7 +103,10 @@ If input wrapped in `QFormItem`, prop `validateEvent` defines if input `change` 
 Whether `QInput` is clearable.
 
 ```vue
-<q-input v-model="value" clearable />
+<q-input
+  v-model="value"
+  clearable
+/>
 ```
 
 <iframe style="width: 100%; height: 140px" scrolling="no" frameborder="no" src="/QInput/clearable.html"></iframe>
@@ -103,10 +116,13 @@ Whether `QInput` is clearable.
 - Type: `Boolean`
 - Default: `false`
 
-Whether to show show/hide password switcher. 
+Whether to show show/hide password switcher.
 
 ```vue
-<q-input v-model="value" password-switch />
+<q-input
+  v-model="value"
+  password-switch
+/>
 ```
 
 <iframe style="width: 100%; height: 140px" scrolling="no" frameborder="no" src="/QInput/passwordSwitch.html"></iframe>

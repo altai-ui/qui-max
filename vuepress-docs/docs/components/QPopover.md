@@ -82,9 +82,9 @@ We use Popper.js to show tooltips & popovers. See full options guide [here](http
     modifiers: [
       {
         name: 'flip',
-        enabled: false,
-      },
-    ],
+        enabled: false
+      }
+    ]
   }"
   ...
 />
@@ -153,7 +153,7 @@ Custom transition's animation. Applies for the default vue `<transition>` tag as
 - Type: `Number`
 - Default: `10`
 
-The delay before appearing, in milliseconds. 
+The delay before appearing, in milliseconds.
 NOTE: works only when `trigger` is `hover`.
 
 ```vue {2}
@@ -168,7 +168,7 @@ NOTE: works only when `trigger` is `hover`.
 - Type: `Number`
 - Default: `10`
 
-The delay before disappearing, in milliseconds. 
+The delay before disappearing, in milliseconds.
 NOTE: works only when `trigger` is `hover`.
 
 ```vue {2}
@@ -237,9 +237,7 @@ Triggers when the context window disappeares.
 Popover main content.
 
 ```vue
-<q-popover
-  ...
->
+<q-popover ...>
   Lorem Ipsum is simply dummy text of the printing and typesetting industry.
 </q-popover>
 ```
@@ -249,9 +247,7 @@ Popover main content.
 The trigger.
 
 ```vue
-<q-popover
-  ...
->
+<q-popover ...>
   <template #reference>
     ...trigger element
   </template>

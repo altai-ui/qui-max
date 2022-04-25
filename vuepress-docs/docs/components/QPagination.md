@@ -26,13 +26,13 @@ export default defineComponent({
   setup() {
     const currentPage = Vue.ref(1);
 
-    const handlePageChange = (value) => {
+    const handlePageChange = value => {
       currentPage.value = value;
     };
 
     return { currentPage, handlePageChange };
   }
-})
+});
 ```
 
 ## Props

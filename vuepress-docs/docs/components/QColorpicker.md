@@ -70,14 +70,12 @@ export declare type Options = {
 
 Whether to disable the ColorPicker.
 
-<!-- prettier-ignore-start -->
 ```vue {3}
 <q-color-picker
   v-model="color"
   disabled
 />
 ```
-<!-- prettier-ignore-end -->
 
 ### clearable
 
@@ -86,14 +84,12 @@ Whether to disable the ColorPicker.
 
 Whether to show clear button.
 
-<!-- prettier-ignore-start -->
 ```vue {3}
 <q-color-picker
   v-model="color"
   clearable
 />
 ```
-<!-- prettier-ignore-end -->
 
 ### alphaShown
 
@@ -102,14 +98,12 @@ Whether to show clear button.
 
 Whether to display the alpha slider.
 
-<!-- prettier-ignore-start -->
 ```vue {3}
 <q-color-picker
   v-model="color"
   alpha-shown
 />
 ```
-<!-- prettier-ignore-end -->
 
 <iframe height="350" style="width: 100%;" scrolling="no" frameborder="no" src="/QColorpicker/alpha-shown.html"></iframe>
 
@@ -120,14 +114,12 @@ Whether to display the alpha slider.
 
 Output color format.
 
-<!-- prettier-ignore-start -->
 ```vue {3}
 <q-color-picker
   v-model="color"
   color-format="rgb"
 />
 ```
-<!-- prettier-ignore-end -->
 
 ### placement
 
@@ -136,14 +128,12 @@ Output color format.
 
 Sets picker placement around the button.
 
-<!-- prettier-ignore-start -->
 ```vue {3}
 <q-color-picker
   v-model="color"
   placement="bottom"
 />
 ```
-<!-- prettier-ignore-end -->
 
 ```ts
 // ts type
@@ -168,14 +158,12 @@ type VariationPlacement =
 
 Specifies a target element where QColorpicker will be moved from original layout place. (has to be a valid query selector, or an HTMLElement).
 
-<!-- prettier-ignore-start -->
 ```vue {3}
 <q-color-picker
   v-model="modelValue"
   teleport-to="body"
 />
 ```
-<!-- prettier-ignore-end -->
 
 ## Events
 

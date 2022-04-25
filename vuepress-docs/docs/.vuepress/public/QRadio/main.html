@@ -12,21 +12,42 @@
     <div id="app">
       <div class="block">
         <q-row>
-          <q-col class="wrapper" cols="2">
+          <q-col
+            class="wrapper"
+            cols="2"
+          >
             <div class="label">Default:</div>
-            <q-radio :checked="false" :value="1" label="Option" />
+            <q-radio
+              :checked="false"
+              :value="1"
+              label="Option"
+            />
           </q-col>
           <q-col cols="2">
             <div class="label">Checked:</div>
-            <q-radio :checked="true" :value="1" label="Option" />
+            <q-radio
+              :checked="true"
+              :value="1"
+              label="Option"
+            />
           </q-col>
           <q-col cols="2">
             <div class="label">Disabled:</div>
-            <q-radio :checked="false" :value="1" label="Option" disabled />
+            <q-radio
+              :checked="false"
+              :value="1"
+              label="Option"
+              disabled
+            />
           </q-col>
           <q-col cols="3">
             <div class="label">Checked & Disabled:</div>
-            <q-radio :checked="true" :value="1" label="Option" disabled />
+            <q-radio
+              :checked="true"
+              :value="1"
+              label="Option"
+              disabled
+            />
           </q-col>
         </q-row>
       </div>

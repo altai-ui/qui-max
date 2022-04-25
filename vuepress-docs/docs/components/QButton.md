@@ -66,10 +66,22 @@ Result:
 Code example:
 
 ```vue
-<q-button type="icon" icon="q-icon-bell" />
-<q-button type="icon" icon="q-icon-check" />
-<q-button type="icon" icon="q-icon-comment" />
-<q-button type="icon" icon="q-icon-question-mark" />
+<q-button
+  type="icon"
+  icon="q-icon-bell"
+/>
+<q-button
+  type="icon"
+  icon="q-icon-check"
+/>
+<q-button
+  type="icon"
+  icon="q-icon-comment"
+/>
+<q-button
+  type="icon"
+  icon="q-icon-question-mark"
+/>
 ```
 
 Result:
@@ -137,7 +149,11 @@ Changes button's shape to circle (use with icon)
 Code sample:
 
 ```vue
-<q-button type="icon" icon="q-icon-bell" circle></q-button>
+<q-button
+  type="icon"
+  icon="q-icon-bell"
+  circle
+></q-button>
 ```
 
 Result:

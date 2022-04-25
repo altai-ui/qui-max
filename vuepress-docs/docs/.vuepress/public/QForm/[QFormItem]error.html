@@ -13,14 +13,28 @@
       <div class="block">
         <q-row>
           <q-col cols="6">
-            <q-form ref="form" :model="formModel" :rules="rules">
-              <q-form-item label="Name" prop="name" :error="error">
-                <q-input v-model="formModel.name" type="text" />
+            <q-form
+              ref="form"
+              :model="formModel"
+              :rules="rules"
+            >
+              <q-form-item
+                label="Name"
+                prop="name"
+                :error="error"
+              >
+                <q-input
+                  v-model="formModel.name"
+                  type="text"
+                />
               </q-form-item>
               <q-button @click="handleBtnClick">Set Error</q-button>
-              <q-button theme="secondary" @click="handleBtnClearClick"
-                >Clear Error</q-button
+              <q-button
+                theme="secondary"
+                @click="handleBtnClearClick"
               >
+                Clear Error
+              </q-button>
             </q-form>
           </q-col>
         </q-row>

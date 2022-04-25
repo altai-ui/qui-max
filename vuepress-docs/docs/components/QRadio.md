@@ -124,12 +124,12 @@ As you're not to be able to use `QRadio` in isolation (if you're making great UX
 export default {
   setup() {
     const value = ref(1);
-    const handleChange = (newValue) => {
-      console.log(newValue)
-    }
-    return { value, handleChange }
+    const handleChange = newValue => {
+      console.log(newValue);
+    };
+    return { value, handleChange };
   }
-}
+};
 ```
 
 ## QRadioGroup props
@@ -186,6 +186,7 @@ Custom wrapper tag.
 Triggers when the model is being updated.
 
 ### change
+
 Alias for `update:modelValue`.
 
 ```vue {3}

@@ -41,7 +41,10 @@ Binding value
 Number of digits after decimal separator
 
 ```vue
-<q-input-number v-model="value" :precision="2" />
+<q-input-number
+  v-model="value"
+  :precision="2"
+/>
 ```
 
 Result:
@@ -56,7 +59,10 @@ Result:
 Sets disabled input state
 
 ```vue
-<q-input-number v-model="value" :disabled="true" />
+<q-input-number
+  v-model="value"
+  :disabled="true"
+/>
 ```
 
 Result:
@@ -71,7 +77,10 @@ Result:
 Minimum allowed value. Must be less than maximum value.
 
 ```vue
-<q-input-number v-model="value" :min="0" />
+<q-input-number
+  v-model="value"
+  :min="0"
+/>
 ```
 
 Result:
@@ -93,7 +102,10 @@ Maximum allowed value. Must be higher than minimum value.
 If input is wrapped in `QFormItem`, prop `validateEvent` defines if bound events will be validated immediately
 
 ```vue
-<q-form :model="model" :rules="rules">
+<q-form
+  :model="model"
+  :rules="rules"
+>
   <q-form-item prop="value">
     <q-input-number 
       v-model="model.value" 

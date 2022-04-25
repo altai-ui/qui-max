@@ -13,12 +13,22 @@
       <div class="block">
         <q-row>
           <q-col cols="6">
-            <q-form ref="form" :model="formModel" :rules="rules">
-              <q-form-item label="Name" prop="name">
+            <q-form
+              ref="form"
+              :model="formModel"
+              :rules="rules"
+            >
+              <q-form-item
+                label="Name"
+                prop="name"
+              >
                 <template v-slot:label> label slot </template>
                 <template v-slot:sublabel> sublabel slot </template>
                 <template v-slot:error> error slot </template>
-                <q-input v-model="formModel.name" type="text" />
+                <q-input
+                  v-model="formModel.name"
+                  type="text"
+                />
               </q-form-item>
             </q-form>
           </q-col>

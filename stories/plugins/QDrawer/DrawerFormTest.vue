@@ -1,6 +1,8 @@
 <template>
   <q-drawer-content>
-    <template #title>Morbi massa libero, vehicula nec consequat sed, porta a sem.</template>
+    <template #title>
+      Morbi massa libero, vehicula nec consequat sed, porta a sem.
+    </template>
 
     {{ someExternalProp }}
 
@@ -20,12 +22,16 @@
     <q-button
       :loading="isLoading"
       @click="handleConfirmClick"
-    >Confirm</q-button>
+    >
+      Confirm
+    </q-button>
 
     <q-button
       theme="secondary"
       @click="handleCancelClick"
-    >Cancel</q-button>
+    >
+      Cancel
+    </q-button>
   </q-drawer-content>
 </template>
 
@@ -92,7 +98,10 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
+<style
+  lang="scss"
+  scoped
+>
 .q-drawer-sample-content {
   &__externalprop {
     padding-bottom: 24px;

@@ -35,10 +35,22 @@
             circle
           ></q-button>
         </div>
-        <q-tabs v-model="activeTab" :tab-width="width ?? 100">
-          <q-tab-pane name="tab" title="First tab"></q-tab-pane>
-          <q-tab-pane name="tab_two" title="Second tab"></q-tab-pane>
-          <q-tab-pane name="tab_three" title="Third tab"></q-tab-pane>
+        <q-tabs
+          v-model="activeTab"
+          :tab-width="width ?? 100"
+        >
+          <q-tab-pane
+            name="tab"
+            title="First tab"
+          ></q-tab-pane>
+          <q-tab-pane
+            name="tab_two"
+            title="Second tab"
+          ></q-tab-pane>
+          <q-tab-pane
+            name="tab_three"
+            title="Third tab"
+          ></q-tab-pane>
         </q-tabs>
       </div>
     </div>

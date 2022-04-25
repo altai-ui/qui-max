@@ -13,23 +13,46 @@
       <div class="block">
         <q-row>
           <q-col cols="6">
-            <q-form ref="form" :model="formModel" :rules="rules" disabled>
-              <q-form-item label="Name" prop="name">
-                <q-input v-model="formModel.name" type="text" />
+            <q-form
+              ref="form"
+              :model="formModel"
+              :rules="rules"
+              disabled
+            >
+              <q-form-item
+                label="Name"
+                prop="name"
+              >
+                <q-input
+                  v-model="formModel.name"
+                  type="text"
+                />
               </q-form-item>
 
-              <q-form-item label="Intro" prop="intro">
-                <q-input v-model="formModel.intro" type="text" />
+              <q-form-item
+                label="Intro"
+                prop="intro"
+              >
+                <q-input
+                  v-model="formModel.intro"
+                  type="text"
+                />
               </q-form-item>
 
               <q-button @click="handleSubmitClick">Create</q-button>
-              <q-button @click="handleResetClick" theme="secondary"
-                >Reset</q-button
+              <q-button
+                @click="handleResetClick"
+                theme="secondary"
               >
+                Reset
+              </q-button>
               <br /><br />
-              <q-button @click="handleRule" theme="secondary"
-                >Make Intro required</q-button
+              <q-button
+                @click="handleRule"
+                theme="secondary"
               >
+                Make Intro required
+              </q-button>
             </q-form>
           </q-col>
           <q-col cols="6">

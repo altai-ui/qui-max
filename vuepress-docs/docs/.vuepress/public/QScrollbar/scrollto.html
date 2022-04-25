@@ -11,10 +11,16 @@
   <body>
     <div id="app">
       <div class="block">
-        <q-button @click="handleButtonClick" class="button"
+        <q-button
+          @click="handleButtonClick"
+          class="button"
           >{{ buttonText }}</q-button
         >
-        <q-scrollbar theme="primary" :scroll-to="scrollTo" visible>
+        <q-scrollbar
+          theme="primary"
+          :scroll-to="scrollTo"
+          visible
+        >
           <div>
             <p ref="start"><strong>Primary</strong></p>
             <p>

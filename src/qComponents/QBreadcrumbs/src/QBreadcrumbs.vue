@@ -35,7 +35,7 @@ import type {
   QBreadcrumbsInstance
 } from './types';
 
-export default defineComponent({
+export default /* #__PURE__ */ defineComponent({
   name: 'QBreadcrumbs',
   componentName: 'QBreadcrumbs',
 

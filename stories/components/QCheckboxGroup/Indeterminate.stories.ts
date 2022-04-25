@@ -1,8 +1,8 @@
 import type { Story, Meta } from '@storybook/vue3';
 import { defineComponent, ref, watch } from 'vue';
 
-import QCheckboxGroup from '@/qComponents/QCheckboxGroup';
-import QCheckbox from '@/qComponents/QCheckbox';
+import { QCheckbox } from '@/qComponents/QCheckbox';
+import { QCheckboxGroup } from '@/qComponents/QCheckboxGroup';
 import type { QCheckboxGroupProps } from '@/qComponents/QCheckboxGroup';
 
 const storyMetadata: Meta = {

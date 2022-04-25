@@ -1,13 +1,7 @@
-import type { App } from 'vue';
+import { withInstall } from '../helpers';
 
-import type { SFCWithInstall } from '#/helpers';
+import Upload from './src/QUpload.vue';
 
-import QUpload from './src/QUpload.vue';
-
-/* istanbul ignore next */
-QUpload.install = (app: App): void => {
-  app.component(QUpload.name, QUpload);
-};
+export const QUpload = /* #__PURE__ */ withInstall(Upload);
 
 export type { QUploadProps, QUploadFile, QUploadInstance } from './src/types';
-export default QUpload as SFCWithInstall<App, typeof QUpload>;

@@ -27,5 +27,10 @@ const useNotify = (options?: QNotificationOptions): QNotify => {
 };
 
 export type { QNotify, QNotifyId } from './src/types';
-export { Q_NOTIFY_INJECTION_KEY, NotifyType, provideNotify, useNotify };
-export default QNotification;
+export {
+  Q_NOTIFY_INJECTION_KEY,
+  NotifyType,
+  QNotification,
+  provideNotify,
+  useNotify
+};

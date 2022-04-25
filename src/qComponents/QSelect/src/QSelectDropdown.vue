@@ -66,9 +66,10 @@
 import { get, isPlainObject } from 'lodash-es';
 import { computed, defineComponent, inject, ref, watch } from 'vue';
 
-import QScrollbar, { QScrollbarInstance } from '@/qComponents/QScrollbar';
-import QOption from '@/qComponents/QOption';
-import QCheckbox from '@/qComponents/QCheckbox';
+import { QScrollbar } from '@/qComponents/QScrollbar';
+import type { QScrollbarInstance } from '@/qComponents/QScrollbar';
+import { QOption } from '@/qComponents/QOption';
+import { QCheckbox } from '@/qComponents/QCheckbox';
 import { getConfig } from '@/qComponents/config';
 import type { QSelectProvider } from '@/qComponents/QSelect';
 import type { QOptionPropValue } from '@/qComponents/QOption';
@@ -78,7 +79,7 @@ import type { QSelectDropdownInstance, QSelectDropdownProps } from './types';
 
 const DEFAULT_Z_INDEX = 2000;
 
-export default defineComponent({
+export default /* #__PURE__ */ defineComponent({
   name: 'QSelectDropdown',
   componentName: 'QSelectDropdown',
 

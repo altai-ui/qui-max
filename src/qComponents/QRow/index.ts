@@ -1,13 +1,7 @@
-import type { App } from 'vue';
+import { withInstall } from '../helpers';
 
-import type { SFCWithInstall } from '#/helpers';
+import Row from './src/QRow.vue';
 
-import QRow from './src/QRow.vue';
-
-/* istanbul ignore next */
-QRow.install = (app: App): void => {
-  app.component(QRow.name, QRow);
-};
+export const QRow = /* #__PURE__ */ withInstall(Row);
 
 export type { QRowProps, QRowInstance } from './src/types';
-export default QRow as SFCWithInstall<App, typeof QRow>;

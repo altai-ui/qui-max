@@ -1,13 +1,7 @@
-import type { App } from 'vue';
+import { withInstall } from '../helpers';
 
-import type { SFCWithInstall } from '#/helpers';
+import Cascader from './src/QCascader.vue';
 
-import QCascader from './src/QCascader.vue';
-
-/* istanbul ignore next */
-QCascader.install = (app: App): void => {
-  app.component(QCascader.name, QCascader);
-};
+export const QCascader = /* #__PURE__ */ withInstall(Cascader);
 
 export type { QCascaderProps, QCascaderInstance } from './src/types';
-export default QCascader as SFCWithInstall<App, typeof QCascader>;

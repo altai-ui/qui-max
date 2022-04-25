@@ -1,13 +1,7 @@
-import type { App } from 'vue';
+import { withInstall } from '../helpers';
 
-import type { SFCWithInstall } from '#/helpers';
+import ContextMenu from './src/QContextMenu.vue';
 
-import QContextMenu from './src/QContextMenu.vue';
-
-/* istanbul ignore next */
-QContextMenu.install = (app: App): void => {
-  app.component(QContextMenu.name, QContextMenu);
-};
+export const QContextMenu = /* #__PURE__ */ withInstall(ContextMenu);
 
 export type { QContextMenuProps, QContextMenuInstance } from './src/types';
-export default QContextMenu as SFCWithInstall<App, typeof QContextMenu>;

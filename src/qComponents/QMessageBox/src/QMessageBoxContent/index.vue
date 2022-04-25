@@ -56,7 +56,7 @@
 import { defineComponent, ref, computed, inject } from 'vue';
 import type { PropType } from 'vue';
 
-import QButton from '@/qComponents/QButton';
+import { QButton } from '@/qComponents/QButton';
 
 import { Nullable } from '#/helpers';
 import type { QMessageBoxContainerProvider } from '../QMessageBoxContainer';
@@ -68,7 +68,7 @@ import type {
   QMessageBoxContentInstance
 } from './types';
 
-export default defineComponent({
+export default /* #__PURE__ */ defineComponent({
   name: 'QMessageBoxContent',
   componentName: 'QMessageBoxContent',
 

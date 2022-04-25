@@ -1,17 +1,11 @@
-import type { App } from 'vue';
+import { withInstall } from '../helpers';
 
-import type { SFCWithInstall } from '#/helpers';
+import Scrollbar from './src/QScrollbar.vue';
 
-import QScrollbar from './src/QScrollbar.vue';
-
-/* istanbul ignore next */
-QScrollbar.install = (app: App): void => {
-  app.component(QScrollbar.name, QScrollbar);
-};
+export const QScrollbar = /* #__PURE__ */ withInstall(Scrollbar);
 
 export type {
   QScrollbarProps,
   QScrollbarInstance,
   QScrollbarProvider
 } from './src/types';
-export default QScrollbar as SFCWithInstall<App, typeof QScrollbar>;

@@ -1,6 +1,6 @@
 import type { Meta } from '@storybook/vue3';
 
-import QTable from '@/qComponents/QTable';
+import { QTable } from '@/qComponents/QTable';
 
 import Default from './Default';
 import CustomWidth from './CustomWidth';

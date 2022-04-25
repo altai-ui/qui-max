@@ -1,7 +1,7 @@
 import type { Meta, Story } from '@storybook/vue3';
 import { defineComponent, ref } from 'vue';
 
-import QTextarea from '@/qComponents/QTextarea';
+import { QTextarea } from '@/qComponents/QTextarea';
 import type { QTextareaProps } from '@/qComponents/QTextarea';
 
 const storyMetadata: Meta = {

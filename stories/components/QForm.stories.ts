@@ -1,8 +1,8 @@
 import type { Meta, Story } from '@storybook/vue3';
 import { defineComponent, reactive, ref } from 'vue';
 
-import QForm from '@/qComponents/QForm';
-import QFormItem from '@/qComponents/QFormItem';
+import { QForm } from '@/qComponents/QForm';
+import { QFormItem } from '@/qComponents/QFormItem';
 import type {
   QFormProps,
   QFormPropRules,

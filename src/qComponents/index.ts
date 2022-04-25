@@ -10,38 +10,38 @@ import {
   ru as localeRu,
   zh as localeZh
 } from './constants/locales';
-import QBreadcrumbs from './QBreadcrumbs';
-import QButton from './QButton';
-import QCascader from './QCascader';
-import QCheckbox from './QCheckbox';
-import QCheckboxGroup from './QCheckboxGroup';
-import QCol from './QCol';
-import QCollapse from './QCollapse';
-import QCollapseItem from './QCollapseItem';
-import QColorPicker from './QColorPicker';
-import QContextMenu from './QContextMenu';
-import QDatePicker from './QDatePicker';
-import QForm from './QForm';
-import QFormItem from './QFormItem';
-import QInput from './QInput';
-import QInputNumber from './QInputNumber';
-import QNotification from './QNotification';
-import QOption from './QOption';
-import QPagination from './QPagination';
-import QPopover from './QPopover';
-import QProgressIndicatior from './QProgressIndicatior';
-import QRadio from './QRadio';
-import QRadioGroup from './QRadioGroup';
-import QRow from './QRow';
-import QScrollbar from './QScrollbar';
-import QSelect from './QSelect';
-import QSlider from './QSlider';
-import QTable from './QTable';
-import QTabPane from './QTabPane';
-import QTabs from './QTabs';
-import QTag from './QTag';
-import QTextarea from './QTextarea';
-import QUpload from './QUpload';
+import { QBreadcrumbs } from './QBreadcrumbs';
+import { QButton } from './QButton';
+import { QCascader } from './QCascader';
+import { QCheckbox } from './QCheckbox';
+import { QCheckboxGroup } from './QCheckboxGroup';
+import { QCol } from './QCol';
+import { QCollapse } from './QCollapse';
+import { QCollapseItem } from './QCollapseItem';
+import { QColorPicker } from './QColorPicker';
+import { QContextMenu } from './QContextMenu';
+import { QDatePicker } from './QDatePicker';
+import { QForm } from './QForm';
+import { QFormItem } from './QFormItem';
+import { QInput } from './QInput';
+import { QInputNumber } from './QInputNumber';
+import { QNotification } from './QNotification';
+import { QOption } from './QOption';
+import { QPagination } from './QPagination';
+import { QPopover } from './QPopover';
+import { QProgressIndicatior } from './QProgressIndicatior';
+import { QRadio } from './QRadio';
+import { QRadioGroup } from './QRadioGroup';
+import { QRow } from './QRow';
+import { QScrollbar } from './QScrollbar';
+import { QSelect } from './QSelect';
+import { QSlider } from './QSlider';
+import { QTable } from './QTable';
+import { QTabPane } from './QTabPane';
+import { QTabs } from './QTabs';
+import { QTag } from './QTag';
+import { QTextarea } from './QTextarea';
+import { QUpload } from './QUpload';
 
 import type { ConfigOptions } from './types';
 
@@ -153,46 +153,7 @@ const install = (app: App, config?: ConfigOptions): void => {
 };
 
 export default { install };
-export {
-  createQui,
-  setMessages,
-  setI18n,
-  QBreadcrumbs,
-  QButton,
-  QCascader,
-  QCheckbox,
-  QCheckboxGroup,
-  QCol,
-  QCollapse,
-  QCollapseItem,
-  QColorPicker,
-  QContextMenu,
-  QDatePicker,
-  QForm,
-  QFormItem,
-  QInput,
-  QInputNumber,
-  QNotification,
-  QOption,
-  QPagination,
-  QPopover,
-  QProgressIndicatior,
-  QRadio,
-  QRadioGroup,
-  QRow,
-  QScrollbar,
-  QSelect,
-  QSlider,
-  QTable,
-  QTabPane,
-  QTabs,
-  QTag,
-  QTextarea,
-  QUpload,
-  localeEn,
-  localeRu,
-  localeZh
-};
+export { createQui, setMessages, setI18n, localeEn, localeRu, localeZh };
 
 export * from './QBreadcrumbs';
 export * from './QButton';

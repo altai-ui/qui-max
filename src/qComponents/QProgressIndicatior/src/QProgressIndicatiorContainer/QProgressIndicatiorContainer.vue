@@ -17,7 +17,7 @@ import type {
   QProgressIndicatiorContainerInstance
 } from './types';
 
-export default defineComponent({
+export default /* #__PURE__ */ defineComponent({
   name: 'QProgressIndicatiorContainer',
   componentName: 'QProgressIndicatiorContainer',
 

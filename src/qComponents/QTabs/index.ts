@@ -1,13 +1,7 @@
-import type { App } from 'vue';
+import { withInstall } from '../helpers';
 
-import type { SFCWithInstall } from '#/helpers';
+import Tabs from './src/QTabs.vue';
 
-import QTabs from './src/QTabs.vue';
-
-/* istanbul ignore next */
-QTabs.install = (app: App): void => {
-  app.component(QTabs.name, QTabs);
-};
+export const QTabs = /* #__PURE__ */ withInstall(Tabs);
 
 export type { QTabsProps, QTabsProvider, QTabsInstance } from './src/types';
-export default QTabs as SFCWithInstall<App, typeof QTabs>;

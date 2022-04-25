@@ -23,11 +23,11 @@ Using in template:
     <q-form-item label="Name" prop="name">
       <q-input v-model="formModel.name" type="text" />
     </q-form-item>
-  
+
     <q-form-item label="Intro" prop="intro">
       <q-input v-model="formModel.intro" type="text" />
     </q-form-item>
-  
+
     <q-button @click="handleSubmitClick">Create</q-button>
     <q-button @click="handleResetClick" theme="secondary">Reset</q-button>
   </q-form>
@@ -36,7 +36,6 @@ Using in template:
 Using in component instance:
 
 ```js
-
 const model = {
   name: '',
   intro: ''

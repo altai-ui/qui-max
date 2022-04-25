@@ -1,13 +1,7 @@
-import type { App } from 'vue';
+import { withInstall } from '../helpers';
 
-import type { SFCWithInstall } from '#/helpers';
+import InputNumber from './src/QInputNumber.vue';
 
-import QInputNumber from './src/QInputNumber.vue';
-
-/* istanbul ignore next */
-QInputNumber.install = (app: App): void => {
-  app.component(QInputNumber.name, QInputNumber);
-};
+export const QInputNumber = /* #__PURE__ */ withInstall(InputNumber);
 
 export type { QInputNumberProps, QInputNumberInstance } from './src/types';
-export default QInputNumber as SFCWithInstall<App, typeof QInputNumber>;

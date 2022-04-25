@@ -4,7 +4,7 @@ import type { Meta, Story } from '@storybook/vue3';
 import { defineComponent, computed } from 'vue';
 import { t } from '@/qComponents/locale';
 
-import QBreadcrumbs from '@/qComponents/QBreadcrumbs';
+import { QBreadcrumbs } from '@/qComponents/QBreadcrumbs';
 import type {
   QBreadcrumbsProps,
   QBreadcrumbsPropRoute

@@ -1,13 +1,7 @@
-import type { App } from 'vue';
+import { withInstall } from '../helpers';
 
-import type { SFCWithInstall } from '#/helpers';
+import TabPane from './src/QTabPane.vue';
 
-import QTabPane from './src/QTabPane.vue';
-
-/* istanbul ignore next */
-QTabPane.install = (app: App): void => {
-  app.component(QTabPane.name, QTabPane);
-};
+export const QTabPane = /* #__PURE__ */ withInstall(TabPane);
 
 export type { QTabPaneProps, QTabPaneInstance } from './src/types';
-export default QTabPane as SFCWithInstall<App, typeof QTabPane>;

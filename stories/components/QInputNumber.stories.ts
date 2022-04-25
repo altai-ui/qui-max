@@ -1,7 +1,7 @@
 import type { Meta, Story } from '@storybook/vue3';
 import { defineComponent, ref } from 'vue';
 
-import QInputNumber from '@/qComponents/QInputNumber';
+import { QInputNumber } from '@/qComponents/QInputNumber';
 import type { QInputNumberProps } from '@/qComponents/QInputNumber';
 
 const storyMetadata: Meta = {

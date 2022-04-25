@@ -1,13 +1,7 @@
-import type { App } from 'vue';
+import { withInstall } from '../helpers';
 
-import type { SFCWithInstall } from '#/helpers';
+import Textarea from './src/QTextarea.vue';
 
-import QTextarea from './src/QTextarea.vue';
-
-/* istanbul ignore next */
-QTextarea.install = (app: App): void => {
-  app.component(QTextarea.name, QTextarea);
-};
+export const QTextarea = /* #__PURE__ */ withInstall(Textarea);
 
 export type { QTextareaProps, QTextareaInstance } from './src/types';
-export default QTextarea as SFCWithInstall<App, typeof QTextarea>;

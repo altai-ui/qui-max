@@ -1,13 +1,7 @@
-import type { App } from 'vue';
+import { withInstall } from '../helpers';
 
-import type { SFCWithInstall } from '#/helpers';
+import CollapseItem from './src/QCollapseItem.vue';
 
-import QCollapseItem from './src/QCollapseItem.vue';
-
-/* istanbul ignore next */
-QCollapseItem.install = (app: App): void => {
-  app.component(QCollapseItem.name, QCollapseItem);
-};
+export const QCollapseItem = /* #__PURE__ */ withInstall(CollapseItem);
 
 export type { QCollapseItemProps, QCollapseItemInstance } from './src/types';
-export default QCollapseItem as SFCWithInstall<App, typeof QCollapseItem>;

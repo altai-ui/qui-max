@@ -88,7 +88,7 @@ import { range } from 'lodash-es';
 
 import type { QPaginationProps, QPaginationInstance } from './types';
 
-export default defineComponent({
+export default /* #__PURE__ */ defineComponent({
   name: 'QPagination',
   componentName: 'QPagination',
 

@@ -45,7 +45,7 @@ import {
   onMounted
 } from 'vue';
 
-import QCheckbox from '@/qComponents/QCheckbox';
+import { QCheckbox } from '@/qComponents/QCheckbox';
 import type { QSelectProvider } from '@/qComponents/QSelect';
 import type { Nullable } from '#/helpers';
 
@@ -56,7 +56,7 @@ import type {
   QOptionModel
 } from './types';
 
-export default defineComponent({
+export default /* #__PURE__ */ defineComponent({
   name: 'QOption',
   componentName: 'QOption',
 

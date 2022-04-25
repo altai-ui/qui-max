@@ -24,7 +24,7 @@ import type {
   QTableTHeadCellInstance
 } from './types';
 
-export default defineComponent({
+export default /* #__PURE__ */ defineComponent({
   name: 'QTableTHeadCell',
   componentName: ' QTableTHeadCell',
 

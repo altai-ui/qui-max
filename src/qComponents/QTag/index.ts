@@ -1,13 +1,7 @@
-import type { App } from 'vue';
+import { withInstall } from '../helpers';
 
-import type { SFCWithInstall } from '#/helpers';
+import Tag from './src/QTag.vue';
 
-import QTag from './src/QTag.vue';
-
-/* istanbul ignore next */
-QTag.install = (app: App): void => {
-  app.component(QTag.name, QTag);
-};
+export const QTag = /* #__PURE__ */ withInstall(Tag);
 
 export type { QTagProps, QTagInstance } from './src/types';
-export default QTag as SFCWithInstall<App, typeof QTag>;

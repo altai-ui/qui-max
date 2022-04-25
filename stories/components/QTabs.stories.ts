@@ -1,8 +1,8 @@
 import type { Meta, Story } from '@storybook/vue3';
 import { defineComponent, ref } from 'vue';
 
-import QTabs from '@/qComponents/QTabs';
-import QTabPane from '@/qComponents/QTabPane';
+import { QTabs } from '@/qComponents/QTabs';
+import { QTabPane } from '@/qComponents/QTabPane';
 import type { QTabsProps } from '@/qComponents/QTabs';
 
 const storyMetadata: Meta = {

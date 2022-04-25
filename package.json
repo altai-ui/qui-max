@@ -92,6 +92,7 @@
     "vue-loader": "^15.9.8"
   },
   "files": ["dist"],
+  "sideEffects": false,
   "main": "./dist/qui-max.umd.js",
   "module": "./dist/qui-max.es.js",
   "style": "./dist/style.css",

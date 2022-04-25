@@ -19,14 +19,14 @@
 <script lang="ts">
 import { defineComponent, inject } from 'vue';
 
-import QButton from '@/qComponents/QButton';
+import { QButton } from '@/qComponents/QButton';
 import { QDialogContent, QDialogAction } from '@/qComponents/QDialog';
 import type { QDialogContainerProvider } from '@/qComponents/QDialog';
 
 import type { QDatePickerPropModelValue, QDatePickerProvider } from '../types';
 import type { MobilePanelInstance } from './types';
 
-export default defineComponent({
+export default /* #__PURE__ */ defineComponent({
   name: 'MobilePanel',
 
   components: { QDialogContent, QButton },

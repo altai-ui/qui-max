@@ -67,8 +67,8 @@ import type { HsvaColor } from 'colord';
 
 import { t } from '@/qComponents/locale';
 import { validateArray } from '@/qComponents/helpers';
-import QButton from '@/qComponents/QButton';
-import QInput from '@/qComponents/QInput';
+import { QButton } from '@/qComponents/QButton';
+import { QInput } from '@/qComponents/QInput';
 import type { Nillable, Nullable, UnwrappedInstance } from '#/helpers';
 
 import QColorSvpanel from '../QColorSvpanel';
@@ -92,7 +92,7 @@ const DEFAULT_SATURATION = 100;
 const DEFAULT_VALUE = 100;
 const DEFAULT_ALPHA = 100;
 
-export default defineComponent({
+export default /* #__PURE__ */ defineComponent({
   name: 'QPickerDropdown',
   componentName: 'QPickerDropdown',
 

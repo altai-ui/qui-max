@@ -1,7 +1,7 @@
 import type { Meta, Story } from '@storybook/vue3';
 import { defineComponent } from 'vue';
 
-import QContextMenu from '@/qComponents/QContextMenu';
+import { QContextMenu } from '@/qComponents/QContextMenu';
 import type { QContextMenuProps } from '@/qComponents/QContextMenu';
 
 const storyMetadata: Meta = {

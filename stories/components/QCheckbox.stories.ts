@@ -1,7 +1,7 @@
 import type { Meta, Story } from '@storybook/vue3';
 import { defineComponent, ref } from 'vue';
 
-import QCheckbox from '@/qComponents/QCheckbox';
+import { QCheckbox } from '@/qComponents/QCheckbox';
 import type { QCheckboxProps } from '@/qComponents/QCheckbox';
 
 const storyMetadata: Meta = {

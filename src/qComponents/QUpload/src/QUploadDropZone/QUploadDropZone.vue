@@ -22,7 +22,7 @@ import { defineComponent, ref, computed } from 'vue';
 import { t } from '@/qComponents/locale';
 import type { QUploadDropZoneProps, QUploadDropZoneInstance } from './types';
 
-export default defineComponent({
+export default /* #__PURE__ */ defineComponent({
   name: 'QUploadDropZone',
   componentName: 'QUploadDropZone',
 

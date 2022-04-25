@@ -87,7 +87,7 @@ import type {
 
 const DEFAULT_Z_INDEX = 2000;
 
-export default defineComponent({
+export default /* #__PURE__ */ defineComponent({
   name: 'QColorPicker',
   componentName: 'QColorPicker',
 

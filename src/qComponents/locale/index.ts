@@ -27,5 +27,3 @@ export const setI18n = (fn: (...args: unknown[]) => string): void => {
 export const setMessages = (messages?: Messages): void => {
   if (messages) currentMessages = messages;
 };
-
-export default { setMessages, t, setI18n };

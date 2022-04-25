@@ -18,6 +18,7 @@ module.exports = {
     if (!config.resolve?.alias) return config;
 
     config.resolve.alias['@'] = path.resolve(__dirname, '../src');
+    config.module.rules.push({ test: /\.scss$/, sideEffects: true });
 
     return config;
   }

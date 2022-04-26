@@ -285,6 +285,24 @@ A form item's label.
 ...
 ```
 
+### labelSize
+
+Defines the size of the form item's label.
+
+- Type: `'regular'` | `'small'`
+- Default: `'regular'`
+
+```vue {4}
+...
+<q-form-item
+  label="Name"
+  label-size="small"
+>
+...
+```
+
+<iframe style="width: 100%; height: 120px" scrolling="no" frameborder="no" src="/QForm/[QFormItem]labelSize.html"></iframe>
+
 ### sublabel
 
 The sublabel is similar to `label`, but on the right side ans smaller.

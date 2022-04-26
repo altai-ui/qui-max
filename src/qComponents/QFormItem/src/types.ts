@@ -7,6 +7,8 @@ import type {
 
 import type { Nullable } from '#/helpers';
 
+export type QFormItemPropLabelSize = Nullable<'regular' | 'small'>;
+
 export interface FilteredRuleItem extends RuleItem {
   trigger?: Nullable<string>;
 }
@@ -23,6 +25,7 @@ export interface QFormItemProps {
   error: Nullable<string>;
   rules: QFormItemPropRules;
   showErrorMessage: Nullable<boolean>;
+  labelSize: QFormItemPropLabelSize;
 }
 
 export interface QFormItemContext {
@@ -77,4 +80,5 @@ export interface QFormItemInstance {
     }>
   >;
   resetField: () => void;
+  labelClass: ComputedRef<string>;
 }

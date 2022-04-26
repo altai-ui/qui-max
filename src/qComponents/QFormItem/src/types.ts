@@ -80,5 +80,5 @@ export interface QFormItemInstance {
     }>
   >;
   resetField: () => void;
-  isLabelSmall: ComputedRef<boolean>;
+  labelClass: ComputedRef<string>;
 }

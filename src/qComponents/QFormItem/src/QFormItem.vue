@@ -11,7 +11,7 @@
         v-if="label || $slots.label"
         :for="labelFor"
         class="q-form-item__label"
-        :class="{ 'q-form-item__label_small': isLabelSmall }"
+        :class="labelClass"
       >
         <slot name="label">{{ label }}</slot>
       </label>
@@ -151,8 +151,6 @@ export default /* #__PURE__ */ defineComponent({
 
     const labelFor = computed<Nullable<string>>(() => props.for ?? props.prop);
 
-    const isLabelSmall = computed<boolean>(() => props.labelSize === 'small');
-
     const propRules = computed<FilteredRuleItem[]>(() => {
       const rules =
         props.rules ??
@@ -176,6 +174,10 @@ export default /* #__PURE__ */ defineComponent({
       'q-form-item_is-error': Boolean(errorMessage.value),
       'q-form-item_is-no-asterisk': Boolean(qForm?.hideRequiredAsterisk.value)
     }));
+
+    const labelClass = computed<string>(
+      () => `q-form-item__label_size_${props.labelSize}`
+    );
 
     const getFilteredRules = (
       trigger: Nullable<string>
@@ -287,7 +289,7 @@ export default /* #__PURE__ */ defineComponent({
       isRequired,
       isHeaderShown,
       rootClasses,
-      isLabelSmall,
+      labelClass,
       getFilteredRules,
       // for refs
       validateField,

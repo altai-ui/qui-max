@@ -11,6 +11,7 @@
         v-if="label || $slots.label"
         :for="labelFor"
         class="q-form-item__label"
+        :class="{ 'q-form-item__label_small': isLabelSmall }"
       >
         <slot name="label">{{ label }}</slot>
       </label>
@@ -50,15 +51,16 @@ import {
   onMounted,
   onBeforeUnmount,
   inject,
-  watch,
-  PropType
+  watch
 } from 'vue';
+import type { PropType } from 'vue';
 import AsyncValidator, {
   ValidateError,
   ValidateFieldsError
 } from 'async-validator';
 import { get, set } from 'lodash-es';
 
+import { validateArray } from '@/qComponents/helpers';
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { Nullable } from '#/helpers';
 
@@ -68,7 +70,8 @@ import type {
   QFormItemContext,
   QFormItemProvider,
   FilteredRuleItem,
-  QFormItemInstance
+  QFormItemInstance,
+  QFormItemPropLabelSize
 } from './types';
 
 export default /* #__PURE__ */ defineComponent({
@@ -121,6 +124,14 @@ export default /* #__PURE__ */ defineComponent({
     showErrorMessage: {
       type: Boolean,
       default: true
+    },
+    /**
+     * label size
+     */
+    labelSize: {
+      type: String as PropType<QFormItemPropLabelSize>,
+      default: 'regular',
+      validator: validateArray<QFormItemPropLabelSize>(['regular', 'small'])
     }
   },
 
@@ -139,6 +150,8 @@ export default /* #__PURE__ */ defineComponent({
     );
 
     const labelFor = computed<Nullable<string>>(() => props.for ?? props.prop);
+
+    const isLabelSmall = computed<boolean>(() => props.labelSize === 'small');
 
     const propRules = computed<FilteredRuleItem[]>(() => {
       const rules =
@@ -274,6 +287,7 @@ export default /* #__PURE__ */ defineComponent({
       isRequired,
       isHeaderShown,
       rootClasses,
+      isLabelSmall,
       getFilteredRules,
       // for refs
       validateField,

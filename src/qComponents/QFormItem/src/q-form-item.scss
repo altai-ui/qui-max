@@ -20,6 +20,12 @@
       color: var(--color-secondary-orange);
       content: '*';
     }
+
+    &_small {
+      font-size: 10px;
+      line-height: 12px;
+      color: rgb(var(--color-rgb-gray) / 64%);
+    }
   }
 
   &__sublabel {

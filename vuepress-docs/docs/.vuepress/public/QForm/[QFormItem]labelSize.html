@@ -18,12 +18,21 @@
               :model="formModel"
             >
               <q-form-item
-                label="Name"
+                label="Small label"
                 label-size="small"
                 prop="name"
               >
                 <q-input
                   v-model="formModel.name"
+                  type="text"
+                ></q-input>
+              </q-form-item>
+              <q-form-item
+                label="Regular label"
+                prop="lastName"
+              >
+                <q-input
+                  v-model="formModel.lastName"
                   type="text"
                 ></q-input>
               </q-form-item>
@@ -39,7 +48,8 @@
   <script src="https://unpkg.com/@qvant/qui-max@latest"></script>
   <script>
     const model = {
-      name: ''
+      name: '',
+      lastName: ''
     };
 
     const app = Vue.createApp({
@@ -60,11 +70,6 @@
   <style>
     .block {
       margin: 20px;
-    }
-
-    /* remove after next release */
-    .q-input {
-      height: 40px;
     }
   </style>
 </html>

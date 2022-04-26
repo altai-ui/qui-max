@@ -1,0 +1,110 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- import CSS -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/@qvant/qui-max/dist/style.css"
+    />
+  </head>
+
+  <body>
+    <div id="app">
+      <div class="block">
+        <div class="label">default:</div>
+        <q-slider
+          v-model="value"
+          :data="data"
+        />
+      </div>
+      <div class="block">
+        <div class="label">with custom caption content:</div>
+        <q-slider
+          v-model="valueSlot"
+          :data="dataSlot"
+        >
+          <template #caption="{ label, data }">
+            <div style="margin: 0; font-size: 14px; line-height: 18px">
+              {{ label }}
+            </div>
+            <div style="margin-top: 4px; font-size: 10px; line-height: 12px">
+              {{ data?.description }}
+            </div>
+          </template>
+        </q-slider>
+      </div>
+    </div>
+  </body>
+  <!-- import Vue before Qui -->
+  <script src="https://unpkg.com/vue@latest"></script>
+  <!-- import JavaScript -->
+  <script src="https://unpkg.com/@qvant/qui-max@latest"></script>
+  <script>
+    const app = Vue.createApp({
+      setup() {
+        const value = 'normal';
+        const valueSlot = 'normal';
+        const dataSlot = [
+          {
+            value: 'easy',
+            label: 'Easy',
+            style: {
+              width: '100px'
+            },
+            slotData: {
+              description: 'easy description'
+            }
+          },
+
+          {
+            value: 'normal',
+            label: 'Normal',
+            style: "width: '127px'",
+            slotData: {
+              description: 'medium description'
+            }
+          },
+
+          {
+            value: 'hard',
+            label: 'Hard',
+            style: {
+              width: '135px'
+            },
+            slotData: {
+              description: 'hard description'
+            }
+          }
+        ];
+        const data = [
+          {
+            value: 'easy',
+            label: 'Easy'
+          },
+          {
+            value: 'normal',
+            label: 'Normal'
+          },
+          {
+            value: 'hard',
+            label: 'Hard'
+          }
+        ];
+
+        return { data, dataSlot, value, valueSlot };
+      }
+    });
+
+    app.use(QuiMax.default);
+    app.mount('#app');
+  </script>
+  <style>
+    .block {
+      margin: 20px;
+    }
+
+    .label {
+      padding-bottom: 5px;
+    }
+  </style>
+</html>

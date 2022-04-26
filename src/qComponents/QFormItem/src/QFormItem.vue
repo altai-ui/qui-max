@@ -176,7 +176,7 @@ export default /* #__PURE__ */ defineComponent({
     }));
 
     const labelClass = computed<string>(
-      () => `q-form-item__label_size_${props.labelSize}`
+      () => `q-form-item__label_size_${props.labelSize ?? 'regular'}`
     );
 
     const getFilteredRules = (

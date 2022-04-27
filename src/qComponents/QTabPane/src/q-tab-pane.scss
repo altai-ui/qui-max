@@ -4,13 +4,14 @@
     1px 1px 3px rgb(var(--color-rgb-blue) / 40%);
   --shadow-pressed: 1px 1px 3px rgb(var(--color-rgb-blue) / 40%);
 
+  display: flex;
+
   &:not(:last-child) {
     margin-right: 1px;
   }
 
   &__inner {
     display: flex;
-    align-items: center;
   }
 
   &__btn {

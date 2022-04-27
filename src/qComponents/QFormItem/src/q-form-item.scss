@@ -12,13 +12,33 @@
   &__label {
     font-size: var(--font-size-base);
     font-weight: var(--font-weight-base);
-    line-height: 18px;
-    color: var(--color-primary-black);
 
     .q-form-item_is-required:not(.q-form-item_is-no-asterisk) &::after {
       margin-left: 4px;
       color: var(--color-secondary-orange);
       content: '*';
+    }
+
+    &_size {
+      &_regular {
+        font-size: 14px;
+        line-height: 18px;
+        color: var(--color-primary-black);
+
+        .q-form-item_is-required:not(.q-form-item_is-no-asterisk) &::after {
+          font-weight: 700;
+        }
+      }
+
+      &_small {
+        font-size: 10px;
+        line-height: 12px;
+        color: rgb(var(--color-rgb-gray) / 64%);
+
+        .q-form-item_is-required:not(.q-form-item_is-no-asterisk) &::after {
+          font-weight: 800;
+        }
+      }
     }
   }
 

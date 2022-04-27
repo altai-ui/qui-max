@@ -1,27 +1,28 @@
 <template>
-  <label
+  <div
     class="q-switcher"
     :class="classes"
     :tabindex="tabIndex"
     :aria-disabled="disabled"
     @keyup.enter="handleKeyUp"
-    @keyup.space="handleKeyUp"
+    @keyup.space.prevent="handleKeyUp"
+    @click.prevent="handleSwitcherClick"
   >
     <input
       v-bind="$attrs"
       class="q-switcher__checkbox"
       type="checkbox"
       :checked="isChecked"
-      @change="handleCheckboxChange"
+      tabindex="-1"
     />
     <div class="q-switcher__wrapper">
-      <div class="q-switcher__circle" />
+      <div class="q-switcher__slider" />
     </div>
-  </label>
+  </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from 'vue';
+import { defineComponent, computed, ref } from 'vue';
 
 import type { ClassValue } from '#/helpers';
 
@@ -60,6 +61,7 @@ export default /* #__PURE__ */ defineComponent({
 
   // TODO: типизация
   setup(props, ctx) {
+    const label = ref(null);
     const isChecked = computed<boolean>(
       () => props.modelValue === props.activeValue
     );
@@ -75,7 +77,7 @@ export default /* #__PURE__ */ defineComponent({
       ctx.emit('update:modelValue', props.activeValue);
     };
 
-    const handleCheckboxChange = (): void => {
+    const handleSwitcherClick = (): void => {
       emitChange();
     };
 
@@ -91,11 +93,12 @@ export default /* #__PURE__ */ defineComponent({
     }));
 
     return {
+      label,
       isChecked,
       tabIndex,
       classes,
       handleKeyUp,
-      handleCheckboxChange
+      handleSwitcherClick
     };
   }
 });

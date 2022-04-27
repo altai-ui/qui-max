@@ -1,5 +1,5 @@
 <template>
-  <div
+  <label
     class="q-switcher"
     :class="classes"
     :tabindex="tabIndex"
@@ -23,55 +23,80 @@
         />
       </div>
     </div>
-  </div>
+  </label>
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, ref, inject, watch } from 'vue';
+import { defineComponent, computed, inject, watch } from 'vue';
 
 import type { QFormItemProvider, QFormProvider } from '@/qComponents';
 import type { ClassValue, Nullable } from '#/helpers';
+
+import type { QSwitcherInstance, QSwitcherProps } from './types';
 
 export default /* #__PURE__ */ defineComponent({
   name: 'QSwitcher',
   componentName: 'QSwitcher',
 
-  // TODO: комменты к пропсам
   props: {
+    /**
+     * default to v-model
+     */
     modelValue: {
       type: [Boolean, String, Number],
-      required: true
+      default: false
     },
+    /**
+     * value for active QSwitcher state
+     */
     activeValue: {
       type: [Boolean, String, Number],
       default: true
     },
+    /**
+     * value for inactive QSwitcher state
+     */
     inactiveValue: {
       type: [Boolean, String, Number],
       default: false
     },
+    /**
+     * whether QSwitcher is disabled
+     */
     disabled: {
       type: Boolean,
       default: false
     },
+    /**
+     * whether to show loader inside the slider
+     */
     loading: {
       type: Boolean,
       default: false
     },
+    /**
+     * validate parent form if present
+     */
     validateEvent: {
       type: Boolean,
       default: true
     }
   },
 
-  emits: ['update:modelValue', 'change'],
+  emits: [
+    /**
+     * triggers when model updates
+     */
+    'update:modelValue',
+    /**
+     * alias for update:modelValue
+     */
+    'change'
+  ],
 
-  // TODO: типизация
-  setup(props, ctx) {
+  setup(props: QSwitcherProps, ctx): QSwitcherInstance {
     const qFormItem = inject<Nullable<QFormItemProvider>>('qFormItem', null);
     const qForm = inject<Nullable<QFormProvider>>('qForm', null);
-
-    const label = ref(null);
 
     const isChecked = computed<boolean>(
       () => props.modelValue === props.activeValue
@@ -117,7 +142,6 @@ export default /* #__PURE__ */ defineComponent({
     );
 
     return {
-      label,
       isChecked,
       tabIndex,
       classes,

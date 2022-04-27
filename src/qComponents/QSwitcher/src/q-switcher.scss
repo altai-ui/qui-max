@@ -30,12 +30,23 @@
   }
 
   &__slider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 20px;
     height: 20px;
     margin-left: auto;
     background-color: var(--color-tertiary-gray-ultra-light);
     border: 2px solid var(--color-primary);
     border-radius: 50%;
+
+    .q-icon-reverse {
+      --icon-size: 12px;
+
+      font-size: var(--icon-size);
+      color: var(--color-primary);
+      animation: rotating 2s linear infinite;
+    }
   }
 
   &_active {
@@ -68,8 +79,12 @@
       outline: none;
     }
 
-    .q-switcher__circle {
+    .q-switcher__slider {
       border: 2px solid var(--color-primary-darker);
+
+      .q-icon-reverse {
+        color: var(--color-primary-darker);
+      }
     }
   }
 

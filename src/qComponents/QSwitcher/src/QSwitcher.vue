@@ -16,7 +16,12 @@
       tabindex="-1"
     />
     <div class="q-switcher__wrapper">
-      <div class="q-switcher__slider" />
+      <div class="q-switcher__slider">
+        <div
+          v-if="loading"
+          class="q-icon-reverse"
+        />
+      </div>
     </div>
   </div>
 </template>

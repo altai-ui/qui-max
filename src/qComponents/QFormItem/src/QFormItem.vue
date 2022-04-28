@@ -74,7 +74,7 @@ import type {
   QFormItemPropLabelSize
 } from './types';
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QFormItem',
   componentName: 'QFormItem',
 

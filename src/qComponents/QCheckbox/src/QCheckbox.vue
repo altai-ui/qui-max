@@ -59,7 +59,7 @@ import type { Nullable } from '#/helpers';
 
 import type { QCheckboxProps, QCheckboxInstance } from './types';
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QCheckbox',
   componentName: 'QCheckbox',
 

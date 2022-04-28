@@ -130,7 +130,7 @@ import type {
   DatePanelState
 } from './types';
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QDatePickerPanelDate',
 
   components: {

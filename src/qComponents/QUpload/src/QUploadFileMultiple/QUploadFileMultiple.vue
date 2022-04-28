@@ -92,7 +92,7 @@ import type {
   QUploadFileMultipleInstance
 } from './types';
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QUploadFileMultiple',
   componentName: 'QUploadFileMultiple',
 

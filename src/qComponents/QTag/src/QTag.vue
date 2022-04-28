@@ -23,7 +23,7 @@ import { defineComponent } from 'vue';
 
 import type { QTagProps, QTagInstance } from './types';
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QTag',
   componentName: 'QTag',
 

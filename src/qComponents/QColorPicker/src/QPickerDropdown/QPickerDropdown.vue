@@ -92,7 +92,7 @@ const DEFAULT_SATURATION = 100;
 const DEFAULT_VALUE = 100;
 const DEFAULT_ALPHA = 100;
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QPickerDropdown',
   componentName: 'QPickerDropdown',
 

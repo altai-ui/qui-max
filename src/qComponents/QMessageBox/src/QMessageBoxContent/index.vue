@@ -68,7 +68,7 @@ import type {
   QMessageBoxContentInstance
 } from './types';
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QMessageBoxContent',
   componentName: 'QMessageBoxContent',
 

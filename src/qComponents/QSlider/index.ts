@@ -2,7 +2,7 @@ import { withInstall } from '../helpers';
 
 import Slider from './src/QSlider.vue';
 
-export const QSlider = /* #__PURE__ */ withInstall(Slider);
+export const QSlider = withInstall(Slider);
 
 export type {
   QSliderProps,

@@ -58,7 +58,7 @@ import type { Nullable } from '#/helpers';
 
 import type { NewOption, QSelectTagsInstance } from './types';
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QSelectTags',
   componentName: 'QSelectTags',
 

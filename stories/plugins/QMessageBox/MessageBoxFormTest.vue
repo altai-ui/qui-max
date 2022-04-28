@@ -45,7 +45,7 @@ import { defineComponent, ref, reactive, inject } from 'vue';
 import { QMessageBoxContent, QMessageBoxAction } from '@/qComponents';
 import type { QMessageBoxContainerProvider } from '@/qComponents';
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'MessageBoxFormTest',
 
   components: {

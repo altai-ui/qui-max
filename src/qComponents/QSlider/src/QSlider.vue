@@ -68,7 +68,7 @@ import type {
   QSliderInstance
 } from './types';
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QSlider',
 
   components: {

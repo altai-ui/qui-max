@@ -158,7 +158,7 @@ import type {
 } from './types';
 import { QDatePickerPanelComponent } from './types';
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QDatePicker',
   componentName: 'QDatePicker',
   components: { QInput },

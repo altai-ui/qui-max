@@ -36,7 +36,7 @@ import type {
   QTableInstance
 } from './types';
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QTable',
   componentName: ' QTable',
 

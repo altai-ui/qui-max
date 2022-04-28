@@ -29,7 +29,7 @@ import draggable from '../utils/draggable';
 import type { QPickerDropdownProvider } from '../QPickerDropdown';
 import type { QColorSvpanelInstance } from './types';
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QColorSvpanel',
   componentName: 'QColorSvpanel',
 

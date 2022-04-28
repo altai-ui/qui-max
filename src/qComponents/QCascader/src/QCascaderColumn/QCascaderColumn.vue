@@ -54,7 +54,7 @@ import type {
 
 const EXPAND_EVENT = 'expand';
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QCascaderColumn',
   componentName: 'QCascaderColumn',
 

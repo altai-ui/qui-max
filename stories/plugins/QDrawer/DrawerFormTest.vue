@@ -41,7 +41,7 @@ import { defineComponent, ref, reactive, inject } from 'vue';
 import { QDrawerContent, QDrawerAction } from '@/qComponents';
 import type { QDrawerContainerProvider } from '@/qComponents';
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QDrawerSampleContent',
 
   components: { QDrawerContent },

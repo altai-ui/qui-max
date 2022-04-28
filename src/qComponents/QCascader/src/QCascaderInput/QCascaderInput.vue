@@ -38,7 +38,7 @@ import type { QCascaderProvider } from '../types';
 
 import type { QCascaderInputInstance } from './types';
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QCascaderInput',
   components: { QInput },
   componentName: 'QCascaderInput',

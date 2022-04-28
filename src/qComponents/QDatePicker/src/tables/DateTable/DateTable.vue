@@ -75,7 +75,7 @@ import checkDisabled from './checkDisabled';
 
 const locales: Record<string, Locale> = { ru, en, zh };
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QDatePickerDateTable',
 
   props: {

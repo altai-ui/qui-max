@@ -16,7 +16,7 @@ import type {
   QSliderCaptionsInstance
 } from './types';
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QSliderCaptions',
 
   props: {

@@ -67,7 +67,7 @@ import type {
   QUploadInstance
 } from './types';
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QUpload',
   componentName: 'QUpload',
 

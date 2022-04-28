@@ -15,7 +15,7 @@ import type { Nullable } from '#/helpers';
 
 import type { QColProps, QColInstance } from './types';
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QCol',
   componentName: 'QCol',
 

@@ -45,7 +45,7 @@ import type { QTableTProvider, QTableTInstance } from './types';
 
 const CHANGE_WIDTH_EVENT = 'change-width';
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QTableT',
   componentName: ' QTableT',
 

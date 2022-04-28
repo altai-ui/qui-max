@@ -21,7 +21,7 @@ import type {
   QRowInstance
 } from './types';
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QRow',
   componentName: 'QRow',
 

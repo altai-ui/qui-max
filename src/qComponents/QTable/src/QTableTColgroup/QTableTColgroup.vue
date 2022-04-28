@@ -24,7 +24,7 @@ import type {
 
 import type { QTableTColgroupInstance } from './types';
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QTableTColgroup',
   componentName: ' QTableTColgroup',
 

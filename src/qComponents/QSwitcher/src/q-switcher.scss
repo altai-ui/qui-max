@@ -52,6 +52,7 @@
 
   &_disabled {
     cursor: not-allowed;
+    box-shadow: var(--box-shadow-pressed);
 
     .q-switcher__wrapper {
       background-color: var(--color-tertiary-gray-ultra-darker);
@@ -86,6 +87,8 @@
   }
 
   &:active:not(&_disabled, &_loading, &_active) {
+    box-shadow: var(--box-shadow-pressed);
+
     .q-switcher__wrapper {
       transform: translateX(calc(-100% + 22px));
     }

@@ -4,9 +4,9 @@
     :class="classes"
     :tabindex="tabIndex"
     :aria-disabled="isDisabled"
-    @keyup.enter="handleKeyUp"
-    @keyup.space.prevent="handleKeyUp"
-    @click.prevent="handleSwitcherClick"
+    @keyup.enter="handleSwitcherChange"
+    @keyup.space.prevent="handleSwitcherChange"
+    @click.prevent="handleSwitcherChange"
   >
     <input
       class="q-switch__checkbox"
@@ -31,7 +31,12 @@ import { defineComponent, computed, inject, watch } from 'vue';
 import type { QFormItemProvider, QFormProvider } from '@/qComponents';
 import type { ClassValue, Nullable } from '#/helpers';
 
-import type { QSwitchProps, QSwitchInstance } from './types';
+import type {
+  QSwitchProps,
+  QSwitchInstance,
+  QSwitchTabIndexType,
+  QSwitchEmitValueType
+} from './types';
 
 export default /* #__PURE__ */ defineComponent({
   name: 'QSwitch',
@@ -105,7 +110,9 @@ export default /* #__PURE__ */ defineComponent({
       () => props.disabled || (qForm?.disabled.value ?? false)
     );
 
-    const tabIndex = computed<-1 | 0>(() => (props.disabled ? -1 : 0));
+    const tabIndex = computed<QSwitchTabIndexType>(() =>
+      props.disabled ? -1 : 0
+    );
 
     const classes = computed<ClassValue>(() => ({
       'q-switch_active': isChecked.value,
@@ -113,25 +120,22 @@ export default /* #__PURE__ */ defineComponent({
       'q-switch_loading': Boolean(props.loading)
     }));
 
-    const emitChange = (): void => {
-      if (props.disabled || props.loading) return;
+    const emitChange = (value: QSwitchEmitValueType): void => {
+      ctx.emit('update:modelValue', value);
+      ctx.emit('change', value);
+    };
+
+    const handleSwitcherChange = (): void => {
+      const { disabled, loading, inactiveValue, activeValue } = props;
+
+      if (disabled || loading) return;
 
       if (isChecked.value) {
-        ctx.emit('update:modelValue', props.inactiveValue);
-        ctx.emit('change', props.inactiveValue);
+        emitChange(inactiveValue);
         return;
       }
 
-      ctx.emit('update:modelValue', props.activeValue);
-      ctx.emit('change', props.activeValue);
-    };
-
-    const handleSwitcherClick = (): void => {
-      emitChange();
-    };
-
-    const handleKeyUp = (): void => {
-      emitChange();
+      emitChange(activeValue);
     };
 
     watch(
@@ -146,8 +150,7 @@ export default /* #__PURE__ */ defineComponent({
       tabIndex,
       classes,
       isDisabled,
-      handleKeyUp,
-      handleSwitcherClick
+      handleSwitcherChange
     };
   }
 });

@@ -88,8 +88,8 @@
     }
   }
 
-  &:focus-visible:not(&_disabled),
-  &.focus-visible:not(&_disabled) {
+  &:focus-visible:not(&_disabled, &_loading),
+  &.focus-visible:not(&_disabled, &_loading) {
     --main-switch-color: var(--color-primary-darker);
   }
 }

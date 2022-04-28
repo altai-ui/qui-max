@@ -5,6 +5,12 @@ export type QSwitchPropModelValue = Nullable<boolean | string | number>;
 export type QSwitchPropActiveValue = QSwitchPropModelValue;
 export type QSwitchPropInactiveValue = QSwitchPropActiveValue;
 
+export type QSwitchTabIndexType = -1 | 0;
+
+export type QSwitchEmitValueType =
+  | QSwitchPropInactiveValue
+  | QSwitchPropActiveValue;
+
 export interface QSwitchProps {
   modelValue: QSwitchPropModelValue;
   activeValue: QSwitchPropActiveValue;
@@ -19,6 +25,5 @@ export interface QSwitchInstance {
   isChecked: ComputedRef<boolean>;
   tabIndex: ComputedRef<number>;
   isDisabled: ComputedRef<boolean>;
-  handleKeyUp: () => void;
-  handleSwitcherClick: () => void;
+  handleSwitcherChange: () => void;
 }

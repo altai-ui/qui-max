@@ -110,11 +110,12 @@ export default /* #__PURE__ */ defineComponent({
 
     const classes = computed<ClassValue>(() => ({
       'q-switcher_active': isChecked.value,
-      'q-switcher_disabled': isDisabled.value
+      'q-switcher_disabled': isDisabled.value,
+      'q-switcher_loading': Boolean(props.loading)
     }));
 
     const emitChange = (): void => {
-      if (props.disabled) return;
+      if (props.disabled || props.loading) return;
 
       if (isChecked.value) {
         ctx.emit('update:modelValue', props.inactiveValue);

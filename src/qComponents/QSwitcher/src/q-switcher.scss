@@ -38,7 +38,7 @@
     margin-left: auto;
     background-color: var(--color-tertiary-gray-ultra-light);
     border: 2px solid var(--color-primary);
-    border-radius: 50%;
+    border-radius: 12px;
 
     .q-icon-reverse {
       --icon-size: 12px;
@@ -53,6 +53,10 @@
     .q-switcher__wrapper {
       transform: translateX(0);
     }
+  }
+
+  &_loading {
+    cursor: progress;
   }
 
   &_disabled {
@@ -88,7 +92,7 @@
     }
   }
 
-  &:active:not(&_disabled) {
+  &:active:not(&_disabled, &_loading) {
     box-shadow: var(--box-shadow-pressed);
   }
 }

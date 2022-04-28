@@ -1,4 +1,6 @@
-.q-switcher {
+.q-switch {
+  --main-switch-color: var(--color-primary);
+
   position: relative;
   display: block;
   width: 40px;
@@ -23,13 +25,13 @@
 
   &__wrapper {
     width: 100%;
-    background-color: var(--color-primary);
+    background-color: var(--main-switch-color);
     border-radius: 12px;
     transition: transform 0.2s ease-out;
     transform: translateX(calc(-100% + 20px));
   }
 
-  &__slider {
+  &__handle {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -37,41 +39,31 @@
     height: 20px;
     margin-left: auto;
     background-color: var(--color-tertiary-gray-ultra-light);
-    border: 2px solid var(--color-primary);
+    border: 2px solid var(--main-switch-color);
     border-radius: 12px;
     transition: width 0.1s ease-out;
 
     .q-icon-reverse {
-      --icon-size: 12px;
-
-      font-size: var(--icon-size);
-      color: var(--color-primary);
+      font-size: 12px;
+      color: var(--main-switch-color);
       animation: rotating 2s linear infinite;
     }
   }
 
   &_disabled {
+    --main-switch-color: var(--color-tertiary-gray-ultra-darker);
+
     cursor: not-allowed;
     box-shadow: var(--box-shadow-pressed);
-
-    .q-switcher__wrapper {
-      background-color: var(--color-tertiary-gray-ultra-darker);
-    }
-
-    .q-switcher__slider {
-      border: 2px solid var(--color-tertiary-gray-ultra-darker);
-    }
   }
 
   &_active {
-    .q-switcher__wrapper {
+    .q-switch__wrapper {
       transform: translateX(0);
     }
 
-    &:active:not(.q-switcher_disabled, .q-switcher_loading) {
-      box-shadow: var(--box-shadow-pressed);
-
-      .q-switcher__slider {
+    &:active:not(.q-switch_disabled, .q-switch_loading) {
+      .q-switch__handle {
         width: 22px;
       }
     }
@@ -87,30 +79,17 @@
   }
 
   &:active:not(&_disabled, &_loading, &_active) {
-    box-shadow: var(--box-shadow-pressed);
-
-    .q-switcher__wrapper {
+    .q-switch__wrapper {
       transform: translateX(calc(-100% + 22px));
     }
 
-    .q-switcher__slider {
+    .q-switch__handle {
       width: 22px;
     }
   }
 
   &:focus-visible:not(&_disabled),
   &.focus-visible:not(&_disabled) {
-    .q-switcher__wrapper {
-      background-color: var(--color-primary-darker);
-      outline: none;
-    }
-
-    .q-switcher__slider {
-      border: 2px solid var(--color-primary-darker);
-
-      .q-icon-reverse {
-        color: var(--color-primary-darker);
-      }
-    }
+    --main-switch-color: var(--color-primary-darker);
   }
 }

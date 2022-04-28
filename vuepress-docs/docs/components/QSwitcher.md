@@ -1,12 +1,12 @@
-# QSwitcher 🎚
+# QSwitch 🎚
 
-Allows to turn something on and off. Try a sandbox [story](https://qui-max.netlify.app/?path=/story/components-qswitcher--default)
+Allows to turn something on and off. Try a sandbox [story](https://qui-max.netlify.app/?path=/story/components-QSwitch--default)
 
 ## Examples
 
 Types:
 
-<iframe height="150" style="width: 100%;" scrolling="no" frameborder="no" src="/QSwitcher/default.html"></iframe>
+<iframe height="150" style="width: 100%;" scrolling="no" frameborder="no" src="/QSwitch/default.html"></iframe>
 
 ## Props
 
@@ -16,7 +16,7 @@ Types:
 - default `false`
 
 ```vue
-<q-switcher v-model="model" />
+<q-switch v-model="model" />
 ```
 
 ### activeValue
@@ -24,10 +24,10 @@ Types:
 - type `'boolean' | 'string' | 'number'`
 - default `true`
 
-Defines value for active `QSwitcher` state
+Defines value for active `QSwitch` state
 
 ```vue
-<q-switcher active-value="on" />
+<q-switch active-value="on" />
 ```
 
 ### inactiveValue
@@ -35,10 +35,10 @@ Defines value for active `QSwitcher` state
 - type `'boolean' | 'string' | 'number'`
 - default `false`
 
-Defines value for inactive `QSwitcher` state
+Defines value for inactive `QSwitch` state
 
 ```vue
-<q-switcher active-value="off" />
+<q-switch active-value="off" />
 ```
 
 ### disabled
@@ -46,12 +46,12 @@ Defines value for inactive `QSwitcher` state
 - type `boolean`
 - default `false`
 
-Sets disabled switcher state
+Sets disabled switch state
 
 Code example:
 
 ```vue {3}
-<q-switcher
+<q-switch
   v-model="model"
   disabled
 />
@@ -59,19 +59,19 @@ Code example:
 
 Result:
 
-<iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/QSwitcher/disabled.html"></iframe>
+<iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/QSwitch/disabled.html"></iframe>
 
 ### loading
 
 - Type: `Boolean`
 - Default: `false`
 
-Set loading animation inside switcher slider
+Set loading animation inside switch slider
 
 Code example:
 
 ```vue {3}
-<q-switcher
+<q-switch
   v-model="model"
   loading
 />
@@ -79,23 +79,23 @@ Code example:
 
 Result:
 
-<iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/QSwitcher/loading.html"></iframe>
+<iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/QSwitch/loading.html"></iframe>
 
 ### validateEvent
 
 - type `Boolean`
 - default `false`
 
-If `QSwitcher` wrapped in `QFormItem`, this prop defines if switcher's `change` event will be validated immediately
+If `QSwitch` wrapped in `QFormItem`, this prop defines if switch's `change` event will be validated immediately
 
 ```vue {10}
 <q-form
   :model="model"
   :rules="rules"
 >
-  <q-form-item prop="switcher">
-    <q-switcher 
-      v-model="model.switcher"
+  <q-form-item prop="switch">
+    <q-switch 
+      v-model="model.switch"
       active-value="on"
       inactive-value="off"
       validate-event

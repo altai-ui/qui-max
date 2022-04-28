@@ -1,12 +1,12 @@
 import type { Meta, Story } from '@storybook/vue3';
 import { defineComponent, ref } from 'vue';
 
-import { QSwitcher } from '@/qComponents';
-import type { QSwitcherProps } from '@/qComponents/QSwitcher';
+import { QSwitch } from '@/qComponents';
+import type { QSwitchProps } from '@/qComponents/QSwitch';
 
 const storyMetadata: Meta = {
-  title: 'Components/QSwitcher',
-  component: QSwitcher,
+  title: 'Components/QSwitch',
+  component: QSwitch,
 
   argTypes: {
     modelValue: { control: { type: 'none' } },
@@ -16,7 +16,7 @@ const storyMetadata: Meta = {
   }
 };
 
-const QSwitcherStory: Story<QSwitcherProps> = args =>
+const QSwitchStory: Story<QSwitchProps> = args =>
   defineComponent({
     setup() {
       const isOn = ref(true);
@@ -28,9 +28,9 @@ const QSwitcherStory: Story<QSwitcherProps> = args =>
     },
 
     template: `
-        <q-switcher v-model="isOn" :loading="args.loading" :disabled="args.disabled" :active-value="args.activeValue" :inactive-value="args.inactiveValue"  />
+        <q-switch v-model="isOn" :loading="args.loading" :disabled="args.disabled" :active-value="args.activeValue" :inactive-value="args.inactiveValue"  />
         `
   });
 
-export const Default = QSwitcherStory.bind({});
+export const Default = QSwitchStory.bind({});
 export default storyMetadata;

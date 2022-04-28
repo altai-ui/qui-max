@@ -94,12 +94,12 @@
   "files": ["dist"],
   "sideEffects": false,
   "main": "./dist/qui-max.umd.js",
-  "module": "./dist/qui-max.es.js",
+  "module": "./dist/src/qComponents/index.js",
   "style": "./dist/style.css",
   "types": "./dist/src/qComponents/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/qui-max.es.js",
+      "import": "./dist/src/qComponents/index.js",
       "require": "./dist/qui-max.umd.js"
     },
     "./styles": "./dist/style.css",

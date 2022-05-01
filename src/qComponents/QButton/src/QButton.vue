@@ -1,17 +1,17 @@
 <template>
   <button
     class="q-button"
-    :disabled="isDisabled || loading"
-    :autofocus="autofocus"
-    :type="nativeType"
+    :disabled="isDisabled || isLoading"
+    :autofocus="buttonAutofocus"
+    :type="buttonNativeType"
     :class="classList"
   >
     <span
-      v-if="loading"
+      v-if="isLoading"
       class="q-icon-reverse"
     />
     <span
-      v-if="icon && !loading"
+      v-if="icon && !isLoading"
       :class="icon"
     />
     <span
@@ -33,6 +33,7 @@ import type { QFormProvider } from '@/qComponents/QForm';
 import type { Nullable, ClassValue } from '#/helpers';
 
 import type {
+  QButtonNativeType,
   QButtonProps,
   QButtonPropType,
   QButtonPropTheme,
@@ -88,7 +89,12 @@ export default defineComponent({
      */
     nativeType: {
       type: String as PropType<QButtonPropNativeType>,
-      default: 'button'
+      default: 'button',
+      validator: validateArray<QButtonPropNativeType>([
+        'button',
+        'submit',
+        'reset'
+      ])
     },
 
     /**
@@ -139,6 +145,14 @@ export default defineComponent({
       () => props.disabled || (qForm?.disabled.value ?? false)
     );
 
+    const isLoading = computed<boolean>(() => Boolean(props.loading));
+
+    const buttonNativeType = computed<QButtonNativeType>(
+      () => props.nativeType ?? 'button'
+    );
+
+    const buttonAutofocus = computed<boolean>(() => Boolean(props.autofocus));
+
     const classList = computed<ClassValue[]>(() => {
       const classes: ClassValue[] = Object.entries({
         theme: props.theme,
@@ -150,7 +164,7 @@ export default defineComponent({
 
       classes.push({
         'q-button_disabled': isDisabled.value,
-        'q-button_loading': Boolean(props.loading),
+        'q-button_loading': isLoading.value,
         'q-button_circle': Boolean(props.circle),
         'q-button_full-width': Boolean(props.fullWidth)
       });
@@ -159,8 +173,11 @@ export default defineComponent({
     });
 
     return {
-      classList,
-      isDisabled
+      isDisabled,
+      isLoading,
+      buttonNativeType,
+      buttonAutofocus,
+      classList
     };
   }
 });

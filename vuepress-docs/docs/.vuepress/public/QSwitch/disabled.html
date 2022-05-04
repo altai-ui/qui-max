@@ -12,6 +12,12 @@
     <div id="app">
       <div class="block">
         <q-switch
+          :model-value="false"
+          disabled
+        ></q-switch>
+      </div>
+      <div class="block">
+        <q-switch
           :model-value="true"
           disabled
         ></q-switch>
@@ -28,10 +34,15 @@
     app.mount('#app');
   </script>
   <style>
+    #app {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      column-gap: 20px;
+    }
+
     .block {
-      width: 100%;
       padding-top: 10px;
-      margin: 20px 0 0 20px;
     }
   </style>
 </html>

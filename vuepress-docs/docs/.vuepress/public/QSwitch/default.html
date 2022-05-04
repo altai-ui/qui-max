@@ -28,6 +28,24 @@
           loading
         ></q-switch>
       </div>
+      <div class="block">
+        Default:
+        <q-switch v-model="secondModel"></q-switch>
+      </div>
+      <div class="block">
+        Disabled:
+        <q-switch
+          :model-value="false"
+          disabled
+        ></q-switch>
+      </div>
+      <div class="block">
+        Loading:
+        <q-switch
+          :model-value="false"
+          loading
+        ></q-switch>
+      </div>
     </div>
   </body>
   <!-- import Vue before Qui -->
@@ -38,9 +56,11 @@
     const App = {
       data() {
         const model = Vue.ref(true);
+        const secondModel = Vue.ref(false);
 
         return {
-          model
+          model,
+          secondModel
         };
       }
     };

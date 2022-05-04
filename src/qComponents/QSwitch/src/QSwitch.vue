@@ -126,16 +126,11 @@ export default /* #__PURE__ */ defineComponent({
     };
 
     const handleSwitcherChange = (): void => {
-      const { disabled, loading, inactiveValue, activeValue } = props;
+      if (props.disabled || props.loading) return;
 
-      if (disabled || loading) return;
+      const value = isChecked.value ? props.inactiveValue : props.activeValue;
 
-      if (isChecked.value) {
-        emitChange(inactiveValue);
-        return;
-      }
-
-      emitChange(activeValue);
+      emitChange(value);
     };
 
     watch(

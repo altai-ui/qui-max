@@ -1,5 +1,7 @@
 .q-switch {
   --main-switch-color: var(--color-primary);
+  --handle-width: 24px;
+  --wrapper-translate-x: calc(-100% + var(--handle-width));
 
   position: relative;
   display: block;
@@ -28,15 +30,15 @@
     background-color: var(--main-switch-color);
     border-radius: 12px;
     transition: transform 0.2s ease-out;
-    transform: translateX(calc(-100% + 20px));
+    transform: translateX(var(--wrapper-translate-x));
   }
 
   &__handle {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 20px;
-    height: 20px;
+    width: var(--handle-width);
+    height: 24px;
     margin-left: auto;
     background-color: var(--color-tertiary-gray-ultra-light);
     border: 2px solid var(--main-switch-color);
@@ -44,7 +46,7 @@
     transition: width 0.2s ease-out;
 
     .q-icon-reverse {
-      font-size: 12px;
+      font-size: 16px;
       color: var(--main-switch-color);
       animation: rotating 2s linear infinite;
     }
@@ -58,14 +60,10 @@
   }
 
   &_active {
-    .q-switch__wrapper {
-      transform: translateX(0);
-    }
+    --wrapper-translate-x: 0;
 
     &:active:not(.q-switch_disabled, .q-switch_loading) {
-      .q-switch__handle {
-        width: 22px;
-      }
+      --handle-width: 28px;
     }
   }
 
@@ -73,19 +71,12 @@
     cursor: progress;
   }
 
-  &:focus,
   &.focus-visible {
     outline: none;
   }
 
   &:active:not(&_disabled, &_loading, &_active) {
-    .q-switch__wrapper {
-      transform: translateX(calc(-100% + 22px));
-    }
-
-    .q-switch__handle {
-      width: 22px;
-    }
+    --handle-width: 28px;
   }
 
   &:focus-visible:not(&_disabled, &_loading),

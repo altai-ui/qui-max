@@ -2,7 +2,7 @@ import type { Meta, Story } from '@storybook/vue3';
 import { defineComponent, ref } from 'vue';
 
 import { QSwitch } from '@/qComponents';
-import type { QSwitchProps } from '@/qComponents/QSwitch';
+import type { QSwitchProps } from '@/qComponents';
 
 const storyMetadata: Meta = {
   title: 'Components/QSwitch',
@@ -28,8 +28,14 @@ const QSwitchStory: Story<QSwitchProps> = args =>
     },
 
     template: `
-        <q-switch v-model="isOn" :loading="args.loading" :disabled="args.disabled" :active-value="args.activeValue" :inactive-value="args.inactiveValue"  />
-        `
+      <q-switch 
+        v-model="isOn"
+        :loading="args.loading"
+        :disabled="args.disabled"
+        :active-value="args.activeValue"
+        :inactive-value="args.inactiveValue"
+      />
+    `
   });
 
 export const Default = QSwitchStory.bind({});

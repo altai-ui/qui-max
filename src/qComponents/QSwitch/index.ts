@@ -2,12 +2,11 @@ import { withInstall } from '../helpers';
 
 import Switch from './src/QSwitch.vue';
 
-export const QSwitch = /* #__PURE__ */ withInstall(Switch);
+export const QSwitch = withInstall(Switch);
 
 export type {
   QSwitchPropModelValue,
   QSwitchPropActiveValue,
   QSwitchPropInactiveValue,
-  QSwitchProps,
-  QSwitchInstance
+  QSwitchProps
 } from './src/types';

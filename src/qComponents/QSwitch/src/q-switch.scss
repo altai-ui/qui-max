@@ -1,7 +1,7 @@
 .q-switch {
-  --main-switch-color: var(--color-primary);
-  --handle-width: 24px;
-  --wrapper-translate-x: calc(-100% + var(--handle-width));
+  --switch-main-color: var(--color-primary);
+  --switch-handle-width: 24px;
+  --switch-wrapper-translate-x: calc(-100% + var(--switch-handle-width));
 
   position: relative;
   display: block;
@@ -27,43 +27,43 @@
 
   &__wrapper {
     width: 100%;
-    background-color: var(--main-switch-color);
+    background-color: var(--switch-main-color);
     border-radius: 12px;
     transition: transform 0.2s ease-out;
-    transform: translateX(var(--wrapper-translate-x));
+    transform: translateX(var(--switch-wrapper-translate-x));
   }
 
   &__handle {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: var(--handle-width);
+    width: var(--switch-handle-width);
     height: 24px;
     margin-left: auto;
     background-color: var(--color-tertiary-gray-ultra-light);
-    border: 2px solid var(--main-switch-color);
+    border: 2px solid var(--switch-main-color);
     border-radius: 12px;
     transition: width 0.2s ease-out;
 
     .q-icon-reverse {
       font-size: 16px;
-      color: var(--main-switch-color);
+      color: var(--switch-main-color);
       animation: rotating 2s linear infinite;
     }
   }
 
   &_disabled {
-    --main-switch-color: var(--color-tertiary-gray-ultra-darker);
+    --switch-main-color: var(--color-tertiary-gray-ultra-darker);
 
     cursor: not-allowed;
     box-shadow: var(--box-shadow-pressed);
   }
 
   &_active {
-    --wrapper-translate-x: 0;
+    --switch-wrapper-translate-x: 0;
 
     &:active:not(.q-switch_disabled, .q-switch_loading) {
-      --handle-width: 28px;
+      --switch-handle-width: 28px;
     }
   }
 
@@ -76,11 +76,11 @@
   }
 
   &:active:not(&_disabled, &_loading, &_active) {
-    --handle-width: 28px;
+    --switch-handle-width: 28px;
   }
 
   &:focus-visible:not(&_disabled, &_loading),
   &.focus-visible:not(&_disabled, &_loading) {
-    --main-switch-color: var(--color-primary-darker);
+    --switch-main-color: var(--color-primary-darker);
   }
 }

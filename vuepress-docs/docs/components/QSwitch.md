@@ -1,4 +1,4 @@
-# QSwitch 🎚
+# QSwitch 🔛
 
 Allows to turn something on and off. Try a sandbox [story](https://qui-max.netlify.app/?path=/story/components-QSwitch--default)
 

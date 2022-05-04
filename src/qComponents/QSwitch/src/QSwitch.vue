@@ -38,7 +38,7 @@ import type {
   QSwitchEmitValueType
 } from './types';
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QSwitch',
   componentName: 'QSwitch',
 

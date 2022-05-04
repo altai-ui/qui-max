@@ -2,8 +2,8 @@
   <button
     class="q-button"
     :disabled="isDisabled || isLoading"
-    :autofocus="buttonAutofocus"
-    :type="buttonNativeType"
+    :autofocus="Boolean(autofocus)"
+    :type="nativeType ?? 'button'"
     :class="classList"
   >
     <span
@@ -33,7 +33,6 @@ import type { QFormProvider } from '@/qComponents/QForm';
 import type { Nullable, ClassValue } from '#/helpers';
 
 import type {
-  QButtonNativeType,
   QButtonProps,
   QButtonPropType,
   QButtonPropTheme,
@@ -147,12 +146,6 @@ export default defineComponent({
 
     const isLoading = computed<boolean>(() => Boolean(props.loading));
 
-    const buttonNativeType = computed<QButtonNativeType>(
-      () => props.nativeType ?? 'button'
-    );
-
-    const buttonAutofocus = computed<boolean>(() => Boolean(props.autofocus));
-
     const classList = computed<ClassValue[]>(() => {
       const classes: ClassValue[] = Object.entries({
         theme: props.theme,
@@ -175,8 +168,6 @@ export default defineComponent({
     return {
       isDisabled,
       isLoading,
-      buttonNativeType,
-      buttonAutofocus,
       classList
     };
   }

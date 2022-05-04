@@ -31,7 +31,5 @@ export interface QButtonProps {
 export interface QButtonInstance {
   isDisabled: ComputedRef<boolean>;
   isLoading: ComputedRef<boolean>;
-  buttonNativeType: ComputedRef<QButtonNativeType>;
-  buttonAutofocus: ComputedRef<boolean>;
   classList: ComputedRef<ClassValue[]>;
 }

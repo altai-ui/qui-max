@@ -12,8 +12,10 @@ Types:
 
 ### modelValue
 
-- type `'boolean' | 'string' | 'number'`
+- type `'Boolean' | 'String' | 'Number'`
 - default `false`
+
+The binding value
 
 ```vue
 <q-switch v-model="model" />
@@ -21,7 +23,7 @@ Types:
 
 ### activeValue
 
-- type `'boolean' | 'string' | 'number'`
+- type `'Boolean' | 'String' | 'Number'`
 - default `true`
 
 Defines value for active `QSwitch` state
@@ -32,7 +34,7 @@ Defines value for active `QSwitch` state
 
 ### inactiveValue
 
-- type `'boolean' | 'string' | 'number'`
+- type `'Boolean' | 'String' | 'Number'`
 - default `false`
 
 Defines value for inactive `QSwitch` state
@@ -43,7 +45,7 @@ Defines value for inactive `QSwitch` state
 
 ### disabled
 
-- type `boolean`
+- type `Boolean`
 - default `false`
 
 Sets disabled switch state

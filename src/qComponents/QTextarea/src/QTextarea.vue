@@ -51,7 +51,7 @@ import type {
   QTextareaInstance
 } from './types';
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QTextarea',
   componentName: 'QTextarea',
 

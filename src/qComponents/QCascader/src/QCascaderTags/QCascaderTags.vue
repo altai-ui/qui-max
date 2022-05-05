@@ -37,7 +37,7 @@ import type { QCascaderProvider } from '../types';
 
 import type { TagItem, QCascaderTagsInstance } from './types';
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QCascaderTags',
   components: { QTag },
   componentName: 'QCascaderTags',

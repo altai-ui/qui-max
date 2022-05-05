@@ -36,7 +36,7 @@ import type {
 } from './types';
 import { renderThumbStyle, BAR_MAP } from './util';
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QBar',
   componentName: 'QBar',
 

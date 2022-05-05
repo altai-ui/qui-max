@@ -37,7 +37,7 @@ import type { StickyGlobalConfig, QTableTStickyInstance } from './types';
 
 const WRAPPER_PADDING_LEFT = 32;
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QTableTSticky',
   componentName: ' QTableTSticky',
 

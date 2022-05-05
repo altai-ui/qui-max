@@ -15,7 +15,7 @@ import type {
   QCollapseInstance
 } from './types';
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QCollapse',
   componentName: 'QCollapse',
 

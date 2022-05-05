@@ -30,7 +30,7 @@ import type {
   QNotificationContainerInstance
 } from './types';
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QNotificationContainer',
   componentName: 'QNotificationContainer',
 

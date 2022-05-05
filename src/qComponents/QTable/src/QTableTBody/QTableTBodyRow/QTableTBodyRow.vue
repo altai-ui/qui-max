@@ -46,7 +46,7 @@ import type {
   RootStyles
 } from './types';
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QTableTBodyRow',
   componentName: ' QTableTBodyRow',
 

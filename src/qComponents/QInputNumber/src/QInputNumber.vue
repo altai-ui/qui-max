@@ -43,7 +43,7 @@ import type { QInputNumberInstance, QInputNumberProps } from './types';
 const MIN_INTEGER = Number(String(Number.MIN_SAFE_INTEGER).slice(0, -2));
 const MAX_INTEGER = Number(String(Number.MAX_SAFE_INTEGER).slice(0, -2));
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QInputNumber',
   componentName: 'QInputNumber',
   inheritAttrs: false,

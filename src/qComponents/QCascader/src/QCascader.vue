@@ -60,7 +60,7 @@ import type {
   QCascaderProvider
 } from './types';
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QCascader',
   componentName: 'QCascader',
 

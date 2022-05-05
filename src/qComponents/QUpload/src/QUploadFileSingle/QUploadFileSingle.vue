@@ -40,7 +40,7 @@ import type {
   QUploadFileSingleInstance
 } from './types';
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QUploadFileSingle',
   componentName: 'QUploadFileSingle',
 

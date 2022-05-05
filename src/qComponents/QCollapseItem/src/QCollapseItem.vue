@@ -40,7 +40,7 @@ import type { QCollapseProvider } from '@/qComponents/QCollapse';
 import QCollapseTransition from './QCollapseTransition.vue';
 import type { QCollapseItemProps, QCollapseItemInstance } from './types';
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QCollapseItem',
   componentName: 'QCollapseItem',
 

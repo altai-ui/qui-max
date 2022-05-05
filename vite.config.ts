@@ -47,14 +47,20 @@ export default defineConfig({
       // into your library
       external: ['vue'],
       treeshake: true,
-      output: {
-        // Provide global variables to use in the UMD build
-        // for externalized deps
-        exports: 'named',
-        globals: {
-          vue: 'Vue'
+      output: [
+        {
+          format: 'umd',
+          // Provide global variables to use in the UMD build
+          // for externalized deps
+          exports: 'named',
+          globals: { vue: 'Vue' }
+        },
+        {
+          format: 'es',
+          entryFileNames: '[name].js',
+          preserveModules: true
         }
-      },
+      ],
       plugins: [
         sassPlugin({
           runtime: sass,

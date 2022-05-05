@@ -78,7 +78,7 @@ import type {
 
 const DEFAULT_Z_INDEX = 2000;
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QPopover',
   componentName: 'QPopover',
 

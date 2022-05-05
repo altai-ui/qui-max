@@ -124,7 +124,7 @@ import type {
   YearRangeState
 } from './types';
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QDatePickerYearRange',
 
   components: { PeriodTable },

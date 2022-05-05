@@ -136,7 +136,7 @@ import type {
 import QSelectDropdown from './QSelectDropdown.vue';
 import QSelectTags from './QSelectTags.vue';
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QSelect',
   componentName: 'QSelect',
 

@@ -43,7 +43,7 @@ import type {
   QCascaderRowInstance
 } from './types';
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QCascaderRow',
   components: { QCheckbox },
   componentName: 'QCascaderRow',

@@ -80,7 +80,7 @@ import type {
   QInputClass
 } from './types';
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QInput',
   componentName: 'QInput',
 

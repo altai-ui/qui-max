@@ -79,7 +79,7 @@ import type { QSelectDropdownInstance, QSelectDropdownProps } from './types';
 
 const DEFAULT_Z_INDEX = 2000;
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QSelectDropdown',
   componentName: 'QSelectDropdown',
 

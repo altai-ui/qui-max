@@ -1,0 +1,60 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- import CSS -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/@qvant/qui-max/dist/style.css"
+    />
+  </head>
+
+  <body>
+    <div id="app">
+      <div class="block">
+        <q-switch
+          v-model="model"
+          :loading="loading"
+          @change="handleSwitcherChange"
+        ></q-switch>
+      </div>
+    </div>
+  </body>
+  <!-- import Vue before Qui -->
+  <script src="https://unpkg.com/vue@latest"></script>
+  <!-- import JavaScript -->
+  <script src="https://unpkg.com/@qvant/qui-max@latest"></script>
+  <script>
+    const App = {
+      data() {
+        const model = Vue.ref(false);
+
+        const loading = Vue.ref(false);
+
+        const handleSwitcherChange = () => {
+          loading.value = true;
+
+          setTimeout(() => {
+            loading.value = false;
+          }, 1000);
+        };
+
+        return {
+          model,
+          loading,
+          handleSwitcherChange
+        };
+      }
+    };
+
+    const app = Vue.createApp(App);
+    app.use(QuiMax.default);
+    app.mount('#app');
+  </script>
+  <style>
+    .block {
+      width: 100%;
+      padding-top: 10px;
+      margin: 20px 0 0 20px;
+    }
+  </style>
+</html>

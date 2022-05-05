@@ -1,0 +1,88 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- import CSS -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/@qvant/qui-max/dist/style.css"
+    />
+  </head>
+
+  <body>
+    <div id="app">
+      <div class="block">
+        Default:
+        <q-switch v-model="model"></q-switch>
+      </div>
+      <div class="block">
+        Disabled:
+        <q-switch
+          :model-value="true"
+          disabled
+        ></q-switch>
+      </div>
+      <div class="block">
+        Loading:
+        <q-switch
+          :model-value="true"
+          loading
+        ></q-switch>
+      </div>
+      <div class="block">
+        Default:
+        <q-switch v-model="secondModel"></q-switch>
+      </div>
+      <div class="block">
+        Disabled:
+        <q-switch
+          :model-value="false"
+          disabled
+        ></q-switch>
+      </div>
+      <div class="block">
+        Loading:
+        <q-switch
+          :model-value="false"
+          loading
+        ></q-switch>
+      </div>
+    </div>
+  </body>
+  <!-- import Vue before Qui -->
+  <script src="https://unpkg.com/vue@latest"></script>
+  <!-- import JavaScript -->
+  <script src="https://unpkg.com/@qvant/qui-max@latest"></script>
+  <script>
+    const App = {
+      data() {
+        const model = Vue.ref(true);
+        const secondModel = Vue.ref(false);
+
+        return {
+          model,
+          secondModel
+        };
+      }
+    };
+
+    const app = Vue.createApp(App);
+    app.use(QuiMax.default);
+    app.mount('#app');
+  </script>
+  <style>
+    #app {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      align-items: center;
+      padding: 25px;
+    }
+
+    .block {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+  </style>
+</html>

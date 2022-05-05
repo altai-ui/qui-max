@@ -33,6 +33,26 @@
     "import/extensions": "off",
     "import/no-unresolved": "off",
     "import/prefer-default-export": "off",
+    "import/order": [
+      "error",
+      {
+        "newlines-between": "always",
+        "groups": [
+          "builtin",
+          "external",
+          "internal",
+          "parent",
+          "sibling",
+          "index",
+          "object"
+        ],
+        "pathGroups": [
+          { "pattern": "@/**", "group": "internal", "position": "before" },
+          { "pattern": "#/**", "group": "internal", "position": "before" }
+        ],
+        "alphabetize": { "order": "asc", "caseInsensitive": true }
+      }
+    ],
 
     "vue/component-name-in-template-casing": ["error", "kebab-case"],
     "vue/max-attributes-per-line": "warn",

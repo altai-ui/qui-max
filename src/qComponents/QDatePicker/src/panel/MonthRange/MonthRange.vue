@@ -85,6 +85,8 @@
 </template>
 
 <script lang="ts">
+import { isDate, addYears, addMonths, isSameMonth } from 'date-fns';
+import { isNil } from 'lodash-es';
 import {
   reactive,
   computed,
@@ -95,17 +97,13 @@ import {
   defineComponent
 } from 'vue';
 import type { PropType } from 'vue';
-import { isDate, addYears, addMonths, isSameMonth } from 'date-fns';
-import { isNil } from 'lodash-es';
 
 import type { Nullable } from '#/helpers';
 
-import PeriodTable from '../../tables/PeriodTable/PeriodTable.vue';
-import { PERIOD_CELLS_IN_ROW_COUNT } from '../../constants';
-import type { DatePanelRangePropModelValue } from '../DateRange/types';
-import type { QDatePickerProvider } from '../../types';
 import type { RangePickValue, RangeState } from '../../commonTypes';
-
+import { PERIOD_CELLS_IN_ROW_COUNT } from '../../constants';
+import PeriodTable from '../../tables/PeriodTable/PeriodTable.vue';
+import type { QDatePickerProvider } from '../../types';
 import {
   leftYearComposable,
   isValidValue,
@@ -117,6 +115,7 @@ import {
   getActualMonth,
   getPeriodNextNodeIndex
 } from '../composition';
+import type { DatePanelRangePropModelValue } from '../DateRange/types';
 
 import type {
   MonthRangePanelInstance,

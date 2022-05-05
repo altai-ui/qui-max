@@ -34,6 +34,7 @@
 import { defineComponent, inject, computed, PropType } from 'vue';
 
 import { QCheckbox } from '@/qComponents/QCheckbox';
+
 import getChildStatuses from '../helpers/getChildStatuses';
 import type { QCascaderProvider } from '../types';
 

@@ -2,14 +2,14 @@ import type { Meta } from '@storybook/vue3';
 
 import { QTable } from '@/qComponents/QTable';
 
-import Default from './Default';
-import CustomWidth from './CustomWidth';
-import Selectable from './Selectable';
-import Total from './Total';
-import StickyColumn from './StickyColumn';
 import CustomRows from './CustomRows';
-import Groups from './Groups';
+import CustomWidth from './CustomWidth';
+import Default from './Default';
 import Draggable from './Draggable';
+import Groups from './Groups';
+import Selectable from './Selectable';
+import StickyColumn from './StickyColumn';
+import Total from './Total';
 
 const storyMetadata: Meta = {
   title: 'Components/QTable',

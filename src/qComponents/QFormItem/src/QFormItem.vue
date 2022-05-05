@@ -43,6 +43,11 @@
 </template>
 
 <script lang="ts">
+import AsyncValidator, {
+  ValidateError,
+  ValidateFieldsError
+} from 'async-validator';
+import { get, set } from 'lodash-es';
 import {
   provide,
   ref,
@@ -54,14 +59,10 @@ import {
   watch
 } from 'vue';
 import type { PropType } from 'vue';
-import AsyncValidator, {
-  ValidateError,
-  ValidateFieldsError
-} from 'async-validator';
-import { get, set } from 'lodash-es';
 
 import { validateArray } from '@/qComponents/helpers';
 import type { QFormProvider } from '@/qComponents/QForm';
+
 import type { Nullable } from '#/helpers';
 
 import type {

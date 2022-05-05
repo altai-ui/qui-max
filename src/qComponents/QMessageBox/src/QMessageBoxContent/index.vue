@@ -59,8 +59,9 @@ import type { PropType } from 'vue';
 import { QButton } from '@/qComponents/QButton';
 
 import { Nullable } from '#/helpers';
-import type { QMessageBoxContainerProvider } from '../QMessageBoxContainer';
+
 import { QMessageBoxAction } from '../constants';
+import type { QMessageBoxContainerProvider } from '../QMessageBoxContainer';
 
 import type {
   QMessageBoxContentPropBeforeClose,

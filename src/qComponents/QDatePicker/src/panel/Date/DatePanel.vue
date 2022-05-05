@@ -92,6 +92,8 @@
 </template>
 
 <script lang="ts">
+import { subMonths, addMonths, subYears, addYears } from 'date-fns';
+import { isNil } from 'lodash-es';
 import {
   reactive,
   computed,
@@ -103,15 +105,12 @@ import {
   nextTick
 } from 'vue';
 import type { PropType } from 'vue';
-import { subMonths, addMonths, subYears, addYears } from 'date-fns';
-import { isNil } from 'lodash-es';
 
-import { t } from '@/qComponents/locale';
 import { getConfig } from '@/qComponents/config';
+import { t } from '@/qComponents/locale';
+
 import type { Nullable } from '#/helpers';
 
-import PeriodTable from '../../tables/PeriodTable/PeriodTable.vue';
-import DateTable from '../../tables/DateTable/DateTable.vue';
 import {
   DATE_CELLS_COUNT,
   DATE_CELLS_IN_ROW_COUNT,
@@ -120,6 +119,8 @@ import {
   PERIOD_CELLS_IN_ROW_COUNT,
   YEARS_IN_DECADE
 } from '../../constants';
+import DateTable from '../../tables/DateTable/DateTable.vue';
+import PeriodTable from '../../tables/PeriodTable/PeriodTable.vue';
 import type { QDatePickerProvider } from '../../types';
 import { getPeriodNextNodeIndex } from '../composition';
 

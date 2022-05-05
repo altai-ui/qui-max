@@ -38,11 +38,12 @@ import {
 } from 'vue';
 
 import { QScrollbar } from '@/qComponents/QScrollbar';
+
 import type { Nullable } from '#/helpers';
 
 import findAllLeaves from '../helpers/findAllLeaves';
-import QCascaderRow from '../QCascaderRow/QCascaderRow.vue';
 import type { QCascaderDropdownProvider } from '../QCascaderDropdown/types';
+import QCascaderRow from '../QCascaderRow/QCascaderRow.vue';
 import type { Option, QCascaderProvider } from '../types';
 
 import { getSibling } from './helpers';

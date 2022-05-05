@@ -58,7 +58,6 @@ import type { Nullable } from '#/helpers';
 import { QDrawerAction } from '../constants';
 import type { QDrawerComponent, QDrawerEvent } from '../types';
 
-import { isExternalComponent } from './utils';
 import type {
   QDrawerContainerPropContent,
   QDrawerContainerPropPosition,
@@ -68,6 +67,7 @@ import type {
   QDrawerContainerInstance,
   QDrawerContainerProvider
 } from './types';
+import { isExternalComponent } from './utils';
 
 export default defineComponent({
   name: 'QDrawerContainer',

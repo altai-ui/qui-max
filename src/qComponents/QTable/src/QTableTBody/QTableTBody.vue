@@ -10,8 +10,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, inject } from 'vue';
 import getHash from 'object-hash';
+import { defineComponent, computed, inject } from 'vue';
 
 import { randId } from '@/qComponents/helpers';
 

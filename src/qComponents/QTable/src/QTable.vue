@@ -15,12 +15,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, computed, provide, toRef } from 'vue';
 import { isEmpty, isFunction } from 'lodash-es';
+import { defineComponent, PropType, computed, provide, toRef } from 'vue';
 
 import QTableContainer from './QTableContainer/QTableContainer.vue';
 import QTableEmpty from './QTableEmpty/QTableEmpty.vue';
-
 import type {
   Row,
   QTableProps,

@@ -1,4 +1,5 @@
 import type { ComputedRef, CSSProperties } from 'vue';
+
 import type { Nullable } from '#/helpers';
 
 type CssPropertyWidth = CSSProperties['width'];

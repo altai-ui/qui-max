@@ -1,4 +1,5 @@
 import type { App, Component } from 'vue';
+
 import type { SFCWithInstall } from '#/helpers';
 
 export const withInstall = <T extends Component>(

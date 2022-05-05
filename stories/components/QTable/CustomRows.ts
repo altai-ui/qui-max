@@ -1,6 +1,5 @@
-import Template from './Default';
-
 import { groupsOfColumns, rows, loadingRowCount } from './args';
+import Template from './Default';
 
 const CustomRows = Template.bind({});
 

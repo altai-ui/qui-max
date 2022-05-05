@@ -19,8 +19,9 @@
 <script lang="ts">
 import { defineComponent, computed } from 'vue';
 
-import { t } from '@/qComponents/locale';
 import image from '@/assets/empty-table-v2.svg';
+import { t } from '@/qComponents/locale';
+
 import type { QTableEmptyProps, QTableEmptyInstance } from './types';
 
 export default defineComponent({

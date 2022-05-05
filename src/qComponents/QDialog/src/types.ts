@@ -2,8 +2,8 @@ import type { App, Component, ComponentInternalInstance } from 'vue';
 
 import type { Nullable, UnwrappedInstance } from '#/helpers';
 
-import type { QDialogContainerInstance } from './QDialogContainer';
 import type { QDialogAction } from './constants';
+import type { QDialogContainerInstance } from './QDialogContainer';
 
 export interface ComponentInternalInstanceWithProvides
   extends ComponentInternalInstance {

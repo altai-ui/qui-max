@@ -5,6 +5,8 @@
 </template>
 
 <script lang="ts">
+import type { ValidateFieldsError } from 'async-validator';
+import { concat } from 'lodash-es';
 import {
   defineComponent,
   PropType,
@@ -14,10 +16,9 @@ import {
   watch,
   toRef
 } from 'vue';
-import type { ValidateFieldsError } from 'async-validator';
-import { concat } from 'lodash-es';
 
 import type { QFormItemContext } from '@/qComponents/QFormItem';
+
 import type { Nullable } from '#/helpers';
 
 import type {

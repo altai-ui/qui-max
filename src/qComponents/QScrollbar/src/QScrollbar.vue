@@ -50,9 +50,10 @@ import {
   provide
 } from 'vue';
 
-import { validateArray } from '@/qComponents/helpers';
 import { isServer } from '@/qComponents/constants/isServer';
+import { validateArray } from '@/qComponents/helpers';
 import { useResizeListener } from '@/qComponents/hooks';
+
 import type { Nullable, Optional, UnwrappedInstance } from '#/helpers';
 
 import QBar from './QBar.vue';

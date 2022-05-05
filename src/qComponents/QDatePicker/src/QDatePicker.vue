@@ -96,6 +96,17 @@
 </template>
 
 <script lang="ts">
+import { createPopper } from '@popperjs/core';
+import {
+  isDate,
+  isValid,
+  parse,
+  startOfMonth,
+  startOfWeek,
+  startOfYear,
+  parseISO
+} from 'date-fns';
+import { isNumber, isString } from 'lodash-es';
 import {
   computed,
   defineComponent,
@@ -108,36 +119,20 @@ import {
   toRef
 } from 'vue';
 import type { PropType } from 'vue';
-import { createPopper } from '@popperjs/core';
-import { isNumber, isString } from 'lodash-es';
-import {
-  isDate,
-  isValid,
-  parse,
-  startOfMonth,
-  startOfWeek,
-  startOfYear,
-  parseISO
-} from 'date-fns';
 
-import { isServer } from '@/qComponents/constants/isServer';
 import { getConfig } from '@/qComponents/config';
-import { t } from '@/qComponents/locale';
+import { isServer } from '@/qComponents/constants/isServer';
 import { notNull, validateArray } from '@/qComponents/helpers';
 import { useMediaQuery } from '@/qComponents/hooks';
-import { QInput } from '@/qComponents/QInput';
+import { t } from '@/qComponents/locale';
 import { useDialog } from '@/qComponents/QDialog';
 import type { QFormProvider } from '@/qComponents/QForm';
-import type { QInputInstance } from '@/qComponents/QInput';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
+import { QInput } from '@/qComponents/QInput';
+import type { QInputInstance } from '@/qComponents/QInput';
+
 import type { Nullable, UnwrappedInstance } from '#/helpers';
 
-import DatePanel from './panel/Date/DatePanel.vue';
-import DateRangePanel from './panel/DateRange/DateRange.vue';
-import MonthRangePanel from './panel/MonthRange/MonthRange.vue';
-import YearRangePanel from './panel/YearRange/YearRange.vue';
-import MobilePanel from './mobile/MobilePanel.vue';
-import type { DatePanelInstance } from './panel/Date/types';
 import {
   calcInputData,
   formatToLocalReadableString,
@@ -145,6 +140,12 @@ import {
   checkArrayValueIsValid,
   convertISOToDate
 } from './helpers';
+import MobilePanel from './mobile/MobilePanel.vue';
+import DatePanel from './panel/Date/DatePanel.vue';
+import type { DatePanelInstance } from './panel/Date/types';
+import DateRangePanel from './panel/DateRange/DateRange.vue';
+import MonthRangePanel from './panel/MonthRange/MonthRange.vue';
+import YearRangePanel from './panel/YearRange/YearRange.vue';
 import type {
   QDatePickerPropDisabledValues,
   QDatePickerPropModelValue,

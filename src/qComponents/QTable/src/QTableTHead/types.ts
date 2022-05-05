@@ -2,8 +2,8 @@ import type { Ref, ComputedRef } from 'vue';
 
 import type { Nullable } from '#/helpers';
 
-import type { QTablePropSortBy } from '../types';
 import type { ExtendedColumn } from '../QTableContainer/types';
+import type { QTablePropSortBy } from '../types';
 
 export interface QTableTHeadInstance {
   isSelectable: Nullable<ComputedRef<boolean>>;

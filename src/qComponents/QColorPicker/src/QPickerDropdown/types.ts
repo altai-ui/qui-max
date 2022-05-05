@@ -2,10 +2,10 @@ import type { Ref } from 'vue';
 
 import type { Nullable, UnwrappedInstance } from '#/helpers';
 
-import type { ColorFormat } from '../types';
-import type { QColorSvpanelInstance } from '../QColorSvpanel';
-import type { QColorHueSliderInstance } from '../QColorHueSlider';
 import type { QColorAlphaSliderInstance } from '../QColorAlphaSlider';
+import type { QColorHueSliderInstance } from '../QColorHueSlider';
+import type { QColorSvpanelInstance } from '../QColorSvpanel';
+import type { ColorFormat } from '../types';
 
 export type QPickerDropdownPropColorFormat = ColorFormat;
 

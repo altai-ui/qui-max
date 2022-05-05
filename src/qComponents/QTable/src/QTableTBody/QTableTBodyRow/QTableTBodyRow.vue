@@ -25,19 +25,21 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, computed, inject } from 'vue';
 import { get } from 'lodash-es';
+import { defineComponent, PropType, computed, inject } from 'vue';
 
 import { randId } from '@/qComponents/helpers';
+
 import type { Nullable } from '#/helpers';
 
-import QTableTBodyCell from '../QTableTBodyCell/QTableTBodyCell.vue';
 import QTableCellCheckbox from '../../QTableCellCheckbox/QTableCellCheckbox.vue';
-import type { QTableProvider } from '../../types';
 import type {
   ExtendedColumn,
   QTableContainerProvider
 } from '../../QTableContainer/types';
+import type { QTableProvider } from '../../types';
+import QTableTBodyCell from '../QTableTBodyCell/QTableTBodyCell.vue';
+
 import type {
   QTableTBodyRowProps,
   QTableTBodyRowPropRow,

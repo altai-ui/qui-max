@@ -1,9 +1,9 @@
-import type { Ref, ComputedRef } from 'vue';
 import type {
   RuleItem,
   ValidateError,
   ValidateFieldsError
 } from 'async-validator';
+import type { Ref, ComputedRef } from 'vue';
 
 import type { Nullable } from '#/helpers';
 

@@ -13,5 +13,5 @@ A few scenarios:
 
 ### modelValue
 
-- Type: `String` | `Number` | `Array` | `Object`,
+- Type: `String` | `Number` | `Boolean`,
 - Default: `null`

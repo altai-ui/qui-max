@@ -37,10 +37,11 @@ import {
   PropType
 } from 'vue';
 
-import { t } from '@/qComponents/locale';
 import { validateArray } from '@/qComponents/helpers';
+import { t } from '@/qComponents/locale';
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
+
 import type { Nullable } from '#/helpers';
 
 import calcTextareaHeight from './calcTextareaHeight';

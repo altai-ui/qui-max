@@ -23,11 +23,11 @@ import { defineComponent, computed, inject } from 'vue';
 
 import { TOTAL_CHECKED_INDEX } from '../config';
 import QTableCellCheckbox from '../QTableCellCheckbox/QTableCellCheckbox.vue';
-import type { QTableProvider } from '../types';
 import type {
   ExtendedColumn,
   QTableContainerProvider
 } from '../QTableContainer/types';
+import type { QTableProvider } from '../types';
 
 import QTableTTotalCell from './QTableTTotalCell/QTableTTotalCell.vue';
 import type { QTableTTotalInstance } from './types';

@@ -25,6 +25,7 @@
 </template>
 
 <script lang="ts">
+import { createPopper } from '@popperjs/core';
 import {
   defineComponent,
   inject,
@@ -34,9 +35,9 @@ import {
   onMounted,
   onUnmounted
 } from 'vue';
-import { createPopper } from '@popperjs/core';
 
 import { getConfig } from '@/qComponents/config';
+
 import type { Nullable } from '#/helpers';
 
 import QCascaderColumn from '../QCascaderColumn/QCascaderColumn.vue';

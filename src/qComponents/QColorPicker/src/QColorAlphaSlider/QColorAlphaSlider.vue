@@ -18,6 +18,7 @@
 </template>
 
 <script lang="ts">
+import { colord } from 'colord';
 import {
   defineComponent,
   ref,
@@ -28,12 +29,11 @@ import {
   nextTick
 } from 'vue';
 
-import { colord } from 'colord';
-
 import type { Nullable } from '#/helpers';
 
-import draggable from '../utils/draggable';
 import type { QPickerDropdownProvider } from '../QPickerDropdown';
+import draggable from '../utils/draggable';
+
 import type { QColorAlphaSliderInstance } from './types';
 
 export default defineComponent({

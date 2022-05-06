@@ -30,12 +30,13 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, inject, nextTick, ref, watch } from 'vue';
 import { isNil } from 'lodash-es';
+import { computed, defineComponent, inject, nextTick, ref, watch } from 'vue';
 
 import { getConfig } from '@/qComponents/config';
-import type { QFormItemProvider } from '@/qComponents/QFormItem';
 import type { QFormProvider } from '@/qComponents/QForm';
+import type { QFormItemProvider } from '@/qComponents/QFormItem';
+
 import type { Nullable } from '#/helpers';
 
 import type { QInputNumberInstance, QInputNumberProps } from './types';

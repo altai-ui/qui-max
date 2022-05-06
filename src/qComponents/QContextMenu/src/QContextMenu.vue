@@ -52,6 +52,12 @@
 
 <script lang="ts">
 import {
+  createPopper as createPopperJs,
+  Instance,
+  Options,
+  Placement
+} from '@popperjs/core';
+import {
   defineComponent,
   computed,
   ref,
@@ -60,16 +66,11 @@ import {
   onUnmounted,
   onBeforeUpdate
 } from 'vue';
-import {
-  createPopper as createPopperJs,
-  Instance,
-  Options,
-  Placement
-} from '@popperjs/core';
 
+import { getConfig } from '@/qComponents/config';
 import { isServer } from '@/qComponents/constants/isServer';
 import { validateArray } from '@/qComponents/helpers';
-import { getConfig } from '@/qComponents/config';
+
 import type { Nullable } from '#/helpers';
 
 import type {

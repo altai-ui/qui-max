@@ -1,6 +1,5 @@
-import Template from './Default';
-
 import { groupsOfColumns, sortBy, rows, loadingRowCount } from './args';
+import Template from './Default';
 
 const CustomWidth = Template.bind({});
 

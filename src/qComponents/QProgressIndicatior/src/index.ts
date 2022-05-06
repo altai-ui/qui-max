@@ -2,13 +2,13 @@ import { createApp, ref, nextTick } from 'vue';
 
 import { isServer } from '@/qComponents/constants/isServer';
 
-import QProgressIndicatiorContainer from './QProgressIndicatiorContainer';
 import { HIDE_ANIMATION_IN_MS, TRANSFORM_ANIMATION_IN_MS } from './constants';
-import { createQueue } from './utils';
+import QProgressIndicatiorContainer from './QProgressIndicatiorContainer';
 import type {
   QProgressIndicatior,
   QProgressIndicatiorPluginOptions
 } from './types';
+import { createQueue } from './utils';
 
 const isShown = ref<boolean>(false);
 const isStarted = ref<boolean>(false);

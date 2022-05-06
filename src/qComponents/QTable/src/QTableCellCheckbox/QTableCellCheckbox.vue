@@ -9,12 +9,13 @@ import {
 } from 'vue';
 
 import { CHANGE_EVENT } from '@/qComponents/constants/events';
+
 import type { Nullable } from '#/helpers';
 
 import { useSticky } from '../hooks/sticky';
 import type { StickyConfig } from '../hooks/sticky';
-import type { QTableProvider } from '../types';
 import type { QTableTProvider } from '../QTableT/types';
+import type { QTableProvider } from '../types';
 
 import type {
   QTableCellCheckboxProps,

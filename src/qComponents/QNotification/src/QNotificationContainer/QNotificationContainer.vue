@@ -21,8 +21,9 @@ import { defineComponent, getCurrentInstance, onMounted, computed } from 'vue';
 import type { PropType, Ref } from 'vue';
 
 import { REMOVE_EVENT } from '@/qComponents/constants/events';
-import QNotificationToast from '../QNotificationToast';
+
 import { DEFAULT_DURATION } from '../constants';
+import QNotificationToast from '../QNotificationToast';
 import type { QNotifyItem, QNotifyId } from '../types';
 
 import type {

@@ -59,17 +59,16 @@ import {
 } from 'vue';
 import type { PropType } from 'vue';
 
-import { QScrollbar } from '@/qComponents/QScrollbar';
-import { isServer } from '@/qComponents/constants/isServer';
 import { getConfig } from '@/qComponents/config';
+import { isServer } from '@/qComponents/constants/isServer';
+import { QScrollbar } from '@/qComponents/QScrollbar';
 
 import type { Nullable } from '#/helpers';
 
-import { QMessageBoxContent } from '../QMessageBoxContent';
 import { QMessageBoxAction } from '../constants';
+import { QMessageBoxContent } from '../QMessageBoxContent';
 import type { QMessageBoxEvent } from '../types';
 
-import { isExternalComponent, isInternalComponent } from './utils';
 import type {
   QMessageBoxComponent,
   QMessageBoxContainerPropContent,
@@ -81,6 +80,7 @@ import type {
   QMessageBoxContainerProvider,
   QMessageBoxContainerInstance
 } from './types';
+import { isExternalComponent, isInternalComponent } from './utils';
 
 export default defineComponent({
   name: 'QMessageBoxContainer',

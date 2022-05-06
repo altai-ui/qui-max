@@ -2,8 +2,8 @@ import type { Meta, Story } from '@storybook/vue3';
 import { defineComponent, ref } from 'vue';
 
 import { QCollapse } from '@/qComponents/QCollapse';
-import { QCollapseItem } from '@/qComponents/QCollapseItem';
 import type { QCollapseProps } from '@/qComponents/QCollapse';
+import { QCollapseItem } from '@/qComponents/QCollapseItem';
 
 const storyMetadata: Meta = {
   title: 'Components/QCollapse',

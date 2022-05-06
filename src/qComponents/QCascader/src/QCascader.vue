@@ -26,6 +26,7 @@
 </template>
 
 <script lang="ts">
+import type { Instance } from '@popperjs/core';
 import {
   defineComponent,
   inject,
@@ -37,20 +38,19 @@ import {
   watch,
   nextTick
 } from 'vue';
-import type { Instance } from '@popperjs/core';
 
 import { isServer } from '@/qComponents/constants/isServer';
 import { randId } from '@/qComponents/helpers';
 import { useResizeListener } from '@/qComponents/hooks';
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
+
 import type { Nullable, UnwrappedInstance } from '#/helpers';
 
 import QCascaderDropdown from './QCascaderDropdown/QCascaderDropdown.vue';
 import QCascaderInput from './QCascaderInput/QCascaderInput.vue';
-import QCascaderTags from './QCascaderTags/QCascaderTags.vue';
 import type { QCascaderInputInstance } from './QCascaderInput/types';
-
+import QCascaderTags from './QCascaderTags/QCascaderTags.vue';
 import type {
   QCascaderPropModelValue,
   QCascaderPropOptions,

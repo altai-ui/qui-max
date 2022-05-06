@@ -2,11 +2,12 @@ import { createApp, ref, nextTick } from 'vue';
 import type { App, Ref } from 'vue';
 
 import { isServer } from '@/qComponents/constants/isServer';
+
 import type { Nullable, Nillable, UnwrappedInstance } from '#/helpers';
 
+import { QMessageBoxAction } from './constants';
 import { QMessageBoxContainer } from './QMessageBoxContainer';
 import type { QMessageBoxContainerInstance } from './QMessageBoxContainer';
-import { QMessageBoxAction } from './constants';
 import type {
   ComponentInternalInstanceWithProvides,
   MessageBoxPromise,

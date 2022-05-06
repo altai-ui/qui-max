@@ -1,5 +1,5 @@
-import type { Ref, ComputedRef } from 'vue';
 import type { Instance } from '@popperjs/core';
+import type { Ref, ComputedRef } from 'vue';
 
 import type { Nullable, UnwrappedInstance } from '#/helpers';
 

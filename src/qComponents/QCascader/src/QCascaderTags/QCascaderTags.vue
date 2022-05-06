@@ -32,6 +32,7 @@
 import { defineComponent, inject, computed } from 'vue';
 
 import { QTag } from '@/qComponents/QTag';
+
 import findFullPath from '../helpers/findFullPath';
 import type { QCascaderProvider } from '../types';
 

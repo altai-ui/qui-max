@@ -50,14 +50,14 @@ import {
 } from 'vue';
 import type { PropType } from 'vue';
 
-import type { Nullable } from '#/helpers';
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
 
-import QSliderButton from './components/QSliderButton/QSliderButton.vue';
-import QSliderBar from './components/QSliderBar/QSliderBar.vue';
-import QSliderCaptions from './components/QSliderCaptions/QSliderCaptions.vue';
+import type { Nullable } from '#/helpers';
 
+import QSliderBar from './components/QSliderBar/QSliderBar.vue';
+import QSliderButton from './components/QSliderButton/QSliderButton.vue';
+import QSliderCaptions from './components/QSliderCaptions/QSliderCaptions.vue';
 import type {
   QSliderPropModelValue,
   QSliderPropData,

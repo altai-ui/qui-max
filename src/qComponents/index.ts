@@ -1,15 +1,15 @@
-import type { App, Plugin } from 'vue';
 import { merge } from 'lodash-es';
+import type { App, Plugin } from 'vue';
 
 import 'focus-visible';
 
-import { setMessages, setI18n } from './locale';
 import { setConfig } from './config';
 import {
   en as localeEn,
   ru as localeRu,
   zh as localeZh
 } from './constants/locales';
+import { setMessages, setI18n } from './locale';
 import { QBreadcrumbs } from './QBreadcrumbs';
 import { QButton } from './QButton';
 import { QCascader } from './QCascader';
@@ -43,7 +43,6 @@ import { QTabs } from './QTabs';
 import { QTag } from './QTag';
 import { QTextarea } from './QTextarea';
 import { QUpload } from './QUpload';
-
 import type { ConfigOptions } from './types';
 
 import '../fonts/fonts.scss';

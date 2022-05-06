@@ -7661,10 +7661,10 @@ handlebars@^4.7.7:
   optionalDependencies:
     uglify-js "^3.1.4"
 
-happy-dom@^2.50.0:
-  version "2.50.0"
-  resolved "https://registry.yarnpkg.com/happy-dom/-/happy-dom-2.50.0.tgz#c0e2db033e985bba4a96e1419297d3a70817621f"
-  integrity sha512-3boJ9i4AbSMUvI4f6N4UEuDDOdKMTCXlnsjoB7KCyhkN1VD+vR9kQEmHLLDHrIPdLn65zA/XhhaFZhCkoWoLQQ==
+happy-dom@^3.1.1:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/happy-dom/-/happy-dom-3.1.1.tgz#cefc1e48b9f5f750d634d0f1732220fdb42e4534"
+  integrity sha512-yomqZv0JJ3FSQ/OZXiDSNOqw/vxZEzrFpxXausyyGPMICZs3KIGfQt+X/007abXkQWRb1SDeetM4PqOM0cagfQ==
   dependencies:
     css.escape "^1.5.1"
     he "^1.2.0"

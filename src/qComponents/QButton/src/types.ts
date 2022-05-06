@@ -2,13 +2,13 @@ import type { ComputedRef } from 'vue';
 
 import type { Nullable, ClassValue } from '#/helpers';
 
-export type QButtonNativeType = 'button' | 'submit' | 'reset';
+type NativeType = 'button' | 'submit' | 'reset';
 
 export type QButtonPropType = Nullable<'default' | 'icon'>;
 export type QButtonPropTheme = Nullable<'primary' | 'secondary' | 'link'>;
 export type QButtonPropSize = Nullable<'small' | 'medium'>;
 export type QButtonPropIcon = Nullable<ClassValue>;
-export type QButtonPropNativeType = Nullable<QButtonNativeType>;
+export type QButtonPropNativeType = Nullable<NativeType>;
 export type QButtonPropLoading = Nullable<boolean>;
 export type QButtonPropDisabled = Nullable<boolean>;
 export type QButtonPropAutofocus = Nullable<boolean>;

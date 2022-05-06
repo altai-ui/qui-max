@@ -18,6 +18,7 @@
     "lint:style:fix": "stylelint --fix '**/*.{css,scss,vue}'",
     "prettier": "prettier --check --ignore-unknown '**/*'",
     "prettier:fix": "prettier --write --ignore-unknown '**/*'",
+    "format": "yarn lint:style:fix && yarn lint:js:fix && yarn prettier:fix",
     "test": "vitest",
     "test:c": "vitest --run --coverage",
     "prepare": "husky install",

@@ -12,9 +12,11 @@
 
       <q-slider-button
         v-model:position="state.btnPosition"
+        :current-value="modelValue"
         :path-left="state.pathLeft"
         :path-width="state.pathWidth"
         :disabled="isDisabled"
+        :tooltip-mode="tooltipMode"
         @drag-start="setupPathValues"
         @update:position="handleBtnPositionUpdate"
       />
@@ -65,7 +67,8 @@ import type {
   QSliderProvider,
   RootClasses,
   QSliderProps,
-  QSliderInstance
+  QSliderInstance,
+  QSliderTooltipMode
 } from './types';
 
 export default defineComponent({
@@ -94,7 +97,13 @@ export default defineComponent({
       type: Array as PropType<QSliderPropData>,
       required: true
     },
-
+    /**
+     * tooltip mode
+     */
+    tooltipMode: {
+      type: String as PropType<QSliderTooltipMode>,
+      default: 'hover'
+    },
     /**
      * whether Slider is disabled
      */

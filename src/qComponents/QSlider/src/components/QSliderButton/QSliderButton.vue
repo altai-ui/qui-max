@@ -8,11 +8,22 @@
   >
     <div class="q-slider-button__target" />
   </button>
+  <div
+    v-if="isTooltipVisible"
+    class="q-slider-button__tooltip"
+    :style="tooltipStyles"
+  >
+    {{ currentValue }}
+  </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref, computed, onBeforeUnmount } from 'vue';
 import type { PropType } from 'vue';
+
+import type { Optional } from '#/helpers';
+
+import type { QSliderPropModelValue, QSliderTooltipMode } from '../../types';
 
 import type {
   QSliderButtonPropPosition,
@@ -21,7 +32,9 @@ import type {
   QSliderButtonProps,
   BtnClasses,
   BtnStyles,
-  QSliderButtonInstance
+  TooltipStyles,
+  QSliderButtonInstance,
+  CSSPropertyDisplay
 } from './types';
 
 export default defineComponent({
@@ -42,7 +55,14 @@ export default defineComponent({
       type: Number as PropType<QSliderButtonPropPathWidth>,
       default: null
     },
-
+    tooltipMode: {
+      type: String as PropType<QSliderTooltipMode>,
+      default: 'hover'
+    },
+    currentValue: {
+      type: [String, Number, Boolean] as PropType<QSliderPropModelValue>,
+      default: null
+    },
     disabled: {
       type: Boolean,
       required: true
@@ -61,6 +81,28 @@ export default defineComponent({
 
     const btnStyles = computed<BtnStyles>(() => ({
       left: props.position ?? undefined
+    }));
+
+    const isTooltipVisible = computed<boolean>(
+      () => props.tooltipMode !== 'none'
+    );
+
+    const displayTooltipStyle = computed<Optional<CSSPropertyDisplay>>(() => {
+      switch (props.tooltipMode) {
+        case 'none':
+          return 'none';
+        case 'always':
+          return 'block';
+        case 'hover':
+        default:
+          return undefined;
+      }
+    });
+
+    const tooltipStyles = computed<TooltipStyles>(() => ({
+      left: props.position ?? undefined,
+      transform: 'translateY(calc(100% - 8px)) translateX(-50%)',
+      display: displayTooltipStyle.value
     }));
 
     const handleDragging = ({ clientX }: MouseEvent): void => {
@@ -102,6 +144,8 @@ export default defineComponent({
     return {
       btnClasses,
       btnStyles,
+      tooltipStyles,
+      isTooltipVisible,
       handleBtnDown
     };
   }

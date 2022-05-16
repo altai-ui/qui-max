@@ -25,6 +25,18 @@
       -1px -1px 3px rgb(var(--color-rgb-white) / 25%);
   }
 
+  &__tooltip {
+    position: absolute;
+    z-index: 99;
+    display: none;
+    width: fit-content;
+    padding: 3px 8px;
+    color: var(--color-primary-black);
+    background-color: var(--color-tertiary-gray);
+    border-radius: var(--border-radius-base);
+    box-shadow: var(--box-shadow-primary);
+  }
+
   &_is-dragging {
     .q-slider-button__target {
       background-color: var(--color-primary);
@@ -56,6 +68,10 @@
     .q-slider-button__target {
       background-color: var(--color-primary);
       box-shadow: none;
+    }
+
+    ~ .q-slider-button__tooltip {
+      display: block;
     }
   }
 }

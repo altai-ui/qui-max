@@ -17,7 +17,7 @@
     width: 16px;
     height: 16px;
     user-select: none;
-    background-color: var(--color-tertiary-gray-light);
+    background-color: var(--color-primary);
     border-radius: 50%;
     box-shadow: -4px -4px 12px var(--color-tertiary-white),
       4px 4px 8px rgb(var(--color-rgb-blue) / 40%),
@@ -37,22 +37,9 @@
     box-shadow: var(--box-shadow-primary);
   }
 
-  &_is-dragging {
-    .q-slider-button__target {
-      background-color: var(--color-primary);
-      box-shadow: none;
-    }
-  }
-
   &_is-disabled {
     .q-slider-button__target {
-      background-color: var(--color-primary);
-    }
-
-    &.focus-visible {
-      .q-slider-button__target {
-        box-shadow: var(--box-shadow-hover);
-      }
+      background-color: var(--color-tertiary-gray-ultra-darker);
     }
 
     &:hover {
@@ -60,17 +47,23 @@
     }
   }
 
-  &:hover,
-  &.focus-visible {
-    z-index: 3;
-    outline: none;
-
+  &_is-dragging:not(&_is-disabled) {
     .q-slider-button__target {
       background-color: var(--color-primary);
       box-shadow: none;
     }
+  }
 
-    ~ .q-slider-button__tooltip {
+  &:hover:not(&_is-disabled),
+  &.focus-visible:not(&_is-disabled) {
+    z-index: 3;
+    outline: none;
+
+    .q-slider-button__target {
+      box-shadow: none;
+    }
+
+    .q-slider-button__tooltip {
       display: block;
     }
   }

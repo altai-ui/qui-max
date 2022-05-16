@@ -19,10 +19,8 @@
     user-select: none;
     background-color: var(--color-primary);
     border-radius: 50%;
-    box-shadow: -4px -4px 12px var(--color-tertiary-white),
-      4px 4px 8px rgb(var(--color-rgb-blue) / 40%),
-      1px 1px 3px rgb(var(--color-rgb-blue) / 40%),
-      -1px -1px 3px rgb(var(--color-rgb-white) / 25%);
+    box-shadow: 4px 4px 8px rgb(var(--color-rgb-blue) / 40%),
+      1px 1px 3px rgb(var(--color-rgb-blue) / 40%);
   }
 
   &__tooltip {
@@ -50,7 +48,7 @@
   &_is-dragging:not(&_is-disabled) {
     .q-slider-button__target {
       background-color: var(--color-primary);
-      box-shadow: none;
+      box-shadow: 1px 1px 3px rgb(var(--color-rgb-blue) / 40%);
     }
   }
 
@@ -58,13 +56,17 @@
   &.focus-visible:not(&_is-disabled) {
     z-index: 3;
     outline: none;
+  }
 
-    .q-slider-button__target {
-      box-shadow: none;
-    }
-
-    .q-slider-button__tooltip {
+  &:hover:not(&_is-disabled) {
+    ~ .q-slider-button__tooltip {
       display: block;
+    }
+  }
+
+  &.focus-visible:not(&_is-disabled) {
+    .q-slider-button__target {
+      background-color: var(--color-primary-darker);
     }
   }
 }

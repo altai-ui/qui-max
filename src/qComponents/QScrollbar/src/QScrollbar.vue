@@ -63,7 +63,6 @@ import type {
 
 import QBar from './components/QBar/QBar.vue';
 import type { QBarInstance } from './components/QBar/types';
-
 import type {
   QScrollbarInstance,
   QScrollbarProps,

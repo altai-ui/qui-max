@@ -11,7 +11,7 @@
       class="q-icon-reverse"
     />
     <span
-      v-if="icon && !isLoading"
+      v-else-if="icon"
       :class="icon"
     />
     <span
@@ -47,6 +47,10 @@ import type {
   QButtonInstance
 } from './types';
 
+const defaultPropTypeValue = 'default';
+const defaultPropThemeValue = 'primary';
+const defaultPropSizeValue = 'medium';
+
 export default defineComponent({
   name: 'QButton',
 
@@ -55,13 +59,13 @@ export default defineComponent({
   props: {
     type: {
       type: String as PropType<QButtonPropType>,
-      default: 'default',
+      default: defaultPropTypeValue,
       validator: validateArray<QButtonPropType>(['default', 'icon'])
     },
 
     theme: {
       type: String as PropType<QButtonPropTheme>,
-      default: 'primary',
+      default: defaultPropThemeValue,
       validator: validateArray<QButtonPropTheme>([
         'primary',
         'secondary',
@@ -71,7 +75,7 @@ export default defineComponent({
 
     size: {
       type: String as PropType<QButtonPropSize>,
-      default: 'medium',
+      default: defaultPropSizeValue,
       validator: validateArray<QButtonPropSize>(['small', 'medium'])
     },
 
@@ -148,9 +152,9 @@ export default defineComponent({
 
     const classList = computed<ClassValue[]>(() => {
       const classes: ClassValue[] = Object.entries({
-        theme: props.theme,
-        type: props.type,
-        size: props.size
+        theme: props.theme ?? defaultPropThemeValue,
+        type: props.type ?? defaultPropTypeValue,
+        size: props.size ?? defaultPropSizeValue
       })
         .filter(([, value]) => Boolean(value))
         .map(([key, value]) => `q-button_${key}_${value}`);

@@ -15,6 +15,5 @@ export type {
   QButtonPropDisabled,
   QButtonPropAutofocus,
   QButtonPropCircle,
-  QButtonPropFullWidth,
-  QButtonInstance
+  QButtonPropFullWidth
 } from './src/types';

@@ -84,7 +84,10 @@ export default defineComponent({
     }));
 
     const isTooltipVisible = computed<boolean>(
-      () => props.tooltipMode !== 'none'
+      () =>
+        props.tooltipMode !== 'none' &&
+        props.currentValue !== undefined &&
+        props.currentValue !== null
     );
 
     const displayTooltipStyle = computed<Optional<CSSPropertyDisplay>>(() => {

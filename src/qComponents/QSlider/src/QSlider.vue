@@ -194,6 +194,7 @@ export default defineComponent({
     watch(
       () => props.modelValue,
       () => {
+        setupValue();
         qFormItem?.validateField('change');
       }
     );

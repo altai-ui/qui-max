@@ -50,6 +50,10 @@
       background-color: var(--color-primary);
       box-shadow: 1px 1px 3px rgb(var(--color-rgb-blue) / 40%);
     }
+
+    ~ .q-slider-button__tooltip {
+      display: block;
+    }
   }
 
   &:hover:not(&_is-disabled),

@@ -19,14 +19,6 @@
     border: none;
     transform: translateX(-50%);
 
-    &:last-child {
-      text-align: right;
-    }
-
-    &:first-child {
-      text-align: left;
-    }
-
     &.focus-visible,
     &_active {
       color: var(--color-primary-black);

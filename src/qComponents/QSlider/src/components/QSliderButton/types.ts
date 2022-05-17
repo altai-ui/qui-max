@@ -2,7 +2,10 @@ import type { ComputedRef, CSSProperties } from 'vue';
 
 import type { Nullable, ClassValue } from '#/helpers';
 
-import type { QSliderPropModelValue, QSliderTooltipMode } from '../../types';
+import type {
+  QSliderPropModelValue,
+  QSliderPropTooltipMode
+} from '../../types';
 
 type CssPropertyLeft = CSSProperties['left'];
 
@@ -15,7 +18,7 @@ export interface QSliderButtonProps {
   pathLeft: QSliderButtonPropPathLeft;
   pathWidth: QSliderButtonPropPathWidth;
   disabled: boolean;
-  tooltipMode: Nullable<QSliderTooltipMode>;
+  tooltipMode: Nullable<QSliderPropTooltipMode>;
   currentValue: QSliderPropModelValue;
 }
 

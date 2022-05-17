@@ -24,7 +24,10 @@ import type { PropType } from 'vue';
 
 import type { ClassValue } from '#/helpers';
 
-import type { QSliderPropModelValue, QSliderTooltipMode } from '../../types';
+import type {
+  QSliderPropModelValue,
+  QSliderPropTooltipMode
+} from '../../types';
 
 import type {
   QSliderButtonPropPosition,
@@ -56,7 +59,7 @@ export default defineComponent({
       default: null
     },
     tooltipMode: {
-      type: String as PropType<QSliderTooltipMode>,
+      type: String as PropType<QSliderPropTooltipMode>,
       default: 'hover'
     },
     currentValue: {

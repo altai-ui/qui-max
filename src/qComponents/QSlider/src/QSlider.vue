@@ -68,7 +68,7 @@ import type {
   RootClasses,
   QSliderProps,
   QSliderInstance,
-  QSliderTooltipMode
+  QSliderPropTooltipMode
 } from './types';
 
 export default defineComponent({
@@ -101,7 +101,7 @@ export default defineComponent({
      * tooltip mode
      */
     tooltipMode: {
-      type: String as PropType<QSliderTooltipMode>,
+      type: String as PropType<QSliderPropTooltipMode>,
       default: 'none'
     },
     /**

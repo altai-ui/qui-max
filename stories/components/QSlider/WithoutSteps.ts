@@ -6,7 +6,7 @@ import type { QSliderPropData } from '@/qComponents/QSlider';
 const QSliderStory: Story = args =>
   defineComponent({
     setup() {
-      const value = ref<number>(0);
+      const value = ref<number>(33);
 
       return { args: { ...args, showSteps: false }, value };
     },

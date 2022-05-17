@@ -16,7 +16,7 @@ type SlotDataTest = {
 const QSliderStory: Story = args =>
   defineComponent({
     setup() {
-      const value = ref<ModelValue>('easy');
+      const value = ref<ModelValue>('normal');
 
       return {
         args,

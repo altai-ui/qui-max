@@ -5,8 +5,6 @@ import type { Nullable, ClassValue } from '#/helpers';
 import type { QSliderPropModelValue, QSliderTooltipMode } from '../../types';
 
 type CssPropertyLeft = CSSProperties['left'];
-type CSSPropertyTransform = CSSProperties['transform'];
-export type CSSPropertyDisplay = CSSProperties['display'];
 
 export type QSliderButtonPropPosition = Nullable<CssPropertyLeft>;
 export type QSliderButtonPropPathLeft = Nullable<number>;
@@ -29,14 +27,13 @@ export interface BtnStyles {
 
 export interface TooltipStyles {
   left: CssPropertyLeft;
-  transform: CSSPropertyTransform;
-  display?: CSSPropertyDisplay;
 }
 
 export interface QSliderButtonInstance {
   btnClasses: ComputedRef<BtnClasses>;
   btnStyles: ComputedRef<BtnStyles>;
+  isTooltipHidden: ComputedRef<boolean>;
+  tooltipClasses: ComputedRef<ClassValue>;
   tooltipStyles: ComputedRef<TooltipStyles>;
-  isTooltipVisible: ComputedRef<boolean>;
   handleBtnDown: (event: MouseEvent) => void;
 }

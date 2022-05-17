@@ -102,7 +102,7 @@ export default defineComponent({
      */
     tooltipMode: {
       type: String as PropType<QSliderTooltipMode>,
-      default: 'hover'
+      default: 'none'
     },
     /**
      * whether Slider is disabled

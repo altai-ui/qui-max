@@ -33,6 +33,11 @@
     background-color: var(--color-tertiary-gray);
     border-radius: var(--border-radius-base);
     box-shadow: var(--box-shadow-primary);
+    transform: translateY(calc(100% - 8px)) translateX(-50%);
+
+    &_is-always-visible {
+      display: block;
+    }
   }
 
   &_is-disabled {

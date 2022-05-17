@@ -9,8 +9,9 @@
     <div class="q-slider-button__target" />
   </button>
   <div
-    v-if="isTooltipVisible"
+    v-if="!isTooltipHidden"
     class="q-slider-button__tooltip"
+    :class="tooltipClasses"
     :style="tooltipStyles"
   >
     {{ currentValue }}
@@ -21,7 +22,7 @@
 import { defineComponent, ref, computed, onBeforeUnmount } from 'vue';
 import type { PropType } from 'vue';
 
-import type { Optional } from '#/helpers';
+import type { ClassValue } from '#/helpers';
 
 import type { QSliderPropModelValue, QSliderTooltipMode } from '../../types';
 
@@ -33,8 +34,7 @@ import type {
   BtnClasses,
   BtnStyles,
   TooltipStyles,
-  QSliderButtonInstance,
-  CSSPropertyDisplay
+  QSliderButtonInstance
 } from './types';
 
 export default defineComponent({
@@ -79,33 +79,24 @@ export default defineComponent({
       'q-slider-button_is-dragging': isDragging.value
     }));
 
+    const tooltipClasses = computed<ClassValue>(() => ({
+      'q-slider-button__tooltip_is-always-visible':
+        props.tooltipMode === 'always'
+    }));
+
     const btnStyles = computed<BtnStyles>(() => ({
       left: props.position ?? undefined
     }));
 
-    const isTooltipVisible = computed<boolean>(
+    const isTooltipHidden = computed<boolean>(
       () =>
-        props.tooltipMode !== 'none' &&
-        props.currentValue !== undefined &&
-        props.currentValue !== null
+        props.tooltipMode === 'none' ||
+        props.currentValue === undefined ||
+        props.currentValue === null
     );
 
-    const displayTooltipStyle = computed<Optional<CSSPropertyDisplay>>(() => {
-      switch (props.tooltipMode) {
-        case 'none':
-          return 'none';
-        case 'always':
-          return 'block';
-        case 'hover':
-        default:
-          return undefined;
-      }
-    });
-
     const tooltipStyles = computed<TooltipStyles>(() => ({
-      left: props.position ?? undefined,
-      transform: 'translateY(calc(100% - 8px)) translateX(-50%)',
-      display: displayTooltipStyle.value
+      left: props.position ?? undefined
     }));
 
     const handleDragging = ({ clientX }: MouseEvent): void => {
@@ -147,8 +138,9 @@ export default defineComponent({
     return {
       btnClasses,
       btnStyles,
+      tooltipClasses,
+      isTooltipHidden,
       tooltipStyles,
-      isTooltipVisible,
       handleBtnDown
     };
   }

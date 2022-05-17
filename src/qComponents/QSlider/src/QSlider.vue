@@ -105,7 +105,7 @@ export default defineComponent({
      */
     tooltipMode: {
       type: String as PropType<QSliderPropTooltipMode>,
-      default: 'none'
+      default: null
     },
     /**
      * whether steps is hidden

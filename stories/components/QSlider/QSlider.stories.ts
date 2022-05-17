@@ -11,7 +11,7 @@ const storyMetadata: Meta = {
   component: QSlider,
   argTypes: {
     tooltipMode: {
-      options: ['hover', 'always', 'none'],
+      options: ['hover', 'always', null],
       control: { type: 'select' }
     }
   },

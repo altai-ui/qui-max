@@ -7,7 +7,7 @@ export type QSliderPropModelValue<T extends ModelValue = ModelValue> = T;
 
 type SlotData = Optional<Record<string | number, unknown>>;
 
-export type QSliderPropTooltipMode = 'none' | 'hover' | 'always';
+export type QSliderPropTooltipMode = Nullable<'hover' | 'always'>;
 
 type QSliderData<T> = {
   value: T;

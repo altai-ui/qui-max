@@ -60,7 +60,7 @@ export default defineComponent({
     },
     tooltipMode: {
       type: String as PropType<QSliderPropTooltipMode>,
-      default: 'hover'
+      default: null
     },
     currentValue: {
       type: [String, Number, Boolean] as PropType<QSliderPropModelValue>,
@@ -93,7 +93,7 @@ export default defineComponent({
 
     const isTooltipHidden = computed<boolean>(
       () =>
-        props.tooltipMode === 'none' ||
+        !props.tooltipMode ||
         props.currentValue === undefined ||
         props.currentValue === null
     );

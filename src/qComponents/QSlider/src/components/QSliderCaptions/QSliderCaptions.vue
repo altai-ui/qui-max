@@ -80,6 +80,9 @@ export default defineComponent({
       }));
     });
 
+    const getCaptionLeftPosition = (index: number): string =>
+      `${(index / (props.data.length - ARR_LENGTH_CORRECTION)) * 100}%`;
+
     const captionContent = computed<VNode[]>(() => {
       if (!qSlider?.slots.caption) {
         return preparedData.value.reduce(
@@ -89,12 +92,7 @@ export default defineComponent({
                 'div',
                 {
                   class: getCaptionItemClasses(value),
-                  style: {
-                    left: `${
-                      (index / (props.data.length - ARR_LENGTH_CORRECTION)) *
-                      100
-                    }%`
-                  },
+                  style: { left: getCaptionLeftPosition(index) },
                   onClick: () => handleCaptionClick(value)
                 },
                 [label]
@@ -113,11 +111,7 @@ export default defineComponent({
           'div',
           {
             class: getCaptionItemClasses(value),
-            style: {
-              left: `${
-                (index / (props.data.length - ARR_LENGTH_CORRECTION)) * 100
-              }%`
-            },
+            style: { left: getCaptionLeftPosition(index) },
             onClick: () => handleCaptionClick(value)
           },
           [

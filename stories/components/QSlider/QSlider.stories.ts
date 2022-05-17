@@ -4,7 +4,7 @@ import { QSlider } from '@/qComponents/QSlider';
 
 import Default from './Default';
 import SlotCaption from './SlotCaption';
-import WithoutSteps from './WithoutSteps';
+import WithEmptyCaptions from './WithEmptyCaptions';
 
 const storyMetadata: Meta = {
   title: 'Components/QSlider',
@@ -22,6 +22,6 @@ const storyMetadata: Meta = {
   ]
 };
 
-export { Default, SlotCaption, WithoutSteps };
+export { Default, SlotCaption, WithEmptyCaptions };
 
 export default storyMetadata;

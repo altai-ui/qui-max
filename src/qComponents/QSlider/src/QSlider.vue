@@ -101,18 +101,21 @@ export default defineComponent({
       required: true
     },
     /**
-     * tooltip mode
+     * Slider's tooltip displaying mode:
+     * `'hover' | 'always'`.
+     * If `null`, the tooltip will be hidden
      */
     tooltipMode: {
       type: String as PropType<QSliderPropTooltipMode>,
       default: null
     },
     /**
-     * whether steps is hidden
+     *
+     * whether Slider steps is visible
      */
     showSteps: {
       type: Boolean,
-      default: true
+      default: false
     },
     /**
      * whether Slider is disabled

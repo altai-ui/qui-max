@@ -8,7 +8,7 @@ const QSliderStory: Story = args =>
     setup() {
       const value = ref<number>(33);
 
-      return { args: { ...args, showSteps: false }, value };
+      return { args, value };
     },
 
     template: `
@@ -23,10 +23,7 @@ const data: QSliderPropData<number> = Array(101)
   .fill(null)
   .map((_, index) => ({
     value: index,
-    label:
-      index === 0 || index === 100 || index === 12 || index === 33
-        ? String(index)
-        : undefined
+    label: [0, 100, 12, 33].includes(index) ? String(index) : undefined
   }));
 
 QSliderStory.args = {

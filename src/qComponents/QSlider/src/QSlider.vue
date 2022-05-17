@@ -22,7 +22,7 @@
       />
 
       <div
-        v-if="!stepsHidden"
+        v-if="showSteps"
         class="q-slider__steps"
       >
         <div
@@ -110,9 +110,9 @@ export default defineComponent({
     /**
      * whether steps is hidden
      */
-    stepsHidden: {
+    showSteps: {
       type: Boolean,
-      default: false
+      default: true
     },
     /**
      * whether Slider is disabled

@@ -8,7 +8,7 @@ const QSliderStory: Story = args =>
     setup() {
       const value = ref<number>(0);
 
-      return { args: { ...args, stepsHidden: true }, value };
+      return { args: { ...args, showSteps: false }, value };
     },
 
     template: `

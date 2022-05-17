@@ -28,7 +28,7 @@ export interface QSliderProps {
   modelValue: QSliderPropModelValue;
   data: QSliderPropData;
   tooltipMode: Nullable<QSliderPropTooltipMode>;
-  stepsHidden: Nullable<boolean>;
+  showSteps: Nullable<boolean>;
   disabled: boolean;
 }
 

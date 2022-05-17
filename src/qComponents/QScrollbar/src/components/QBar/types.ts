@@ -2,18 +2,18 @@ import type { Ref, ComputedRef, CSSProperties } from 'vue';
 
 import type { Nullable, ClassValue } from '#/helpers';
 
+export type Types = 'vertical' | 'horizontal';
+
 export interface BarMapItem {
   offset: 'offsetHeight' | 'offsetWidth';
   scroll: 'scrollTop' | 'scrollLeft';
   scrollSize: 'scrollHeight' | 'scrollWidth';
   size: 'height' | 'width';
-  key: 'vertical' | 'horizontal';
+  key: Types;
   axis: 'Y' | 'X';
   client: 'clientY' | 'clientX';
   direction: 'top' | 'left';
 }
-
-export type Types = 'vertical' | 'horizontal';
 
 export type QBarPropType = Nullable<Types>;
 export type QBarPropTheme = Nullable<string>;

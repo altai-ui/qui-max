@@ -24,6 +24,7 @@ import type { Nullable, ClassValue } from '#/helpers';
 
 import type { QScrollbarProvider } from '../../types';
 
+import { BAR_MAP } from './constants';
 import type {
   QBarProps,
   QBarPropType,
@@ -33,7 +34,7 @@ import type {
   BarMapItem,
   QBarInstance
 } from './types';
-import { renderThumbStyle, BAR_MAP } from './util';
+import { renderThumbStyle } from './util';
 
 export default defineComponent({
   name: 'QBar',

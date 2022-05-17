@@ -16,6 +16,8 @@ import type {
   QSliderCaptionsInstance
 } from './types';
 
+const ARR_LENGTH_CORRECTION = 1;
+
 export default defineComponent({
   name: 'QSliderCaptions',
 
@@ -80,28 +82,41 @@ export default defineComponent({
 
     const captionContent = computed<VNode[]>(() => {
       if (!qSlider?.slots.caption) {
-        return preparedData.value.map(({ value, label }) =>
-          h(
-            'div',
-            {
-              class: getCaptionItemClasses(value),
-              style: {
-                width: `${100 / props.data.length}%`
-              },
-              onClick: () => handleCaptionClick(value)
-            },
-            [label]
-          )
+        return preparedData.value.reduce(
+          (captions: VNode[], { value, label }, index) => {
+            if (label) {
+              const caption = h(
+                'div',
+                {
+                  class: getCaptionItemClasses(value),
+                  style: {
+                    left: `${
+                      (index / (props.data.length - ARR_LENGTH_CORRECTION)) *
+                      100
+                    }%`
+                  },
+                  onClick: () => handleCaptionClick(value)
+                },
+                [label]
+              );
+
+              captions.push(caption);
+            }
+            return captions;
+          },
+          []
         );
       }
 
-      return preparedData.value.map(({ value, style, slot }) =>
+      return preparedData.value.map(({ value, style, slot }, index) =>
         h(
           'div',
           {
             class: getCaptionItemClasses(value),
             style: {
-              width: `${100 / props.data.length}%`
+              left: `${
+                (index / (props.data.length - ARR_LENGTH_CORRECTION)) * 100
+              }%`
             },
             onClick: () => handleCaptionClick(value)
           },

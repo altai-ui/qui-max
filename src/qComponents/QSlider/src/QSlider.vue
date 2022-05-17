@@ -21,7 +21,10 @@
         @update:position="handleBtnPositionUpdate"
       />
 
-      <div class="q-slider__steps">
+      <div
+        v-if="!stepsHidden"
+        class="q-slider__steps"
+      >
         <div
           v-for="step in data.length"
           :key="step"
@@ -103,6 +106,13 @@ export default defineComponent({
     tooltipMode: {
       type: String as PropType<QSliderPropTooltipMode>,
       default: 'none'
+    },
+    /**
+     * whether steps is hidden
+     */
+    stepsHidden: {
+      type: Boolean,
+      default: false
     },
     /**
      * whether Slider is disabled

@@ -3,8 +3,8 @@ import type { Meta } from '@storybook/vue3';
 import { QSlider } from '@/qComponents/QSlider';
 
 import Default from './Default';
-import Range from './Range';
 import SlotCaption from './SlotCaption';
+import WithoutSteps from './WithoutSteps';
 
 const storyMetadata: Meta = {
   title: 'Components/QSlider',
@@ -22,6 +22,6 @@ const storyMetadata: Meta = {
   ]
 };
 
-export { Default, SlotCaption, Range };
+export { Default, SlotCaption, WithoutSteps };
 
 export default storyMetadata;

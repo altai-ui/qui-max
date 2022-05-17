@@ -10,7 +10,7 @@
       @scroll="handleScroll"
     >
       <component
-        :is="viewTag || 'div'"
+        :is="viewTag ?? 'div'"
         ref="view"
         class="q-scrollbar__view"
         :class="viewClass"
@@ -23,7 +23,7 @@
       v-show="isXBarShown"
       ref="xbar"
       type="horizontal"
-      :theme="theme"
+      :theme="theme ?? 'primary'"
       :move="moveX"
       :size="sizeWidth"
     />
@@ -31,7 +31,7 @@
       v-show="isYBarShown"
       ref="ybar"
       type="vertical"
-      :theme="theme"
+      :theme="theme ?? 'primary'"
       :move="moveY"
       :size="sizeHeight"
     />
@@ -176,9 +176,10 @@ export default defineComponent({
       'q-scrollbar_has-vertical-bar': isYBarShown.value
     }));
 
-    const wrapClasses = computed<QScrollbarPropWrapClass[]>(() => {
-      return [props.wrapClass, { 'q-scrollbar__wrap_hidden-default': true }];
-    });
+    const wrapClasses = computed<QScrollbarPropWrapClass[]>(() => [
+      props.wrapClass,
+      { 'q-scrollbar__wrap_hidden-default': true }
+    ]);
 
     /**
      * @public

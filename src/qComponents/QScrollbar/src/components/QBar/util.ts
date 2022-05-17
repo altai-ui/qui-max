@@ -1,4 +1,5 @@
 import type { CSSProperties } from 'vue';
+
 import type { BarMapItem } from './types';
 
 export const BAR_MAP: Record<'vertical' | 'horizontal', BarMapItem> = {

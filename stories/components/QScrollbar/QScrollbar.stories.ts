@@ -53,14 +53,10 @@ const QScrollbarStory: Story<QScrollbarProps> = args =>
 export const Default = QScrollbarStory.bind({});
 
 Default.args = {
-  scrollTo: null,
-  visible: false,
   theme: 'primary',
-  wrapClass: 'scrollbar__wrap',
   viewTag: 'div',
-  viewClass: '',
-  viewStyle: '',
-  noresize: false
+  wrapClass: 'scrollbar__wrap',
+  viewClass: ''
 };
 
 export default storyMetadata;

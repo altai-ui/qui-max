@@ -202,11 +202,7 @@ export default defineComponent({
       return value;
     };
 
-    const isInputFocused = ref<boolean>(false);
-
-    const getValueWithOrWithoutSuffixPrefix = (value: string): string => {
-      if (isInputFocused.value || value === '') return value;
-
+    const getValueWithSuffixAndPrefix = (value: string): string => {
       const prefix = props.prefix ?? '';
       const suffix = props.suffix ?? '';
 
@@ -241,7 +237,6 @@ export default defineComponent({
     };
 
     const handleFocus = (event: FocusEvent): void => {
-      isInputFocused.value = true;
       const target = event.target as HTMLInputElement;
       internalValue = isNil(props.modelValue)
         ? target.value
@@ -252,9 +247,10 @@ export default defineComponent({
     };
 
     const handleBlur = (event: FocusEvent): void => {
-      isInputFocused.value = false;
       const target = event.target as HTMLInputElement;
-      target.value = formatNumber(target.value);
+      const formattedValue = formatNumber(target.value);
+
+      target.value = getValueWithSuffixAndPrefix(formattedValue);
       internalValue = null;
       ctx.emit('blur', event);
       if (props.validateEvent) qFormItem?.validateField('blur');
@@ -270,27 +266,19 @@ export default defineComponent({
 
         if (isNil(value)) {
           internalValue = '';
-          input.value = getValueWithOrWithoutSuffixPrefix(internalValue);
+          input.value = getValueWithSuffixAndPrefix(internalValue);
           return;
         }
 
         if (!internalValue || value !== Number(internalValue)) {
           internalValue = getClampedValue(matchValue(String(value)));
-          input.value = getValueWithOrWithoutSuffixPrefix(
+          input.value = getValueWithSuffixAndPrefix(
             formatNumber(internalValue)
           );
         }
       },
       { immediate: true }
     );
-
-    watch(isInputFocused, () => {
-      const input = inputRef.value;
-
-      if (input) {
-        input.value = getValueWithOrWithoutSuffixPrefix(input.value);
-      }
-    });
 
     return {
       inputRef,

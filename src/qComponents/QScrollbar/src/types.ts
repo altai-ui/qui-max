@@ -2,7 +2,7 @@ import type { Ref, ComputedRef, StyleValue } from 'vue';
 
 import type { Nullable, UnwrappedInstance, ClassValue } from '#/helpers';
 
-import type { QBarInstance } from './components/QBar/types';
+import type { QBarInstance } from './components/QBar';
 
 export type QScrollbarPropScrollTo = Nullable<HTMLElement>;
 export type QScrollbarPropVisible = Nullable<boolean>;
@@ -43,6 +43,7 @@ export interface QScrollbarInstance {
   moveY: Ref<number>;
   rootClasses: ComputedRef<ClassValue>;
   wrapClasses: ComputedRef<QScrollbarPropWrapClass[]>;
+  themeValue: ComputedRef<string>;
   handleScroll: () => void;
   update: () => void;
 }

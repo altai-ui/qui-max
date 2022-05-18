@@ -23,7 +23,7 @@
       v-show="isXBarShown"
       ref="xbar"
       type="horizontal"
-      :theme="theme ?? 'primary'"
+      :theme="themeValue"
       :move="moveX"
       :size="sizeWidth"
     />
@@ -31,7 +31,7 @@
       v-show="isYBarShown"
       ref="ybar"
       type="vertical"
-      :theme="theme ?? 'primary'"
+      :theme="themeValue"
       :move="moveY"
       :size="sizeHeight"
     />
@@ -61,8 +61,8 @@ import type {
   ClassValue
 } from '#/helpers';
 
-import QBar from './components/QBar/QBar.vue';
-import type { QBarInstance } from './components/QBar/types';
+import type { QBarInstance } from './components/QBar';
+import QBar from './components/QBar';
 import type {
   QScrollbarInstance,
   QScrollbarProps,
@@ -181,6 +181,8 @@ export default defineComponent({
       { 'q-scrollbar__wrap_hidden-default': true }
     ]);
 
+    const themeValue = computed<string>(() => props.theme ?? 'primary');
+
     /**
      * @public
      */
@@ -263,6 +265,7 @@ export default defineComponent({
       moveY,
       rootClasses,
       wrapClasses,
+      themeValue,
       handleScroll,
       update
     };

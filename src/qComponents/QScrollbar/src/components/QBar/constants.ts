@@ -1,4 +1,4 @@
-import { Types, BarMapItem } from './types';
+import type { Types, BarMapItem } from './types';
 
 export const BAR_MAP: Record<Types, BarMapItem> = {
   vertical: {

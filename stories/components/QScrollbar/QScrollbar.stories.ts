@@ -20,16 +20,18 @@ const storyMetadata: Meta = {
 const QScrollbarStory: Story<QScrollbarProps> = args =>
   defineComponent({
     components: { QScrollbar },
+
     setup() {
       return { args };
     },
+
     template: `
       <q-scrollbar
         :scroll-to="args.scrollTo"
         :visible="args.visible"
         :theme="args.theme"
-        :wrap-class="args.wrapClass"
         :view-tag="args.viewTag"
+        :wrap-class="args.wrapClass"
         :view-class="args.viewClass"
         :view-style="args.viewStyle"
         :noresize="args.noresize"
@@ -49,6 +51,7 @@ const QScrollbarStory: Story<QScrollbarProps> = args =>
   });
 
 export const Default = QScrollbarStory.bind({});
+
 Default.args = {
   theme: 'primary',
   viewTag: 'div',

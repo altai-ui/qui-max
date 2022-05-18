@@ -2,7 +2,7 @@
   <div
     ref="root"
     class="q-scrollbar__bar"
-    :class="classes"
+    :class="rootClasses"
     @mousedown="handleTrackerClick"
   >
     <div
@@ -15,30 +15,30 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  PropType,
-  ref,
-  computed,
-  onUnmounted,
-  inject
-} from 'vue';
+import { defineComponent, ref, computed, onUnmounted, inject } from 'vue';
+import type { PropType, CSSProperties } from 'vue';
 
 import { validateArray } from '@/qComponents/helpers';
 
-import type { Nullable } from '#/helpers';
+import type { Nullable, ClassValue } from '#/helpers';
 
+import type { QScrollbarProvider } from '../../types';
+
+import { BAR_MAP } from './constants';
 import type {
   QBarProps,
   QBarPropType,
-  QScrollbarProvider,
+  QBarPropTheme,
+  QBarPropSize,
+  QBarPropMove,
   BarMapItem,
   QBarInstance
 } from './types';
-import { renderThumbStyle, BAR_MAP } from './util';
+import { renderThumbStyle } from './util';
 
 export default defineComponent({
   name: 'QBar',
+
   componentName: 'QBar',
 
   props: {
@@ -47,32 +47,50 @@ export default defineComponent({
       default: 'horizontal',
       validator: validateArray<QBarPropType>(['horizontal', 'vertical'])
     },
-    theme: { type: String, default: null },
-    size: { type: String, default: '0' },
-    move: { type: Number, default: null }
+
+    theme: {
+      type: String as PropType<QBarPropTheme>,
+      default: null
+    },
+
+    size: {
+      type: String as PropType<QBarPropSize>,
+      default: '0'
+    },
+
+    move: {
+      type: Number as PropType<QBarPropMove>,
+      default: null
+    }
   },
 
   setup(props: QBarProps): QBarInstance {
     const qScrollbar = inject<QScrollbarProvider>('qScrollbar');
+
     const root = ref<Nullable<HTMLElement>>(null);
     const thumb = ref<Nullable<HTMLElement>>(null);
     const cursorDown = ref<boolean>(false);
 
     let axis = 0;
 
-    const bar = computed<BarMapItem>(() => BAR_MAP[props.type]);
-    const thumbStyles = computed<Record<string, string | number>>(() =>
+    const bar = computed<BarMapItem>(() => {
+      if (!props.type) return BAR_MAP.horizontal;
+
+      return BAR_MAP[props.type];
+    });
+
+    const thumbStyles = computed<CSSProperties>(() =>
       renderThumbStyle(props.move ?? 0, props.size ?? '0', bar.value)
     );
 
-    const classes = computed<Record<string, boolean>>(() => ({
-      [`q-scrollbar__bar_${bar.value.key}`]: true,
-      'q-scrollbar__bar_secondary': props?.theme === 'secondary'
-    }));
-
-    const thumbClasses = computed<Record<string, boolean>>(() => ({
+    const thumbClasses = computed<ClassValue>(() => ({
       'q-scrollbar__thumb': true,
       'q-scrollbar__thumb_secondary': props?.theme === 'secondary'
+    }));
+
+    const rootClasses = computed<ClassValue>(() => ({
+      [`q-scrollbar__bar_${bar.value.key}`]: true,
+      'q-scrollbar__bar_secondary': props?.theme === 'secondary'
     }));
 
     const wrap = computed<Nullable<HTMLElement>>(
@@ -168,11 +186,11 @@ export default defineComponent({
 
     return {
       root,
-      bar,
       thumb,
-      classes,
-      thumbClasses,
+      bar,
       thumbStyles,
+      thumbClasses,
+      rootClasses,
       handleThumbClick,
       handleTrackerClick,
       scrollToPx

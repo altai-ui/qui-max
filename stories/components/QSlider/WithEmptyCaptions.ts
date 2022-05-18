@@ -8,7 +8,7 @@ const QSliderStory: Story = args =>
     setup() {
       const value = ref<number>(33);
 
-      return { args, value };
+      return { args: { ...args, tooltipMode: 'always' }, value };
     },
 
     template: `

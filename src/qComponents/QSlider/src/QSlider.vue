@@ -12,14 +12,19 @@
 
       <q-slider-button
         v-model:position="state.btnPosition"
+        :current-value="modelValue"
         :path-left="state.pathLeft"
         :path-width="state.pathWidth"
         :disabled="isDisabled"
+        :tooltip-mode="tooltipMode"
         @drag-start="setupPathValues"
         @update:position="handleBtnPositionUpdate"
       />
 
-      <div class="q-slider__steps">
+      <div
+        v-if="showSteps"
+        class="q-slider__steps"
+      >
         <div
           v-for="step in data.length"
           :key="step"
@@ -65,7 +70,8 @@ import type {
   QSliderProvider,
   RootClasses,
   QSliderProps,
-  QSliderInstance
+  QSliderInstance,
+  QSliderPropTooltipMode
 } from './types';
 
 export default defineComponent({
@@ -94,7 +100,23 @@ export default defineComponent({
       type: Array as PropType<QSliderPropData>,
       required: true
     },
-
+    /**
+     * Slider's tooltip displaying mode:
+     * `'hover' | 'always'`.
+     * If `null`, the tooltip will be hidden
+     */
+    tooltipMode: {
+      type: String as PropType<QSliderPropTooltipMode>,
+      default: null
+    },
+    /**
+     *
+     * whether Slider steps is visible
+     */
+    showSteps: {
+      type: Boolean,
+      default: false
+    },
     /**
      * whether Slider is disabled
      */
@@ -185,6 +207,7 @@ export default defineComponent({
     watch(
       () => props.modelValue,
       () => {
+        setupValue();
         qFormItem?.validateField('change');
       }
     );

@@ -14,8 +14,8 @@
     />
 
     <div
-      v-if="isSuffixVisible"
-      class="q-input-number__suffix"
+      v-if="isPostfixVisible"
+      class="q-input-number__postfix"
     >
       <span
         v-if="isDisabled"
@@ -23,7 +23,7 @@
       />
       <slot
         v-else
-        name="suffix"
+        name="postfix"
       />
     </div>
   </div>
@@ -83,6 +83,18 @@ export default defineComponent({
       validator: (val: number) => val <= MAX_INTEGER
     },
 
+    /** If input is not in focus value of the prefix will be displayed in input-number before main value */
+    prefix: {
+      type: String,
+      default: null
+    },
+
+    /** If input is not in focus value of the prefix will be displayed in input-number after main value */
+    suffix: {
+      type: String,
+      default: null
+    },
+
     /** validate parent form if present */
     validateEvent: {
       type: Boolean,
@@ -118,13 +130,13 @@ export default defineComponent({
       () => props.disabled || (qForm?.disabled.value ?? false)
     );
 
-    const isSuffixVisible = computed<boolean>(() =>
-      Boolean(isDisabled.value || ctx.slots.suffix)
+    const isPostfixVisible = computed<boolean>(() =>
+      Boolean(isDisabled.value || ctx.slots.postfix)
     );
 
     let internalValue: Nullable<string> = null;
 
-    const formatNumber = (value: string): string => {
+    const formatNumber = (value: Nullable<string>): string => {
       if (!value) return '';
 
       const locale = getConfig('locale');
@@ -190,6 +202,21 @@ export default defineComponent({
       return value;
     };
 
+    const isInputFocused = ref<boolean>(false);
+
+    const getValueWithOrWithoutSuffixPrefix = (value: string): string => {
+      if (isInputFocused.value || value === '') return value;
+
+      const prefix = Number.isNaN(Number(props.prefix))
+        ? `${String(props.prefix ?? '')} `
+        : '';
+      const suffix = Number.isNaN(Number(props.suffix))
+        ? ` ${String(props.suffix ?? '')}`
+        : '';
+
+      return `${prefix}${value}${suffix}`;
+    };
+
     const handleInput = (event: Event): void => {
       const target = event.target as HTMLInputElement;
 
@@ -218,6 +245,7 @@ export default defineComponent({
     };
 
     const handleFocus = (event: FocusEvent): void => {
+      isInputFocused.value = true;
       const target = event.target as HTMLInputElement;
       internalValue = isNil(props.modelValue)
         ? target.value
@@ -228,6 +256,7 @@ export default defineComponent({
     };
 
     const handleBlur = (event: FocusEvent): void => {
+      isInputFocused.value = false;
       const target = event.target as HTMLInputElement;
       target.value = formatNumber(target.value);
       internalValue = null;
@@ -245,22 +274,32 @@ export default defineComponent({
 
         if (isNil(value)) {
           internalValue = '';
-          input.value = internalValue;
+          input.value = getValueWithOrWithoutSuffixPrefix(internalValue);
           return;
         }
 
         if (!internalValue || value !== Number(internalValue)) {
           internalValue = getClampedValue(matchValue(String(value)));
-          input.value = formatNumber(internalValue);
+          input.value = getValueWithOrWithoutSuffixPrefix(
+            formatNumber(internalValue)
+          );
         }
       },
       { immediate: true }
     );
 
+    watch(isInputFocused, () => {
+      const input = inputRef.value;
+
+      if (input) {
+        input.value = getValueWithOrWithoutSuffixPrefix(input.value);
+      }
+    });
+
     return {
       inputRef,
       isDisabled,
-      isSuffixVisible,
+      isPostfixVisible,
       handleInput,
       handleChange,
       handleFocus,

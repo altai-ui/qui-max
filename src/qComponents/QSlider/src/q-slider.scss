@@ -7,6 +7,7 @@
 
   position: relative;
   width: 100%;
+  padding-top: 4px;
 
   &__path {
     position: relative;
@@ -19,7 +20,7 @@
   }
 
   &__bar {
-    position: absolute;
+    position: relative;
     left: 0;
     z-index: 1;
     height: 8px;
@@ -28,7 +29,8 @@
   }
 
   &__steps {
-    position: relative;
+    position: absolute;
+    top: 0;
     z-index: 1;
     display: flex;
     justify-content: space-between;

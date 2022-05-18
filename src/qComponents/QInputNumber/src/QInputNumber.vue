@@ -34,7 +34,6 @@ import { isNil } from 'lodash-es';
 import { computed, defineComponent, inject, nextTick, ref, watch } from 'vue';
 
 import { getConfig } from '@/qComponents/config';
-import { isNumber } from '@/qComponents/helpers';
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
 
@@ -208,16 +207,10 @@ export default defineComponent({
     const getValueWithOrWithoutSuffixPrefix = (value: string): string => {
       if (isInputFocused.value || value === '') return value;
 
-      const prefix =
-        props.prefix && !isNumber(props.prefix)
-          ? `${String(props.prefix ?? '')} `
-          : '';
-      const suffix =
-        props.suffix && !isNumber(props.suffix)
-          ? ` ${String(props.suffix)}`
-          : '';
+      const prefix = props.prefix ?? '';
+      const suffix = props.suffix ?? '';
 
-      return `${prefix}${value}${suffix}`;
+      return `${prefix} ${value} ${suffix}`.trim();
     };
 
     const handleInput = (event: Event): void => {

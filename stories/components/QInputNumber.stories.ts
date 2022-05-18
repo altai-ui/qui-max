@@ -53,6 +53,7 @@ export const Default = Template.bind({});
 export const Disabled = Template.bind({});
 export const PositiveOnly = Template.bind({});
 export const WithPrecision = Template.bind({});
+export const WithPrefixAndSuffix = Template.bind({});
 
 Default.args = {};
 
@@ -66,6 +67,11 @@ PositiveOnly.args = {
 
 WithPrecision.args = {
   precision: 2
+};
+
+WithPrefixAndSuffix.args = {
+  prefix: 'Distance:',
+  suffix: 'Km'
 };
 
 export default storyMetadata;

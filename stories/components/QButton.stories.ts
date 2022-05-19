@@ -19,6 +19,12 @@ const storyMetadata: Meta = {
     size: {
       options: ['small', 'medium'],
       control: { type: 'select' }
+    },
+    disabled: {
+      control: { type: 'boolean' }
+    },
+    loading: {
+      control: { type: 'boolean' }
     }
   }
 };

@@ -3,10 +3,10 @@
   display: inline-block;
   flex-shrink: 0;
   max-height: 40px;
-  padding: 12px 40px;
+  padding: 12.5px 40px;
   font-size: 12px;
-  font-weight: var(--font-weight-bold);
-  line-height: var(--line-height-button);
+  font-weight: 700;
+  line-height: 15px;
   color: var(--color-tertiary-white);
   text-align: center;
   text-transform: uppercase;
@@ -48,6 +48,7 @@
   }
 
   &:active {
+    color: rgb(var(--color-rgb-white) / 64%);
     background-image: none;
     box-shadow: var(--box-shadow-pressed);
   }
@@ -179,6 +180,7 @@
 
   &_loading {
     position: relative;
+    color: rgb(var(--color-rgb-white) / 64%);
     pointer-events: none;
 
     .q-button__inner {

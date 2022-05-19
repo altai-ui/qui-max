@@ -83,13 +83,13 @@ export default defineComponent({
       validator: (val: number) => val <= MAX_INTEGER
     },
 
-    /** If input is not in focus value of the prefix will be displayed in input-number before main value */
+    /** Text before main value in blurred state of the input */
     prefix: {
       type: String,
       default: null
     },
 
-    /** If input is not in focus value of the prefix will be displayed in input-number after main value */
+    /** Text after main value in blurred state of the input */
     suffix: {
       type: String,
       default: null

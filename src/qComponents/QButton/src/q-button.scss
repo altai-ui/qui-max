@@ -129,8 +129,20 @@
       }
 
       &:active {
+        color: var(--color-primary);
         outline: none;
         box-shadow: none;
+      }
+
+      &.q-button_type_icon {
+        &.focus-visible {
+          text-decoration: none;
+          border: 1px solid var(--color-primary-blue);
+
+          &:active {
+            border: 1px solid var(--color-primary);
+          }
+        }
       }
     }
   }
@@ -183,11 +195,18 @@
       --box-shadow: none;
       --background-color: transparent;
     }
+
+    .q-icon-reverse {
+      color: rgb(var(--color-rgb-gray) / 64%);
+    }
   }
 
   &_loading {
     position: relative;
-    pointer-events: none;
+
+    &:not(&.q-button_disabled) {
+      pointer-events: none;
+    }
 
     .q-button__inner {
       margin-left: 0;

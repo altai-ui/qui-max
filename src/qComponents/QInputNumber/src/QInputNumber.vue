@@ -141,9 +141,14 @@ export default defineComponent({
 
       const locale = getConfig('locale');
 
-      return Number(value).toLocaleString(locale, {
+      const localizedNumber = Number(value).toLocaleString(locale, {
         maximumFractionDigits: precision.value
       });
+
+      const prefix = props.prefix ?? '';
+      const suffix = props.suffix ?? '';
+
+      return `${prefix} ${localizedNumber} ${suffix}`.trim();
     };
 
     const changesEmitter = (type: 'input' | 'change', value: string): void => {
@@ -202,13 +207,6 @@ export default defineComponent({
       return value;
     };
 
-    const getValueWithSuffixAndPrefix = (value: string): string => {
-      const prefix = props.prefix ?? '';
-      const suffix = props.suffix ?? '';
-
-      return `${prefix} ${value} ${suffix}`.trim();
-    };
-
     const handleInput = (event: Event): void => {
       const target = event.target as HTMLInputElement;
 
@@ -248,9 +246,7 @@ export default defineComponent({
 
     const handleBlur = (event: FocusEvent): void => {
       const target = event.target as HTMLInputElement;
-      const formattedValue = formatNumber(target.value);
-
-      target.value = getValueWithSuffixAndPrefix(formattedValue);
+      target.value = formatNumber(target.value);
       internalValue = null;
       ctx.emit('blur', event);
       if (props.validateEvent) qFormItem?.validateField('blur');
@@ -266,15 +262,13 @@ export default defineComponent({
 
         if (isNil(value)) {
           internalValue = '';
-          input.value = getValueWithSuffixAndPrefix(internalValue);
+          input.value = internalValue;
           return;
         }
 
         if (!internalValue || value !== Number(internalValue)) {
           internalValue = getClampedValue(matchValue(String(value)));
-          input.value = getValueWithSuffixAndPrefix(
-            formatNumber(internalValue)
-          );
+          input.value = formatNumber(internalValue);
         }
       },
       { immediate: true }

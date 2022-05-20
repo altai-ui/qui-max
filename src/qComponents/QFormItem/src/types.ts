@@ -5,7 +5,7 @@ import type {
 } from 'async-validator';
 import type { Ref, ComputedRef } from 'vue';
 
-import type { Nullable, Optional, Enumerable, ClassValue } from '#/helpers';
+import type { Nullable, Enumerable, ClassValue } from '#/helpers';
 
 export interface FilteredRuleItem extends RuleItem {
   trigger?: Nullable<string>;
@@ -45,7 +45,7 @@ export interface QFormItemContext {
   isErrorSlotShown: ComputedRef<boolean>;
   isHeaderShown: ComputedRef<boolean>;
   isRequired: ComputedRef<boolean>;
-  labelFor: ComputedRef<Optional<string>>;
+  labelFor: ComputedRef<string>;
   resetField: () => void;
   rootClasses: ComputedRef<ClassValue>;
   rules: Nullable<FilteredRuleItem | FilteredRuleItem[]>;
@@ -69,7 +69,7 @@ export interface QFormItemProvider {
 export interface QFormItemInstance {
   errorMessage: Ref<Nullable<string>>;
   isErrorSlotShown: ComputedRef<boolean>;
-  labelFor: ComputedRef<Optional<string>>;
+  labelFor: ComputedRef<string>;
   isRequired: ComputedRef<boolean>;
   isHeaderShown: ComputedRef<boolean>;
   rootClasses: ComputedRef<ClassValue>;

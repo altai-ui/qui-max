@@ -61,7 +61,7 @@ import type { PropType } from 'vue';
 import { validateArray } from '@/qComponents/helpers';
 import type { QFormProvider } from '@/qComponents/QForm';
 
-import type { Nullable, Optional, ClassValue } from '#/helpers';
+import type { Nullable, ClassValue } from '#/helpers';
 
 import type {
   QFormItemProps,
@@ -155,10 +155,7 @@ export default defineComponent({
       )
     );
 
-    const labelFor = computed<Optional<string>>(() => {
-      if (!props.for || !props.prop) return undefined;
-      return props.for ?? props.prop;
-    });
+    const labelFor = computed<string>(() => props.for ?? props.prop ?? '');
 
     const propRules = computed<FilteredRuleItem[]>(() => {
       const rules =

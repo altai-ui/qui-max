@@ -66,6 +66,10 @@
       padding: 0;
       font-size: 26px;
     }
+
+    &:active:not(&.q-button_theme-icon) {
+      color: var(--color-primary-darker);
+    }
   }
 
   &_theme {
@@ -92,7 +96,7 @@
       }
 
       &:active {
-        color: var(--color-primary);
+        color: var(--color-primary-darker);
         background-color: var(--color-tertiary-gray);
         outline: none;
         box-shadow: var(--box-shadow-pressed);
@@ -100,6 +104,10 @@
 
       &.focus-visible {
         border: 1px solid var(--color-primary);
+
+        &:active {
+          border: 1px solid var(--color-primary-darker);
+        }
       }
 
       .q-icon-reverse {
@@ -116,6 +124,7 @@
       text-transform: initial;
       background-color: transparent;
       background-image: none;
+      border: none;
       box-shadow: none;
 
       &.focus-visible {
@@ -144,6 +153,10 @@
           &:active {
             border: 1px solid var(--color-primary);
           }
+
+          &:hover {
+            border: 1px solid var(--color-primary-black);
+          }
         }
       }
     }
@@ -157,16 +170,19 @@
         line-height: 12px;
       }
 
+      &.q-button_theme_link {
+        padding: 0;
+        font-size: 12px;
+        line-height: 18px;
+        border: none;
+      }
+
       &.q-button_type_icon {
         width: 24px;
         height: 24px;
         padding: 0;
         font-size: 16px;
         line-height: 1;
-      }
-
-      &.q-button_theme_link {
-        font-size: 12px;
       }
     }
   }

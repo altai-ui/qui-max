@@ -1,4 +1,8 @@
 .q-button {
+  --box-shadow: 4px 4px 8px rgb(174 174 192 / 40%),
+    1px 1px 3px rgb(174 174 192 / 40%);
+  --box-shadow-pressed: 1px 1px 3px rgb(174 174 192 / 40%);
+
   box-sizing: border-box;
   display: inline-block;
   flex-shrink: 0;
@@ -19,10 +23,7 @@
   border: 1px solid transparent;
   border-radius: var(--border-radius-base);
   outline: none;
-  box-shadow: -1px -1px 3px rgb(var(--color-rgb-white) / 25%),
-    1px 1px 3px rgb(var(--color-rgb-blue) / 40%),
-    4px 4px 8px rgb(var(--color-rgb-blue) / 40%),
-    -4px -4px 12px var(--color-tertiary-white);
+  box-shadow: var(--box-shadow);
   transition: background-color 0.1s;
   appearance: none;
 
@@ -41,10 +42,7 @@
   &:hover {
     background-color: var(--color-primary);
     background-image: none;
-    box-shadow: -1px -1px 4px rgb(var(--color-rgb-white) / 25%),
-      1px 1px 4px rgb(var(--color-rgb-blue) / 40%),
-      4px 4px 8px rgb(var(--color-rgb-blue) / 40%),
-      -4px -4px 8px rgb(var(--color-rgb-white) / 80%);
+    box-shadow: var(--box-shadow);
   }
 
   &:active {
@@ -95,6 +93,7 @@
 
       &:active {
         color: var(--color-primary);
+        background-color: var(--color-tertiary-gray);
         outline: none;
         box-shadow: var(--box-shadow-pressed);
       }
@@ -112,6 +111,7 @@
       padding: 0;
       font-size: var(--font-size-base);
       font-weight: var(--font-weight-base);
+      line-height: 18px;
       color: var(--color-primary-blue);
       text-transform: initial;
       background-color: transparent;
@@ -135,6 +135,8 @@
       }
 
       &.q-button_type_icon {
+        font-size: 24px;
+
         &.focus-visible {
           text-decoration: none;
           border: 1px solid var(--color-primary-blue);
@@ -150,8 +152,9 @@
   &_size {
     &_small {
       &.q-button_type_default {
-        padding: 6px 20px;
+        padding: 7px 20px;
         font-size: 10px;
+        line-height: 12px;
       }
 
       &.q-button_type_icon {
@@ -173,27 +176,30 @@
   }
 
   &_disabled {
-    --color: rgb(var(--color-rgb-gray) / 64%);
     --background-color: var(--color-tertiary-gray);
-    --box-shadow: 1px 1px 3px rgb(var(--color-rgb-blue) / 40%),
-      -1px -1px 3px rgb(var(--color-rgb-white) / 25%);
 
-    color: var(--color);
+    color: rgb(var(--color-rgb-gray) / 64%);
     cursor: not-allowed;
     background-color: var(--background-color);
     background-image: none;
-    box-shadow: var(--box-shadow);
+    box-shadow: var(--box-shadow-pressed);
 
     &:hover,
     &:active {
-      color: var(--color);
+      color: rgb(var(--color-rgb-gray) / 64%);
       background-color: var(--background-color);
-      box-shadow: var(--box-shadow);
+      box-shadow: var(--box-shadow-pressed);
     }
 
     &.q-button_theme_link {
-      --box-shadow: none;
       --background-color: transparent;
+
+      box-shadow: none;
+
+      &:hover,
+      &:active {
+        color: rgb(var(--color-rgb-gray) / 64%);
+      }
     }
 
     .q-icon-reverse {

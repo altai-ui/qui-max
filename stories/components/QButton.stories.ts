@@ -25,6 +25,12 @@ const storyMetadata: Meta = {
     },
     loading: {
       control: { type: 'boolean' }
+    },
+    circle: {
+      control: { type: 'boolean' }
+    },
+    icon: {
+      control: { type: 'text' }
     }
   }
 };

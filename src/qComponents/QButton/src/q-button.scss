@@ -49,15 +49,22 @@
 
   &:active {
     color: rgb(var(--color-rgb-white) / 64%);
+
+    &.q-button_theme_secondary {
+      color: var(--color-primary-darker);
+    }
   }
 
   &.focus-visible,
   &:hover:not(&_loading),
-  &:active:not(&_loading) {
+  &:active:not(&_loading),
+  &_disabled,
+  &_theme_secondary,
+  &_theme_link {
     background-image: none;
   }
 
-  &:active:not(&_loading) {
+  &:active:not(&_loading, &_theme_link) {
     box-shadow: var(--box-shadow-pressed);
   }
 
@@ -65,8 +72,88 @@
     background-color: var(--color-primary-darker);
   }
 
+  &_theme {
+    &_secondary {
+      color: var(--color-primary);
+      background-color: var(--color-tertiary-gray-light);
+
+      &.focus-visible {
+        background-color: var(--color-tertiary-gray-light);
+        border-color: var(--color-primary);
+
+        &:active {
+          border-color: var(--color-primary-darker);
+        }
+      }
+
+      &:hover,
+      &:active {
+        background-color: var(--color-tertiary-gray);
+      }
+
+      &:active {
+        color: var(--color-primary-darker);
+      }
+
+      &.q-button_loading,
+      &.q-button_loading:hover {
+        color: var(--color-primary-darker);
+        background-color: var(--color-tertiary-gray-light);
+        background-image: none;
+      }
+    }
+
+    &_link {
+      color: var(--color-primary-blue);
+      background-color: transparent;
+      box-shadow: none;
+
+      &:hover {
+        color: rgb(var(--color-rgb-gray) / 96%);
+      }
+
+      &:active {
+        color: var(--color-primary);
+        box-shadow: none;
+      }
+
+      &.focus-visible {
+        text-decoration: underline;
+        background-color: transparent;
+
+        &.q-button_type_icon {
+          text-decoration: none;
+          border-color: var(--color-primary-blue);
+
+          &:hover {
+            border-color: rgb(var(--color-rgb-gray) / 96%);
+          }
+
+          &:active {
+            border-color: var(--color-primary);
+          }
+        }
+      }
+
+      &.q-button_disabled,
+      &.q-button_disabled:hover {
+        background-color: transparent;
+        box-shadow: none;
+      }
+
+      &.q-button_loading,
+      &.q-button_loading:hover {
+        color: var(--color-primary-blue);
+        background-color: transparent;
+        background-image: none;
+        box-shadow: none;
+      }
+    }
+  }
+
   &_disabled,
-  &_disabled:active {
+  &_disabled:active,
+  &_disabled:hover {
     color: rgb(var(--color-rgb-gray) / 64%);
     cursor: not-allowed;
     background-color: var(--color-tertiary-gray);
@@ -75,7 +162,8 @@
   }
 
   &_loading,
-  &_loading:active {
+  &_loading:active,
+  &_loading:hover {
     color: rgb(var(--color-rgb-white) / 64%);
     cursor: progress;
     background-color: var(--color-primary);

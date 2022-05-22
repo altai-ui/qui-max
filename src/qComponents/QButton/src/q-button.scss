@@ -1,7 +1,7 @@
 .q-button {
-  --box-shadow: 4px 4px 8px rgb(174 174 192 / 40%),
-    1px 1px 3px rgb(174 174 192 / 40%);
-  --box-shadow-pressed: 1px 1px 3px rgb(174 174 192 / 40%);
+  --box-shadow-default: 4px 4px 8px rgb(var(--color-rgb-blue) / 40%),
+    1px 1px 3px rgb(var(--color-rgb-blue) / 40%);
+  --box-shadow-pressed: 1px 1px 3px rgb(var(--color-rgb-blue) / 40%);
 
   box-sizing: border-box;
   display: inline-block;
@@ -23,12 +23,19 @@
   border: 1px solid transparent;
   border-radius: var(--border-radius-base);
   outline: none;
-  box-shadow: var(--box-shadow);
+  box-shadow: var(--box-shadow-default);
   transition: background-color 0.1s;
   appearance: none;
 
-  &::-moz-focus-inner {
-    border: 0;
+  .q-icon-reverse {
+    --icon-size: 24px;
+
+    position: absolute;
+    top: calc(50% - var(--icon-size) / 2);
+    left: calc(50% - var(--icon-size) / 2);
+    font-size: var(--icon-size);
+    transform-origin: calc(var(--icon-size) / 2);
+    animation: reverse-icon-rotating 2s linear infinite;
   }
 
   & + & {
@@ -39,229 +46,55 @@
     outline: none;
   }
 
-  &:hover {
-    background-color: var(--color-primary);
-    background-image: none;
-    box-shadow: var(--box-shadow);
-  }
-
   &:active {
     color: rgb(var(--color-rgb-white) / 64%);
+  }
+
+  &.focus-visible,
+  &:hover:not(&_loading),
+  &:active:not(&_loading) {
     background-image: none;
+  }
+
+  &:active:not(&_loading) {
     box-shadow: var(--box-shadow-pressed);
   }
 
-  &:visited {
-    background-image: var(--gradient-primary);
-    box-shadow: var(--box-shadow-primary);
+  &.focus-visible {
+    background-color: var(--color-primary-darker);
   }
 
-  &_type {
-    &_icon {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 40px;
-      height: 40px;
-      padding: 0;
-      font-size: 26px;
-    }
-
-    &:active:not(&.q-button_theme-icon) {
-      color: var(--color-primary-darker);
-    }
-  }
-
-  &_theme {
-    &_primary {
-      &.focus-visible {
-        background-color: var(--color-primary-darker);
-        background-image: none;
-      }
-
-      .q-icon-reverse {
-        color: rgb(var(--color-rgb-white) / 64%);
-      }
-    }
-
-    &_secondary {
-      color: var(--color-primary);
-      background-color: var(--color-tertiary-gray-light);
-      background-image: none;
-      box-shadow: var(--box-shadow-primary);
-
-      &:hover {
-        background-color: var(--color-tertiary-gray);
-        box-shadow: var(--box-shadow-hover);
-      }
-
-      &:active {
-        color: var(--color-primary-darker);
-        background-color: var(--color-tertiary-gray);
-        outline: none;
-        box-shadow: var(--box-shadow-pressed);
-      }
-
-      &.focus-visible {
-        border: 1px solid var(--color-primary);
-
-        &:active {
-          border: 1px solid var(--color-primary-darker);
-        }
-      }
-
-      .q-icon-reverse {
-        color: var(--color-primary-darker);
-      }
-    }
-
-    &_link {
-      padding: 0;
-      font-size: var(--font-size-base);
-      font-weight: var(--font-weight-base);
-      line-height: 18px;
-      color: var(--color-primary-blue);
-      text-transform: initial;
-      background-color: transparent;
-      background-image: none;
-      border: none;
-      box-shadow: none;
-
-      &.focus-visible {
-        text-decoration: underline;
-      }
-
-      &:hover {
-        color: var(--color-primary-black);
-        background-color: transparent;
-        box-shadow: none;
-      }
-
-      &:active {
-        color: var(--color-primary);
-        outline: none;
-        box-shadow: none;
-      }
-
-      &.q-button_type_icon {
-        font-size: 24px;
-
-        &.focus-visible {
-          text-decoration: none;
-          border: 1px solid var(--color-primary-blue);
-
-          &:active {
-            border: 1px solid var(--color-primary);
-          }
-
-          &:hover {
-            border: 1px solid var(--color-primary-black);
-          }
-        }
-      }
-    }
-  }
-
-  &_size {
-    &_small {
-      &.q-button_type_default {
-        padding: 7px 20px;
-        font-size: 10px;
-        line-height: 12px;
-      }
-
-      &.q-button_theme_link {
-        padding: 0;
-        font-size: 12px;
-        line-height: 18px;
-        border: none;
-      }
-
-      &.q-button_type_icon {
-        width: 24px;
-        height: 24px;
-        padding: 0;
-        font-size: 16px;
-        line-height: 1;
-      }
-    }
-  }
-
-  &_full-width {
-    width: 100%;
-  }
-
-  &_disabled {
-    --background-color: var(--color-tertiary-gray);
-
+  &_disabled,
+  &_disabled:active {
     color: rgb(var(--color-rgb-gray) / 64%);
     cursor: not-allowed;
-    background-color: var(--background-color);
+    background-color: var(--color-tertiary-gray);
     background-image: none;
     box-shadow: var(--box-shadow-pressed);
-
-    &:hover,
-    &:active {
-      color: rgb(var(--color-rgb-gray) / 64%);
-      background-color: var(--background-color);
-      box-shadow: var(--box-shadow-pressed);
-    }
-
-    &.q-button_theme_link {
-      --background-color: transparent;
-
-      box-shadow: none;
-
-      &:hover,
-      &:active {
-        color: rgb(var(--color-rgb-gray) / 64%);
-      }
-    }
-
-    .q-icon-reverse {
-      color: rgb(var(--color-rgb-gray) / 64%);
-    }
   }
 
-  &_loading {
-    position: relative;
-
-    &:not(&.q-button_disabled) {
-      pointer-events: none;
-    }
+  &_loading,
+  &_loading:active {
+    color: rgb(var(--color-rgb-white) / 64%);
+    cursor: progress;
+    background-color: var(--color-primary);
+    background-image: var(--gradient-primary);
+    box-shadow: var(--box-shadow-default);
 
     .q-button__inner {
       margin-left: 0;
       visibility: hidden;
     }
+  }
 
-    .q-icon-reverse {
-      --icon-size: 24px;
-
-      position: absolute;
-      top: calc(50% - var(--icon-size) / 2);
-      left: calc(50% - var(--icon-size) / 2);
-      font-size: var(--icon-size);
-      transform-origin: calc(var(--icon-size) / 2);
-      animation: rotating 2s linear infinite;
-    }
-
-    &.q-button_size_small {
-      .q-icon-reverse {
-        --icon-size: 16px;
-      }
-    }
-
-    &::before {
-      position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      pointer-events: none;
-      content: '';
-      border-radius: inherit;
-    }
+  &_type_icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 7px;
+    font-size: 24px;
   }
 
   &_circle {
@@ -269,7 +102,7 @@
   }
 }
 
-@keyframes rotating {
+@keyframes reverse-icon-rotating {
   0% {
     transform: rotateZ(0deg);
   }

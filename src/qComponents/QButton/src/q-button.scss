@@ -3,6 +3,7 @@
     1px 1px 3px rgb(var(--color-rgb-blue) / 40%);
   --box-shadow-pressed: 1px 1px 3px rgb(var(--color-rgb-blue) / 40%);
   --color-rgb-gray: 29 29 27;
+  --icon-size: 24px;
 
   box-sizing: border-box;
   display: inline-block;
@@ -29,8 +30,6 @@
   appearance: none;
 
   .q-icon-reverse {
-    --icon-size: 24px;
-
     position: absolute;
     top: calc(50% - var(--icon-size) / 2);
     left: calc(50% - var(--icon-size) / 2);
@@ -70,6 +69,24 @@
 
   &.focus-visible {
     background-color: var(--color-primary-darker);
+  }
+
+  &_size_small {
+    --icon-size: 16px;
+
+    padding: 7px 20px;
+    font-size: 10px;
+    line-height: 12px;
+
+    &.q-button_theme_link {
+      font-size: 12px;
+      line-height: 18px;
+    }
+
+    &.q-button_type_icon {
+      width: 24px;
+      height: 24px;
+    }
   }
 
   &_theme {
@@ -187,7 +204,7 @@
     width: 40px;
     height: 40px;
     padding: 7px;
-    font-size: 24px;
+    font-size: var(--icon-size);
   }
 
   &_circle {

@@ -13,7 +13,7 @@
       <div class="block">
         <q-input-number
           v-model="value"
-          suffix="hours"
+          prefix="Distance:"
         >
         </q-input-number>
       </div>
@@ -26,7 +26,7 @@
   <script>
     const app = Vue.createApp({
       setup() {
-        const value = Vue.ref(10);
+        const value = Vue.ref(123);
 
         return { value };
       }

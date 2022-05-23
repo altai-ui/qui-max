@@ -9,12 +9,14 @@ export interface QInputNumberProps {
   precision: Nullable<number>;
   min: Nullable<number>;
   max: Nullable<number>;
+  prefix: Nullable<string>;
+  suffix: Nullable<string>;
 }
 
 export interface QInputNumberInstance {
   inputRef: Ref<Nullable<HTMLInputElement>>;
   isDisabled: ComputedRef<boolean>;
-  isSuffixVisible: ComputedRef<boolean>;
+  isPostfixVisible: ComputedRef<boolean>;
   handleInput: (event: Event) => void;
   handleChange: (event: Event) => void;
   handleFocus: (event: FocusEvent) => void;

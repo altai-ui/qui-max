@@ -94,6 +94,38 @@ Result:
 
 Maximum allowed value. Must be higher than minimum value.
 
+### prefix
+
+- Type: `String`
+- Default: `null`
+
+If input not in focus, the prefix will be displayed before main value.
+
+```vue {3}
+<q-input-number
+  v-model="value"
+  prefix="Distance:"
+/>
+```
+
+<iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/QInputNumber/prefix.html"></iframe>
+
+### suffix
+
+- Type: `String`
+- Default: `null`
+
+If input not in focus, the suffix will be displayed after main value.
+
+```vue {3}
+<q-input-number
+  v-model="value"
+  suffix="hours"
+/>
+```
+
+<iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/QInputNumber/suffix.html"></iframe>
+
 ### validateEvent
 
 - Type: `Boolean`
@@ -139,8 +171,8 @@ Triggers when input loses focus
 
 ## Slots
 
-### suffix
+### postfix
 
-Set your custom content as a suffix.
+Set your custom content as a postfix.
 
-<iframe style="width: 100%; height: 85px" scrolling="no" frameborder="no" src="/QInputNumber/suffix.html"></iframe>
+<iframe style="width: 100%; height: 85px" scrolling="no" frameborder="no" src="/QInputNumber/postfix.html"></iframe>

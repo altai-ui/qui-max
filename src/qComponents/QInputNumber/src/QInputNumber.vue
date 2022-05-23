@@ -14,8 +14,8 @@
     />
 
     <div
-      v-if="isSuffixVisible"
-      class="q-input-number__suffix"
+      v-if="isPostfixVisible"
+      class="q-input-number__postfix"
     >
       <span
         v-if="isDisabled"
@@ -23,7 +23,7 @@
       />
       <slot
         v-else
-        name="suffix"
+        name="postfix"
       />
     </div>
   </div>
@@ -83,6 +83,18 @@ export default defineComponent({
       validator: (val: number) => val <= MAX_INTEGER
     },
 
+    /** Text before main value in blurred state of the input */
+    prefix: {
+      type: String,
+      default: null
+    },
+
+    /** Text after main value in blurred state of the input */
+    suffix: {
+      type: String,
+      default: null
+    },
+
     /** validate parent form if present */
     validateEvent: {
       type: Boolean,
@@ -118,20 +130,25 @@ export default defineComponent({
       () => props.disabled || (qForm?.disabled.value ?? false)
     );
 
-    const isSuffixVisible = computed<boolean>(() =>
-      Boolean(isDisabled.value || ctx.slots.suffix)
+    const isPostfixVisible = computed<boolean>(() =>
+      Boolean(isDisabled.value || ctx.slots.postfix)
     );
 
     let internalValue: Nullable<string> = null;
 
-    const formatNumber = (value: string): string => {
+    const formatNumber = (value: Nullable<string>): string => {
       if (!value) return '';
 
       const locale = getConfig('locale');
 
-      return Number(value).toLocaleString(locale, {
+      const localizedNumber = Number(value).toLocaleString(locale, {
         maximumFractionDigits: precision.value
       });
+
+      const prefix = props.prefix ?? '';
+      const suffix = props.suffix ?? '';
+
+      return `${prefix} ${localizedNumber} ${suffix}`.trim();
     };
 
     const changesEmitter = (type: 'input' | 'change', value: string): void => {
@@ -260,7 +277,7 @@ export default defineComponent({
     return {
       inputRef,
       isDisabled,
-      isSuffixVisible,
+      isPostfixVisible,
       handleInput,
       handleChange,
       handleFocus,

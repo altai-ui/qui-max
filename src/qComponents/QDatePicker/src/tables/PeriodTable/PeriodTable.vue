@@ -43,6 +43,8 @@ import type { PropType } from 'vue';
 import { getConfig } from '@/qComponents/config';
 import { notNull } from '@/qComponents/helpers';
 
+import type { Nullable } from '#/helpers';
+
 import type { RangeState } from '../../commonTypes';
 import { PERIOD_CELLS_IN_ROW_COUNT } from '../../constants';
 import {
@@ -63,9 +65,18 @@ export default defineComponent({
   name: 'QDatePickerPeriodTable',
 
   props: {
-    value: { type: Date, default: null },
-    minDate: { type: Date, default: null },
-    maxDate: { type: Date, default: null },
+    value: {
+      type: Date as PropType<Nullable<Date>>,
+      default: null
+    },
+    minDate: {
+      type: Date as PropType<Nullable<Date>>,
+      default: null
+    },
+    maxDate: {
+      type: Date as PropType<Nullable<Date>>,
+      default: null
+    },
     type: {
       type: String,
       default: 'month',

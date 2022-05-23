@@ -71,7 +71,7 @@ import { t } from '@/qComponents/locale';
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
 
-import type { Nullable } from '#/helpers';
+import type { Nullable, Enumerable } from '#/helpers';
 
 import type {
   QInputInstance,
@@ -92,7 +92,7 @@ export default defineComponent({
      * default to v-model
      */
     modelValue: {
-      type: String,
+      type: [String, Array] as PropType<Nullable<Enumerable<string>>>,
       default: null
     },
     /**

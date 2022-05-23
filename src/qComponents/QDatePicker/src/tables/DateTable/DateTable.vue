@@ -61,7 +61,7 @@ import type { PropType } from 'vue';
 import { getConfig } from '@/qComponents/config';
 import { notNull } from '@/qComponents/helpers';
 
-import type { Nullable } from '#/helpers';
+import type { Nullable, ClassValue } from '#/helpers';
 
 import type { DateCellModel, RangeState, TableProps } from '../../commonTypes';
 import {
@@ -243,7 +243,7 @@ export default defineComponent({
       });
     });
 
-    const getCellClasses = (cell: DateCellModel): string[] => {
+    const getCellClasses = (cell: DateCellModel): ClassValue => {
       const classes = ['cell', 'cell_date'];
       if (['today', 'prev-month', 'next-month'].includes(cell.type)) {
         classes.push(`cell_${cell.type}`);

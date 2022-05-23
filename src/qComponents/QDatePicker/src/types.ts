@@ -3,7 +3,12 @@ import type { ComputedRef, Ref } from 'vue';
 
 import type { QInputInstance } from '@/qComponents/QInput';
 
-import type { Nullable, UnwrappedInstance } from '#/helpers';
+import type {
+  Nullable,
+  UnwrappedInstance,
+  ClassValue,
+  Enumerable
+} from '#/helpers';
 
 import type DatePanel from './panel/Date/DatePanel.vue';
 import type { DatePanelInstance } from './panel/Date/types';
@@ -110,9 +115,9 @@ interface QDatePickerInstance {
   isMobileView: Ref<boolean>;
   calcFirstDayOfWeek: ComputedRef<number>;
   transformedToDate: ComputedRef<Nullable<Date | Date[]>>;
-  rangeClasses: ComputedRef<Record<string, boolean>>;
+  rangeClasses: ComputedRef<ClassValue>;
   panelComponent: ComputedRef<QDatePickerPanelComponent>;
-  displayValue: ComputedRef<Nullable<string | string[]>>;
+  displayValue: ComputedRef<Nullable<Enumerable<string>>>;
   iconClass: ComputedRef<string>;
   handleInputDateChange: () => void;
   handleKeyUp: (e: KeyboardEvent) => void;

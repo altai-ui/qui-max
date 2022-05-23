@@ -43,7 +43,7 @@ import type { PropType } from 'vue';
 import { getConfig } from '@/qComponents/config';
 import { notNull } from '@/qComponents/helpers';
 
-import type { Nullable } from '#/helpers';
+import type { Nullable, ClassValue } from '#/helpers';
 
 import type { RangeState } from '../../commonTypes';
 import { PERIOD_CELLS_IN_ROW_COUNT } from '../../constants';
@@ -78,7 +78,7 @@ export default defineComponent({
       default: null
     },
     type: {
-      type: String,
+      type: String as PropType<Nullable<string>>,
       default: 'month',
       validator: notNull
     },
@@ -186,7 +186,7 @@ export default defineComponent({
       );
     };
 
-    const getCellClasses = (cell: PeriodCellModel): Record<string, boolean> => {
+    const getCellClasses = (cell: PeriodCellModel): ClassValue => {
       const isCurrent = Boolean(
         props.value && cell.date && isSameFn.value(props.value, cell.date)
       );

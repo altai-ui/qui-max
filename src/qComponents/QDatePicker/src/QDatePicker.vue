@@ -131,7 +131,12 @@ import type { QFormItemProvider } from '@/qComponents/QFormItem';
 import { QInput } from '@/qComponents/QInput';
 import type { QInputInstance } from '@/qComponents/QInput';
 
-import type { Nullable, UnwrappedInstance } from '#/helpers';
+import type {
+  Nullable,
+  UnwrappedInstance,
+  ClassValue,
+  Enumerable
+} from '#/helpers';
 
 import {
   calcInputData,
@@ -365,7 +370,7 @@ export default defineComponent({
       Boolean(props.disabled || qForm?.disabled.value)
     );
 
-    const rangeClasses = computed<Record<string, boolean>>(() => ({
+    const rangeClasses = computed<ClassValue>(() => ({
       'q-date-picker__range-wrapper': true,
       'q-date-picker__range-wrapper_disabled': isPickerDisabled.value,
       'q-date-picker__range-wrapper_focused': state.pickerVisible
@@ -403,7 +408,7 @@ export default defineComponent({
       return state.showCloseIcon ? 'q-icon-close' : 'q-icon-calendar';
     });
 
-    const displayValue = computed<Nullable<string | string[]>>(() => {
+    const displayValue = computed<Nullable<Enumerable<string>>>(() => {
       let formattedValue: string | number | Date | (string | number | Date)[] =
         '';
 

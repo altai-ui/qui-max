@@ -1,7 +1,7 @@
 import type { DebouncedFunc } from 'lodash-es';
 import type { ComputedRef } from 'vue';
 
-import type { Nullable } from '#/helpers';
+import type { Nullable, ClassValue } from '#/helpers';
 
 import type { TableProps } from '../../commonTypes';
 
@@ -18,7 +18,7 @@ interface PeriodTableState {
 }
 
 interface PeriodTableProps extends TableProps {
-  type?: string;
+  type?: Nullable<string>;
 }
 
 interface PeriodTableInstance {
@@ -27,7 +27,7 @@ interface PeriodTableInstance {
   rows: ComputedRef<PeriodCellModel[][]>;
   getMonthName: (monthIndex: number) => string;
   handleTableClick: (cell: PeriodCellModel) => void;
-  getCellClasses: (cell: PeriodCellModel) => Record<string, boolean>;
+  getCellClasses: (cell: PeriodCellModel) => ClassValue;
   getCellContent: (cell: PeriodCellModel) => string;
   handleMouseMove: DebouncedFunc<(cell: PeriodCellModel) => void>;
 }

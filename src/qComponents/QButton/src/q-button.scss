@@ -93,6 +93,10 @@
 
       &:active {
         color: var(--color-primary-darker);
+
+        &.q-button_disabled {
+          color: rgb(var(--color-rgb-gray) / 64%);
+        }
       }
 
       &.q-button_loading,

@@ -71,24 +71,6 @@
     background-color: var(--color-primary-darker);
   }
 
-  &_size_small {
-    --icon-size: 16px;
-
-    padding: 7px 20px;
-    font-size: 10px;
-    line-height: 12px;
-
-    &.q-button_theme_link {
-      font-size: 12px;
-      line-height: 18px;
-    }
-
-    &.q-button_type_icon {
-      width: 24px;
-      height: 24px;
-    }
-  }
-
   &_theme {
     &_secondary {
       color: var(--color-primary);
@@ -125,6 +107,8 @@
     }
 
     &_link {
+      font-size: 14px;
+      line-height: 18px;
       color: var(--color-primary-blue);
       background-color: transparent;
       box-shadow: none;
@@ -169,6 +153,24 @@
         background-image: none;
         box-shadow: none;
       }
+    }
+  }
+
+  &_size_small {
+    padding: 7px 20px;
+    font-size: 10px;
+    line-height: 12px;
+
+    &.q-button_theme_link:not(&.q-button_type_icon) {
+      font-size: 12px;
+      line-height: 18px;
+    }
+
+    &.q-button_type_icon {
+      --icon-size: 16px;
+
+      width: 24px;
+      height: 24px;
     }
   }
 

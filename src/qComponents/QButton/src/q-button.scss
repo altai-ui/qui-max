@@ -4,10 +4,9 @@
   --box-shadow-pressed: 1px 1px 3px rgb(var(--color-rgb-blue) / 40%);
   --color-rgb-gray: 29 29 27;
   --button-bg-color: var(--color-primary);
-  --button-bg-image: var(--gradient-primary);
+  --button-bg-image: none;
   --button-box-shadow: var(--box-shadow-default);
   --button-color: var(--color-tertiary-white);
-  --button-border-color: transparent;
   --icon-size: 24px;
   --button-font-size: 12px;
   --button-line-height: 15px;
@@ -29,7 +28,7 @@
   cursor: pointer;
   background-color: var(--button-bg-color);
   background-image: var(--button-bg-image);
-  border: 1px solid var(--button-border-color);
+  border: 1px solid transparent;
   border-radius: var(--border-radius-base);
   outline: none;
   box-shadow: var(--button-box-shadow);
@@ -62,13 +61,14 @@
       }
 
       &.focus-visible {
-        --button-bg-color: var(--color-primary-darker);
+        background-color: var(--color-primary-darker);
       }
 
       &:active {
-        --button-bg-color: var(--color-primary);
         --button-color: rgb(var(--color-rgb-white) / 64%);
         --button-box-shadow: var(--box-shadow-pressed);
+
+        background-color: var(--color-primary);
       }
     }
 
@@ -83,10 +83,10 @@
       }
 
       &.focus-visible {
-        --button-border-color: var(--color-primary);
+        border-color: var(--color-primary);
 
         &:active {
-          --button-border-color: var(--color-primary-darker);
+          border-color: var(--color-primary-darker);
         }
       }
 
@@ -113,15 +113,14 @@
 
         &.q-button_type_icon {
           text-decoration: none;
-
-          --button-border-color: var(--color-primary-blue);
+          border-color: var(--color-primary-blue);
 
           &:hover {
-            --button-border-color: rgb(var(--color-rgb-gray) / 96%);
+            border-color: rgb(var(--color-rgb-gray) / 96%);
           }
 
           &:active {
-            --button-border-color: var(--color-primary);
+            border-color: var(--color-primary);
           }
         }
       }
@@ -156,18 +155,17 @@
     }
 
     &.q-button_theme_primary {
-      --button-color: rgb(var(--color-rgb-white) / 64%);
-      --button-bg-image: var(--gradient-primary);
+      color: rgb(var(--color-rgb-white) / 64%);
+      background-image: var(--gradient-primary);
     }
 
     &.q-button_theme_secondary {
-      --button-bg-color: var(--color-tertiary-gray-light);
-      --button-color: var(--color-primary-darker);
+      color: var(--color-primary-darker);
+      background-color: var(--color-tertiary-gray-light);
     }
 
     &.q-button_theme_link {
-      --button-color: var(--color-primary-blue);
-
+      color: var(--color-primary-blue);
       box-shadow: none;
     }
   }

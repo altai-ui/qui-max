@@ -10,10 +10,12 @@
   --icon-size: 24px;
   --button-font-size: 12px;
   --button-line-height: 15px;
+  --button-padding: 12px 40px;
 
   box-sizing: border-box;
   display: inline-block;
   flex-shrink: 0;
+  padding: var(--button-padding);
   font-size: var(--button-font-size);
   font-weight: 700;
   line-height: var(--button-line-height);
@@ -98,6 +100,9 @@
       --button-font-size: 14px;
       --button-line-height: 18px;
 
+      padding: 0;
+      font-weight: 500;
+
       &:hover {
         --button-color: rgb(var(--color-rgb-gray) / 96%);
       }
@@ -177,16 +182,19 @@
   &_size {
     &_medium {
       max-height: 40px;
-      padding: 12px 40px;
+
+      &.q-button_type_icon {
+        --button-padding: 7px;
+      }
     }
 
     &_small {
       --icon-size: 16px;
       --button-font-size: 10px;
       --button-line-height: 12px;
+      --button-padding: 7px 20px;
 
       max-height: 28px;
-      padding: 7px 20px;
 
       &.q-button_theme_link {
         --button-font-size: 12px;
@@ -194,9 +202,10 @@
       }
 
       &.q-button_type_icon {
+        --button-padding: 4px;
+
         width: 24px;
         height: 24px;
-        padding: 7px;
       }
     }
   }

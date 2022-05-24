@@ -52,12 +52,6 @@
 
   &_theme {
     &_primary {
-      &.focus-visible,
-      &:hover,
-      &:active {
-        --button-bg-image: none;
-      }
-
       &.focus-visible {
         background-color: var(--color-primary-darker);
       }
@@ -68,10 +62,13 @@
 
         background-color: var(--color-primary);
       }
+
+      &:not(&:hover, &:active, &.focus-visible) {
+        --button-bg-image: var(--gradient-primary);
+      }
     }
 
     &_secondary {
-      --button-bg-image: none;
       --button-bg-color: var(--color-tertiary-gray-light);
       --button-color: var(--color-primary);
 
@@ -95,7 +92,6 @@
     }
 
     &_link {
-      --button-bg-image: none;
       --button-bg-color: transparent;
       --button-box-shadow: none;
       --button-color: var(--color-primary-blue);

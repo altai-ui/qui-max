@@ -32,9 +32,11 @@ import {
 } from 'vue';
 
 import { validateArray } from '@/qComponents/helpers';
+
 import type { Nullable } from '#/helpers';
 
 import { DEFAULT_DURATION, NotifyType } from '../constants';
+
 import type {
   QNotificationToastProps,
   QNotificationToastPropContent,
@@ -43,7 +45,7 @@ import type {
   QNotificationToastInstance
 } from './types';
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QNotificationToast',
   componentName: 'QNotificationToast',
 

@@ -43,6 +43,9 @@
 </template>
 
 <script lang="ts">
+import AsyncValidator from 'async-validator';
+import type { ValidateError, ValidateFieldsError } from 'async-validator';
+import { get, set } from 'lodash-es';
 import {
   provide,
   ref,
@@ -54,33 +57,36 @@ import {
   watch
 } from 'vue';
 import type { PropType } from 'vue';
-import AsyncValidator, {
-  ValidateError,
-  ValidateFieldsError
-} from 'async-validator';
-import { get, set } from 'lodash-es';
 
 import { validateArray } from '@/qComponents/helpers';
 import type { QFormProvider } from '@/qComponents/QForm';
-import type { Nullable } from '#/helpers';
+
+import type { Nullable, ClassValue } from '#/helpers';
 
 import type {
   QFormItemProps,
+  QFormItemPropFor,
+  QFormItemPropProp,
+  QFormItemPropLabel,
+  QFormItemPropSublabel,
+  QFormItemPropError,
   QFormItemPropRules,
+  QFormItemPropShowErrorMessage,
+  QFormItemPropLabelSize,
   QFormItemContext,
   QFormItemProvider,
   FilteredRuleItem,
-  QFormItemInstance,
-  QFormItemPropLabelSize
+  QFormItemInstance
 } from './types';
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QFormItem',
+
   componentName: 'QFormItem',
 
   props: {
     for: {
-      type: String,
+      type: String as PropType<QFormItemPropFor>,
       default: null
     },
     /**
@@ -88,18 +94,18 @@ export default /* #__PURE__ */ defineComponent({
      * the attribute is required
      */
     prop: {
-      type: String,
+      type: String as PropType<QFormItemPropProp>,
       default: null
     },
     /**
      * label
      */
     label: {
-      type: String,
+      type: String as PropType<QFormItemPropLabel>,
       default: null
     },
     sublabel: {
-      type: String,
+      type: String as PropType<QFormItemPropSublabel>,
       default: null
     },
     /**
@@ -107,7 +113,7 @@ export default /* #__PURE__ */ defineComponent({
      * and show this message immediately
      */
     error: {
-      type: String,
+      type: String as PropType<QFormItemPropError>,
       default: null
     },
     /**
@@ -122,7 +128,7 @@ export default /* #__PURE__ */ defineComponent({
      * whether to show the error message
      */
     showErrorMessage: {
-      type: Boolean,
+      type: Boolean as PropType<QFormItemPropShowErrorMessage>,
       default: true
     },
     /**
@@ -149,7 +155,7 @@ export default /* #__PURE__ */ defineComponent({
       )
     );
 
-    const labelFor = computed<Nullable<string>>(() => props.for ?? props.prop);
+    const labelFor = computed<string>(() => props.for ?? props.prop ?? '');
 
     const propRules = computed<FilteredRuleItem[]>(() => {
       const rules =
@@ -169,13 +175,13 @@ export default /* #__PURE__ */ defineComponent({
       )
     );
 
-    const rootClasses = computed<Record<string, boolean>>(() => ({
+    const rootClasses = computed<ClassValue>(() => ({
       'q-form-item_is-required': isRequired.value,
       'q-form-item_is-error': Boolean(errorMessage.value),
       'q-form-item_is-no-asterisk': Boolean(qForm?.hideRequiredAsterisk.value)
     }));
 
-    const labelClass = computed<string>(
+    const labelClass = computed<ClassValue>(
       () => `q-form-item__label_size_${props.labelSize ?? 'regular'}`
     );
 

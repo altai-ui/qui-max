@@ -2,15 +2,14 @@ import { writeFileSync, mkdirSync, existsSync } from 'fs';
 import { resolve } from 'path';
 
 /* eslint-disable import/no-extraneous-dependencies */
-import { defineConfig } from 'vite';
-import sass from 'sass';
-import sassPlugin from 'rollup-plugin-sass';
-import copy from 'rollup-plugin-copy';
 import vue from '@vitejs/plugin-vue';
+import copy from 'rollup-plugin-copy';
+import sassPlugin from 'rollup-plugin-sass';
+import type { IdAndContentObject } from 'rollup-plugin-sass/dist/types';
+import sass from 'sass';
+import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
 /* eslint-enable import/no-extraneous-dependencies */
-
-import type { IdAndContentObject } from 'rollup-plugin-sass/dist/types';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -47,14 +46,20 @@ export default defineConfig({
       // into your library
       external: ['vue'],
       treeshake: true,
-      output: {
-        // Provide global variables to use in the UMD build
-        // for externalized deps
-        exports: 'named',
-        globals: {
-          vue: 'Vue'
+      output: [
+        {
+          format: 'umd',
+          // Provide global variables to use in the UMD build
+          // for externalized deps
+          exports: 'named',
+          globals: { vue: 'Vue' }
+        },
+        {
+          format: 'es',
+          entryFileNames: '[name].js',
+          preserveModules: true
         }
-      },
+      ],
       plugins: [
         sassPlugin({
           runtime: sass,

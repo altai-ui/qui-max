@@ -2,14 +2,14 @@ import type { Instance } from '@popperjs/core';
 import type { ComputedRef, Ref } from 'vue';
 
 import type { QInputInstance } from '@/qComponents/QInput';
+
 import type { Nullable, UnwrappedInstance } from '#/helpers';
 
 import type DatePanel from './panel/Date/DatePanel.vue';
+import type { DatePanelInstance } from './panel/Date/types';
 import type DateRangePanel from './panel/DateRange/DateRange.vue';
 import type MonthRangePanel from './panel/MonthRange/MonthRange.vue';
 import type YearRangePanel from './panel/YearRange/YearRange.vue';
-
-import type { DatePanelInstance } from './panel/Date/types';
 
 type QDatePickerPropModelValue = Nullable<
   string | Date | [string, string] | [Date, Date]

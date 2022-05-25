@@ -16,7 +16,7 @@ import type {
   QSliderBarInstance
 } from './types';
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QSliderBar',
 
   props: {

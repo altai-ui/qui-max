@@ -1,15 +1,15 @@
-import type { App, Plugin } from 'vue';
 import { merge } from 'lodash-es';
+import type { App, Plugin } from 'vue';
 
 import 'focus-visible';
 
-import { setMessages, setI18n } from './locale';
 import { setConfig } from './config';
 import {
   en as localeEn,
   ru as localeRu,
   zh as localeZh
 } from './constants/locales';
+import { setMessages, setI18n } from './locale';
 import { QBreadcrumbs } from './QBreadcrumbs';
 import { QButton } from './QButton';
 import { QCascader } from './QCascader';
@@ -36,13 +36,13 @@ import { QRow } from './QRow';
 import { QScrollbar } from './QScrollbar';
 import { QSelect } from './QSelect';
 import { QSlider } from './QSlider';
+import { QSwitch } from './QSwitch';
 import { QTable } from './QTable';
 import { QTabPane } from './QTabPane';
 import { QTabs } from './QTabs';
 import { QTag } from './QTag';
 import { QTextarea } from './QTextarea';
 import { QUpload } from './QUpload';
-
 import type { ConfigOptions } from './types';
 
 import '../fonts/fonts.scss';
@@ -76,6 +76,7 @@ import './QRow/src/q-row.scss';
 import './QScrollbar/src/q-scrollbar.scss';
 import './QSelect/src/q-select.scss';
 import './QSlider/src/q-slider.scss';
+import './QSwitch/src/q-switch.scss';
 import './QTable/src/q-table.scss';
 import './QTabPane/src/q-tab-pane.scss';
 import './QTabs/src/q-tabs.scss';
@@ -144,6 +145,7 @@ const install = (app: App, config?: ConfigOptions): void => {
   app.use(QScrollbar);
   app.use(QSelect);
   app.use(QSlider);
+  app.use(QSwitch);
   app.use(QTable);
   app.use(QTabPane);
   app.use(QTabs);
@@ -184,6 +186,7 @@ export * from './QRow';
 export * from './QScrollbar';
 export * from './QSelect';
 export * from './QSlider';
+export * from './QSwitch';
 export * from './QTable';
 export * from './QTabPane';
 export * from './QTabs';

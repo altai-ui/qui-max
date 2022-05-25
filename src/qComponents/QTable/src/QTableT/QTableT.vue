@@ -24,28 +24,29 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, ref, computed, provide, watch } from 'vue';
 import { isEmpty } from 'lodash-es';
+import { defineComponent, inject, ref, computed, provide, watch } from 'vue';
 
 import { useResizeListener } from '@/qComponents/hooks';
+
 import type { Nullable, UnwrappedInstance } from '#/helpers';
 
 import QTableTBody from '../QTableTBody/QTableTBody.vue';
 import QTableTColgroup from '../QTableTColgroup/QTableTColgroup.vue';
 import QTableTHead from '../QTableTHead/QTableTHead.vue';
 import QTableTSticky from '../QTableTSticky/QTableTSticky.vue';
-import QTableTTotal from '../QTableTTotal/QTableTTotal.vue';
-import type { QTableProvider } from '../types';
 import type {
   StickyGlobalConfig,
   QTableTStickyInstance
 } from '../QTableTSticky/types';
+import QTableTTotal from '../QTableTTotal/QTableTTotal.vue';
+import type { QTableProvider } from '../types';
 
 import type { QTableTProvider, QTableTInstance } from './types';
 
 const CHANGE_WIDTH_EVENT = 'change-width';
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QTableT',
   componentName: ' QTableT',
 

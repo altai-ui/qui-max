@@ -70,6 +70,7 @@ import type { PropType } from 'vue';
 import { t } from '@/qComponents/locale';
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
+
 import type { Nullable } from '#/helpers';
 
 import type {
@@ -80,7 +81,7 @@ import type {
   QInputClass
 } from './types';
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QInput',
   componentName: 'QInput',
 

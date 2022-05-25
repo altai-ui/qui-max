@@ -1,5 +1,6 @@
 import type { Story } from '@storybook/vue3';
 import { defineComponent, ref } from 'vue';
+
 import { t } from '@/qComponents/locale';
 import type {
   QSliderPropModelValue,
@@ -15,7 +16,7 @@ type SlotDataTest = {
 const QSliderStory: Story = args =>
   defineComponent({
     setup() {
-      const value = ref<ModelValue>('easy');
+      const value = ref<ModelValue>('normal');
 
       return {
         args,
@@ -40,9 +41,6 @@ const data: QSliderPropData<ModelValue, SlotDataTest> = [
   {
     value: 'easy',
     label: t('qSlider.easyLevel'),
-    style: {
-      width: '100px'
-    },
     slotData: {
       description: t('qSlider.captionDescription')
     }
@@ -51,7 +49,6 @@ const data: QSliderPropData<ModelValue, SlotDataTest> = [
   {
     value: 'normal',
     label: t('qSlider.mediumlevel'),
-    style: "width: '127px'",
     slotData: {
       description: t('qSlider.captionDescription')
     }
@@ -60,9 +57,6 @@ const data: QSliderPropData<ModelValue, SlotDataTest> = [
   {
     value: 'hard',
     label: t('qSlider.hardLevel'),
-    style: {
-      width: '135px'
-    },
     slotData: {
       description: t('qSlider.captionDescription')
     }

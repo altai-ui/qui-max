@@ -1,29 +1,32 @@
 .q-slider-captions {
   position: relative;
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
+  display: block;
   width: 100%;
   min-height: 20px;
   margin-top: 8px;
 
   &__caption {
+    position: absolute;
     padding: 0;
     font-size: var(--font-size-base);
     font-weight: var(--font-weight-base);
     line-height: var(--line-height-base);
     color: rgb(var(--color-rgb-gray) / 32%);
     text-align: center;
+    white-space: nowrap;
     cursor: pointer;
     background-color: transparent;
     border: none;
-
-    &:last-child {
-      text-align: right;
-    }
+    transform: translateX(-50%);
 
     &:first-child {
       text-align: left;
+      transform: translateX(0);
+    }
+
+    &:last-child {
+      text-align: right;
+      transform: translateX(-100%);
     }
 
     &.focus-visible,

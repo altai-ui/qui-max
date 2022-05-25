@@ -1,5 +1,5 @@
-import type { Ref, ComputedRef } from 'vue';
 import type { Placement, Options } from '@popperjs/core';
+import type { Ref, ComputedRef } from 'vue';
 
 import type { Nullable } from '#/helpers';
 

@@ -2,7 +2,7 @@ import { withInstall } from '../helpers';
 
 import Table from './src/QTable.vue';
 
-export const QTable = /* #__PURE__ */ withInstall(Table);
+export const QTable = withInstall(Table);
 
 export type {
   QTableProps,

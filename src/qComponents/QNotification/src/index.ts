@@ -3,8 +3,8 @@ import { createApp, ref, nextTick } from 'vue';
 import { isServer } from '@/qComponents/constants/isServer';
 import { randId } from '@/qComponents/helpers';
 
-import QNotificationContainer from './QNotificationContainer';
 import { NotifyType } from './constants';
+import QNotificationContainer from './QNotificationContainer';
 import type {
   QNotify,
   QNotifyItem,

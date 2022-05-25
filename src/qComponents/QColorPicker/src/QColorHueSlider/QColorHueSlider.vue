@@ -29,11 +29,12 @@ import {
 
 import type { Nullable } from '#/helpers';
 
-import draggable from '../utils/draggable';
 import type { QPickerDropdownProvider } from '../QPickerDropdown';
+import draggable from '../utils/draggable';
+
 import type { QColorHueSliderInstance } from './types';
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QColorHueSlider',
   componentName: 'QColorHueSlider',
 

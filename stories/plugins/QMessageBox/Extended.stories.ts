@@ -2,8 +2,8 @@ import type { Story, Meta } from '@storybook/vue3';
 import { defineComponent, defineAsyncComponent } from 'vue';
 
 import { useMessageBox } from '@/qComponents';
-import { QMessageBoxContainer } from '@/qComponents/QMessageBox/src/QMessageBoxContainer';
 import type { QMessageBoxOptions } from '@/qComponents';
+import { QMessageBoxContainer } from '@/qComponents/QMessageBox/src/QMessageBoxContainer';
 
 const storyMetadata: Meta = {
   title: 'Plugins/QMessageBox/Extended',

@@ -14,7 +14,7 @@ import type {
   QTabsInstance
 } from './types';
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QTabs',
   componentName: 'QTabs',
 

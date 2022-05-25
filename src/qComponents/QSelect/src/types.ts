@@ -1,9 +1,10 @@
-import type { Ref, ComputedRef } from 'vue';
 import type { Instance as PopperInstance } from '@popperjs/core';
+import type { Ref, ComputedRef } from 'vue';
 
+import type { QInputInstance } from '@/qComponents/QInput';
 import type { QOptionModel, QOptionPropValue } from '@/qComponents/QOption';
 import type { QScrollbarInstance } from '@/qComponents/QScrollbar';
-import type { QInputInstance } from '@/qComponents/QInput';
+
 import type { Nullable, Optional, UnwrappedInstance } from '#/helpers';
 
 type QSelectPropModelValue = Nullable<

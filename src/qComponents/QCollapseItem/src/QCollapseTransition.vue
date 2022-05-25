@@ -71,7 +71,7 @@ const on = {
 };
 /* eslint-enable no-param-reassign */
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QCollapseTransition',
 
   setup(): QCollapseTransitionInstance {

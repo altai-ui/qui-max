@@ -2,8 +2,8 @@ import type { Meta, Story } from '@storybook/vue3';
 import { defineAsyncComponent, defineComponent } from 'vue';
 
 import { useDialog } from '@/qComponents';
-import { QDialogContainer } from '@/qComponents/QDialog/src/QDialogContainer';
 import type { QDialogOptions } from '@/qComponents';
+import { QDialogContainer } from '@/qComponents/QDialog/src/QDialogContainer';
 
 const storyMetadata: Meta = {
   title: 'Plugins/QDialog/Extended',

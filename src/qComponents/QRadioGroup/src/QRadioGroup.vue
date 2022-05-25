@@ -26,6 +26,7 @@ import {
 import { validateArray } from '@/qComponents/helpers';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
 import type { QRadioGroupProvider } from '@/qComponents/QRadioGroup';
+
 import type { Nullable } from '#/helpers';
 
 import type {
@@ -35,7 +36,7 @@ import type {
   QRadioGroupInstance
 } from './types';
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QRadioGroup',
   componentName: 'QRadioGroup',
 

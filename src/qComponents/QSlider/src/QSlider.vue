@@ -12,14 +12,19 @@
 
       <q-slider-button
         v-model:position="state.btnPosition"
+        :current-value="modelValue"
         :path-left="state.pathLeft"
         :path-width="state.pathWidth"
         :disabled="isDisabled"
+        :tooltip-mode="tooltipMode"
         @drag-start="setupPathValues"
         @update:position="handleBtnPositionUpdate"
       />
 
-      <div class="q-slider__steps">
+      <div
+        v-if="showSteps"
+        class="q-slider__steps"
+      >
         <div
           v-for="step in data.length"
           :key="step"
@@ -50,14 +55,14 @@ import {
 } from 'vue';
 import type { PropType } from 'vue';
 
-import type { Nullable } from '#/helpers';
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
 
-import QSliderButton from './components/QSliderButton/QSliderButton.vue';
-import QSliderBar from './components/QSliderBar/QSliderBar.vue';
-import QSliderCaptions from './components/QSliderCaptions/QSliderCaptions.vue';
+import type { Nullable } from '#/helpers';
 
+import QSliderBar from './components/QSliderBar/QSliderBar.vue';
+import QSliderButton from './components/QSliderButton/QSliderButton.vue';
+import QSliderCaptions from './components/QSliderCaptions/QSliderCaptions.vue';
 import type {
   QSliderPropModelValue,
   QSliderPropData,
@@ -65,10 +70,11 @@ import type {
   QSliderProvider,
   RootClasses,
   QSliderProps,
-  QSliderInstance
+  QSliderInstance,
+  QSliderPropTooltipMode
 } from './types';
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QSlider',
 
   components: {
@@ -94,7 +100,23 @@ export default /* #__PURE__ */ defineComponent({
       type: Array as PropType<QSliderPropData>,
       required: true
     },
-
+    /**
+     * Slider's tooltip displaying mode:
+     * `'hover' | 'always'`.
+     * If `null`, the tooltip will be hidden
+     */
+    tooltipMode: {
+      type: String as PropType<QSliderPropTooltipMode>,
+      default: null
+    },
+    /**
+     *
+     * whether Slider steps is visible
+     */
+    showSteps: {
+      type: Boolean,
+      default: false
+    },
     /**
      * whether Slider is disabled
      */
@@ -185,6 +207,7 @@ export default /* #__PURE__ */ defineComponent({
     watch(
       () => props.modelValue,
       () => {
+        setupValue();
         qFormItem?.validateField('change');
       }
     );

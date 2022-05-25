@@ -30,9 +30,10 @@ import { QScrollbar } from '@/qComponents/QScrollbar';
 import type { Nullable } from '#/helpers';
 
 import type { QDrawerContainerProvider } from '../QDrawerContainer';
+
 import type { QDrawerContentInstance, QDrawerContentProps } from './types';
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QDrawerContent',
   componentName: 'QDrawerContent',
 

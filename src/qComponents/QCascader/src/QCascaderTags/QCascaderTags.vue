@@ -32,12 +32,13 @@
 import { defineComponent, inject, computed } from 'vue';
 
 import { QTag } from '@/qComponents/QTag';
+
 import findFullPath from '../helpers/findFullPath';
 import type { QCascaderProvider } from '../types';
 
 import type { TagItem, QCascaderTagsInstance } from './types';
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QCascaderTags',
   components: { QTag },
   componentName: 'QCascaderTags',

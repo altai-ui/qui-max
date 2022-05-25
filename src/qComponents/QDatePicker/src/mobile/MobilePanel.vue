@@ -24,9 +24,10 @@ import { QDialogContent, QDialogAction } from '@/qComponents/QDialog';
 import type { QDialogContainerProvider } from '@/qComponents/QDialog';
 
 import type { QDatePickerPropModelValue, QDatePickerProvider } from '../types';
+
 import type { MobilePanelInstance } from './types';
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'MobilePanel',
 
   components: { QDialogContent, QButton },

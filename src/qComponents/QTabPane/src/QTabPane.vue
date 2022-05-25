@@ -23,11 +23,12 @@
 import { defineComponent, inject, computed } from 'vue';
 
 import type { QTabsProvider } from '@/qComponents/QTabs';
+
 import type { Optional } from '#/helpers';
 
 import type { QTabPaneProps, QTabPaneInstance } from './types';
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QTabPane',
   componentName: 'QTabPane',
 

@@ -8,11 +8,26 @@
   >
     <div class="q-slider-button__target" />
   </button>
+  <div
+    v-if="!isTooltipHidden"
+    class="q-slider-button__tooltip"
+    :class="tooltipClasses"
+    :style="tooltipStyles"
+  >
+    {{ currentValue }}
+  </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref, computed, onBeforeUnmount } from 'vue';
 import type { PropType } from 'vue';
+
+import type { ClassValue } from '#/helpers';
+
+import type {
+  QSliderPropModelValue,
+  QSliderPropTooltipMode
+} from '../../types';
 
 import type {
   QSliderButtonPropPosition,
@@ -21,10 +36,11 @@ import type {
   QSliderButtonProps,
   BtnClasses,
   BtnStyles,
+  TooltipStyles,
   QSliderButtonInstance
 } from './types';
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QSliderButton',
 
   props: {
@@ -42,7 +58,14 @@ export default /* #__PURE__ */ defineComponent({
       type: Number as PropType<QSliderButtonPropPathWidth>,
       default: null
     },
-
+    tooltipMode: {
+      type: String as PropType<QSliderPropTooltipMode>,
+      default: null
+    },
+    currentValue: {
+      type: [String, Number, Boolean] as PropType<QSliderPropModelValue>,
+      default: null
+    },
     disabled: {
       type: Boolean,
       required: true
@@ -59,7 +82,23 @@ export default /* #__PURE__ */ defineComponent({
       'q-slider-button_is-dragging': isDragging.value
     }));
 
+    const tooltipClasses = computed<ClassValue>(() => ({
+      'q-slider-button__tooltip_is-always-visible':
+        props.tooltipMode === 'always'
+    }));
+
     const btnStyles = computed<BtnStyles>(() => ({
+      left: props.position ?? undefined
+    }));
+
+    const isTooltipHidden = computed<boolean>(
+      () =>
+        !props.tooltipMode ||
+        props.currentValue === undefined ||
+        props.currentValue === null
+    );
+
+    const tooltipStyles = computed<TooltipStyles>(() => ({
       left: props.position ?? undefined
     }));
 
@@ -102,6 +141,9 @@ export default /* #__PURE__ */ defineComponent({
     return {
       btnClasses,
       btnStyles,
+      tooltipClasses,
+      isTooltipHidden,
+      tooltipStyles,
       handleBtnDown
     };
   }

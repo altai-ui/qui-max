@@ -2,8 +2,8 @@ import type { Meta, Story } from '@storybook/vue3';
 import { defineAsyncComponent, defineComponent } from 'vue';
 
 import { useDrawer } from '@/qComponents';
-import { QDrawerContainer } from '@/qComponents/QDrawer/src/QDrawerContainer';
 import type { QDrawerOptions } from '@/qComponents';
+import { QDrawerContainer } from '@/qComponents/QDrawer/src/QDrawerContainer';
 
 const storyMetadata: Meta = {
   title: 'Plugins/QDrawer/Extended',

@@ -1,7 +1,7 @@
 <template>
   <div
     ref="root"
-    :class="classes"
+    :class="rootClasses"
   >
     <div
       ref="wrap"
@@ -10,7 +10,7 @@
       @scroll="handleScroll"
     >
       <component
-        :is="viewTag || 'div'"
+        :is="viewTag ?? 'div'"
         ref="view"
         class="q-scrollbar__view"
         :class="viewClass"
@@ -23,7 +23,7 @@
       v-show="isXBarShown"
       ref="xbar"
       type="horizontal"
-      :theme="theme"
+      :theme="themeValue"
       :move="moveX"
       :size="sizeWidth"
     />
@@ -31,7 +31,7 @@
       v-show="isYBarShown"
       ref="ybar"
       type="vertical"
-      :theme="theme"
+      :theme="themeValue"
       :move="moveY"
       :size="sizeHeight"
     />
@@ -41,7 +41,6 @@
 <script lang="ts">
 import {
   defineComponent,
-  PropType,
   onMounted,
   watch,
   ref,
@@ -49,27 +48,40 @@ import {
   nextTick,
   provide
 } from 'vue';
+import type { PropType } from 'vue';
 
-import { validateArray } from '@/qComponents/helpers';
 import { isServer } from '@/qComponents/constants/isServer';
+import { validateArray } from '@/qComponents/helpers';
 import { useResizeListener } from '@/qComponents/hooks';
-import type { Nullable, Optional, UnwrappedInstance } from '#/helpers';
 
-import QBar from './QBar.vue';
+import type {
+  Nullable,
+  Optional,
+  UnwrappedInstance,
+  ClassValue
+} from '#/helpers';
+
+import type { QBarInstance } from './components/QBar';
+import QBar from './components/QBar';
 import type {
   QScrollbarInstance,
   QScrollbarProps,
   QScrollbarPropScrollTo,
+  QScrollbarPropVisible,
   QScrollbarPropTheme,
   QScrollbarPropWrapClass,
-  QScrollbarProvider,
-  QBarInstance
+  QScrollbarPropViewTag,
+  QScrollbarPropViewClass,
+  QScrollbarPropViewStyle,
+  QScrollbarPropNoResize,
+  QScrollbarProvider
 } from './types';
 
 const OFFSET = -10;
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QScrollbar',
+
   componentName: 'QScrollbar',
 
   components: { QBar },
@@ -84,10 +96,15 @@ export default /* #__PURE__ */ defineComponent({
         : HTMLElement) as PropType<QScrollbarPropScrollTo>,
       default: null
     },
+
     /**
      * whether scrollbar is always visible
      */
-    visible: { type: Boolean, default: false },
+    visible: {
+      type: Boolean as PropType<QScrollbarPropVisible>,
+      default: false
+    },
+
     /**
      * changes style
      */
@@ -96,29 +113,46 @@ export default /* #__PURE__ */ defineComponent({
       default: 'primary',
       validator: validateArray<QScrollbarPropTheme>(['primary', 'secondary'])
     },
+
     /**
      * custom wrapper content class (it helps you to style content)
      */
-    wrapClass: { type: [Object, String, Array], default: null },
+    wrapClass: {
+      type: [String, Object, Array] as PropType<QScrollbarPropWrapClass>,
+      default: null
+    },
+
     /**
      * custom inner content tag
      */
     viewTag: {
-      type: String,
+      type: String as PropType<QScrollbarPropViewTag>,
       default: 'div'
     },
+
     /**
      * custom inner content class
      */
-    viewClass: { type: [Object, String, Array], default: null },
+    viewClass: {
+      type: [String, Object, Array] as PropType<QScrollbarPropViewClass>,
+      default: null
+    },
+
     /**
      * custom inner content class
      */
-    viewStyle: { type: [Object, String, Array], default: null },
+    viewStyle: {
+      type: [String, Object, Array] as PropType<QScrollbarPropViewStyle>,
+      default: null
+    },
+
     /**
      * whether is resizeListener will watch for parent
      */
-    noresize: { type: Boolean, default: false }
+    noresize: {
+      type: Boolean as PropType<QScrollbarPropNoResize>,
+      default: false
+    }
   },
 
   setup(props: QScrollbarProps): QScrollbarInstance {
@@ -135,16 +169,19 @@ export default /* #__PURE__ */ defineComponent({
     const isXBarShown = computed<boolean>(() => sizeWidth.value !== '');
     const isYBarShown = computed<boolean>(() => sizeHeight.value !== '');
 
-    const classes = computed<Record<string, boolean>>(() => ({
+    const rootClasses = computed<ClassValue>(() => ({
       'q-scrollbar': true,
       'q-scrollbar_visible': Boolean(props.visible),
       'q-scrollbar_has-horizontal-bar': isXBarShown.value,
       'q-scrollbar_has-vertical-bar': isYBarShown.value
     }));
 
-    const wrapClasses = computed<QScrollbarPropWrapClass[]>(() => {
-      return [props.wrapClass, { 'q-scrollbar__wrap_hidden-default': true }];
-    });
+    const wrapClasses = computed<QScrollbarPropWrapClass[]>(() => [
+      props.wrapClass,
+      { 'q-scrollbar__wrap_hidden-default': true }
+    ]);
+
+    const themeValue = computed<string>(() => props.theme ?? 'primary');
 
     /**
      * @public
@@ -226,8 +263,9 @@ export default /* #__PURE__ */ defineComponent({
       isYBarShown,
       moveX,
       moveY,
-      classes,
+      rootClasses,
       wrapClasses,
+      themeValue,
       handleScroll,
       update
     };

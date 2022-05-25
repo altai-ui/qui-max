@@ -1,6 +1,5 @@
-import Template from './Default';
-
 import { total, sortBy, rows, loadingRowCount } from './args';
+import Template from './Default';
 
 const Groups = Template.bind({});
 

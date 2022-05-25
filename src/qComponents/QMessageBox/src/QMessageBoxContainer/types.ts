@@ -2,12 +2,12 @@ import type { Component, Ref, ComputedRef } from 'vue';
 
 import type { Nullable } from '#/helpers';
 
+import type { QMessageBoxAction } from '../constants';
 import type {
   QMessageBoxEvent,
   QMessageBoxOptionWrapClass,
   QMessageBoxOptionWrapStyle
 } from '../types';
-import type { QMessageBoxAction } from '../constants';
 
 export interface QMessageBoxParams {
   title: string;

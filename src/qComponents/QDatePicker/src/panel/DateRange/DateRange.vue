@@ -113,6 +113,9 @@
 </template>
 
 <script lang="ts">
+import { addMonths, subMonths, isSameMonth } from 'date-fns';
+import { isNil } from 'lodash-es';
+import type { PropType } from 'vue';
 import {
   reactive,
   computed,
@@ -122,13 +125,9 @@ import {
   onMounted,
   defineComponent
 } from 'vue';
-import type { PropType } from 'vue';
-import { addMonths, subMonths, isSameMonth } from 'date-fns';
-import { isNil } from 'lodash-es';
 
 import type { Nullable } from '#/helpers';
 
-import type { QDatePickerProvider } from '../../types';
 import type { RangePickValue, RangeState } from '../../commonTypes';
 import {
   DATE_CELLS_COUNT,
@@ -136,7 +135,7 @@ import {
   MONTHS_COUNT
 } from '../../constants';
 import DateTable from '../../tables/DateTable/DateTable.vue';
-
+import type { QDatePickerProvider } from '../../types';
 import {
   getActualMonth,
   leftYearComposable,
@@ -156,7 +155,7 @@ import type {
   DateRangePanelState
 } from './types';
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QDatePickerPanelDateRange',
 
   components: {

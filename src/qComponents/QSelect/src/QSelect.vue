@@ -87,6 +87,17 @@
 </template>
 
 <script lang="ts">
+import { createPopper } from '@popperjs/core';
+import {
+  isObject,
+  isPlainObject,
+  isNil,
+  isEqual,
+  get,
+  isString,
+  isEmpty,
+  isNumber
+} from 'lodash-es';
 import {
   defineComponent,
   ref,
@@ -101,28 +112,20 @@ import {
   toRefs,
   toRef
 } from 'vue';
-import {
-  isObject,
-  isPlainObject,
-  isNil,
-  isEqual,
-  get,
-  isString,
-  isEmpty,
-  isNumber
-} from 'lodash-es';
-import { createPopper } from '@popperjs/core';
 import type { PropType } from 'vue';
 
-import { t } from '@/qComponents/locale';
 import { isServer } from '@/qComponents/constants/isServer';
 import { useResizeListener } from '@/qComponents/hooks';
-import type { QInputInstance } from '@/qComponents/QInput';
+import { t } from '@/qComponents/locale';
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
+import type { QInputInstance } from '@/qComponents/QInput';
 import type { QOptionModel, QOptionPropValue } from '@/qComponents/QOption';
+
 import type { Nullable, Optional, UnwrappedInstance } from '#/helpers';
 
+import QSelectDropdown from './QSelectDropdown.vue';
+import QSelectTags from './QSelectTags.vue';
 import type {
   QSelectPropModelValue,
   NewOption,
@@ -133,10 +136,8 @@ import type {
   QSelectTagsInstance,
   QSelectDropdownInstance
 } from './types';
-import QSelectDropdown from './QSelectDropdown.vue';
-import QSelectTags from './QSelectTags.vue';
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QSelect',
   componentName: 'QSelect',
 

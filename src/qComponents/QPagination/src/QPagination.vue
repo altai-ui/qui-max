@@ -83,12 +83,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from 'vue';
 import { range } from 'lodash-es';
+import { defineComponent, computed } from 'vue';
 
 import type { QPaginationProps, QPaginationInstance } from './types';
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QPagination',
   componentName: 'QPagination',
 

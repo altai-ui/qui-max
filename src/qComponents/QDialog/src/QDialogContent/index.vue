@@ -31,15 +31,16 @@
 <script lang="ts">
 import { defineComponent, inject } from 'vue';
 
-import { QScrollbar } from '@/qComponents/QScrollbar';
 import { QButton } from '@/qComponents/QButton';
+import { QScrollbar } from '@/qComponents/QScrollbar';
 
 import type { Nullable } from '#/helpers';
 
 import type { QDialogContainerProvider } from '../QDialogContainer';
+
 import type { QDialogContentInstance, QDialogContentProps } from './types';
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QDialogContent',
   componentName: 'QDialogContent',
 

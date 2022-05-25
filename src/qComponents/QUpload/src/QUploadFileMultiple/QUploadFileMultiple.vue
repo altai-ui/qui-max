@@ -74,8 +74,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, PropType } from 'vue';
 import { isNil } from 'lodash-es';
+import { defineComponent, computed, PropType } from 'vue';
 
 import {
   CLEAR_ALL_EVENT,
@@ -83,16 +83,18 @@ import {
   ABORT_EVENT
 } from '@/qComponents/constants/events';
 import { t } from '@/qComponents/locale';
+
 import type { Nullable } from '#/helpers';
 
 import type { QUploadFile } from '../types';
+
 import type {
   QUploadFileMultipleProps,
   QUploadFileMultiplePropValue,
   QUploadFileMultipleInstance
 } from './types';
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QUploadFileMultiple',
   componentName: 'QUploadFileMultiple',
 

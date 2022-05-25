@@ -34,6 +34,7 @@
 import { defineComponent, inject, computed, PropType } from 'vue';
 
 import { QCheckbox } from '@/qComponents/QCheckbox';
+
 import getChildStatuses from '../helpers/getChildStatuses';
 import type { QCascaderProvider } from '../types';
 
@@ -43,7 +44,7 @@ import type {
   QCascaderRowInstance
 } from './types';
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QCascaderRow',
   components: { QCheckbox },
   componentName: 'QCascaderRow',

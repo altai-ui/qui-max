@@ -13,6 +13,7 @@
 </template>
 
 <script lang="ts">
+import { isEmpty } from 'lodash-es';
 import {
   defineComponent,
   inject,
@@ -24,10 +25,10 @@ import {
   onBeforeUpdate,
   onUpdated
 } from 'vue';
-import { isEmpty } from 'lodash-es';
 
 import { useResizeListener } from '@/qComponents/hooks';
 import type { QScrollbarProvider } from '@/qComponents/QScrollbar';
+
 import type { Nullable, Nillable } from '#/helpers';
 
 import { SELECTABLE_COLUMN_STICKY_INDEX } from '../config';
@@ -37,7 +38,7 @@ import type { StickyGlobalConfig, QTableTStickyInstance } from './types';
 
 const WRAPPER_PADDING_LEFT = 32;
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QTableTSticky',
   componentName: ' QTableTSticky',
 

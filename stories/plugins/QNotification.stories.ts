@@ -2,11 +2,13 @@ import type { Meta, Story } from '@storybook/vue3';
 import { defineComponent } from 'vue';
 
 import { useNotify, NotifyType } from '@/qComponents/QNotification';
+import type { QNotifyId } from '@/qComponents/QNotification';
 import QNotificationToast, {
   QNotificationToastProps
 } from '@/qComponents/QNotification/src/QNotificationToast';
-import type { QNotifyId } from '@/qComponents/QNotification';
+
 import type { Nullable } from '#/helpers';
+
 import iconsList from '../core/iconsList';
 
 const storyMetadata: Meta = {

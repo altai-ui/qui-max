@@ -10,8 +10,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, inject } from 'vue';
 import getHash from 'object-hash';
+import { defineComponent, computed, inject } from 'vue';
 
 import { randId } from '@/qComponents/helpers';
 
@@ -20,7 +20,7 @@ import type { QTableProvider } from '../types';
 import QTableTBodyRow from './QTableTBodyRow/QTableTBodyRow.vue';
 import type { QTableTBodyInstance } from './types';
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QTableTBody',
   componentName: ' QTableTBody',
 

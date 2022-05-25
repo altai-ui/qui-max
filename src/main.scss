@@ -23,6 +23,8 @@ body {
   color: rgb(var(--color-rgb-gray) / 64%);
   letter-spacing: var(--letter-spacing-base);
   background-color: var(--color-tertiary-gray-lighter);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 svg {

@@ -2,11 +2,12 @@ import { createApp, ref, nextTick } from 'vue';
 import type { App, Ref } from 'vue';
 
 import { isServer } from '@/qComponents/constants/isServer';
+
 import type { Nullable, Nillable, UnwrappedInstance } from '#/helpers';
 
+import { QDialogAction } from './constants';
 import { QDialogContainer } from './QDialogContainer';
 import type { QDialogContainerInstance } from './QDialogContainer';
-import { QDialogAction } from './constants';
 import type {
   DialogPromise,
   ComponentInternalInstanceWithProvides,

@@ -52,14 +52,15 @@
 <script lang="ts">
 import { computed, defineComponent, inject, watch, ref } from 'vue';
 
+import type { QCheckboxGroupProvider } from '@/qComponents/QCheckboxGroup';
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
-import type { QCheckboxGroupProvider } from '@/qComponents/QCheckboxGroup';
+
 import type { Nullable } from '#/helpers';
 
 import type { QCheckboxProps, QCheckboxInstance } from './types';
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QCheckbox',
   componentName: 'QCheckbox',
 

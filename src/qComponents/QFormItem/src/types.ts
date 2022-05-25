@@ -1,30 +1,33 @@
-import type { Ref, ComputedRef } from 'vue';
 import type {
   RuleItem,
   ValidateError,
   ValidateFieldsError
 } from 'async-validator';
+import type { Ref, ComputedRef } from 'vue';
 
-import type { Nullable } from '#/helpers';
-
-export type QFormItemPropLabelSize = Nullable<'regular' | 'small'>;
+import type { Nullable, Enumerable, ClassValue } from '#/helpers';
 
 export interface FilteredRuleItem extends RuleItem {
   trigger?: Nullable<string>;
 }
 
-export type QFormItemPropRules = Nullable<
-  FilteredRuleItem | FilteredRuleItem[]
->;
+export type QFormItemPropFor = Nullable<string>;
+export type QFormItemPropProp = Nullable<string>;
+export type QFormItemPropLabel = Nullable<string>;
+export type QFormItemPropSublabel = Nullable<string>;
+export type QFormItemPropError = Nullable<string>;
+export type QFormItemPropRules = Nullable<Enumerable<FilteredRuleItem>>;
+export type QFormItemPropShowErrorMessage = Nullable<boolean>;
+export type QFormItemPropLabelSize = Nullable<'regular' | 'small'>;
 
 export interface QFormItemProps {
-  for: Nullable<string>;
-  prop: Nullable<string>;
-  label: Nullable<string>;
-  sublabel: Nullable<string>;
-  error: Nullable<string>;
+  for: QFormItemPropFor;
+  prop: QFormItemPropProp;
+  label: QFormItemPropLabel;
+  sublabel: QFormItemPropSublabel;
+  error: QFormItemPropError;
   rules: QFormItemPropRules;
-  showErrorMessage: Nullable<boolean>;
+  showErrorMessage: QFormItemPropShowErrorMessage;
   labelSize: QFormItemPropLabelSize;
 }
 
@@ -42,11 +45,9 @@ export interface QFormItemContext {
   isErrorSlotShown: ComputedRef<boolean>;
   isHeaderShown: ComputedRef<boolean>;
   isRequired: ComputedRef<boolean>;
-  labelFor: ComputedRef<Nullable<string>>;
+  labelFor: ComputedRef<string>;
   resetField: () => void;
-  rootClasses: ComputedRef<{
-    [key: string]: boolean;
-  }>;
+  rootClasses: ComputedRef<ClassValue>;
   rules: Nullable<FilteredRuleItem | FilteredRuleItem[]>;
   showErrorMessage: Nullable<boolean>;
   for: Nullable<string>;
@@ -68,10 +69,10 @@ export interface QFormItemProvider {
 export interface QFormItemInstance {
   errorMessage: Ref<Nullable<string>>;
   isErrorSlotShown: ComputedRef<boolean>;
-  labelFor: ComputedRef<Nullable<string>>;
+  labelFor: ComputedRef<string>;
   isRequired: ComputedRef<boolean>;
   isHeaderShown: ComputedRef<boolean>;
-  rootClasses: ComputedRef<Record<string, boolean>>;
+  rootClasses: ComputedRef<ClassValue>;
   getFilteredRules: (trigger: Nullable<string>) => Nullable<FilteredRuleItem[]>;
   validateField: (trigger?: Nullable<string>) => Nullable<
     Promise<{
@@ -80,5 +81,5 @@ export interface QFormItemInstance {
     }>
   >;
   resetField: () => void;
-  labelClass: ComputedRef<string>;
+  labelClass: ComputedRef<ClassValue>;
 }

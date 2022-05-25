@@ -1,0 +1,86 @@
+.q-switch {
+  --switch-main-color: var(--color-primary);
+  --switch-handle-width: 24px;
+  --switch-wrapper-translate-x: calc(-100% + var(--switch-handle-width));
+
+  position: relative;
+  display: block;
+  width: 40px;
+  overflow: hidden;
+  cursor: pointer;
+  background: var(--color-tertiary-gray-ultra-light);
+  border-radius: 12px;
+  box-shadow: 4px 4px 8px rgb(174 174 192 / 40%),
+    1px 1px 3px rgb(174 174 192 / 40%);
+
+  &__checkbox {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: -1;
+    margin: 0;
+    outline: none;
+    opacity: 0;
+  }
+
+  &__wrapper {
+    width: 100%;
+    background-color: var(--switch-main-color);
+    border-radius: 12px;
+    transition: transform 0.2s ease-out;
+    transform: translateX(var(--switch-wrapper-translate-x));
+  }
+
+  &__handle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--switch-handle-width);
+    height: 24px;
+    margin-left: auto;
+    background-color: var(--color-tertiary-gray-ultra-light);
+    border: 2px solid var(--switch-main-color);
+    border-radius: 12px;
+    transition: width 0.2s ease-out;
+
+    .q-icon-reverse {
+      font-size: 16px;
+      color: var(--switch-main-color);
+      animation: rotating 2s linear infinite;
+    }
+  }
+
+  &_disabled {
+    --switch-main-color: var(--color-tertiary-gray-ultra-darker);
+
+    cursor: not-allowed;
+    box-shadow: var(--box-shadow-pressed);
+  }
+
+  &_active {
+    --switch-wrapper-translate-x: 0;
+
+    &:active:not(.q-switch_disabled, .q-switch_loading) {
+      --switch-handle-width: 28px;
+    }
+  }
+
+  &_loading {
+    cursor: progress;
+  }
+
+  &.focus-visible {
+    outline: none;
+  }
+
+  &:active:not(&_disabled, &_loading, &_active) {
+    --switch-handle-width: 28px;
+  }
+
+  &:focus-visible:not(&_disabled, &_loading),
+  &.focus-visible:not(&_disabled, &_loading) {
+    --switch-main-color: var(--color-primary-darker);
+  }
+}

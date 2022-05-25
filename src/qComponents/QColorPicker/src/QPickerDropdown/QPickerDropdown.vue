@@ -51,6 +51,8 @@
 </template>
 
 <script lang="ts">
+import { colord } from 'colord';
+import type { HsvaColor } from 'colord';
 import {
   defineComponent,
   PropType,
@@ -62,21 +64,20 @@ import {
   onUnmounted,
   provide
 } from 'vue';
-import { colord } from 'colord';
-import type { HsvaColor } from 'colord';
 
-import { t } from '@/qComponents/locale';
 import { validateArray } from '@/qComponents/helpers';
+import { t } from '@/qComponents/locale';
 import { QButton } from '@/qComponents/QButton';
 import { QInput } from '@/qComponents/QInput';
+
 import type { Nillable, Nullable, UnwrappedInstance } from '#/helpers';
 
-import QColorSvpanel from '../QColorSvpanel';
 import QColorAlphaSlider from '../QColorAlphaSlider';
-import QColorHueSlider from '../QColorHueSlider';
-import type { QColorSvpanelInstance } from '../QColorSvpanel';
-import type { QColorHueSliderInstance } from '../QColorHueSlider';
 import type { QColorAlphaSliderInstance } from '../QColorAlphaSlider';
+import QColorHueSlider from '../QColorHueSlider';
+import type { QColorHueSliderInstance } from '../QColorHueSlider';
+import type { QColorSvpanelInstance } from '../QColorSvpanel';
+import QColorSvpanel from '../QColorSvpanel';
 import type { QColorPickerProvider } from '../types';
 
 import type {
@@ -92,7 +93,7 @@ const DEFAULT_SATURATION = 100;
 const DEFAULT_VALUE = 100;
 const DEFAULT_ALPHA = 100;
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QPickerDropdown',
   componentName: 'QPickerDropdown',
 

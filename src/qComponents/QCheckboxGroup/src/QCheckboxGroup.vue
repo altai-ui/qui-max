@@ -22,6 +22,7 @@ import {
 
 import { validateArray } from '@/qComponents/helpers';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
+
 import type { Nullable } from '#/helpers';
 
 import type {
@@ -31,7 +32,7 @@ import type {
   QCheckboxGroupInstance
 } from './types';
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QCheckboxGroup',
   componentName: 'QCheckboxGroup',
 

@@ -42,15 +42,14 @@ import {
 } from 'vue';
 import type { PropType } from 'vue';
 
-import { isServer } from '@/qComponents/constants/isServer';
 import { getConfig } from '@/qComponents/config';
+import { isServer } from '@/qComponents/constants/isServer';
 
 import type { Nullable } from '#/helpers';
 
 import { QDialogAction } from '../constants';
 import type { QDialogComponent, QDialogEvent } from '../types';
 
-import { isExternalComponent } from './utils';
 import type {
   QDialogContainerPropContent,
   QDialogContainerPropBeforeClose,
@@ -59,8 +58,9 @@ import type {
   QDialogContainerInstance,
   QDialogContainerProvider
 } from './types';
+import { isExternalComponent } from './utils';
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QDialogContainer',
   componentName: 'QDialogContainer',
 

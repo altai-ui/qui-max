@@ -5,8 +5,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, provide, watch, ref } from 'vue';
 import { uniqueId } from 'lodash-es';
+import { defineComponent, PropType, provide, watch, ref } from 'vue';
 
 import type {
   QCollapseProps,
@@ -15,7 +15,7 @@ import type {
   QCollapseInstance
 } from './types';
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QCollapse',
   componentName: 'QCollapse',
 

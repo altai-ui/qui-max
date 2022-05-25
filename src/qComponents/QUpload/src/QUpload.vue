@@ -47,18 +47,18 @@
 </template>
 
 <script lang="ts">
+import { isNil } from 'lodash-es';
 import { defineComponent, inject, ref, computed } from 'vue';
 import type { PropType } from 'vue';
-import { isNil } from 'lodash-es';
+
 import { validateArray, randId } from '@/qComponents/helpers';
 import type { QFormProvider } from '@/qComponents/QForm';
 
 import type { Nullable } from '#/helpers';
 
 import QUploadDropZone from './QUploadDropZone';
-import QUploadFileSingle from './QUploadFileSingle';
 import QUploadFileMultiple from './QUploadFileMultiple';
-
+import QUploadFileSingle from './QUploadFileSingle';
 import type {
   QUploadProps,
   QUploadPropValue,
@@ -67,7 +67,7 @@ import type {
   QUploadInstance
 } from './types';
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QUpload',
   componentName: 'QUpload',
 

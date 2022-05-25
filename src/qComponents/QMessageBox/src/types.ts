@@ -2,11 +2,11 @@ import type { App, ComponentInternalInstance } from 'vue';
 
 import type { Nullable, UnwrappedInstance } from '#/helpers';
 
+import type { QMessageBoxAction } from './constants';
 import type {
   QMessageBoxContainerPropContent,
   QMessageBoxContainerInstance
 } from './QMessageBoxContainer';
-import type { QMessageBoxAction } from './constants';
 
 export interface ComponentInternalInstanceWithProvides
   extends ComponentInternalInstance {

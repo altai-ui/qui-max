@@ -29,8 +29,6 @@
 </template>
 
 <script lang="ts">
-import { reactive, computed, inject, defineComponent } from 'vue';
-import type { PropType } from 'vue';
 import {
   addYears,
   startOfMonth,
@@ -39,18 +37,20 @@ import {
   startOfDecade
 } from 'date-fns';
 import { debounce } from 'lodash-es';
+import { reactive, computed, inject, defineComponent } from 'vue';
+import type { PropType } from 'vue';
 
 import { getConfig } from '@/qComponents/config';
 import { notNull } from '@/qComponents/helpers';
 
+import type { RangeState } from '../../commonTypes';
+import { PERIOD_CELLS_IN_ROW_COUNT } from '../../constants';
 import {
   formatToLocalReadableString,
   isDateInRangeInterval,
   checkDisabled
 } from '../../helpers';
-import type { RangeState } from '../../commonTypes';
 import type { QDatePickerProvider } from '../../types';
-import { PERIOD_CELLS_IN_ROW_COUNT } from '../../constants';
 
 import type {
   PeriodCellModel,
@@ -59,7 +59,7 @@ import type {
   PeriodTableState
 } from './types';
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QDatePickerPeriodTable',
 
   props: {

@@ -2,8 +2,8 @@ import type { App, Component, ComponentInternalInstance } from 'vue';
 
 import type { Nullable, UnwrappedInstance } from '#/helpers';
 
-import type { QDrawerContainerInstance } from './QDrawerContainer';
 import type { QDrawerAction } from './constants';
+import type { QDrawerContainerInstance } from './QDrawerContainer';
 
 export interface ComponentInternalInstanceWithProvides
   extends ComponentInternalInstance {

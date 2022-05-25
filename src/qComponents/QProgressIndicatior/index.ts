@@ -1,13 +1,14 @@
 import { getCurrentInstance, inject } from 'vue';
 import type { App, Plugin } from 'vue';
 
+import type { Nullable, Nillable } from '#/helpers';
+
 import { createProgressIndicatior } from './src';
 import { PROGRESS_INDICATIOR_INJECTION_KEY } from './src/constants';
 import type {
   QProgressIndicatior,
   QProgressIndicatiorPluginOptions
 } from './src/types';
-import type { Nullable, Nillable } from '#/helpers';
 
 let progressIndicatior: Nullable<QProgressIndicatior> = null;
 

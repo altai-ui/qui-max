@@ -50,6 +50,8 @@
 </template>
 
 <script lang="ts">
+import { createPopper as createPopperJs, Instance } from '@popperjs/core';
+import { placements } from '@popperjs/core/lib/enums';
 import {
   defineComponent,
   PropType,
@@ -59,12 +61,11 @@ import {
   onMounted,
   onUnmounted
 } from 'vue';
-import { createPopper as createPopperJs, Instance } from '@popperjs/core';
-import { placements } from '@popperjs/core/lib/enums';
 
+import { getConfig } from '@/qComponents/config';
 import { isServer } from '@/qComponents/constants/isServer';
 import { validateArray } from '@/qComponents/helpers';
-import { getConfig } from '@/qComponents/config';
+
 import type { Nullable } from '#/helpers';
 
 import type {
@@ -78,7 +79,7 @@ import type {
 
 const DEFAULT_Z_INDEX = 2000;
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QPopover',
   componentName: 'QPopover',
 

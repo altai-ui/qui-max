@@ -12,6 +12,7 @@
 import { defineComponent, PropType, computed } from 'vue';
 
 import { validateArray } from '@/qComponents/helpers';
+
 import type { Nullable } from '#/helpers';
 
 import type {
@@ -21,7 +22,7 @@ import type {
   QRowInstance
 } from './types';
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QRow',
   componentName: 'QRow',
 

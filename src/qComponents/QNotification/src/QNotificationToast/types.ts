@@ -2,8 +2,8 @@ import type { ComputedRef } from 'vue';
 
 import type { Nullable } from '#/helpers';
 
-import type { QNotifyContent } from '../types';
 import type { NotifyType } from '../constants';
+import type { QNotifyContent } from '../types';
 
 export type QNotificationToastPropType = NotifyType;
 export type QNotificationToastPropOnClose = Nullable<(id: string) => void>;

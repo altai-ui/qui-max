@@ -52,6 +52,9 @@
 </template>
 
 <script lang="ts">
+import { createPopper, Instance, Options } from '@popperjs/core';
+import { placements } from '@popperjs/core/lib/enums';
+import { colord } from 'colord';
 import {
   defineComponent,
   PropType,
@@ -62,15 +65,13 @@ import {
   nextTick,
   provide
 } from 'vue';
-import { createPopper, Instance, Options } from '@popperjs/core';
-import { placements } from '@popperjs/core/lib/enums';
-import { colord } from 'colord';
 
+import { getConfig } from '@/qComponents/config';
 import { isServer } from '@/qComponents/constants/isServer';
 import { validateArray } from '@/qComponents/helpers';
-import { getConfig } from '@/qComponents/config';
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
+
 import type { Nullable, UnwrappedInstance } from '#/helpers';
 
 import QPickerDropdown from './QPickerDropdown';
@@ -87,7 +88,7 @@ import type {
 
 const DEFAULT_Z_INDEX = 2000;
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QColorPicker',
   componentName: 'QColorPicker',
 

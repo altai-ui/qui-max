@@ -47,6 +47,7 @@ import {
 
 import { QCheckbox } from '@/qComponents/QCheckbox';
 import type { QSelectProvider } from '@/qComponents/QSelect';
+
 import type { Nullable } from '#/helpers';
 
 import type {
@@ -56,7 +57,7 @@ import type {
   QOptionModel
 } from './types';
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QOption',
   componentName: 'QOption',
 

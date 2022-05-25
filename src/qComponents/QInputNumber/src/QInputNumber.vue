@@ -14,8 +14,8 @@
     />
 
     <div
-      v-if="isSuffixVisible"
-      class="q-input-number__suffix"
+      v-if="isPostfixVisible"
+      class="q-input-number__postfix"
     >
       <span
         v-if="isDisabled"
@@ -23,19 +23,20 @@
       />
       <slot
         v-else
-        name="suffix"
+        name="postfix"
       />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, inject, nextTick, ref, watch } from 'vue';
 import { isNil } from 'lodash-es';
+import { computed, defineComponent, inject, nextTick, ref, watch } from 'vue';
 
 import { getConfig } from '@/qComponents/config';
-import type { QFormItemProvider } from '@/qComponents/QFormItem';
 import type { QFormProvider } from '@/qComponents/QForm';
+import type { QFormItemProvider } from '@/qComponents/QFormItem';
+
 import type { Nullable } from '#/helpers';
 
 import type { QInputNumberInstance, QInputNumberProps } from './types';
@@ -43,7 +44,7 @@ import type { QInputNumberInstance, QInputNumberProps } from './types';
 const MIN_INTEGER = Number(String(Number.MIN_SAFE_INTEGER).slice(0, -2));
 const MAX_INTEGER = Number(String(Number.MAX_SAFE_INTEGER).slice(0, -2));
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QInputNumber',
   componentName: 'QInputNumber',
   inheritAttrs: false,
@@ -82,6 +83,18 @@ export default /* #__PURE__ */ defineComponent({
       validator: (val: number) => val <= MAX_INTEGER
     },
 
+    /** Text before main value in blurred state of the input */
+    prefix: {
+      type: String,
+      default: null
+    },
+
+    /** Text after main value in blurred state of the input */
+    suffix: {
+      type: String,
+      default: null
+    },
+
     /** validate parent form if present */
     validateEvent: {
       type: Boolean,
@@ -117,20 +130,25 @@ export default /* #__PURE__ */ defineComponent({
       () => props.disabled || (qForm?.disabled.value ?? false)
     );
 
-    const isSuffixVisible = computed<boolean>(() =>
-      Boolean(isDisabled.value || ctx.slots.suffix)
+    const isPostfixVisible = computed<boolean>(() =>
+      Boolean(isDisabled.value || ctx.slots.postfix)
     );
 
     let internalValue: Nullable<string> = null;
 
-    const formatNumber = (value: string): string => {
+    const formatNumber = (value: Nullable<string>): string => {
       if (!value) return '';
 
       const locale = getConfig('locale');
 
-      return Number(value).toLocaleString(locale, {
+      const localizedNumber = Number(value).toLocaleString(locale, {
         maximumFractionDigits: precision.value
       });
+
+      const prefix = props.prefix ?? '';
+      const suffix = props.suffix ?? '';
+
+      return `${prefix} ${localizedNumber} ${suffix}`.trim();
     };
 
     const changesEmitter = (type: 'input' | 'change', value: string): void => {
@@ -259,7 +277,7 @@ export default /* #__PURE__ */ defineComponent({
     return {
       inputRef,
       isDisabled,
-      isSuffixVisible,
+      isPostfixVisible,
       handleInput,
       handleChange,
       handleFocus,

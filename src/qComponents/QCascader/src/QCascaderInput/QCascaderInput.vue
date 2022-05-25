@@ -26,11 +26,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, computed } from 'vue';
 import { isNumber, isEmpty } from 'lodash-es';
+import { defineComponent, inject, computed } from 'vue';
 
 import { t } from '@/qComponents/locale';
 import { QInput } from '@/qComponents/QInput';
+
 import type { Nullable } from '#/helpers';
 
 import findFullPath from '../helpers/findFullPath';
@@ -38,7 +39,7 @@ import type { QCascaderProvider } from '../types';
 
 import type { QCascaderInputInstance } from './types';
 
-export default /* #__PURE__ */ defineComponent({
+export default defineComponent({
   name: 'QCascaderInput',
   components: { QInput },
   componentName: 'QCascaderInput',

@@ -99,7 +99,7 @@ export interface QDatePickerState {
   popper: Nullable<Instance>;
 }
 
-export type QDatePickerTransformedToDate = Nullable<Date | Date[]>;
+export type QDatePickerTransformedToDate = Nullable<Enumerable<Date>>;
 
 export interface QDatePickerProvider {
   emit: (

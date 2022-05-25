@@ -1,6 +1,6 @@
 import type { Ref, ComputedRef } from 'vue';
 
-import type { Nullable, Enumerable } from '#/helpers';
+import type { Nullable } from '#/helpers';
 
 type Classes = Record<string, boolean>;
 export type QInputClass = Nullable<string | Classes | Classes[]>;
@@ -8,7 +8,7 @@ export type QInputClass = Nullable<string | Classes | Classes[]>;
 export type QInputPropRootClass = QInputClass;
 
 export interface QInputProps {
-  modelValue: Nullable<Enumerable<string>>;
+  modelValue: Nullable<string>;
   disabled: Nullable<boolean>;
   showSymbolLimit: Nullable<boolean>;
   validateEvent: Nullable<boolean>;

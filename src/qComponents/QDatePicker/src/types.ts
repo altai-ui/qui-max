@@ -30,10 +30,6 @@ export type QDatePickerPropOutputFormat = Nullable<'date' | 'iso'>;
 
 export type QDatePickerPropPlaceholder = Nullable<string>;
 
-export type QDatePickerPropStartPlaceholder = Nullable<string>;
-
-export type QDatePickerPropEndPlaceholder = Nullable<string>;
-
 export type QDatePickerPropFirstDayOfWeek = Nullable<number>;
 
 export type QDatePickerPropName = Nullable<string>;
@@ -67,13 +63,13 @@ export type QDatePickerPropValidateEvent = Nullable<boolean>;
 export type QDatePickerPropTeleportTo = Nullable<string | HTMLElement>;
 
 export interface QDatePickerProps {
-  modelValue: Nullable<QDatePickerPropModelValue>;
+  modelValue: QDatePickerPropModelValue;
   type: QDatePickerPropType;
   format: QDatePickerPropFormat;
   outputFormat: QDatePickerPropOutputFormat;
   placeholder: QDatePickerPropPlaceholder;
-  startPlaceholder: QDatePickerPropStartPlaceholder;
-  endPlaceholder: QDatePickerPropEndPlaceholder;
+  startPlaceholder: QDatePickerPropPlaceholder;
+  endPlaceholder: QDatePickerPropPlaceholder;
   firstDayOfWeek: QDatePickerPropFirstDayOfWeek;
   name: QDatePickerPropName;
   disabled: QDatePickerPropDisabled;

@@ -157,8 +157,6 @@ import type {
   QDatePickerPropFormat,
   QDatePickerPropOutputFormat,
   QDatePickerPropPlaceholder,
-  QDatePickerPropStartPlaceholder,
-  QDatePickerPropEndPlaceholder,
   QDatePickerPropFirstDayOfWeek,
   QDatePickerPropName,
   QDatePickerPropDisabled,
@@ -237,7 +235,7 @@ export default defineComponent({
      * only for ranged types
      */
     startPlaceholder: {
-      type: String as PropType<QDatePickerPropStartPlaceholder>,
+      type: String as PropType<QDatePickerPropPlaceholder>,
       default: null
     },
 
@@ -245,7 +243,7 @@ export default defineComponent({
      * only for ranged types
      */
     endPlaceholder: {
-      type: String as PropType<QDatePickerPropEndPlaceholder>,
+      type: String as PropType<QDatePickerPropPlaceholder>,
       default: null
     },
 

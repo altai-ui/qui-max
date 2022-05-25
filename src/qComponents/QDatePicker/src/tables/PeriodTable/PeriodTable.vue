@@ -78,7 +78,7 @@ export default defineComponent({
       default: null
     },
     type: {
-      type: String as PropType<Nullable<string>>,
+      type: String,
       default: 'month',
       validator: notNull
     },

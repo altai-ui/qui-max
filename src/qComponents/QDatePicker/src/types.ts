@@ -24,7 +24,7 @@ export type QDatePickerPropType = Nullable<
   'date' | 'week' | 'month' | 'year' | 'daterange' | 'monthrange' | 'yearrange'
 >;
 
-export type QDatePickerPropFormat = Nullable<string>;
+export type QDatePickerPropFormat = string;
 
 export type QDatePickerPropOutputFormat = Nullable<'date' | 'iso'>;
 

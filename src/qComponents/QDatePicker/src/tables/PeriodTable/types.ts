@@ -18,7 +18,7 @@ interface PeriodTableState {
 }
 
 interface PeriodTableProps extends TableProps {
-  type?: Nullable<string>;
+  type?: string;
 }
 
 interface PeriodTableInstance {

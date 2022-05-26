@@ -7,9 +7,73 @@ import type { QScrollbarInstance } from '@/qComponents/QScrollbar';
 
 import type { Nullable, Optional, UnwrappedInstance } from '#/helpers';
 
-type QSelectPropModelValue = Nullable<
+export type QSelectPropModelValue = Nullable<
   string | number | QOptionPropValue | (string | number | QOptionPropValue)[]
 >;
+
+export type QSelectPropAutocomplete = Nullable<'on' | 'off'>;
+
+export type QSelectPropCanLoadMore = Nullable<boolean>;
+
+export type QSelectPropDisabled = Nullable<boolean>;
+
+export type QSelectPropClearable = Nullable<boolean>;
+
+export type QSelectPropFilterable = Nullable<boolean>;
+
+export type QSelectPropAllowCreate = Nullable<boolean>;
+
+export type QSelectPropLoading = Nullable<boolean>;
+
+export type QSelectPropRemote = Nullable<boolean>;
+
+export type QSelectPropLoadingText = Nullable<string>;
+
+export type QSelectPropLoadMoreText = Nullable<string>;
+
+export type QSelectPropNoMatchText = Nullable<string>;
+
+export type QSelectPropNoDataText = Nullable<string>;
+
+export type QSelectPropMultiple = Nullable<boolean>;
+
+export type QSelectPropMultipleLimit = Nullable<number>;
+
+export type QSelectPropPlaceholder = Nullable<string>;
+
+export type QSelectPropSelectAllShown = Nullable<boolean>;
+
+export type QSelectPropSelectAllText = Nullable<string>;
+
+export type QSelectPropValueKey = Nullable<string>;
+
+export type QSelectPropCollapseTags = Nullable<boolean>;
+
+export type QSelectPropTeleportTo = Nullable<string | HTMLElement>;
+
+interface QSelectProps {
+  modelValue: QSelectPropModelValue;
+  autocomplete: QSelectPropAutocomplete;
+  canLoadMore: QSelectPropCanLoadMore;
+  disabled: QSelectPropDisabled;
+  clearable: QSelectPropClearable;
+  filterable: QSelectPropFilterable;
+  allowCreate: QSelectPropAllowCreate;
+  loading: QSelectPropLoading;
+  remote: QSelectPropRemote;
+  loadingText: QSelectPropLoadingText;
+  loadMoreText: QSelectPropLoadMoreText;
+  noMatchText: QSelectPropNoMatchText;
+  noDataText: QSelectPropNoDataText;
+  multiple: QSelectPropMultiple;
+  multipleLimit: QSelectPropMultipleLimit;
+  placeholder: QSelectPropPlaceholder;
+  selectAllShown: QSelectPropSelectAllShown;
+  selectAllText: QSelectPropSelectAllText;
+  valueKey: QSelectPropValueKey;
+  collapseTags: QSelectPropCollapseTags;
+  teleportTo: QSelectPropTeleportTo;
+}
 
 type NewOption = {
   value: QSelectPropModelValue;
@@ -72,29 +136,6 @@ interface QSelectProvider {
   modelValue: Ref<QSelectPropModelValue>;
 }
 
-interface QSelectProps {
-  selectAllShown: Nullable<boolean>;
-  selectAllText: Nullable<string>;
-  loadMoreText: Nullable<string>;
-  filterable: Nullable<boolean>;
-  collapseTags: Nullable<boolean>;
-  autocomplete: Nullable<'on' | 'off'>;
-  multiple: Nullable<boolean>;
-  modelValue: Nullable<QSelectPropModelValue>;
-  placeholder: Nullable<string>;
-  disabled: Nullable<boolean>;
-  canLoadMore: Nullable<boolean>;
-  loading: Nullable<boolean>;
-  loadingText: Nullable<string>;
-  noMatchText: Nullable<string>;
-  noDataText: Nullable<string>;
-  allowCreate: Nullable<boolean>;
-  clearable: Nullable<boolean>;
-  remote: Nullable<boolean>;
-  valueKey: Nullable<string>;
-  multipleLimit: Nullable<number>;
-}
-
 interface QSelectState {
   options: QOptionModel[];
   selected: Nullable<QOptionModel | NewOption | (QOptionModel | NewOption)[]>;
@@ -149,7 +190,6 @@ interface QSelectTagsInstance {
 
 export {
   QOptionPropValue,
-  QSelectPropModelValue,
   NewOption,
   QSelectInstance,
   QSelectProps,

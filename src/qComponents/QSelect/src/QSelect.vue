@@ -128,17 +128,38 @@ import QSelectDropdown from './QSelectDropdown.vue';
 import QSelectTags from './QSelectTags.vue';
 import type {
   QSelectPropModelValue,
-  NewOption,
+  QSelectPropAutocomplete,
+  QSelectPropCanLoadMore,
+  QSelectPropDisabled,
+  QSelectPropClearable,
+  QSelectPropFilterable,
+  QSelectPropAllowCreate,
+  QSelectPropLoading,
+  QSelectPropRemote,
+  QSelectPropLoadingText,
+  QSelectPropLoadMoreText,
+  QSelectPropNoMatchText,
+  QSelectPropNoDataText,
+  QSelectPropMultiple,
+  QSelectPropMultipleLimit,
+  QSelectPropPlaceholder,
+  QSelectPropSelectAllShown,
+  QSelectPropSelectAllText,
+  QSelectPropValueKey,
+  QSelectPropCollapseTags,
+  QSelectPropTeleportTo,
+  QSelectProps,
   QSelectInstance,
+  NewOption,
   QSelectProvider,
   QSelectState,
-  QSelectProps,
   QSelectTagsInstance,
   QSelectDropdownInstance
 } from './types';
 
 export default defineComponent({
   name: 'QSelect',
+
   componentName: 'QSelect',
 
   components: {
@@ -154,88 +175,168 @@ export default defineComponent({
       type: [String, Number, Object, Array] as PropType<QSelectPropModelValue>,
       default: null
     },
+
     /**
      * the autocomplete attribute of select input
      */
-    autocomplete: { type: String as PropType<'on' | 'off'>, default: 'off' },
+    autocomplete: {
+      type: String as PropType<QSelectPropAutocomplete>,
+      default: 'off'
+    },
+
     /**
      * whether loadMoreText is shown
      */
-    canLoadMore: { type: Boolean, default: false },
+    canLoadMore: {
+      type: Boolean as PropType<QSelectPropCanLoadMore>,
+      default: false
+    },
+
     /**
      * whether Select is disabled
      */
-    disabled: { type: Boolean, default: false },
+    disabled: {
+      type: Boolean as PropType<QSelectPropDisabled>,
+      default: false
+    },
+
     /**
      * whether select can be cleared
      */
-    clearable: { type: Boolean, default: false },
+    clearable: {
+      type: Boolean as PropType<QSelectPropClearable>,
+      default: false
+    },
+
     /**
      * whether Select is filterable
      */
-    filterable: { type: Boolean, default: false },
+    filterable: {
+      type: Boolean as PropType<QSelectPropFilterable>,
+      default: false
+    },
+
     /**
      * whether creating new items is allowed. To use this, `filterable` must be true
      */
-    allowCreate: { type: Boolean, default: false },
+    allowCreate: {
+      type: Boolean as PropType<QSelectPropAllowCreate>,
+      default: false
+    },
+
     /**
      * whether Select is loading data from server
      */
-    loading: { type: Boolean, default: false },
+    loading: {
+      type: Boolean as PropType<QSelectPropLoading>,
+      default: false
+    },
+
     /**
      * whether options are loaded from server
      */
-    remote: { type: Boolean, default: false },
+    remote: {
+      type: Boolean as PropType<QSelectPropRemote>,
+      default: false
+    },
+
     /**
      * text that is shown when `loading` is true
      */
-    loadingText: { type: String, default: null },
+    loadingText: {
+      type: String as PropType<QSelectPropLoadingText>,
+      default: null
+    },
+
     /**
      * text that is shown when `canLoadMore` is true
      */
-    loadMoreText: { type: String, default: null },
+    loadMoreText: {
+      type: String as PropType<QSelectPropLoadMoreText>,
+      default: null
+    },
+
     /**
      * text of no match state
      */
-    noMatchText: { type: String, default: null },
+    noMatchText: {
+      type: String as PropType<QSelectPropNoMatchText>,
+      default: null
+    },
+
     /**
      * text of no data state
      */
-    noDataText: { type: String, default: null },
+    noDataText: {
+      type: String as PropType<QSelectPropNoDataText>,
+      default: null
+    },
+
     /**
      * whether multiple-select is activated
      */
-    multiple: { type: Boolean, default: false },
+    multiple: {
+      type: Boolean as PropType<QSelectPropMultiple>,
+      default: false
+    },
+
     /**
      * maximum number of options user can select when `multiple` is true. No `limit` when set to 0
      */
-    multipleLimit: { type: Number, default: 0 },
+    multipleLimit: {
+      type: Number as PropType<QSelectPropMultipleLimit>,
+      default: 0
+    },
+
     /**
      * placeholder
      */
-    placeholder: { type: String, default: '' },
+    placeholder: {
+      type: String as PropType<QSelectPropPlaceholder>,
+      default: ''
+    },
+
     /**
      * whether select all button is shown
      */
-    selectAllShown: { type: Boolean, default: false },
+    selectAllShown: {
+      type: Boolean as PropType<QSelectPropSelectAllShown>,
+      default: false
+    },
+
     /**
      * text of select all button
      */
-    selectAllText: { type: String, default: null },
+    selectAllText: {
+      type: String as PropType<QSelectPropSelectAllText>,
+      default: null
+    },
+
     /**
      * unique identity key name for value, required when option's value is an object
      */
-    valueKey: { type: String, default: 'value' },
+    valueKey: {
+      type: String as PropType<QSelectPropValueKey>,
+      default: 'value'
+    },
+
     /**
      * whether to collapse tags to a text when multiple selecting
      */
-    collapseTags: { type: Boolean, default: false },
+    collapseTags: {
+      type: Boolean as PropType<QSelectPropCollapseTags>,
+      default: false
+    },
+
     /**
      * Specifies a target element where QSelect will be moved.
      * (has to be a valid query selector, or an HTMLElement)
      */
     teleportTo: {
-      type: [String, isServer ? Object : HTMLElement],
+      type: [
+        String,
+        isServer ? Object : HTMLElement
+      ] as PropType<QSelectPropTeleportTo>,
       default: null
     }
   },

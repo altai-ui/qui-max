@@ -92,7 +92,7 @@ export default defineComponent({
      * default to v-model
      */
     modelValue: {
-      type: String as PropType<Nullable<string>>,
+      type: String,
       default: null
     },
     /**

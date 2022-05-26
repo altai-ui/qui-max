@@ -30,6 +30,10 @@ export type QDatePickerPropOutputFormat = Nullable<'date' | 'iso'>;
 
 export type QDatePickerPropPlaceholder = Nullable<string>;
 
+export type QDatePickerPropStartPlaceholder = Nullable<string>;
+
+export type QDatePickerPropEndPlaceholder = Nullable<string>;
+
 export type QDatePickerPropFirstDayOfWeek = Nullable<number>;
 
 export type QDatePickerPropName = Nullable<string>;
@@ -68,8 +72,8 @@ export interface QDatePickerProps {
   format: QDatePickerPropFormat;
   outputFormat: QDatePickerPropOutputFormat;
   placeholder: QDatePickerPropPlaceholder;
-  startPlaceholder: QDatePickerPropPlaceholder;
-  endPlaceholder: QDatePickerPropPlaceholder;
+  startPlaceholder: QDatePickerPropStartPlaceholder;
+  endPlaceholder: QDatePickerPropEndPlaceholder;
   firstDayOfWeek: QDatePickerPropFirstDayOfWeek;
   name: QDatePickerPropName;
   disabled: QDatePickerPropDisabled;
@@ -136,7 +140,7 @@ export interface QDatePickerInstance {
   rangeClasses: ComputedRef<ClassValue>;
   panelComponent: ComputedRef<QDatePickerPanelComponent>;
   displayValue: ComputedRef<Nullable<Enumerable<string>>>;
-  iconClass: ComputedRef<string>;
+  iconClass: ComputedRef<ClassValue>;
   handleInputDateChange: () => void;
   handleKeyUp: (e: KeyboardEvent) => void;
   handleKeyDown: (e: KeyboardEvent) => void;

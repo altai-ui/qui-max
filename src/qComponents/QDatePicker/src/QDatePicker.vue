@@ -13,7 +13,7 @@
       <q-input
         ref="reference"
         class="q-date-picker__input"
-        :model-value="displayValue"
+        :model-value="String(displayValue)"
         :root-class="{ 'q-input_focused': state.pickerVisible }"
         :readonly="!editable"
         :disabled="isPickerDisabled"
@@ -157,6 +157,8 @@ import type {
   QDatePickerPropFormat,
   QDatePickerPropOutputFormat,
   QDatePickerPropPlaceholder,
+  QDatePickerPropStartPlaceholder,
+  QDatePickerPropEndPlaceholder,
   QDatePickerPropFirstDayOfWeek,
   QDatePickerPropName,
   QDatePickerPropDisabled,
@@ -235,7 +237,7 @@ export default defineComponent({
      * only for ranged types
      */
     startPlaceholder: {
-      type: String as PropType<QDatePickerPropPlaceholder>,
+      type: String as PropType<QDatePickerPropStartPlaceholder>,
       default: null
     },
 
@@ -243,7 +245,7 @@ export default defineComponent({
      * only for ranged types
      */
     endPlaceholder: {
-      type: String as PropType<QDatePickerPropPlaceholder>,
+      type: String as PropType<QDatePickerPropEndPlaceholder>,
       default: null
     },
 
@@ -440,7 +442,7 @@ export default defineComponent({
       return !transformedToDate.value;
     });
 
-    const iconClass = computed<string>(() => {
+    const iconClass = computed<ClassValue>(() => {
       if (isPickerDisabled.value) return 'q-icon-lock';
       if (isTouchMode.value)
         return !isValueEmpty.value && props.clearable

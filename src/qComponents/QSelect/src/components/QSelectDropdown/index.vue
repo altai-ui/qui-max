@@ -76,7 +76,10 @@ import type { QSelectProvider } from '@/qComponents/QSelect';
 
 import type { Nullable, UnwrappedInstance } from '#/helpers';
 
-import type { QSelectDropdownInstance, QSelectDropdownProps } from './types';
+import type {
+  QSelectDropdownInstance,
+  QSelectDropdownProps
+} from '../../types';
 
 const DEFAULT_Z_INDEX = 2000;
 

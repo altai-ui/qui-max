@@ -57,10 +57,11 @@ import type { QSelectProvider } from '@/qComponents/QSelect';
 
 import type { Nullable } from '#/helpers';
 
-import type { NewOption, QSelectTagsInstance } from './types';
+import type { NewOption, QSelectTagsInstance } from '../../types';
 
 export default defineComponent({
   name: 'QSelectTags',
+
   componentName: 'QSelectTags',
 
   emits: ['remove-tag', 'exit', 'update:query', 'focus', 'keyup-enter'],

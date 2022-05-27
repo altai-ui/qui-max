@@ -124,8 +124,10 @@ import type { QOptionModel, QOptionPropValue } from '@/qComponents/QOption';
 
 import type { Nullable, Optional, UnwrappedInstance } from '#/helpers';
 
-import QSelectDropdown from './QSelectDropdown.vue';
-import QSelectTags from './QSelectTags.vue';
+import QSelectDropdown from './components/QSelectDropdown';
+import type { QSelectDropdownInstance } from './components/QSelectDropdown';
+import QSelectTags from './components/QSelectTags';
+import type { QSelectTagsInstance } from './components/QSelectTags';
 import type {
   QSelectPropModelValue,
   QSelectPropAutocomplete,
@@ -152,9 +154,7 @@ import type {
   QSelectInstance,
   NewOption,
   QSelectProvider,
-  QSelectState,
-  QSelectTagsInstance,
-  QSelectDropdownInstance
+  QSelectState
 } from './types';
 
 export default defineComponent({

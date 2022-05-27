@@ -76,15 +76,13 @@ import type { QSelectProvider } from '@/qComponents/QSelect';
 
 import type { Nullable, UnwrappedInstance } from '#/helpers';
 
-import type {
-  QSelectDropdownInstance,
-  QSelectDropdownProps
-} from '../../types';
+import type { QSelectDropdownInstance, QSelectDropdownProps } from './types';
 
 const DEFAULT_Z_INDEX = 2000;
 
 export default defineComponent({
   name: 'QSelectDropdown',
+
   componentName: 'QSelectDropdown',
 
   components: {
@@ -94,15 +92,50 @@ export default defineComponent({
   },
 
   props: {
-    shown: { type: Boolean, required: true },
-    selectAllShown: { type: Boolean, required: true },
-    selectAllText: { type: String, required: true },
-    showEmptyContent: { type: Boolean, required: true },
-    emptyText: { type: String, required: true },
-    isCanLoadMoreShown: { type: Boolean, required: true },
-    loadMoreText: { type: String, required: true },
-    isNewOptionShown: { type: Boolean, required: true },
-    width: { type: Number, default: null }
+    shown: {
+      type: Boolean,
+      required: true
+    },
+
+    selectAllShown: {
+      type: Boolean,
+      required: true
+    },
+
+    selectAllText: {
+      type: String,
+      required: true
+    },
+
+    showEmptyContent: {
+      type: Boolean,
+      required: true
+    },
+
+    emptyText: {
+      type: String,
+      required: true
+    },
+
+    isCanLoadMoreShown: {
+      type: Boolean,
+      required: true
+    },
+
+    loadMoreText: {
+      type: String,
+      required: true
+    },
+
+    isNewOptionShown: {
+      type: Boolean,
+      required: true
+    },
+
+    width: {
+      type: Number,
+      default: null
+    }
   },
 
   emits: ['select-all'],

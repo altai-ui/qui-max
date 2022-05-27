@@ -152,6 +152,10 @@ export default defineComponent({
 
     const isIconType = computed<boolean>(() => props.type === 'icon');
 
+    const isCircle = computed<boolean>(
+      () => Boolean(props.circle) && isIconType.value
+    );
+
     const classList = computed<ClassValue[]>(() => {
       const classes: ClassValue[] = Object.entries({
         theme: props.theme ?? defaultPropThemeValue,
@@ -164,8 +168,8 @@ export default defineComponent({
       classes.push({
         'q-button_disabled': isDisabled.value && !isLoading.value,
         'q-button_loading': isLoading.value,
-        'q-button_circle': Boolean(props.circle) && isIconType.value,
-        'q-button_full-width': Boolean(props.fullWidth)
+        'q-button_circle': isCircle.value,
+        'q-button_full-width': Boolean(props.fullWidth) && !isCircle.value
       });
 
       return classes;

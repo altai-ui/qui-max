@@ -417,8 +417,8 @@ export default defineComponent({
       'q-date-picker__range-wrapper_focused': state.pickerVisible
     }));
 
-    const isRanged = computed<boolean>(() =>
-      !props.type ? false : props.type.includes('range')
+    const isRanged = computed<boolean>(
+      () => props.type?.includes('range') ?? false
     );
 
     const panelComponent = computed<QDatePickerPanelComponent>(() => {

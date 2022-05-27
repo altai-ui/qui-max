@@ -16,43 +16,29 @@ import type DateRangePanel from './panel/DateRange/DateRange.vue';
 import type MonthRangePanel from './panel/MonthRange/MonthRange.vue';
 import type YearRangePanel from './panel/YearRange/YearRange.vue';
 
+interface Shortcut {
+  text: string;
+  value: Date;
+}
+
 export type QDatePickerPropModelValue = Nullable<
   string | Date | [string, string] | [Date, Date]
 >;
-
 export type QDatePickerPropType = Nullable<
   'date' | 'week' | 'month' | 'year' | 'daterange' | 'monthrange' | 'yearrange'
 >;
-
 export type QDatePickerPropFormat = string;
-
 export type QDatePickerPropOutputFormat = Nullable<'date' | 'iso'>;
-
 export type QDatePickerPropPlaceholder = Nullable<string>;
-
 export type QDatePickerPropStartPlaceholder = Nullable<string>;
-
 export type QDatePickerPropEndPlaceholder = Nullable<string>;
-
 export type QDatePickerPropFirstDayOfWeek = Nullable<number>;
-
 export type QDatePickerPropName = Nullable<string>;
-
 export type QDatePickerPropDisabled = Nullable<boolean>;
-
 export type QDatePickerPropClearable = Nullable<boolean>;
-
 export type QDatePickerPropEditable = Nullable<boolean>;
-
 export type QDatePickerPropRangeSeparator = Nullable<string>;
-
-export type QDatePickerPropShortcuts = Nullable<
-  {
-    text: string;
-    value: Date;
-  }[]
->;
-
+export type QDatePickerPropShortcuts = Nullable<Shortcut[]>;
 export type QDatePickerPropDisabledValues = Nullable<{
   to?: Date;
   from?: Date;
@@ -61,9 +47,7 @@ export type QDatePickerPropDisabledValues = Nullable<{
     end: Date;
   }[];
 }>;
-
 export type QDatePickerPropValidateEvent = Nullable<boolean>;
-
 export type QDatePickerPropTeleportTo = Nullable<string | HTMLElement>;
 
 export interface QDatePickerProps {
@@ -113,7 +97,7 @@ export interface QDatePickerProvider {
   ) => void;
   handlePickClick: (
     val: QDatePickerPropModelValue,
-    { hidePicker }?: { hidePicker?: boolean }
+    options?: { hidePicker?: boolean }
   ) => void;
   firstDayOfWeek: ComputedRef<number>;
   isMobileView: Ref<boolean>;

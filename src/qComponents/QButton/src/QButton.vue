@@ -8,7 +8,7 @@
   >
     <span
       v-if="isLoading"
-      class="q-icon-reverse"
+      class="q-button__spinner-icon q-icon-reverse"
     />
     <span
       v-else-if="icon"

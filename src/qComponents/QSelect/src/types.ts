@@ -12,45 +12,25 @@ import type { QSelectTagsInstance } from './components/QSelectTags/types';
 export type QSelectPropModelValue = Nullable<
   string | number | QOptionPropValue | (string | number | QOptionPropValue)[]
 >;
-
 export type QSelectPropAutocomplete = Nullable<'on' | 'off'>;
-
 export type QSelectPropCanLoadMore = Nullable<boolean>;
-
 export type QSelectPropDisabled = Nullable<boolean>;
-
 export type QSelectPropClearable = Nullable<boolean>;
-
 export type QSelectPropFilterable = Nullable<boolean>;
-
 export type QSelectPropAllowCreate = Nullable<boolean>;
-
 export type QSelectPropLoading = Nullable<boolean>;
-
 export type QSelectPropRemote = Nullable<boolean>;
-
 export type QSelectPropLoadingText = Nullable<string>;
-
 export type QSelectPropLoadMoreText = Nullable<string>;
-
 export type QSelectPropNoMatchText = Nullable<string>;
-
 export type QSelectPropNoDataText = Nullable<string>;
-
 export type QSelectPropMultiple = Nullable<boolean>;
-
 export type QSelectPropMultipleLimit = Nullable<number>;
-
 export type QSelectPropPlaceholder = Nullable<string>;
-
 export type QSelectPropSelectAllShown = Nullable<boolean>;
-
 export type QSelectPropSelectAllText = Nullable<string>;
-
 export type QSelectPropValueKey = Nullable<string>;
-
 export type QSelectPropCollapseTags = Nullable<boolean>;
-
 export type QSelectPropTeleportTo = Nullable<string | HTMLElement>;
 
 export interface QSelectProps {

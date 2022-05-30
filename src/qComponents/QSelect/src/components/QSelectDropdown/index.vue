@@ -64,7 +64,8 @@
 
 <script lang="ts">
 import { get, isPlainObject } from 'lodash-es';
-import { computed, defineComponent, inject, ref, watch } from 'vue';
+import { defineComponent, computed, inject, ref, watch } from 'vue';
+import type { CSSProperties } from 'vue';
 
 import { getConfig } from '@/qComponents/config';
 import { QCheckbox } from '@/qComponents/QCheckbox';
@@ -92,50 +93,15 @@ export default defineComponent({
   },
 
   props: {
-    shown: {
-      type: Boolean,
-      required: true
-    },
-
-    selectAllShown: {
-      type: Boolean,
-      required: true
-    },
-
-    selectAllText: {
-      type: String,
-      required: true
-    },
-
-    showEmptyContent: {
-      type: Boolean,
-      required: true
-    },
-
-    emptyText: {
-      type: String,
-      required: true
-    },
-
-    isCanLoadMoreShown: {
-      type: Boolean,
-      required: true
-    },
-
-    loadMoreText: {
-      type: String,
-      required: true
-    },
-
-    isNewOptionShown: {
-      type: Boolean,
-      required: true
-    },
-
-    width: {
-      type: Number,
-      default: null
-    }
+    shown: { type: Boolean, required: true },
+    selectAllShown: { type: Boolean, required: true },
+    selectAllText: { type: String, required: true },
+    showEmptyContent: { type: Boolean, required: true },
+    emptyText: { type: String, required: true },
+    isCanLoadMoreShown: { type: Boolean, required: true },
+    loadMoreText: { type: String, required: true },
+    isNewOptionShown: { type: Boolean, required: true },
+    width: { type: Number, default: null }
   },
 
   emits: ['select-all'],
@@ -148,9 +114,9 @@ export default defineComponent({
     const multiple = qSelect.multiple ?? ref(false);
     const zIndex = ref<number>(DEFAULT_Z_INDEX);
 
-    const styles = computed<Record<string, Nullable<string | number>>>(() => ({
+    const styles = computed<CSSProperties>(() => ({
       zIndex: zIndex.value,
-      width: props.width ? `${props.width}px` : null
+      width: props.width ? `${props.width}px` : undefined
     }));
 
     const isVisibleOptionExist = computed<boolean>(() =>

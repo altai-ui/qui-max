@@ -1,4 +1,4 @@
-import type { ComputedRef, Ref } from 'vue';
+import type { ComputedRef, Ref, CSSProperties } from 'vue';
 
 import type { QScrollbarInstance } from '@/qComponents/QScrollbar';
 import type { QSelectState } from '@/qComponents/QSelect';
@@ -19,14 +19,14 @@ export interface QSelectDropdownProps {
 
 export interface QSelectDropdownInstance {
   zIndex: Ref<number>;
-  styles: ComputedRef<Record<string, Nullable<string | number>>>;
+  styles: ComputedRef<CSSProperties>;
   isVisibleOptionExist: ComputedRef<boolean>;
   areAllSelected: ComputedRef<boolean>;
   isIndeterminate: ComputedRef<boolean>;
   navigateDropdown: (e: KeyboardEvent) => void;
   handleSelectAllClick: () => void;
   root: Ref<Nullable<HTMLDivElement>>;
-  multiple: Ref<Nullable<boolean>> | boolean;
+  multiple: Ref<Nullable<boolean>>;
   scrollbar: Ref<UnwrappedInstance<QScrollbarInstance>>;
   qSelectState: Partial<Nullable<QSelectState>>;
 }

@@ -388,7 +388,7 @@ export default defineComponent({
     });
 
     // transform to plain Date to handle it easily
-    const transformedToDate = computed<Nullable<Date | Date[]>>(() => {
+    const transformedToDate = computed<Nullable<Enumerable<Date>>>(() => {
       if (Array.isArray(props.modelValue)) {
         if (checkArrayValueIsValid(props.modelValue)) {
           return [

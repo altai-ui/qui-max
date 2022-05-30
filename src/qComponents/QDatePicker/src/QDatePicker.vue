@@ -5,7 +5,7 @@
     :class="{ 'q-date-picker_ranged': isRanged }"
   >
     <div
-      v-if="!isRanged"
+      v-if="!isRanged && typeof displayValue === 'string'"
       class="q-date-picker__wrapper"
       @mouseenter="handleMouseEnter"
       @mouseleave="state.showCloseIcon = false"
@@ -13,7 +13,7 @@
       <q-input
         ref="reference"
         class="q-date-picker__input"
-        :model-value="String(displayValue)"
+        :model-value="displayValue"
         :root-class="{ 'q-input_focused': state.pickerVisible }"
         :readonly="!editable"
         :disabled="isPickerDisabled"

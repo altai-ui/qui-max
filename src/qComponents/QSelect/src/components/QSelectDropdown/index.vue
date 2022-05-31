@@ -65,7 +65,7 @@
 <script lang="ts">
 import { get, isPlainObject } from 'lodash-es';
 import { defineComponent, computed, inject, ref, watch } from 'vue';
-import type { CSSProperties } from 'vue';
+import type { StyleValue } from 'vue';
 
 import { getConfig } from '@/qComponents/config';
 import { QCheckbox } from '@/qComponents/QCheckbox';
@@ -114,7 +114,7 @@ export default defineComponent({
     const multiple = qSelect.multiple ?? ref(false);
     const zIndex = ref<number>(DEFAULT_Z_INDEX);
 
-    const styles = computed<CSSProperties>(() => ({
+    const styles = computed<StyleValue>(() => ({
       zIndex: zIndex.value,
       width: props.width ? `${props.width}px` : undefined
     }));

@@ -1,4 +1,4 @@
-import type { ComputedRef, Ref, CSSProperties } from 'vue';
+import type { ComputedRef, Ref, StyleValue } from 'vue';
 
 import type { QScrollbarInstance } from '@/qComponents/QScrollbar';
 import type { QSelectState } from '@/qComponents/QSelect';
@@ -19,7 +19,7 @@ export interface QSelectDropdownProps {
 
 export interface QSelectDropdownInstance {
   zIndex: Ref<number>;
-  styles: ComputedRef<CSSProperties>;
+  styles: ComputedRef<StyleValue>;
   isVisibleOptionExist: ComputedRef<boolean>;
   areAllSelected: ComputedRef<boolean>;
   isIndeterminate: ComputedRef<boolean>;

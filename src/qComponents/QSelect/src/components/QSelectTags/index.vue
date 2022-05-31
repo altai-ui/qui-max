@@ -71,7 +71,7 @@ export default defineComponent({
   setup(props, ctx): QSelectTagsInstance {
     const input = ref<Nullable<HTMLInputElement>>(null);
     const qSelect = inject<Nullable<QSelectProvider>>('qSelect', null);
-    const { selected = ref([]), query = ref('') } = toRefs(
+    const { selected = ref<QOptionModel[]>([]), query = ref('') } = toRefs(
       qSelect?.state ?? {}
     );
 

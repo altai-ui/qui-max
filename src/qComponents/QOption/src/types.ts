@@ -1,8 +1,30 @@
 import type { Ref, ComputedRef } from 'vue';
 
-import type { Nullable } from '#/helpers';
+import type { Nullable, Nillable, ClassValue } from '#/helpers';
 
-export type QOptionPropValue = string | number | Record<string, unknown>;
+export type QOptionPropValue = Nillable<
+  string | number | Record<string, unknown>
+>;
+export type QOptionPropLabel = Nillable<string | number>;
+export type QOptionPropCreated = Nullable<boolean>;
+export type QOptionPropDisabled = Nullable<boolean>;
+
+export interface QOptionProps {
+  value: QOptionPropValue;
+  label: QOptionPropLabel;
+  created: QOptionPropCreated;
+  disabled: QOptionPropDisabled;
+}
+
+export interface QOptionModel extends QOptionProps {
+  preparedLabel: string;
+  isVisible: Nullable<boolean>;
+  isSelected: boolean;
+  isLimitReached: boolean;
+  isDisabled: boolean;
+  key: string | number;
+  root: Nullable<HTMLElement>;
+}
 
 export interface QOptionInstance {
   multiple: boolean;
@@ -14,21 +36,5 @@ export interface QOptionInstance {
   handleMouseEnter: () => void;
   handleOptionClick: () => void;
   root: Ref<Nullable<HTMLElement>>;
-}
-
-export interface QOptionProps {
-  value: Nullable<QOptionPropValue>;
-  label: Nullable<string | number>;
-  created: Nullable<boolean>;
-  disabled: Nullable<boolean>;
-}
-
-export interface QOptionModel extends QOptionProps {
-  preparedLabel: string;
-  isVisible: Nullable<boolean>;
-  isSelected: boolean;
-  isLimitReached: boolean;
-  isDisabled: boolean;
-  key: string | number;
-  root: Nullable<HTMLElement>;
+  qOptionClasses: ComputedRef<ClassValue>;
 }

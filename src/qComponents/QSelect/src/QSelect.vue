@@ -63,7 +63,7 @@
           ref="dropdown"
           :shown="state.isDropdownShown"
           :width="state.inputWidth"
-          :select-all-shown="selectAllShown"
+          :select-all-shown="Boolean(selectAllShown)"
           :select-all-text="selectAllText || t('QSelect.selectAll')"
           :show-empty-content="showEmptyContent"
           :empty-text="emptyText"

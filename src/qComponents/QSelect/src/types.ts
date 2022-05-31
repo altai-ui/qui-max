@@ -6,8 +6,8 @@ import type { QOptionModel, QOptionPropValue } from '@/qComponents/QOption';
 
 import type { Nullable, UnwrappedInstance } from '#/helpers';
 
-import type { QSelectDropdownInstance } from './components/QSelectDropdown/types';
-import type { QSelectTagsInstance } from './components/QSelectTags/types';
+import type { QSelectDropdownInstance } from './components/QSelectDropdown';
+import type { QSelectTagsInstance } from './components/QSelectTags';
 
 export type QSelectPropModelValue = Nullable<
   string | number | QOptionPropValue | (string | number | QOptionPropValue)[]
@@ -71,14 +71,14 @@ export interface QSelectInstance {
   state: QSelectState;
   preparedPlaceholder: ComputedRef<Nullable<string>>;
   visibleOptionsCount: ComputedRef<number>;
-  isCanLoadMoreShown: ComputedRef<Nullable<boolean>>;
+  isCanLoadMoreShown: ComputedRef<boolean>;
   showEmptyContent: ComputedRef<boolean>;
   isReadonly: ComputedRef<Nullable<boolean>>;
   isDisabled: ComputedRef<boolean>;
   isClearBtnShown: ComputedRef<Nullable<boolean>>;
   iconClass: ComputedRef<string>;
   emptyText: ComputedRef<string>;
-  isNewOptionShown: ComputedRef<Nullable<boolean>>;
+  isNewOptionShown: ComputedRef<boolean>;
   popperInit: () => void;
   showPopper: () => void;
   hidePopper: () => void;

@@ -40,7 +40,7 @@ Defines value for active `QSwitch` state
 Defines value for inactive `QSwitch` state
 
 ```vue
-<q-switch active-value="off" />
+<q-switch inactive-value="off" />
 ```
 
 ### disabled

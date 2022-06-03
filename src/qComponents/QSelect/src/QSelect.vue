@@ -578,6 +578,16 @@ export default defineComponent({
     );
 
     watch(
+      () => state.options,
+      () => {
+        nextTick(() => {
+          setSelected();
+        });
+      },
+      { deep: true }
+    );
+
+    watch(
       () => state.isDropdownShown,
       val => {
         const inputInsideTagsEl = tags?.value?.input;

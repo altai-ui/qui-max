@@ -40,6 +40,12 @@ Whether uploading multiple files is allowed.
 
 Defines the file list position.
 
+```vue
+<q-upload direction="right" />
+```
+
+<iframe style="width: 100%;" height="670px" scrolling="no" frameborder="no" src="/QUpload/direction.html"></iframe>
+
 ### limit
 
 - Type: `Number`
@@ -53,6 +59,12 @@ Maximum number of uploads.
 - Default: `false`
 
 Whether QUpload is disabled.
+
+```vue
+<q-upload disabled />
+```
+
+<iframe style="width: 100%;" height="290px" scrolling="no" frameborder="no" src="/QUpload/disabled.html"></iframe>
 
 ### clearable
 
@@ -75,12 +87,24 @@ If `QUpload` is wrapped in `QFormItem`, prop `validateEvent` defines if bound ev
 
 Defines the 'upload file' text.
 
+```vue
+<q-upload text-upload-file="Upload file" />
+```
+
+<iframe style="width: 100%;" height="350px" scrolling="no" frameborder="no" src="/QUpload/textupload.html"></iframe>
+
 ### textReplaceFile
 
 - Type: `String`
 - Default: `null`
 
 Defines the 'replace file' text.
+
+```vue
+<q-upload text-replace-file="Replace file" />
+```
+
+<iframe style="width: 100%;" height="350px" scrolling="no" frameborder="no" src="/QUpload/textreplace.html"></iframe>
 
 ### textLoadingFile
 
@@ -89,12 +113,24 @@ Defines the 'replace file' text.
 
 Defines the 'loading file' text.
 
+```vue
+<q-upload text-loading-file="Loading" />
+```
+
+<iframe style="width: 100%;" height="350px" scrolling="no" frameborder="no" src="/QUpload/textloading.html"></iframe>
+
 ### textUploadedFiles
 
 - Type: `String`
 - Default: `null`
 
-Defines the 'uploaded file' text.
+Defines the 'uploaded files' text.
+
+```vue
+<q-upload text-uploaded-files="Uploaded:" />
+```
+
+<iframe style="width: 100%;" height="350px" scrolling="no" frameborder="no" src="/QUpload/textuploadedfiles.html"></iframe>
 
 ## Events
 

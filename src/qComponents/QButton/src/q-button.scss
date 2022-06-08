@@ -28,6 +28,8 @@
   vertical-align: middle;
   cursor: pointer;
   background: var(--button-main-bg);
+  background-position-x: -1px;
+  background-size: calc(100% + 2px);
   border: 1px solid transparent;
   border-radius: var(--border-radius-base);
   outline: none;

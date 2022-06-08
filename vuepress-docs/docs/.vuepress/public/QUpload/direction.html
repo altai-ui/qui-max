@@ -1,0 +1,76 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- import CSS -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/@qvant/qui-max/dist/style.css"
+    />
+  </head>
+
+  <body>
+    <div id="app">
+      <div>
+        <q-button @click="handleDirectionChange">Change direction</q-button>
+      </div>
+      Direction: {{ direction }}
+      <div class="block">
+        <q-upload
+          :value="formModel.files"
+          :direction="direction"
+          :clearable="false"
+          multiple
+        ></q-upload>
+      </div>
+    </div>
+  </body>
+  <!-- import Vue before Qui -->
+  <script src="https://unpkg.com/vue@latest"></script>
+  <!-- import JavaScript -->
+  <script src="https://unpkg.com/@qvant/qui-max@latest"></script>
+  <script>
+    const app = Vue.createApp({
+      setup() {
+        const formModel = Vue.reactive({
+          files: [
+            { id: 0, name: 'testFile_1.txt' },
+            { id: 1, name: 'testFile_2.txt' }
+          ]
+        });
+
+        const direction = Vue.ref('right');
+
+        const handleDirectionChange = () => {
+          if (direction.value === 'right') direction.value = 'bottom';
+          else direction.value = 'right';
+        };
+
+        return {
+          formModel,
+          direction,
+          handleDirectionChange
+        };
+      }
+    });
+
+    app.use(QuiMax.default);
+    app.mount('#app');
+  </script>
+  <style>
+    #app {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+    }
+
+    .block {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 10px;
+    }
+  </style>
+</html>

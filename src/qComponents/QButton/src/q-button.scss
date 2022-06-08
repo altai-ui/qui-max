@@ -15,10 +15,11 @@
   --color-rgb-gray: 29 29 27;
   --button-main-bg: transparent;
   --icon-size: 24px;
+  --border-width: 1px;
 
   display: inline-block;
   flex-shrink: 0;
-  padding: 11.5px 40px;
+  padding: calc(12.5px - var(--border-width)) 40px;
   font-size: 12px;
   font-weight: 700;
   line-height: 15px;
@@ -30,7 +31,7 @@
   background: var(--button-main-bg);
   background-position-x: -1px;
   background-size: calc(100% + 2px);
-  border: 1px solid transparent;
+  border: var(--border-width) solid transparent;
   border-radius: var(--border-radius-base);
   outline: none;
   box-shadow: var(--box-shadow-default);
@@ -59,6 +60,7 @@
       --button-hover-active-bg: var(--color-primary);
       --button-main-bg: var(--gradient-primary);
       --button-hover-color: var(--color-tertiary-white);
+      --border-width: 0;
 
       color: var(--color-tertiary-white);
 
@@ -129,7 +131,7 @@
   &_type_icon {
     width: 40px;
     height: 40px;
-    padding: 7px;
+    padding: calc(8px - var(--border-width)) 7px;
     font-size: var(--icon-size);
   }
 
@@ -168,14 +170,14 @@
   &_size_small {
     --icon-size: 16px;
 
-    padding: 7px 20px;
+    padding: calc(8px - var(--border-width)) 20px;
     font-size: 10px;
     line-height: 12px;
 
     &.q-button_type_icon {
       width: 24px;
       height: 24px;
-      padding: 3px;
+      padding: calc(4px - var(--border-width)) 3px;
     }
 
     &.q-button_theme_link {

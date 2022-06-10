@@ -27,6 +27,7 @@
       :value="value"
       :is-disabled="isDisabled"
       :is-clearable="clearable"
+      :text-uploaded-files="textUploadedFiles"
       @clear-all="handleClearAll"
       @clear="handleClear"
       @abort="handleAbort"
@@ -38,7 +39,6 @@
         :is-loading="isLoading"
         :is-disabled="isDisabled"
         :is-clearable="clearable"
-        :text-uploaded-files="textUploadedFiles"
         @clear="handleClear"
         @abort="handleAbort"
       />

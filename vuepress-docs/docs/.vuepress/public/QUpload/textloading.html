@@ -1,0 +1,75 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- import CSS -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/@qvant/qui-max/dist/style.css"
+    />
+  </head>
+
+  <body>
+    <div id="app">
+      <div class="input">
+        <q-input
+          v-model="textLoading"
+          placeholder="Enter new 'loading file' text here"
+        ></q-input>
+      </div>
+      <div class="block">
+        <q-upload
+          :value="formModel.file"
+          :text-loading-file="textLoading"
+        ></q-upload>
+      </div>
+    </div>
+  </body>
+  <!-- import Vue before Qui -->
+  <script src="https://unpkg.com/vue@latest"></script>
+  <!-- import JavaScript -->
+  <script src="https://unpkg.com/@qvant/qui-max@latest"></script>
+  <script>
+    const app = Vue.createApp({
+      setup() {
+        const formModel = Vue.reactive({
+          file: {
+            name: 'TestFile.txt',
+            loading: 10
+          }
+        });
+
+        const textLoading = Vue.ref(null);
+
+        return {
+          formModel,
+          textLoading
+        };
+      }
+    });
+
+    app.use(QuiMax.default);
+    app.mount('#app');
+  </script>
+  <style>
+    #app {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+    }
+
+    .block {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 10px;
+    }
+
+    .input {
+      display: block;
+      width: 50%;
+    }
+  </style>
+</html>

@@ -24,9 +24,7 @@
           :is-loading="isLoading"
           :loading-row-count="loadingRowCount"
           :rows="rows"
-          fixed-layout
           grid
-          @row-click="handleRowClick"
         ></q-table>
       </div>
     </div>
@@ -39,10 +37,6 @@
   <script>
     const app = Vue.createApp({
       setup() {
-        const handleRowClick = (row, rowIndex) => {
-          console.log(rowIndex, row);
-        };
-
         const isLoading = Vue.ref(false);
 
         const handleButtonClick = () => {
@@ -59,8 +53,7 @@
           total,
           loadingRowCount,
           isLoading,
-          handleButtonClick,
-          handleRowClick
+          handleButtonClick
         };
       }
     });

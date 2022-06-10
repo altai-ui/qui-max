@@ -59,15 +59,14 @@ setup() {
       col1: 12,
       col2: 332,
       col3: 11,
-      col4: 33,
-    }
+    },
+    ...
   ];
 
   const total = {
-    col1: 'Total 100',
-    col2: 'Total 400',
-    col3: 'Total 300',
-    col4: 'Total 300',
+    col1: 'Total 370',
+    col2: 'Total 351',
+    col3: 'Total 803'
   };
 }
 ```

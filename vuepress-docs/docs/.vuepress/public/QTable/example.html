@@ -13,17 +13,16 @@
       <div class="block">
         <q-table
           v-model:groups-of-columns="groupsOfColumns"
-          :loading-row-count="loadingRowCount"
-          :rows="rows"
+          v-model:sort-by="sortBy"
+          v-model:rows="rows"
           :total="total"
           grid
-          @row-click="handleRowClick"
         >
-          <template #customHeader="{ value }"> {{ value }} custom </template>
+          <template #custom-header="{ value }"> {{ value }} custom </template>
 
-          <template #customTotal="{ value }"> {{ value }} custom </template>
+          <template #custom-total="{ value }"> {{ value }} custom </template>
 
-          <template #customRow="{ value }"> {{ value }} custom </template>
+          <template #custom-row="{ value }"> {{ value }} custom </template>
         </q-table>
       </div>
     </div>
@@ -36,17 +35,11 @@
   <script>
     const app = Vue.createApp({
       setup() {
-        const handleRowClick = (row, rowIndex) => {
-          console.log(rowIndex, row);
-        };
-
         return {
           groupsOfColumns,
-          sortBy,
           rows,
           total,
-          loadingRowCount,
-          handleRowClick
+          sortBy
         };
       }
     });
@@ -58,6 +51,10 @@
     .block {
       width: 100%;
       padding: 10px;
+    }
+
+    .q-table-t-total {
+      text-align: left;
     }
   </style>
 </html>

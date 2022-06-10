@@ -10,21 +10,24 @@
 
   <body>
     <div id="app">
+      <div class="button-container">
+        <q-button
+          theme="secondary"
+          :disabled="isLoading"
+          @click="handleButtonClick"
+          >is loading</q-button
+        >
+      </div>
       <div class="block">
         <q-table
           v-model:groups-of-columns="groupsOfColumns"
+          :is-loading="isLoading"
           :loading-row-count="loadingRowCount"
           :rows="rows"
-          :total="total"
+          fixed-layout
           grid
           @row-click="handleRowClick"
-        >
-          <template #customHeader="{ value }"> {{ value }} custom </template>
-
-          <template #customTotal="{ value }"> {{ value }} custom </template>
-
-          <template #customRow="{ value }"> {{ value }} custom </template>
-        </q-table>
+        ></q-table>
       </div>
     </div>
   </body>
@@ -40,12 +43,23 @@
           console.log(rowIndex, row);
         };
 
+        const isLoading = Vue.ref(false);
+
+        const handleButtonClick = () => {
+          isLoading.value = true;
+          setTimeout(() => {
+            isLoading.value = false;
+          }, 2000);
+        };
+
         return {
           groupsOfColumns,
           sortBy,
           rows,
           total,
           loadingRowCount,
+          isLoading,
+          handleButtonClick,
           handleRowClick
         };
       }
@@ -55,6 +69,10 @@
     app.mount('#app');
   </script>
   <style>
+    .button-container {
+      padding: 10px 0 0 40px;
+    }
+
     .block {
       width: 100%;
       padding: 10px;

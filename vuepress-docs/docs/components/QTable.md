@@ -43,41 +43,36 @@ setup() {
         {
           key: 'col3',
           value: 'Column 3',
-          sortable: true
-        },
-        {
-          key: 'col4',
-          value: 'Column 4',
           sortable: true,
           slots: {
             header: 'customHeader',
             total: 'customTotal',
             row: 'customRow'
           }
-        },
-        {
-          key: 'col5',
-          value: 'Column with a very long title with ellipsis in the second line'
-        },
-        {
-          key: 'col6',
-          value: 'Column 6'
-        },
-        {
-          key: 'col7',
-          value: 'Column 6'
-        },
-        {
-          key: 'col8',
-          value: 'Column 6'
         }
       ]
     }
   ];
+
+  const rows = [
+    {
+      col1: 12,
+      col2: 332,
+      col3: 11,
+      col4: 33,
+    }
+  ];
+
+  const total = {
+    col1: 'Total 100',
+    col2: 'Total 400',
+    col3: 'Total 300',
+    col4: 'Total 300',
+  };
 }
 ```
 
-<iframe style="width: 100%; height: 330px" scrolling="no" frameborder="no" src="/QTable/example.html"></iframe>
+<iframe style="width: 100%; height: 400px" scrolling="no" frameborder="no" src="/QTable/example.html"></iframe>
 
 ## Props
 
@@ -136,6 +131,8 @@ Used to set sort the table. `Object` **MUST** contain:
 
 Whether to show skeleton.
 
+<iframe style="width: 100%; height: 400px" scrolling="no" frameborder="no" src="/QTable/loading.html"></iframe>
+
 ### loadingRowCount
 
 - Type: `Number`
@@ -143,12 +140,21 @@ Whether to show skeleton.
 
 Count of rows, when table is loading.
 
+### defaultColWidth
+
+- Type: `String`
+- Default: `null`
+
+Defines the default width of the columns, required `fixedLayout: true`
+
 ### fixedLayout
 
 - Type: `Boolean`
 - Default: `true`
 
-Used to prevent column width shrinking as in native table. (Change [`defaultColWidth`](#defaultColWidth) or pass the `width` to [each column](#groupsofcolumns) object for managing the width).
+Used to prevent column width shrinking as in native table. (Change [`defaultColWidth`](#defaultcolwidth) or pass the `width` to [each column](#groupsofcolumns) object for managing the width).
+
+<iframe style="width: 100%; height: 350px" scrolling="no" frameborder="no" src="/QTable/layout.html"></iframe>
 
 ### grid
 
@@ -156,13 +162,6 @@ Used to prevent column width shrinking as in native table. (Change [`defaultColW
 - Default: `false`
 
 whether QTable has vertical border
-
-### defaultColWidth
-
-- Type: `String`
-- Default: `null`
-
-Defines the default width of the columns, required `fixedLayout: true`
 
 ### total
 
@@ -186,9 +185,10 @@ Checkboxes column settings. All `Object` properties are optional and all types a
 
 Using in template
 
-```vue {4}
+```vue {3-4}
 <q-table
   v-model:groups-of-columns="groupsOfColumns"
+  v-model:checked-rows="checkedRows"
   :rows="rows"
   :selection-column="selectionColumn"
 />
@@ -198,6 +198,7 @@ Using in component instance
 
 ```js {2, 6}
 setup() {
+  const checkedRows = ref(null);
   const selectionColumn = {
     enabled: true,
     selectAllShown: true,
@@ -208,6 +209,7 @@ setup() {
   return {
     groupsOfColumns,
     rows,
+    checkedRows,
     selectionColumn
   }
 }

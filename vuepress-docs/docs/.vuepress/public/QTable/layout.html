@@ -10,21 +10,17 @@
 
   <body>
     <div id="app">
+      <div class="checkbox-container">
+        Fixed layout: <q-checkbox v-model="isFixedLayout"></q-checkbox>
+      </div>
       <div class="block">
         <q-table
+          v-if="isComponentRender"
           v-model:groups-of-columns="groupsOfColumns"
-          :loading-row-count="loadingRowCount"
+          default-col-width="150px"
           :rows="rows"
-          :total="total"
-          grid
-          @row-click="handleRowClick"
-        >
-          <template #customHeader="{ value }"> {{ value }} custom </template>
-
-          <template #customTotal="{ value }"> {{ value }} custom </template>
-
-          <template #customRow="{ value }"> {{ value }} custom </template>
-        </q-table>
+          :fixed-layout="isFixedLayout"
+        ></q-table>
       </div>
     </div>
   </body>
@@ -36,17 +32,26 @@
   <script>
     const app = Vue.createApp({
       setup() {
-        const handleRowClick = (row, rowIndex) => {
-          console.log(rowIndex, row);
+        const isFixedLayout = Vue.ref(false);
+
+        const isComponentRender = Vue.ref(true);
+
+        const forceRerender = async () => {
+          isComponentRender.value = false;
+          await Vue.nextTick();
+          isComponentRender.value = true;
         };
+
+        Vue.watch(isFixedLayout, value => {
+          if (!value) forceRerender();
+        });
 
         return {
           groupsOfColumns,
           sortBy,
           rows,
-          total,
-          loadingRowCount,
-          handleRowClick
+          isFixedLayout,
+          isComponentRender
         };
       }
     });
@@ -55,6 +60,10 @@
     app.mount('#app');
   </script>
   <style>
+    .checkbox-container {
+      padding: 10px 0 0 40px;
+    }
+
     .block {
       width: 100%;
       padding: 10px;

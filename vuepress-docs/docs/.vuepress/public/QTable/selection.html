@@ -13,6 +13,7 @@
       <div class="block">
         <q-table
           v-model:groups-of-columns="groupsOfColumns"
+          v-model:checked-rows="checkedRows"
           :rows="rows"
           :selection-column="selectionColumn"
         ></q-table>
@@ -34,7 +35,10 @@
           sticky: false
         };
 
+        const checkedRows = Vue.ref(null);
+
         return {
+          checkedRows,
           groupsOfColumns,
           rows,
           selectionColumn

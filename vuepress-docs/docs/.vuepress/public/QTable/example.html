@@ -35,11 +35,20 @@
   <script>
     const app = Vue.createApp({
       setup() {
+        const groups = Vue.ref(groupsOfColumnsAllTypes);
+
+        const sort = Vue.ref(sortBy);
+
+        const handleSortByUpdate = val => {
+          console.log(val);
+        };
+
         return {
-          groupsOfColumns,
+          groupsOfColumns: groups,
+          sortBy: sort,
           rows,
           total,
-          sortBy
+          handleSortByUpdate
         };
       }
     });
@@ -48,6 +57,10 @@
     app.mount('#app');
   </script>
   <style>
+    #app {
+      width: 100vw;
+    }
+
     .block {
       width: 100%;
       padding: 10px;

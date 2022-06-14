@@ -15,7 +15,8 @@ Using in template
   <template #customHeader="{ value }">
     {{ value }} custom
   </template>
-  <template #customTotal="{ value }">   {{ value }} custom
+  <template #customTotal="{ value }">   
+    {{ value }} custom
   </template>
   <template #customRow="{ value }">   
     {{ value }} custom
@@ -30,6 +31,8 @@ setup() {
   const groupsOfColumns = [
     {
       key: 'one',
+      color: '#de4b7a',
+      draggable: true,
       columns: [
         {
           key: 'col1',
@@ -38,18 +41,33 @@ setup() {
         },
         {
           key: 'col2',
-          value: 'Column 2'
+          value: 'Sticky Column'
         },
         {
           key: 'col3',
           value: 'Column 3',
-          sortable: true,
           slots: {
             header: 'customHeader',
             total: 'customTotal',
             row: 'customRow'
           }
         }
+      ]
+    },
+    {
+      key: 'two',
+      draggable: true,
+      color: '#74aff8',
+      columns: [
+        {
+          key: 'col4',
+          value: 'Column 4',
+          sortable: true
+        },
+        {
+          key: 'col5',
+          value: 'Column 5'
+        },
       ]
     }
   ];

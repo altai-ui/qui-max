@@ -1,6 +1,8 @@
 import type { Ref, ComputedRef } from 'vue';
 
-import type { Nullable } from '#/helpers';
+import type { Nullable, ClassValue } from '#/helpers';
+
+export type QCheckboxItemPropLabelSize = Nullable<'regular' | 'small'>;
 
 export interface QCheckboxProps {
   modelValue: Nullable<boolean>;
@@ -9,6 +11,7 @@ export interface QCheckboxProps {
   disabled: Nullable<boolean>;
   rootTag: Nullable<string>;
   validateEvent: Nullable<boolean>;
+  labelSize: QCheckboxItemPropLabelSize;
 }
 
 export interface QCheckboxInstance {
@@ -19,4 +22,5 @@ export interface QCheckboxInstance {
   nativeClick: () => void;
   handleCheckboxClick: () => void;
   checkboxInput: Ref<Nullable<HTMLInputElement>>;
+  labelClass: ComputedRef<ClassValue>;
 }

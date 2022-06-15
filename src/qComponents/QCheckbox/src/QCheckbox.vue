@@ -43,6 +43,7 @@
     <span
       v-if="$slots.default || label"
       class="q-checkbox__label"
+      :class="labelClass"
     >
       <slot>{{ label }}</slot>
     </span>
@@ -50,15 +51,16 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, inject, watch, ref } from 'vue';
+import { computed, defineComponent, inject, watch, ref, PropType } from 'vue';
 
+import { validateArray } from '@/qComponents/helpers';
 import type { QCheckboxGroupProvider } from '@/qComponents/QCheckboxGroup';
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
 
-import type { Nullable } from '#/helpers';
+import type { Nullable, ClassValue } from '#/helpers';
 
-import type { QCheckboxProps, QCheckboxInstance } from './types';
+import type { QCheckboxProps, QCheckboxInstance, QCheckboxItemPropLabelSize } from './types';
 
 export default defineComponent({
   name: 'QCheckbox',
@@ -87,7 +89,15 @@ export default defineComponent({
     /**
      * wheteher is validate parent q-form if present
      */
-    validateEvent: { type: Boolean, default: false }
+    validateEvent: { type: Boolean, default: false },
+    /**
+     * label size
+     */
+    labelSize: {
+      type: String as PropType<QCheckboxItemPropLabelSize>,
+      default: 'regular',
+      validator: validateArray<QCheckboxItemPropLabelSize>(['regular', 'small'])
+    }
   },
 
   emits: [
@@ -140,6 +150,10 @@ export default defineComponent({
           isLimitDisabled.value
         : props.disabled || (qForm?.disabled.value ?? false)
     );
+    
+    const labelClass = computed<ClassValue>(
+      () => `q-checkbox__label_size_${props.labelSize ?? 'regular'}`
+    );
 
     const handleCheckboxClick = (): void => {
       if (isDisabled.value) return;
@@ -186,7 +200,8 @@ export default defineComponent({
       isDisabled,
       nativeClick,
       checkboxInput,
-      handleCheckboxClick
+      handleCheckboxClick,
+      labelClass,
     };
   }
 });

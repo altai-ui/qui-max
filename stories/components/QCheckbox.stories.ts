@@ -8,7 +8,12 @@ const storyMetadata: Meta = {
   title: 'Components/QCheckbox',
   component: QCheckbox,
   argTypes: {
-    modelValue: { control: { type: 'none' } }
+    modelValue: { control: { type: 'none' } },
+    labelSize: {
+      options: ['regular', 'small'],
+      control: { type: 'select' },
+      defaultValue: 'regular'
+    }
   }
 };
 
@@ -30,6 +35,7 @@ const Template: Story<QCheckboxProps> = args =>
         :indeterminate="args.indeterminate"
         :disabled="args.disabled"
         :rootTag="args.rootTag"
+        :labelSize="args.labelSize"
       />
     `
   });

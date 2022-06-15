@@ -43,6 +43,16 @@
       color: var(--checkbox-color-disabled);
       cursor: not-allowed;
     }
+    
+    &_size {
+      &_regular {
+          font-size: 14px;
+      }
+      
+      &_small {
+          font-size: 10px;
+      }
+    }
   }
 
   &__input {

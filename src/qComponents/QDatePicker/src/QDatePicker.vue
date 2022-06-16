@@ -1,11 +1,51 @@
 <template>
+  <pre>rangeDisplayValue: {{ rangeDisplayValue }}</pre>
   <div
     ref="root"
     class="q-date-picker"
     :class="{ 'q-date-picker_ranged': isRanged }"
   >
     <div
-      v-if="!isRanged && typeof displayValue === 'string'"
+      v-if="isRanged && Array.isArray(displayValue)"
+      ref="rangedReference"
+      :class="rangeClasses"
+      tabindex="0"
+      @click="handleRangeClick"
+      @mouseenter="handleMouseEnter"
+      @mouseleave="state.showCloseIcon = false"
+      @keyup="handleKeyUp"
+      @keyup.tab="handleFocus"
+    >
+      <input
+        autocomplete="off"
+        class="q-date-picker__input"
+        :placeholder="startPlaceholder || t('QDatePicker.startPlaceholder')"
+        :value="displayValue[0]"
+        :disabled="isPickerDisabled"
+        readonly
+        tabindex="-1"
+      />
+      <slot name="range-separator">
+        <span class="q-date-picker__range-separator">{{ rangeSeparator }}</span>
+      </slot>
+      <input
+        autocomplete="off"
+        :placeholder="endPlaceholder || t('QDatePicker.endPlaceholder')"
+        :value="displayValue[1]"
+        :disabled="isPickerDisabled"
+        class="q-date-picker__input"
+        readonly
+        tabindex="-1"
+      />
+      <span
+        :class="iconClass"
+        class="q-date-picker__suffix"
+        @click="handleIconClick"
+      />
+    </div>
+
+    <div
+      v-else
       class="q-date-picker__wrapper"
       @mouseenter="handleMouseEnter"
       @mouseleave="state.showCloseIcon = false"
@@ -35,44 +75,7 @@
         </template>
       </q-input>
     </div>
-    <div
-      v-else
-      ref="rangedReference"
-      :class="rangeClasses"
-      tabindex="0"
-      @click="handleRangeClick"
-      @mouseenter="handleMouseEnter"
-      @mouseleave="state.showCloseIcon = false"
-      @keyup="handleKeyUp"
-      @keyup.tab="handleFocus"
-    >
-      <input
-        autocomplete="off"
-        class="q-date-picker__input"
-        :placeholder="startPlaceholder || t('QDatePicker.startPlaceholder')"
-        :value="displayValue && displayValue[0]"
-        :disabled="isPickerDisabled"
-        readonly
-        tabindex="-1"
-      />
-      <slot name="range-separator">
-        <span class="q-date-picker__range-separator">{{ rangeSeparator }}</span>
-      </slot>
-      <input
-        autocomplete="off"
-        :placeholder="endPlaceholder || t('QDatePicker.endPlaceholder')"
-        :value="displayValue && displayValue[1]"
-        :disabled="isPickerDisabled"
-        class="q-date-picker__input"
-        readonly
-        tabindex="-1"
-      />
-      <span
-        :class="iconClass"
-        class="q-date-picker__suffix"
-        @click="handleIconClick"
-      />
-    </div>
+
     <teleport
       :to="teleportTo || 'body'"
       :disabled="!teleportTo"
@@ -407,9 +410,7 @@ export default defineComponent({
       return null;
     });
 
-    const isPickerDisabled = computed<boolean>(() =>
-      Boolean(props.disabled || qForm?.disabled.value)
-    );
+    const isPickerDisabled = computed<boolean>(() => Boolean(props.disabled || qForm?.disabled.value));
 
     const rangeClasses = computed<ClassValue>(() => ({
       'q-date-picker__range-wrapper': true,
@@ -417,9 +418,7 @@ export default defineComponent({
       'q-date-picker__range-wrapper_focused': state.pickerVisible
     }));
 
-    const isRanged = computed<boolean>(
-      () => props.type?.includes('range') ?? false
-    );
+    const isRanged = computed<boolean>(() => props.type?.includes('range') ?? false);
 
     const panelComponent = computed<QDatePickerPanelComponent>(() => {
       switch (props.type) {
@@ -451,39 +450,59 @@ export default defineComponent({
       return state.showCloseIcon ? 'q-icon-close' : 'q-icon-calendar';
     });
 
-    const displayValue = computed<Nullable<Enumerable<string>>>(() => {
-      let formattedValue: string | number | Date | (string | number | Date)[] =
-        '';
+    const rangeDisplayValue = computed<string[]>(() => {
+      if (!isRanged.value || !Array.isArray(transformedToDate.value)) return [];
 
-      if (Array.isArray(transformedToDate.value)) {
-        formattedValue = transformedToDate.value.map(dateFromArray =>
+      return transformedToDate.value.map(dateFromArray =>
           formatToLocalReadableString(
-            dateFromArray,
-            props.format,
-            getConfig('locale')
+              dateFromArray,
+              props.format,
+              getConfig('locale')
           )
-        );
-      } else if (
-        isDate(transformedToDate.value) &&
-        isValid(transformedToDate.value) &&
-        transformedToDate.value
-      ) {
-        formattedValue = formatToLocalReadableString(
-          transformedToDate.value,
-          props.format,
-          getConfig('locale')
+      );
+    });
+
+    const displayValue = computed<Nullable<Enumerable<string>>>(() => {
+      let formattedValue: Enumerable<string | number | Date> = '';
+
+      console.log('isRanged.value', isRanged.value);
+      console.log('Array.isArray(transformedToDate.value)', Array.isArray(transformedToDate.value));
+      if (isRanged.value && Array.isArray(transformedToDate.value)) {
+        return transformedToDate.value.map(dateFromArray =>
+            formatToLocalReadableString(
+                dateFromArray,
+                props.format,
+                getConfig('locale')
+            )
         );
       }
 
+      if (
+          isDate(transformedToDate.value) &&
+          isValid(transformedToDate.value) &&
+          transformedToDate.value instanceof Date
+      ) {
+        formattedValue = formatToLocalReadableString(
+            transformedToDate.value,
+            props.format,
+            getConfig('locale')
+        );
+
+        console.log('formattedValue', formattedValue)
+      }
+
+      console.log('state.userInput', state.userInput);
       if (Array.isArray(state.userInput)) {
         return [
           state.userInput?.[0] ?? formattedValue?.[0] ?? '',
           state.userInput?.[1] ?? formattedValue?.[1] ?? ''
         ];
       }
+
       if (state.userInput !== null) {
         return state.userInput;
       }
+
       if (formattedValue) {
         return formattedValue;
       }
@@ -811,6 +830,7 @@ export default defineComponent({
       handleInputDateChange,
       handleKeyUp,
       isValueEmpty,
+      rangeDisplayValue,
       displayValue,
       iconClass,
       destroyPopper,

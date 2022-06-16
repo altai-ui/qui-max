@@ -123,6 +123,7 @@ export interface QDatePickerInstance {
   transformedToDate: ComputedRef<Nullable<Date | Date[]>>;
   rangeClasses: ComputedRef<ClassValue>;
   panelComponent: ComputedRef<QDatePickerPanelComponent>;
+  rangeDisplayValue: ComputedRef<Nullable<string[]>>;
   displayValue: ComputedRef<Nullable<Enumerable<string>>>;
   iconClass: ComputedRef<ClassValue>;
   handleInputDateChange: () => void;

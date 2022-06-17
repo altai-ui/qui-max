@@ -17,6 +17,6 @@ export interface QCheckboxInstance {
   isLimitDisabled: ComputedRef<boolean>;
   isDisabled: ComputedRef<boolean>;
   nativeClick: () => void;
-  handleCheckboxClick: () => void;
+  handleCheckboxClick: (event: Event) => void;
   checkboxInput: Ref<Nullable<HTMLInputElement>>;
 }

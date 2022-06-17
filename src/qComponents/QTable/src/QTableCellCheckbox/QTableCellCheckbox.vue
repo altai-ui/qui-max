@@ -89,7 +89,8 @@ export default defineComponent({
         modelValue: props.checked,
         indeterminate: props.indeterminate,
         validateEvent: false,
-        onChange: handleCheckboxChange
+        onChange: handleCheckboxChange,
+        onClick: (event: Event) => event.stopPropagation()
       });
     });
 
@@ -99,8 +100,7 @@ export default defineComponent({
           h(
             'div',
             {
-              class: `${props.baseClass}__content ${props.baseClass}__content_checkbox`,
-              onClick: (event: Event) => event.stopPropagation()
+              class: `${props.baseClass}__content ${props.baseClass}__content_checkbox`
             },
             [content.value]
           )

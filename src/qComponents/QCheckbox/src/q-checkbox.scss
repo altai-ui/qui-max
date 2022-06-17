@@ -6,18 +6,11 @@
   --checkbox-background-color-focus: var(--color-tertiary-gray-ultra-light);
   --checkbox-background-color-checked: var(--color-tertiary-gray-ultra-light);
   --checkbox-background-color-disabled: var(--color-tertiary-gray);
-  --checkbox-mark-color-base: var(--color-primary-blue);
+  --checkbox-mark-color-base: var(--color-accent-secondary-main);
   --checkbox-mark-color-disabled: rgb(var(--color-rgb-gray) / 64%);
-  --checkbox-box-shadow-base: -1px -1px 3px rgb(var(--color-rgb-white) / 25%),
-    1px 1px 3px rgb(var(--color-rgb-blue) / 40%),
-    inset -1px -1px 1px rgb(var(--color-rgb-white) / 70%),
-    inset 1px 1px 2px rgb(var(--color-rgb-blue) / 20%);
-  --checkbox-box-shadow-focus: -1px -1px 3px rgb(var(--color-rgb-white) / 25%),
-    1px 1px 3px rgb(var(--color-rgb-blue) / 40%),
-    4px 4px 10px rgb(var(--color-rgb-blue) / 40%),
-    -4px -4px 10px rgb(var(--color-rgb-white) / 25%),
-    inset -1px -1px 1px rgb(var(--color-rgb-white) / 70%),
-    inset 1px 1px 2px rgb(var(--color-rgb-blue) / 20%);
+  --checkbox-box-shadow-base: 1px 1px 3px rgb(var(--color-rgb-blue) / 40%);
+  --checkbox-box-shadow-focus: 1px 1px 3px rgb(var(--color-rgb-blue) / 40%),
+    inset 0 0 0 1px var(--color-accent-secondary-main);
 
   position: relative;
   display: inline-flex;
@@ -43,14 +36,14 @@
       color: var(--checkbox-color-disabled);
       cursor: not-allowed;
     }
-    
+
     &_size {
       &_regular {
-          font-size: 14px;
+        font-size: 14px;
       }
-      
+
       &_small {
-          font-size: 10px;
+        font-size: 10px;
       }
     }
   }
@@ -109,6 +102,13 @@
       &-icon {
         color: var(--checkbox-mark-color-disabled);
         cursor: not-allowed;
+      }
+    }
+
+    .q-form-item_is-error & {
+      &,
+      .q-checkbox__input_focus {
+        border: var(--border-error);
       }
     }
 

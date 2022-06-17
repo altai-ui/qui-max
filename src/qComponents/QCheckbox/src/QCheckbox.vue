@@ -51,7 +51,8 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, inject, watch, ref, PropType } from 'vue';
+import { computed, defineComponent, inject, watch, ref } from 'vue';
+import type { PropType } from 'vue';
 
 import { validateArray } from '@/qComponents/helpers';
 import type { QCheckboxGroupProvider } from '@/qComponents/QCheckboxGroup';
@@ -60,7 +61,11 @@ import type { QFormItemProvider } from '@/qComponents/QFormItem';
 
 import type { Nullable, ClassValue } from '#/helpers';
 
-import type { QCheckboxProps, QCheckboxInstance, QCheckboxItemPropLabelSize } from './types';
+import type {
+  QCheckboxProps,
+  QCheckboxInstance,
+  QCheckboxItemPropLabelSize
+} from './types';
 
 export default defineComponent({
   name: 'QCheckbox',
@@ -150,7 +155,7 @@ export default defineComponent({
           isLimitDisabled.value
         : props.disabled || (qForm?.disabled.value ?? false)
     );
-    
+
     const labelClass = computed<ClassValue>(
       () => `q-checkbox__label_size_${props.labelSize ?? 'regular'}`
     );
@@ -201,7 +206,7 @@ export default defineComponent({
       nativeClick,
       checkboxInput,
       handleCheckboxClick,
-      labelClass,
+      labelClass
     };
   }
 });

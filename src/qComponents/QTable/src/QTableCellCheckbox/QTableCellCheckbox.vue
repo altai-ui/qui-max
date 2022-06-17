@@ -99,7 +99,8 @@ export default defineComponent({
           h(
             'div',
             {
-              class: `${props.baseClass}__content ${props.baseClass}__content_checkbox`
+              class: `${props.baseClass}__content ${props.baseClass}__content_checkbox`,
+              onClick: (event: Event) => event.stopPropagation()
             },
             [content.value]
           )

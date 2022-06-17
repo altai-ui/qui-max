@@ -64,7 +64,7 @@ import type { Nullable, ClassValue } from '#/helpers';
 import type {
   QCheckboxProps,
   QCheckboxInstance,
-  QCheckboxItemPropLabelSize
+  QCheckboxPropLabelSize
 } from './types';
 
 export default defineComponent({
@@ -99,9 +99,9 @@ export default defineComponent({
      * label size
      */
     labelSize: {
-      type: String as PropType<QCheckboxItemPropLabelSize>,
+      type: String as PropType<QCheckboxPropLabelSize>,
       default: 'regular',
-      validator: validateArray<QCheckboxItemPropLabelSize>(['regular', 'small'])
+      validator: validateArray<QCheckboxPropLabelSize>(['regular', 'small'])
     }
   },
 

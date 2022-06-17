@@ -1,10 +1,9 @@
 .q-checkbox {
   --checkbox-color-base: var(--color-primary-black);
+  --checkbox-label-color: var(--checkbox-color-base);
   --checkbox-color-disabled: rgb(var(--color-rgb-gray) / 64%);
   --checkbox-background-color-base: var(--color-tertiary-gray-ultra-light);
   --checkbox-background-color-hover: var(--color-tertiary-gray);
-  --checkbox-background-color-focus: var(--color-tertiary-gray-ultra-light);
-  --checkbox-background-color-checked: var(--color-tertiary-gray-ultra-light);
   --checkbox-background-color-disabled: var(--color-tertiary-gray);
   --checkbox-mark-color-base: var(--color-accent-secondary-main);
   --checkbox-mark-color-disabled: rgb(var(--color-rgb-gray) / 64%);
@@ -26,9 +25,8 @@
 
   &__label {
     padding-left: 16px;
-    margin-top: 3px;
     font-size: var(--font-size-base);
-    line-height: 18px;
+    color: var(--checkbox-label-color);
     word-break: break-word;
     white-space: normal;
 
@@ -39,11 +37,17 @@
 
     &_size {
       &_regular {
+        margin-top: 2px;
         font-size: 14px;
+        line-height: 20px;
       }
 
       &_small {
+        --checkbox-label-color: rgb(var(--color-primary-black) / 64%);
+
+        margin-top: 5px;
         font-size: 10px;
+        line-height: 14px;
       }
     }
   }
@@ -70,6 +74,10 @@
     border-radius: var(--border-radius-base);
     box-shadow: var(--checkbox-box-shadow-base);
 
+    &:hover {
+      background-color: var(--checkbox-background-color-hover);
+    }
+
     &-icon {
       position: absolute;
       top: 4px;
@@ -83,15 +91,12 @@
 
     .q-checkbox_checked &,
     .q-checkbox__input_indeterminate & {
-      background-color: var(--checkbox-background-color-checked);
-
       &::after {
         opacity: 1;
       }
     }
 
     .q-checkbox__input_focus & {
-      background-color: var(--checkbox-background-color-focus);
       box-shadow: var(--checkbox-box-shadow-focus);
     }
 
@@ -109,14 +114,6 @@
       &,
       .q-checkbox__input_focus {
         border: var(--border-error);
-      }
-    }
-
-    .q-checkbox__input_focus &,
-    .q-checkbox_checked &,
-    .q-checkbox__input_indeterminate & {
-      &:hover {
-        background-color: var(--checkbox-background-color-hover);
       }
     }
   }

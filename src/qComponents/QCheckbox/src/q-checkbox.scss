@@ -1,6 +1,5 @@
 .q-checkbox {
-  --checkbox-color-base: var(--color-primary-black);
-  --checkbox-label-color: var(--checkbox-color-base);
+  --checkbox-color-base: rgb(var(--color-base-regular-rgb) / 96%);
   --checkbox-color-disabled: rgb(var(--color-rgb-gray) / 64%);
   --checkbox-background-color-base: var(--color-tertiary-gray-ultra-light);
   --checkbox-background-color-hover: var(--color-tertiary-gray);
@@ -26,7 +25,7 @@
   &__label {
     padding-left: 16px;
     font-size: var(--font-size-base);
-    color: var(--checkbox-label-color);
+    color: var(--checkbox-color-base);
     word-break: break-word;
     white-space: normal;
 
@@ -43,7 +42,7 @@
       }
 
       &_small {
-        --checkbox-label-color: rgb(var(--color-primary-black) / 64%);
+        --checkbox-color-base: rgb(var(--color-base-regular-rgb) / 64%);
 
         margin-top: 5px;
         font-size: 10px;

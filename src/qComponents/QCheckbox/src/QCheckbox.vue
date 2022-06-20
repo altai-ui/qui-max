@@ -98,7 +98,11 @@ export default defineComponent({
     /**
      * alias for update:modelValue
      */
-    'change'
+    'change',
+    /**
+     * triggers when click
+     */
+    'click'
   ],
 
   setup(props: QCheckboxProps, ctx): QCheckboxInstance {
@@ -141,7 +145,7 @@ export default defineComponent({
         : props.disabled || (qForm?.disabled.value ?? false)
     );
 
-    const handleCheckboxClick = (): void => {
+    const handleCheckboxClick = (event: Event): void => {
       if (isDisabled.value) return;
 
       const value = !isChecked.value;
@@ -162,6 +166,8 @@ export default defineComponent({
 
         qCheckboxGroup.update(Array.from(set));
       }
+
+      ctx.emit('click', event);
     };
 
     watch(

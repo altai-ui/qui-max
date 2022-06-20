@@ -29,8 +29,6 @@
   vertical-align: middle;
   cursor: pointer;
   background: var(--button-main-bg);
-  background-position-x: -1px;
-  background-size: calc(100% + 2px);
   border: var(--border-width) solid transparent;
   border-radius: var(--border-radius-base);
   outline: none;
@@ -60,7 +58,7 @@
       --button-hover-active-bg: var(--color-primary);
       --button-main-bg: var(--gradient-primary);
       --button-hover-color: var(--color-tertiary-white);
-      --border-width: 0px;
+      --border-width: 0;
 
       color: var(--color-tertiary-white);
 

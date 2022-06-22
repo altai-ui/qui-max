@@ -56,6 +56,8 @@ The Radio's label size.
 />
 ```
 
+<iframe style="width: 100%; height: 64px" scrolling="no" frameborder="no" src="/QRadio/labelSize.html"></iframe>
+
 ### checked
 
 - Type: `Boolean`

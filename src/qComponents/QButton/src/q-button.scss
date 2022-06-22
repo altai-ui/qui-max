@@ -146,6 +146,7 @@
   }
 
   &_loading {
+    position: relative;
     cursor: progress;
     background: var(--button-main-bg);
 

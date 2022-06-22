@@ -23,6 +23,22 @@ Defines the text of the checkbox. You could use default [slot](#slots) instead o
 
 <iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/QCheckbox/label.html"></iframe>
 
+### labelSize
+
+- type `string`
+- default `regular`
+
+Defines the label size of the checkbox.
+
+```vue
+<q-checkbox
+  label="Label"
+  labelSize="small"
+/>
+```
+
+<iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/QCheckbox/labelSize.html"></iframe>
+
 ### modelValue
 
 - type `boolean`

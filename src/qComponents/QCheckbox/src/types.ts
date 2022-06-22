@@ -17,6 +17,7 @@ export interface QCheckboxProps {
 export interface QCheckboxInstance {
   focus: Ref<boolean>;
   isChecked: ComputedRef<boolean>;
+  isIntermediate: ComputedRef<boolean>;
   isLimitDisabled: ComputedRef<boolean>;
   isDisabled: ComputedRef<boolean>;
   nativeClick: () => void;

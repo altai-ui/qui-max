@@ -1,12 +1,11 @@
 <template>
-  <pre>rangeDisplayValue: {{ rangeDisplayValue }}</pre>
   <div
     ref="root"
     class="q-date-picker"
     :class="{ 'q-date-picker_ranged': isRanged }"
   >
     <div
-      v-if="isRanged && Array.isArray(displayValue)"
+      v-if="isRanged && Array.isArray(rangeDisplayValue)"
       ref="rangedReference"
       :class="rangeClasses"
       tabindex="0"
@@ -20,7 +19,7 @@
         autocomplete="off"
         class="q-date-picker__input"
         :placeholder="startPlaceholder || t('QDatePicker.startPlaceholder')"
-        :value="displayValue[0]"
+        :value="rangeDisplayValue[0]"
         :disabled="isPickerDisabled"
         readonly
         tabindex="-1"
@@ -31,7 +30,7 @@
       <input
         autocomplete="off"
         :placeholder="endPlaceholder || t('QDatePicker.endPlaceholder')"
-        :value="displayValue[1]"
+        :value="rangeDisplayValue[1]"
         :disabled="isPickerDisabled"
         class="q-date-picker__input"
         readonly
@@ -410,15 +409,15 @@ export default defineComponent({
       return null;
     });
 
-    const isPickerDisabled = computed<boolean>(() => Boolean(props.disabled || qForm?.disabled.value));
+    const isPickerDisabled = computed<boolean>(() =>
+      Boolean(props.disabled || qForm?.disabled.value)
+    );
 
     const rangeClasses = computed<ClassValue>(() => ({
       'q-date-picker__range-wrapper': true,
       'q-date-picker__range-wrapper_disabled': isPickerDisabled.value,
       'q-date-picker__range-wrapper_focused': state.pickerVisible
     }));
-
-    const isRanged = computed<boolean>(() => props.type?.includes('range') ?? false);
 
     const panelComponent = computed<QDatePickerPanelComponent>(() => {
       switch (props.type) {
@@ -450,64 +449,45 @@ export default defineComponent({
       return state.showCloseIcon ? 'q-icon-close' : 'q-icon-calendar';
     });
 
-    const rangeDisplayValue = computed<string[]>(() => {
-      if (!isRanged.value || !Array.isArray(transformedToDate.value)) return [];
+    const isRanged = computed<boolean>(
+      () => props.type?.includes('range') ?? false
+    );
+
+    const rangeDisplayValue = computed<Nullable<string[]>>(() => {
+      if (!isRanged.value || !Array.isArray(transformedToDate.value))
+        return null;
 
       return transformedToDate.value.map(dateFromArray =>
-          formatToLocalReadableString(
-              dateFromArray,
-              props.format,
-              getConfig('locale')
-          )
+        formatToLocalReadableString(
+          dateFromArray,
+          props.format,
+          getConfig('locale')
+        )
       );
     });
 
-    const displayValue = computed<Nullable<Enumerable<string>>>(() => {
-      let formattedValue: Enumerable<string | number | Date> = '';
-
-      console.log('isRanged.value', isRanged.value);
-      console.log('Array.isArray(transformedToDate.value)', Array.isArray(transformedToDate.value));
-      if (isRanged.value && Array.isArray(transformedToDate.value)) {
-        return transformedToDate.value.map(dateFromArray =>
-            formatToLocalReadableString(
-                dateFromArray,
-                props.format,
-                getConfig('locale')
-            )
-        );
-      }
-
-      if (
-          isDate(transformedToDate.value) &&
-          isValid(transformedToDate.value) &&
-          transformedToDate.value instanceof Date
-      ) {
-        formattedValue = formatToLocalReadableString(
-            transformedToDate.value,
-            props.format,
-            getConfig('locale')
-        );
-
-        console.log('formattedValue', formattedValue)
-      }
-
-      console.log('state.userInput', state.userInput);
-      if (Array.isArray(state.userInput)) {
-        return [
-          state.userInput?.[0] ?? formattedValue?.[0] ?? '',
-          state.userInput?.[1] ?? formattedValue?.[1] ?? ''
-        ];
-      }
+    const displayValue = computed<string>(() => {
+      if (isRanged.value || Array.isArray(transformedToDate.value)) return '';
 
       if (state.userInput !== null) {
         return state.userInput;
       }
 
-      if (formattedValue) {
-        return formattedValue;
+      let formattedValue: Enumerable<string | number | Date> = '';
+
+      if (
+        isDate(transformedToDate.value) &&
+        isValid(transformedToDate.value) &&
+        transformedToDate.value instanceof Date
+      ) {
+        formattedValue = formatToLocalReadableString(
+          transformedToDate.value,
+          props.format,
+          getConfig('locale')
+        );
       }
 
-      return '';
+      return formattedValue ?? '';
     });
 
     const emitChange = (val: QDatePickerPropModelValue): void => {

@@ -42,7 +42,15 @@ import type { QRadioGroupProvider } from '@/qComponents/QRadioGroup';
 
 import type { Nullable, ClassValue } from '#/helpers';
 
-import type { QRadioProps, QRadioInstance, QRadioPropLabelSize } from './types';
+import type {
+  QRadioProps,
+  QRadioInstance,
+  QRadioPropLabelSize,
+  QRadioPropLabel,
+  QRadioPropValue,
+  QRadioPropChecked,
+  QRadioPropDisabled
+} from './types';
 
 export default defineComponent({
   name: 'QRadio',
@@ -54,19 +62,31 @@ export default defineComponent({
     /**
      * the value of Radio label
      */
-    label: { type: String, default: null },
+    label: {
+      type: String as PropType<QRadioPropLabel>,
+      default: null
+    },
     /**
      * binding value
      */
-    value: { type: [String, Number, Boolean], default: null },
+    value: {
+      type: [String, Number, Boolean] as PropType<QRadioPropValue>,
+      default: null
+    },
     /**
      * whether Radio is checked
      */
-    checked: { type: Boolean, default: false },
+    checked: {
+      type: Boolean as PropType<QRadioPropChecked>,
+      default: false
+    },
     /**
      * whether Radio is disabled
      */
-    disabled: { type: Boolean, default: false },
+    disabled: {
+      type: Boolean as PropType<QRadioPropDisabled>,
+      default: false
+    },
     /**
      * label size
      */
@@ -106,7 +126,7 @@ export default defineComponent({
         (qRadioGroup?.disabled.value ?? false)
     );
 
-    const wrapClass = computed<Record<string, boolean>>(() => ({
+    const wrapClass = computed<ClassValue>(() => ({
       'q-radio_disabled': isDisabled.value,
       'q-radio_checked': isChecked.value
     }));

@@ -24,6 +24,7 @@
     </span>
     <span
       class="q-radio__label"
+      :class="labelClass"
       @keydown.stop
     >
       <slot>{{ label }}</slot>
@@ -33,13 +34,15 @@
 
 <script lang="ts">
 import { defineComponent, inject, computed } from 'vue';
+import type { PropType } from 'vue';
 
+import { validateArray } from '@/qComponents/helpers';
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QRadioGroupProvider } from '@/qComponents/QRadioGroup';
 
-import type { Nullable } from '#/helpers';
+import type { Nullable, ClassValue } from '#/helpers';
 
-import type { QRadioProps, QRadioInstance } from './types';
+import type { QRadioProps, QRadioInstance, QRadioPropLabelSize } from './types';
 
 export default defineComponent({
   name: 'QRadio',
@@ -63,7 +66,15 @@ export default defineComponent({
     /**
      * whether Radio is disabled
      */
-    disabled: { type: Boolean, default: false }
+    disabled: { type: Boolean, default: false },
+    /**
+     * label size
+     */
+    labelSize: {
+      type: String as PropType<QRadioPropLabelSize>,
+      default: 'regular',
+      validator: validateArray<QRadioPropLabelSize>(['regular', 'small'])
+    }
   },
 
   emits: [
@@ -104,6 +115,10 @@ export default defineComponent({
       isDisabled.value || (isGroup.value && !isChecked.value) ? -1 : 0
     );
 
+    const labelClass = computed<ClassValue>(
+      () => `q-radio__label_size_${props.labelSize ?? 'regular'}`
+    );
+
     const handleSpaceKeyUp = (): void => {
       if (isGroup.value) return;
 
@@ -127,7 +142,8 @@ export default defineComponent({
       wrapClass,
       tabIndex,
       handleSpaceKeyUp,
-      handleChange
+      handleChange,
+      labelClass
     };
   }
 });

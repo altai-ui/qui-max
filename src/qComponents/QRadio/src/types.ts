@@ -1,12 +1,15 @@
 import type { ComputedRef } from 'vue';
 
-import type { Nullable } from '#/helpers';
+import type { Nullable, ClassValue } from '#/helpers';
+
+export type QRadioPropLabelSize = Nullable<'regular' | 'small'>;
 
 export interface QRadioProps {
   label: Nullable<string>;
   value: Nullable<string | number | boolean>;
   checked: Nullable<boolean>;
   disabled: Nullable<boolean>;
+  labelSize: QRadioPropLabelSize;
 }
 
 export interface QRadioInstance {
@@ -16,4 +19,5 @@ export interface QRadioInstance {
   tabIndex: ComputedRef<0 | -1>;
   handleSpaceKeyUp: () => void;
   handleChange: () => void;
+  labelClass: ComputedRef<ClassValue>;
 }

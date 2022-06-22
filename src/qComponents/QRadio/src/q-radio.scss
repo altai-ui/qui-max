@@ -1,23 +1,14 @@
 .q-radio {
-  --radio-color-base: var(--color-primary-black);
+  --radio-color-base: rgb(var(--color-base-regular-rgb) / 96%);
   --radio-color-disabled: rgb(var(--color-rgb-gray) / 64%);
   --radio-background-color-base: var(--color-tertiary-gray-ultra-light);
   --radio-background-color-hover: var(--color-tertiary-gray);
-  --radio-background-color-focus: var(--color-tertiary-gray-ultra-light);
-  --radio-background-color-checked: var(--color-tertiary-gray-ultra-light);
   --radio-background-color-disabled: var(--color-tertiary-gray);
-  --radio-dot-color-base: var(--color-primary-blue);
+  --radio-dot-color-base: var(--color-accent-secondary-main);
   --radio-dot-color-disabled: rgb(var(--color-rgb-gray) / 64%);
-  --radio-box-shadow-base: -1px -1px 3px rgb(var(--color-rgb-white) / 25%),
-    1px 1px 3px rgb(var(--color-rgb-blue) / 40%),
-    inset -1px -1px 1px rgb(var(--color-rgb-white) / 70%),
-    inset 1px 1px 2px rgb(var(--color-rgb-blue) / 20%);
-  --radio-box-shadow-focus: -1px -1px 3px rgb(var(--color-rgb-white) / 25%),
-    1px 1px 3px rgb(var(--color-rgb-blue) / 40%),
-    4px 4px 10px rgb(var(--color-rgb-blue) / 40%),
-    -4px -4px 10px rgb(var(--color-rgb-white) / 25%),
-    inset -1px -1px 1px rgb(var(--color-rgb-white) / 70%),
-    inset 1px 1px 2px rgb(var(--color-rgb-blue) / 20%);
+  --radio-box-shadow-base: 1px 1px 3px rgb(var(--color-rgb-blue) / 40%);
+  --radio-box-shadow-focus: 1px 1px 3px rgb(var(--color-rgb-blue) / 40%),
+    inset 0 0 0 1px var(--color-accent-secondary-main);
 
   position: relative;
   display: inline-flex;
@@ -36,14 +27,29 @@
 
   &__label {
     padding-left: 16px;
-    margin-top: 3px;
     font-size: var(--font-size-base);
-    line-height: 18px;
+    color: var(--checkbox-label-color);
     word-break: break-word;
     white-space: normal;
 
     .q-radio_disabled & {
       color: var(--radio-color-disabled);
+    }
+
+    &_size {
+      &_regular {
+        margin-top: 2px;
+        font-size: 14px;
+        line-height: 20px;
+      }
+
+      &_small {
+        --radio-color-base: rgb(var(--color-base-regular-rgb) / 64%);
+
+        margin-top: 5px;
+        font-size: 10px;
+        line-height: 14px;
+      }
     }
   }
 
@@ -83,9 +89,14 @@
       background-color: var(--radio-background-color-hover);
     }
 
-    .q-radio_checked & {
-      background-color: var(--radio-background-color-checked);
+    .q-form-item_is-error & {
+      &,
+      .q-checkbox__input_focus {
+        border: var(--border-error);
+      }
+    }
 
+    .q-radio_checked & {
       &::after {
         transform: translate(-50%, -50%) scale(1);
       }
@@ -108,7 +119,6 @@
     }
 
     .q-radio:not(.q-radio_disabled):focus & {
-      background-color: var(--radio-background-color-focus);
       box-shadow: var(--radio-box-shadow-focus);
 
       &:hover {

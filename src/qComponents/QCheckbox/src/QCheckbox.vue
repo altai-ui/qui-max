@@ -4,7 +4,8 @@
     class="q-checkbox"
     :class="{
       'q-checkbox_disabled': isDisabled,
-      'q-checkbox_checked': isChecked
+      'q-checkbox_checked': isChecked,
+      'q-checkbox_indeterminate': isIntermediate
     }"
     @click.prevent="handleCheckboxClick"
   >
@@ -13,6 +14,7 @@
       :class="{
         'q-checkbox__input_disabled': isDisabled,
         'q-checkbox__input_checked': isChecked,
+        'q-checkbox__input_indeterminate': isIntermediate,
         'q-checkbox__input_focus': focus
       }"
       :tabindex="indeterminate ? 0 : false"
@@ -156,6 +158,10 @@ export default defineComponent({
         : props.disabled || (qForm?.disabled.value ?? false)
     );
 
+    const isIntermediate = computed<boolean>(
+      () => !isChecked.value && (props.indeterminate ?? false)
+    );
+
     const labelClass = computed<ClassValue>(
       () => `q-checkbox__label_size_${props.labelSize ?? 'regular'}`
     );
@@ -201,6 +207,7 @@ export default defineComponent({
     return {
       focus,
       isChecked,
+      isIntermediate,
       isLimitDisabled,
       isDisabled,
       nativeClick,

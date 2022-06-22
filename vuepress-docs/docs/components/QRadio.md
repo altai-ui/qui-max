@@ -40,6 +40,22 @@ The Radio's label.
 />
 ```
 
+### labelSize
+
+- Type: `String`
+- Default: `regular`
+
+The Radio's label size.
+
+```vue {4}
+<q-radio
+  :checked="false"
+  :value="1"
+  label="Option"
+  labelSize="small"
+/>
+```
+
 ### checked
 
 - Type: `Boolean`

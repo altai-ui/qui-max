@@ -10,7 +10,12 @@ const storyMetadata: Meta = {
   argTypes: {
     checked: { control: { type: 'none' } },
     value: { control: { type: 'none' } },
-    label: { control: 'text' }
+    label: { control: 'text' },
+    labelSize: {
+      options: ['regular', 'small'],
+      control: { type: 'select' },
+      defaultValue: 'regular'
+    }
   }
 };
 
@@ -36,6 +41,7 @@ const QRadioStory: Story<QRadioProps> = args =>
           :disabled="args.disabled"
           :name="args.name"
           @change="handleChange"
+          :labelSize="args.labelSize"
         />
         <br /><br />
         <q-radio
@@ -43,6 +49,7 @@ const QRadioStory: Story<QRadioProps> = args =>
           :value="2"
           label="Option B"
           @change="handleChange"
+          :labelSize="args.labelSize"
         />
         <br /><br />
         <q-radio
@@ -50,6 +57,7 @@ const QRadioStory: Story<QRadioProps> = args =>
           :value="3"
           label="Option C"
           @change="handleChange"
+          :labelSize="args.labelSize"
         />
         <br /><br />
         <q-radio
@@ -58,6 +66,7 @@ const QRadioStory: Story<QRadioProps> = args =>
           disabled
           label="Disabled"
           @change="handleChange"
+          :labelSize="args.labelSize"
         />
         <br /><br />
         <q-radio
@@ -66,6 +75,7 @@ const QRadioStory: Story<QRadioProps> = args =>
           disabled
           label="Checked & disabled"
           @change="radio2 = $event"
+          :labelSize="args.labelSize"
         />
       </div>
     `

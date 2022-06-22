@@ -52,7 +52,7 @@ The Radio's label size.
   :checked="false"
   :value="1"
   label="Option"
-  labelSize="small"
+  label-size="small"
 />
 ```
 

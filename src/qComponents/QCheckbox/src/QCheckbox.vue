@@ -183,21 +183,21 @@ export default defineComponent({
     );
 
     const qCheckboxClasses = computed<ClassValue>(() => ({
-      'q-checkbox_disabled': Boolean(isDisabled),
-      'q-checkbox_checked': Boolean(isChecked),
-      'q-checkbox_indeterminate': Boolean(isIndeterminate)
+      'q-checkbox_disabled': isDisabled.value,
+      'q-checkbox_checked': isChecked.value,
+      'q-checkbox_indeterminate': isIndeterminate.value
     }));
 
     const qCheckboxInputClasses = computed<ClassValue>(() => ({
-      'q-checkbox__input_disabled': Boolean(isDisabled),
-      'q-checkbox__input_checked': Boolean(isChecked),
-      'q-checkbox__input_indeterminate': Boolean(isIndeterminate),
-      'q-checkbox__input_focus': Boolean(focus)
+      'q-checkbox__input_disabled': isDisabled.value,
+      'q-checkbox__input_checked': isChecked.value,
+      'q-checkbox__input_indeterminate': isIndeterminate.value,
+      'q-checkbox__input_focus': focus.value
     }));
 
     const qCheckboxInnerIconClasses = computed<ClassValue>(() => ({
-      'q-icon-minus': Boolean(isIndeterminate),
-      'q-icon-check': Boolean(isChecked)
+      'q-icon-minus': isIndeterminate.value,
+      'q-icon-check': isChecked.value
     }));
 
     const handleCheckboxClick = (event: Event): void => {

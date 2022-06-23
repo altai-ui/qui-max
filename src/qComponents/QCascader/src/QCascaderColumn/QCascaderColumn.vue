@@ -6,8 +6,8 @@
     <q-scrollbar
       wrap-class="q-cascader-column__scrollbar"
       :scroll-to="scrollTo"
-      @keydown.arrow-down.prevent=""
-      @keydown.arrow-up.prevent=""
+      @keydown.arrow-down.prevent
+      @keydown.arrow-up.prevent
       @keyup.arrow-left="handleArrowLeftKeyUp"
     >
       <q-cascader-row

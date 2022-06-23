@@ -78,7 +78,8 @@ import type {
   QInputPropRootClass,
   QInputProps,
   QInputState,
-  QInputClass
+  QInputClass,
+  QInputPropModelValue
 } from './types';
 
 export default defineComponent({
@@ -92,7 +93,7 @@ export default defineComponent({
      * default to v-model
      */
     modelValue: {
-      type: String,
+      type: String as PropType<QInputPropModelValue>,
       default: null
     },
     /**

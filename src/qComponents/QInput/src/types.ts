@@ -5,10 +5,11 @@ import type { Nullable } from '#/helpers';
 type Classes = Record<string, boolean>;
 export type QInputClass = Nullable<string | Classes | Classes[]>;
 
+export type QInputPropModelValue = Nullable<string>;
 export type QInputPropRootClass = QInputClass;
 
 export interface QInputProps {
-  modelValue: Nullable<string>;
+  modelValue: QInputPropModelValue;
   disabled: Nullable<boolean>;
   showSymbolLimit: Nullable<boolean>;
   validateEvent: Nullable<boolean>;

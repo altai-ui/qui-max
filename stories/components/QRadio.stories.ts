@@ -40,14 +40,14 @@ const QRadioStory: Story<QRadioProps> = args =>
           :label="args.label"
           :disabled="args.disabled"
           :name="args.name"
-          :labelSize="args.labelSize"
+          :label-size="args.labelSize"
           @change="handleChange"
         />
         <br /><br />
         <q-radio
           :checked="radio1 === 2"
           :value="2"
-          :labelSize="args.labelSize"
+          :label-size="args.labelSize"
           label="Option B"
           @change="handleChange"
         />
@@ -55,7 +55,7 @@ const QRadioStory: Story<QRadioProps> = args =>
         <q-radio
           :checked="radio1 === 3"
           :value="3"
-          :labelSize="args.labelSize"
+          :label-size="args.labelSize"
           label="Option C"
           @change="handleChange"
         />
@@ -63,7 +63,7 @@ const QRadioStory: Story<QRadioProps> = args =>
         <q-radio
           :checked="radio1 === 4"
           :value="4"
-          :labelSize="args.labelSize"
+          :label-size="args.labelSize"
           disabled
           label="Disabled"
           @change="handleChange"
@@ -72,7 +72,7 @@ const QRadioStory: Story<QRadioProps> = args =>
         <q-radio
           :checked="radio2 === 1"
           :value="1"
-          :labelSize="args.labelSize"
+          :label-size="args.labelSize"
           disabled
           label="Checked & disabled"
           @change="radio2 = $event"

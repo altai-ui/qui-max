@@ -5,7 +5,7 @@
     :class="{ 'q-date-picker_ranged': isRanged }"
   >
     <div
-      v-if="isRanged && Array.isArray(rangeDisplayValue)"
+      v-if="isRanged"
       ref="rangedReference"
       :class="rangeClasses"
       tabindex="0"
@@ -453,9 +453,8 @@ export default defineComponent({
       () => props.type?.includes('range') ?? false
     );
 
-    const rangeDisplayValue = computed<Nullable<string[]>>(() => {
-      if (!isRanged.value || !Array.isArray(transformedToDate.value))
-        return null;
+    const rangeDisplayValue = computed<string[]>(() => {
+      if (!isRanged.value || !Array.isArray(transformedToDate.value)) return [];
 
       return transformedToDate.value.map(dateFromArray =>
         formatToLocalReadableString(

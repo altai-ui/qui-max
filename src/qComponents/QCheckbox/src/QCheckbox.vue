@@ -5,7 +5,7 @@
     :class="{
       'q-checkbox_disabled': isDisabled,
       'q-checkbox_checked': isChecked,
-      'q-checkbox_indeterminate': isIntermediate
+      'q-checkbox_indeterminate': isIndeterminate
     }"
     @click.prevent="handleCheckboxClick"
   >
@@ -14,18 +14,18 @@
       :class="{
         'q-checkbox__input_disabled': isDisabled,
         'q-checkbox__input_checked': isChecked,
-        'q-checkbox__input_indeterminate': isIntermediate,
+        'q-checkbox__input_indeterminate': isIndeterminate,
         'q-checkbox__input_focus': focus
       }"
-      :tabindex="isIntermediate ? 0 : false"
-      :role="isIntermediate ? 'checkbox' : false"
-      :aria-checked="isIntermediate ? 'mixed' : false"
+      :tabindex="isIndeterminate ? 0 : undefined"
+      :role="isIndeterminate ? 'checkbox' : undefined"
+      :aria-checked="isIndeterminate ? 'mixed' : false"
     >
       <span class="q-checkbox__inner">
         <span
           class="q-checkbox__inner-icon"
           :class="{
-            'q-icon-minus': isIntermediate,
+            'q-icon-minus': isIndeterminate,
             'q-icon-check': isChecked
           }"
         />
@@ -36,7 +36,7 @@
         :value="isChecked"
         class="q-checkbox__original"
         type="checkbox"
-        :aria-hidden="isIntermediate ? 'true' : 'false'"
+        :aria-hidden="isIndeterminate ? 'true' : 'false'"
         :disabled="isDisabled"
         @focus="focus = true"
         @blur="focus = false"
@@ -158,7 +158,7 @@ export default defineComponent({
         : props.disabled || (qForm?.disabled.value ?? false)
     );
 
-    const isIntermediate = computed<boolean>(
+    const isIndeterminate = computed<boolean>(
       () => !isChecked.value && Boolean(props.indeterminate)
     );
 
@@ -207,7 +207,7 @@ export default defineComponent({
     return {
       focus,
       isChecked,
-      isIntermediate,
+      isIndeterminate,
       isLimitDisabled,
       isDisabled,
       nativeClick,

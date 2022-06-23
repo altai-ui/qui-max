@@ -34,8 +34,8 @@ const Template: Story<QCheckboxProps> = args =>
         :label="args.label"
         :indeterminate="args.indeterminate"
         :disabled="args.disabled"
-        :rootTag="args.rootTag"
-        :labelSize="args.labelSize"
+        :root-tag="args.rootTag"
+        :label-size="args.labelSize"
       />
     `
   });

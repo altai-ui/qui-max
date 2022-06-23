@@ -159,7 +159,7 @@ export default defineComponent({
     );
 
     const isIntermediate = computed<boolean>(
-      () => !isChecked.value && (props.indeterminate ?? false)
+      () => !isChecked.value && Boolean(props.indeterminate)
     );
 
     const labelClass = computed<ClassValue>(

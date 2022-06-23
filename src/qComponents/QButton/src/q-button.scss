@@ -1,34 +1,39 @@
+@keyframes q-button-icon-rotating {
+  0% {
+    transform: rotateZ(0deg);
+  }
+
+  100% {
+    transform: rotateZ(360deg);
+  }
+}
+
 .q-button {
-  box-sizing: border-box;
+  --box-shadow-default: 4px 4px 8px rgb(var(--color-rgb-blue) / 40%),
+    1px 1px 3px rgb(var(--color-rgb-blue) / 40%);
+  --box-shadow-pressed: 1px 1px 3px rgb(var(--color-rgb-blue) / 40%);
+  --color-rgb-gray: 29 29 27;
+  --button-main-bg: transparent;
+  --icon-size: 24px;
+  --border-width: 1px;
+
   display: inline-block;
   flex-shrink: 0;
-  max-height: 40px;
-  padding: 12px 40px;
+  padding: calc(12.5px - var(--border-width)) 40px;
   font-size: 12px;
-  font-weight: var(--font-weight-bold);
-  line-height: var(--line-height-button);
-  color: var(--color-tertiary-white);
+  font-weight: 700;
+  line-height: 15px;
   text-align: center;
   text-transform: uppercase;
-  letter-spacing: var(--letter-spacing-base);
   white-space: nowrap;
   vertical-align: middle;
   cursor: pointer;
-  background-color: var(--color-primary);
-  background-image: var(--gradient-primary);
-  border: none;
+  background: var(--button-main-bg);
+  border: var(--border-width) solid transparent;
   border-radius: var(--border-radius-base);
   outline: none;
-  box-shadow: -1px -1px 3px rgb(var(--color-rgb-white) / 25%),
-    1px 1px 3px rgb(var(--color-rgb-blue) / 40%),
-    4px 4px 8px rgb(var(--color-rgb-blue) / 40%),
-    -4px -4px 12px var(--color-tertiary-white);
-  transition: background-color 0.1s;
+  box-shadow: var(--box-shadow-default);
   appearance: none;
-
-  &::-moz-focus-inner {
-    border: 0;
-  }
 
   & + & {
     margin-left: 16px;
@@ -38,194 +43,153 @@
     outline: none;
   }
 
-  &:hover {
-    background-color: var(--color-primary);
-    background-image: none;
-    box-shadow: -1px -1px 4px rgb(var(--color-rgb-white) / 25%),
-      1px 1px 4px rgb(var(--color-rgb-blue) / 40%),
-      4px 4px 8px rgb(var(--color-rgb-blue) / 40%),
-      -4px -4px 8px rgb(var(--color-rgb-white) / 80%);
-  }
-
-  &:active {
-    background-image: none;
-    box-shadow: var(--box-shadow-pressed);
-  }
-
-  &:visited {
-    background-image: var(--gradient-primary);
-    box-shadow: var(--box-shadow-primary);
-  }
-
-  &_type {
-    &_icon {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 40px;
-      height: 40px;
-      padding: 0;
-      font-size: 26px;
-    }
+  &__spinner-icon {
+    position: absolute;
+    top: calc(50% - var(--icon-size) / 2);
+    left: calc(50% - var(--icon-size) / 2);
+    font-size: var(--icon-size);
+    transform-origin: calc(var(--icon-size) / 2);
+    animation: q-button-icon-rotating 2s linear infinite;
   }
 
   &_theme {
     &_primary {
+      --button-active-color: rgb(var(--color-rgb-white) / 64%);
+      --button-hover-active-bg: var(--color-primary);
+      --button-main-bg: var(--gradient-primary);
+      --button-hover-color: var(--color-tertiary-white);
+      /* stylelint-disable length-zero-no-unit */
+      --border-width: 0px;
+
+      color: var(--color-tertiary-white);
+
       &.focus-visible {
-        background-color: var(--color-primary-darker);
-        background-image: none;
+        background: var(--color-primary-darker);
       }
     }
 
     &_secondary {
-      color: var(--color-primary-blue);
-      background-color: var(--color-tertiary-gray);
-      background-image: none;
-      box-shadow: var(--box-shadow-primary);
+      --button-active-color: var(--color-primary-darker);
+      --button-hover-active-bg: var(--color-tertiary-gray);
+      --button-main-bg: var(--color-tertiary-gray-light);
+      --button-hover-color: var(--color-primary);
 
-      &:hover {
-        color: var(--color-tertiary-white);
-        background-color: var(--color-primary);
-        box-shadow: var(--box-shadow-hover);
-      }
-
-      &:active {
-        outline: none;
-        box-shadow: var(--box-shadow-pressed);
-      }
+      color: var(--color-primary);
 
       &.focus-visible {
-        color: var(--color-tertiary-white);
-        background-color: var(--color-primary-darker);
+        border-color: var(--color-primary);
+
+        &:active {
+          border-color: var(--color-primary-darker);
+        }
       }
     }
 
     &_link {
+      --button-active-color: var(--color-primary);
+      --button-hover-color: rgb(var(--color-rgb-gray) / 96%);
+
       padding: 0;
-      font-size: var(--font-size-base);
+      font-size: 14px;
       font-weight: var(--font-weight-base);
+      line-height: 18px;
       color: var(--color-primary-blue);
       text-transform: initial;
-      background-color: transparent;
-      background-image: none;
+      border-radius: var(--border-radius-base);
       box-shadow: none;
 
       &.focus-visible {
         text-decoration: underline;
-      }
 
-      &:hover {
-        color: var(--color-primary-black);
-        background-color: transparent;
-        box-shadow: none;
-      }
-
-      &:active {
-        outline: none;
-        box-shadow: none;
+        &.q-button_type_icon {
+          text-decoration: underline;
+          border: 1px solid;
+        }
       }
     }
   }
 
-  &_size {
-    &_small {
-      &.q-button_type_default {
-        padding: 6px 20px;
-        font-size: 10px;
-      }
+  &:not(&.q-button_loading, &.q-button_disabled) {
+    &:hover,
+    &:active {
+      background: var(--button-hover-active-bg);
+    }
 
-      &.q-button_type_icon {
-        width: 24px;
-        height: 24px;
-        padding: 0;
-        font-size: 16px;
-        line-height: 1;
-      }
+    &:hover {
+      color: var(--button-hover-color);
+    }
 
-      &.q-button_theme_link {
-        font-size: 12px;
+    &:active {
+      color: var(--button-active-color);
+
+      &:not(&.q-button_theme_link) {
+        box-shadow: var(--box-shadow-pressed);
       }
     }
   }
 
-  &_full-width {
-    width: 100%;
+  &_type_icon {
+    width: 40px;
+    height: 40px;
+    padding: calc(8px - var(--border-width)) 7px;
+    font-size: var(--icon-size);
   }
 
   &_disabled {
-    --color: rgb(var(--color-rgb-gray) / 64%);
-    --background-color: var(--color-tertiary-gray);
-    --box-shadow: 1px 1px 3px rgb(var(--color-rgb-blue) / 40%),
-      -1px -1px 3px rgb(var(--color-rgb-white) / 25%);
-
-    color: var(--color);
+    color: rgb(var(--color-rgb-gray) / 64%);
     cursor: not-allowed;
-    background-color: var(--background-color);
-    background-image: none;
-    box-shadow: var(--box-shadow);
 
-    &:hover,
-    &:active {
-      color: var(--color);
-      background-color: var(--background-color);
-      box-shadow: var(--box-shadow);
-    }
-
-    &.q-button_theme_link {
-      --box-shadow: none;
-      --background-color: transparent;
+    &:not(&.q-button_theme_link) {
+      background: var(--color-tertiary-gray);
+      box-shadow: var(--box-shadow-pressed);
     }
   }
 
   &_loading {
     position: relative;
-    pointer-events: none;
+    cursor: progress;
+    background: var(--button-main-bg);
+
+    &:not(&.q-button_theme_link) {
+      color: var(--button-active-color);
+      box-shadow: var(--box-shadow-default);
+    }
+
+    &.q-button_theme_link {
+      color: var(--color-primary-blue);
+    }
 
     .q-button__inner {
-      margin-left: 0;
       visibility: hidden;
-    }
-
-    .q-icon-reverse {
-      --icon-size: 24px;
-
-      position: absolute;
-      top: calc(50% - var(--icon-size) / 2);
-      left: calc(50% - var(--icon-size) / 2);
-      font-size: var(--icon-size);
-      transform-origin: calc(var(--icon-size) / 2);
-      animation: rotating 2s linear infinite;
-    }
-
-    &.q-button_size_small {
-      .q-icon-reverse {
-        --icon-size: 16px;
-      }
-    }
-
-    &::before {
-      position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      pointer-events: none;
-      content: '';
-      border-radius: inherit;
     }
   }
 
   &_circle {
     border-radius: 50%;
   }
-}
 
-@keyframes rotating {
-  0% {
-    transform: rotateZ(0deg);
+  &_size_small {
+    --icon-size: 16px;
+
+    padding: calc(8px - var(--border-width)) 20px;
+    font-size: 10px;
+    line-height: 12px;
+
+    &.q-button_type_icon {
+      width: 24px;
+      height: 24px;
+      padding: calc(4px - var(--border-width)) 3px;
+    }
+
+    &.q-button_theme_link {
+      padding: 0;
+      font-size: 12px;
+      font-weight: 500;
+      line-height: 18px;
+    }
   }
 
-  100% {
-    transform: rotateZ(360deg);
+  &_full-width {
+    width: 100%;
   }
 }

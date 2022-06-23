@@ -89,7 +89,8 @@ export default defineComponent({
         modelValue: props.checked,
         indeterminate: props.indeterminate,
         validateEvent: false,
-        onChange: handleCheckboxChange
+        onChange: handleCheckboxChange,
+        onClick: (event: Event) => event.stopPropagation()
       });
     });
 

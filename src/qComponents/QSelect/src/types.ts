@@ -3,21 +3,67 @@ import type { Ref, ComputedRef } from 'vue';
 
 import type { QInputInstance } from '@/qComponents/QInput';
 import type { QOptionModel, QOptionPropValue } from '@/qComponents/QOption';
-import type { QScrollbarInstance } from '@/qComponents/QScrollbar';
 
-import type { Nullable, Optional, UnwrappedInstance } from '#/helpers';
+import type { Nullable, UnwrappedInstance } from '#/helpers';
 
-type QSelectPropModelValue = Nullable<
+import type { QSelectDropdownInstance } from './components/QSelectDropdown';
+import type { QSelectTagsInstance } from './components/QSelectTags';
+
+export type QSelectPropModelValue = Nullable<
   string | number | QOptionPropValue | (string | number | QOptionPropValue)[]
 >;
+export type QSelectPropAutocomplete = Nullable<'on' | 'off'>;
+export type QSelectPropCanLoadMore = Nullable<boolean>;
+export type QSelectPropDisabled = Nullable<boolean>;
+export type QSelectPropClearable = Nullable<boolean>;
+export type QSelectPropFilterable = Nullable<boolean>;
+export type QSelectPropAllowCreate = Nullable<boolean>;
+export type QSelectPropLoading = Nullable<boolean>;
+export type QSelectPropRemote = Nullable<boolean>;
+export type QSelectPropLoadingText = Nullable<string>;
+export type QSelectPropLoadMoreText = Nullable<string>;
+export type QSelectPropNoMatchText = Nullable<string>;
+export type QSelectPropNoDataText = Nullable<string>;
+export type QSelectPropMultiple = Nullable<boolean>;
+export type QSelectPropMultipleLimit = Nullable<number>;
+export type QSelectPropPlaceholder = Nullable<string>;
+export type QSelectPropSelectAllShown = Nullable<boolean>;
+export type QSelectPropSelectAllText = Nullable<string>;
+export type QSelectPropValueKey = Nullable<string>;
+export type QSelectPropCollapseTags = Nullable<boolean>;
+export type QSelectPropTeleportTo = Nullable<string | HTMLElement>;
 
-type NewOption = {
+export interface QSelectProps {
+  modelValue: QSelectPropModelValue;
+  autocomplete: QSelectPropAutocomplete;
+  canLoadMore: QSelectPropCanLoadMore;
+  disabled: QSelectPropDisabled;
+  clearable: QSelectPropClearable;
+  filterable: QSelectPropFilterable;
+  allowCreate: QSelectPropAllowCreate;
+  loading: QSelectPropLoading;
+  remote: QSelectPropRemote;
+  loadingText: QSelectPropLoadingText;
+  loadMoreText: QSelectPropLoadMoreText;
+  noMatchText: QSelectPropNoMatchText;
+  noDataText: QSelectPropNoDataText;
+  multiple: QSelectPropMultiple;
+  multipleLimit: QSelectPropMultipleLimit;
+  placeholder: QSelectPropPlaceholder;
+  selectAllShown: QSelectPropSelectAllShown;
+  selectAllText: QSelectPropSelectAllText;
+  valueKey: QSelectPropValueKey;
+  collapseTags: QSelectPropCollapseTags;
+  teleportTo: QSelectPropTeleportTo;
+}
+
+export type NewOption = {
   value: QSelectPropModelValue;
   key: QSelectPropModelValue;
   preparedLabel: string | number;
 };
 
-interface QSelectInstance {
+export interface QSelectInstance {
   input: Ref<UnwrappedInstance<QInputInstance>>;
   tags: Ref<UnwrappedInstance<QSelectTagsInstance>>;
   dropdown: Ref<UnwrappedInstance<QSelectDropdownInstance>>;
@@ -25,14 +71,14 @@ interface QSelectInstance {
   state: QSelectState;
   preparedPlaceholder: ComputedRef<Nullable<string>>;
   visibleOptionsCount: ComputedRef<number>;
-  isCanLoadMoreShown: ComputedRef<Nullable<boolean>>;
+  isCanLoadMoreShown: ComputedRef<boolean>;
   showEmptyContent: ComputedRef<boolean>;
   isReadonly: ComputedRef<Nullable<boolean>>;
   isDisabled: ComputedRef<boolean>;
   isClearBtnShown: ComputedRef<Nullable<boolean>>;
   iconClass: ComputedRef<string>;
   emptyText: ComputedRef<string>;
-  isNewOptionShown: ComputedRef<Nullable<boolean>>;
+  isNewOptionShown: ComputedRef<boolean>;
   popperInit: () => void;
   showPopper: () => void;
   hidePopper: () => void;
@@ -53,7 +99,7 @@ interface QSelectInstance {
   t: (key: string) => string;
 }
 
-interface QSelectProvider {
+export interface QSelectProvider {
   toggleMenu: (event: MouseEvent | KeyboardEvent) => void;
   toggleOptionSelection: (option: QOptionModel) => void;
   setSelected: () => void;
@@ -72,30 +118,7 @@ interface QSelectProvider {
   modelValue: Ref<QSelectPropModelValue>;
 }
 
-interface QSelectProps {
-  selectAllShown: Nullable<boolean>;
-  selectAllText: Nullable<string>;
-  loadMoreText: Nullable<string>;
-  filterable: Nullable<boolean>;
-  collapseTags: Nullable<boolean>;
-  autocomplete: Nullable<'on' | 'off'>;
-  multiple: Nullable<boolean>;
-  modelValue: Nullable<QSelectPropModelValue>;
-  placeholder: Nullable<string>;
-  disabled: Nullable<boolean>;
-  canLoadMore: Nullable<boolean>;
-  loading: Nullable<boolean>;
-  loadingText: Nullable<string>;
-  noMatchText: Nullable<string>;
-  noDataText: Nullable<string>;
-  allowCreate: Nullable<boolean>;
-  clearable: Nullable<boolean>;
-  remote: Nullable<boolean>;
-  valueKey: Nullable<string>;
-  multipleLimit: Nullable<number>;
-}
-
-interface QSelectState {
+export interface QSelectState {
   options: QOptionModel[];
   selected: Nullable<QOptionModel | NewOption | (QOptionModel | NewOption)[]>;
   inputWidth: number;
@@ -107,55 +130,3 @@ interface QSelectState {
   popper: Nullable<PopperInstance>;
   isDropdownShown: boolean;
 }
-
-interface QSelectDropdownInstance {
-  zIndex: Ref<number>;
-  styles: ComputedRef<Record<string, Nullable<string | number>>>;
-  isVisibleOptionExist: ComputedRef<boolean>;
-  areAllSelected: ComputedRef<boolean>;
-  isIndeterminate: ComputedRef<boolean>;
-  navigateDropdown: (e: KeyboardEvent) => void;
-  handleSelectAllClick: () => void;
-  root: Ref<Nullable<HTMLDivElement>>;
-  multiple: Ref<Nullable<boolean>> | boolean;
-  scrollbar: Ref<UnwrappedInstance<QScrollbarInstance>>;
-  qSelectState: Partial<Nullable<QSelectState>>;
-}
-
-interface QSelectDropdownProps {
-  shown: Nullable<boolean>;
-  selectAllShown: Nullable<boolean>;
-  selectAllText: Nullable<string>;
-  showEmptyContent: Nullable<boolean>;
-  emptyText: Nullable<string>;
-  isCanLoadMoreShown: Nullable<boolean>;
-  loadMoreText: Nullable<string>;
-  isNewOptionShown: Nullable<boolean>;
-  width: Nullable<number>;
-}
-
-interface QSelectTagsInstance {
-  filterable: Ref<Nullable<boolean> | boolean>;
-  collapseTags: Ref<Nullable<boolean> | boolean>;
-  isDisabled: Ref<Nullable<boolean> | boolean>;
-  autocomplete: Ref<Nullable<string>>;
-  selected: Ref<Optional<QSelectState['selected']>>;
-  query: Ref<Optional<string>>;
-  handleBackspaceKeyDown: () => void;
-  handleTagClose: (option: Nullable<QOptionModel | NewOption>) => void;
-  handleInput: (event: KeyboardEvent) => void;
-  input: Ref<Nullable<HTMLInputElement>>;
-}
-
-export {
-  QOptionPropValue,
-  QSelectPropModelValue,
-  NewOption,
-  QSelectInstance,
-  QSelectProps,
-  QSelectProvider,
-  QSelectState,
-  QSelectDropdownInstance,
-  QSelectDropdownProps,
-  QSelectTagsInstance
-};

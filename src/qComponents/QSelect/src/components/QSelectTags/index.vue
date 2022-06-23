@@ -39,7 +39,7 @@
       :value="query"
       type="text"
       class="q-select-tags__input"
-      :autocomplete="autocomplete"
+      :autocomplete="autocomplete ?? 'off'"
       @focus="$emit('focus')"
       @keyup.esc="$emit('exit')"
       @keyup.enter="$emit('keyup-enter')"
@@ -57,10 +57,13 @@ import type { QSelectProvider } from '@/qComponents/QSelect';
 
 import type { Nullable } from '#/helpers';
 
-import type { NewOption, QSelectTagsInstance } from './types';
+import type { NewOption } from '../../types';
+
+import type { QSelectTagsInstance } from './types';
 
 export default defineComponent({
   name: 'QSelectTags',
+
   componentName: 'QSelectTags',
 
   emits: ['remove-tag', 'exit', 'update:query', 'focus', 'keyup-enter'],
@@ -68,7 +71,7 @@ export default defineComponent({
   setup(props, ctx): QSelectTagsInstance {
     const input = ref<Nullable<HTMLInputElement>>(null);
     const qSelect = inject<Nullable<QSelectProvider>>('qSelect', null);
-    const { selected = ref([]), query = ref('') } = toRefs(
+    const { selected = ref<QOptionModel[]>([]), query = ref('') } = toRefs(
       qSelect?.state ?? {}
     );
 
@@ -87,7 +90,7 @@ export default defineComponent({
       ctx.emit('remove-tag', option);
     };
 
-    const handleInput = (event: KeyboardEvent): void => {
+    const handleInput = (event: Event): void => {
       const target = event.target as HTMLInputElement;
       ctx.emit('update:query', target.value);
     };

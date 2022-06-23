@@ -64,7 +64,8 @@
 
 <script lang="ts">
 import { get, isPlainObject } from 'lodash-es';
-import { computed, defineComponent, inject, ref, watch } from 'vue';
+import { defineComponent, computed, inject, ref, watch } from 'vue';
+import type { StyleValue } from 'vue';
 
 import { getConfig } from '@/qComponents/config';
 import { QCheckbox } from '@/qComponents/QCheckbox';
@@ -82,6 +83,7 @@ const DEFAULT_Z_INDEX = 2000;
 
 export default defineComponent({
   name: 'QSelectDropdown',
+
   componentName: 'QSelectDropdown',
 
   components: {
@@ -112,9 +114,9 @@ export default defineComponent({
     const multiple = qSelect.multiple ?? ref(false);
     const zIndex = ref<number>(DEFAULT_Z_INDEX);
 
-    const styles = computed<Record<string, Nullable<string | number>>>(() => ({
+    const styles = computed<StyleValue>(() => ({
       zIndex: zIndex.value,
-      width: props.width ? `${props.width}px` : null
+      width: props.width ? `${props.width}px` : undefined
     }));
 
     const isVisibleOptionExist = computed<boolean>(() =>

@@ -17,15 +17,15 @@
         'q-checkbox__input_indeterminate': isIntermediate,
         'q-checkbox__input_focus': focus
       }"
-      :tabindex="indeterminate ? 0 : false"
-      :role="indeterminate ? 'checkbox' : false"
-      :aria-checked="indeterminate ? 'mixed' : false"
+      :tabindex="isIntermediate ? 0 : false"
+      :role="isIntermediate ? 'checkbox' : false"
+      :aria-checked="isIntermediate ? 'mixed' : false"
     >
       <span class="q-checkbox__inner">
         <span
           class="q-checkbox__inner-icon"
           :class="{
-            'q-icon-minus': indeterminate,
+            'q-icon-minus': isIntermediate,
             'q-icon-check': isChecked
           }"
         />
@@ -36,7 +36,7 @@
         :value="isChecked"
         class="q-checkbox__original"
         type="checkbox"
-        :aria-hidden="indeterminate ? 'true' : 'false'"
+        :aria-hidden="isIntermediate ? 'true' : 'false'"
         :disabled="isDisabled"
         @focus="focus = true"
         @blur="focus = false"

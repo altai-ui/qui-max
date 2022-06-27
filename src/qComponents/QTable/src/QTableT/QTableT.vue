@@ -29,7 +29,7 @@ import { defineComponent, inject, ref, computed, provide, watch } from 'vue';
 
 import { useResizeListener } from '@/qComponents/hooks';
 
-import type { Nullable, UnwrappedInstance } from '#/helpers';
+import type { Nullable, UnwrappedInstance, ClassValue } from '#/helpers';
 
 import QTableTBody from '../QTableTBody/QTableTBody.vue';
 import QTableTColgroup from '../QTableTColgroup/QTableTColgroup.vue';
@@ -74,7 +74,7 @@ export default defineComponent({
 
     const rootResize = useResizeListener(root);
 
-    const rootClasses = computed<Record<string, boolean>>(() => ({
+    const rootClasses = computed<ClassValue>(() => ({
       'q-table-t': true,
       'q-table-t_fixed': isColgroupShown.value,
       'q-table-t_grided': Boolean(qTable.grided.value)

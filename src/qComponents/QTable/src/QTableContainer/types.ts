@@ -1,6 +1,6 @@
-import type { ComputedRef } from 'vue';
+import type { ComputedRef, StyleValue } from 'vue';
 
-import type { Nullable } from '#/helpers';
+import type { Optional } from '#/helpers';
 
 import type { Column } from '../types';
 
@@ -20,8 +20,6 @@ export interface QTableContainerProvider {
 
 export interface QTableContainerInstance {
   columnList: ComputedRef<ExtendedColumn[]>;
-  wrapperStyles: ComputedRef<{
-    width: Nullable<string>;
-  }>;
-  handleWidthChange: (width: Nullable<number>) => void;
+  wrapperStyles: ComputedRef<StyleValue>;
+  handleWidthChange: (width: Optional<number>) => void;
 }

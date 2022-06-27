@@ -26,11 +26,12 @@
 
 <script lang="ts">
 import { get } from 'lodash-es';
-import { defineComponent, PropType, computed, inject } from 'vue';
+import { defineComponent, computed, inject } from 'vue';
+import type { PropType, StyleValue } from 'vue';
 
 import { randId } from '@/qComponents/helpers';
 
-import type { Nullable } from '#/helpers';
+import type { Nullable, ClassValue } from '#/helpers';
 
 import QTableCellCheckbox from '../../QTableCellCheckbox/QTableCellCheckbox.vue';
 import type {
@@ -43,9 +44,7 @@ import QTableTBodyCell from '../QTableTBodyCell/QTableTBodyCell.vue';
 import type {
   QTableTBodyRowProps,
   QTableTBodyRowPropRow,
-  QTableTBodyRowInstance,
-  RootClasses,
-  RootStyles
+  QTableTBodyRowInstance
 } from './types';
 
 export default defineComponent({
@@ -79,8 +78,8 @@ export default defineComponent({
       () => qTable.checkedRows.value.includes(props.rowIndex) ?? false
     );
 
-    const rootClasses = computed<RootClasses>(() => {
-      const classes: RootClasses = ['q-table-t-body-row'];
+    const rootClasses = computed<ClassValue>(() => {
+      const classes: ClassValue = ['q-table-t-body-row'];
 
       if (qTable.isRowClickable.value)
         classes.push('q-table-t-body-row_clickable');
@@ -99,10 +98,11 @@ export default defineComponent({
       return classes;
     });
 
-    const rootStyles = computed<RootStyles>(() => {
-      const styles: RootStyles = [];
+    const rootStyles = computed<StyleValue>(() => {
+      const styles: StyleValue = [];
 
       const getCustomStyles = qTable.customRowStyle.value;
+
       if (getCustomStyles) {
         const customStyles = getCustomStyles({
           row: props.row,

@@ -1,13 +1,8 @@
-import type { ComputedRef } from 'vue';
+import type { ComputedRef, StyleValue } from 'vue';
 
-import type { Nullable } from '#/helpers';
+import type { Nullable, ClassValue } from '#/helpers';
 
 import type { ExtendedColumn } from '../../QTableContainer/types';
-
-type Classes = Record<string, boolean>;
-export type RootClasses = (string | string[] | Classes | Classes[])[];
-type Styles = Record<string, string | number>;
-export type RootStyles = (string | string[] | Styles | Styles[])[];
 
 export type QTableTBodyRowPropRow = Record<string, unknown>;
 
@@ -19,8 +14,8 @@ export interface QTableTBodyRowProps {
 export interface QTableTBodyRowInstance {
   isSelectable: Nullable<ComputedRef<boolean>>;
   isChecked: ComputedRef<boolean>;
-  rootClasses: ComputedRef<RootClasses>;
-  rootStyles: ComputedRef<RootStyles>;
+  rootClasses: ComputedRef<ClassValue>;
+  rootStyles: ComputedRef<StyleValue>;
   randId: (prefix: string) => string;
   columnList: ComputedRef<ExtendedColumn[]>;
   getRowValue: (key: string) => Nullable<unknown>;

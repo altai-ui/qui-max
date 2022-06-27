@@ -7,10 +7,11 @@ import {
   inject,
   VNode
 } from 'vue';
+import type { PropType, StyleValue } from 'vue';
 
 import { CHANGE_EVENT } from '@/qComponents/constants/events';
 
-import type { Nullable } from '#/helpers';
+import type { Nullable, ClassValue } from '#/helpers';
 
 import { useSticky } from '../hooks/sticky';
 import type { StickyConfig } from '../hooks/sticky';
@@ -18,6 +19,8 @@ import type { QTableTProvider } from '../QTableT/types';
 import type { QTableProvider } from '../types';
 
 import type {
+  QTableCellCheckboxIndeterminate,
+  QTableCellCheckboxIsCheckable,
   QTableCellCheckboxProps,
   QTableCellCheckboxInstance
 } from './types';
@@ -31,20 +34,24 @@ export default defineComponent({
       type: String,
       required: true
     },
+
     baseClass: {
       type: String,
       required: true
     },
+
     checked: {
       type: Boolean,
       required: true
     },
+
     indeterminate: {
-      type: Boolean,
+      type: Boolean as PropType<QTableCellCheckboxIndeterminate>,
       default: null
     },
+
     isCheckable: {
-      type: Boolean,
+      type: Boolean as PropType<QTableCellCheckboxIsCheckable>,
       default: true
     }
   },
@@ -59,7 +66,7 @@ export default defineComponent({
       useSticky('left', -1, qTableT.stickyGlobalConfig.value)
     );
 
-    const rootClasses = computed<Record<string, boolean>>(() => ({
+    const rootClasses = computed<ClassValue>(() => ({
       [props.baseClass]: true,
       [`${props.baseClass}_sticked`]: stickyConfig.value.isSticked,
       [`${props.baseClass}_sticked_first`]: stickyConfig.value.isSticked,
@@ -67,11 +74,9 @@ export default defineComponent({
       [`${props.baseClass}_sticked_left`]: stickyConfig.value.isSticked
     }));
 
-    const rootStyles = computed<Record<string, string>>(() => ({
-      left: stickyConfig.value.isSticked ? '0' : '',
-      zIndex: stickyConfig.value.isSticked
-        ? String(stickyConfig.value.zIndex)
-        : ''
+    const rootStyles = computed<StyleValue>(() => ({
+      left: stickyConfig.value.isSticked ? '0' : undefined,
+      zIndex: stickyConfig.value.isSticked ? stickyConfig.value.zIndex : 0
     }));
 
     const handleCheckboxChange = (value: boolean): void => {

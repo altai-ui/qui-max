@@ -1,7 +1,8 @@
 <script lang="ts">
-import { h, defineComponent, computed, PropType, inject, VNode } from 'vue';
+import { h, defineComponent, computed, inject, VNode } from 'vue';
+import type { PropType, StyleValue } from 'vue';
 
-import type { Nullable } from '#/helpers';
+import type { Nullable, ClassValue } from '#/helpers';
 
 import { useSticky } from '../../hooks/sticky';
 import type { StickyConfig } from '../../hooks/sticky';
@@ -38,7 +39,7 @@ export default defineComponent({
       )
     );
 
-    const rootClasses = computed<Record<string, boolean>>(() => ({
+    const rootClasses = computed<ClassValue>(() => ({
       'q-table-t-total-cell': true,
       [`q-table-t-total-cell_align_${props.column.align ?? ''}`]: Boolean(
         props.column.align
@@ -50,7 +51,7 @@ export default defineComponent({
         stickyConfig.value.isSticked
     }));
 
-    const rootStyles = computed<Record<string, string>>(() => ({
+    const rootStyles = computed<StyleValue>(() => ({
       zIndex: stickyConfig.value.isSticked
         ? String(stickyConfig.value.zIndex)
         : '',

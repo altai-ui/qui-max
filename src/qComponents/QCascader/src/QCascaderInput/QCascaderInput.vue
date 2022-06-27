@@ -50,7 +50,7 @@ export default defineComponent({
       {} as QCascaderProvider
     );
 
-    const value = computed<Nullable<string | number>>(() => {
+    const value = computed<Nullable<string>>(() => {
       const modelValue = qCascader.modelValue.value;
 
       if (Array.isArray(modelValue)) return null;

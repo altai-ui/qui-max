@@ -1,6 +1,6 @@
 import type { ComputedRef, Ref } from 'vue';
 
-import type { Nullable } from '#/helpers';
+import type { Nullable, ClassValue } from '#/helpers';
 
 import type { RangePickValue, RangeState } from '../../commonTypes';
 import type { QDatePickerPropShortcuts } from '../../types';
@@ -33,8 +33,8 @@ interface YearRangePanelInstance {
   leftLabel: ComputedRef<string>;
   rightLabel: ComputedRef<string>;
   enableYearArrow: ComputedRef<boolean>;
-  leftPanelClasses: ComputedRef<Record<string, boolean>>;
-  rightPanelClasses: ComputedRef<Record<string, boolean>>;
+  leftPanelClasses: ComputedRef<ClassValue>;
+  rightPanelClasses: ComputedRef<ClassValue>;
   shortcuts: Ref<Nullable<QDatePickerPropShortcuts>>;
   isMobileView: Ref<boolean>;
   handleLeftNextYearClick: () => void;

@@ -1,6 +1,6 @@
 import type { ComputedRef, Ref } from 'vue';
 
-import type { Nullable } from '#/helpers';
+import type { Nullable, ClassValue } from '#/helpers';
 
 import type { QDatePickerPropShortcuts } from '../../types';
 
@@ -28,7 +28,7 @@ interface DatePanelInstance {
   shortcuts: Ref<Nullable<QDatePickerPropShortcuts>>;
   isMobileView: Ref<boolean>;
   datePanel: Ref<Nullable<HTMLElement>>;
-  panelContentClasses: ComputedRef<Record<string, boolean>>;
+  panelContentClasses: ComputedRef<ClassValue>;
   isPeriodTableShown: ComputedRef<boolean>;
   currentMonth: ComputedRef<string>;
   yearLabel: ComputedRef<string | number>;

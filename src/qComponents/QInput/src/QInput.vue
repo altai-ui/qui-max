@@ -71,13 +71,12 @@ import { t } from '@/qComponents/locale';
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
 
-import type { Nullable } from '#/helpers';
+import type { Nullable, ClassValue } from '#/helpers';
 
 import type {
   QInputInstance,
   QInputProps,
   QInputState,
-  QInputClass,
   QInputPropModelValue,
   QInputPropDisabled,
   QInputPropShowSymbolLimit,
@@ -148,7 +147,7 @@ export default defineComponent({
      * as native attrs bind to native input, via rootСlass you can set class for q-input root
      */
     rootClass: {
-      type: [Array, Object] as PropType<QInputPropRootClass>,
+      type: [String, Array, Object] as PropType<QInputPropRootClass>,
       default: null
     }
   },
@@ -240,7 +239,7 @@ export default defineComponent({
       )
     );
 
-    const classes = computed<QInputClass[]>(() => {
+    const classes = computed<ClassValue[]>(() => {
       const mainClass = 'q-input';
 
       return [
@@ -250,7 +249,7 @@ export default defineComponent({
           [`${mainClass}_disabled`]: isDisabled.value,
           [`${mainClass}_suffix`]: isSuffixVisible.value
         }
-      ];
+      ] as ClassValue[];
     });
 
     const textLength = computed<number>(() => props.modelValue?.length ?? 0);

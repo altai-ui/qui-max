@@ -1,9 +1,6 @@
 import type { Ref, ComputedRef } from 'vue';
 
-import type { Nullable } from '#/helpers';
-
-type Classes = Record<string, boolean>;
-export type QInputClass = Nullable<string | Classes | Classes[]>;
+import type { Nullable, ClassValue } from '#/helpers';
 
 export type QInputPropModelValue = Nullable<string>;
 export type QInputPropDisabled = Nullable<boolean>;
@@ -12,7 +9,7 @@ export type QInputPropValidateEvent = Nullable<boolean>;
 export type QInputPropSuffixIcon = Nullable<string>;
 export type QInputPropClearable = Nullable<boolean>;
 export type QInputPropPasswordSwitch = Nullable<boolean>;
-export type QInputPropRootClass = QInputClass;
+export type QInputPropRootClass = Nullable<ClassValue>;
 
 export interface QInputProps {
   modelValue: QInputPropModelValue;
@@ -33,7 +30,7 @@ export interface QInputState {
 
 export interface QInputInstance {
   state: QInputState;
-  classes: ComputedRef<QInputClass[]>;
+  classes: ComputedRef<ClassValue[]>;
   isDisabled: ComputedRef<boolean>;
   isPasswordSwitchShown: Ref<boolean>;
   isSuffixVisible: Ref<boolean>;

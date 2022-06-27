@@ -76,7 +76,9 @@ export default defineComponent({
 
     const rootStyles = computed<StyleValue>(() => ({
       left: stickyConfig.value.isSticked ? '0' : undefined,
-      zIndex: stickyConfig.value.isSticked ? stickyConfig.value.zIndex : 0
+      zIndex: stickyConfig.value.isSticked
+        ? stickyConfig.value.zIndex
+        : undefined
     }));
 
     const handleCheckboxChange = (value: boolean): void => {

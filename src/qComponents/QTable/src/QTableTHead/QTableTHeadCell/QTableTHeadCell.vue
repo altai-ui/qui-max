@@ -76,14 +76,16 @@ export default defineComponent({
     }));
 
     const cellStyles = computed<StyleValue>(() => ({
-      '--group-color': props.column.group.color ?? '',
+      '--group-color': props.column.group.color ?? undefined,
       zIndex: stickyConfig.value.isSticked
-        ? String(stickyConfig.value.zIndex)
-        : '',
+        ? stickyConfig.value.zIndex
+        : undefined,
       [stickyConfig.value.position]: stickyConfig.value.isSticked
         ? `${stickyConfig.value.offset}px`
-        : '',
-      minWidth: qTable.fixedLayout.value ? props.column.minWidth ?? '' : ''
+        : undefined,
+      minWidth: qTable.fixedLayout.value
+        ? props.column.minWidth ?? undefined
+        : undefined
     }));
 
     const currentSlot = computed<Optional<Slot>>(() => {

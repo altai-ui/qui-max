@@ -53,11 +53,11 @@ export default defineComponent({
 
     const rootStyles = computed<StyleValue>(() => ({
       zIndex: stickyConfig.value.isSticked
-        ? String(stickyConfig.value.zIndex)
-        : '',
+        ? stickyConfig.value.zIndex
+        : undefined,
       [stickyConfig.value.position]: stickyConfig.value.isSticked
         ? `${stickyConfig.value.offset}px`
-        : ''
+        : undefined
     }));
 
     const content = computed<Nullable<VNode[] | string | number>>(() => {

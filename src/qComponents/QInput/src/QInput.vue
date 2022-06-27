@@ -75,6 +75,7 @@ import type { Nullable, ClassValue } from '#/helpers';
 
 import type {
   QInputInstance,
+  QInputClass,
   QInputProps,
   QInputState,
   QInputPropModelValue,
@@ -241,15 +242,19 @@ export default defineComponent({
 
     const classes = computed<ClassValue[]>(() => {
       const mainClass = 'q-input';
-
-      return [
+      const classList = <ClassValue[]>[
         mainClass,
-        props.rootClass,
         {
           [`${mainClass}_disabled`]: isDisabled.value,
           [`${mainClass}_suffix`]: isSuffixVisible.value
         }
-      ] as ClassValue[];
+      ];
+
+      if (props.rootClass != null) {
+        classList.push(props.rootClass);
+      }
+
+      return classList;
     });
 
     const textLength = computed<number>(() => props.modelValue?.length ?? 0);

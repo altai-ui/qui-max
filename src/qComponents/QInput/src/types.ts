@@ -5,16 +5,23 @@ import type { Nullable } from '#/helpers';
 type Classes = Record<string, boolean>;
 export type QInputClass = Nullable<string | Classes | Classes[]>;
 
+export type QInputPropModelValue = Nullable<string>;
+export type QInputPropDisabled = Nullable<boolean>;
+export type QInputPropShowSymbolLimit = Nullable<boolean>;
+export type QInputPropValidateEvent = Nullable<boolean>;
+export type QInputPropSuffixIcon = Nullable<string>;
+export type QInputPropClearable = Nullable<boolean>;
+export type QInputPropPasswordSwitch = Nullable<boolean>;
 export type QInputPropRootClass = QInputClass;
 
 export interface QInputProps {
-  modelValue: Nullable<string>;
-  disabled: Nullable<boolean>;
-  showSymbolLimit: Nullable<boolean>;
-  validateEvent: Nullable<boolean>;
-  suffixIcon: Nullable<string>;
-  clearable: Nullable<boolean>;
-  passwordSwitch: Nullable<boolean>;
+  modelValue: QInputPropModelValue;
+  disabled: QInputPropDisabled;
+  showSymbolLimit: QInputPropShowSymbolLimit;
+  validateEvent: QInputPropValidateEvent;
+  suffixIcon: QInputPropSuffixIcon;
+  clearable: QInputPropClearable;
+  passwordSwitch: QInputPropPasswordSwitch;
   rootClass: QInputPropRootClass;
 }
 

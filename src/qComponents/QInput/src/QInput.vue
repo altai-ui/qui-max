@@ -75,10 +75,17 @@ import type { Nullable } from '#/helpers';
 
 import type {
   QInputInstance,
-  QInputPropRootClass,
   QInputProps,
   QInputState,
-  QInputClass
+  QInputClass,
+  QInputPropModelValue,
+  QInputPropDisabled,
+  QInputPropShowSymbolLimit,
+  QInputPropValidateEvent,
+  QInputPropSuffixIcon,
+  QInputPropClearable,
+  QInputPropPasswordSwitch,
+  QInputPropRootClass
 } from './types';
 
 export default defineComponent({
@@ -92,49 +99,49 @@ export default defineComponent({
      * default to v-model
      */
     modelValue: {
-      type: String,
+      type: String as PropType<QInputPropModelValue>,
       default: null
     },
     /**
      * whether input is disabled
      */
     disabled: {
-      type: Boolean,
+      type: Boolean as PropType<QInputPropDisabled>,
       default: false
     },
     /**
      * shows the counter
      */
     showSymbolLimit: {
-      type: Boolean,
+      type: Boolean as PropType<QInputPropShowSymbolLimit>,
       default: false
     },
     /**
      * validate parent form if present
      */
     validateEvent: {
-      type: Boolean,
+      type: Boolean as PropType<QInputPropValidateEvent>,
       default: true
     },
     /**
      * suffix icon class
      */
     suffixIcon: {
-      type: String,
+      type: String as PropType<QInputPropSuffixIcon>,
       default: null
     },
     /**
      * whether to show clear button
      */
     clearable: {
-      type: Boolean,
+      type: Boolean as PropType<QInputPropClearable>,
       default: false
     },
     /**
      * whether to show password
      */
     passwordSwitch: {
-      type: Boolean,
+      type: Boolean as PropType<QInputPropPasswordSwitch>,
       default: false
     },
     /**

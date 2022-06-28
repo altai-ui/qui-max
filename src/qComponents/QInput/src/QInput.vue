@@ -240,18 +240,10 @@ export default defineComponent({
     );
 
     const classes = computed<ClassValue>(() => {
-      const mainClass = 'q-input';
-      const classList = <IsArray<ClassValue>>[
-        mainClass,
-        {
-          [`${mainClass}_disabled`]: isDisabled.value,
-          [`${mainClass}_suffix`]: isSuffixVisible.value
-        }
-      ];
+      const classList: IsArray<ClassValue> = ['q-input', props.rootClass];
 
-      if (props.rootClass != null) {
-        classList.push(props.rootClass);
-      }
+      if (isDisabled.value) classList.push('q-input_disabled');
+      if (isSuffixVisible.value) classList.push('q-input_suffix');
 
       return classList;
     });

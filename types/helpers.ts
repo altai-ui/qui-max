@@ -9,5 +9,8 @@ export type UnwrappedInstance<T> = Nullable<
 >;
 export type Enumerable<T> = T | T[];
 export type IsArray<T> = T extends unknown[] ? T : never;
+export type UnpackArrayType<T> = T extends (infer R)[] ? R : T;
 
-export type ClassValue = Enumerable<string | Record<string, boolean>>;
+export type ClassValue = Nillable<
+  ClassValue[] | Record<string, unknown> | string | number | boolean
+>;

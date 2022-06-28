@@ -8,7 +8,6 @@ export type UnwrappedInstance<T> = Nullable<
   ComponentPublicInstance<UnwrapRef<T>>
 >;
 export type Enumerable<T> = T | T[];
+export type IsArray<T> = T extends unknown[] ? T : never;
 
-export type ClassValue =
-  | Enumerable<string>
-  | Enumerable<Record<string, boolean>>;
+export type ClassValue = Enumerable<string | Record<string, boolean>>;

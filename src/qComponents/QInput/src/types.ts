@@ -30,7 +30,7 @@ export interface QInputState {
 
 export interface QInputInstance {
   state: QInputState;
-  classes: ComputedRef<ClassValue[]>;
+  classes: ComputedRef<ClassValue>;
   isDisabled: ComputedRef<boolean>;
   isPasswordSwitchShown: Ref<boolean>;
   isSuffixVisible: Ref<boolean>;

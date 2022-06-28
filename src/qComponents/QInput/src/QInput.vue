@@ -71,11 +71,10 @@ import { t } from '@/qComponents/locale';
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
 
-import type { Nullable, ClassValue } from '#/helpers';
+import type { Nullable, ClassValue, IsArray } from '#/helpers';
 
 import type {
   QInputInstance,
-  QInputClass,
   QInputProps,
   QInputState,
   QInputPropModelValue,
@@ -240,9 +239,9 @@ export default defineComponent({
       )
     );
 
-    const classes = computed<ClassValue[]>(() => {
+    const classes = computed<ClassValue>(() => {
       const mainClass = 'q-input';
-      const classList = <ClassValue[]>[
+      const classList = <IsArray<ClassValue>>[
         mainClass,
         {
           [`${mainClass}_disabled`]: isDisabled.value,

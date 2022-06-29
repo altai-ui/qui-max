@@ -471,7 +471,7 @@ export default defineComponent({
     });
 
     const qSelectClasses = computed<ClassValue>(() => ({
-      'q-select__disabled': isDisabled.value
+      'q-select_disabled': isDisabled.value
     }));
 
     const iconClass = computed<string>(() => {

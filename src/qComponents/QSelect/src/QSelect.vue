@@ -2,6 +2,7 @@
   <div
     ref="root"
     class="q-select"
+    :class="qSelectClasses"
     @click="toggleMenu"
     @mouseenter="state.hover = true"
     @mouseleave="state.hover = false"
@@ -122,7 +123,12 @@ import type { QFormItemProvider } from '@/qComponents/QFormItem';
 import type { QInputInstance } from '@/qComponents/QInput';
 import type { QOptionModel, QOptionPropValue } from '@/qComponents/QOption';
 
-import type { Nullable, Optional, UnwrappedInstance } from '#/helpers';
+import type {
+  Nullable,
+  Optional,
+  UnwrappedInstance,
+  ClassValue
+} from '#/helpers';
 
 import QSelectDropdown from './components/QSelectDropdown';
 import type { QSelectDropdownInstance } from './components/QSelectDropdown';
@@ -463,6 +469,10 @@ export default defineComponent({
         props.clearable && !isDisabled.value && state.hover && hasValue
       );
     });
+
+    const qSelectClasses = computed<ClassValue>(() => ({
+      'q-select__disabled': isDisabled.value
+    }));
 
     const iconClass = computed<string>(() => {
       if (props.remote && props.filterable) return 'q-icon-search';
@@ -944,6 +954,7 @@ export default defineComponent({
       isReadonly,
       isDisabled,
       isClearBtnShown,
+      qSelectClasses,
       iconClass,
       emptyText,
       isNewOptionShown,

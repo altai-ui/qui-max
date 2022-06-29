@@ -12,5 +12,5 @@ export type IsArray<T> = T extends unknown[] ? T : never;
 export type UnpackArrayType<T> = T extends (infer R)[] ? R : T;
 
 export type ClassValue = Nillable<
-  ClassValue[] | Record<string, unknown> | string
+  ClassValue[] | Record<string, Nillable<boolean>> | string
 >;

@@ -8,7 +8,14 @@ const storyMetadata: Meta = {
   title: 'Components/QCheckbox',
   component: QCheckbox,
   argTypes: {
-    modelValue: { control: { type: 'none' } },
+    modelValue: {
+      control: { type: 'boolean' },
+      defaultValue: true
+    },
+    indeterminate: {
+      control: { type: 'boolean' },
+      defaultValue: true
+    },
     labelSize: {
       options: ['regular', 'small'],
       control: { type: 'select' },
@@ -20,7 +27,7 @@ const storyMetadata: Meta = {
 const Template: Story<QCheckboxProps> = args =>
   defineComponent({
     setup() {
-      const isChecked = ref<boolean>(true);
+      const isChecked = ref<boolean>(!!args.modelValue);
 
       return {
         isChecked,
@@ -54,6 +61,7 @@ Disabled.args = {
 export const Indeterminate = Template.bind({});
 Indeterminate.args = {
   label: 'Option A',
+  modelValue: false,
   indeterminate: true
 };
 

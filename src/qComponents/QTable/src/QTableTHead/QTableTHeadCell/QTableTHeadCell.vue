@@ -1,16 +1,8 @@
 <script lang="ts">
-import {
-  h,
-  defineComponent,
-  ref,
-  computed,
-  PropType,
-  inject,
-  VNode,
-  Slot
-} from 'vue';
+import { h, defineComponent, ref, computed, inject, VNode, Slot } from 'vue';
+import type { PropType, StyleValue } from 'vue';
 
-import type { Nullable, Optional } from '#/helpers';
+import type { Nullable, Optional, ClassValue } from '#/helpers';
 
 import { useSticky } from '../../hooks/sticky';
 import type { StickyConfig } from '../../hooks/sticky';
@@ -67,7 +59,7 @@ export default defineComponent({
       () => props.sortBy?.key === props.column.key
     );
 
-    const cellClasses = computed<Record<string, boolean>>(() => ({
+    const cellClasses = computed<ClassValue>(() => ({
       'q-table-t-head-cell': true,
       [`q-table-t-head-cell_align_${props.column.align ?? ''}`]: Boolean(
         props.column.align
@@ -83,15 +75,17 @@ export default defineComponent({
         isCurrentSorting.value && Boolean(props.sortBy?.direction)
     }));
 
-    const cellStyles = computed<Record<string, string>>(() => ({
-      '--group-color': props.column.group.color ?? '',
+    const cellStyles = computed<StyleValue>(() => ({
+      '--group-color': props.column.group.color ?? undefined,
       zIndex: stickyConfig.value.isSticked
-        ? String(stickyConfig.value.zIndex)
-        : '',
+        ? stickyConfig.value.zIndex
+        : undefined,
       [stickyConfig.value.position]: stickyConfig.value.isSticked
         ? `${stickyConfig.value.offset}px`
-        : '',
-      minWidth: qTable.fixedLayout.value ? props.column.minWidth ?? '' : ''
+        : undefined,
+      minWidth: qTable.fixedLayout.value
+        ? props.column.minWidth ?? undefined
+        : undefined
     }));
 
     const currentSlot = computed<Optional<Slot>>(() => {
@@ -99,7 +93,7 @@ export default defineComponent({
       return qTable.slots[slotName];
     });
 
-    const contentClasses = computed<Record<string, boolean>>(() => ({
+    const contentClasses = computed<ClassValue>(() => ({
       'q-table-t-head-cell__content': true,
       'q-table-t-head-cell__content_ellipsis': !currentSlot.value
     }));
@@ -115,7 +109,7 @@ export default defineComponent({
       });
     });
 
-    const sortArrowElClasses = computed<Record<string, boolean>>(() => {
+    const sortArrowElClasses = computed<ClassValue>(() => {
       const isDirectionAsc = props.sortBy?.direction === 'ascending';
       const isArrowUpShown = isCurrentSorting.value && isDirectionAsc;
 

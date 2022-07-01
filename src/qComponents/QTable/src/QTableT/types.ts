@@ -1,6 +1,6 @@
 import type { Ref, ComputedRef } from 'vue';
 
-import type { Nullable, UnwrappedInstance } from '#/helpers';
+import type { Nullable, ClassValue, UnwrappedInstance } from '#/helpers';
 
 import type {
   StickyGlobalConfig,
@@ -18,5 +18,5 @@ export interface QTableTInstance {
   sticky: Ref<UnwrappedInstance<QTableTStickyInstance>>;
   isColgroupShown: ComputedRef<boolean>;
   isTotalShown: ComputedRef<boolean>;
-  rootClasses: ComputedRef<Record<string, boolean>>;
+  rootClasses: ComputedRef<ClassValue>;
 }

@@ -4,7 +4,7 @@ import type { Ref, ComputedRef } from 'vue';
 import type { QInputInstance } from '@/qComponents/QInput';
 import type { QOptionModel, QOptionPropValue } from '@/qComponents/QOption';
 
-import type { Nullable, UnwrappedInstance } from '#/helpers';
+import type { Nullable, UnwrappedInstance, ClassValue } from '#/helpers';
 
 import type { QSelectDropdownInstance } from './components/QSelectDropdown';
 import type { QSelectTagsInstance } from './components/QSelectTags';
@@ -76,6 +76,7 @@ export interface QSelectInstance {
   isReadonly: ComputedRef<Nullable<boolean>>;
   isDisabled: ComputedRef<boolean>;
   isClearBtnShown: ComputedRef<Nullable<boolean>>;
+  qSelectClasses: ComputedRef<ClassValue>;
   iconClass: ComputedRef<string>;
   emptyText: ComputedRef<string>;
   isNewOptionShown: ComputedRef<boolean>;

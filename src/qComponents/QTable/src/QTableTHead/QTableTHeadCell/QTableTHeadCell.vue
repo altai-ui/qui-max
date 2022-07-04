@@ -4,6 +4,7 @@ import type { PropType, StyleValue } from 'vue';
 
 import type { Nullable, Optional, ClassValue } from '#/helpers';
 
+import { DEFAULT_SORTING_ORDER } from '../../config';
 import { useSticky } from '../../hooks/sticky';
 import type { StickyConfig } from '../../hooks/sticky';
 import type { ExtendedColumn } from '../../QTableContainer/types';
@@ -124,27 +125,13 @@ export default defineComponent({
 
     let sortCounter = 0;
     const handleSortArrowClick = (): void => {
-      const currentDirection = props.sortBy?.direction ?? null;
       let newDirection: SortDirection = null;
-      const { sortOrder } = props.column;
+      const sortOrder = props.column.sortOrder ?? DEFAULT_SORTING_ORDER;
 
       if (Array.isArray(sortOrder)) {
         newDirection = sortOrder[sortCounter];
         sortCounter =
           sortOrder.length - 1 === sortCounter ? 0 : (sortCounter += 1);
-      } else {
-        switch (currentDirection) {
-          case null:
-            newDirection = 'descending';
-            break;
-
-          case 'descending':
-            newDirection = 'ascending';
-            break;
-
-          default:
-            break;
-        }
       }
 
       qTable.updateSortBy({

@@ -14,6 +14,7 @@ export interface Column {
   value: Nullable<string | number>;
   isHidden?: boolean;
   sortable?: boolean;
+  sortOrder?: Nullable<'ascending' | 'descending'>[];
   draggable?: boolean;
   align?: 'left' | 'right';
   slots?: Record<string, string>;

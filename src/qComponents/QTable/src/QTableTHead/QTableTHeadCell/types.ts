@@ -1,6 +1,6 @@
 import type { VNode } from 'vue';
 
-import type { Nullable } from '#/helpers';
+import type { ClassValue, Nullable } from '#/helpers';
 
 import type { ExtendedColumn } from '../../QTableContainer/types';
 
@@ -17,3 +17,8 @@ export interface QTableTHeadCellProps {
 }
 
 export type QTableTHeadCellInstance = () => VNode;
+
+export interface QTableTHeadCellContainerAttrs {
+  class: ClassValue;
+  onClick?: () => void;
+}

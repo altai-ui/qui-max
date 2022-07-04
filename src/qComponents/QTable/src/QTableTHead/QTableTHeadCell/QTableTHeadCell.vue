@@ -13,7 +13,8 @@ import type { QTableProvider } from '../../types';
 import type {
   QTableTHeadCellProps,
   QTableTHeadCellPropSortBy,
-  QTableTHeadCellInstance
+  QTableTHeadCellInstance,
+  QTableTHeadCellContainerAttrs
 } from './types';
 
 export default defineComponent({
@@ -55,6 +56,10 @@ export default defineComponent({
     );
 
     const isSortable = computed<boolean>(() => Boolean(props.column.sortable));
+    const hasSortOrder = computed<boolean>(() =>
+      Boolean(props.column.sortOrder)
+    );
+    console.log(props.column.sortOrder);
     const isCurrentSorting = computed<boolean>(
       () => props.sortBy?.key === props.column.key
     );
@@ -95,7 +100,8 @@ export default defineComponent({
 
     const contentClasses = computed<ClassValue>(() => ({
       'q-table-t-head-cell__content': true,
-      'q-table-t-head-cell__content_ellipsis': !currentSlot.value
+      'q-table-t-head-cell__content_ellipsis': !currentSlot.value,
+      'q-table-t-head-cell__content_sortable': isSortable.value
     }));
 
     const content = computed<Nullable<VNode[] | string | number>>(() => {
@@ -120,27 +126,43 @@ export default defineComponent({
       };
     });
 
+    let sortCounter = 0;
     const handleSortArrowClick = (): void => {
-      const oldDirection = props.sortBy?.direction ?? null;
+      const currentDirection = props.sortBy?.direction ?? null;
+      let newDirection: Nullable<'ascending' | 'descending'> = null;
 
-      let direction: Nullable<'ascending' | 'descending'> = null;
+      const sortOrder = props.column.sortOrder;
+      if (sortOrder && Array.isArray(sortOrder)) {
+        const sortOrderLength = sortOrder.length;
 
-      switch (oldDirection) {
-        case null:
-          direction = 'descending';
-          break;
+        const makeCounter = (): (() => number) => {
+          return () => {
+            sortCounter =
+              sortOrderLength - 1 === sortCounter ? 0 : (sortCounter += 1);
+            return sortCounter;
+          };
+        };
 
-        case 'descending':
-          direction = 'ascending';
-          break;
+        const currentDirectionIndex = makeCounter();
+        newDirection = sortOrder[currentDirectionIndex()];
+      } else {
+        switch (currentDirection) {
+          case null:
+            newDirection = 'descending';
+            break;
 
-        default:
-          break;
+          case 'descending':
+            newDirection = 'ascending';
+            break;
+
+          default:
+            break;
+        }
       }
 
       qTable.updateSortBy({
         key: props.column.key,
-        direction
+        direction: newDirection
       });
     };
 
@@ -245,6 +267,12 @@ export default defineComponent({
       ];
     });
 
+    const cellContainerAttrs: QTableTHeadCellContainerAttrs = {
+      class: contentClasses.value
+    };
+
+    if (isSortable.value) cellContainerAttrs.onClick = handleSortArrowClick;
+
     return (): VNode =>
       h(
         'th',
@@ -253,7 +281,7 @@ export default defineComponent({
           dummyEl.value,
           dropZoneEls.value,
           h('div', { class: 'q-table-t-head-cell__container' }, [
-            h('div', { class: contentClasses.value }, [content.value]),
+            h('div', cellContainerAttrs, [content.value]),
             sortArrowEl.value,
             dragTriggerEl.value
           ])

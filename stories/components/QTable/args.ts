@@ -16,7 +16,8 @@ const groupsOfColumns = [
       {
         key: 'col3',
         value: 'Column 3',
-        sortable: true
+        sortable: true,
+        sortOrder: ['ascending', 'descending']
       },
       {
         key: 'col4',

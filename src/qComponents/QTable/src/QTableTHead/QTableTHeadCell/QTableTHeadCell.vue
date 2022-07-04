@@ -8,7 +8,7 @@ import { useSticky } from '../../hooks/sticky';
 import type { StickyConfig } from '../../hooks/sticky';
 import type { ExtendedColumn } from '../../QTableContainer/types';
 import type { QTableTProvider } from '../../QTableT/types';
-import type { QTableProvider } from '../../types';
+import type { QTableProvider, SortDirection } from '../../types';
 
 import type {
   QTableTHeadCellProps,
@@ -125,22 +125,13 @@ export default defineComponent({
     let sortCounter = 0;
     const handleSortArrowClick = (): void => {
       const currentDirection = props.sortBy?.direction ?? null;
-      let newDirection: Nullable<'ascending' | 'descending'> = null;
+      let newDirection: SortDirection = null;
+      const { sortOrder } = props.column;
 
-      const sortOrder = props.column.sortOrder;
-      if (sortOrder && Array.isArray(sortOrder)) {
-        const sortOrderLength = sortOrder.length;
-
-        const makeCounter = (): (() => number) => {
-          return () => {
-            sortCounter =
-              sortOrderLength - 1 === sortCounter ? 0 : (sortCounter += 1);
-            return sortCounter;
-          };
-        };
-
-        const currentDirectionIndex = makeCounter();
-        newDirection = sortOrder[currentDirectionIndex()];
+      if (Array.isArray(sortOrder)) {
+        newDirection = sortOrder[sortCounter];
+        sortCounter =
+          sortOrder.length - 1 === sortCounter ? 0 : (sortCounter += 1);
       } else {
         switch (currentDirection) {
           case null:

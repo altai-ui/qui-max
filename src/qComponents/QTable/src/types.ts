@@ -14,7 +14,7 @@ export interface Column {
   value: Nullable<string | number>;
   isHidden?: boolean;
   sortable?: boolean;
-  sortOrder?: Nullable<'ascending' | 'descending'>[];
+  sortOrder?: SortDirection[];
   draggable?: boolean;
   align?: 'left' | 'right';
   slots?: Record<string, string>;
@@ -40,9 +40,11 @@ export interface GroupOfColumns {
   draggable?: boolean;
 }
 
+export type SortDirection = Nullable<'ascending' | 'descending'>;
+
 export interface SortBy {
   key: Nullable<string>;
-  direction: Nullable<'ascending' | 'descending'>;
+  direction: SortDirection;
 }
 
 export type Row = Record<string, unknown>;

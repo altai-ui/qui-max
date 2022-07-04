@@ -56,10 +56,6 @@ export default defineComponent({
     );
 
     const isSortable = computed<boolean>(() => Boolean(props.column.sortable));
-    const hasSortOrder = computed<boolean>(() =>
-      Boolean(props.column.sortOrder)
-    );
-    console.log(props.column.sortOrder);
     const isCurrentSorting = computed<boolean>(
       () => props.sortBy?.key === props.column.key
     );

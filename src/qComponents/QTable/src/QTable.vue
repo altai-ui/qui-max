@@ -107,6 +107,7 @@ export default defineComponent({
      * Each column MAY contain:
      *  `isHidden`.
      *  `sortable`.
+     *  `sortOrder`. (MUST be an array of keywords - 'ascending', 'descending', null. Works with `sortable: true`)
      *  `draggable`.
      *  `slots`.
      *  `align` (left/right) - content's align.

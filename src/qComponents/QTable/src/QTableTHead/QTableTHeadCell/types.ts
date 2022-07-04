@@ -1,12 +1,13 @@
 import type { VNode } from 'vue';
 
-import type { Nullable } from '#/helpers';
+import type { ClassValue, Nullable } from '#/helpers';
 
 import type { ExtendedColumn } from '../../QTableContainer/types';
+import type { SortDirection } from '../../types';
 
 export interface QTableTHeadCellPropSortBy {
   key: Nullable<string>;
-  direction: Nullable<'ascending' | 'descending'>;
+  direction: SortDirection;
 }
 
 export interface QTableTHeadCellProps {
@@ -17,3 +18,8 @@ export interface QTableTHeadCellProps {
 }
 
 export type QTableTHeadCellInstance = () => VNode;
+
+export interface QTableTHeadCellContainerAttrs {
+  class: ClassValue;
+  onClick?: () => void;
+}

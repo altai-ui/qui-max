@@ -14,7 +14,7 @@ const storyMetadata: Meta = {
     },
     indeterminate: {
       control: { type: 'boolean' },
-      defaultValue: true
+      defaultValue: false
     },
     labelSize: {
       options: ['regular', 'small'],

@@ -61,6 +61,8 @@ import type { PropType } from 'vue';
 import { getConfig } from '@/qComponents/config';
 import { notNull } from '@/qComponents/helpers';
 
+import type { Nullable, ClassValue } from '#/helpers';
+
 import type { DateCellModel, RangeState, TableProps } from '../../commonTypes';
 import {
   DAYS_IN_WEEK,
@@ -90,11 +92,20 @@ export default defineComponent({
       validator: notNull
     },
 
-    value: { type: Date, default: null },
+    value: {
+      type: Date as PropType<Nullable<Date>>,
+      default: null
+    },
 
-    minDate: { type: Date, default: null },
+    minDate: {
+      type: Date as PropType<Nullable<Date>>,
+      default: null
+    },
 
-    maxDate: { type: Date, default: null },
+    maxDate: {
+      type: Date as PropType<Nullable<Date>>,
+      default: null
+    },
 
     rangeState: {
       type: Object as PropType<RangeState>,
@@ -232,7 +243,7 @@ export default defineComponent({
       });
     });
 
-    const getCellClasses = (cell: DateCellModel): string[] => {
+    const getCellClasses = (cell: DateCellModel): ClassValue => {
       const classes = ['cell', 'cell_date'];
       if (['today', 'prev-month', 'next-month'].includes(cell.type)) {
         classes.push(`cell_${cell.type}`);

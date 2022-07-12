@@ -3,7 +3,7 @@
     :id="uniqueId"
     :class="rootClasses"
     role="menuitem"
-    :tabindex="row.disabled ? false : -1"
+    :tabindex="row.disabled ? undefined : -1"
     @click="handleClick"
     @keyup.right="handleRightKeyUp"
     @keyup.enter="handleEnterKeyUp"

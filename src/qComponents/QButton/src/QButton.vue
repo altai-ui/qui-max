@@ -49,7 +49,7 @@ import type {
 
 const defaultPropTypeValue = 'default';
 const defaultPropThemeValue = 'primary';
-const defaultPropSizeValue = 'medium';
+const defaultPropSizeValue = 'regular';
 
 export default defineComponent({
   name: 'QButton',
@@ -76,7 +76,7 @@ export default defineComponent({
     size: {
       type: String as PropType<QButtonPropSize>,
       default: defaultPropSizeValue,
-      validator: validateArray<QButtonPropSize>(['small', 'medium'])
+      validator: validateArray<QButtonPropSize>(['small', 'regular'])
     },
 
     /**

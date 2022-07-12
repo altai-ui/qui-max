@@ -1,6 +1,6 @@
 import type { ComputedRef, Ref } from 'vue';
 
-import type { Nullable } from '#/helpers';
+import type { Nullable, ClassValue } from '#/helpers';
 
 import type { RangeState, RangePickValue } from '../../commonTypes';
 import type { QDatePickerPropShortcuts } from '../../types';
@@ -34,8 +34,8 @@ interface DateRangePanelInstance {
   enableMonthArrow: ComputedRef<boolean>;
   isLeftTimeDisabled: ComputedRef<boolean>;
   enableYearArrow: ComputedRef<boolean>;
-  rightPanelClasses: ComputedRef<Record<string, boolean>>;
-  leftPanelClasses: ComputedRef<Record<string, boolean>>;
+  rightPanelClasses: ComputedRef<ClassValue>;
+  leftPanelClasses: ComputedRef<ClassValue>;
   rightYear: ComputedRef<number>;
   leftYear: ComputedRef<number>;
   leftLabel: ComputedRef<string>;

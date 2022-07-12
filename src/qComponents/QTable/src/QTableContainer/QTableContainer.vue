@@ -16,8 +16,9 @@
 
 <script lang="ts">
 import { defineComponent, computed, ref, provide, inject } from 'vue';
+import type { StyleValue } from 'vue';
 
-import type { Nullable } from '#/helpers';
+import type { Optional } from '#/helpers';
 
 import QTableT from '../QTableT/QTableT.vue';
 import type { QTableProvider } from '../types';
@@ -54,13 +55,13 @@ export default defineComponent({
       Boolean(qTable.selectionColumn.value?.enabled)
     );
 
-    const tableWidth = ref<Nullable<number>>(null);
+    const tableWidth = ref<Optional<number>>(0);
 
-    const wrapperStyles = computed<{ width: Nullable<string> }>(() => ({
-      width: tableWidth.value ? `${tableWidth.value}px` : null
+    const wrapperStyles = computed<StyleValue>(() => ({
+      width: tableWidth.value ? `${tableWidth.value}px` : undefined
     }));
 
-    const handleWidthChange = (width: Nullable<number>): void => {
+    const handleWidthChange = (width: Optional<number>): void => {
       tableWidth.value = width;
     };
 

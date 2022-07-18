@@ -181,7 +181,7 @@ export default defineComponent({
     const getMonthName = (monthIndex: number): string => {
       return formatToLocalReadableString(
         new Date(props.year, monthIndex, 1),
-        'MMM',
+        'LLL',
         getConfig('locale')
       );
     };

@@ -85,7 +85,7 @@ export default defineComponent({
       [stickyConfig.value.position]: stickyConfig.value.isSticked
         ? `${stickyConfig.value.offset}px`
         : undefined,
-      minWidth: qTable.fixedLayout.value
+      minWidth: !qTable.fixedLayout.value
         ? props.column.minWidth ?? undefined
         : undefined
     }));

@@ -62,7 +62,7 @@
     "@vue/test-utils": "^2.0.0-rc.21",
     "@vuedx/typescript-plugin-vue": "^0.7.5",
     "babel-loader": "^8.2.5",
-    "c8": "^7.11.2",
+    "c8": "^7.12.0",
     "css-loader": "^6.7.1",
     "eslint": "^8.14.0",
     "eslint-config-airbnb": "^19.0.4",

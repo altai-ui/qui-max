@@ -90,8 +90,8 @@ Result:
 
 ### size
 
-- Type: `'medium'` | `'small'`
-- Default: `'medium'`
+- Type: `'regular'` | `'small'`
+- Default: `'regular'`
 
 Changes button size.
 

@@ -2,30 +2,20 @@
   <component
     :is="rootTag || 'label'"
     class="q-checkbox"
-    :class="{
-      'q-checkbox_disabled': isDisabled,
-      'q-checkbox_checked': isChecked
-    }"
+    :class="qCheckboxClasses"
     @click.prevent="handleCheckboxClick"
   >
     <span
       class="q-checkbox__input"
-      :class="{
-        'q-checkbox__input_disabled': isDisabled,
-        'q-checkbox__input_checked': isChecked,
-        'q-checkbox__input_focus': focus
-      }"
-      :tabindex="indeterminate ? 0 : false"
-      :role="indeterminate ? 'checkbox' : false"
-      :aria-checked="indeterminate ? 'mixed' : false"
+      :class="qCheckboxInputClasses"
+      :tabindex="isIndeterminate ? 0 : undefined"
+      :role="isIndeterminate ? 'checkbox' : undefined"
+      :aria-checked="isIndeterminate ? 'mixed' : false"
     >
       <span class="q-checkbox__inner">
         <span
           class="q-checkbox__inner-icon"
-          :class="{
-            'q-icon-minus': indeterminate,
-            'q-icon-check': isChecked
-          }"
+          :class="qCheckboxInnerIconClasses"
         />
       </span>
       <input
@@ -34,7 +24,7 @@
         :value="isChecked"
         class="q-checkbox__original"
         type="checkbox"
-        :aria-hidden="indeterminate ? 'true' : 'false'"
+        :aria-hidden="isIndeterminate ? 'true' : 'false'"
         :disabled="isDisabled"
         @focus="focus = true"
         @blur="focus = false"
@@ -43,6 +33,7 @@
     <span
       v-if="$slots.default || label"
       class="q-checkbox__label"
+      :class="labelClass"
     >
       <slot>{{ label }}</slot>
     </span>
@@ -51,14 +42,26 @@
 
 <script lang="ts">
 import { computed, defineComponent, inject, watch, ref } from 'vue';
+import type { PropType } from 'vue';
 
+import { validateArray } from '@/qComponents/helpers';
 import type { QCheckboxGroupProvider } from '@/qComponents/QCheckboxGroup';
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
 
-import type { Nullable } from '#/helpers';
+import type { Nullable, ClassValue } from '#/helpers';
 
-import type { QCheckboxProps, QCheckboxInstance } from './types';
+import type {
+  QCheckboxProps,
+  QCheckboxInstance,
+  QCheckboxPropLabelSize,
+  QCheckboxPropModelValue,
+  QCheckboxPropLabel,
+  QCheckboxPropIndeterminate,
+  QCheckboxPropDisabled,
+  QCheckboxPropRootTag,
+  QCheckboxPropValidateEvent
+} from './types';
 
 export default defineComponent({
   name: 'QCheckbox',
@@ -70,24 +73,50 @@ export default defineComponent({
     /**
      * Array for group, Boolean for single
      */
-    modelValue: { type: Boolean, default: null },
+    modelValue: {
+      type: Boolean as PropType<QCheckboxPropModelValue>,
+      default: null
+    },
     /**
      * Checkbox label
      */
-    label: { type: String, default: null },
+    label: {
+      type: String as PropType<QCheckboxPropLabel>,
+      default: null
+    },
     /**
      * wheteher Checkbox is indeterminate
      */
-    indeterminate: { type: Boolean, default: false },
+    indeterminate: {
+      type: Boolean as PropType<QCheckboxPropIndeterminate>,
+      default: false
+    },
     /**
      * wheteher Checkbox is disabled
      */
-    disabled: { type: Boolean, default: false },
-    rootTag: { type: String, default: 'label' },
+    disabled: {
+      type: Boolean as PropType<QCheckboxPropDisabled>,
+      default: false
+    },
+    rootTag: {
+      type: String as PropType<QCheckboxPropRootTag>,
+      default: 'label'
+    },
     /**
      * wheteher is validate parent q-form if present
      */
-    validateEvent: { type: Boolean, default: false }
+    validateEvent: {
+      type: Boolean as PropType<QCheckboxPropValidateEvent>,
+      default: false
+    },
+    /**
+     * label size
+     */
+    labelSize: {
+      type: String as PropType<QCheckboxPropLabelSize>,
+      default: 'regular',
+      validator: validateArray<QCheckboxPropLabelSize>(['regular', 'small'])
+    }
   },
 
   emits: [
@@ -98,7 +127,11 @@ export default defineComponent({
     /**
      * alias for update:modelValue
      */
-    'change'
+    'change',
+    /**
+     * triggers when click
+     */
+    'click'
   ],
 
   setup(props: QCheckboxProps, ctx): QCheckboxInstance {
@@ -141,7 +174,33 @@ export default defineComponent({
         : props.disabled || (qForm?.disabled.value ?? false)
     );
 
-    const handleCheckboxClick = (): void => {
+    const isIndeterminate = computed<boolean>(
+      () => !isChecked.value && Boolean(props.indeterminate)
+    );
+
+    const labelClass = computed<ClassValue>(
+      () => `q-checkbox__label_size_${props.labelSize ?? 'regular'}`
+    );
+
+    const qCheckboxClasses = computed<ClassValue>(() => ({
+      'q-checkbox_disabled': isDisabled.value,
+      'q-checkbox_checked': isChecked.value,
+      'q-checkbox_indeterminate': isIndeterminate.value
+    }));
+
+    const qCheckboxInputClasses = computed<ClassValue>(() => ({
+      'q-checkbox__input_disabled': isDisabled.value,
+      'q-checkbox__input_checked': isChecked.value,
+      'q-checkbox__input_indeterminate': isIndeterminate.value,
+      'q-checkbox__input_focus': focus.value
+    }));
+
+    const qCheckboxInnerIconClasses = computed<ClassValue>(() => ({
+      'q-icon-minus': isIndeterminate.value,
+      'q-icon-check': isChecked.value
+    }));
+
+    const handleCheckboxClick = (event: Event): void => {
       if (isDisabled.value) return;
 
       const value = !isChecked.value;
@@ -162,6 +221,8 @@ export default defineComponent({
 
         qCheckboxGroup.update(Array.from(set));
       }
+
+      ctx.emit('click', event);
     };
 
     watch(
@@ -182,11 +243,16 @@ export default defineComponent({
     return {
       focus,
       isChecked,
+      isIndeterminate,
       isLimitDisabled,
       isDisabled,
       nativeClick,
       checkboxInput,
-      handleCheckboxClick
+      handleCheckboxClick,
+      labelClass,
+      qCheckboxClasses,
+      qCheckboxInputClasses,
+      qCheckboxInnerIconClasses
     };
   }
 });

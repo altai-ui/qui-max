@@ -5,7 +5,7 @@
         <img
           :src="image"
           class="q-table-empty__img"
-          :alt="noDataText"
+          :alt="noDataText ?? ''"
         />
       </div>
 
@@ -18,11 +18,16 @@
 
 <script lang="ts">
 import { defineComponent, computed } from 'vue';
+import type { PropType } from 'vue';
 
 import image from '@/assets/empty-table-v2.svg';
 import { t } from '@/qComponents/locale';
 
-import type { QTableEmptyProps, QTableEmptyInstance } from './types';
+import type {
+  QTableEmptyPropEmptyText,
+  QTableEmptyProps,
+  QTableEmptyInstance
+} from './types';
 
 export default defineComponent({
   name: 'QTableEmpty',
@@ -30,7 +35,7 @@ export default defineComponent({
 
   props: {
     emptyText: {
-      type: String,
+      type: String as PropType<QTableEmptyPropEmptyText>,
       default: null
     }
   },

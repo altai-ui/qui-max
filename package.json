@@ -1,6 +1,6 @@
 {
   "name": "@qvant/qui-max",
-  "version": "0.14.0",
+  "version": "0.17.0",
   "private": false,
   "description": "A Vue 3 Design system for Web.",
   "author": {
@@ -46,7 +46,7 @@
     "@storybook/addon-essentials": "^6.4.22",
     "@storybook/addon-links": "^6.4.22",
     "@storybook/addon-storysource": "^6.4.22",
-    "@storybook/builder-webpack5": "^6.4.22",
+    "@storybook/builder-webpack5": "^6.5.9",
     "@storybook/manager-webpack5": "^6.4.22",
     "@storybook/preset-scss": "^1.0.3",
     "@storybook/vue3": "^6.4.22",
@@ -73,7 +73,7 @@
     "eslint-plugin-vue": "^8.7.1",
     "happy-dom": "^3.1.1",
     "husky": "^7.0.4",
-    "lint-staged": "^12.4.1",
+    "lint-staged": "^13.0.3",
     "prettier": "^2.6.2",
     "release-it": "^15.0.0",
     "rollup-plugin-copy": "^3.4.0",

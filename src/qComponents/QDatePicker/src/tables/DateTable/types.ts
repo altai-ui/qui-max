@@ -1,7 +1,7 @@
 import type { DebouncedFunc } from 'lodash-es';
 import type { ComputedRef } from 'vue';
 
-import type { Nullable } from '#/helpers';
+import type { Nullable, ClassValue } from '#/helpers';
 
 import type { DateCellModel } from '../../commonTypes';
 
@@ -18,7 +18,7 @@ interface DateTableInterface {
   rows: ComputedRef<DateCellModel[][]>;
   startMonthDate: ComputedRef<Date>;
   endMonthDate: ComputedRef<Date>;
-  getCellClasses: (cell: DateCellModel) => string[];
+  getCellClasses: (cell: DateCellModel) => ClassValue;
   handleMouseMove: DebouncedFunc<(cell: DateCellModel) => void>;
   handleClick: (cell: DateCellModel) => void;
 }

@@ -1,27 +1,21 @@
 <script lang="ts">
-import {
-  h,
-  defineComponent,
-  ref,
-  computed,
-  PropType,
-  inject,
-  VNode,
-  Slot
-} from 'vue';
+import { h, defineComponent, ref, computed, inject, VNode, Slot } from 'vue';
+import type { PropType, StyleValue } from 'vue';
 
-import type { Nullable, Optional } from '#/helpers';
+import type { Nullable, Optional, ClassValue } from '#/helpers';
 
+import { DEFAULT_SORTING_ORDER } from '../../config';
 import { useSticky } from '../../hooks/sticky';
 import type { StickyConfig } from '../../hooks/sticky';
 import type { ExtendedColumn } from '../../QTableContainer/types';
 import type { QTableTProvider } from '../../QTableT/types';
-import type { QTableProvider } from '../../types';
+import type { QTableProvider, SortDirection } from '../../types';
 
 import type {
   QTableTHeadCellProps,
   QTableTHeadCellPropSortBy,
-  QTableTHeadCellInstance
+  QTableTHeadCellInstance,
+  QTableTHeadCellContainerAttrs
 } from './types';
 
 export default defineComponent({
@@ -67,7 +61,7 @@ export default defineComponent({
       () => props.sortBy?.key === props.column.key
     );
 
-    const cellClasses = computed<Record<string, boolean>>(() => ({
+    const cellClasses = computed<ClassValue>(() => ({
       'q-table-t-head-cell': true,
       [`q-table-t-head-cell_align_${props.column.align ?? ''}`]: Boolean(
         props.column.align
@@ -83,15 +77,17 @@ export default defineComponent({
         isCurrentSorting.value && Boolean(props.sortBy?.direction)
     }));
 
-    const cellStyles = computed<Record<string, string>>(() => ({
-      '--group-color': props.column.group.color ?? '',
+    const cellStyles = computed<StyleValue>(() => ({
+      '--group-color': props.column.group.color ?? undefined,
       zIndex: stickyConfig.value.isSticked
-        ? String(stickyConfig.value.zIndex)
-        : '',
+        ? stickyConfig.value.zIndex
+        : undefined,
       [stickyConfig.value.position]: stickyConfig.value.isSticked
         ? `${stickyConfig.value.offset}px`
-        : '',
-      minWidth: qTable.fixedLayout.value ? props.column.minWidth ?? '' : ''
+        : undefined,
+      minWidth: !qTable.fixedLayout.value
+        ? props.column.minWidth ?? undefined
+        : undefined
     }));
 
     const currentSlot = computed<Optional<Slot>>(() => {
@@ -99,9 +95,10 @@ export default defineComponent({
       return qTable.slots[slotName];
     });
 
-    const contentClasses = computed<Record<string, boolean>>(() => ({
+    const contentClasses = computed<ClassValue>(() => ({
       'q-table-t-head-cell__content': true,
-      'q-table-t-head-cell__content_ellipsis': !currentSlot.value
+      'q-table-t-head-cell__content_ellipsis': !currentSlot.value,
+      'q-table-t-head-cell__content_sortable': isSortable.value
     }));
 
     const content = computed<Nullable<VNode[] | string | number>>(() => {
@@ -115,7 +112,7 @@ export default defineComponent({
       });
     });
 
-    const sortArrowElClasses = computed<Record<string, boolean>>(() => {
+    const sortArrowElClasses = computed<ClassValue>(() => {
       const isDirectionAsc = props.sortBy?.direction === 'ascending';
       const isArrowUpShown = isCurrentSorting.value && isDirectionAsc;
 
@@ -126,27 +123,20 @@ export default defineComponent({
       };
     });
 
+    let sortCounter = 0;
     const handleSortArrowClick = (): void => {
-      const oldDirection = props.sortBy?.direction ?? null;
+      let newDirection: SortDirection = null;
+      const sortOrder = props.column.sortOrder ?? DEFAULT_SORTING_ORDER;
 
-      let direction: Nullable<'ascending' | 'descending'> = null;
-
-      switch (oldDirection) {
-        case null:
-          direction = 'descending';
-          break;
-
-        case 'descending':
-          direction = 'ascending';
-          break;
-
-        default:
-          break;
+      if (Array.isArray(sortOrder)) {
+        newDirection = sortOrder[sortCounter];
+        sortCounter =
+          sortOrder.length - 1 === sortCounter ? 0 : (sortCounter += 1);
       }
 
       qTable.updateSortBy({
         key: props.column.key,
-        direction
+        direction: newDirection
       });
     };
 
@@ -251,6 +241,12 @@ export default defineComponent({
       ];
     });
 
+    const cellContainerAttrs: QTableTHeadCellContainerAttrs = {
+      class: contentClasses.value
+    };
+
+    if (isSortable.value) cellContainerAttrs.onClick = handleSortArrowClick;
+
     return (): VNode =>
       h(
         'th',
@@ -259,7 +255,7 @@ export default defineComponent({
           dummyEl.value,
           dropZoneEls.value,
           h('div', { class: 'q-table-t-head-cell__container' }, [
-            h('div', { class: contentClasses.value }, [content.value]),
+            h('div', cellContainerAttrs, [content.value]),
             sortArrowEl.value,
             dragTriggerEl.value
           ])

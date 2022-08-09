@@ -2,6 +2,7 @@
   <div
     ref="root"
     class="q-select"
+    :class="qSelectClasses"
     @click="toggleMenu"
     @mouseenter="state.hover = true"
     @mouseleave="state.hover = false"
@@ -63,7 +64,7 @@
           ref="dropdown"
           :shown="state.isDropdownShown"
           :width="state.inputWidth"
-          :select-all-shown="selectAllShown"
+          :select-all-shown="Boolean(selectAllShown)"
           :select-all-text="selectAllText || t('QSelect.selectAll')"
           :show-empty-content="showEmptyContent"
           :empty-text="emptyText"
@@ -122,23 +123,49 @@ import type { QFormItemProvider } from '@/qComponents/QFormItem';
 import type { QInputInstance } from '@/qComponents/QInput';
 import type { QOptionModel, QOptionPropValue } from '@/qComponents/QOption';
 
-import type { Nullable, Optional, UnwrappedInstance } from '#/helpers';
+import type {
+  Nullable,
+  Optional,
+  UnwrappedInstance,
+  ClassValue
+} from '#/helpers';
 
-import QSelectDropdown from './QSelectDropdown.vue';
-import QSelectTags from './QSelectTags.vue';
+import QSelectDropdown from './components/QSelectDropdown';
+import type { QSelectDropdownInstance } from './components/QSelectDropdown';
+import QSelectTags from './components/QSelectTags';
+import type { QSelectTagsInstance } from './components/QSelectTags';
 import type {
   QSelectPropModelValue,
-  NewOption,
-  QSelectInstance,
-  QSelectProvider,
-  QSelectState,
+  QSelectPropAutocomplete,
+  QSelectPropCanLoadMore,
+  QSelectPropDisabled,
+  QSelectPropClearable,
+  QSelectPropFilterable,
+  QSelectPropAllowCreate,
+  QSelectPropLoading,
+  QSelectPropRemote,
+  QSelectPropLoadingText,
+  QSelectPropLoadMoreText,
+  QSelectPropNoMatchText,
+  QSelectPropNoDataText,
+  QSelectPropMultiple,
+  QSelectPropMultipleLimit,
+  QSelectPropPlaceholder,
+  QSelectPropSelectAllShown,
+  QSelectPropSelectAllText,
+  QSelectPropValueKey,
+  QSelectPropCollapseTags,
+  QSelectPropTeleportTo,
   QSelectProps,
-  QSelectTagsInstance,
-  QSelectDropdownInstance
+  QSelectInstance,
+  NewOption,
+  QSelectProvider,
+  QSelectState
 } from './types';
 
 export default defineComponent({
   name: 'QSelect',
+
   componentName: 'QSelect',
 
   components: {
@@ -154,88 +181,168 @@ export default defineComponent({
       type: [String, Number, Object, Array] as PropType<QSelectPropModelValue>,
       default: null
     },
+
     /**
      * the autocomplete attribute of select input
      */
-    autocomplete: { type: String as PropType<'on' | 'off'>, default: 'off' },
+    autocomplete: {
+      type: String as PropType<QSelectPropAutocomplete>,
+      default: 'off'
+    },
+
     /**
      * whether loadMoreText is shown
      */
-    canLoadMore: { type: Boolean, default: false },
+    canLoadMore: {
+      type: Boolean as PropType<QSelectPropCanLoadMore>,
+      default: false
+    },
+
     /**
      * whether Select is disabled
      */
-    disabled: { type: Boolean, default: false },
+    disabled: {
+      type: Boolean as PropType<QSelectPropDisabled>,
+      default: false
+    },
+
     /**
      * whether select can be cleared
      */
-    clearable: { type: Boolean, default: false },
+    clearable: {
+      type: Boolean as PropType<QSelectPropClearable>,
+      default: false
+    },
+
     /**
      * whether Select is filterable
      */
-    filterable: { type: Boolean, default: false },
+    filterable: {
+      type: Boolean as PropType<QSelectPropFilterable>,
+      default: false
+    },
+
     /**
      * whether creating new items is allowed. To use this, `filterable` must be true
      */
-    allowCreate: { type: Boolean, default: false },
+    allowCreate: {
+      type: Boolean as PropType<QSelectPropAllowCreate>,
+      default: false
+    },
+
     /**
      * whether Select is loading data from server
      */
-    loading: { type: Boolean, default: false },
+    loading: {
+      type: Boolean as PropType<QSelectPropLoading>,
+      default: false
+    },
+
     /**
      * whether options are loaded from server
      */
-    remote: { type: Boolean, default: false },
+    remote: {
+      type: Boolean as PropType<QSelectPropRemote>,
+      default: false
+    },
+
     /**
      * text that is shown when `loading` is true
      */
-    loadingText: { type: String, default: null },
+    loadingText: {
+      type: String as PropType<QSelectPropLoadingText>,
+      default: null
+    },
+
     /**
      * text that is shown when `canLoadMore` is true
      */
-    loadMoreText: { type: String, default: null },
+    loadMoreText: {
+      type: String as PropType<QSelectPropLoadMoreText>,
+      default: null
+    },
+
     /**
      * text of no match state
      */
-    noMatchText: { type: String, default: null },
+    noMatchText: {
+      type: String as PropType<QSelectPropNoMatchText>,
+      default: null
+    },
+
     /**
      * text of no data state
      */
-    noDataText: { type: String, default: null },
+    noDataText: {
+      type: String as PropType<QSelectPropNoDataText>,
+      default: null
+    },
+
     /**
      * whether multiple-select is activated
      */
-    multiple: { type: Boolean, default: false },
+    multiple: {
+      type: Boolean as PropType<QSelectPropMultiple>,
+      default: false
+    },
+
     /**
      * maximum number of options user can select when `multiple` is true. No `limit` when set to 0
      */
-    multipleLimit: { type: Number, default: 0 },
+    multipleLimit: {
+      type: Number as PropType<QSelectPropMultipleLimit>,
+      default: 0
+    },
+
     /**
      * placeholder
      */
-    placeholder: { type: String, default: '' },
+    placeholder: {
+      type: String as PropType<QSelectPropPlaceholder>,
+      default: ''
+    },
+
     /**
      * whether select all button is shown
      */
-    selectAllShown: { type: Boolean, default: false },
+    selectAllShown: {
+      type: Boolean as PropType<QSelectPropSelectAllShown>,
+      default: false
+    },
+
     /**
      * text of select all button
      */
-    selectAllText: { type: String, default: null },
+    selectAllText: {
+      type: String as PropType<QSelectPropSelectAllText>,
+      default: null
+    },
+
     /**
      * unique identity key name for value, required when option's value is an object
      */
-    valueKey: { type: String, default: 'value' },
+    valueKey: {
+      type: String as PropType<QSelectPropValueKey>,
+      default: 'value'
+    },
+
     /**
      * whether to collapse tags to a text when multiple selecting
      */
-    collapseTags: { type: Boolean, default: false },
+    collapseTags: {
+      type: Boolean as PropType<QSelectPropCollapseTags>,
+      default: false
+    },
+
     /**
      * Specifies a target element where QSelect will be moved.
      * (has to be a valid query selector, or an HTMLElement)
      */
     teleportTo: {
-      type: [String, isServer ? Object : HTMLElement],
+      type: [
+        String,
+        isServer ? Object : HTMLElement
+      ] as PropType<QSelectPropTeleportTo>,
       default: null
     }
   },
@@ -362,6 +469,10 @@ export default defineComponent({
         props.clearable && !isDisabled.value && state.hover && hasValue
       );
     });
+
+    const qSelectClasses = computed<ClassValue>(() => ({
+      'q-select_disabled': isDisabled.value
+    }));
 
     const iconClass = computed<string>(() => {
       if (props.remote && props.filterable) return 'q-icon-search';
@@ -575,6 +686,16 @@ export default defineComponent({
          */
         ctx.emit('search', value);
       }
+    );
+
+    watch(
+      () => state.options,
+      () => {
+        nextTick(() => {
+          setSelected();
+        });
+      },
+      { deep: true }
     );
 
     watch(
@@ -833,6 +954,7 @@ export default defineComponent({
       isReadonly,
       isDisabled,
       isClearBtnShown,
+      qSelectClasses,
       iconClass,
       emptyText,
       isNewOptionShown,

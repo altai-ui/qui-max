@@ -16,13 +16,19 @@
 
 <script lang="ts">
 import { isEmpty, isFunction } from 'lodash-es';
-import { defineComponent, PropType, computed, provide, toRef } from 'vue';
+import { defineComponent, computed, provide, toRef } from 'vue';
+import type { PropType } from 'vue';
+
+import type { ClassValue } from '#/helpers';
 
 import QTableContainer from './QTableContainer/QTableContainer.vue';
 import QTableEmpty from './QTableEmpty/QTableEmpty.vue';
 import type {
-  Row,
-  QTableProps,
+  QTablePropGrid,
+  QTablePropFixedLayout,
+  QTablePropIsLoading,
+  QTablePropLoadingRowCount,
+  QTablePropDefaultColWidth,
   QTablePropSelectionColumn,
   QTablePropGroupsOfColumns,
   QTablePropTotal,
@@ -31,12 +37,16 @@ import type {
   QTablePropSortBy,
   QTablePropCustomRowClass,
   QTablePropCustomRowStyle,
+  QTablePropEmptyText,
+  QTableProps,
+  Row,
   QTableProvider,
   QTableInstance
 } from './types';
 
 export default defineComponent({
   name: 'QTable',
+
   componentName: ' QTable',
 
   components: {
@@ -49,7 +59,7 @@ export default defineComponent({
      * whether QTable has vertical border
      */
     grid: {
-      type: Boolean,
+      type: Boolean as PropType<QTablePropGrid>,
       default: false
     },
     /**
@@ -57,28 +67,28 @@ export default defineComponent({
      * (change `defaultColWidth` or pass the `width` to each column object for managing the width)
      */
     fixedLayout: {
-      type: Boolean,
+      type: Boolean as PropType<QTablePropFixedLayout>,
       default: true
     },
     /**
      * whether to show skeleton
      */
     isLoading: {
-      type: Boolean,
+      type: Boolean as PropType<QTablePropIsLoading>,
       default: false
     },
     /**
      * count of rows, when table is loading
      */
     loadingRowCount: {
-      type: Number,
+      type: Number as PropType<QTablePropLoadingRowCount>,
       default: 30
     },
     /**
      * Default columns width, required `fixedLayout: true`
      */
     defaultColWidth: {
-      type: String,
+      type: String as PropType<QTablePropDefaultColWidth>,
       default: null
     },
     /**
@@ -97,6 +107,7 @@ export default defineComponent({
      * Each column MAY contain:
      *  `isHidden`.
      *  `sortable`.
+     *  `sortOrder`. (MUST be an array of keywords - 'ascending', 'descending', null. Works with `sortable: true`)
      *  `draggable`.
      *  `slots`.
      *  `align` (left/right) - content's align.
@@ -155,7 +166,7 @@ export default defineComponent({
      * used to change 'No data' text
      */
     emptyText: {
-      type: String,
+      type: String as PropType<QTablePropEmptyText>,
       default: null
     }
   },
@@ -192,7 +203,7 @@ export default defineComponent({
       props.groupsOfColumns.some(({ color }) => Boolean(color))
     );
 
-    const rootClasses = computed<Record<string, boolean>>(() => ({
+    const rootClasses = computed<ClassValue>(() => ({
       'q-table': true,
       'q-table_has-color-groups': hasColorGroups.value,
       'q-table_has-total': !isEmpty(props.total)

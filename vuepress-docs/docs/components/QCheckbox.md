@@ -12,8 +12,8 @@ Types:
 
 ### label
 
-- type `string`
-- default `null`
+- Type `String`
+- Default `null`
 
 Defines the text of the checkbox. You could use default [slot](#slots) instead of the `label` prop as well.
 
@@ -23,10 +23,26 @@ Defines the text of the checkbox. You could use default [slot](#slots) instead o
 
 <iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/QCheckbox/label.html"></iframe>
 
+### labelSize
+
+- Type `String`
+- Default `regular`
+
+Defines the label size of the checkbox.
+
+```vue
+<q-checkbox
+  label="Label"
+  label-size="small"
+/>
+```
+
+<iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/QCheckbox/labelSize.html"></iframe>
+
 ### modelValue
 
 - type `boolean`
-- default `null`
+- Default `null`
 
 ```vue
 <q-checkbox v-model="model" />
@@ -37,7 +53,7 @@ Defines the text of the checkbox. You could use default [slot](#slots) instead o
 ### indeterminate
 
 - type `boolean`
-- default `false`
+- Default `false`
 
 Defines the checkbox indeterminacy
 
@@ -52,7 +68,7 @@ Result:
 ### disabled
 
 - type `boolean`
-- default `false`
+- Default `false`
 
 Sets disabled checkbox state
 
@@ -66,8 +82,8 @@ Result:
 
 ### rootTag
 
-- type `string`
-- default `label`
+- Type `String`
+- Default `label`
 
 Sets custom root tag
 
@@ -78,7 +94,7 @@ Sets custom root tag
 ### validateEvent
 
 - type `boolean`
-- default `false`
+- Default `false`
 
 If checkbox wrapped in `QFormItem`, prop `validateEvent` defines if checkbox `change` event will be validated immediately
 

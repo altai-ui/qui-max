@@ -109,7 +109,7 @@ import type { PropType } from 'vue';
 import { getConfig } from '@/qComponents/config';
 import { t } from '@/qComponents/locale';
 
-import type { Nullable } from '#/helpers';
+import type { Nullable, ClassValue } from '#/helpers';
 
 import {
   DATE_CELLS_COUNT,
@@ -228,7 +228,7 @@ export default defineComponent({
       }
     };
 
-    const panelContentClasses = computed<Record<string, boolean>>(() => ({
+    const panelContentClasses = computed<ClassValue>(() => ({
       'q-picker-panel__content': true,
       'q-picker-panel__content_focused': state.panelInFocus === 'date'
     }));

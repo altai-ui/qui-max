@@ -1,6 +1,6 @@
-import type { Ref, ComputedRef, Slots } from 'vue';
+import type { Ref, ComputedRef, Slots, StyleValue } from 'vue';
 
-import type { Nullable } from '#/helpers';
+import type { Nullable, ClassValue } from '#/helpers';
 
 interface SelectionColumn {
   enabled?: Nullable<boolean>;
@@ -14,6 +14,7 @@ export interface Column {
   value: Nullable<string | number>;
   isHidden?: boolean;
   sortable?: boolean;
+  sortOrder?: SortDirection[];
   draggable?: boolean;
   align?: 'left' | 'right';
   slots?: Record<string, string>;
@@ -39,15 +40,20 @@ export interface GroupOfColumns {
   draggable?: boolean;
 }
 
+export type SortDirection = Nullable<'ascending' | 'descending'>;
+
 export interface SortBy {
   key: Nullable<string>;
-  direction: Nullable<'ascending' | 'descending'>;
+  direction: SortDirection;
 }
 
 export type Row = Record<string, unknown>;
-type Classes = Record<string, boolean>;
-type Styles = Record<string, string | number>;
 
+export type QTablePropGrid = Nullable<boolean>;
+export type QTablePropFixedLayout = Nullable<boolean>;
+export type QTablePropIsLoading = Nullable<boolean>;
+export type QTablePropLoadingRowCount = Nullable<number>;
+export type QTablePropDefaultColWidth = Nullable<string>;
 export type QTablePropSelectionColumn = Nullable<SelectionColumn>;
 export type QTablePropGroupsOfColumns = GroupOfColumns[];
 export type QTablePropTotal = Nullable<Record<string, unknown>>;
@@ -55,24 +61,19 @@ export type QTablePropRows = Row[];
 export type QTablePropCheckedRows = Nullable<number[]>;
 export type QTablePropSortBy = Nullable<SortBy>;
 export type QTablePropCustomRowClass = Nullable<
-  (arg0: {
-    row: Row;
-    rowIndex: number;
-  }) => Nullable<string | string[] | Classes | Classes[]>
+  (arg0: { row: Row; rowIndex: number }) => Nullable<ClassValue>
 >;
 export type QTablePropCustomRowStyle = Nullable<
-  (arg0: {
-    row: Row;
-    rowIndex: number;
-  }) => Nullable<string | string[] | Styles | Styles[]>
+  (arg0: { row: Row; rowIndex: number }) => Nullable<StyleValue>
 >;
+export type QTablePropEmptyText = Nullable<string>;
 
 export interface QTableProps {
-  grid: Nullable<boolean>;
-  fixedLayout: Nullable<boolean>;
-  isLoading: Nullable<boolean>;
-  loadingRowCount: Nullable<number>;
-  defaultColWidth: Nullable<string>;
+  grid: QTablePropGrid;
+  fixedLayout: QTablePropFixedLayout;
+  isLoading: QTablePropIsLoading;
+  loadingRowCount: QTablePropLoadingRowCount;
+  defaultColWidth: QTablePropDefaultColWidth;
   selectionColumn: QTablePropSelectionColumn;
   groupsOfColumns: QTablePropGroupsOfColumns;
   total: QTablePropTotal;
@@ -81,7 +82,7 @@ export interface QTableProps {
   sortBy: QTablePropSortBy;
   customRowClass: QTablePropCustomRowClass;
   customRowStyle: QTablePropCustomRowStyle;
-  emptyText: Nullable<string>;
+  emptyText: QTablePropEmptyText;
 }
 
 export interface QTableProvider {
@@ -108,5 +109,5 @@ export interface QTableProvider {
 
 export interface QTableInstance {
   isTableEmpty: ComputedRef<boolean>;
-  rootClasses: ComputedRef<Record<string, boolean>>;
+  rootClasses: ComputedRef<ClassValue>;
 }

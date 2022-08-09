@@ -3,12 +3,8 @@
     v-show="isVisible"
     ref="root"
     class="q-option"
-    :class="{
-      'q-option_selected': isSelected,
-      'q-option_disabled': isDisabled,
-      'q-option_with-checkbox': multiple
-    }"
-    :tabindex="isDisabled ? null : '-1'"
+    :class="qOptionClasses"
+    :tabindex="isDisabled ? undefined : '-1'"
     @mouseenter="handleMouseEnter"
     @click.stop="handleOptionClick"
   >
@@ -38,23 +34,26 @@ import {
   defineComponent,
   inject,
   onBeforeUnmount,
-  PropType,
   ref,
   reactive,
   toRefs,
   onMounted
 } from 'vue';
+import type { PropType } from 'vue';
 
 import { QCheckbox } from '@/qComponents/QCheckbox';
 import type { QSelectProvider } from '@/qComponents/QSelect';
 
-import type { Nullable } from '#/helpers';
+import type { Nullable, ClassValue } from '#/helpers';
 
 import type {
   QOptionPropValue,
-  QOptionInstance,
+  QOptionPropLabel,
+  QOptionPropCreated,
+  QOptionPropDisabled,
   QOptionProps,
-  QOptionModel
+  QOptionModel,
+  QOptionInstance
 } from './types';
 
 export default defineComponent({
@@ -69,15 +68,15 @@ export default defineComponent({
       required: true
     },
     label: {
-      type: [String, Number],
+      type: [String, Number] as PropType<QOptionPropLabel>,
       default: null
     },
     created: {
-      type: Boolean,
+      type: Boolean as PropType<QOptionPropCreated>,
       default: false
     },
     disabled: {
-      type: Boolean,
+      type: Boolean as PropType<QOptionPropDisabled>,
       default: false
     }
   },
@@ -168,6 +167,12 @@ export default defineComponent({
       }
     };
 
+    const qOptionClasses = computed<ClassValue>(() => ({
+      'q-option_selected': isSelected.value,
+      'q-option_disabled': isDisabled.value,
+      'q-option_with-checkbox': multiple
+    }));
+
     onBeforeUnmount(() => {
       qSelect?.removeOption(self);
     });
@@ -185,7 +190,8 @@ export default defineComponent({
       handleMouseEnter,
       handleOptionClick,
       multiple,
-      root
+      root,
+      qOptionClasses
     };
   }
 });

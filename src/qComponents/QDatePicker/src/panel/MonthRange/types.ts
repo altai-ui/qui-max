@@ -1,6 +1,6 @@
 import type { ComputedRef, Ref } from 'vue';
 
-import type { Nullable } from '#/helpers';
+import type { Nullable, ClassValue } from '#/helpers';
 
 import type { RangePickValue, RangeState } from '../../commonTypes';
 import type { QDatePickerPropShortcuts } from '../../types';
@@ -30,8 +30,8 @@ interface MonthRangePanelInstance {
   shortcuts: Ref<Nullable<QDatePickerPropShortcuts>>;
   isMobileView: Ref<boolean>;
   state: MonthRangeState;
-  leftPanelClasses: ComputedRef<Record<string, boolean>>;
-  rightPanelClasses: ComputedRef<Record<string, boolean>>;
+  leftPanelClasses: ComputedRef<ClassValue>;
+  rightPanelClasses: ComputedRef<ClassValue>;
   rightYear: ComputedRef<number>;
   leftYear: ComputedRef<number>;
   leftMonth: ComputedRef<number>;

@@ -71,14 +71,20 @@ import { t } from '@/qComponents/locale';
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
 
-import type { Nullable } from '#/helpers';
+import type { Nullable, ClassValue, IsArray } from '#/helpers';
 
 import type {
   QInputInstance,
-  QInputPropRootClass,
   QInputProps,
   QInputState,
-  QInputClass
+  QInputPropModelValue,
+  QInputPropDisabled,
+  QInputPropShowSymbolLimit,
+  QInputPropValidateEvent,
+  QInputPropSuffixIcon,
+  QInputPropClearable,
+  QInputPropPasswordSwitch,
+  QInputPropRootClass
 } from './types';
 
 export default defineComponent({
@@ -92,56 +98,56 @@ export default defineComponent({
      * default to v-model
      */
     modelValue: {
-      type: String,
+      type: String as PropType<QInputPropModelValue>,
       default: null
     },
     /**
      * whether input is disabled
      */
     disabled: {
-      type: Boolean,
+      type: Boolean as PropType<QInputPropDisabled>,
       default: false
     },
     /**
      * shows the counter
      */
     showSymbolLimit: {
-      type: Boolean,
+      type: Boolean as PropType<QInputPropShowSymbolLimit>,
       default: false
     },
     /**
      * validate parent form if present
      */
     validateEvent: {
-      type: Boolean,
+      type: Boolean as PropType<QInputPropValidateEvent>,
       default: true
     },
     /**
      * suffix icon class
      */
     suffixIcon: {
-      type: String,
+      type: String as PropType<QInputPropSuffixIcon>,
       default: null
     },
     /**
      * whether to show clear button
      */
     clearable: {
-      type: Boolean,
+      type: Boolean as PropType<QInputPropClearable>,
       default: false
     },
     /**
      * whether to show password
      */
     passwordSwitch: {
-      type: Boolean,
+      type: Boolean as PropType<QInputPropPasswordSwitch>,
       default: false
     },
     /**
      * as native attrs bind to native input, via rootСlass you can set class for q-input root
      */
     rootClass: {
-      type: [Array, Object] as PropType<QInputPropRootClass>,
+      type: [String, Array, Object] as PropType<QInputPropRootClass>,
       default: null
     }
   },
@@ -233,17 +239,13 @@ export default defineComponent({
       )
     );
 
-    const classes = computed<QInputClass[]>(() => {
-      const mainClass = 'q-input';
+    const classes = computed<ClassValue>(() => {
+      const classList: IsArray<ClassValue> = ['q-input', props.rootClass];
 
-      return [
-        mainClass,
-        props.rootClass,
-        {
-          [`${mainClass}_disabled`]: isDisabled.value,
-          [`${mainClass}_suffix`]: isSuffixVisible.value
-        }
-      ];
+      if (isDisabled.value) classList.push('q-input_disabled');
+      if (isSuffixVisible.value) classList.push('q-input_suffix');
+
+      return classList;
     });
 
     const textLength = computed<number>(() => props.modelValue?.length ?? 0);

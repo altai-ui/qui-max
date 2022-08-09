@@ -34,7 +34,7 @@ const getActualMonth = (rightDate: Date, correction?: number): number => {
   return new Date().getMonth() + (correction ?? 0);
 };
 
-const getLabelFromDate = (date: Date, type: string): string => {
+const getLabelFromDate = (date: Date, type: Nullable<string>): string => {
   if (type === 'yearrange') {
     return `${startOfDecade(date).getFullYear()} - ${endOfDecade(
       date

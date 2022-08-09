@@ -1,6 +1,9 @@
-import type { QTablePropSortBy } from '@/qComponents/QTable';
+import type {
+  QTablePropGroupsOfColumns,
+  QTablePropSortBy
+} from '@/qComponents/QTable';
 
-const groupsOfColumns = [
+const groupsOfColumns: QTablePropGroupsOfColumns = [
   {
     key: 'one',
     columns: [
@@ -16,7 +19,8 @@ const groupsOfColumns = [
       {
         key: 'col3',
         value: 'Column 3',
-        sortable: true
+        sortable: true,
+        sortOrder: ['ascending', 'descending']
       },
       {
         key: 'col4',

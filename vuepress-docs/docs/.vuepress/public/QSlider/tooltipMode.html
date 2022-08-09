@@ -11,10 +11,19 @@
   <body>
     <div id="app">
       <div class="block">
-        <div class="label">default:</div>
+        <div class="label">Tooltip mode: always</div>
         <q-slider
           v-model="value"
           :data="data"
+          tooltip-mode="always"
+        />
+      </div>
+      <div class="block">
+        <div class="label">Tooltip mode: hover</div>
+        <q-slider
+          v-model="valueHover"
+          :data="dataHover"
+          tooltip-mode="hover"
         />
       </div>
     </div>
@@ -27,6 +36,7 @@
     const app = Vue.createApp({
       setup() {
         const value = Vue.ref('normal');
+        const valueHover = Vue.ref('normal');
         const data = [
           {
             value: 'easy',
@@ -41,8 +51,9 @@
             label: 'Hard'
           }
         ];
+        const dataHover = [...data];
 
-        return { data, value };
+        return { data, dataHover, value, valueHover };
       }
     });
 

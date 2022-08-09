@@ -15,6 +15,7 @@
         <q-slider
           v-model="value"
           :data="data"
+          :show-steps="true"
         />
       </div>
     </div>
@@ -26,7 +27,7 @@
   <script>
     const app = Vue.createApp({
       setup() {
-        const value = Vue.ref('normal');
+        const value = Vue.ref('qui');
         const data = [
           {
             value: 'easy',
@@ -39,6 +40,18 @@
           {
             value: 'hard',
             label: 'Hard'
+          },
+          {
+            value: 'expert',
+            label: 'Expert'
+          },
+          {
+            value: 'god',
+            label: 'God'
+          },
+          {
+            value: 'qui',
+            label: 'Qui user'
           }
         ];
 

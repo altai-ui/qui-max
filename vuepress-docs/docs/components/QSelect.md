@@ -562,7 +562,7 @@ Used to put your custom content istead of `<q-options>`
 
 `QOption` is an additional component to control options. Use with `v-for` directive to render options list.
 
-```vue {5-10}
+```vue {3-8}
 <template>
   <q-select v-model="value">
     <q-option

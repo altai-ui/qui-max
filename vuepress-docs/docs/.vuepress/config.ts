@@ -40,7 +40,6 @@ export default defineUserConfig<DefaultThemeOptions, ViteBundlerOptions>({
           '/components/QSelect.md',
           '/components/QSwitch.md',
           '/components/QTabs.md',
-          '/components/QSwitch.md',
           '/components/QUpload.md'
         ]
       },
@@ -81,7 +80,6 @@ export default defineUserConfig<DefaultThemeOptions, ViteBundlerOptions>({
             '/components/QSelect.md',
             '/components/QSwitch.md',
             '/components/QTabs.md',
-            '/components/QSwitch.md',
             '/components/QUpload.md'
           ]
         }

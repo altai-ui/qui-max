@@ -11,16 +11,13 @@
   <body>
     <div id="app">
       <div class="block">
+        <div class="label">currentValue: {{ currentValue }}</div>
         <q-switch
-          :model-value="false"
-          disabled
-        ></q-switch>
-      </div>
-      <div class="block">
-        <q-switch
-          :model-value="true"
-          disabled
-        ></q-switch>
+          v-model="currentValue"
+          active-value="on"
+          inactive-value="off"
+          @change="handleChange"
+        />
       </div>
     </div>
   </body>
@@ -29,17 +26,30 @@
   <!-- import JavaScript -->
   <script src="https://unpkg.com/@qvant/qui-max@latest"></script>
   <script>
-    const app = Vue.createApp({});
+    const app = Vue.createApp({
+      setup() {
+        const currentValue = Vue.ref('on');
+        const handleChange = value => {
+          currentValue.value = value;
+        };
+        return { currentValue, handleChange };
+      }
+    });
     app.use(QuiMax.default);
     app.mount('#app');
   </script>
   <style>
     #app {
       display: flex;
+      column-gap: 20px;
     }
 
     .block {
       margin: 20px;
+    }
+
+    .label {
+      margin-bottom: 10px;
     }
   </style>
 </html>

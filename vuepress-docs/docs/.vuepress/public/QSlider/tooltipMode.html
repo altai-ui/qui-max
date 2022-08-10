@@ -1,0 +1,72 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- import CSS -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/@qvant/qui-max/dist/style.css"
+    />
+  </head>
+
+  <body>
+    <div id="app">
+      <div class="block">
+        <div class="label">Tooltip mode: always</div>
+        <q-slider
+          v-model="value"
+          :data="data"
+          tooltip-mode="always"
+        />
+      </div>
+      <div class="block">
+        <div class="label">Tooltip mode: hover</div>
+        <q-slider
+          v-model="valueHover"
+          :data="dataHover"
+          tooltip-mode="hover"
+        />
+      </div>
+    </div>
+  </body>
+  <!-- import Vue before Qui -->
+  <script src="https://unpkg.com/vue@latest"></script>
+  <!-- import JavaScript -->
+  <script src="https://unpkg.com/@qvant/qui-max@latest"></script>
+  <script>
+    const app = Vue.createApp({
+      setup() {
+        const value = Vue.ref('normal');
+        const valueHover = Vue.ref('normal');
+        const data = [
+          {
+            value: 'easy',
+            label: 'Easy'
+          },
+          {
+            value: 'normal',
+            label: 'Normal'
+          },
+          {
+            value: 'hard',
+            label: 'Hard'
+          }
+        ];
+        const dataHover = [...data];
+
+        return { data, dataHover, value, valueHover };
+      }
+    });
+
+    app.use(QuiMax.default);
+    app.mount('#app');
+  </script>
+  <style>
+    .block {
+      margin: 20px;
+    }
+
+    .label {
+      padding-bottom: 5px;
+    }
+  </style>
+</html>

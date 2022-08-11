@@ -37,9 +37,9 @@ export default defineUserConfig<DefaultThemeOptions, ViteBundlerOptions>({
           '/components/QScrollbar.md',
           '/components/QSelect.md',
           '/components/QSlider.md',
-          '/components/QSelect.md',
           '/components/QSwitch.md',
           '/components/QTabs.md',
+          '/components/QTag.md',
           '/components/QUpload.md'
         ]
       },
@@ -77,9 +77,9 @@ export default defineUserConfig<DefaultThemeOptions, ViteBundlerOptions>({
             '/components/QScrollbar.md',
             '/components/QSelect.md',
             '/components/QSlider.md',
-            '/components/QSelect.md',
             '/components/QSwitch.md',
             '/components/QTabs.md',
+            '/components/QTag.md',
             '/components/QUpload.md'
           ]
         }

@@ -1,0 +1,79 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- import CSS -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/@qvant/qui-max/dist/style.css"
+    />
+  </head>
+
+  <body>
+    <div id="app">
+      <div class="block">
+        <span>Default:</span>
+        <div>
+          <q-tag
+            v-for="tag in tags"
+            :key="tag"
+            @close="handleCloseClick(tag)"
+          >
+            {{ tag }}
+          </q-tag>
+        </div>
+      </div>
+      <div class="block">
+        <span>Closable:</span>
+        <div>
+          <q-tag
+            v-for="tag in tagsClosable"
+            :key="tag"
+            :closable="true"
+            @close="handleCloseClick(tag)"
+          >
+            {{ tag }}
+          </q-tag>
+        </div>
+      </div>
+    </div>
+  </body>
+  <!-- import Vue before Qui -->
+  <script src="https://unpkg.com/vue@latest"></script>
+  <!-- import JavaScript -->
+  <script src="https://unpkg.com/@qvant/qui-max@latest"></script>
+  <script>
+    const app = Vue.createApp({
+      setup() {
+        const tags = Vue.ref(['Tag 1', 'Tag 2', 'Tag 3', 'Tag 4', 'Tag 5']);
+        const tagsClosable = Vue.ref([
+          'Tag 1',
+          'Tag 2',
+          'Tag 3',
+          'Tag 4',
+          'Tag 5'
+        ]);
+
+        const handleCloseClick = clickedTag => {
+          console.log('Close tag clicked');
+          tagsClosable.value = tagsClosable.value.filter(
+            tag => tag !== clickedTag
+          );
+        };
+
+        return { tags, tagsClosable, handleCloseClick };
+      }
+    });
+
+    app.use(QuiMax.default);
+    app.mount('#app');
+  </script>
+  <style>
+    .block {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      width: 100%;
+      padding: 25px 40px 10px;
+    }
+  </style>
+</html>

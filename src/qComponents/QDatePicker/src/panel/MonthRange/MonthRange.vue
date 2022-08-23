@@ -48,37 +48,6 @@
             @range-selecting="handleRangeSelecting"
           />
         </div>
-        <div
-          v-if="!isMobileView"
-          ref="rightPanel"
-          :class="rightPanelClasses"
-        >
-          <div class="q-picker-panel__header">
-            <button
-              type="button"
-              :disabled="!enableYearArrow"
-              :class="{ 'q-picker-panel__icon-btn_disabled': !enableYearArrow }"
-              class="q-picker-panel__icon-btn q-icon-double-triangle-left"
-              @click="handleRightPrevYearClick"
-            />
-            <div class="q-picker-panel__header-sign">{{ rightYear }}</div>
-            <button
-              type="button"
-              class="q-picker-panel__icon-btn q-icon-double-triangle-right"
-              @click="handleRightNextYearClick"
-            />
-          </div>
-          <period-table
-            selection-mode="range"
-            :month="rightMonth"
-            :year="rightYear"
-            :min-date="state.minDate"
-            :max-date="state.maxDate"
-            :range-state="state.rangeState"
-            @pick="handleRangePick"
-            @range-selecting="handleRangeSelecting"
-          />
-        </div>
       </div>
     </div>
   </div>
@@ -191,10 +160,7 @@ export default defineComponent({
       getActualMonth(state.rightDate, 1)
     );
 
-    const enableYearArrow = computed<boolean>(() => {
-      if (picker.isMobileView.value) return true;
-      return rightYear.value > leftYear.value + 1;
-    });
+    const enableYearArrow = computed<boolean>(() => true);
 
     const handleRangeSelecting = (value: RangeState): void => {
       state.rangeState = value;

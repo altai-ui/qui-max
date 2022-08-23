@@ -6,8 +6,8 @@
     position: relative;
     box-sizing: border-box;
     flex-shrink: 0;
-    width: 220px;
-    background: var(--color-tertiary-gray-light);
+    width: 256px;
+    background: var(--color-tertiary-white);
     border-radius: var(--border-radius-base);
     box-shadow: var(--box-shadow-pressed);
 
@@ -70,7 +70,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 10px 8px 0;
+    padding: 8px 16px 0;
     text-align: center;
     text-transform: uppercase;
 

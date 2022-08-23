@@ -35,14 +35,14 @@ const getActualMonth = (rightDate: Date, correction?: number): number => {
 };
 
 const getLabelFromDate = (date: Date, type: Nullable<string>): string => {
-  if (type === 'yearrange') {
+  if (type === 'yearrange' || type === 'yearmultyrange') {
     return `${startOfDecade(date).getFullYear()} - ${endOfDecade(
       date
     ).getFullYear()}`;
   }
 
   const formatter = new Intl.DateTimeFormat(getConfig('locale'), {
-    month: 'short'
+    month: 'long'
   });
 
   return `${formatter.format(date)} ${date.getFullYear()}`;

@@ -18,6 +18,7 @@
       <input
         autocomplete="off"
         class="q-date-picker__input"
+        :style="{ width: inputWidthInCh }"
         :placeholder="startPlaceholder || t('QDatePicker.startPlaceholder')"
         :value="rangeDisplayValue[0]"
         :disabled="isPickerDisabled"
@@ -29,10 +30,11 @@
       </slot>
       <input
         autocomplete="off"
+        class="q-date-picker__input"
+        :style="{ width: inputWidthInCh }"
         :placeholder="endPlaceholder || t('QDatePicker.endPlaceholder')"
         :value="rangeDisplayValue[1]"
         :disabled="isPickerDisabled"
-        class="q-date-picker__input"
         readonly
         tabindex="-1"
       />
@@ -178,6 +180,8 @@ import type {
   QDatePickerProvider
 } from './types';
 
+const defaultFormat = 'dd.MM.yy';
+
 export default defineComponent({
   name: 'QDatePicker',
 
@@ -190,7 +194,7 @@ export default defineComponent({
      * type Date, type String (ISO), array for ranges
      */
     modelValue: {
-      type: [String, Array, Date] as PropType<QDatePickerPropModelValue>,
+      type: [String, Date, Array] as PropType<QDatePickerPropModelValue>,
       default: null,
       validator: modelValueValidator
     },
@@ -203,12 +207,15 @@ export default defineComponent({
       default: 'date',
       validator: validateArray<QDatePickerPropType>([
         'date',
-        'week',
+        'week', // TODO: Незабыть спросить нужно ли оставлять
         'month',
         'year',
         'daterange',
         'monthrange',
-        'yearrange'
+        'yearrange',
+        'datemultyrange',
+        'monthmultyrange',
+        'yearmultyrange'
       ])
     },
 
@@ -217,7 +224,7 @@ export default defineComponent({
      */
     format: {
       type: String as PropType<QDatePickerPropFormat>,
-      default: 'dd MMMM yyyy',
+      default: defaultFormat,
       validator: notNull
     },
 
@@ -423,9 +430,15 @@ export default defineComponent({
       switch (props.type) {
         case 'daterange':
           return DateRangePanel;
+        case 'datemultyrange':
+          return DateRangePanel;
         case 'monthrange':
           return MonthRangePanel;
+        case 'monthmultyrange':
+          return MonthRangePanel;
         case 'yearrange':
+          return YearRangePanel;
+        case 'yearmultyrange':
           return YearRangePanel;
         default:
           return DatePanel;
@@ -453,13 +466,40 @@ export default defineComponent({
       () => props.type?.includes('range') ?? false
     );
 
+    const displayFormat = computed<string>(() => {
+      if (props.format !== defaultFormat) {
+        return props.format ?? defaultFormat;
+      }
+
+      switch (props.type) {
+        case 'month':
+          return 'MMMM - yyyy';
+
+        case 'monthrange':
+        case 'monthmultyrange':
+          return 'MM.yy';
+
+        case 'year':
+        case 'yearrange':
+        case 'yearmultyrange':
+          return 'yyyy';
+
+        default:
+          return defaultFormat;
+      }
+    });
+
+    const inputWidthInCh = computed<string>(
+      () => `${displayFormat.value.length}ch`
+    );
+
     const rangeDisplayValue = computed<string[]>(() => {
       if (!isRanged.value || !Array.isArray(transformedToDate.value)) return [];
 
       return transformedToDate.value.map(dateFromArray =>
         formatToLocalReadableString(
           dateFromArray,
-          props.format,
+          displayFormat.value,
           getConfig('locale')
         )
       );
@@ -481,7 +521,7 @@ export default defineComponent({
       ) {
         formattedValue = formatToLocalReadableString(
           transformedToDate.value,
-          props.format,
+          displayFormat.value,
           getConfig('locale')
         );
       }
@@ -809,6 +849,8 @@ export default defineComponent({
       handleInputDateChange,
       handleKeyUp,
       isValueEmpty,
+      inputWidthInCh,
+      displayFormat,
       rangeDisplayValue,
       displayValue,
       iconClass,

@@ -1,9 +1,5 @@
 <template>
-  <table
-    cellspacing="10"
-    cellpadding="2"
-    class="q-date-table"
-  >
+  <table class="q-date-table">
     <thead>
       <tr>
         <th
@@ -33,7 +29,9 @@
             @click="handleClick(cell)"
             @mouseenter="handleMouseMove(cell)"
           >
-            {{ cell.text }}
+            <span class="cell_date_text">
+              {{ cell.text }}
+            </span>
           </button>
         </td>
       </tr>
@@ -274,6 +272,18 @@ export default defineComponent({
 
       if (cell.disabled) {
         classes.push('cell_disabled');
+      }
+
+      const minDateNum = props.minDate?.getTime();
+      const maxDateNum = props.maxDate?.getTime() ?? minDateNum;
+
+      if (cell.date?.getTime() === minDateNum) {
+        classes.push('cell_start-range');
+      }
+
+      // FixMe: пока не работает
+      if (cell.date?.getTime() === maxDateNum) {
+        classes.push('cell_end-range');
       }
 
       return classes;

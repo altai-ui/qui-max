@@ -24,27 +24,7 @@
         :class="panelContentClasses"
       >
         <div class="q-picker-panel__header">
-          <button
-            type="button"
-            :title="t('QDatePicker.prevYear')"
-            class="q-picker-panel__icon-btn q-icon-double-triangle-left"
-            @click="handlePrevYearClick"
-          />
-          <button
-            v-show="state.currentView === 'date'"
-            type="button"
-            :title="t('QDatePicker.prevMonth')"
-            class="q-picker-panel__icon-btn q-icon-triangle-left"
-            @click="handlePrevMonthClick"
-          />
           <div class="q-picker-panel__header-sign">
-            <button
-              v-show="state.currentView === 'date'"
-              class="q-picker-panel__header-label"
-              @click="showMonthPicker"
-            >
-              {{ currentMonth }}
-            </button>
             <button
               class="q-picker-panel__header-label"
               :class="{
@@ -55,18 +35,40 @@
             >
               {{ yearLabel }}
             </button>
+            <button
+              v-show="state.currentView === 'date'"
+              class="q-picker-panel__header-label"
+              @click="showMonthPicker"
+            >
+              {{ currentMonth }}
+            </button>
           </div>
           <button
-            v-show="state.currentView === 'date'"
+            v-if="state.currentView === 'date'"
+            type="button"
+            :title="t('QDatePicker.prevMonth')"
+            class="q-picker-panel__icon-btn q-icon-triangle-left"
+            @click="handlePrevMonthClick"
+          />
+          <button
+            v-else
+            type="button"
+            :title="t('QDatePicker.prevYear')"
+            class="q-picker-panel__icon-btn q-icon-triangle-left"
+            @click="handlePrevYearClick"
+          />
+          <button
+            v-if="state.currentView === 'date'"
             type="button"
             :title="t('QDatePicker.nextMonth')"
             class="q-picker-panel__icon-btn q-icon-triangle-right"
             @click="handleNextMonthClick"
           />
           <button
+            v-else
             type="button"
             :title="t('QDatePicker.nextYear')"
-            class="q-picker-panel__icon-btn q-icon-double-triangle-right"
+            class="q-picker-panel__icon-btn q-icon-triangle-right"
             @click="handleNextYearClick"
           />
         </div>
@@ -235,7 +237,7 @@ export default defineComponent({
 
     const currentMonth = computed<string>(() => {
       const formatter = new Intl.DateTimeFormat(getConfig('locale'), {
-        month: 'short'
+        month: 'long'
       });
       return formatter.format(new Date(state.year, state.month));
     });

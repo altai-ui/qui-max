@@ -20,14 +20,23 @@ interface Shortcut {
   text: string;
   value: Date;
 }
-
+export type QDatePickerDateRangeValue = [string | Date, string | Date];
 export type QDatePickerPropModelValue = Nullable<
-  string | Date | [string, string] | [Date, Date]
+  string | Date | QDatePickerDateRangeValue | QDatePickerDateRangeValue[]
 >;
 export type QDatePickerPropType = Nullable<
-  'date' | 'week' | 'month' | 'year' | 'daterange' | 'monthrange' | 'yearrange'
+  | 'date'
+  | 'week'
+  | 'month'
+  | 'year'
+  | 'daterange'
+  | 'monthrange'
+  | 'yearrange'
+  | 'datemultyrange'
+  | 'monthmultyrange'
+  | 'yearmultyrange'
 >;
-export type QDatePickerPropFormat = string;
+export type QDatePickerPropFormat = undefined | string;
 export type QDatePickerPropOutputFormat = Nullable<'date' | 'iso'>;
 export type QDatePickerPropPlaceholder = Nullable<string>;
 export type QDatePickerPropStartPlaceholder = Nullable<string>;
@@ -123,6 +132,8 @@ export interface QDatePickerInstance {
   transformedToDate: ComputedRef<Nullable<Date | Date[]>>;
   rangeClasses: ComputedRef<ClassValue>;
   panelComponent: ComputedRef<QDatePickerPanelComponent>;
+  inputWidthInCh: ComputedRef<string>;
+  displayFormat: ComputedRef<string>;
   rangeDisplayValue: ComputedRef<string[]>;
   displayValue: ComputedRef<string>;
   iconClass: ComputedRef<ClassValue>;

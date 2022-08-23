@@ -1,7 +1,7 @@
 export const MAX_DATE_INPUT_LENGTH = 10;
 export const DATE_CELLS_COUNT = 42;
 export const DATE_CELLS_IN_ROW_COUNT = 7;
-export const PERIOD_CELLS_IN_ROW_COUNT = 4;
+export const PERIOD_CELLS_IN_ROW_COUNT = 3;
 export const LEFT_PERIOD_PANEL_START_INDEX = 0;
 export const RIGHT_MONTH_PANEL_START_INDEX = 12;
 export const RIGHT_YEAR_PANEL_START_INDEX = 10;

@@ -15,7 +15,8 @@ import type { RangeState } from './commonTypes';
 import { MAX_DATE_INPUT_LENGTH } from './constants';
 import type {
   QDatePickerPropDisabledValues,
-  QDatePickerPropModelValue
+  QDatePickerPropModelValue,
+  QDatePickerDateRangeValue
 } from './types';
 
 const checkDisabled = (
@@ -103,13 +104,26 @@ const checkArrayValueIsValid = (value: unknown[]): boolean =>
     value.length === 2 && value.every(isString) && value.every(checkISOIsValid)
   ) || value.every(isValid);
 
+const checkArrayOfRangesValueIsValid = (
+  value: QDatePickerDateRangeValue[]
+): boolean =>
+  Boolean(
+    value.every(
+      (val: QDatePickerDateRangeValue) =>
+        (val.every(isString) && val.every(checkISOIsValid)) ||
+        val.every(isValid)
+    )
+  );
+
 const modelValueValidator = (val: QDatePickerPropModelValue): boolean => {
   if (val === null) return true;
 
   return Boolean(
     (isString(val) && checkISOIsValid(val)) ||
       isValid(val) ||
-      (Array.isArray(val) && checkArrayValueIsValid(val))
+      (Array.isArray(val) && checkArrayValueIsValid(val)) ||
+      (Array.isArray(val) &&
+        checkArrayOfRangesValueIsValid(val as QDatePickerDateRangeValue[]))
   );
 };
 

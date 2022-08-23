@@ -25,28 +25,17 @@
           :class="leftPanelClasses"
         >
           <div class="q-picker-panel__header">
-            <button
-              type="button"
-              class="q-picker-panel__icon-btn q-icon-double-triangle-left"
-              @click="handleLeftPrevYearClick"
-            />
+            <div class="q-picker-panel__header-sign">{{ leftLabel }}</div>
             <button
               type="button"
               class="q-picker-panel__icon-btn q-icon-triangle-left"
               @click="handleLeftPrevMonthClick"
             />
-            <div class="q-picker-panel__header-sign">{{ leftLabel }}</div>
             <button
               type="button"
               :disabled="!enableMonthArrow"
               class="q-picker-panel__icon-btn q-icon-triangle-right"
               @click="handleLeftNextMonthClick"
-            />
-            <button
-              type="button"
-              :disabled="!enableYearArrow"
-              class="q-picker-panel__icon-btn q-icon-double-triangle-right"
-              @click="handleLeftNextYearClick"
             />
           </div>
           <date-table
@@ -55,53 +44,6 @@
             :max-date="state.maxDate"
             :month="leftMonth"
             :year="leftYear"
-            :range-state="state.rangeState"
-            @pick="handleRangePick"
-            @range-selecting="handleRangeSelecting"
-          />
-        </div>
-        <div
-          v-if="!isMobileView"
-          ref="rightPanel"
-          :class="rightPanelClasses"
-        >
-          <div class="q-picker-panel__header">
-            <button
-              type="button"
-              :disabled="!enableYearArrow"
-              :class="{ 'q-picker-panel__icon-btn_disabled': !enableYearArrow }"
-              class="q-picker-panel__icon-btn q-icon-double-triangle-left"
-              @click="handleRightPrevYearClick"
-            />
-            <button
-              type="button"
-              :disabled="!enableMonthArrow"
-              :class="{
-                'q-picker-panel__icon-btn_disabled': !enableMonthArrow
-              }"
-              class="q-picker-panel__icon-btn q-icon-triangle-left"
-              @click="handleRightPrevMonthClick"
-            />
-            <div class="q-picker-panel__header-sign">
-              {{ rightLabel }}
-            </div>
-            <button
-              type="button"
-              class="q-picker-panel__icon-btn q-icon-triangle-right"
-              @click="handleRightNextMonthClick"
-            />
-            <button
-              type="button"
-              class="q-picker-panel__icon-btn q-icon-double-triangle-right"
-              @click="handleRightNextYearClick"
-            />
-          </div>
-          <date-table
-            selection-mode="range"
-            :min-date="state.minDate"
-            :max-date="state.maxDate"
-            :month="rightMonth"
-            :year="rightYear"
             :range-state="state.rangeState"
             @pick="handleRangePick"
             @range-selecting="handleRangeSelecting"
@@ -129,11 +71,7 @@ import {
 import type { Nullable, ClassValue } from '#/helpers';
 
 import type { RangePickValue, RangeState } from '../../commonTypes';
-import {
-  DATE_CELLS_COUNT,
-  DATE_CELLS_IN_ROW_COUNT,
-  MONTHS_COUNT
-} from '../../constants';
+import { DATE_CELLS_COUNT, DATE_CELLS_IN_ROW_COUNT } from '../../constants';
 import DateTable from '../../tables/DateTable/DateTable.vue';
 import type { QDatePickerProvider } from '../../types';
 import {
@@ -243,25 +181,9 @@ export default defineComponent({
     }));
 
     const rightYear = computed<number>(() => state.rightDate.getFullYear());
-    const enableMonthArrow = computed<boolean>(() => {
-      if (picker.isMobileView.value) return true;
-      const nextMonth = (leftMonth.value + 1) % 12;
-      const yearOffset = leftMonth.value + 1 >= 12 ? 1 : 0;
-      return (
-        new Date(leftYear.value + yearOffset, nextMonth) <
-        new Date(rightYear.value, rightMonth.value)
-      );
-    });
+    const enableMonthArrow = computed<boolean>(() => true);
 
-    const enableYearArrow = computed<boolean>(() => {
-      if (picker.isMobileView.value) return true;
-      return Boolean(
-        rightYear.value * MONTHS_COUNT +
-          rightMonth.value -
-          (leftYear.value * MONTHS_COUNT + leftMonth.value + 1) >=
-          MONTHS_COUNT
-      );
-    });
+    const enableYearArrow = computed<boolean>(() => true);
 
     const handleRangeSelecting = (value: RangeState): void => {
       state.rangeState = value;
@@ -487,8 +409,7 @@ export default defineComponent({
       handleRightPrevMonthClick,
       handleRangeSelecting,
       navigateDropdown,
-      shortcuts: picker.shortcuts,
-      isMobileView: picker.isMobileView
+      shortcuts: picker.shortcuts
     };
   }
 });

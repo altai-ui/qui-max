@@ -21,7 +21,9 @@
           @click="handleTableClick(cell)"
           @mousemove="handleMouseMove(cell)"
         >
-          {{ getCellContent(cell) }}
+          <span class="cell_date_text">
+            {{ getCellContent(cell) }}
+          </span>
         </button>
       </td>
     </tr>
@@ -107,7 +109,7 @@ export default defineComponent({
 
   setup(props: PeriodTableProps, ctx): PeriodTableInstance {
     const state = reactive<PeriodTableState>({
-      tableRows: [[], [], []]
+      tableRows: [[], [], [], []]
     });
 
     const picker = inject<QDatePickerProvider>(

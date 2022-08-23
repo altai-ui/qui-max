@@ -24,12 +24,12 @@
           :class="leftPanelClasses"
         >
           <div class="q-picker-panel__header">
+            <div class="q-picker-panel__header-sign">{{ leftLabel }}</div>
             <button
               type="button"
               class="q-picker-panel__icon-btn q-icon-double-triangle-left"
               @click="handleLeftPrevYearClick"
             />
-            <div class="q-picker-panel__header-sign">{{ leftLabel }}</div>
             <button
               type="button"
               :disabled="!enableYearArrow"
@@ -46,40 +46,6 @@
             :max-date="state.maxDate"
             :range-state="state.rangeState"
             type="year"
-            @pick="handleRangePick"
-            @range-selecting="handleRangeSelecting"
-          />
-        </div>
-        <div
-          v-if="!isMobileView"
-          ref="rightPanel"
-          :class="rightPanelClasses"
-        >
-          <div class="q-picker-panel__header">
-            <button
-              type="button"
-              :disabled="!enableYearArrow"
-              :class="{
-                'q-picker-panel__icon-btn_disabled': !enableYearArrow
-              }"
-              class="q-picker-panel__icon-btn q-icon-double-triangle-left"
-              @click="handleRightPrevYearClick"
-            />
-            <div class="q-picker-panel__header-sign">
-              {{ rightLabel }}
-            </div>
-            <button
-              type="button"
-              class="q-picker-panel__icon-btn q-icon-double-triangle-right"
-              @click="handleRightNextYearClick"
-            />
-          </div>
-          <period-table
-            :year="rightYear"
-            :min-date="state.minDate"
-            :max-date="state.maxDate"
-            type="year"
-            :range-state="state.rangeState"
             @pick="handleRangePick"
             @range-selecting="handleRangeSelecting"
           />
@@ -181,10 +147,8 @@ export default defineComponent({
       getLabelFromDate(state.rightDate, picker.type.value)
     );
 
-    const enableYearArrow = computed<boolean>(() => {
-      if (picker.isMobileView.value) return true;
-      return rightYear.value > leftYear.value + YEARS_IN_DECADE;
-    });
+    const enableYearArrow = computed<boolean>(() => true);
+
     const leftPanelClasses = computed<ClassValue>(() => ({
       'q-picker-panel__content': true,
       'q-picker-panel__content_no-right-borders': true,

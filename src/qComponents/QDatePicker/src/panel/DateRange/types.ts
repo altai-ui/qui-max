@@ -43,7 +43,6 @@ interface DateRangePanelInstance {
   leftMonth: ComputedRef<number>;
   rightMonth: ComputedRef<number>;
   shortcuts: Ref<Nullable<QDatePickerPropShortcuts>>;
-  isMobileView: Ref<boolean>;
   handleRangePick: (val: RangePickValue, close?: boolean) => void;
   handleShortcutClick: (shortcut: Date) => void;
   handleClear: () => void;

@@ -1,7 +1,8 @@
 .q-date-table {
   width: 100%;
-  font-size: 10px;
+  font-size: 14px;
   table-layout: fixed;
+  border-collapse: collapse;
   user-select: none;
 
   &__days {
@@ -21,29 +22,36 @@
 
   .cell {
     position: relative;
-    box-sizing: border-box;
-    width: 20px;
-    height: 20px;
+    width: 100%;
+    height: 100%;
     padding: 0;
-    margin: 0 auto;
-    font-weight: var(--font-weight-base);
-    color: var(--color-primary-blue);
-    background-color: var(--color-tertiary-gray-light);
+    font-weight: var(--font-weight-bolder);
+    background-color: var(--color-primary-white);
     border: none;
-    border-radius: var(--border-radius-base);
-    box-shadow: var(--box-shadow-secondary);
+
+    &_date_text {
+      box-sizing: border-box;
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+      margin: 4px;
+      line-height: 24px;
+      background-color: var(--color-primary-white);
+      border-radius: var(--border-radius-base);
+    }
 
     &:hover {
       &:not(.cell_disabled):not(.cell_current):not(.cell_in-range) {
         color: var(--color-primary-black);
         background-color: var(--color-tertiary-gray);
+        border-radius: var(--border-radius-base);
       }
     }
 
     &[data-focus-visible-added] {
       &:not(.cell_disabled) {
         color: var(--color-tertiary-white);
-        background-color: var(--color-primary-blue);
+        background-color: rgb(var(--color-rgb-cyan));
         box-shadow: var(--box-shadow-pressed);
         transition: transform 0.2s;
         transform: scale(1.2);
@@ -60,7 +68,7 @@
 
     &_selected {
       color: var(--color-tertiary-white);
-      background-color: var(--color-primary-blue);
+      background-color: rgb(var(--color-rgb-cyan));
       box-shadow: var(--box-shadow-primary);
     }
 
@@ -89,10 +97,20 @@
       }
     }
 
+    &_start-range:not(.cell_disabled),
+    &_end-range:not(.cell_disabled) {
+      .cell_date_text {
+        background-color: rgb(var(--color-rgb-cyan));
+      }
+    }
+
+    &_in-range:not(.cell_disabled) {
+      background-color: rgb(var(--color-rgb-cyan) / 20%);
+    }
+
     &_current:not(.cell_disabled),
     &_in-range:not(.cell_disabled) {
       color: var(--color-tertiary-white);
-      background-color: var(--color-primary-blue);
 
       &::after {
         position: absolute;
@@ -100,8 +118,8 @@
         right: 0;
         left: 0;
         z-index: -1;
-        width: 20px;
-        height: 20px;
+        width: 24px;
+        height: 24px;
         margin: auto;
         content: '';
         border-radius: var(--border-radius-base);

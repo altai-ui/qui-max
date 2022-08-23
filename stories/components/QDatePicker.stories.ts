@@ -39,14 +39,18 @@ const storyMetadata: Meta = {
     type: {
       options: [
         'date',
-        'week',
+        'week', // TODO: Незабыть спросить нужно ли оставлять
         'month',
         'year',
         'daterange',
         'monthrange',
-        'yearrange'
+        'yearrange',
+        'datemultyrange',
+        'monthmultyrange',
+        'yearmultyrange'
       ],
       control: { type: 'select' },
+      defaultValue: 'date',
       datetime: { disable: true }
     },
     firstDayOfWeek: {
@@ -139,7 +143,22 @@ export const Year = Template.bind({});
 export const DateRange = Template.bind({});
 export const MonthRange = Template.bind({});
 export const YearRange = Template.bind({});
+export const DateMultyRange = Template.bind({});
+export const MonthMultyRange = Template.bind({});
+export const YearMultyRange = Template.bind({});
 export const Shortcuts = Template.bind({});
+
+YearMultyRange.args = {
+  type: 'yearmultyrange'
+};
+
+MonthMultyRange.args = {
+  type: 'monthmultyrange'
+};
+
+DateMultyRange.args = {
+  type: 'datemultyrange'
+};
 
 YearRange.args = {
   type: 'yearrange'

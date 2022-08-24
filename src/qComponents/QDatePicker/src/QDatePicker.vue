@@ -91,7 +91,7 @@
           :is="panelComponent"
           v-show="state.pickerVisible"
           ref="panel"
-          :model-value="transformedToDate"
+          :model-value="dates"
           @pick="handlePickClick"
         />
       </transition>
@@ -139,15 +139,17 @@ import type {
   Nullable,
   UnwrappedInstance,
   ClassValue,
-  Enumerable
+  Enumerable,
+  UnpackArrayType
 } from '#/helpers';
 
 import {
   calcInputData,
   formatToLocalReadableString,
   modelValueValidator,
-  checkArrayValueIsValid,
-  convertISOToDate
+  convertISOToDate,
+  isValidMultyrangeOfDates,
+  isValidRangeOfDates
 } from './helpers';
 import MobilePanel from './mobile/MobilePanel.vue';
 import DatePanel from './panel/Date/DatePanel.vue';
@@ -177,8 +179,10 @@ import type {
   QDatePickerInstance,
   QDatePickerState,
   QDatePickerPanelComponent,
-  QDatePickerProvider
+  QDatePickerProvider,
+  QDatePickerDateRangeValue
 } from './types';
+import { QDatePickerDateValue } from './types';
 
 const defaultFormat = 'dd.MM.yy';
 
@@ -191,10 +195,10 @@ export default defineComponent({
 
   props: {
     /**
-     * type Date, type String (ISO), array for ranges
+     * type Date, type String (ISO), Array for ranges or arrays of ranges
      */
     modelValue: {
-      type: [String, Date, Array] as PropType<QDatePickerPropModelValue>,
+      type: [Date, String, Array] as PropType<QDatePickerPropModelValue>,
       default: null,
       validator: modelValueValidator
     },
@@ -207,7 +211,7 @@ export default defineComponent({
       default: 'date',
       validator: validateArray<QDatePickerPropType>([
         'date',
-        'week', // TODO: Незабыть спросить нужно ли оставлять
+        'week', // TODO: Не забыть спросить нужно ли оставлять
         'month',
         'year',
         'daterange',
@@ -396,21 +400,27 @@ export default defineComponent({
       return getConfig('locale') === 'ru' ? 1 : 0;
     });
 
-    // transform to plain Date to handle it easily
-    const transformedToDate = computed<Nullable<Enumerable<Date>>>(() => {
-      if (Array.isArray(props.modelValue)) {
-        if (checkArrayValueIsValid(props.modelValue)) {
-          return [
-            convertISOToDate(props.modelValue[0]),
-            convertISOToDate(props.modelValue[1])
-          ];
-        }
-
-        return null;
+    // Array of dates or dates arrays transform to plain Date object to handle it easily
+    const dates = computed<Nullable<QDatePickerDateValue>>(() => {
+      if (isValidMultyrangeOfDates(props.modelValue)) {
+        return props.modelValue.map<[Date, Date]>(range => [
+          convertISOToDate(range[0]),
+          convertISOToDate(range[1])
+        ]);
       }
 
-      if (isString(props.modelValue)) return parseISO(props.modelValue);
-      if (isValid(props.modelValue)) return props.modelValue;
+      if (isValidRangeOfDates(props.modelValue)) {
+        return [
+          [
+            convertISOToDate(props.modelValue[0]),
+            convertISOToDate(props.modelValue[1])
+          ]
+        ];
+      }
+
+      if (isString(props.modelValue)) return [parseISO(props.modelValue)];
+      if (props.modelValue && isValid(props.modelValue))
+        return [props.modelValue];
 
       // not valid Date in model
       return null;
@@ -429,15 +439,12 @@ export default defineComponent({
     const panelComponent = computed<QDatePickerPanelComponent>(() => {
       switch (props.type) {
         case 'daterange':
-          return DateRangePanel;
         case 'datemultyrange':
           return DateRangePanel;
         case 'monthrange':
-          return MonthRangePanel;
         case 'monthmultyrange':
           return MonthRangePanel;
         case 'yearrange':
-          return YearRangePanel;
         case 'yearmultyrange':
           return YearRangePanel;
         default:
@@ -446,11 +453,11 @@ export default defineComponent({
     });
 
     const isValueEmpty = computed<boolean>(() => {
-      if (Array.isArray(transformedToDate.value)) {
-        return !transformedToDate.value.length;
+      if (Array.isArray(dates.value)) {
+        return !dates.value.length;
       }
 
-      return !transformedToDate.value;
+      return false;
     });
 
     const iconClass = computed<ClassValue>(() => {
@@ -463,7 +470,7 @@ export default defineComponent({
     });
 
     const isRanged = computed<boolean>(
-      () => props.type?.includes('range') ?? false
+      () => props.type?.endsWith('range') ?? false
     );
 
     const displayFormat = computed<string>(() => {
@@ -494,9 +501,9 @@ export default defineComponent({
     );
 
     const rangeDisplayValue = computed<string[]>(() => {
-      if (!isRanged.value || !Array.isArray(transformedToDate.value)) return [];
+      if (!isRanged.value || !Array.isArray(dates.value)) return [];
 
-      return transformedToDate.value.map(dateFromArray =>
+      return dates.value.map(dateFromArray =>
         formatToLocalReadableString(
           dateFromArray,
           displayFormat.value,
@@ -506,7 +513,7 @@ export default defineComponent({
     });
 
     const displayValue = computed<string>(() => {
-      if (isRanged.value || Array.isArray(transformedToDate.value)) return '';
+      if (isRanged.value || Array.isArray(dates.value)) return '';
 
       if (state.userInput !== null) {
         return state.userInput;
@@ -515,12 +522,12 @@ export default defineComponent({
       let formattedValue: Enumerable<string | number | Date> = '';
 
       if (
-        isDate(transformedToDate.value) &&
-        isValid(transformedToDate.value) &&
-        transformedToDate.value instanceof Date
+        isDate(dates.value) &&
+        isValid(dates.value) &&
+        dates.value instanceof Date
       ) {
         formattedValue = formatToLocalReadableString(
-          transformedToDate.value,
+          dates.value,
           displayFormat.value,
           getConfig('locale')
         );
@@ -529,11 +536,13 @@ export default defineComponent({
       return formattedValue ?? '';
     });
 
-    const emitChange = (val: QDatePickerPropModelValue): void => {
-      let result = val;
+    const formatDate = (
+      date: Exclude<QDatePickerPropModelValue, QDatePickerDateRangeValue[]>
+    ): Exclude<QDatePickerPropModelValue, QDatePickerDateRangeValue[]> => {
+      let result = date;
 
       if (result && props.outputFormat === 'iso') {
-        if (result && Array.isArray(result)) {
+        if (Array.isArray(result)) {
           const isoDateOne =
             result[0] instanceof Date ? result[0].toISOString() : result[0];
           const isoDateTwo =
@@ -541,6 +550,37 @@ export default defineComponent({
           result = [isoDateOne, isoDateTwo];
         } else {
           result = result instanceof Date ? result.toISOString() : result;
+        }
+      }
+
+      return result;
+    };
+
+    const emitChange = (val: QDatePickerPropModelValue): void => {
+      let result = val;
+
+      if (result) {
+        if (isValidMultyrangeOfDates(result)) {
+          result = result.reduce(
+            (
+              dateRanges: QDatePickerDateRangeValue[],
+              dateValue: UnpackArrayType<QDatePickerPropModelValue>
+            ) => {
+              const formattedDateValue = formatDate(dateValue);
+
+              if (Array.isArray(formattedDateValue)) {
+                dateRanges.push(formattedDateValue);
+              }
+
+              return dateRanges;
+            },
+            []
+          );
+
+          // Для обратной совместимости
+          if (result.length === 1) result = result[0];
+        } else {
+          result = formatDate(result);
         }
       }
 
@@ -585,7 +625,7 @@ export default defineComponent({
         value = parse(date, format, new Date());
 
         if (!Number.isNaN(Number(value))) {
-          let resultValue = value;
+          let resultValue;
           switch (props.type) {
             case 'week':
               resultValue = startOfWeek(value, { weekStartsOn: 1 });
@@ -600,6 +640,7 @@ export default defineComponent({
               resultValue = value;
               break;
           }
+
           emitChange(resultValue);
         }
       } else {
@@ -729,16 +770,12 @@ export default defineComponent({
       state.pickerVisible = true;
       ctx.emit('focus');
 
-      if (
-        !transformedToDate.value ||
-        Array.isArray(transformedToDate.value) ||
-        isMobileView.value
-      )
+      if (!dates.value || Array.isArray(dates.value) || isMobileView.value)
         return;
 
       const format = 'dd.MM.yy';
       state.userInput = formatToLocalReadableString(
-        transformedToDate.value,
+        dates.value,
         format,
         getConfig('locale')
       );
@@ -829,7 +866,7 @@ export default defineComponent({
       type: toRef(props, 'type'),
       disabledValues: toRef(props, 'disabledValues'),
       shortcuts: toRef(props, 'shortcuts'),
-      transformedToDate,
+      dates,
       panelComponent
     });
 
@@ -843,7 +880,7 @@ export default defineComponent({
       isRanged,
       isPickerDisabled,
       calcFirstDayOfWeek,
-      transformedToDate,
+      dates,
       rangeClasses,
       panelComponent,
       handleInputDateChange,

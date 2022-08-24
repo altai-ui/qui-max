@@ -20,9 +20,10 @@ interface Shortcut {
   text: string;
   value: Date;
 }
-export type QDatePickerDateRangeValue = [string | Date, string | Date];
+export type QDatePickerDateValue = Array<Date | [Date, Date]>;
+export type QDatePickerDateRangeValue = [string, string] | [Date, Date];
 export type QDatePickerPropModelValue = Nullable<
-  string | Date | QDatePickerDateRangeValue | QDatePickerDateRangeValue[]
+  string | Date | Enumerable<QDatePickerDateRangeValue>
 >;
 export type QDatePickerPropType = Nullable<
   | 'date'

@@ -4,7 +4,8 @@ import {
   isWithinInterval,
   parseISO,
   isAfter,
-  isBefore
+  isBefore,
+  isDate
 } from 'date-fns';
 import { ru, enGB as en, zhHK as zh } from 'date-fns/locale';
 import { isString } from 'lodash-es';
@@ -99,21 +100,41 @@ const checkISOIsValid = (isoDate: string): boolean =>
 const convertISOToDate = (value: string | Date): Date =>
   isString(value) ? parseISO(value) : value;
 
-const checkArrayValueIsValid = (value: unknown[]): boolean =>
-  Boolean(
-    value.length === 2 && value.every(isString) && value.every(checkISOIsValid)
-  ) || value.every(isValid);
+const isValidDateRange = (dates: unknown): dates is [Date, Date] => {
+  return (
+    Array.isArray(dates) &&
+    dates.length === 2 &&
+    (dates as []).every((date: unknown) => isDate(date) && isValid(date))
+  );
+};
 
-const checkArrayOfRangesValueIsValid = (
-  value: QDatePickerDateRangeValue[]
-): boolean =>
-  Boolean(
-    value.every(
-      (val: QDatePickerDateRangeValue) =>
-        (val.every(isString) && val.every(checkISOIsValid)) ||
-        val.every(isValid)
+const isValidStringDateRange = (dates: unknown): dates is [string, string] => {
+  return (
+    Array.isArray(dates) &&
+    dates.length === 2 &&
+    (dates as []).every(
+      (date: unknown) => isString(date) && checkISOIsValid(date)
     )
   );
+};
+
+const isValidRangeOfDates = (
+  range: unknown
+): range is QDatePickerDateRangeValue => {
+  return isValidDateRange(range) || isValidStringDateRange(range);
+};
+
+const isValidMultyrangeOfDates = (
+  multyrange: unknown
+): multyrange is QDatePickerDateRangeValue[] => {
+  return (
+    Array.isArray(multyrange) &&
+    (multyrange as []).every(
+      (range: unknown) =>
+        isValidDateRange(range) || isValidStringDateRange(range)
+    )
+  );
+};
 
 const modelValueValidator = (val: QDatePickerPropModelValue): boolean => {
   if (val === null) return true;
@@ -121,9 +142,8 @@ const modelValueValidator = (val: QDatePickerPropModelValue): boolean => {
   return Boolean(
     (isString(val) && checkISOIsValid(val)) ||
       isValid(val) ||
-      (Array.isArray(val) && checkArrayValueIsValid(val)) ||
-      (Array.isArray(val) &&
-        checkArrayOfRangesValueIsValid(val as QDatePickerDateRangeValue[]))
+      isValidRangeOfDates(val) ||
+      isValidMultyrangeOfDates(val)
   );
 };
 
@@ -148,8 +168,12 @@ export {
   calcInputData,
   validator,
   modelValueValidator,
-  checkArrayValueIsValid,
+  checkISOIsValid,
   convertISOToDate,
   isDateInRangeInterval,
-  checkDisabled
+  checkDisabled,
+  isValidDateRange,
+  isValidStringDateRange,
+  isValidRangeOfDates,
+  isValidMultyrangeOfDates
 };

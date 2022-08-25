@@ -1,14 +1,16 @@
 import type { ComputedRef } from 'vue';
 
+import type { Nullable } from '#/helpers';
+
 import type {
   QDatePickerPropModelValue,
-  QDatePickerTransformedToDate,
+  QDatePickerDate,
   QDatePickerPanelComponent
 } from '../types';
 
 export interface MobilePanelInstance {
   handleCloseBtnClick: () => void;
   panelComponent: ComputedRef<QDatePickerPanelComponent>;
-  transformedToDate: ComputedRef<QDatePickerTransformedToDate>;
+  date: ComputedRef<Nullable<QDatePickerDate>>;
   handlePick: (val: QDatePickerPropModelValue) => void;
 }

@@ -1,6 +1,8 @@
 import type { Instance } from '@popperjs/core';
 import type { ComputedRef, Ref } from 'vue';
 
+import type { QInputInstance } from '@/qComponents/QInput';
+
 import type {
   Nullable,
   UnwrappedInstance,
@@ -8,11 +10,11 @@ import type {
   Enumerable
 } from '#/helpers';
 
-import type DatePanel from './panel/Date/DatePanel.vue';
-import type { DatePanelInstance } from './panel/Date/types';
-import type DateRangePanel from './panel/DateRange/DateRange.vue';
-import type MonthRangePanel from './panel/MonthRange/MonthRange.vue';
-import type YearRangePanel from './panel/YearRange/YearRange.vue';
+import type DatePanel from '../../panel/Date/DatePanel.vue';
+import type { DatePanelInstance } from '../../panel/Date/types';
+import type DateRangePanel from '../../panel/DateRange/DateRange.vue';
+import type MonthRangePanel from '../../panel/MonthRange/MonthRange.vue';
+import type YearRangePanel from '../../panel/YearRange/YearRange.vue';
 
 export interface Shortcut {
   text: string;
@@ -61,7 +63,7 @@ export type QDatePickerPropValidateEvent = Nullable<boolean>;
 export type QDatePickerPropTeleportTo = Nullable<string | HTMLElement>;
 
 export interface QDatePickerProps {
-  modelValue: QDatePickerPropModelValue;
+  modelValue: QDatePickerDate;
   type: QDatePickerPropType;
   format: QDatePickerPropFormat;
   outputFormat: QDatePickerPropOutputFormat;
@@ -87,7 +89,6 @@ export type QDatePickerPanelComponent =
   | typeof DatePanel;
 
 export interface QDatePickerState {
-  activeDateIndex: Nullable<number>;
   pickerVisible: boolean;
   showCloseIcon: boolean;
   userInput: Nullable<string>;
@@ -114,7 +115,7 @@ export interface QDatePickerProvider {
   shortcuts: Ref<Nullable<QDatePickerPropShortcuts>>;
   emitChange: (val: QDatePickerPropModelValue, intermediate: boolean) => void;
   type: Ref<QDatePickerPropType>;
-  date: ComputedRef<Nullable<QDatePickerDate>>;
+  dates: ComputedRef<Nullable<QDatePickerDate>>;
   panelComponent: ComputedRef<QDatePickerPanelComponent>;
 }
 
@@ -122,21 +123,23 @@ export interface QDatePickerInstance {
   state: QDatePickerState;
   root: Ref<Nullable<HTMLElement>>;
   panel: Ref<UnwrappedInstance<DatePanelInstance>>;
-  reference: Ref<Nullable<HTMLElement>>;
+  reference: Ref<UnwrappedInstance<QInputInstance>>;
+  rangedReference: Ref<Nullable<HTMLElement>>;
   isRanged: ComputedRef<boolean>;
   isPickerDisabled: ComputedRef<boolean>;
   isValueEmpty: ComputedRef<boolean>;
   isMobileView: Ref<boolean>;
   calcFirstDayOfWeek: ComputedRef<number>;
-  dates: ComputedRef<QDatePickerDates>;
-  activeDate: ComputedRef<Nullable<QDatePickerDate>>;
+  dates: ComputedRef<QDatePickerDate>;
   rangeClasses: ComputedRef<ClassValue>;
   panelComponent: ComputedRef<QDatePickerPanelComponent>;
+  displayFormat: ComputedRef<string>;
+  rangeDisplayValue: ComputedRef<string[]>;
+  displayValue: ComputedRef<string>;
   iconClass: ComputedRef<ClassValue>;
   handleInputDateChange: () => void;
   handleKeyUp: (e: KeyboardEvent) => void;
-  popperInit: () => void;
-  destroyPopper: () => void;
+  handleKeyDown: (e: KeyboardEvent) => void;
   closePicker: () => void;
   handlePickClick: (
     val: QDatePickerPropModelValue,

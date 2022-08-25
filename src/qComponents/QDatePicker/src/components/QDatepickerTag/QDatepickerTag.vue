@@ -1,74 +1,81 @@
 <template>
-  <div
-    ref="root"
-    class="q-date-picker"
-  >
-    <div
+  <q-tag v-if="isRanged">
+    <input
+      autocomplete="off"
+      class="q-date-picker__input"
+      :placeholder="startPlaceholder || t('QDatePicker.startPlaceholder')"
+      :value="rangeDisplayValue[0]"
+      :disabled="isPickerDisabled"
+      readonly
+      tabindex="-1"
+    />
+    <slot name="range-separator">
+      <span class="q-date-picker__range-separator">{{ rangeSeparator }}</span>
+    </slot>
+    <input
+      autocomplete="off"
+      class="q-date-picker__input"
+      :placeholder="endPlaceholder || t('QDatePicker.endPlaceholder')"
+      :value="rangeDisplayValue[1]"
+      :disabled="isPickerDisabled"
+      readonly
+      tabindex="-1"
+    />
+  </q-tag>
+  <q-tag v-else>
+    <input
       ref="reference"
-      :class="rangeClasses"
-      tabindex="0"
-      @click="handleRangeClick"
-      @mouseenter="handleMouseEnter"
-      @mouseleave="state.showCloseIcon = false"
+      class="q-date-picker__input"
+      :value="displayValue"
+      :class="{ 'q-input_focused': state.pickerVisible }"
+      :readonly="!editable"
+      :disabled="isPickerDisabled"
+      :name="name"
+      :placeholder="placeholder ?? t('QDatePicker.placeholder')"
+      :maxlength="10"
+      @focus="handleFocus"
       @keyup="handleKeyUp"
-      @keyup.tab="handleFocus"
-    >
-      <div style="display: flex; flex-wrap: wrap">
-        <q-datepicker-tag
-          v-for="(date, index) in dates"
-          :key="index"
-          :type="type"
-          :model-value="date"
-          :output-format="outputFormat"
-          :editable="editable"
-          :clearable="clearable"
-          :disabled="disabled"
-          :first-day-of-week="firstDayOfWeek"
-          :placeholder="placeholder"
-          :format="format"
-        />
-      </div>
-
-      <span
-        :class="iconClass"
-        class="q-date-picker__suffix"
-        @click="handleIconClick"
-      />
-    </div>
-
-    <teleport
-      :to="teleportTo || 'body'"
-      :disabled="!teleportTo"
-    >
-      <transition
-        v-if="!isMobileView"
-        name="q-picker-panel-animation"
-        @after-leave="destroyPopper"
-        @before-enter="popperInit"
-      >
-        <component
-          :is="panelComponent"
-          v-show="state.pickerVisible"
-          ref="panel"
-          :model-value="activeDate"
-          @pick="handlePickClick"
-        />
-      </transition>
-    </teleport>
-  </div>
+      @input="handleInput"
+      @change="handleInputDateChange"
+      @keydown="handleKeyDown"
+    />
+    <!--    <q-input-->
+    <!--      ref="reference"-->
+    <!--      class="q-date-picker__input"-->
+    <!--      :model-value="displayValue"-->
+    <!--      :root-class="{ 'q-input_focused': state.pickerVisible }"-->
+    <!--      :readonly="!editable"-->
+    <!--      :disabled="isPickerDisabled"-->
+    <!--      :name="name"-->
+    <!--      :placeholder="placeholder ?? t('QDatePicker.placeholder')"-->
+    <!--      :maxlength="10"-->
+    <!--      @focus="handleFocus"-->
+    <!--      @keyup="handleKeyUp"-->
+    <!--      @input="handleInput"-->
+    <!--      @change="handleInputDateChange"-->
+    <!--      @keydown="handleKeyDown"-->
+    <!--    >-->
+    <!--      <template #suffix>-->
+    <!--        <span-->
+    <!--          class="q-input__icon"-->
+    <!--          :class="iconClass"-->
+    <!--          @click="handleIconClick"-->
+    <!--        />-->
+    <!--      </template>-->
+    <!--    </q-input>-->
+  </q-tag>
 </template>
 
 <script lang="ts">
-import { createPopper } from '@popperjs/core';
 import {
+  isDate,
   isValid,
   parse,
   startOfMonth,
   startOfWeek,
-  startOfYear,
-  parseISO
+  startOfYear
 } from 'date-fns';
-import { isNumber, isString } from 'lodash-es';
+import { isNumber } from 'lodash-es';
 import {
   computed,
   defineComponent,
@@ -76,7 +83,6 @@ import {
   reactive,
   ref,
   watch,
-  onBeforeUnmount,
   provide,
   toRef
 } from 'vue';
@@ -90,30 +96,28 @@ import { t } from '@/qComponents/locale';
 import { useDialog } from '@/qComponents/QDialog';
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QFormItemProvider } from '@/qComponents/QFormItem';
+import type { QInputInstance } from '@/qComponents/QInput';
+import { QTag } from '@/qComponents/QTag';
 
 import type {
   Nullable,
   UnwrappedInstance,
   ClassValue,
-  UnpackArrayType
+  Enumerable
 } from '#/helpers';
 
-import QDatepickerTag from './components/QDatepickerTag/QDatepickerTag.vue';
 import {
   calcInputData,
   formatToLocalReadableString,
-  modelValueValidator,
-  shortcutsValidator,
-  convertISOToDate,
-  isValidMultyrangeOfDates,
-  isValidRangeOfDates
-} from './helpers';
-import MobilePanel from './mobile/MobilePanel.vue';
-import DatePanel from './panel/Date/DatePanel.vue';
-import type { DatePanelInstance } from './panel/Date/types';
-import DateRangePanel from './panel/DateRange/DateRange.vue';
-import MonthRangePanel from './panel/MonthRange/MonthRange.vue';
-import YearRangePanel from './panel/YearRange/YearRange.vue';
+  shortcutsValidator
+} from '../../helpers';
+import MobilePanel from '../../mobile/MobilePanel.vue';
+import DatePanel from '../../panel/Date/DatePanel.vue';
+import type { DatePanelInstance } from '../../panel/Date/types';
+import DateRangePanel from '../../panel/DateRange/DateRange.vue';
+import MonthRangePanel from '../../panel/MonthRange/MonthRange.vue';
+import YearRangePanel from '../../panel/YearRange/YearRange.vue';
+
 import type {
   QDatePickerPropModelValue,
   QDatePickerPropType,
@@ -137,28 +141,25 @@ import type {
   QDatePickerState,
   QDatePickerPanelComponent,
   QDatePickerProvider,
-  QDatePickerDateRangeValue,
-  QDatePickerDates,
   QDatePickerDate
 } from './types';
 
 const defaultFormat = 'dd.MM.yy';
 
 export default defineComponent({
-  name: 'QDatePicker',
+  name: 'QDatePickerTag',
 
-  componentName: 'QDatePicker',
+  componentName: 'QDatePickerTag',
 
-  components: { QDatepickerTag },
+  components: { QTag },
 
   props: {
     /**
      * type Date, type String (ISO), Array for ranges or arrays of ranges
      */
     modelValue: {
-      type: [Date, String, Array] as PropType<QDatePickerPropModelValue>,
-      default: null,
-      validator: modelValueValidator
+      type: [Date, Array] as PropType<QDatePickerDate>,
+      required: true
     },
 
     /**
@@ -344,10 +345,10 @@ export default defineComponent({
     const panel = ref<UnwrappedInstance<DatePanelInstance>>(null);
     const qForm = inject<Nullable<QFormProvider>>('qForm', null);
     const qFormItem = inject<Nullable<QFormItemProvider>>('qFormItem', null);
-    const reference = ref<Nullable<HTMLInputElement>>(null);
+    const reference = ref<Nullable<UnwrappedInstance<QInputInstance>>>(null);
+    const rangedReference = ref<Nullable<HTMLElement>>(null);
 
     const state = reactive<QDatePickerState>({
-      activeDateIndex: 0,
       pickerVisible: false,
       showCloseIcon: false,
       userInput: null,
@@ -364,52 +365,9 @@ export default defineComponent({
       return getConfig('locale') === 'ru' ? 1 : 0;
     });
 
-    const isRanged = computed<boolean>(
-      () => props.type?.endsWith('range') ?? false
-    );
-
-    const isMultyranged = computed<boolean>(
-      () => props.type?.endsWith('multyrange') ?? false
-    );
-
     // Array of dates or dates arrays transform to plain Date object to handle it easily
-    const dates = computed<QDatePickerDates>(() => {
-      if (isValidMultyrangeOfDates(props.modelValue)) {
-        let end = props.modelValue.length;
-
-        if (!isMultyranged.value) end = 1;
-
-        return props.modelValue
-          .slice(0, end)
-          .map<[Date, Date]>(range => [
-            convertISOToDate(range[0]),
-            convertISOToDate(range[1])
-          ]);
-      }
-
-      if (isValidRangeOfDates(props.modelValue)) {
-        return [
-          [
-            convertISOToDate(props.modelValue[0]),
-            convertISOToDate(props.modelValue[1])
-          ]
-        ];
-      }
-
-      if (isString(props.modelValue)) return [parseISO(props.modelValue)];
-      if (props.modelValue && isValid(props.modelValue))
-        return [props.modelValue];
-
-      // not valid Date in model
-      return null;
-    });
-
-    const activeDate = computed<Nullable<QDatePickerDate>>(() => {
-      if (state.activeDateIndex) {
-        return dates.value?.[state.activeDateIndex] ?? null;
-      }
-
-      return null;
+    const dates = computed<QDatePickerDate>(() => {
+      return props.modelValue;
     });
 
     const isPickerDisabled = computed<boolean>(() =>
@@ -417,9 +375,9 @@ export default defineComponent({
     );
 
     const rangeClasses = computed<ClassValue>(() => ({
-      'q-date-picker-wrapper': true,
-      'q-date-picker-wrapper_disabled': isPickerDisabled.value,
-      'q-date-picker-wrapper_focused': state.pickerVisible
+      'q-date-picker__range-wrapper': true,
+      'q-date-picker__range-wrapper_disabled': isPickerDisabled.value,
+      'q-date-picker__range-wrapper_focused': state.pickerVisible
     }));
 
     const panelComponent = computed<QDatePickerPanelComponent>(() => {
@@ -455,57 +413,73 @@ export default defineComponent({
       return state.showCloseIcon ? 'q-icon-close' : 'q-icon-calendar';
     });
 
-    const formatDate = (
-      date: Exclude<QDatePickerPropModelValue, QDatePickerDateRangeValue[]>
-    ): Exclude<QDatePickerPropModelValue, QDatePickerDateRangeValue[]> => {
-      let result = date;
+    const isRanged = computed<boolean>(
+      () => props.type?.endsWith('range') ?? false
+    );
 
-      if (result && props.outputFormat === 'iso') {
-        if (Array.isArray(result)) {
-          const isoDateOne =
-            result[0] instanceof Date ? result[0].toISOString() : result[0];
-          const isoDateTwo =
-            result[1] instanceof Date ? result[1].toISOString() : result[1];
-          result = [isoDateOne, isoDateTwo];
-        } else {
-          result = result instanceof Date ? result.toISOString() : result;
-        }
+    const displayFormat = computed<string>(() => {
+      if (props.format !== defaultFormat) {
+        return props.format ?? defaultFormat;
       }
 
-      return result;
-    };
+      switch (props.type) {
+        case 'month':
+          return 'MMMM - yyyy';
+
+        case 'monthrange':
+        case 'monthmultyrange':
+          return 'MM.yy';
+
+        case 'year':
+        case 'yearrange':
+        case 'yearmultyrange':
+          return 'yyyy';
+
+        default:
+          return defaultFormat;
+      }
+    });
+
+    const rangeDisplayValue = computed<string[]>(() => {
+      if (!isRanged.value || !Array.isArray(dates.value)) return [];
+
+      return dates.value.map(dateFromArray =>
+        formatToLocalReadableString(
+          dateFromArray,
+          displayFormat.value,
+          getConfig('locale')
+        )
+      );
+    });
+
+    const displayValue = computed<string>(() => {
+      if (isRanged.value || Array.isArray(dates.value)) return '';
+
+      if (state.userInput !== null) {
+        return state.userInput;
+      }
+
+      let formattedValue: Enumerable<string | number | Date> = '';
+
+      if (
+        isDate(dates.value) &&
+        isValid(dates.value) &&
+        dates.value instanceof Date
+      ) {
+        formattedValue = formatToLocalReadableString(
+          dates.value,
+          displayFormat.value,
+          getConfig('locale')
+        );
+      }
+
+      return formattedValue ?? '';
+    });
 
     const emitChange = (val: QDatePickerPropModelValue): void => {
-      let result = val;
-
-      if (result) {
-        if (isValidMultyrangeOfDates(result)) {
-          result = result.reduce(
-            (
-              dateRanges: QDatePickerDateRangeValue[],
-              dateValue: UnpackArrayType<QDatePickerPropModelValue>
-            ) => {
-              const formattedDateValue = formatDate(dateValue);
-
-              if (Array.isArray(formattedDateValue)) {
-                dateRanges.push(formattedDateValue);
-              }
-
-              return dateRanges;
-            },
-            []
-          );
-
-          // For backwards compatibility
-          if (!isMultyranged.value && result.length === 1) result = result[0];
-        } else {
-          result = formatDate(result);
-        }
-      }
-
       if (val !== props.modelValue) {
-        ctx.emit('update:modelValue', result);
-        ctx.emit('change', result);
+        ctx.emit('update:modelValue', val);
+        ctx.emit('change', val);
         if (props.validateEvent) {
           qFormItem?.validateField('change');
         }
@@ -568,6 +542,17 @@ export default defineComponent({
       state.userInput = null;
     };
 
+    const handleKeyDown = (event: KeyboardEvent): void => {
+      // prevent letters input
+      if (
+        event.key.match(
+          /^(?!Enter$|Escape$|Tab$|Backspace$|ArrowLeft$|ArrowRight$)[^0-9]+/g
+        )
+      ) {
+        event.preventDefault();
+      }
+    };
+
     const handleKeyUp = (e: KeyboardEvent): void => {
       // if user is typing, do not let picker handle key input
       if (state.userInput) {
@@ -583,7 +568,7 @@ export default defineComponent({
 
         case 'ArrowRight':
         case 'ArrowLeft': {
-          const nativeInput = reference.value ?? null;
+          const nativeInput = reference.value?.input ?? null;
           if (nativeInput !== document.activeElement) {
             panel.value?.navigateDropdown(e);
           }
@@ -612,60 +597,6 @@ export default defineComponent({
         default:
           break;
       }
-    };
-
-    const handleDocumentClick = (e: MouseEvent): void => {
-      const target = e.target as HTMLElement;
-      const dropdownEl = panel.value?.$el;
-
-      if (root.value?.contains(target) || dropdownEl?.contains(target)) {
-        return;
-      }
-
-      state.pickerVisible = false;
-    };
-
-    const popperInit = (): void => {
-      const panelEl = panel.value?.$el;
-
-      if (!panelEl || !reference.value) return;
-
-      state.popper = createPopper(reference.value, panelEl, {
-        modifiers: [
-          {
-            name: 'offset',
-            options: {
-              offset: [0, 8]
-            }
-          },
-          {
-            name: 'flip',
-            options: {
-              fallbackPlacements: ['top', 'bottom']
-            }
-          },
-          {
-            name: 'computeStyles',
-            options: {
-              adaptive: false // true by default
-            }
-          }
-        ]
-      });
-
-      panelEl.style.zIndex = getConfig('nextZIndex') ?? 2000;
-      document.addEventListener('keyup', handleKeyUp, true);
-      document.addEventListener('click', handleDocumentClick, true);
-    };
-
-    const destroyPopper = (): void => {
-      if (state.popper) {
-        state.popper.destroy();
-        state.popper = null;
-      }
-
-      document.removeEventListener('keyup', handleKeyUp, true);
-      document.removeEventListener('click', handleDocumentClick, true);
     };
 
     const handleFocus = (): void => {
@@ -758,8 +689,6 @@ export default defineComponent({
       }
     });
 
-    onBeforeUnmount(() => destroyPopper());
-
     provide<QDatePickerProvider>('qDatePicker', {
       emit: ctx.emit,
       firstDayOfWeek: calcFirstDayOfWeek,
@@ -769,7 +698,7 @@ export default defineComponent({
       type: toRef(props, 'type'),
       disabledValues: toRef(props, 'disabledValues'),
       shortcuts: toRef(props, 'shortcuts'),
-      date: activeDate,
+      dates,
       panelComponent
     });
 
@@ -778,23 +707,25 @@ export default defineComponent({
       root,
       panel,
       reference,
+      rangedReference,
       isMobileView,
       isRanged,
       isPickerDisabled,
       calcFirstDayOfWeek,
       dates,
-      activeDate,
       rangeClasses,
       panelComponent,
       handleInputDateChange,
       handleKeyUp,
       isValueEmpty,
+      displayFormat,
+      rangeDisplayValue,
+      displayValue,
       iconClass,
-      destroyPopper,
-      popperInit,
       handlePickClick,
       handleFocus,
       handleInput,
+      handleKeyDown,
       handleMouseEnter,
       handleRangeClick,
       closePicker,

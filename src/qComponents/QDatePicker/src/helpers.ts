@@ -17,7 +17,8 @@ import { MAX_DATE_INPUT_LENGTH } from './constants';
 import type {
   QDatePickerPropDisabledValues,
   QDatePickerPropModelValue,
-  QDatePickerDateRangeValue
+  QDatePickerDateRangeValue,
+  Shortcut
 } from './types';
 
 const checkDisabled = (
@@ -129,10 +130,17 @@ const isValidMultyrangeOfDates = (
 ): multyrange is QDatePickerDateRangeValue[] => {
   return (
     Array.isArray(multyrange) &&
+    Boolean(multyrange.length) &&
     (multyrange as []).every(
       (range: unknown) =>
         isValidDateRange(range) || isValidStringDateRange(range)
     )
+  );
+};
+
+const isShortcut = (shortcut: Shortcut): shortcut is Shortcut => {
+  return (
+    isString(shortcut.text) && isDate(shortcut.value) && isValid(shortcut.value)
   );
 };
 
@@ -145,6 +153,12 @@ const modelValueValidator = (val: QDatePickerPropModelValue): boolean => {
       isValidRangeOfDates(val) ||
       isValidMultyrangeOfDates(val)
   );
+};
+
+const shortcutsValidator = (val: Nullable<Shortcut[]>): boolean => {
+  if (val === null) return true;
+
+  return Array.isArray(val) && val.every(isShortcut);
 };
 
 const isDateInRangeInterval = (date: Date, rangeState: RangeState): boolean => {
@@ -168,6 +182,7 @@ export {
   calcInputData,
   validator,
   modelValueValidator,
+  shortcutsValidator,
   checkISOIsValid,
   convertISOToDate,
   isDateInRangeInterval,

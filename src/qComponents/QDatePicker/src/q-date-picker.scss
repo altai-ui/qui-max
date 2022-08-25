@@ -37,102 +37,100 @@
     }
   }
 
-  &_ranged {
-    .q-date-picker__range-wrapper {
-      position: relative;
-      display: inline-flex;
-      align-items: center;
-      width: 100%;
-      height: 40px;
-      padding-right: 1px;
-      padding-left: 5px;
+  .q-date-picker-wrapper {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    width: 100%;
+    height: 40px;
+    padding-right: 1px;
+    padding-left: 5px;
+    cursor: pointer;
+    background-color: var(--color-tertiary-white);
+    border: none;
+    border-radius: var(--border-radius-base);
+    outline: none;
+    box-shadow: var(--box-shadow-insert-primary);
+
+    .q-date-picker__input {
+      width: 42%;
+      height: 100%;
+      padding: 0;
+      margin: auto 0;
+      font-size: inherit;
+      font-weight: var(--font-weight-base);
+      line-height: 40px;
+      color: var(--color-primary-black);
+      text-align: center;
+      text-overflow: ellipsis;
+      white-space: nowrap;
       cursor: pointer;
-      background-color: var(--color-tertiary-white);
+      background: none;
       border: none;
-      border-radius: var(--border-radius-base);
       outline: none;
-      box-shadow: var(--box-shadow-insert-primary);
+      appearance: none;
 
-      .q-date-picker__input {
-        width: 42%;
-        height: 100%;
-        padding: 0;
-        margin: auto 0;
-        font-size: inherit;
-        font-weight: var(--font-weight-base);
+      &::placeholder {
+        color: rgb(var(--color-rgb-gray) / 32%);
+        opacity: 1;
+      }
+    }
+
+    .q-date-picker__suffix {
+      display: inline;
+      flex-shrink: 0;
+      width: 40px;
+      margin-left: auto;
+      color: var(--field-icon-color-inactive);
+      text-align: center;
+      pointer-events: all;
+      transition: color 0.3s;
+
+      &::before {
+        font-size: 24px;
         line-height: 40px;
-        color: var(--color-primary-black);
-        text-align: center;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        cursor: pointer;
-        background: none;
-        border: none;
-        outline: none;
-        appearance: none;
-
-        &::placeholder {
-          color: rgb(var(--color-rgb-gray) / 32%);
-          opacity: 1;
-        }
       }
 
-      .q-date-picker__suffix {
-        display: inline;
-        flex-shrink: 0;
-        width: 40px;
-        margin-left: auto;
-        color: var(--field-icon-color-inactive);
-        text-align: center;
-        pointer-events: all;
-        transition: color 0.3s;
+      &.q-icon-close {
+        color: var(--field-icon-color-base);
 
-        &::before {
-          font-size: 24px;
-          line-height: 40px;
-        }
-
-        &.q-icon-close {
-          color: var(--field-icon-color-base);
-
-          &.focus-visible,
-          &:hover {
-            color: var(--field-icon-color-hover);
-          }
-        }
-      }
-
-      .q-date-picker__range-separator {
-        margin: auto 0;
-      }
-
-      &_focused {
-        background-color: var(--color-tertiary-gray-ultra-light);
-        outline: none;
-        box-shadow: var(--field-box-shadow-focus);
-      }
-
-      &_disabled {
-        cursor: not-allowed;
-        background-color: var(--color-tertiary-gray);
-        box-shadow: var(--box-shadow-pressed);
-
+        &.focus-visible,
         &:hover {
-          box-shadow: var(--box-shadow-pressed);
-        }
-
-        .q-date-picker__range-separator,
-        .q-date-picker__input {
-          color: var(--field-color-disabled);
-          cursor: not-allowed;
+          color: var(--field-icon-color-hover);
         }
       }
+    }
 
-      .q-form-item_is-error & {
-        padding-right: 0;
-        padding-left: 4px;
-        border: var(--border-error);
+    .q-date-picker__range-separator {
+      margin: auto 0;
+    }
+
+    &_focused {
+      background-color: var(--color-tertiary-gray-ultra-light);
+      outline: none;
+      box-shadow: var(--field-box-shadow-focus);
+    }
+
+    &_disabled {
+      cursor: not-allowed;
+      background-color: var(--color-tertiary-gray);
+      box-shadow: var(--box-shadow-pressed);
+
+      &:hover {
+        box-shadow: var(--box-shadow-pressed);
       }
+
+      .q-date-picker__range-separator,
+      .q-date-picker__input {
+        color: var(--field-color-disabled);
+        cursor: not-allowed;
+      }
+    }
+
+    .q-form-item_is-error & {
+      padding-right: 0;
+      padding-left: 4px;
+      border: var(--border-error);
     }
   }
 

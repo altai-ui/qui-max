@@ -10,7 +10,7 @@
 
   <component
     :is="panelComponent"
-    :model-value="transformedToDate"
+    :model-value="date"
     class="q-dialog-mobile-panel__dialog-view"
     @pick="handlePick"
   />
@@ -50,7 +50,7 @@ export default defineComponent({
     return {
       handleCloseBtnClick: dialog.emitCloseEvent,
       panelComponent: picker.panelComponent,
-      transformedToDate: picker.transformedToDate,
+      date: picker.date,
       handlePick
     };
   }

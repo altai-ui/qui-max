@@ -1,0 +1,82 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- import CSS -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/@qvant/qui-max/dist/style.css"
+    />
+  </head>
+
+  <body>
+    <div id="app">
+      <div class="block">
+        <q-row>
+          <q-col cols="6">
+            <p>Default</p>
+            <q-textarea
+              v-model="value"
+              placeholder="Input Text"
+            ></q-textarea>
+            <p>Autosize: "{ minRows: 6, maxRows: 8 }"</p>
+            <q-textarea
+              v-model="value5"
+              :autosize="{ minRows: 6, maxRows: 8 }"
+              placeholder="Input Text"
+            >
+            </q-textarea>
+          </q-col>
+          <q-col cols="6">
+            <p>Disabled</p>
+            <q-textarea
+              v-model="value3"
+              disabled
+            ></q-textarea>
+            <p>Show symbol limit</p>
+            <q-textarea
+              v-model="value4"
+              :show-symbol-limit="true"
+              maxlength="100"
+              placeholder="Input 100 symbols max"
+            ></q-textarea>
+          </q-col>
+        </q-row>
+      </div>
+    </div>
+  </body>
+  <!-- import Vue before Qui -->
+  <script src="https://unpkg.com/vue@latest"></script>
+  <!-- import JavaScript -->
+  <script src="https://unpkg.com/@qvant/qui-max@latest"></script>
+  <script>
+    const app = Vue.createApp({
+      setup() {
+        const value = Vue.ref('');
+        const value2 = Vue.ref('');
+        const value3 = Vue.ref('');
+        const value4 = Vue.ref('');
+        const value5 = Vue.ref('');
+        return {
+          value,
+          value2,
+          value3,
+          value4,
+          value5
+        };
+      }
+    });
+
+    app.use(QuiMax.default);
+    app.mount('#app');
+  </script>
+  <style>
+    .block {
+      margin: 20px;
+    }
+
+    /* remove after next release */
+    .q-input {
+      height: 40px;
+    }
+  </style>
+</html>

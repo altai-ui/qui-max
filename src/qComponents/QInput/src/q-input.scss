@@ -1,3 +1,5 @@
+@import '../../../vars';
+
 .q-input {
   --field-color-base: var(--color-primary-black);
   --field-color-placeholder: rgb(var(--color-rgb-gray) / 32%);
@@ -37,11 +39,11 @@
     font-size: var(--font-size-base);
     font-weight: var(--font-weight-base);
     line-height: var(--line-height-base);
-    color: var(--field-color-base);
+    color: $input-default-text-color;
     background-color: var(--field-background-color-base);
     border: none;
     border-radius: var(--border-radius-base);
-    box-shadow: var(--field-box-shadow-base);
+    box-shadow: create-shadow($tokens, 'input', 'default', 'dropShadow');
     appearance: textfield;
 
     &::-webkit-outer-spin-button,

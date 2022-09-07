@@ -1,0 +1,15 @@
+{
+  "source": ["transformed-tokens/**/*.json"],
+  "platforms": {
+    "scss": {
+      "transformGroup": "scss",
+      "buildPath": "src/",
+      "files": [
+        {
+          "destination": "token_variables.scss",
+          "format": "scss/map-deep"
+        }
+      ]
+    }
+  }
+}

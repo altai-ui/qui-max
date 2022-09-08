@@ -51,14 +51,14 @@
     &.focus-visible {
       color: $input-focus-filled-text-color;
       background-color: $input-filled-background-color;
-      outline-color: $input-focus-filled-border-color;
+      outline: 1px solid $input-focus-filled-border-color;
       box-shadow: create-shadow($tokens, 'input', 'focus', 'dropShadow');
     }
 
     &:hover {
       color: $input-hover-filled-text-color;
       background-color: $input-hover-background-color;
-      outline-color: $input-hover-border-color;
+      outline: 1px solid $input-hover-border-color;
       box-shadow: create-shadow($tokens, 'input', 'hover', 'dropShadow');
     }
 
@@ -67,7 +67,7 @@
       color: $input-disabled-text-color;
       cursor: not-allowed;
       background-color: $input-disabled-background-color;
-      outline-color: $input-disabled-border-color;
+      outline: 1px solid $input-disabled-border-color;
       box-shadow: create-shadow($tokens, 'input', 'disabled', 'dropShadow');
     }
 
@@ -79,7 +79,7 @@
       &,
       &.focus-visible {
         padding-left: 15px;
-        outline: var(--border-error);
+        outline: 1px solid var(--border-error);
       }
     }
   }
@@ -106,6 +106,19 @@
       display: none;
     }
 
+    .q-input_disabled & {
+      color: $input-disabled-icon-color;
+    }
+
+    .q-input_focused .q-input__inner &,
+    .q-input__inner.focus-visible & {
+      color: $input-focus-icon-color;
+    }
+
+    .q-input__inner:hover & {
+      color: $input-hover-icon-color;
+    }
+
     &.q-icon-close,
     &.q-icon-eye,
     &.q-icon-eye-close {
@@ -113,9 +126,12 @@
       pointer-events: all;
       cursor: pointer;
 
-      &:hover,
-      &.focus-visible {
+      &:hover {
         color: $input-hover-filled-icon-color;
+      }
+
+      &.focus-visible {
+        color: $input-focus-filled-icon-color;
       }
     }
   }

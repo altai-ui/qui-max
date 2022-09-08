@@ -104,7 +104,7 @@
       &,
       &.focus-visible {
         padding-left: 15px;
-        border: var(--border-error);
+        outline: var(--border-error);
       }
     }
   }
@@ -124,7 +124,7 @@
     width: 40px;
     font-size: 24px;
     line-height: 40px;
-    color: var(--field-icon-color-inactive);
+    color: $input-default-icon-color;
     text-align: center;
 
     &:not(:last-child) {
@@ -134,13 +134,13 @@
     &.q-icon-close,
     &.q-icon-eye,
     &.q-icon-eye-close {
-      color: var(--field-icon-color-base);
+      color: $input-filled-icon-color;
       pointer-events: all;
       cursor: pointer;
 
       &:hover,
       &.focus-visible {
-        color: var(--field-icon-color-hover);
+        color: $input-focus-filled-icon-color;
       }
     }
   }

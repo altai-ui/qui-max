@@ -12,7 +12,7 @@
     "serve": "vite preview",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "build-tokens": "token-transformer ./tokens/tokens.json transformed-tokens/tokens.json && style-dictionary build --config sd.config.json",
+    "build-tokens": "token-transformer ./tokens/tokens.json tokens/transformed-tokens.json && style-dictionary build --config sd.config.json",
     "lint:js": "eslint '**/*.{vue,ts}'",
     "lint:js:fix": "eslint --fix '**/*.{vue,ts,html}'",
     "lint:style": "stylelint '**/*.{css,scss,vue}'",

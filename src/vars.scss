@@ -1,12 +1,24 @@
 @use 'sass:list';
 @use 'sass:map';
-@import './token_variables';
+@import './token-variables';
 
 @function create-shadow($args...) {
   $drop-shadow: list.append((), (), $separator: 'comma');
-  $shadows: map.get($args...);
 
-  @each $key, $shadow in $shadows {
+  @if map.has-key(map.get($args...), '0') {
+    $shadows: map.get($args...);
+
+    @each $key, $shadow in $shadows {
+      $x: map.get($shadow, 'x');
+      $y: map.get($shadow, 'y');
+      $blur: map.get($shadow, 'blur');
+      $spread: map.get($shadow, 'spread');
+      $color: map.get($shadow, 'color');
+      $list: #{$x}px #{$y}px #{$blur}px #{$spread}px #{$color};
+      $drop-shadow: list.append($drop-shadow, $list, $separator: 'comma');
+    }
+  } @else {
+    $shadow: map.get($args...);
     $x: map.get($shadow, 'x');
     $y: map.get($shadow, 'y');
     $blur: map.get($shadow, 'blur');

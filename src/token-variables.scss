@@ -1,11 +1,3 @@
-/**
- * Do not edit directly
- * Generated on Thu, 08 Sep 2022 12:39:35 GMT
- */
-
-$token-set-order-0: 🎨 oc- !default;
-$token-set-order-1: 🎨 sdh !default;
-$token-set-order-2: ❖ components !default;
 $input-default-background-color: #f8f9fa !default;
 $input-default-border-color: #f8f9fa !default;
 $input-default-text-color: #adb5bd !default;
@@ -288,11 +280,6 @@ $orange-orange7: #f76707 !default;
 $orange-orange8: #e8590c !default;
 $orange-orange9: #d9480f !default;
 $tokens: (
-  'tokenSetOrder': (
-    '0': $token-set-order-0,
-    '1': $token-set-order-1,
-    '2': $token-set-order-2
-  ),
   'input': (
     'default': (
       'backgroundColor': $input-default-background-color,

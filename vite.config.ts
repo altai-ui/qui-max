@@ -3,6 +3,7 @@ import { resolve } from 'path';
 
 /* eslint-disable import/no-extraneous-dependencies */
 import vue from '@vitejs/plugin-vue';
+import aliasImporter from 'node-sass-alias-importer';
 import copy from 'rollup-plugin-copy';
 import sassPlugin from 'rollup-plugin-sass';
 import type { IdAndContentObject } from 'rollup-plugin-sass/dist/types';
@@ -63,6 +64,13 @@ export default defineConfig({
       plugins: [
         sassPlugin({
           runtime: sass,
+          options: {
+            importer: [
+              aliasImporter({
+                src: './src'
+              })
+            ]
+          },
           output(_: string, styleNodes: IdAndContentObject[]) {
             styleNodes.forEach(styleNode => {
               const splittedPath = styleNode.id?.split('/') ?? [];

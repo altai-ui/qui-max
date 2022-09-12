@@ -8,7 +8,10 @@
       "files": [
         {
           "destination": "token-variables.scss",
-          "format": "scss/map-deep"
+          "format": "scss/map-deep",
+          "options": {
+            "showFileHeader": false
+          }
         }
       ]
     }

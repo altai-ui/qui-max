@@ -67,7 +67,7 @@ export default defineConfig({
           options: {
             importer: [
               aliasImporter({
-                src: './src'
+                '@': './src'
               })
             ]
           },

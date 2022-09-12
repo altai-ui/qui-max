@@ -28,7 +28,6 @@
     "stories/**/*.vue",
     "types/**/*.d.ts",
     "types/**/*.ts",
-    "sd.config.ts",
     "vite.config.ts",
     "vitest.config.ts"
   ]

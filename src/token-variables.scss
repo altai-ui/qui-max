@@ -1,624 +1,213 @@
-
-$input-default-background-color: #f8f9fa !default;
-$input-default-border-color: #f8f9fa !default;
-$input-default-text-color: #adb5bd !default;
-$input-default-icon-color: #868e96 !default;
-$input-default-drop-shadow-0-color: #aeaec066 !default;
-$input-default-drop-shadow-0-x: 1 !default;
-$input-default-drop-shadow-0-y: 1 !default;
-$input-default-drop-shadow-0-blur: 3 !default;
-$input-default-drop-shadow-0-spread: 0 !default;
-$input-default-drop-shadow-1-color: #aeaec066 !default;
-$input-default-drop-shadow-1-x: 4 !default;
-$input-default-drop-shadow-1-y: 4 !default;
-$input-default-drop-shadow-1-blur: 8 !default;
-$input-default-drop-shadow-1-spread: 0 !default;
-$input-hover-background-color: #f1f3f5 !default;
-$input-hover-border-color: #f1f3f5 !default;
-$input-hover-text-color: #adb5bd !default;
-$input-hover-icon-color: #868e96 !default;
-$input-hover-drop-shadow-color: #aeaec066 !default;
-$input-hover-drop-shadow-x: 1 !default;
-$input-hover-drop-shadow-y: 1 !default;
-$input-hover-drop-shadow-blur: 3 !default;
-$input-hover-drop-shadow-spread: 0 !default;
-$input-focus-background-color: #ffffff !default;
-$input-focus-border-color: #1c7ed6 !default;
-$input-focus-text-color: #adb5bd !default;
-$input-focus-icon-color: #868e96 !default;
-$input-focus-drop-shadow-x: 0 !default;
-$input-focus-drop-shadow-y: 0 !default;
-$input-focus-drop-shadow-blur: 0 !default;
-$input-focus-drop-shadow-spread: 0 !default;
-$input-focus-drop-shadow-color: #ffffff00 !default;
-$input-focus-filled-background-color: #ffffff !default;
-$input-focus-filled-border-color: #1c7ed6 !default;
-$input-focus-filled-text-color: #343a40 !default;
-$input-focus-filled-icon-color: #1c7ed6 !default;
-$input-focus-filled-drop-shadow-x: 0 !default;
-$input-focus-filled-drop-shadow-y: 0 !default;
-$input-focus-filled-drop-shadow-blur: 0 !default;
-$input-focus-filled-drop-shadow-spread: 0 !default;
-$input-focus-filled-drop-shadow-color: #ffffff00 !default;
-$input-hover-filled-background-color: #f1f3f5 !default;
-$input-hover-filled-border-color: #f1f3f5 !default;
-$input-hover-filled-text-color: #343a40 !default;
-$input-hover-filled-icon-color: #1c7ed6 !default;
-$input-hover-filled-drop-shadow-color: #aeaec066 !default;
-$input-hover-filled-drop-shadow-x: 1 !default;
-$input-hover-filled-drop-shadow-y: 1 !default;
-$input-hover-filled-drop-shadow-blur: 3 !default;
-$input-hover-filled-drop-shadow-spread: 0 !default;
-$input-filled-background-color: #f8f9fa !default;
-$input-filled-border-color: #f8f9fa !default;
-$input-filled-text-color: #343a40 !default;
-$input-filled-icon-color: #868e96 !default;
-$input-filled-drop-shadow-0-color: #aeaec066 !default;
-$input-filled-drop-shadow-0-x: 1 !default;
-$input-filled-drop-shadow-0-y: 1 !default;
-$input-filled-drop-shadow-0-blur: 3 !default;
-$input-filled-drop-shadow-0-spread: 0 !default;
-$input-filled-drop-shadow-1-color: #aeaec066 !default;
-$input-filled-drop-shadow-1-x: 4 !default;
-$input-filled-drop-shadow-1-y: 4 !default;
-$input-filled-drop-shadow-1-blur: 8 !default;
-$input-filled-drop-shadow-1-spread: 0 !default;
-$input-disabled-background-color: #e9ecef !default;
-$input-disabled-border-color: #e9ecef !default;
-$input-disabled-text-color: #adb5bd !default;
-$input-disabled-icon-color: #adb5bd !default;
-$input-disabled-drop-shadow-color: #aeaec066 !default;
-$input-disabled-drop-shadow-x: 1 !default;
-$input-disabled-drop-shadow-y: 1 !default;
-$input-disabled-drop-shadow-blur: 3 !default;
-$input-disabled-drop-shadow-spread: 0 !default;
-$brand-hue: 336 !default;
-$brand-white: #ffffff !default;
-$brand-color-0: #fff0f6 !default;
-$brand-color-1: #ffe0ed !default;
-$brand-color-2: #fcc0d8 !default;
-$brand-color-3: #faa3c6 !default;
-$brand-color-4: #f782b1 !default;
-$brand-color-5: #f0669d !default;
-$brand-color-6: #e64787 !default;
-$brand-color-7: #d73374 !default;
-$brand-color-8: #c12563 !default;
-$brand-color-9: #a41e54 !default;
-$bg-lvl-3: #ffffff !default;
-$bg-lvl-2: #f8f9fa !default;
-$bg-lvl-1: #f1f3f5 !default;
-$bg-lvl-0: #e9ecef !default;
-$bg-brand: #ffe0ed !default;
-$bg-secondary: #d0ebff !default;
-$bg-positive: #d3f9d8 !default;
-$bg-negative: #ffe8cc !default;
-$bg-working: #fff9db !default;
-$bg-waiting: #e3fafc !default;
-$bg-service: #e5dbff !default;
-$bg-gradient: linear-gradient(180deg, #de4b7a 0%, #4162f0 100%) !default;
-$brd-muted: #dee2e6 !default;
-$brd-default: #ced4da !default;
-$brd-brand: #faa3c6 !default;
-$brd-secondary: #a5d8ff !default;
-$brd-positive: #b2f2bb !default;
-$brd-negative: #ffd8a8 !default;
-$brd-working: #ffec99 !default;
-$brd-waiting: #99e9f2 !default;
-$brd-service: #b197fc !default;
-$fg-silent: #adb5bd !default;
-$fg-muted: #868e96 !default;
-$fg-default: #343a40 !default;
-$fg-inverse: #f8f9fa !default;
-$fg-brand: #d73374 !default;
-$fg-secondary: #1c7ed6 !default;
-$fg-positive: #37b24d !default;
-$fg-negative: #f76707 !default;
-$fg-working: #f59f00 !default;
-$fg-waiting: #1098ad !default;
-$fg-service: #7048e8 !default;
-$default-0-color: #aeaec066 !default;
-$default-0-x: 1 !default;
-$default-0-y: 1 !default;
-$default-0-blur: 3 !default;
-$default-0-spread: 0 !default;
-$default-1-color: #aeaec066 !default;
-$default-1-x: 4 !default;
-$default-1-y: 4 !default;
-$default-1-blur: 8 !default;
-$default-1-spread: 0 !default;
-$hover-color: #aeaec066 !default;
-$hover-x: 1 !default;
-$hover-y: 1 !default;
-$hover-blur: 3 !default;
-$hover-spread: 0 !default;
-$focus-x: 0 !default;
-$focus-y: 0 !default;
-$focus-blur: 0 !default;
-$focus-spread: 0 !default;
-$focus-color: #ffffff00 !default;
-$gray-gray-0: #f8f9fa !default;
-$gray-gray-1: #f1f3f5 !default;
-$gray-gray-2: #e9ecef !default;
-$gray-gray-3: #dee2e6 !default;
-$gray-gray-4: #ced4da !default;
-$gray-gray-5: #adb5bd !default;
-$gray-gray-6: #868e96 !default;
-$gray-gray-7: #495057 !default;
-$gray-gray-8: #343a40 !default;
-$gray-gray-9: #212529 !default;
-$gray-gray-10: #1b1f22 !default;
-$red-red0: #fff5f5 !default;
-$red-red1: #ffe3e3 !default;
-$red-red2: #ffc9c9 !default;
-$red-red3: #ffa8a8 !default;
-$red-red4: #ff8787 !default;
-$red-red5: #ff6b6b !default;
-$red-red6: #fa5252 !default;
-$red-red7: #f03e3e !default;
-$red-red8: #e03131 !default;
-$red-red9: #c92a2a !default;
-$pink-pink0: #fff0f6 !default;
-$pink-pink1: #ffdeeb !default;
-$pink-pink2: #fcc2d7 !default;
-$pink-pink3: #faa2c1 !default;
-$pink-pink4: #f783ac !default;
-$pink-pink5: #f06595 !default;
-$pink-pink6: #e64980 !default;
-$pink-pink7: #d6336c !default;
-$pink-pink8: #c2255c !default;
-$pink-pink9: #a61e4d !default;
-$grape-grape0: #f8f0fc !default;
-$grape-grape1: #f3d9fa !default;
-$grape-grape2: #eebefa !default;
-$grape-grape3: #e599f7 !default;
-$grape-grape4: #da77f2 !default;
-$grape-grape5: #cc5de8 !default;
-$grape-grape6: #be4bdb !default;
-$grape-grape7: #ae3ec9 !default;
-$grape-grape8: #9c36b5 !default;
-$grape-grape9: #862e9c !default;
-$violet-violet0: #f3f0ff !default;
-$violet-violet1: #e5dbff !default;
-$violet-violet2: #d0bfff !default;
-$violet-violet3: #b197fc !default;
-$violet-violet4: #9775fa !default;
-$violet-violet5: #845ef7 !default;
-$violet-violet6: #7950f2 !default;
-$violet-violet7: #7048e8 !default;
-$violet-violet8: #6741d9 !default;
-$violet-violet9: #5f3dc4 !default;
-$indigo-indigo0: #edf2ff !default;
-$indigo-indigo1: #dbe4ff !default;
-$indigo-indigo2: #bac8ff !default;
-$indigo-indigo3: #91a7ff !default;
-$indigo-indigo4: #748ffc !default;
-$indigo-indigo5: #5c7cfa !default;
-$indigo-indigo6: #4c6ef5 !default;
-$indigo-indigo7: #4263eb !default;
-$indigo-indigo8: #3b5bdb !default;
-$indigo-indigo9: #364fc7 !default;
-$blue-blue0: #e7f5ff !default;
-$blue-blue1: #d0ebff !default;
-$blue-blue2: #a5d8ff !default;
-$blue-blue3: #74c0fc !default;
-$blue-blue4: #4dabf7 !default;
-$blue-blue5: #339af0 !default;
-$blue-blue6: #228be6 !default;
-$blue-blue7: #1c7ed6 !default;
-$blue-blue8: #1971c2 !default;
-$blue-blue9: #1864ab !default;
-$cyan-cyan0: #e3fafc !default;
-$cyan-cyan1: #c5f6fa !default;
-$cyan-cyan2: #99e9f2 !default;
-$cyan-cyan3: #66d9e8 !default;
-$cyan-cyan4: #3bc9db !default;
-$cyan-cyan5: #22b8cf !default;
-$cyan-cyan6: #15aabf !default;
-$cyan-cyan7: #1098ad !default;
-$cyan-cyan8: #0c8599 !default;
-$cyan-cyan9: #0b7285 !default;
-$teal-teal0: #e6fcf5 !default;
-$teal-teal1: #c3fae8 !default;
-$teal-teal2: #96f2d7 !default;
-$teal-teal3: #63e6be !default;
-$teal-teal4: #38d9a9 !default;
-$teal-teal5: #20c997 !default;
-$teal-teal6: #12b886 !default;
-$teal-teal7: #0ca678 !default;
-$teal-teal8: #099268 !default;
-$teal-teal9: #087f5b !default;
-$green-green0: #ebfbee !default;
-$green-green1: #d3f9d8 !default;
-$green-green2: #b2f2bb !default;
-$green-green3: #8ce99a !default;
-$green-green4: #69db7c !default;
-$green-green5: #51cf66 !default;
-$green-green6: #40c057 !default;
-$green-green7: #37b24d !default;
-$green-green8: #2f9e44 !default;
-$green-green9: #2b8a3e !default;
-$lime-lime0: #f4fce3 !default;
-$lime-lime9: #5c940d !default;
-$lime-lime8: #66a80f !default;
-$lime-lime7: #74b816 !default;
-$lime-lime6: #82c91e !default;
-$lime-lime5: #94d82d !default;
-$lime-lime4: #a9e34b !default;
-$lime-lime3: #c0eb75 !default;
-$lime-lime2: #d8f5a2 !default;
-$lime-lime1: #e9fac8 !default;
-$yellow-yellow0: #fff9db !default;
-$yellow-yellow1: #fff3bf !default;
-$yellow-yellow2: #ffec99 !default;
-$yellow-yellow3: #ffe066 !default;
-$yellow-yellow4: #ffd43b !default;
-$yellow-yellow5: #fcc419 !default;
-$yellow-yellow6: #fab005 !default;
-$yellow-yellow7: #f59f00 !default;
-$yellow-yellow8: #f08c00 !default;
-$yellow-yellow9: #e67700 !default;
-$orange-orange0: #fff4e6 !default;
-$orange-orange1: #ffe8cc !default;
-$orange-orange2: #ffd8a8 !default;
-$orange-orange3: #ffc078 !default;
-$orange-orange4: #ffa94d !default;
-$orange-orange5: #ff922b !default;
-$orange-orange6: #fd7e14 !default;
-$orange-orange7: #f76707 !default;
-$orange-orange8: #e8590c !default;
-$orange-orange9: #d9480f !default;
-
-$tokens: (
-  'input': (
-    'default': (
-      'backgroundColor': $input-default-background-color,
-      'borderColor': $input-default-border-color,
-      'textColor': $input-default-text-color,
-      'iconColor': $input-default-icon-color,
-      'dropShadow': (
-        '0': (
-          'color': $input-default-drop-shadow-0-color,
-          'x': $input-default-drop-shadow-0-x,
-          'y': $input-default-drop-shadow-0-y,
-          'blur': $input-default-drop-shadow-0-blur,
-          'spread': $input-default-drop-shadow-0-spread
-        ),
-        '1': (
-          'color': $input-default-drop-shadow-1-color,
-          'x': $input-default-drop-shadow-1-x,
-          'y': $input-default-drop-shadow-1-y,
-          'blur': $input-default-drop-shadow-1-blur,
-          'spread': $input-default-drop-shadow-1-spread
-        )
-      )
-    ),
-    'hover': (
-      'backgroundColor': $input-hover-background-color,
-      'borderColor': $input-hover-border-color,
-      'textColor': $input-hover-text-color,
-      'iconColor': $input-hover-icon-color,
-      'dropShadow': (
-        'color': $input-hover-drop-shadow-color,
-        'x': $input-hover-drop-shadow-x,
-        'y': $input-hover-drop-shadow-y,
-        'blur': $input-hover-drop-shadow-blur,
-        'spread': $input-hover-drop-shadow-spread
-      )
-    ),
-    'focus': (
-      'backgroundColor': $input-focus-background-color,
-      'borderColor': $input-focus-border-color,
-      'textColor': $input-focus-text-color,
-      'iconColor': $input-focus-icon-color,
-      'dropShadow': (
-        'x': $input-focus-drop-shadow-x,
-        'y': $input-focus-drop-shadow-y,
-        'blur': $input-focus-drop-shadow-blur,
-        'spread': $input-focus-drop-shadow-spread,
-        'color': $input-focus-drop-shadow-color
-      )
-    ),
-    'focusFilled': (
-      'backgroundColor': $input-focus-filled-background-color,
-      'borderColor': $input-focus-filled-border-color,
-      'textColor': $input-focus-filled-text-color,
-      'iconColor': $input-focus-filled-icon-color,
-      'dropShadow': (
-        'x': $input-focus-filled-drop-shadow-x,
-        'y': $input-focus-filled-drop-shadow-y,
-        'blur': $input-focus-filled-drop-shadow-blur,
-        'spread': $input-focus-filled-drop-shadow-spread,
-        'color': $input-focus-filled-drop-shadow-color
-      )
-    ),
-    'hoverFilled': (
-      'backgroundColor': $input-hover-filled-background-color,
-      'borderColor': $input-hover-filled-border-color,
-      'textColor': $input-hover-filled-text-color,
-      'iconColor': $input-hover-filled-icon-color,
-      'dropShadow': (
-        'color': $input-hover-filled-drop-shadow-color,
-        'x': $input-hover-filled-drop-shadow-x,
-        'y': $input-hover-filled-drop-shadow-y,
-        'blur': $input-hover-filled-drop-shadow-blur,
-        'spread': $input-hover-filled-drop-shadow-spread
-      )
-    ),
-    'filled': (
-      'backgroundColor': $input-filled-background-color,
-      'borderColor': $input-filled-border-color,
-      'textColor': $input-filled-text-color,
-      'iconColor': $input-filled-icon-color,
-      'dropShadow': (
-        '0': (
-          'color': $input-filled-drop-shadow-0-color,
-          'x': $input-filled-drop-shadow-0-x,
-          'y': $input-filled-drop-shadow-0-y,
-          'blur': $input-filled-drop-shadow-0-blur,
-          'spread': $input-filled-drop-shadow-0-spread
-        ),
-        '1': (
-          'color': $input-filled-drop-shadow-1-color,
-          'x': $input-filled-drop-shadow-1-x,
-          'y': $input-filled-drop-shadow-1-y,
-          'blur': $input-filled-drop-shadow-1-blur,
-          'spread': $input-filled-drop-shadow-1-spread
-        )
-      )
-    ),
-    'disabled': (
-      'backgroundColor': $input-disabled-background-color,
-      'borderColor': $input-disabled-border-color,
-      'textColor': $input-disabled-text-color,
-      'iconColor': $input-disabled-icon-color,
-      'dropShadow': (
-        'color': $input-disabled-drop-shadow-color,
-        'x': $input-disabled-drop-shadow-x,
-        'y': $input-disabled-drop-shadow-y,
-        'blur': $input-disabled-drop-shadow-blur,
-        'spread': $input-disabled-drop-shadow-spread
-      )
-    )
-  ),
-  'brand': (
-    'hue': $brand-hue,
-    'white': $brand-white,
-    'color': (
-      '0': $brand-color-0,
-      '1': $brand-color-1,
-      '2': $brand-color-2,
-      '3': $brand-color-3,
-      '4': $brand-color-4,
-      '5': $brand-color-5,
-      '6': $brand-color-6,
-      '7': $brand-color-7,
-      '8': $brand-color-8,
-      '9': $brand-color-9
-    )
-  ),
-  'bg': (
-    'lvl-3': $bg-lvl-3,
-    'lvl-2': $bg-lvl-2,
-    'lvl-1': $bg-lvl-1,
-    'lvl-0': $bg-lvl-0,
-    'brand': $bg-brand,
-    'secondary': $bg-secondary,
-    'positive': $bg-positive,
-    'negative': $bg-negative,
-    'working': $bg-working,
-    'waiting': $bg-waiting,
-    'service': $bg-service,
-    'gradient': $bg-gradient
-  ),
-  'brd': (
-    'muted': $brd-muted,
-    'default': $brd-default,
-    'brand': $brd-brand,
-    'secondary': $brd-secondary,
-    'positive': $brd-positive,
-    'negative': $brd-negative,
-    'working': $brd-working,
-    'waiting': $brd-waiting,
-    'service': $brd-service
-  ),
-  'fg': (
-    'silent': $fg-silent,
-    'muted': $fg-muted,
-    'default': $fg-default,
-    'inverse': $fg-inverse,
-    'brand': $fg-brand,
-    'secondary': $fg-secondary,
-    'positive': $fg-positive,
-    'negative': $fg-negative,
-    'working': $fg-working,
-    'waiting': $fg-waiting,
-    'service': $fg-service
-  ),
-  'default': (
-    '0': (
-      'color': $default-0-color,
-      'x': $default-0-x,
-      'y': $default-0-y,
-      'blur': $default-0-blur,
-      'spread': $default-0-spread
-    ),
-    '1': (
-      'color': $default-1-color,
-      'x': $default-1-x,
-      'y': $default-1-y,
-      'blur': $default-1-blur,
-      'spread': $default-1-spread
-    )
-  ),
-  'hover': (
-    'color': $hover-color,
-    'x': $hover-x,
-    'y': $hover-y,
-    'blur': $hover-blur,
-    'spread': $hover-spread
-  ),
-  'focus': (
-    'x': $focus-x,
-    'y': $focus-y,
-    'blur': $focus-blur,
-    'spread': $focus-spread,
-    'color': $focus-color
-  ),
-  'Gray': (
-    'Gray-0': $gray-gray-0,
-    'Gray-1': $gray-gray-1,
-    'Gray-2': $gray-gray-2,
-    'Gray-3': $gray-gray-3,
-    'Gray-4': $gray-gray-4,
-    'Gray-5': $gray-gray-5,
-    'Gray-6': $gray-gray-6,
-    'Gray-7': $gray-gray-7,
-    'Gray-8': $gray-gray-8,
-    'Gray-9': $gray-gray-9,
-    'Gray-10': $gray-gray-10
-  ),
-  'Red': (
-    'Red0': $red-red0,
-    'Red1': $red-red1,
-    'Red2': $red-red2,
-    'Red3': $red-red3,
-    'Red4': $red-red4,
-    'Red5': $red-red5,
-    'Red6': $red-red6,
-    'Red7': $red-red7,
-    'Red8': $red-red8,
-    'Red9': $red-red9
-  ),
-  'Pink': (
-    'Pink0': $pink-pink0,
-    'Pink1': $pink-pink1,
-    'Pink2': $pink-pink2,
-    'Pink3': $pink-pink3,
-    'Pink4': $pink-pink4,
-    'Pink5': $pink-pink5,
-    'Pink6': $pink-pink6,
-    'Pink7': $pink-pink7,
-    'Pink8': $pink-pink8,
-    'Pink9': $pink-pink9
-  ),
-  'Grape': (
-    'Grape0': $grape-grape0,
-    'Grape1': $grape-grape1,
-    'Grape2': $grape-grape2,
-    'Grape3': $grape-grape3,
-    'Grape4': $grape-grape4,
-    'Grape5': $grape-grape5,
-    'Grape6': $grape-grape6,
-    'Grape7': $grape-grape7,
-    'Grape8': $grape-grape8,
-    'Grape9': $grape-grape9
-  ),
-  'Violet': (
-    'Violet0': $violet-violet0,
-    'Violet1': $violet-violet1,
-    'Violet2': $violet-violet2,
-    'Violet3': $violet-violet3,
-    'Violet4': $violet-violet4,
-    'Violet5': $violet-violet5,
-    'Violet6': $violet-violet6,
-    'Violet7': $violet-violet7,
-    'Violet8': $violet-violet8,
-    'Violet9': $violet-violet9
-  ),
-  'Indigo': (
-    'Indigo0': $indigo-indigo0,
-    'Indigo1': $indigo-indigo1,
-    'Indigo2': $indigo-indigo2,
-    'Indigo3': $indigo-indigo3,
-    'Indigo4': $indigo-indigo4,
-    'Indigo5': $indigo-indigo5,
-    'Indigo6': $indigo-indigo6,
-    'Indigo7': $indigo-indigo7,
-    'Indigo8': $indigo-indigo8,
-    'Indigo9': $indigo-indigo9
-  ),
-  'Blue': (
-    'Blue0': $blue-blue0,
-    'Blue1': $blue-blue1,
-    'Blue2': $blue-blue2,
-    'Blue3': $blue-blue3,
-    'Blue4': $blue-blue4,
-    'Blue5': $blue-blue5,
-    'Blue6': $blue-blue6,
-    'Blue7': $blue-blue7,
-    'Blue8': $blue-blue8,
-    'Blue9': $blue-blue9
-  ),
-  'Cyan': (
-    'Cyan0': $cyan-cyan0,
-    'Cyan1': $cyan-cyan1,
-    'Cyan2': $cyan-cyan2,
-    'Cyan3': $cyan-cyan3,
-    'Cyan4': $cyan-cyan4,
-    'Cyan5': $cyan-cyan5,
-    'Cyan6': $cyan-cyan6,
-    'Cyan7': $cyan-cyan7,
-    'Cyan8': $cyan-cyan8,
-    'Cyan9': $cyan-cyan9
-  ),
-  'Teal': (
-    'Teal0': $teal-teal0,
-    'Teal1': $teal-teal1,
-    'Teal2': $teal-teal2,
-    'Teal3': $teal-teal3,
-    'Teal4': $teal-teal4,
-    'Teal5': $teal-teal5,
-    'Teal6': $teal-teal6,
-    'Teal7': $teal-teal7,
-    'Teal8': $teal-teal8,
-    'Teal9': $teal-teal9
-  ),
-  'Green': (
-    'Green0': $green-green0,
-    'Green1': $green-green1,
-    'Green2': $green-green2,
-    'Green3': $green-green3,
-    'Green4': $green-green4,
-    'Green5': $green-green5,
-    'Green6': $green-green6,
-    'Green7': $green-green7,
-    'Green8': $green-green8,
-    'Green9': $green-green9
-  ),
-  'Lime': (
-    'Lime0': $lime-lime0,
-    'Lime9': $lime-lime9,
-    'Lime8': $lime-lime8,
-    'Lime7': $lime-lime7,
-    'Lime6': $lime-lime6,
-    'Lime5': $lime-lime5,
-    'Lime4': $lime-lime4,
-    'Lime3': $lime-lime3,
-    'Lime2': $lime-lime2,
-    'Lime1': $lime-lime1
-  ),
-  'Yellow': (
-    'Yellow0': $yellow-yellow0,
-    'Yellow1': $yellow-yellow1,
-    'Yellow2': $yellow-yellow2,
-    'Yellow3': $yellow-yellow3,
-    'Yellow4': $yellow-yellow4,
-    'Yellow5': $yellow-yellow5,
-    'Yellow6': $yellow-yellow6,
-    'Yellow7': $yellow-yellow7,
-    'Yellow8': $yellow-yellow8,
-    'Yellow9': $yellow-yellow9
-  ),
-  'Orange': (
-    'Orange0': $orange-orange0,
-    'Orange1': $orange-orange1,
-    'Orange2': $orange-orange2,
-    'Orange3': $orange-orange3,
-    'Orange4': $orange-orange4,
-    'Orange5': $orange-orange5,
-    'Orange6': $orange-orange6,
-    'Orange7': $orange-orange7,
-    'Orange8': $orange-orange8,
-    'Orange9': $orange-orange9
-  )
-);
+$input-default-background-color: #f8f9fa;
+$input-default-border-color: #f8f9fa;
+$input-default-text-color: #adb5bd;
+$input-default-icon-color: #868e96;
+$input-default-drop-shadow: 1px 1px 3px 0 #aeaec066, 4px 4px 8px 0 #aeaec066;
+$input-hover-background-color: #f1f3f5;
+$input-hover-border-color: #f1f3f5;
+$input-hover-text-color: #adb5bd;
+$input-hover-icon-color: #868e96;
+$input-hover-drop-shadow: 1px 1px 3px 0 #aeaec066;
+$input-focus-background-color: #fff;
+$input-focus-border-color: #1c7ed6;
+$input-focus-text-color: #adb5bd;
+$input-focus-icon-color: #868e96;
+$input-focus-drop-shadow: 0 0 0 0 #fff0;
+$input-focus-filled-background-color: #fff;
+$input-focus-filled-border-color: #1c7ed6;
+$input-focus-filled-text-color: #343a40;
+$input-focus-filled-icon-color: #1c7ed6;
+$input-focus-filled-drop-shadow: 0 0 0 0 #fff0;
+$input-hover-filled-background-color: #f1f3f5;
+$input-hover-filled-border-color: #f1f3f5;
+$input-hover-filled-text-color: #343a40;
+$input-hover-filled-icon-color: #1c7ed6;
+$input-hover-filled-drop-shadow: 1px 1px 3px 0 #aeaec066;
+$input-filled-background-color: #f8f9fa;
+$input-filled-border-color: #f8f9fa;
+$input-filled-text-color: #343a40;
+$input-filled-icon-color: #868e96;
+$input-filled-drop-shadow: 1px 1px 3px 0 #aeaec066, 4px 4px 8px 0 #aeaec066;
+$input-disabled-background-color: #e9ecef;
+$input-disabled-border-color: #e9ecef;
+$input-disabled-text-color: #adb5bd;
+$input-disabled-icon-color: #adb5bd;
+$input-disabled-drop-shadow: 1px 1px 3px 0 #aeaec066;
+$brand-hue: 336;
+$brand-white: #fff;
+$brand-color-0: #fff0f6;
+$brand-color-1: #ffe0ed;
+$brand-color-2: #fcc0d8;
+$brand-color-3: #faa3c6;
+$brand-color-4: #f782b1;
+$brand-color-5: #f0669d;
+$brand-color-6: #e64787;
+$brand-color-7: #d73374;
+$brand-color-8: #c12563;
+$brand-color-9: #a41e54;
+$bg-lvl-3: #fff;
+$bg-lvl-2: #f8f9fa;
+$bg-lvl-1: #f1f3f5;
+$bg-lvl-0: #e9ecef;
+$bg-brand: #ffe0ed;
+$bg-secondary: #d0ebff;
+$bg-positive: #d3f9d8;
+$bg-negative: #ffe8cc;
+$bg-working: #fff9db;
+$bg-waiting: #e3fafc;
+$bg-service: #e5dbff;
+$bg-gradient: linear-gradient(180deg, #de4b7a 0%, #4162f0 100%);
+$brd-muted: #dee2e6;
+$brd-default: #ced4da;
+$brd-brand: #faa3c6;
+$brd-secondary: #a5d8ff;
+$brd-positive: #b2f2bb;
+$brd-negative: #ffd8a8;
+$brd-working: #ffec99;
+$brd-waiting: #99e9f2;
+$brd-service: #b197fc;
+$fg-silent: #adb5bd;
+$fg-muted: #868e96;
+$fg-default: #343a40;
+$fg-inverse: #f8f9fa;
+$fg-brand: #d73374;
+$fg-secondary: #1c7ed6;
+$fg-positive: #37b24d;
+$fg-negative: #f76707;
+$fg-working: #f59f00;
+$fg-waiting: #1098ad;
+$fg-service: #7048e8;
+$default: 1px 1px 3px 0 #aeaec066, 4px 4px 8px 0 #aeaec066;
+$hover: 1px 1px 3px 0 #aeaec066;
+$focus: 0 0 0 0 #fff0;
+$gray-gray-0: #f8f9fa;
+$gray-gray-1: #f1f3f5;
+$gray-gray-2: #e9ecef;
+$gray-gray-3: #dee2e6;
+$gray-gray-4: #ced4da;
+$gray-gray-5: #adb5bd;
+$gray-gray-6: #868e96;
+$gray-gray-7: #495057;
+$gray-gray-8: #343a40;
+$gray-gray-9: #212529;
+$gray-gray-10: #1b1f22;
+$red-red0: #fff5f5;
+$red-red1: #ffe3e3;
+$red-red2: #ffc9c9;
+$red-red3: #ffa8a8;
+$red-red4: #ff8787;
+$red-red5: #ff6b6b;
+$red-red6: #fa5252;
+$red-red7: #f03e3e;
+$red-red8: #e03131;
+$red-red9: #c92a2a;
+$pink-pink0: #fff0f6;
+$pink-pink1: #ffdeeb;
+$pink-pink2: #fcc2d7;
+$pink-pink3: #faa2c1;
+$pink-pink4: #f783ac;
+$pink-pink5: #f06595;
+$pink-pink6: #e64980;
+$pink-pink7: #d6336c;
+$pink-pink8: #c2255c;
+$pink-pink9: #a61e4d;
+$grape-grape0: #f8f0fc;
+$grape-grape1: #f3d9fa;
+$grape-grape2: #eebefa;
+$grape-grape3: #e599f7;
+$grape-grape4: #da77f2;
+$grape-grape5: #cc5de8;
+$grape-grape6: #be4bdb;
+$grape-grape7: #ae3ec9;
+$grape-grape8: #9c36b5;
+$grape-grape9: #862e9c;
+$violet-violet0: #f3f0ff;
+$violet-violet1: #e5dbff;
+$violet-violet2: #d0bfff;
+$violet-violet3: #b197fc;
+$violet-violet4: #9775fa;
+$violet-violet5: #845ef7;
+$violet-violet6: #7950f2;
+$violet-violet7: #7048e8;
+$violet-violet8: #6741d9;
+$violet-violet9: #5f3dc4;
+$indigo-indigo0: #edf2ff;
+$indigo-indigo1: #dbe4ff;
+$indigo-indigo2: #bac8ff;
+$indigo-indigo3: #91a7ff;
+$indigo-indigo4: #748ffc;
+$indigo-indigo5: #5c7cfa;
+$indigo-indigo6: #4c6ef5;
+$indigo-indigo7: #4263eb;
+$indigo-indigo8: #3b5bdb;
+$indigo-indigo9: #364fc7;
+$blue-blue0: #e7f5ff;
+$blue-blue1: #d0ebff;
+$blue-blue2: #a5d8ff;
+$blue-blue3: #74c0fc;
+$blue-blue4: #4dabf7;
+$blue-blue5: #339af0;
+$blue-blue6: #228be6;
+$blue-blue7: #1c7ed6;
+$blue-blue8: #1971c2;
+$blue-blue9: #1864ab;
+$cyan-cyan0: #e3fafc;
+$cyan-cyan1: #c5f6fa;
+$cyan-cyan2: #99e9f2;
+$cyan-cyan3: #66d9e8;
+$cyan-cyan4: #3bc9db;
+$cyan-cyan5: #22b8cf;
+$cyan-cyan6: #15aabf;
+$cyan-cyan7: #1098ad;
+$cyan-cyan8: #0c8599;
+$cyan-cyan9: #0b7285;
+$teal-teal0: #e6fcf5;
+$teal-teal1: #c3fae8;
+$teal-teal2: #96f2d7;
+$teal-teal3: #63e6be;
+$teal-teal4: #38d9a9;
+$teal-teal5: #20c997;
+$teal-teal6: #12b886;
+$teal-teal7: #0ca678;
+$teal-teal8: #099268;
+$teal-teal9: #087f5b;
+$green-green0: #ebfbee;
+$green-green1: #d3f9d8;
+$green-green2: #b2f2bb;
+$green-green3: #8ce99a;
+$green-green4: #69db7c;
+$green-green5: #51cf66;
+$green-green6: #40c057;
+$green-green7: #37b24d;
+$green-green8: #2f9e44;
+$green-green9: #2b8a3e;
+$lime-lime0: #f4fce3;
+$lime-lime9: #5c940d;
+$lime-lime8: #66a80f;
+$lime-lime7: #74b816;
+$lime-lime6: #82c91e;
+$lime-lime5: #94d82d;
+$lime-lime4: #a9e34b;
+$lime-lime3: #c0eb75;
+$lime-lime2: #d8f5a2;
+$lime-lime1: #e9fac8;
+$yellow-yellow0: #fff9db;
+$yellow-yellow1: #fff3bf;
+$yellow-yellow2: #ffec99;
+$yellow-yellow3: #ffe066;
+$yellow-yellow4: #ffd43b;
+$yellow-yellow5: #fcc419;
+$yellow-yellow6: #fab005;
+$yellow-yellow7: #f59f00;
+$yellow-yellow8: #f08c00;
+$yellow-yellow9: #e67700;
+$orange-orange0: #fff4e6;
+$orange-orange1: #ffe8cc;
+$orange-orange2: #ffd8a8;
+$orange-orange3: #ffc078;
+$orange-orange4: #ffa94d;
+$orange-orange5: #ff922b;
+$orange-orange6: #fd7e14;
+$orange-orange7: #f76707;
+$orange-orange8: #e8590c;
+$orange-orange9: #d9480f;

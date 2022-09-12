@@ -1,4 +1,4 @@
-@import '@/vars';
+@import '@/token-variables';
 
 .q-input {
   position: relative;
@@ -19,7 +19,7 @@
     border: none;
     border-radius: var(--border-radius-base);
     outline: 1px solid $input-default-border-color;
-    box-shadow: create-shadow($tokens, 'input', 'default', 'dropShadow');
+    box-shadow: $input-default-drop-shadow;
     appearance: textfield;
 
     &::-webkit-outer-spin-button,
@@ -52,14 +52,14 @@
       color: $input-focus-filled-text-color;
       background-color: $input-filled-background-color;
       outline: 1px solid $input-focus-filled-border-color;
-      box-shadow: create-shadow($tokens, 'input', 'focus', 'dropShadow');
+      box-shadow: $input-focus-drop-shadow;
     }
 
     &:hover {
       color: $input-hover-filled-text-color;
       background-color: $input-hover-background-color;
       outline: 1px solid $input-hover-border-color;
-      box-shadow: create-shadow($tokens, 'input', 'hover', 'dropShadow');
+      box-shadow: $input-hover-drop-shadow;
     }
 
     .q-input_disabled & {
@@ -68,7 +68,7 @@
       cursor: not-allowed;
       background-color: $input-disabled-background-color;
       outline: 1px solid $input-disabled-border-color;
-      box-shadow: create-shadow($tokens, 'input', 'disabled', 'dropShadow');
+      box-shadow: $input-disabled-drop-shadow;
     }
 
     .q-input_suffix & {

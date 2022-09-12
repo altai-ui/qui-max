@@ -1,15 +1,14 @@
+
 $input-default-background-color: #f8f9fa !default;
 $input-default-border-color: #f8f9fa !default;
 $input-default-text-color: #adb5bd !default;
 $input-default-icon-color: #868e96 !default;
 $input-default-drop-shadow-0-color: #aeaec066 !default;
-$input-default-drop-shadow-0-type: dropshadow !default;
 $input-default-drop-shadow-0-x: 1 !default;
 $input-default-drop-shadow-0-y: 1 !default;
 $input-default-drop-shadow-0-blur: 3 !default;
 $input-default-drop-shadow-0-spread: 0 !default;
 $input-default-drop-shadow-1-color: #aeaec066 !default;
-$input-default-drop-shadow-1-type: dropshadow !default;
 $input-default-drop-shadow-1-x: 4 !default;
 $input-default-drop-shadow-1-y: 4 !default;
 $input-default-drop-shadow-1-blur: 8 !default;
@@ -19,12 +18,11 @@ $input-hover-border-color: #f1f3f5 !default;
 $input-hover-text-color: #adb5bd !default;
 $input-hover-icon-color: #868e96 !default;
 $input-hover-drop-shadow-color: #aeaec066 !default;
-$input-hover-drop-shadow-type: dropshadow !default;
 $input-hover-drop-shadow-x: 1 !default;
 $input-hover-drop-shadow-y: 1 !default;
 $input-hover-drop-shadow-blur: 3 !default;
 $input-hover-drop-shadow-spread: 0 !default;
-$input-focus-background-color: #fff !default;
+$input-focus-background-color: #ffffff !default;
 $input-focus-border-color: #1c7ed6 !default;
 $input-focus-text-color: #adb5bd !default;
 $input-focus-icon-color: #868e96 !default;
@@ -32,9 +30,8 @@ $input-focus-drop-shadow-x: 0 !default;
 $input-focus-drop-shadow-y: 0 !default;
 $input-focus-drop-shadow-blur: 0 !default;
 $input-focus-drop-shadow-spread: 0 !default;
-$input-focus-drop-shadow-color: #fff0 !default;
-$input-focus-drop-shadow-type: dropshadow !default;
-$input-focus-filled-background-color: #fff !default;
+$input-focus-drop-shadow-color: #ffffff00 !default;
+$input-focus-filled-background-color: #ffffff !default;
 $input-focus-filled-border-color: #1c7ed6 !default;
 $input-focus-filled-text-color: #343a40 !default;
 $input-focus-filled-icon-color: #1c7ed6 !default;
@@ -42,14 +39,12 @@ $input-focus-filled-drop-shadow-x: 0 !default;
 $input-focus-filled-drop-shadow-y: 0 !default;
 $input-focus-filled-drop-shadow-blur: 0 !default;
 $input-focus-filled-drop-shadow-spread: 0 !default;
-$input-focus-filled-drop-shadow-color: #fff0 !default;
-$input-focus-filled-drop-shadow-type: dropshadow !default;
+$input-focus-filled-drop-shadow-color: #ffffff00 !default;
 $input-hover-filled-background-color: #f1f3f5 !default;
 $input-hover-filled-border-color: #f1f3f5 !default;
 $input-hover-filled-text-color: #343a40 !default;
 $input-hover-filled-icon-color: #1c7ed6 !default;
 $input-hover-filled-drop-shadow-color: #aeaec066 !default;
-$input-hover-filled-drop-shadow-type: dropshadow !default;
 $input-hover-filled-drop-shadow-x: 1 !default;
 $input-hover-filled-drop-shadow-y: 1 !default;
 $input-hover-filled-drop-shadow-blur: 3 !default;
@@ -59,13 +54,11 @@ $input-filled-border-color: #f8f9fa !default;
 $input-filled-text-color: #343a40 !default;
 $input-filled-icon-color: #868e96 !default;
 $input-filled-drop-shadow-0-color: #aeaec066 !default;
-$input-filled-drop-shadow-0-type: dropshadow !default;
 $input-filled-drop-shadow-0-x: 1 !default;
 $input-filled-drop-shadow-0-y: 1 !default;
 $input-filled-drop-shadow-0-blur: 3 !default;
 $input-filled-drop-shadow-0-spread: 0 !default;
 $input-filled-drop-shadow-1-color: #aeaec066 !default;
-$input-filled-drop-shadow-1-type: dropshadow !default;
 $input-filled-drop-shadow-1-x: 4 !default;
 $input-filled-drop-shadow-1-y: 4 !default;
 $input-filled-drop-shadow-1-blur: 8 !default;
@@ -75,13 +68,12 @@ $input-disabled-border-color: #e9ecef !default;
 $input-disabled-text-color: #adb5bd !default;
 $input-disabled-icon-color: #adb5bd !default;
 $input-disabled-drop-shadow-color: #aeaec066 !default;
-$input-disabled-drop-shadow-type: dropshadow !default;
 $input-disabled-drop-shadow-x: 1 !default;
 $input-disabled-drop-shadow-y: 1 !default;
 $input-disabled-drop-shadow-blur: 3 !default;
 $input-disabled-drop-shadow-spread: 0 !default;
 $brand-hue: 336 !default;
-$brand-white: #fff !default;
+$brand-white: #ffffff !default;
 $brand-color-0: #fff0f6 !default;
 $brand-color-1: #ffe0ed !default;
 $brand-color-2: #fcc0d8 !default;
@@ -92,7 +84,7 @@ $brand-color-6: #e64787 !default;
 $brand-color-7: #d73374 !default;
 $brand-color-8: #c12563 !default;
 $brand-color-9: #a41e54 !default;
-$bg-lvl-3: #fff !default;
+$bg-lvl-3: #ffffff !default;
 $bg-lvl-2: #f8f9fa !default;
 $bg-lvl-1: #f1f3f5 !default;
 $bg-lvl-0: #e9ecef !default;
@@ -125,19 +117,16 @@ $fg-working: #f59f00 !default;
 $fg-waiting: #1098ad !default;
 $fg-service: #7048e8 !default;
 $default-0-color: #aeaec066 !default;
-$default-0-type: dropshadow !default;
 $default-0-x: 1 !default;
 $default-0-y: 1 !default;
 $default-0-blur: 3 !default;
 $default-0-spread: 0 !default;
 $default-1-color: #aeaec066 !default;
-$default-1-type: dropshadow !default;
 $default-1-x: 4 !default;
 $default-1-y: 4 !default;
 $default-1-blur: 8 !default;
 $default-1-spread: 0 !default;
 $hover-color: #aeaec066 !default;
-$hover-type: dropshadow !default;
 $hover-x: 1 !default;
 $hover-y: 1 !default;
 $hover-blur: 3 !default;
@@ -146,8 +135,7 @@ $focus-x: 0 !default;
 $focus-y: 0 !default;
 $focus-blur: 0 !default;
 $focus-spread: 0 !default;
-$focus-color: #fff0 !default;
-$focus-type: dropshadow !default;
+$focus-color: #ffffff00 !default;
 $gray-gray-0: #f8f9fa !default;
 $gray-gray-1: #f1f3f5 !default;
 $gray-gray-2: #e9ecef !default;
@@ -279,6 +267,7 @@ $orange-orange6: #fd7e14 !default;
 $orange-orange7: #f76707 !default;
 $orange-orange8: #e8590c !default;
 $orange-orange9: #d9480f !default;
+
 $tokens: (
   'input': (
     'default': (
@@ -289,7 +278,6 @@ $tokens: (
       'dropShadow': (
         '0': (
           'color': $input-default-drop-shadow-0-color,
-          'type': $input-default-drop-shadow-0-type,
           'x': $input-default-drop-shadow-0-x,
           'y': $input-default-drop-shadow-0-y,
           'blur': $input-default-drop-shadow-0-blur,
@@ -297,7 +285,6 @@ $tokens: (
         ),
         '1': (
           'color': $input-default-drop-shadow-1-color,
-          'type': $input-default-drop-shadow-1-type,
           'x': $input-default-drop-shadow-1-x,
           'y': $input-default-drop-shadow-1-y,
           'blur': $input-default-drop-shadow-1-blur,
@@ -312,7 +299,6 @@ $tokens: (
       'iconColor': $input-hover-icon-color,
       'dropShadow': (
         'color': $input-hover-drop-shadow-color,
-        'type': $input-hover-drop-shadow-type,
         'x': $input-hover-drop-shadow-x,
         'y': $input-hover-drop-shadow-y,
         'blur': $input-hover-drop-shadow-blur,
@@ -329,8 +315,7 @@ $tokens: (
         'y': $input-focus-drop-shadow-y,
         'blur': $input-focus-drop-shadow-blur,
         'spread': $input-focus-drop-shadow-spread,
-        'color': $input-focus-drop-shadow-color,
-        'type': $input-focus-drop-shadow-type
+        'color': $input-focus-drop-shadow-color
       )
     ),
     'focusFilled': (
@@ -343,8 +328,7 @@ $tokens: (
         'y': $input-focus-filled-drop-shadow-y,
         'blur': $input-focus-filled-drop-shadow-blur,
         'spread': $input-focus-filled-drop-shadow-spread,
-        'color': $input-focus-filled-drop-shadow-color,
-        'type': $input-focus-filled-drop-shadow-type
+        'color': $input-focus-filled-drop-shadow-color
       )
     ),
     'hoverFilled': (
@@ -354,7 +338,6 @@ $tokens: (
       'iconColor': $input-hover-filled-icon-color,
       'dropShadow': (
         'color': $input-hover-filled-drop-shadow-color,
-        'type': $input-hover-filled-drop-shadow-type,
         'x': $input-hover-filled-drop-shadow-x,
         'y': $input-hover-filled-drop-shadow-y,
         'blur': $input-hover-filled-drop-shadow-blur,
@@ -369,7 +352,6 @@ $tokens: (
       'dropShadow': (
         '0': (
           'color': $input-filled-drop-shadow-0-color,
-          'type': $input-filled-drop-shadow-0-type,
           'x': $input-filled-drop-shadow-0-x,
           'y': $input-filled-drop-shadow-0-y,
           'blur': $input-filled-drop-shadow-0-blur,
@@ -377,7 +359,6 @@ $tokens: (
         ),
         '1': (
           'color': $input-filled-drop-shadow-1-color,
-          'type': $input-filled-drop-shadow-1-type,
           'x': $input-filled-drop-shadow-1-x,
           'y': $input-filled-drop-shadow-1-y,
           'blur': $input-filled-drop-shadow-1-blur,
@@ -392,7 +373,6 @@ $tokens: (
       'iconColor': $input-disabled-icon-color,
       'dropShadow': (
         'color': $input-disabled-drop-shadow-color,
-        'type': $input-disabled-drop-shadow-type,
         'x': $input-disabled-drop-shadow-x,
         'y': $input-disabled-drop-shadow-y,
         'blur': $input-disabled-drop-shadow-blur,
@@ -457,7 +437,6 @@ $tokens: (
   'default': (
     '0': (
       'color': $default-0-color,
-      'type': $default-0-type,
       'x': $default-0-x,
       'y': $default-0-y,
       'blur': $default-0-blur,
@@ -465,7 +444,6 @@ $tokens: (
     ),
     '1': (
       'color': $default-1-color,
-      'type': $default-1-type,
       'x': $default-1-x,
       'y': $default-1-y,
       'blur': $default-1-blur,
@@ -474,7 +452,6 @@ $tokens: (
   ),
   'hover': (
     'color': $hover-color,
-    'type': $hover-type,
     'x': $hover-x,
     'y': $hover-y,
     'blur': $hover-blur,
@@ -485,8 +462,7 @@ $tokens: (
     'y': $focus-y,
     'blur': $focus-blur,
     'spread': $focus-spread,
-    'color': $focus-color,
-    'type': $focus-type
+    'color': $focus-color
   ),
   'Gray': (
     'Gray-0': $gray-gray-0,

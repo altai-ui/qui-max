@@ -29,21 +29,21 @@ StyleDictionary.registerTransform({
 });
 
 StyleDictionary.extend({
-    "source": ["tokens/transformed-tokens.json"],
-    "platforms": {
-        "scss": {
-            "transformGroup": "scss",
-            "transforms": ["attribute/cti", "name/cti/kebab", "size/px", "color/css", "shadows-value/scss"],
-            "buildPath": "src/",
-            "files": [
-                {
-                    "destination": "token-variables.scss",
-                    "format": "scss/variables",
-                    "options": {
-                        "showFileHeader": false
-                    }
-                }
-            ]
+  "source": ["tokens/transformed-tokens.json"],
+  "platforms": {
+    "scss": {
+      "transformGroup": "scss",
+      "transforms": ["attribute/cti", "name/cti/kebab", "size/px", "color/css", "shadows-value/scss"],
+      "buildPath": "src/",
+      "files": [
+        {
+          "destination": "token-variables.scss",
+          "format": "scss/variables",
+          "options": {
+            "showFileHeader": false
+          }
         }
+      ]
     }
+  }
 }).buildAllPlatforms();

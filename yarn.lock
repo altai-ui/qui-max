@@ -10264,11 +10264,6 @@ node-releases@^2.0.3:
   resolved "https://registry.yarnpkg.com/node-releases/-/node-releases-2.0.4.tgz#f38252370c43854dc48aa431c766c6c398f40476"
   integrity sha512-gbMzqQtTtDz/00jQzZ21PQzdI9PyLYqUSvD0p3naOhX4odFji0ZxYdnVwPTxmSwkmxhcFImpozceidSG+AgoPQ==
 
-node-sass-alias-importer@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/node-sass-alias-importer/-/node-sass-alias-importer-2.0.0.tgz#8f38d3457ce047d4697d52b70f2388644100fbfc"
-  integrity sha512-FhLO3yUTZm49hQzi9vGFtf54wlHR3dehFIDLBK2gOQUZh69KJcYLQ3hk99fWMtKYujptykDLeFnFK7PI8JeO7g==
-
 normalize-package-data@^2.5.0:
   version "2.5.0"
   resolved "https://registry.yarnpkg.com/normalize-package-data/-/normalize-package-data-2.5.0.tgz#e66db1838b200c1dfc233225d12cb36520e234a8"

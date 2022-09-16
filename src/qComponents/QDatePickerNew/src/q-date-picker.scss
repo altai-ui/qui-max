@@ -1,5 +1,8 @@
 @import './QDatePickerField/q-date-picker-field';
+@import './QDatePickerDropDown/q-date-picker-drop-down';
 
 .q-date-picker {
+  position: relative;
   display: block;
+  width: 256px;
 }

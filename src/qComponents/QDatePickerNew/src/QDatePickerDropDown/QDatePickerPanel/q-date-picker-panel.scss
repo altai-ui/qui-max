@@ -1,0 +1,37 @@
+@import './QDatePiockerDatePanel/q-date-picker-date-panel';
+
+.q-date-picker-panel {
+  display: block;
+  width: 256px;
+  height: 256px;
+  padding: 8px 16px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 4px 4px 8px rgb(174 174 192 / 40%),
+    1px 1px 3px rgb(174 174 192 / 40%);
+
+  &__heading {
+    width: 100%;
+    padding: 11px 0;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 18px;
+    color: #868e96;
+  }
+
+  &__animation {
+    &-enter-active,
+    &-leave-active {
+      transition: opacity var(--transition-spline-base) 0.25s;
+
+      .q-picker-panel__body {
+        transition: margin-top var(--transition-spline-base) 0.25s;
+      }
+    }
+
+    &-enter-from,
+    &-leave-to {
+      opacity: 0;
+    }
+  }
+}

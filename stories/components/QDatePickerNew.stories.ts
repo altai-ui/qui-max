@@ -8,7 +8,7 @@ const storyMetadata: Meta = {
   component: QDatePickerNew
 };
 
-const Template: Story = () =>
+const QDatePickerNewStory: Story = () =>
   defineComponent({
     components: { QDatePickerNew },
     template: `
@@ -18,6 +18,6 @@ const Template: Story = () =>
     `
   });
 
-export const Default = Template.bind({});
+export const Default = QDatePickerNewStory.bind({});
 
 export default storyMetadata;

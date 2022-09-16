@@ -1,0 +1,25 @@
+@import './QDatePickerPanel/q-date-picker-panel';
+
+.q-date-picker-drop-down {
+  display: block;
+  width: 256px;
+  height: 256px;
+  background-color: #fff;
+  border-radius: 8px;
+
+  &__animation {
+    &-enter-active,
+    &-leave-active {
+      transition: opacity var(--transition-spline-base) 0.25s;
+
+      .q-picker-panel__body {
+        transition: margin-top var(--transition-spline-base) 0.25s;
+      }
+    }
+
+    &-enter-from,
+    &-leave-to {
+      opacity: 0;
+    }
+  }
+}

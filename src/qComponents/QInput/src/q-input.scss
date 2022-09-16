@@ -14,12 +14,12 @@
     font-size: var(--font-size-base);
     font-weight: var(--font-weight-base);
     line-height: var(--line-height-base);
-    color: $input-filled-text-color;
-    background-color: $input-default-background-color;
+    color: var(--input-filled-text-color);
+    background-color: var(--input-default-background-color);
     border: none;
     border-radius: var(--border-radius-base);
-    outline: 1px solid $input-default-border-color;
-    box-shadow: $input-default-drop-shadow;
+    outline: 1px solid var(--input-default-border-color);
+    box-shadow: var(--input-default-drop-shadow);
     appearance: textfield;
 
     &::-webkit-outer-spin-button,
@@ -30,7 +30,7 @@
 
     &::placeholder,
     &:placeholder-shown {
-      color: $input-disabled-text-color;
+      color: var(--input-disabled-text-color);
       text-overflow: ellipsis;
       opacity: 1;
     }
@@ -49,26 +49,26 @@
 
     .q-input_focused &,
     &.focus-visible {
-      color: $input-focus-filled-text-color;
-      background-color: $input-filled-background-color;
-      outline: 1px solid $input-focus-filled-border-color;
-      box-shadow: $input-focus-drop-shadow;
+      color: var(--input-focus-filled-text-color);
+      background-color: var(--input-filled-background-color);
+      outline: 1px solid var(--input-focus-filled-border-color);
+      box-shadow: var(--input-focus-drop-shadow);
     }
 
     &:hover {
-      color: $input-hover-filled-text-color;
-      background-color: $input-hover-background-color;
-      outline: 1px solid $input-hover-border-color;
-      box-shadow: $input-hover-drop-shadow;
+      color: var(--input-hover-filled-text-color);
+      background-color: var(--input-hover-background-color);
+      outline: 1px solid var(--input-hover-border-color);
+      box-shadow: var(--input-hover-drop-shadow);
     }
 
     .q-input_disabled & {
       padding-right: 40px;
-      color: $input-disabled-text-color;
+      color: var(--input-disabled-text-color);
       cursor: not-allowed;
-      background-color: $input-disabled-background-color;
-      outline: 1px solid $input-disabled-border-color;
-      box-shadow: $input-disabled-drop-shadow;
+      background-color: var(--input-disabled-background-color);
+      outline: 1px solid var(--input-disabled-border-color);
+      box-shadow: var(--input-disabled-drop-shadow);
     }
 
     .q-input_suffix & {
@@ -99,7 +99,7 @@
     width: 40px;
     font-size: 24px;
     line-height: 40px;
-    color: $input-default-icon-color;
+    color: var(--input-default-icon-color);
     text-align: center;
 
     &:not(:last-child) {
@@ -107,31 +107,31 @@
     }
 
     .q-input_disabled & {
-      color: $input-disabled-icon-color;
+      color: var(--input-disabled-icon-color);
     }
 
     .q-input_focused .q-input__inner &,
     .q-input__inner.focus-visible & {
-      color: $input-focus-icon-color;
+      color: var(--input-focus-icon-color);
     }
 
     .q-input__inner:hover & {
-      color: $input-hover-icon-color;
+      color: var(--input-hover-icon-color);
     }
 
     &.q-icon-close,
     &.q-icon-eye,
     &.q-icon-eye-close {
-      color: $input-filled-icon-color;
+      color: var(--input-filled-icon-color);
       pointer-events: all;
       cursor: pointer;
 
       &:hover {
-        color: $input-hover-filled-icon-color;
+        color: var(--input-hover-filled-icon-color);
       }
 
       &.focus-visible {
-        color: $input-focus-filled-icon-color;
+        color: var(--input-focus-filled-icon-color);
       }
     }
   }

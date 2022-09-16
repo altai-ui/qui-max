@@ -23,25 +23,31 @@ const dropShadowTransformer = (token) => {
 
 StyleDictionary.registerTransform({
     type: 'value',
-    name: 'shadows-value/scss',
+    name: 'shadows-value/css',
     matcher: (token) => ['dropShadow', 'boxShadow'].includes(token.type),
     transformer: dropShadowTransformer
+});
+
+StyleDictionary.registerFilter({
+    name: 'token-set-order/css',
+    matcher: (token) => !token.attributes.category.includes('tokenSetOrder'),
 });
 
 StyleDictionary.extend({
   "source": ["tokens/transformed-tokens.json"],
   "platforms": {
-    "scss": {
-      "transformGroup": "scss",
-      "transforms": ["attribute/cti", "name/cti/kebab", "size/px", "color/css", "shadows-value/scss"],
+    "css": {
+      "transformGroup": "css",
+      "transforms": ["attribute/cti", "name/cti/kebab", "size/px", "color/css", "shadows-value/css"],
       "buildPath": "src/",
       "files": [
         {
           "destination": "token-variables.scss",
-          "format": "scss/variables",
+          "format": "css/variables",
           "options": {
             "showFileHeader": false
-          }
+          },
+            filter: 'token-set-order/css'
         }
       ]
     }

@@ -5,7 +5,13 @@ import StyleDictionary from "style-dictionary";
 const createShadowFromTokenValue = (value) => {
     const { x, y, blur, spread, color } = value;
 
-    return `${x}px ${y}px ${blur}px ${spread}px ${color}`;
+    const shadowValues = [x, y, blur, spread];
+
+    const isShadowValueNone = shadowValues.every(val => !val);
+
+    if (isShadowValueNone) return 'none';
+
+    return `${shadowValues.join('px ')} ${color}`;
 };
 
 const dropShadowTransformer = (token) => {

@@ -13,12 +13,12 @@
   --input-focus-border-color: #1c7ed6;
   --input-focus-text-color: #adb5bd;
   --input-focus-icon-color: #868e96;
-  --input-focus-drop-shadow: 0 0 0 0 #fff0;
+  --input-focus-drop-shadow: none;
   --input-focus-filled-background-color: #fff;
   --input-focus-filled-border-color: #1c7ed6;
   --input-focus-filled-text-color: #343a40;
   --input-focus-filled-icon-color: #1c7ed6;
-  --input-focus-filled-drop-shadow: 0 0 0 0 #fff0;
+  --input-focus-filled-drop-shadow: none;
   --input-hover-filled-background-color: #f1f3f5;
   --input-hover-filled-border-color: #f1f3f5;
   --input-hover-filled-text-color: #343a40;
@@ -80,7 +80,7 @@
   --fg-service: #7048e8;
   --default: 1px 1px 3px 0 #aeaec066, 4px 4px 8px 0 #aeaec066;
   --hover: 1px 1px 3px 0 #aeaec066;
-  --focus: 0 0 0 0 #fff0;
+  --focus: none;
   --gray-gray-0: #f8f9fa;
   --gray-gray-1: #f1f3f5;
   --gray-gray-2: #e9ecef;

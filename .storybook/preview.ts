@@ -8,7 +8,7 @@ import { localeEn, localeRu } from '../src/qComponents';
 
 app.use(Qui, {
   localization: {
-    locale: 'ru',
+    locale: 'en',
     messages: {
       en: { ...localeEn, ...messages.en },
       ru: { ...localeRu, ...messages.ru }

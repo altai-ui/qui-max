@@ -13,9 +13,7 @@
     >
       <component
         :is="QDatePickerDatePanel"
-        :day="day"
-        :month="month"
-        :year="year"
+        :model-value="today"
       />
     </q-date-picker-panel>
   </transition>
@@ -24,7 +22,7 @@
 <script lang="ts">
 import { createPopper } from '@popperjs/core';
 import type { Instance } from '@popperjs/core';
-import { getDay, getMonth, getYear } from 'date-fns';
+import { addDays, getDate, getMonth, getYear } from 'date-fns';
 import { defineComponent, ref } from 'vue';
 import type { PropType, ComponentPublicInstance } from 'vue';
 
@@ -98,13 +96,14 @@ export default defineComponent({
       }
     };
 
-    const today = new Date();
-    const day = getDay(today);
+    const today = addDays(new Date(), 1);
+    const day = getDate(today);
     const year = getYear(today);
     const month = getMonth(today);
 
     return {
       QDatePickerDatePanel,
+      today,
       day,
       year,
       month,

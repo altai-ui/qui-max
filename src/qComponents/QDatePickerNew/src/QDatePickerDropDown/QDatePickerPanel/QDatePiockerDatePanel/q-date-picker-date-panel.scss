@@ -36,10 +36,15 @@
   &__date {
     cursor: pointer;
 
+    &_selected,
     &:hover {
       color: #f8f9fa;
       background-color: #1c7ed6;
       border-radius: 4px;
+    }
+
+    &_today {
+      text-decoration: underline;
     }
 
     &_additional {

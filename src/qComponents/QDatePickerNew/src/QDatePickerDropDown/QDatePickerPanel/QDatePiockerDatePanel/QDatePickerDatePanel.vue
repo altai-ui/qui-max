@@ -18,14 +18,16 @@
           class="q-date-picker-date-panel__row"
         >
           <td
-            v-for="{ date, isAdditional } in row"
+            v-for="{ date, isAdditional, isToday, isSelected } in row"
             :key="date"
             class="q-date-picker-date-panel__cell"
           >
             <div
               class="q-date-picker-date-panel__date"
               :class="{
-                'q-date-picker-date-panel__date_additional': isAdditional
+                'q-date-picker-date-panel__date_additional': isAdditional,
+                'q-date-picker-date-panel__date_today': isToday,
+                'q-date-picker-date-panel__date_selected': isSelected
               }"
             >
               {{ date }}
@@ -38,13 +40,21 @@
 </template>
 
 <script lang="ts">
-import { endOfMonth, getDaysInMonth, startOfMonth } from 'date-fns';
+import {
+  endOfMonth,
+  format,
+  getDate,
+  getDaysInMonth,
+  getMonth,
+  getYear,
+  startOfMonth
+} from 'date-fns';
 import { chunk, range } from 'lodash-es';
-import { computed, defineComponent } from 'vue';
+import { computed, defineComponent, PropType } from 'vue';
 
-import { DAYS_IN_WEEK, FIRST_DATE_OF_MONTH } from '../../../constants';
+import { DAYS_IN_WEEK } from '../../../constants';
 
-import { QDatePickerDay } from './types';
+import type { QDatePickerDay, DatePanelPropModelValue } from './types';
 
 export default defineComponent({
   name: 'QDatePickerDatePanel',
@@ -52,16 +62,8 @@ export default defineComponent({
   componentName: 'QDatePickerDatePanel',
 
   props: {
-    day: {
-      type: Number,
-      default: null
-    },
-    month: {
-      type: Number,
-      default: null
-    },
-    year: {
-      type: Number,
+    modelValue: {
+      type: Date as PropType<DatePanelPropModelValue>,
       default: null
     }
   },
@@ -69,17 +71,22 @@ export default defineComponent({
   setup(props) {
     const dayNames = ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'];
 
-    const daysInMonth = computed<number>(() => getDaysInMonth(props.month));
+    const dateForeDisplaying = computed<Date>(
+      () => props.modelValue ?? new Date()
+    );
+
+    const month = computed<number>(() => getMonth(dateForeDisplaying.value));
+    const year = computed<number>(() => getYear(dateForeDisplaying.value));
+
+    const daysInMonth = computed<number>(() =>
+      getDaysInMonth(getMonth(dateForeDisplaying.value))
+    );
 
     const firstDayInMonth = computed<number>(() =>
-      startOfMonth(
-        new Date(props.year, props.month, FIRST_DATE_OF_MONTH)
-      ).getDay()
+      startOfMonth(dateForeDisplaying.value).getDay()
     );
     const lastDayInMonth = computed<number>(() =>
-      endOfMonth(
-        new Date(props.year, props.month, daysInMonth.value - 1)
-      ).getDay()
+      endOfMonth(dateForeDisplaying.value).getDay()
     );
 
     const createAdditionalDaysArr = (
@@ -95,7 +102,10 @@ export default defineComponent({
 
       const numOfDays = DAYS_IN_WEEK - firstDayInMonth.value;
 
-      const prevMonth = props.month === 0 ? 11 : props.month - 1;
+      const prevMonth =
+        getMonth(dateForeDisplaying.value) === 0
+          ? 11
+          : getMonth(dateForeDisplaying.value) - 1;
 
       const daysInPrevMonth = getDaysInMonth(prevMonth);
 
@@ -107,18 +117,33 @@ export default defineComponent({
 
       const numOfDays = DAYS_IN_WEEK - lastDayInMonth.value;
 
-      const nextMonth = props.month === 11 ? 0 : props.month + 1;
+      const nextMonth =
+        getMonth(dateForeDisplaying.value) === 11
+          ? 0
+          : getMonth(dateForeDisplaying.value) + 1;
 
       const daysInNextMonth = getDaysInMonth(nextMonth);
 
       return createAdditionalDaysArr(daysInNextMonth, [0, numOfDays]);
     });
 
+    const today = new Date();
+
+    const isToday = (date: number): boolean =>
+      format(today, 'dd.MM.yyyy') ===
+      format(new Date(year.value, month.value, date), 'dd.MM.yyyy');
+    const isSelected = (date: number): boolean =>
+      getDate(dateForeDisplaying.value) === date;
+
     const daysArray = computed<QDatePickerDay[]>(() => {
       const currentMonthDays: QDatePickerDay[] = range(
         1,
         daysInMonth.value
-      ).map(date => ({ date }));
+      ).map(date => ({
+        date,
+        isToday: isToday(date),
+        isSelected: isSelected(date)
+      }));
 
       return [
         ...prevMonthDays.value,
@@ -130,6 +155,8 @@ export default defineComponent({
     const rows = computed<QDatePickerDay[][]>(() => chunk(daysArray.value, 7));
 
     return {
+      month,
+      year,
       dayNames,
       rows,
       daysArray

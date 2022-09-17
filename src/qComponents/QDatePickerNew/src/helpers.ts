@@ -1,5 +1,8 @@
-import { format } from 'date-fns';
+import { format, isValid, parseISO } from 'date-fns';
 import { ru, enGB as en, zhHK as zh } from 'date-fns/locale';
+import { isString } from 'lodash-es';
+
+import { QDatePickerPropModelValue } from '@/qComponents';
 
 import type { Nullable } from '#/helpers';
 
@@ -15,4 +18,25 @@ const formatToLocalReadableString = (
   });
 };
 
-export { formatToLocalReadableString };
+const checkISOIsValid = (isoDate: string): boolean =>
+  isValid(parseISO(isoDate));
+
+const convertISOToDate = (value: string | Date): Date =>
+  isString(value) ? parseISO(value) : value;
+
+const checkArrayValueIsValid = (value: unknown[]): boolean =>
+  Boolean(
+    value.length === 2 && value.every(isString) && value.every(checkISOIsValid)
+  ) || value.every(isValid);
+
+const modelValueValidator = (val: QDatePickerPropModelValue): boolean => {
+  if (val === null) return true;
+
+  return Boolean(
+    (isString(val) && checkISOIsValid(val)) ||
+      isValid(val) ||
+      (Array.isArray(val) && checkArrayValueIsValid(val))
+  );
+};
+
+export { formatToLocalReadableString, modelValueValidator, convertISOToDate };

@@ -81,11 +81,16 @@ type QTextareaPropAutosize = Nullable<
 
 Control the resizability. As native `resize` attribute.
 
-```vue {4}
+::: tip NOTE
+The `resize` works only if `autosize` is `false`:
+:::
+
+```vue {4,5}
 <template>
   <q-textarea
     v-model="value"
     resize="horizontal"
+    :autosize="false"
   >
 </template>
 ```
@@ -97,7 +102,11 @@ Control the resizability. As native `resize` attribute.
 
 Shows the symbol's counter.
 
-```vue {4}
+::: tip NOTE
+The `maxlength` attribute is required:
+:::
+
+```vue {4,5}
 <template>
   <q-textarea
     v-model="value"
@@ -106,3 +115,45 @@ Shows the symbol's counter.
   >
 </template>
 ```
+
+### validateEvent
+
+- type `boolean`
+- Default `false`
+
+If textarea wrapped in `QFormItem`, prop `validateEvent` defines if textarea `change` event will be validated immediately
+
+## Attributes
+
+`QTextarea` support native `textarea` attrubutes:
+
+- placeholder
+- maxlength
+- autocomplete
+- readonly
+
+.. and [others](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/textarea#attributes)
+
+p.s `textarea` has a lot of attributes, we can't claim `QTextarea` well supported all of them, but mostly true. Feel free to fix and contribute bugs [here](https://github.com/Qvant-lab/qui-max)
+
+## Events
+
+### update:modelValue
+
+Triggers when the model is being updated.
+
+### change
+
+Alias for [update:modelValue](#update-modelvalue)
+
+### input
+
+Triggers when native input event fires.
+
+### focus
+
+Triggers when input gets focus.
+
+### blur
+
+Triggers when input gets blur.

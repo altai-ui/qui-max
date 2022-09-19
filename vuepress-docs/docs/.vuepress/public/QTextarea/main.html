@@ -20,7 +20,7 @@
             ></q-textarea>
             <p>Autosize: "{ minRows: 6, maxRows: 8 }"</p>
             <q-textarea
-              v-model="value5"
+              v-model="value2"
               :autosize="{ minRows: 6, maxRows: 8 }"
               placeholder="Input Text"
             >
@@ -55,13 +55,11 @@
         const value2 = Vue.ref('');
         const value3 = Vue.ref('');
         const value4 = Vue.ref('');
-        const value5 = Vue.ref('');
         return {
           value,
           value2,
           value3,
-          value4,
-          value5
+          value4
         };
       }
     });
@@ -72,11 +70,6 @@
   <style>
     .block {
       margin: 20px;
-    }
-
-    /* remove after next release */
-    .q-input {
-      height: 40px;
     }
   </style>
 </html>

@@ -33,7 +33,7 @@ export default defineComponent({
   },
 
   setup(props) {
-    const format = 'dd / LLLL / yyyy';
+    const format = 'yyyy / LLLL';
     const formatted = formatToLocalReadableString(
       new Date(props.year, props.month, props.day),
       format,

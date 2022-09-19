@@ -1,0 +1,75 @@
+.q-date-picker-day-panel {
+  &__heading {
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 17px;
+    color: #adb5bd;
+  }
+
+  &__table {
+    border-spacing: 0 2px;
+  }
+
+  &__calendar {
+    color: #343a40;
+    text-align: center;
+  }
+
+  &__cell {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+
+    &_header {
+      height: 28px;
+    }
+  }
+
+  &__name,
+  &__day {
+    display: grid;
+    place-items: center;
+    width: 24px;
+    height: 24px;
+    margin: 0 auto;
+  }
+
+  &__day {
+    padding: 0;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    vertical-align: center;
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+
+    &:focus-visible,
+    .focus-visible & {
+      color: #1c7ed6;
+      background-color: transparent;
+      border-radius: 4px;
+      outline: 1px solid #1c7ed6;
+    }
+
+    &_selected {
+      color: #f8f9fa;
+      background-color: #1c7ed6;
+      border-radius: 4px;
+    }
+
+    &_today {
+      text-decoration: underline;
+    }
+
+    &_additional {
+      color: #868e96;
+    }
+
+    &:hover:not(&_selected) {
+      color: #1c7ed6;
+      background-color: #d0ebff;
+      border-radius: 4px;
+    }
+  }
+}

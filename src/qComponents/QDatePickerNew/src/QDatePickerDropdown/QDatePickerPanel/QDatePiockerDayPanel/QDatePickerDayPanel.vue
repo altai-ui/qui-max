@@ -1,37 +1,37 @@
 <template>
-  <div class="q-date-picker-date-panel">
-    <table cellspacing="0">
-      <thead class="q-date-picker-date-panel__heading">
+  <div class="q-date-picker-day-panel">
+    <table class="q-date-picker-day-panel__table">
+      <thead class="q-date-picker-day-panel__heading">
         <tr>
           <th
             v-for="name in dayNames"
             :key="name"
+            class="q-date-picker-day-panel__cell q-date-picker-day-panel__cell_header"
           >
-            <div class="q-date-picker-date-panel__name">{{ name }}</div>
+            <div class="q-date-picker-day-panel__name">{{ name }}</div>
           </th>
         </tr>
       </thead>
-      <tbody class="q-date-picker-date-panel__calendar">
+      <tbody class="q-date-picker-day-panel__calendar">
         <tr
           v-for="row in rows"
           :key="row"
-          class="q-date-picker-date-panel__row"
         >
           <td
             v-for="{ date, isAdditional, isToday, isSelected } in row"
             :key="date"
-            class="q-date-picker-date-panel__cell"
+            class="q-date-picker-day-panel__cell"
           >
-            <div
-              class="q-date-picker-date-panel__date"
+            <button
+              class="q-date-picker-day-panel__day"
               :class="{
-                'q-date-picker-date-panel__date_additional': isAdditional,
-                'q-date-picker-date-panel__date_today': isToday,
-                'q-date-picker-date-panel__date_selected': isSelected
+                'q-date-picker-day-panel__day_additional': isAdditional,
+                'q-date-picker-day-panel__day_today': isToday,
+                'q-date-picker-day-panel__day_selected': isSelected
               }"
             >
               {{ date }}
-            </div>
+            </button>
           </td>
         </tr>
       </tbody>
@@ -47,19 +47,25 @@ import {
   getDaysInMonth,
   getMonth,
   getYear,
+  Locale,
   startOfMonth
 } from 'date-fns';
+import { enGB as en, ru, zhHK as zh } from 'date-fns/locale';
 import { chunk, range } from 'lodash-es';
 import { computed, defineComponent, PropType } from 'vue';
+
+import { getConfig } from '@/qComponents/config';
 
 import { DAYS_IN_WEEK } from '../../../constants';
 
 import type { QDatePickerDay, DatePanelPropModelValue } from './types';
 
-export default defineComponent({
-  name: 'QDatePickerDatePanel',
+const locales: Record<string, Locale> = { ru, en, zh };
 
-  componentName: 'QDatePickerDatePanel',
+export default defineComponent({
+  name: 'QDatePickerDayPanel',
+
+  componentName: 'QDatePickerDayPanel',
 
   props: {
     modelValue: {
@@ -69,7 +75,13 @@ export default defineComponent({
   },
 
   setup(props) {
-    const dayNames = ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'];
+    const dayNames = computed<string[]>(() =>
+      range(DAYS_IN_WEEK).map(day =>
+        locales[getConfig('locale')]?.localize
+          ?.day(day, { width: 'short' })
+          .toUpperCase()
+      )
+    );
 
     const dateForeDisplaying = computed<Date>(
       () => props.modelValue ?? new Date()

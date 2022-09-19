@@ -4,9 +4,11 @@
       :day="day"
       :month="month"
       :year="year"
+      :view="view"
+      @update:view="handleViewUpdate"
     >
       <component
-        :is="QDatePickerDayPanel"
+        :is="component"
         :model-value="today"
       />
     </q-date-picker-panel>
@@ -15,11 +17,14 @@
 
 <script lang="ts">
 import { addDays, getDate, getMonth, getYear } from 'date-fns';
-import { defineComponent } from 'vue';
+import { computed, defineComponent, ref } from 'vue';
+
+import type { QDatePickerViewType } from '../types';
 
 import QDatePickerPanel from './QDatePickerPanel';
 import QDatePickerDayPanel from './QDatePickerPanel/QDatePiockerDayPanel';
 import QDatePickerMonthPanel from './QDatePickerPanel/QDatePiockerMonthPanel';
+import type { QDatePickerPanelComponent } from './types';
 
 export default defineComponent({
   name: 'QDatePickerDropdown',
@@ -34,12 +39,33 @@ export default defineComponent({
     const year = getYear(today);
     const month = getMonth(today);
 
+    const view = ref<QDatePickerViewType>();
+
+    const component = computed<QDatePickerPanelComponent>(() => {
+      // TODO: поменять кейс year, когда будет панель с годами
+      switch (view.value) {
+        case 'month':
+          return QDatePickerMonthPanel;
+        case 'day':
+        case 'year':
+          return QDatePickerDayPanel;
+        default:
+          return QDatePickerDayPanel;
+      }
+    });
+
+    const handleViewUpdate = (value: QDatePickerViewType): void => {
+      view.value = value;
+    };
+
     return {
-      QDatePickerDayPanel,
+      component,
       today,
       day,
       year,
-      month
+      month,
+      view,
+      handleViewUpdate
     };
   }
 });

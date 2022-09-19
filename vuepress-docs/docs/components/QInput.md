@@ -44,7 +44,7 @@ Binding value.
 ### disabled
 
 - Type: `Boolean`
-- Default: `null`
+- Default: `false`
 
 Whether input is disabled.
 

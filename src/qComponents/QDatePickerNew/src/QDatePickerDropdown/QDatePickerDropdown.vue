@@ -19,13 +19,14 @@ import { defineComponent } from 'vue';
 
 import QDatePickerPanel from './QDatePickerPanel';
 import QDatePickerDayPanel from './QDatePickerPanel/QDatePiockerDayPanel';
+import QDatePickerMonthPanel from './QDatePickerPanel/QDatePiockerMonthPanel';
 
 export default defineComponent({
   name: 'QDatePickerDropdown',
 
   componentName: 'QDatePickerDropdown',
 
-  components: { QDatePickerDayPanel, QDatePickerPanel },
+  components: { QDatePickerDayPanel, QDatePickerPanel, QDatePickerMonthPanel },
 
   setup() {
     const today = addDays(new Date(), 1);

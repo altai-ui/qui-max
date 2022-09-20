@@ -1,1 +1,3 @@
-export type QDatePickerViewType = 'year' | 'month' | 'day';
+import type { DatePickerPanelViewType } from './constants';
+
+export type QDatePickerViewType = DatePickerPanelViewType;

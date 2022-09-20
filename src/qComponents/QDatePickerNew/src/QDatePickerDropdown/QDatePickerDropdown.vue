@@ -19,6 +19,7 @@
 import { addDays, getDate, getMonth, getYear } from 'date-fns';
 import { computed, defineComponent, ref } from 'vue';
 
+import { DatePickerPanelViewType } from '../constants';
 import type { QDatePickerViewType } from '../types';
 
 import QDatePickerPanel from './QDatePickerPanel';
@@ -39,7 +40,7 @@ export default defineComponent({
     const year = getYear(today);
     const month = getMonth(today);
 
-    const view = ref<QDatePickerViewType>();
+    const view = ref<QDatePickerViewType>(DatePickerPanelViewType.day);
 
     const component = computed<QDatePickerPanelComponent>(() => {
       // TODO: поменять кейс year, когда будет панель с годами

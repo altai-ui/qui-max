@@ -56,6 +56,7 @@ export default defineComponent({
   emits: ['update:view'],
 
   setup(props, ctx) {
+    // TODO: компутеды ниже изменятся, когда пропсы заменятся одним modelValue
     const formattedYear = computed<string>(() =>
       formatToLocalReadableString(
         new Date(props.year, props.month, props.day),

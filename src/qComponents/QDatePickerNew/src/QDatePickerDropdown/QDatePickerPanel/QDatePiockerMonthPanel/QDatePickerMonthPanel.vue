@@ -64,14 +64,14 @@ export default defineComponent({
       if (!props.modelValue) return false;
 
       return (
-        format(new Date(), 'dd.LL.yyyy') ===
+        format(new Date(), 'LL.yyyy') ===
         format(
           new Date(
             props.modelValue.getFullYear(),
             index,
-            props.modelValue.getDate() - 1
+            props.modelValue.getDate()
           ),
-          'dd.LL.yyyy'
+          'LL.yyyy'
         )
       );
     };

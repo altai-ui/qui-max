@@ -98,7 +98,7 @@ import {
 } from 'vue';
 import type { PropType } from 'vue';
 
-import type { Nullable } from '#/helpers';
+import type { Nullable, ClassValue } from '#/helpers';
 
 import type { RangePickValue, RangeState } from '../../commonTypes';
 import { PERIOD_CELLS_IN_ROW_COUNT } from '../../constants';
@@ -163,13 +163,13 @@ export default defineComponent({
     const leftPanel = ref<Nullable<HTMLElement>>(null);
     const rightPanel = ref<Nullable<HTMLElement>>(null);
 
-    const leftPanelClasses = computed<Record<string, boolean>>(() => ({
+    const leftPanelClasses = computed<ClassValue>(() => ({
       'q-picker-panel__content': true,
       'q-picker-panel__content_no-right-borders': true,
       'q-picker-panel__content_focused': state.panelInFocus === 'left'
     }));
 
-    const rightPanelClasses = computed<Record<string, boolean>>(() => ({
+    const rightPanelClasses = computed<ClassValue>(() => ({
       'q-picker-panel__content': true,
       'q-picker-panel__content_no-left-borders': true,
       'q-picker-panel__content_focused': state.panelInFocus === 'right'

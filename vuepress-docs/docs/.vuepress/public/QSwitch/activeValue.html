@@ -1,0 +1,55 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- import CSS -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/@qvant/qui-max/dist/style.css"
+    />
+  </head>
+
+  <body>
+    <div id="app">
+      <div class="block">
+        <div class="label">currentValue: {{ currentValue }}</div>
+        <q-switch
+          v-model="currentValue"
+          active-value="on"
+          inactive-value="off"
+          @change="handleChange"
+        />
+      </div>
+    </div>
+  </body>
+  <!-- import Vue before Qui -->
+  <script src="https://unpkg.com/vue@latest"></script>
+  <!-- import JavaScript -->
+  <script src="https://unpkg.com/@qvant/qui-max@latest"></script>
+  <script>
+    const app = Vue.createApp({
+      setup() {
+        const currentValue = Vue.ref('on');
+        const handleChange = value => {
+          currentValue.value = value;
+        };
+        return { currentValue, handleChange };
+      }
+    });
+    app.use(QuiMax.default);
+    app.mount('#app');
+  </script>
+  <style>
+    #app {
+      display: flex;
+      column-gap: 20px;
+    }
+
+    .block {
+      margin: 20px;
+    }
+
+    .label {
+      margin-bottom: 10px;
+    }
+  </style>
+</html>

@@ -36,9 +36,12 @@ export default defineUserConfig<DefaultThemeOptions, ViteBundlerOptions>({
           '/components/QRadio.md',
           '/components/QScrollbar.md',
           '/components/QSelect.md',
+          '/components/QSlider.md',
           '/components/QSwitch.md',
           '/components/QTable.md',
           '/components/QTabs.md',
+          '/components/QTag.md',
+          '/components/QTextarea.md',
           '/components/QUpload.md'
         ]
       },
@@ -75,9 +78,12 @@ export default defineUserConfig<DefaultThemeOptions, ViteBundlerOptions>({
             '/components/QRadio.md',
             '/components/QScrollbar.md',
             '/components/QSelect.md',
+            '/components/QSlider.md',
             '/components/QSwitch.md',
             '/components/QTable.md',
             '/components/QTabs.md',
+            '/components/QTag.md',
+            '/components/QTextarea.md',
             '/components/QUpload.md'
           ]
         }

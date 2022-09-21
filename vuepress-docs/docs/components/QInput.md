@@ -43,8 +43,8 @@ Binding value.
 
 ### disabled
 
-- Type: `String`
-- Default: `null`
+- Type: `Boolean`
+- Default: `false`
 
 Whether input is disabled.
 

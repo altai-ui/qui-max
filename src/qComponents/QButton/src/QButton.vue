@@ -8,7 +8,7 @@
   >
     <span
       v-if="isLoading"
-      class="q-icon-reverse"
+      class="q-button__spinner-icon q-icon-reverse"
     />
     <span
       v-else-if="icon"
@@ -49,7 +49,7 @@ import type {
 
 const defaultPropTypeValue = 'default';
 const defaultPropThemeValue = 'primary';
-const defaultPropSizeValue = 'medium';
+const defaultPropSizeValue = 'regular';
 
 export default defineComponent({
   name: 'QButton',
@@ -76,7 +76,7 @@ export default defineComponent({
     size: {
       type: String as PropType<QButtonPropSize>,
       default: defaultPropSizeValue,
-      validator: validateArray<QButtonPropSize>(['small', 'medium'])
+      validator: validateArray<QButtonPropSize>(['small', 'regular'])
     },
 
     /**
@@ -150,6 +150,12 @@ export default defineComponent({
 
     const isLoading = computed<boolean>(() => Boolean(props.loading));
 
+    const isIconType = computed<boolean>(() => props.type === 'icon');
+
+    const isCircle = computed<boolean>(
+      () => Boolean(props.circle) && isIconType.value
+    );
+
     const classList = computed<ClassValue[]>(() => {
       const classes: ClassValue[] = Object.entries({
         theme: props.theme ?? defaultPropThemeValue,
@@ -160,10 +166,10 @@ export default defineComponent({
         .map(([key, value]) => `q-button_${key}_${value}`);
 
       classes.push({
-        'q-button_disabled': isDisabled.value,
+        'q-button_disabled': isDisabled.value && !isLoading.value,
         'q-button_loading': isLoading.value,
-        'q-button_circle': Boolean(props.circle),
-        'q-button_full-width': Boolean(props.fullWidth)
+        'q-button_circle': isCircle.value,
+        'q-button_full-width': Boolean(props.fullWidth) && !isCircle.value
       });
 
       return classes;

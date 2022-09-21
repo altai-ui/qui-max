@@ -107,6 +107,11 @@
       -webkit-box-orient: vertical;
     }
 
+    &_sortable {
+      cursor: pointer;
+      user-select: none;
+    }
+
     &_checkbox {
       width: 100%;
     }

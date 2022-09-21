@@ -50,10 +50,10 @@ const locales: Record<string, Locale> = { ru, en, zh };
 
 const formatToLocalReadableString = (
   value: Date,
-  dateFnsFormat = 'dd MMM yyyy',
+  dateFnsFormat: Nullable<string>,
   dateFnsLocale = 'ru'
 ): string => {
-  return format(value, dateFnsFormat, {
+  return format(value, dateFnsFormat ?? 'dd MMM yyyy', {
     locale: locales[dateFnsLocale]
   });
 };

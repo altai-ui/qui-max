@@ -6,7 +6,7 @@ type NativeType = 'button' | 'submit' | 'reset';
 
 export type QButtonPropType = Nullable<'default' | 'icon'>;
 export type QButtonPropTheme = Nullable<'primary' | 'secondary' | 'link'>;
-export type QButtonPropSize = Nullable<'small' | 'medium'>;
+export type QButtonPropSize = Nullable<'small' | 'regular'>;
 export type QButtonPropIcon = Nullable<ClassValue>;
 export type QButtonPropNativeType = Nullable<NativeType>;
 export type QButtonPropLoading = Nullable<boolean>;

@@ -43,3 +43,19 @@ body {
 iframe {
   border-radius: 6px;
 }
+
+#main-title {
+  background: linear-gradient(315deg, #de4b7a 25%, #4162f0);
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+:root {
+  --c-brand: #de4b7a;
+  --c-brand-light: hsl(341deg 64% 61%);
+}
+
+html.dark {
+  --c-brand: #de4b7a;
+  --c-brand-light: #b83e65;
+}

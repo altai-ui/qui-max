@@ -24,6 +24,7 @@
     </span>
     <span
       class="q-radio__label"
+      :class="labelClass"
       @keydown.stop
     >
       <slot>{{ label }}</slot>
@@ -33,13 +34,23 @@
 
 <script lang="ts">
 import { defineComponent, inject, computed } from 'vue';
+import type { PropType } from 'vue';
 
+import { validateArray } from '@/qComponents/helpers';
 import type { QFormProvider } from '@/qComponents/QForm';
 import type { QRadioGroupProvider } from '@/qComponents/QRadioGroup';
 
-import type { Nullable } from '#/helpers';
+import type { Nullable, ClassValue } from '#/helpers';
 
-import type { QRadioProps, QRadioInstance } from './types';
+import type {
+  QRadioProps,
+  QRadioInstance,
+  QRadioPropLabelSize,
+  QRadioPropLabel,
+  QRadioPropValue,
+  QRadioPropChecked,
+  QRadioPropDisabled
+} from './types';
 
 export default defineComponent({
   name: 'QRadio',
@@ -51,19 +62,39 @@ export default defineComponent({
     /**
      * the value of Radio label
      */
-    label: { type: String, default: null },
+    label: {
+      type: String as PropType<QRadioPropLabel>,
+      default: null
+    },
     /**
      * binding value
      */
-    value: { type: [String, Number, Boolean], default: null },
+    value: {
+      type: [String, Number, Boolean] as PropType<QRadioPropValue>,
+      default: null
+    },
     /**
      * whether Radio is checked
      */
-    checked: { type: Boolean, default: false },
+    checked: {
+      type: Boolean as PropType<QRadioPropChecked>,
+      default: false
+    },
     /**
      * whether Radio is disabled
      */
-    disabled: { type: Boolean, default: false }
+    disabled: {
+      type: Boolean as PropType<QRadioPropDisabled>,
+      default: false
+    },
+    /**
+     * label size
+     */
+    labelSize: {
+      type: String as PropType<QRadioPropLabelSize>,
+      default: 'regular',
+      validator: validateArray<QRadioPropLabelSize>(['regular', 'small'])
+    }
   },
 
   emits: [
@@ -95,13 +126,17 @@ export default defineComponent({
         (qRadioGroup?.disabled.value ?? false)
     );
 
-    const wrapClass = computed<Record<string, boolean>>(() => ({
+    const wrapClass = computed<ClassValue>(() => ({
       'q-radio_disabled': isDisabled.value,
       'q-radio_checked': isChecked.value
     }));
 
     const tabIndex = computed<-1 | 0>(() =>
       isDisabled.value || (isGroup.value && !isChecked.value) ? -1 : 0
+    );
+
+    const labelClass = computed<ClassValue>(
+      () => `q-radio__label_size_${props.labelSize ?? 'regular'}`
     );
 
     const handleSpaceKeyUp = (): void => {
@@ -127,7 +162,8 @@ export default defineComponent({
       wrapClass,
       tabIndex,
       handleSpaceKeyUp,
-      handleChange
+      handleChange,
+      labelClass
     };
   }
 });

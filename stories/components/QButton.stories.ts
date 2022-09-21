@@ -17,8 +17,20 @@ const storyMetadata: Meta = {
       control: { type: 'select' }
     },
     size: {
-      options: ['small', 'medium'],
+      options: ['small', 'regular'],
       control: { type: 'select' }
+    },
+    disabled: {
+      control: { type: 'boolean' }
+    },
+    loading: {
+      control: { type: 'boolean' }
+    },
+    circle: {
+      control: { type: 'boolean' }
+    },
+    icon: {
+      control: { type: 'text' }
     }
   }
 };
@@ -58,7 +70,7 @@ ThemePrimary.args = {
   theme: 'primary',
   type: 'default',
   label: 'Primary theme',
-  size: 'medium'
+  size: 'regular'
 };
 
 export const ThemeSecondary = Template.bind({});
@@ -66,7 +78,7 @@ ThemeSecondary.args = {
   theme: 'secondary',
   type: 'default',
   label: 'Secondary theme',
-  size: 'medium'
+  size: 'regular'
 };
 
 export const ThemeLink = Template.bind({});
@@ -74,7 +86,7 @@ ThemeLink.args = {
   theme: 'link',
   type: 'default',
   label: 'Link theme',
-  size: 'medium'
+  size: 'regular'
 };
 
 export const IconPrimary = Template.bind({});
@@ -82,7 +94,7 @@ IconPrimary.args = {
   theme: 'primary',
   type: 'icon',
   icon: 'q-icon-bell',
-  size: 'medium'
+  size: 'regular'
 };
 
 export const IconSecondary = Template.bind({});
@@ -90,7 +102,7 @@ IconSecondary.args = {
   theme: 'secondary',
   type: 'icon',
   icon: 'q-icon-bell',
-  size: 'medium'
+  size: 'regular'
 };
 
 export const IconLink = Template.bind({});
@@ -98,7 +110,7 @@ IconLink.args = {
   theme: 'link',
   type: 'icon',
   icon: 'q-icon-bell',
-  size: 'medium'
+  size: 'regular'
 };
 
 export default storyMetadata;

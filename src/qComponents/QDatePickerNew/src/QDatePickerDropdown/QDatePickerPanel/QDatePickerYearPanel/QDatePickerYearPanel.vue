@@ -7,14 +7,14 @@
           :key="row"
         >
           <td
-            v-for="{ year, isToday, isSelected } in row"
+            v-for="{ year, isCurrent, isSelected } in row"
             :key="year"
             class="q-date-picker-year-panel__cell"
           >
             <button
               class="q-date-picker-year-panel__year"
               :class="{
-                'q-date-picker-year-panel__year_today': isToday,
+                'q-date-picker-year-panel__year_current': isCurrent,
                 'q-date-picker-year-panel__year_selected': isSelected
               }"
             >
@@ -28,10 +28,13 @@
 </template>
 
 <script lang="ts">
+import { addYears, getDecade } from 'date-fns';
 import { chunk, range } from 'lodash-es';
-import { computed, defineComponent, PropType } from 'vue';
+import { computed, defineComponent, type PropType } from 'vue';
 
 import type { QDatePickerYear, YearPanelPropModelValue } from './types';
+
+const ADDITIONAL_YEARS_TO_DECADE = 18;
 
 export default defineComponent({
   name: 'QDatePickerDayPanel',
@@ -45,9 +48,29 @@ export default defineComponent({
     }
   },
 
-  setup() {
+  setup(props) {
+    const yearsRange = computed<[number, number]>(() => {
+      let date;
+
+      if (!props.modelValue) date = new Date();
+      else date = props.modelValue;
+
+      const decade = getDecade(date);
+
+      return [decade, addYears(date, ADDITIONAL_YEARS_TO_DECADE).getFullYear()];
+    });
+
+    const isCurrentYear = (year: number): boolean =>
+      new Date().getFullYear() === year;
+    const isSelected = (year: number): boolean =>
+      props.modelValue?.getFullYear() === year;
+
     const yearsArray = computed<QDatePickerYear[]>(() => {
-      return range(2021, 2041).map(ye => ({ year: ye }));
+      return range(...yearsRange.value).map(ye => ({
+        year: ye,
+        isCurrent: isCurrentYear(ye),
+        isSelected: isSelected(ye)
+      }));
     });
 
     const rows = computed<QDatePickerYear[][]>(() =>
@@ -55,8 +78,7 @@ export default defineComponent({
     );
 
     return {
-      rows,
-      daysArray: yearsArray
+      rows
     };
   }
 });

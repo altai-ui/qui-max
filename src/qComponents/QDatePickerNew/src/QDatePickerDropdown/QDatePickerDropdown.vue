@@ -23,6 +23,7 @@ import { DatePickerPanelViewType } from '../constants';
 import type { QDatePickerViewType } from '../types';
 
 import QDatePickerPanel from './QDatePickerPanel';
+import QDatePickerYearPanel from './QDatePickerPanel/QDatePickerYearPanel';
 import QDatePickerDayPanel from './QDatePickerPanel/QDatePiockerDayPanel';
 import QDatePickerMonthPanel from './QDatePickerPanel/QDatePiockerMonthPanel';
 import type { QDatePickerPanelComponent } from './types';
@@ -32,7 +33,7 @@ export default defineComponent({
 
   componentName: 'QDatePickerDropdown',
 
-  components: { QDatePickerDayPanel, QDatePickerPanel, QDatePickerMonthPanel },
+  components: { QDatePickerDayPanel, QDatePickerPanel, QDatePickerMonthPanel, QDatePickerYearPanel },
 
   setup() {
     const today = addDays(new Date(), 1);
@@ -48,8 +49,9 @@ export default defineComponent({
         case 'month':
           return QDatePickerMonthPanel;
         case 'day':
+          return QDatePickerYearPanel;
         case 'year':
-          return QDatePickerDayPanel;
+          return QDatePickerYearPanel;
         default:
           return QDatePickerDayPanel;
       }

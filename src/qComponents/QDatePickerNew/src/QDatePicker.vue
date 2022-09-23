@@ -36,6 +36,7 @@ export default defineComponent({
   componentName: 'QDatePickerNew',
 
   setup() {
+    // TODO: добавить "отображаемая дата" и считать "выбрано" и "сегодня" в зависимости от отображаемой даты
     const field =
       ref<Nullable<UnwrappedInstance<ComponentPublicInstance>>>(null);
     const isDDVisible = ref(false);
@@ -69,7 +70,7 @@ export default defineComponent({
           {
             name: 'computeStyles',
             options: {
-              adaptive: false // true by default
+              adaptive: false
             }
           }
         ]

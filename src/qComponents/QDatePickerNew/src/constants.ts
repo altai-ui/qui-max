@@ -13,3 +13,9 @@ export const MONTHS_COUNT = 12;
 export const CELLS_COUNT_IN_YEAR_RANGE = 20;
 export const WEEK_FRONTIER = 3;
 export const FIRST_DATE_OF_MONTH = 1;
+
+export enum DatePickerPanelViewType {
+  day = 'day',
+  month = 'month',
+  year = 'year'
+}

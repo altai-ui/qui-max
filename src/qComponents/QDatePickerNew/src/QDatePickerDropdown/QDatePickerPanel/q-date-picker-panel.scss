@@ -1,4 +1,5 @@
 @import 'QDatePiockerDayPanel/q-date-picker-day-panel';
+@import 'QDatePiockerMonthPanel/q-date-picker-month-panel';
 
 .q-date-picker-panel {
   display: block;
@@ -13,10 +14,17 @@
   &__heading {
     width: 100%;
     padding: 11px 0;
+  }
+
+  &__view-button {
+    padding: 0;
+    margin: 0;
     font-size: 16px;
     font-weight: 700;
     line-height: 18px;
     color: #868e96;
+    background-color: transparent;
+    border: none;
   }
 
   &__animation {

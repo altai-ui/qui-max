@@ -8,6 +8,7 @@
       :text-upload-file="textUploadFile"
       :text-replace-file="textReplaceFile"
       :text-loading-file="textLoadingFile"
+      @drop="handleFileDrop"
       @click="handleUploadClick"
       @keyup.enter="handleUploadClick"
     />
@@ -19,7 +20,7 @@
       tabindex="-1"
       :accept="accept?.toString()"
       :multiple="multiple"
-      @change="processFile"
+      @change="handleFileChange"
     />
 
     <q-upload-file-multiple
@@ -251,10 +252,8 @@ export default defineComponent({
       ctx.emit('abort', fileId);
     };
 
-    const processFile = ({ target }: MouseEvent): void => {
+    const processFile = (fileList: Nullable<FileList>): void => {
       if (isDisabled.value) return;
-
-      const fileList = (target as HTMLInputElement)?.files;
 
       if (!fileList) return;
 
@@ -282,6 +281,16 @@ export default defineComponent({
       ctx.emit('select-all', preparedFileList);
     };
 
+    const handleFileDrop = ({ dataTransfer }: DragEvent): void => {
+      const fileList = dataTransfer?.files ?? null;
+      processFile(fileList);
+    };
+
+    const handleFileChange = ({ target }: Event): void => {
+      const fileList = (target as HTMLInputElement)?.files;
+      processFile(fileList);
+    };
+
     return {
       isDisabled,
       isLoading,
@@ -289,7 +298,9 @@ export default defineComponent({
       classes,
       hasValue,
       processFile,
+      handleFileDrop,
       handleUploadClick,
+      handleFileChange,
       handleClearAll,
       handleClear,
       handleAbort

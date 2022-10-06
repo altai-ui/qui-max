@@ -286,7 +286,7 @@ export default defineComponent({
       processFile(fileList);
     };
 
-    const handleFileChange = ({ target }: MouseEvent): void => {
+    const handleFileChange = ({ target }: Event): void => {
       const fileList = (target as HTMLInputElement)?.files;
       processFile(fileList);
     };

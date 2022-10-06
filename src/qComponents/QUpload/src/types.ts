@@ -33,7 +33,7 @@ export interface QUploadInstance {
   fileInput: Ref<Nullable<HTMLInputElement>>;
   classes: ComputedRef<Record<string, boolean>>;
   hasValue: ComputedRef<boolean>;
-  handleFileChange: ({ target }: MouseEvent) => void;
+  handleFileChange: ({ target }: Event) => void;
   processFile: (fileList: Nullable<FileList>) => void;
   handleFileDrop: (dropEvent: DragEvent) => void;
   handleUploadClick: () => void;

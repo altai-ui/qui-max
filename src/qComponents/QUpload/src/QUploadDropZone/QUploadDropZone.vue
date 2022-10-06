@@ -86,13 +86,11 @@ export default defineComponent({
         : textUploadFile;
     });
 
-    const handleDrop = ({ dataTransfer }: DragEvent): void => {
+    const handleDrop = (dropEvent: DragEvent): void => {
       if (props.isDisabled) return;
       if (isDragover.value) isDragover.value = false;
 
-      const sourceFile = dataTransfer?.files?.[0];
-
-      ctx.emit('drop', sourceFile);
+      ctx.emit('drop', dropEvent);
     };
 
     const handleDragover = (): void => {

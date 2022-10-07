@@ -1,16 +1,13 @@
-import type { ViteBundlerOptions } from '@vuepress/bundler-vite';
-import { defineUserConfig } from '@vuepress/cli';
-import type { DefaultThemeOptions } from '@vuepress/theme-default';
+import { defaultTheme } from 'vuepress';
 
-export default defineUserConfig<DefaultThemeOptions, ViteBundlerOptions>({
+module.exports = {
   // The base URL the site will be deployed at:
   base: '/',
   lang: 'en-US',
   title: 'Qui Max',
   description: 'Neumorphic design system for Web',
   head: [['link', { rel: 'icon', href: '/qui-logo.svg' }]],
-
-  themeConfig: {
+  theme: defaultTheme({
     logo: './qui-logo.svg',
     navbar: [
       // NavbarItem
@@ -95,5 +92,5 @@ export default defineUserConfig<DefaultThemeOptions, ViteBundlerOptions>({
         }
       ]
     }
-  }
-});
+  })
+};

@@ -43,3 +43,6 @@ tests/unit/coverage/
 /vuepress-docs/docs/.vuepress/.cache/
 /vuepress-docs/docs/.vuepress/dist/
 /vuepress-docs/node_modules
+
+/vitepress-docs/docs/.vitepress/dist/
+/vitepress-docs/node_modules

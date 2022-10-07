@@ -4,18 +4,14 @@
   "private": false,
   "description": "Qui Max Docs",
   "author": {
-    "name": "Qvant Frontend team"
+    "name": "GPMD Frontend team"
   },
   "scripts": {
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs"
   },
-  "peerDependencies": {
-    "vue": "^3.2.23"
-  },
   "devDependencies": {
-    "vuepress": "^2.0.0-beta.35",
-    "vuepress-vite": "^2.0.0-beta.27"
+    "vuepress": "^2.0.0-beta.51"
   },
   "license": "MIT",
   "maintainers": [

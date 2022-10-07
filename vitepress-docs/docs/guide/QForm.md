@@ -372,7 +372,7 @@ Field error message, set the value and the field will validate error and show th
 
 ### rules
 
-The same as [QForm rules](/components/QForm.html#rules).
+The same as [QForm rules](/guide/QForm#rules).
 
 ### showErrorMessage
 

@@ -96,7 +96,7 @@ type QDatePickerPropType =
 </template>
 ```
 
-See [example](./QDatepicker/#example) above.
+See [example](/guide/QDatepicker#example) above.
 
 ### format
 
@@ -231,7 +231,7 @@ export default defineComponent({
 });
 ```
 
-See [example](./QDatepicker/#example) above.
+See [example](/guide/QDatepicker#example) above.
 
 ### firstDayOfWeek
 

@@ -1,8 +1,7 @@
 {
   "name": "quimax-docs",
-  "version": "1.0.0",
+  "version": "0.18.1",
   "main": "index.js",
-  "license": "MIT",
   "devDependencies": {
     "vitepress": "^1.0.0-alpha.19",
     "vue": "^3.2.40",
@@ -12,5 +11,20 @@
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:serve": "vitepress serve docs"
+  },
+  "license": "MIT",
+  "maintainers": [
+    {
+      "name": "Tim Bochkarev",
+      "url": "https://github.com/Tim152"
+    },
+    {
+      "name": "Viktor Zheleztsov",
+      "url": "https://github.com/ViZhe"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Qvant-lab/qui-max.git"
   }
 }

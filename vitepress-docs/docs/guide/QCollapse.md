@@ -143,4 +143,4 @@ Alias for update:modelValue
 
 ### default
 
-See [example](./QCollapse/#example) above. Using `default` slot recommended by default.
+See [example](/guide/QCollapse#example) above. Using `default` slot recommended by default.

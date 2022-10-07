@@ -1,83 +1,9 @@
-<script setup>
-import { QTag, QCol, QRow } from '@qvant/qui-max';
-const args = {
-  tag: 'div',
-  cols: 4,
-  offset: 3
-};
-</script>
-<style scoped>
-  .block {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 1000px;
-    max-width: 100%;
-    margin: 5px 0 0 20px;
-  }
-
-  .block__row {
-    width: 100%;
-  }
-
-  .block__content {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 50px;
-    margin-bottom: var(--layout-gutter);
-    background-color: var(--color-primary-blue-aqua);
-    border-radius: var(--border-radius-base);
-  }
-</style>
-
 # Layout 🧱
 
 Qui Max supports 12-column `flex` based layout. To define your layout start with `<q-row>` component, and then add `<q-col>` with `cols` property.
 You can try it out in a sandbox [story](https://qui-max.netlify.app/?path=/story/components-layout--default).
 
 Default view:
-
-<div class="block">
-  <q-row class="block__row">
-    <q-col
-      class="block__col"
-      cols="2"
-    >
-      <div class="block__content">2</div>
-    </q-col>
-    <q-col
-      class="block__col"
-      :tag="args.tag"
-      :cols="args.cols"
-      :offset="args.offset"
-    >
-      <div class="block__content">Lorem ipsum dolor</div>
-    </q-col>
-    <q-col
-      class="block__col"
-      cols="2"
-    >
-      <div class="block__content">2</div>
-    </q-col>
-  </q-row>
-
-  <q-row class="block__row">
-    <q-col
-      class="block__col"
-      cols="5"
-    >
-      <div class="block__content">5</div>
-    </q-col>
-    <q-col
-      class="block__col"
-      cols="7"
-    >
-      <div class="block__content">7</div>
-    </q-col>
-  </q-row>
-</div>
 
 <iframe height="340" style="width: 100%;" scrolling="no" frameborder="no" src="/Layout/Layout.html"></iframe>
 

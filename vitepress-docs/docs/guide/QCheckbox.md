@@ -206,4 +206,4 @@ Defines the text of the checkbox label, like [label](#label) prop does. Just put
 
 ## QCheckboxGroup
 
-You also could wrap a several QCheckboxes in a group using [QCheckboxGroup](/qui-max/components/QCheckboxGroup).
+You also could wrap a several QCheckboxes in a group using [QCheckboxGroup](/guide/QCheckboxGroup).

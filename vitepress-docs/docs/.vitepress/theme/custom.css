@@ -8,3 +8,7 @@
   --vp-c-green-dark: #646cff;
   --vp-c-green-lighter: rgb(130, 137, 255);
 }
+
+iframe {
+  border-radius: 8px;
+}

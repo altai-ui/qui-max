@@ -13,7 +13,7 @@ const groupsOfColumns = [
       },
       {
         key: 'col3',
-        value: 'ddd 3',
+        value: 'Column 3',
         sortable: true,
         slots: {
           header: 'custom-header',
@@ -45,7 +45,7 @@ const groupsOfColumnsAllTypes = [
       },
       {
         key: 'col3',
-        value: 'ddd 3',
+        value: 'Column 3',
         slots: {
           header: 'custom-header',
           total: 'custom-total',
@@ -79,25 +79,25 @@ const sortBy = {
 
 const rows = [
   {
-    col1: 12,
-    col2: 332,
-    col3: 11,
-    col4: 111,
-    col5: 123
+    col1: 'Lorem ipsum dolor sit amet',
+    col2: 'Consectetur adipiscing elitSed.',
+    col3: 'Do eiusmod tempor incididunt ut',
+    col4: 'labore et dolore magna aliqua',
+    col5: 'Ut enim ad minim veniam'
   },
   {
-    col1: 354,
-    col2: 11,
-    col3: 777,
-    col4: 666,
-    col5: 123
+    col1: 'quis nostrud exercitation ullamco laboris',
+    col2: 'nisi ut aliquip ex',
+    col3: 'ea commodo consequat',
+    col4: 'Duis aute irure dolor in reprehenderit',
+    col5: 'in voluptate velit esse cillum dolore'
   },
   {
-    col1: 4,
-    col2: 8,
-    col3: 15,
-    col4: 16,
-    col5: 23
+    col1: 'eu fugiat nulla pariatur',
+    col2: 'Excepteur sint occaecat cupidatat',
+    col3: 'non proident, sunt in culpa qui',
+    col4: 'officia deserunt mollit anim id',
+    col5: 'est laborum.'
   }
 ];
 

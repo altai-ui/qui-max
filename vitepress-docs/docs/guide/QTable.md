@@ -1,51 +1,119 @@
 # QTable 🗒
 
-Used to represent data in the form of a table.
+Used to represent data in the table.
 
-## Example
+## Simple table example:
+
+<iframe style="width: 100%; height: 320px" scrolling="no" frameborder="no" src="/QTable/simple.html"></iframe>
+
+Template:
+
+```vue
+<template>
+  <q-table
+    v-model:groups-of-columns="groupsOfColumns"
+    v-model:rows="rows"
+  />
+</template>
+```
+
+Component instance:
+
+```ts
+  setup() {
+    const groupsOfColumns = ref<QTablePropGroupsOfColumns>([{
+      columns: [
+        {
+          key: 'col1',
+          value: 'Column 1',
+        },
+        {
+          key: 'col2',
+          value: 'Column2',
+        },
+        {
+          key: 'col3',
+          value: 'Column 3',
+        }
+      ]
+    }]);
+
+    const rows = ref<QTablePropRows>([
+      {
+        col1: 'Lorem ipsum dolor sit amet',
+        col2: 'Consectetur adipiscing elitSed.',
+        col3: 'Do eiusmod tempor incididunt ut',
+      },
+      {
+        col1: 'quis nostrud exercitation ullamco laboris',
+        col2: 'nisi ut aliquip ex',
+        col3: 'ea commodo consequat',
+      },
+      {
+        col1: 'eu fugiat nulla pariatur',
+        col2: 'Excepteur sint occaecat cupidatat',
+        col3: 'non proident, sunt in culpa qui',
+      }
+    ]);
+
+    return {
+      groupsOfColumns,
+      rows,
+    };
+  }
+```
+
+## More feature example
+
+<iframe style="width: 100%; height: 400px" scrolling="no" frameborder="no" src="/QTable/example.html"></iframe>
 
 Using in template
 
 ```vue
 <template>
   <q-table
-    v-model:groups-of-columns="groupsOfCols"
-    :rows="rows"
+    v-model:groups-of-columns="cols"
+    v-model:sort-by="sortBy"
+    v-model:rows="rows"
     :total="total"
+    grid
   >
-    <template #customHeader="{ value }"> {{ value }} custom </template>
-    <template #customTotal="{ value }"> {{ value }} custom </template>
-    <template #customRow="{ value }"> {{ value }} custom </template>
+    <template #custom-header="{ value }"> {{ value }} custom </template>
+    <template #custom-total="{ value }"> {{ value }} custom </template>
+    <template #custom-row="{ value }"> {{ value }} custom </template>
   </q-table>
 </template>
 ```
 
 Using in instance
 
-```js
+```ts
 setup() {
-  const groupsOfColumns = [
+  const groupsOfColumnsAllTypes = [
     {
       key: 'one',
-      color: '#de4b7a',
       draggable: true,
+      color: '#de4b7a',
       columns: [
         {
           key: 'col1',
           value: 'Column 1',
-          formatter: (val) => `formatted ${val}`
+          formatter: val => `formatted ${val}`
         },
         {
           key: 'col2',
-          value: 'Sticky Column'
+          value: 'Sticky Column',
+          sticky: {
+            position: 'left'
+          }
         },
         {
           key: 'col3',
           value: 'Column 3',
           slots: {
-            header: 'customHeader',
-            total: 'customTotal',
-            row: 'customRow'
+            header: 'custom-header',
+            total: 'custom-total',
+            row: 'custom-row'
           }
         }
       ]
@@ -63,18 +131,38 @@ setup() {
         {
           key: 'col5',
           value: 'Column 5'
-        },
+        }
       ]
     }
   ];
 
+  const sortBy = {
+    key: 'col4',
+    direction: 'ascending'
+  };
+
   const rows = [
     {
-      col1: 12,
-      col2: 332,
-      col3: 11,
+      col1: 'Lorem ipsum dolor sit amet',
+      col2: 'Consectetur adipiscing elitSed.',
+      col3: 'Do eiusmod tempor incididunt ut',
+      col4: 'labore et dolore magna aliqua',
+      col5: 'Ut enim ad minim veniam'
     },
-    ...
+    {
+      col1: 'quis nostrud exercitation ullamco laboris',
+      col2: 'nisi ut aliquip ex',
+      col3: 'ea commodo consequat',
+      col4: 'Duis aute irure dolor in reprehenderit',
+      col5: 'in voluptate velit esse cillum dolore'
+    },
+    {
+      col1: 'eu fugiat nulla pariatur',
+      col2: 'Excepteur sint occaecat cupidatat',
+      col3: 'non proident, sunt in culpa qui',
+      col4: 'officia deserunt mollit anim id',
+      col5: 'est laborum.'
+    }
   ];
 
   const total = {
@@ -82,10 +170,24 @@ setup() {
     col2: 'Total 351',
     col3: 'Total 803'
   };
+
+  const checkedRows = ref<QTablePropCheckedRows>(checkedRows);
+  const sortBy = ref<QTablePropSortBy>(sortBy);
+  const cols = ref<QTablePropGroupsOfColumns>(groupsOfColumns);
+
+  const handleSortByUpdate = val => {
+    console.log(val);
+  };
+
+  return {
+    cols,
+    sortBy,
+    rows,
+    total,
+    handleSortByUpdate
+  };
 }
 ```
-
-<iframe style="width: 100%; height: 400px" scrolling="no" frameborder="no" src="/QTable/example.html"></iframe>
 
 ## Props
 
@@ -114,9 +216,9 @@ Each column **MAY** contain:
 - `width` - works with `fixedLayout: true`.
 - `minWidth` - works with `fixedLayout: false`.
 - `formatter` - function that format column value.
-- `isHidden`
-- `sortable`
-- `draggable`
+- `isHidden` - whether column is hidden
+- `sortable` - whether column is sortable
+- `draggable` - whether column is draggable
 - `slots`
 - `customCellClass`
 

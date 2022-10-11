@@ -13,22 +13,8 @@
       <div class="block">
         <q-table
           v-model:groups-of-columns="groupsOfColumns"
-          v-model:sort-by="sortBy"
           v-model:rows="rows"
-          :selection-column="{
-            enabled: true,
-            selectAllShown: true,
-            selectTotalShown: true
-          }"
-          :total="total"
-          grid
-        >
-          <template #custom-header="{ value }"> {{ value }} custom </template>
-
-          <template #custom-total="{ value }"> {{ value }} custom </template>
-
-          <template #custom-row="{ value }"> {{ value }} custom </template>
-        </q-table>
+        />
       </div>
     </div>
   </body>
@@ -40,20 +26,30 @@
   <script>
     const app = Vue.createApp({
       setup() {
-        const groups = Vue.ref(groupsOfColumnsAllTypes);
+        const reactiveGroups = Vue.ref([
+          {
+            columns: [
+              {
+                key: 'col1',
+                value: 'Column 1'
+              },
+              {
+                key: 'col2',
+                value: 'Column2'
+              },
+              {
+                key: 'col3',
+                value: 'Column 3'
+              }
+            ]
+          }
+        ]);
 
-        const sort = Vue.ref(sortBy);
-
-        const handleSortByUpdate = val => {
-          console.log(val);
-        };
+        const reactiveRows = Vue.ref(rows);
 
         return {
-          groupsOfColumns: groups,
-          sortBy: sort,
-          rows,
-          total,
-          handleSortByUpdate
+          groupsOfColumns: reactiveGroups,
+          rows: reactiveRows
         };
       }
     });

@@ -156,11 +156,10 @@ In template:
 
 In setup:
 
-:::: code-group
-::: code-group-item JS
+::code-group
 
-```js
-setup() {
+```js [JS]
+  setup() {
     const model = ref(false);
 
     const changeHandler = (value) => {
@@ -168,15 +167,11 @@ setup() {
     }
 
     return { model, changeHandler }
-}
+  }
 ```
 
-:::
-
-::: code-group-item TS
-
-```ts
-setup() {
+```ts [TS]
+  setup() {
     const model = ref<boolean>(false);
 
     const changeHandler = (value: boolean): void => {
@@ -184,11 +179,10 @@ setup() {
     }
 
     return { model, changeHandler }
-}
+  }
 ```
 
-:::
-::::
+::
 
 ## Slots
 

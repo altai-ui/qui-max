@@ -173,7 +173,11 @@ export default defineComponent({
 
     const handleDocumentFocus = (event: FocusEvent): void => {
       const drawerValue = drawer.value;
-      if (drawerValue && !drawerValue.contains(event.target as HTMLElement)) {
+      if (
+        drawerValue &&
+        !drawerValue.contains(event.target as HTMLElement) &&
+        document.activeElement === drawerValue
+      ) {
         drawerValue.focus();
       }
     };

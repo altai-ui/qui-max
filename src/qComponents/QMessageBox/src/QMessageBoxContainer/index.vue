@@ -257,7 +257,7 @@ export default defineComponent({
 
     onBeforeUnmount(() => {
       qDrawerContainer?.addOrRemoveFocusListener(
-        QDrawerAddOrRemoveFocusListenerAction.remove
+        QDrawerAddOrRemoveFocusListenerAction.add
       );
 
       document.documentElement.style.overflow = '';

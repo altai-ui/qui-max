@@ -55,6 +55,7 @@ import {
   onMounted,
   nextTick,
   provide,
+  inject,
   onBeforeUnmount
 } from 'vue';
 import type { PropType } from 'vue';
@@ -63,7 +64,10 @@ import { getConfig } from '@/qComponents/config';
 import { isServer } from '@/qComponents/constants/isServer';
 import { QScrollbar } from '@/qComponents/QScrollbar';
 
-import type { Nullable } from '#/helpers';
+import type { QDrawerContainerProvider } from '@/qComponents';
+import { QDrawerAddOrRemoveFocusListenerAction } from '@/qComponents';
+
+import type { Nullable, Nillable } from '#/helpers';
 
 import { QMessageBoxAction } from '../constants';
 import { QMessageBoxContent } from '../QMessageBoxContent';
@@ -163,6 +167,11 @@ export default defineComponent({
   setup(props: QMessageBoxContainerProps, ctx): QMessageBoxContainerInstance {
     const instance = getCurrentInstance();
 
+    let qDrawerContainer: Nillable<QDrawerContainerProvider> = null;
+    if (instance?.root.appContext.provides.qDrawerContainer) {
+      qDrawerContainer = inject<QDrawerContainerProvider>('qDrawerContainer');
+    }
+
     const messageBox = ref<Nullable<HTMLElement>>(null);
     const isShown = ref<boolean>(false);
     const zIndex = getConfig('nextZIndex');
@@ -232,6 +241,10 @@ export default defineComponent({
     };
 
     onMounted(async () => {
+      qDrawerContainer?.addOrRemoveFocusListener(
+        QDrawerAddOrRemoveFocusListenerAction.remove
+      );
+
       document.body.appendChild(instance?.vnode.el as Node);
       document.documentElement.style.overflow = 'hidden';
       document.addEventListener('focus', handleDocumentFocus, true);
@@ -243,6 +256,10 @@ export default defineComponent({
     });
 
     onBeforeUnmount(() => {
+      qDrawerContainer?.addOrRemoveFocusListener(
+        QDrawerAddOrRemoveFocusListenerAction.remove
+      );
+
       document.documentElement.style.overflow = '';
       document.removeEventListener('focus', handleDocumentFocus, true);
       if (!props.preventFocusAfterClosing) elementToFocusAfterClosing?.focus();

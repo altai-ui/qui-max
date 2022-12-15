@@ -2,7 +2,11 @@ import type { Ref, ComputedRef } from 'vue';
 
 import type { Nullable } from '#/helpers';
 
-import type { QDrawerAction } from '../constants';
+import type {
+  QDrawerAction,
+  QDrawerAddOrRemoveFocusListenerAction
+} from '../constants';
+
 import type { QDrawerComponent, QDrawerContent, QDrawerEvent } from '../types';
 
 export type QDrawerContainerPropContent = QDrawerContent;
@@ -27,7 +31,9 @@ export interface QDrawerContainerProps {
 export interface QDrawerContainerProvider {
   emitDoneEvent: (props: QDrawerEvent) => Promise<void>;
   emitCloseEvent: () => void;
-  toggleFocusState: (state: boolean) => void;
+  addOrRemoveFocusListener: (
+    action: QDrawerAddOrRemoveFocusListenerAction
+  ) => void;
 }
 
 export interface QDrawerContainerInstance {

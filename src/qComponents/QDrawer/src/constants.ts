@@ -3,3 +3,8 @@ export enum QDrawerAction {
   cancel = 'cancel',
   close = 'close'
 }
+
+export enum QDrawerAddOrRemoveFocusListenerAction {
+  add = 'add',
+  remove = 'remove'
+}

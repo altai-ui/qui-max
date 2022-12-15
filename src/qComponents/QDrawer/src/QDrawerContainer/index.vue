@@ -55,7 +55,10 @@ import { validateArray } from '@/qComponents/helpers';
 
 import type { Nullable } from '#/helpers';
 
-import { QDrawerAction } from '../constants';
+import {
+  QDrawerAction,
+  QDrawerAddOrRemoveFocusListenerAction
+} from '../constants';
 import type { QDrawerComponent, QDrawerEvent } from '../types';
 
 import type {
@@ -149,7 +152,6 @@ export default defineComponent({
     const drawer = ref<Nullable<HTMLElement>>(null);
     const isShown = ref<boolean>(false);
     const zIndex = getConfig('nextZIndex');
-    const shouldBeFocused = ref<boolean>(true);
 
     const drawerStyle = computed<Record<string, Nullable<string | number>>>(
       () => ({
@@ -174,11 +176,7 @@ export default defineComponent({
 
     const handleDocumentFocus = (event: FocusEvent): void => {
       const drawerValue = drawer.value;
-      if (
-        drawerValue &&
-        !drawerValue.contains(event.target as HTMLElement) &&
-        shouldBeFocused.value
-      ) {
+      if (drawerValue && !drawerValue.contains(event.target as HTMLElement)) {
         drawerValue.focus();
       }
     };
@@ -218,14 +216,20 @@ export default defineComponent({
       });
     };
 
-    const toggleFocusState = (state): void => {
-      shouldBeFocused.value = state;
+    const addOrRemoveFocusListener = (
+      action: QDrawerAddOrRemoveFocusListenerAction
+    ): void => {
+      if (action === QDrawerAddOrRemoveFocusListenerAction.add)
+        document.addEventListener('focus', handleDocumentFocus, true);
+
+      if (action === QDrawerAddOrRemoveFocusListenerAction.remove)
+        document.removeEventListener('focus', handleDocumentFocus, true);
     };
 
     onMounted(async () => {
       document.body.appendChild(instance?.vnode.el as Node);
       document.documentElement.style.overflow = 'hidden';
-      document.addEventListener('focus', handleDocumentFocus, true);
+      addOrRemoveFocusListener(QDrawerAddOrRemoveFocusListenerAction.add);
 
       await nextTick();
       isShown.value = true;
@@ -235,14 +239,14 @@ export default defineComponent({
 
     onBeforeUnmount(() => {
       document.documentElement.style.overflow = '';
-      document.removeEventListener('focus', handleDocumentFocus, true);
+      addOrRemoveFocusListener(QDrawerAddOrRemoveFocusListenerAction.remove);
       if (!props.preventFocusAfterClosing) elementToFocusAfterClosing?.focus();
     });
 
     provide<QDrawerContainerProvider>('qDrawerContainer', {
       emitDoneEvent,
       emitCloseEvent,
-      toggleFocusState
+      addOrRemoveFocusListener
     });
 
     return {

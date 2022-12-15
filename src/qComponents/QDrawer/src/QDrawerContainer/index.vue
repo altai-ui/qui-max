@@ -149,6 +149,7 @@ export default defineComponent({
     const drawer = ref<Nullable<HTMLElement>>(null);
     const isShown = ref<boolean>(false);
     const zIndex = getConfig('nextZIndex');
+    const shouldBeFocused = ref<boolean>(true);
 
     const drawerStyle = computed<Record<string, Nullable<string | number>>>(
       () => ({
@@ -176,7 +177,7 @@ export default defineComponent({
       if (
         drawerValue &&
         !drawerValue.contains(event.target as HTMLElement) &&
-        document.activeElement === drawerValue
+        shouldBeFocused.value
       ) {
         drawerValue.focus();
       }
@@ -217,6 +218,10 @@ export default defineComponent({
       });
     };
 
+    const toggleFocusState = (state): void => {
+      shouldBeFocused.value = state;
+    };
+
     onMounted(async () => {
       document.body.appendChild(instance?.vnode.el as Node);
       document.documentElement.style.overflow = 'hidden';
@@ -236,7 +241,8 @@ export default defineComponent({
 
     provide<QDrawerContainerProvider>('qDrawerContainer', {
       emitDoneEvent,
-      emitCloseEvent
+      emitCloseEvent,
+      toggleFocusState
     });
 
     return {

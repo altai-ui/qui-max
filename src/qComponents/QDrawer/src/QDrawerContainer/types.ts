@@ -27,6 +27,7 @@ export interface QDrawerContainerProps {
 export interface QDrawerContainerProvider {
   emitDoneEvent: (props: QDrawerEvent) => Promise<void>;
   emitCloseEvent: () => void;
+  toggleFocusState: (state: boolean) => void;
 }
 
 export interface QDrawerContainerInstance {

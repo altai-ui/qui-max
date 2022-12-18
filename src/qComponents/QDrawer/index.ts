@@ -25,10 +25,7 @@ export type {
   QDrawerContentProps,
   QDrawerContentInstance
 } from './src/QDrawerContent';
-export {
-  QDrawerAction,
-  QDrawerAddOrRemoveFocusListenerAction
-} from './src/constants';
+export { QDrawerAction } from './src/constants';
 export type {
   QDrawer,
   QDrawerOptionsPosition,

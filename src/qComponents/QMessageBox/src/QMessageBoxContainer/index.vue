@@ -65,7 +65,6 @@ import { isServer } from '@/qComponents/constants/isServer';
 import { QScrollbar } from '@/qComponents/QScrollbar';
 
 import type { QDrawerContainerProvider } from '@/qComponents';
-import { QDrawerAddOrRemoveFocusListenerAction } from '@/qComponents';
 
 import type { Nullable, Nillable } from '#/helpers';
 
@@ -241,9 +240,7 @@ export default defineComponent({
     };
 
     onMounted(async () => {
-      qDrawerContainer?.addOrRemoveFocusListener(
-        QDrawerAddOrRemoveFocusListenerAction.remove
-      );
+      qDrawerContainer?.disableFocusing();
 
       document.body.appendChild(instance?.vnode.el as Node);
       document.documentElement.style.overflow = 'hidden';
@@ -256,13 +253,11 @@ export default defineComponent({
     });
 
     onBeforeUnmount(() => {
-      qDrawerContainer?.addOrRemoveFocusListener(
-        QDrawerAddOrRemoveFocusListenerAction.add
-      );
-
-      document.documentElement.style.overflow = '';
       document.removeEventListener('focus', handleDocumentFocus, true);
+      document.documentElement.style.overflow = '';
       if (!props.preventFocusAfterClosing) elementToFocusAfterClosing?.focus();
+
+      qDrawerContainer?.enableFocusing();
     });
 
     provide<QMessageBoxContainerProvider>('qMessageBoxContainer', {

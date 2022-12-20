@@ -167,9 +167,10 @@ export default defineComponent({
     const instance = getCurrentInstance();
 
     let qDrawerContainer: Nillable<QDrawerContainerProvider> = null;
-    if (instance?.root.appContext.provides.qDrawerContainer) {
-      qDrawerContainer = inject<QDrawerContainerProvider>('qDrawerContainer');
-    }
+    qDrawerContainer = inject<Nillable<QDrawerContainerProvider>>(
+      'qDrawerContainer',
+      null
+    );
 
     const messageBox = ref<Nullable<HTMLElement>>(null);
     const isShown = ref<boolean>(false);

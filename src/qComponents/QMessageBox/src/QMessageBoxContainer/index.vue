@@ -240,7 +240,7 @@ export default defineComponent({
     };
 
     onMounted(async () => {
-      qDrawerContainer?.disableFocusing();
+      qDrawerContainer?.disableFocusTrap();
 
       document.body.appendChild(instance?.vnode.el as Node);
       document.documentElement.style.overflow = 'hidden';
@@ -253,11 +253,11 @@ export default defineComponent({
     });
 
     onBeforeUnmount(() => {
-      document.removeEventListener('focus', handleDocumentFocus, true);
       document.documentElement.style.overflow = '';
+      document.removeEventListener('focus', handleDocumentFocus, true);
       if (!props.preventFocusAfterClosing) elementToFocusAfterClosing?.focus();
 
-      qDrawerContainer?.enableFocusing();
+      qDrawerContainer?.enableFocusTrap();
     });
 
     provide<QMessageBoxContainerProvider>('qMessageBoxContainer', {

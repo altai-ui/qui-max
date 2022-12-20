@@ -149,7 +149,7 @@ export default defineComponent({
     const drawer = ref<Nullable<HTMLElement>>(null);
     const isShown = ref<boolean>(false);
     const zIndex = getConfig('nextZIndex');
-    const isFocusing = ref<boolean>(false);
+    let isFocusTrapEnabled: boolean = false;
 
     const drawerStyle = computed<Record<string, Nullable<string | number>>>(
       () => ({
@@ -214,24 +214,24 @@ export default defineComponent({
       });
     };
 
-    const enableFocusing = (): void => {
-      if (isFocusing.value) return;
+    const enableFocusTrap = (): void => {
+      if (isFocusTrapEnabled) return;
 
       document.addEventListener('focus', handleDocumentFocus, true);
-      isFocusing.value = true;
+      isFocusTrapEnabled = true;
     };
 
-    const disableFocusing = (): void => {
-      if (!isFocusing.value) return;
+    const disableFocusTrap = (): void => {
+      if (!isFocusTrapEnabled) return;
 
       document.removeEventListener('focus', handleDocumentFocus, true);
-      isFocusing.value = false;
+      isFocusTrapEnabled = false;
     };
 
     onMounted(async () => {
       document.body.appendChild(instance?.vnode.el as Node);
       document.documentElement.style.overflow = 'hidden';
-      enableFocusing();
+      enableFocusTrap();
 
       await nextTick();
       isShown.value = true;
@@ -241,15 +241,15 @@ export default defineComponent({
 
     onBeforeUnmount(() => {
       document.documentElement.style.overflow = '';
-      disableFocusing();
+      disableFocusTrap();
       if (!props.preventFocusAfterClosing) elementToFocusAfterClosing?.focus();
     });
 
     provide<QDrawerContainerProvider>('qDrawerContainer', {
       emitDoneEvent,
       emitCloseEvent,
-      enableFocusing,
-      disableFocusing
+      enableFocusTrap,
+      disableFocusTrap
     });
 
     return {

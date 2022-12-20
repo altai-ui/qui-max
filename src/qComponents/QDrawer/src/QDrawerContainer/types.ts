@@ -28,8 +28,8 @@ export interface QDrawerContainerProps {
 export interface QDrawerContainerProvider {
   emitDoneEvent: (props: QDrawerEvent) => Promise<void>;
   emitCloseEvent: () => void;
-  enableFocusing: () => void;
-  disableFocusing: () => void;
+  enableFocusTrap: () => void;
+  disableFocusTrap: () => void;
 }
 
 export interface QDrawerContainerInstance {

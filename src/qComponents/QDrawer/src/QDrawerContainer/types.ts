@@ -3,6 +3,7 @@ import type { Ref, ComputedRef } from 'vue';
 import type { Nullable } from '#/helpers';
 
 import type { QDrawerAction } from '../constants';
+
 import type { QDrawerComponent, QDrawerContent, QDrawerEvent } from '../types';
 
 export type QDrawerContainerPropContent = QDrawerContent;
@@ -27,6 +28,8 @@ export interface QDrawerContainerProps {
 export interface QDrawerContainerProvider {
   emitDoneEvent: (props: QDrawerEvent) => Promise<void>;
   emitCloseEvent: () => void;
+  enableFocusTrap: () => void;
+  disableFocusTrap: () => void;
 }
 
 export interface QDrawerContainerInstance {

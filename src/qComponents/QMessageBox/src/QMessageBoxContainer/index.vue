@@ -166,8 +166,7 @@ export default defineComponent({
   setup(props: QMessageBoxContainerProps, ctx): QMessageBoxContainerInstance {
     const instance = getCurrentInstance();
 
-    let qDrawerContainer: Nillable<QDrawerContainerProvider> = null;
-    qDrawerContainer = inject<Nillable<QDrawerContainerProvider>>(
+    const qDrawerContainer = inject<Nillable<QDrawerContainerProvider>>(
       'qDrawerContainer',
       null
     );

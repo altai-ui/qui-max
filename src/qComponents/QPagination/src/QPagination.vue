@@ -222,7 +222,7 @@ export default defineComponent({
     };
 
     const handlePrevQuickBtnClick = (): void => {
-      let newPage = props.currentPage - props.pagerCount - 2;
+      let newPage = props.currentPage - (props.pagerCount - 2);
       if (newPage > preparedPageCount.value) newPage = preparedPageCount.value;
       else if (newPage < 1) newPage = 1;
 
@@ -231,7 +231,7 @@ export default defineComponent({
     };
 
     const handleNextQuickBtnClick = (): void => {
-      let newPage = props.currentPage + props.pagerCount - 2;
+      let newPage = props.currentPage + (props.pagerCount - 2);
       if (newPage > preparedPageCount.value) newPage = preparedPageCount.value;
       else if (newPage < 1) newPage = 1;
 

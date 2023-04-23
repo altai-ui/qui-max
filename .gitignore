@@ -38,8 +38,6 @@ tests/unit/coverage/
 
 *.local
 
-# VuePress files
-/vuepress-docs/docs/.vuepress/.temp/
-/vuepress-docs/docs/.vuepress/.cache/
-/vuepress-docs/docs/.vuepress/dist/
-/vuepress-docs/node_modules
+# Vitepress files
+/vitepress-docs/docs/.vitepress/dist/
+/vitepress-docs/node_modules

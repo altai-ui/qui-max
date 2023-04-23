@@ -2,5 +2,4 @@
 /public
 /dist
 /stories/intro.stories.mdx
-/docs/.vuepress/.temp
-/docs/.vuepress/.cache
+/vitepress-docs/docs/.vitepress/dist/

@@ -1,5 +1,3 @@
 /dist/
 /node_modules/
-/vuepress-docs/docs/.vuepress/.temp/
-/vuepress-docs/docs/.vuepress/.cache/
-/vuepress-docs/docs/.vuepress/dist/
+/vitepress-docs/

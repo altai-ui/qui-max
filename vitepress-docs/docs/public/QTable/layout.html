@@ -1,0 +1,72 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- import CSS -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/@qvant/qui-max/dist/style.css"
+    />
+  </head>
+
+  <body>
+    <div id="app">
+      <div class="checkbox-container">
+        Fixed layout: <q-checkbox v-model="isFixedLayout"></q-checkbox>
+      </div>
+      <div class="block">
+        <q-table
+          v-if="isComponentRender"
+          v-model:groups-of-columns="groupsOfColumns"
+          default-col-width="150px"
+          :rows="rows"
+          :fixed-layout="isFixedLayout"
+        ></q-table>
+      </div>
+    </div>
+  </body>
+  <!-- import Vue before Qui -->
+  <script src="https://unpkg.com/vue@latest"></script>
+  <script src="./data.js"></script>
+  <!-- import JavaScript -->
+  <script src="https://unpkg.com/@qvant/qui-max@latest"></script>
+  <script>
+    const app = Vue.createApp({
+      setup() {
+        const isFixedLayout = Vue.ref(false);
+
+        const isComponentRender = Vue.ref(true);
+
+        const forceRerender = async () => {
+          isComponentRender.value = false;
+          await Vue.nextTick();
+          isComponentRender.value = true;
+        };
+
+        Vue.watch(isFixedLayout, value => {
+          if (!value) forceRerender();
+        });
+
+        return {
+          groupsOfColumns,
+          sortBy,
+          rows,
+          isFixedLayout,
+          isComponentRender
+        };
+      }
+    });
+
+    app.use(QuiMax.default);
+    app.mount('#app');
+  </script>
+  <style>
+    .checkbox-container {
+      padding: 10px 0 0 40px;
+    }
+
+    .block {
+      width: 100%;
+      padding: 10px;
+    }
+  </style>
+</html>

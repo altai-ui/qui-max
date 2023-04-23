@@ -1,0 +1,192 @@
+# QInputNumber 🔢
+
+Provides an input field accepting only numbers. Try a sandbox [story](https://qui-max.netlify.app/?path=/story/components-qinputnumber--default)
+
+## Example
+
+Default view:
+
+<iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/QInputNumber/main.html"></iframe>
+
+Using in template:
+
+```vue
+<template>
+  <q-input-number v-model="value" />
+</template>
+```
+
+Using in component instance:
+
+```js
+setup() {
+  const value = ref(123456);
+
+  return { value }
+}
+```
+
+## Props
+
+### modelValue
+
+- Type: `Number`
+- Default: `null`
+
+Binding value
+
+### precision
+
+- Type: `Number`
+- Default: `null`
+
+Number of digits after decimal separator
+
+```vue
+<template>
+  <q-input-number
+    v-model="value"
+    :precision="2"
+  />
+</template>
+```
+
+Result:
+
+<iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/QInputNumber/precision.html"></iframe>
+
+### disabled
+
+- Type: `Boolean`
+- Default: `null`
+
+Sets disabled input state
+
+```vue
+<template>
+  <q-input-number
+    v-model="value"
+    :disabled="true"
+  />
+</template>
+```
+
+Result:
+
+<iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/QInputNumber/disabled.html"></iframe>
+
+### min
+
+- Type: `Number`
+- Default: `null`
+
+Minimum allowed value. Must be less than maximum value.
+
+```vue
+<template>
+  <q-input-number
+    v-model="value"
+    :min="0"
+  />
+</template>
+```
+
+Result:
+
+<iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/QInputNumber/positive.html"></iframe>
+
+### max
+
+- Type: `Number`
+- Default: `null`
+
+Maximum allowed value. Must be higher than minimum value.
+
+### prefix
+
+- Type: `String`
+- Default: `null`
+
+If input not in focus, the prefix will be displayed before main value.
+
+```vue {3}
+<template>
+  <q-input-number
+    v-model="value"
+    prefix="Distance:"
+  />
+</template>
+```
+
+<iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/QInputNumber/prefix.html"></iframe>
+
+### suffix
+
+- Type: `String`
+- Default: `null`
+
+If input not in focus, the suffix will be displayed after main value.
+
+```vue {3}
+<template>
+  <q-input-number
+    v-model="value"
+    suffix="hours"
+  />
+</template>
+```
+
+<iframe height="80" style="width: 100%;" scrolling="no" frameborder="no" src="/QInputNumber/suffix.html"></iframe>
+
+### validateEvent
+
+- Type: `Boolean`
+- Default: `null`
+
+If input is wrapped in `QFormItem`, prop `validateEvent` defines if bound events will be validated immediately
+
+```vue
+<template>
+  <q-form
+    :model="model"
+    :rules="rules"
+  >
+    <q-form-item prop="value">
+      <q-input-number
+        v-model="model.value"
+        validate-event
+      />
+    </q-form-item>
+  </q-form>
+</template>
+```
+
+## Events
+
+### update:modelValue
+
+Triggers when model updates.
+
+### input
+
+Triggers when native input event fires
+
+### change
+
+Triggers when an alteration to input value is committed by the user
+
+### focus
+
+Triggers when input gets focus
+
+### blur
+
+Triggers when input loses focus
+
+## Slots
+
+### postfix
+
+Set your custom content as a postfix.
+
+<iframe style="width: 100%; height: 85px" scrolling="no" frameborder="no" src="/QInputNumber/postfix.html"></iframe>

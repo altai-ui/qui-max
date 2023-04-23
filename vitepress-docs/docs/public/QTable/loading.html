@@ -1,0 +1,74 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- import CSS -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/@qvant/qui-max/dist/style.css"
+    />
+  </head>
+
+  <body>
+    <div id="app">
+      <div class="button-container">
+        <q-button
+          theme="secondary"
+          :disabled="isLoading"
+          @click="handleButtonClick"
+          >is loading</q-button
+        >
+      </div>
+      <div class="block">
+        <q-table
+          v-model:groups-of-columns="groupsOfColumns"
+          :is-loading="isLoading"
+          :loading-row-count="loadingRowCount"
+          :rows="rows"
+          grid
+        ></q-table>
+      </div>
+    </div>
+  </body>
+  <!-- import Vue before Qui -->
+  <script src="https://unpkg.com/vue@latest"></script>
+  <script src="./data.js"></script>
+  <!-- import JavaScript -->
+  <script src="https://unpkg.com/@qvant/qui-max@latest"></script>
+  <script>
+    const app = Vue.createApp({
+      setup() {
+        const isLoading = Vue.ref(false);
+
+        const handleButtonClick = () => {
+          isLoading.value = true;
+          setTimeout(() => {
+            isLoading.value = false;
+          }, 2000);
+        };
+
+        return {
+          groupsOfColumns,
+          sortBy,
+          rows,
+          total,
+          loadingRowCount,
+          isLoading,
+          handleButtonClick
+        };
+      }
+    });
+
+    app.use(QuiMax.default);
+    app.mount('#app');
+  </script>
+  <style>
+    .button-container {
+      padding: 10px 0 0 40px;
+    }
+
+    .block {
+      width: 100%;
+      padding: 10px;
+    }
+  </style>
+</html>

@@ -1,6 +1,4 @@
 /src/normalize.scss
 /dist
-/vuepress-docs/.vuepress/.temp/
-/vuepress-docs/.vuepress/.cache/
-/vuepress-docs/.vuepress/dist/
+/vitepress-docs/docs/.vitepress/dist/
 /tests

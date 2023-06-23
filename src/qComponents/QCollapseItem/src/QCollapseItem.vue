@@ -76,16 +76,16 @@ export default defineComponent({
     const qCollapse = inject<QCollapseProvider>('qCollapse');
 
     const preparedName = computed<string | number>(
-        () =>
-            props.name ?? qCollapse?.uniqueId('default-collapse-name-') ?? randId()
+      () =>
+        props.name ?? qCollapse?.uniqueId('default-collapse-name-') ?? randId()
     );
     const isActive = computed<boolean>(
-        () =>
-            qCollapse?.activeNames?.value.includes(preparedName.value ?? '') ??
-            false
+      () =>
+        qCollapse?.activeNames?.value.includes(preparedName.value ?? '') ??
+        false
     );
     const icon = computed<'q-icon-minus' | 'q-icon-plus'>(() =>
-        isActive.value ? 'q-icon-minus' : 'q-icon-plus'
+      isActive.value ? 'q-icon-minus' : 'q-icon-plus'
     );
 
     const handleHeaderClick = (): void => {

@@ -1,28 +1,42 @@
 <template>
   <div
-    class="q-collapse-item"
-    :class="{
+      class="q-collapse-item"
+      :class="{
       'q-collapse-item_active': isActive
     }"
   >
     <button
-      type="button"
-      class="q-collapse-item__header"
-      @click="handleHeaderClick"
+        type="button"
+        class="q-collapse-item__header"
+        @click="handleHeaderClick"
     >
       <slot name="title">
         <div class="q-collapse-item__title">{{ title }}</div>
       </slot>
       <div
-        class="q-collapse-item__icon"
-        :class="icon"
+          v-if="$slots['icon-active'] && $slots['icon-not-active']"
+          class="q-icon-collapse-item__icon"
+      >
+        <slot
+            v-if="isActive"
+            name="icon-active"
+        />
+        <slot
+            v-else
+            name="icon-not-active"
+        />
+      </div>
+      <div
+          v-else
+          class="q-collapse-item__icon"
+          :class="icon"
       />
     </button>
 
     <q-collapse-transition>
       <div
-        v-show="isActive"
-        class="q-collapse-item__body"
+          v-show="isActive"
+          class="q-collapse-item__body"
       >
         <div class="q-collapse-item__content">
           <slot />
@@ -62,16 +76,16 @@ export default defineComponent({
     const qCollapse = inject<QCollapseProvider>('qCollapse');
 
     const preparedName = computed<string | number>(
-      () =>
-        props.name ?? qCollapse?.uniqueId('default-collapse-name-') ?? randId()
+        () =>
+            props.name ?? qCollapse?.uniqueId('default-collapse-name-') ?? randId()
     );
     const isActive = computed<boolean>(
-      () =>
-        qCollapse?.activeNames?.value.includes(preparedName.value ?? '') ??
-        false
+        () =>
+            qCollapse?.activeNames?.value.includes(preparedName.value ?? '') ??
+            false
     );
     const icon = computed<'q-icon-minus' | 'q-icon-plus'>(() =>
-      isActive.value ? 'q-icon-minus' : 'q-icon-plus'
+        isActive.value ? 'q-icon-minus' : 'q-icon-plus'
     );
 
     const handleHeaderClick = (): void => {

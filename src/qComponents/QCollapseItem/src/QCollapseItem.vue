@@ -14,7 +14,7 @@
         <div class="q-collapse-item__title">{{ title }}</div>
       </slot>
       <component
-        :is="customIcon ?? 'div'"
+        :is="customIcon"
         :class="collapseIconClass"
       />
     </button>
@@ -39,7 +39,7 @@ import { defineComponent, inject, computed, type Component } from 'vue';
 import { randId } from '@/qComponents/helpers';
 import type { QCollapseProvider } from '@/qComponents/QCollapse';
 
-import type { Nullable, ClassValue } from '#/helpers';
+import type { ClassValue } from '#/helpers';
 
 import QCollapseTransition from './QCollapseTransition.vue';
 import type { QCollapseItemProps, QCollapseItemInstance } from './types';
@@ -75,10 +75,10 @@ export default defineComponent({
         false
     );
 
-    const customIcon = computed<Nullable<Component>>(() => {
-      if (!qCollapse) return null;
+    const customIcon = computed<Component | string>(() => {
+      if (!qCollapse) return 'div';
 
-      if (!qCollapse.openIcon || !qCollapse.closeIcon) return null;
+      if (!qCollapse.openIcon || !qCollapse.closeIcon) return 'div';
 
       return isActive.value ? qCollapse.closeIcon : qCollapse.openIcon
     });

@@ -9,7 +9,7 @@ export interface QCollapseItemProps {
 
 export interface QCollapseItemInstance {
   isActive: ComputedRef<boolean>;
-  customIcon: ComputedRef<Nullable<Component>>;
+  customIcon: ComputedRef<Component | string>;
   collapseIconClass: ComputedRef<ClassValue>;
   handleHeaderClick: () => void;
 }

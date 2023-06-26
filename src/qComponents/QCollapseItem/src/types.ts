@@ -1,6 +1,6 @@
-import type { ComputedRef } from 'vue';
+import type { Component, ComputedRef } from 'vue';
 
-import type { Nullable } from '#/helpers';
+import type { Nullable, ClassValue } from '#/helpers';
 
 export interface QCollapseItemProps {
   title: Nullable<string>;
@@ -9,7 +9,8 @@ export interface QCollapseItemProps {
 
 export interface QCollapseItemInstance {
   isActive: ComputedRef<boolean>;
-  icon: ComputedRef<'q-icon-minus' | 'q-icon-plus'>;
+  customIcon: ComputedRef<Nullable<Component>>;
+  collapseIconClass: ComputedRef<ClassValue>;
   handleHeaderClick: () => void;
 }
 

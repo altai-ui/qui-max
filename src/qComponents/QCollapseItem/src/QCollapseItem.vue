@@ -13,23 +13,9 @@
       <slot name="title">
         <div class="q-collapse-item__title">{{ title }}</div>
       </slot>
-      <div
-        v-if="$slots['icon-active'] && $slots['icon-not-active']"
-        class="q-icon-collapse-item__icon"
-      >
-        <slot
-          v-if="isActive"
-          name="icon-active"
-        />
-        <slot
-          v-else
-          name="icon-not-active"
-        />
-      </div>
-      <div
-        v-else
-        class="q-collapse-item__icon"
-        :class="icon"
+      <component
+        :is="customIcon ?? 'div'"
+        :class="collapseIconClass"
       />
     </button>
 
@@ -47,10 +33,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, computed } from 'vue';
+import { defineComponent, inject, computed, type Component } from 'vue';
+
 
 import { randId } from '@/qComponents/helpers';
 import type { QCollapseProvider } from '@/qComponents/QCollapse';
+
+import type { Nullable, ClassValue } from '#/helpers';
 
 import QCollapseTransition from './QCollapseTransition.vue';
 import type { QCollapseItemProps, QCollapseItemInstance } from './types';
@@ -79,14 +68,29 @@ export default defineComponent({
       () =>
         props.name ?? qCollapse?.uniqueId('default-collapse-name-') ?? randId()
     );
+
     const isActive = computed<boolean>(
       () =>
         qCollapse?.activeNames?.value.includes(preparedName.value ?? '') ??
         false
     );
+
+    const customIcon = computed<Nullable<Component>>(() => {
+      if (!qCollapse) return null;
+
+      if (!qCollapse.openIcon || !qCollapse.closeIcon) return null;
+
+      return isActive.value ? qCollapse.closeIcon : qCollapse.openIcon
+    });
+
     const icon = computed<'q-icon-minus' | 'q-icon-plus'>(() =>
       isActive.value ? 'q-icon-minus' : 'q-icon-plus'
     );
+
+    const collapseIconClass = computed<ClassValue>(() => ({
+      'q-icon-collapse-item__icon': true,
+      [icon.value]: !customIcon.value
+    }));
 
     const handleHeaderClick = (): void => {
       if (preparedName.value) qCollapse?.updateValue(preparedName.value);
@@ -94,7 +98,8 @@ export default defineComponent({
 
     return {
       isActive,
-      icon,
+      customIcon,
+      collapseIconClass,
       handleHeaderClick
     };
   }

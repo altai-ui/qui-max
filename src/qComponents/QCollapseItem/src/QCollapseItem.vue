@@ -75,9 +75,7 @@ export default defineComponent({
     );
 
     const customIcon = computed<Component | string>(() => {
-      if (!qCollapse) return 'div';
-
-      if (!qCollapse.openIcon || !qCollapse.closeIcon) return 'div';
+      if (!qCollapse?.openIcon || !qCollapse?.closeIcon) return 'div';
 
       return isActive.value ? qCollapse.closeIcon : qCollapse.openIcon;
     });

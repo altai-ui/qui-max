@@ -35,7 +35,6 @@
 <script lang="ts">
 import { defineComponent, inject, computed, type Component } from 'vue';
 
-
 import { randId } from '@/qComponents/helpers';
 import type { QCollapseProvider } from '@/qComponents/QCollapse';
 
@@ -80,7 +79,7 @@ export default defineComponent({
 
       if (!qCollapse.openIcon || !qCollapse.closeIcon) return 'div';
 
-      return isActive.value ? qCollapse.closeIcon : qCollapse.openIcon
+      return isActive.value ? qCollapse.closeIcon : qCollapse.openIcon;
     });
 
     const icon = computed<'q-icon-minus' | 'q-icon-plus'>(() =>
@@ -89,7 +88,7 @@ export default defineComponent({
 
     const collapseIconClass = computed<ClassValue>(() => ({
       'q-icon-collapse-item__icon': true,
-      [icon.value]: !customIcon.value
+      [icon.value]: customIcon.value === 'div'
     }));
 
     const handleHeaderClick = (): void => {

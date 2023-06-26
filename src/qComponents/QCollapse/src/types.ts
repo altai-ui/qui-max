@@ -9,8 +9,8 @@ export type QCollapsePropModelValue = Nullable<
 export interface QCollapseProps {
   modelValue: QCollapsePropModelValue;
   accordion: Nullable<boolean>;
-  openIcon?: Nullable<Component>;
-  closeIcon?: Nullable<Component>;
+  openIcon: Nullable<Component>;
+  closeIcon: Nullable<Component>;
 }
 
 export interface QCollapseProvider {

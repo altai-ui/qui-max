@@ -1,4 +1,4 @@
-import type {Component, Ref} from 'vue';
+import type { Component, Ref } from 'vue';
 
 import type { Nullable } from '#/helpers';
 

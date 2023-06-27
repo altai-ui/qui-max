@@ -10,7 +10,9 @@ const storyMetadata: Meta = {
   component: QCollapse,
   subcomponents: { QCollapseItem },
   argTypes: {
-    modelValue: { control: { type: 'none' } }
+    modelValue: { control: { type: 'none' } },
+    openIcon: { control: { type: 'none' } },
+    closeIcon: { control: { type: 'none' } }
   }
 };
 

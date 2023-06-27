@@ -80,13 +80,16 @@ export default defineComponent({
       return isActive.value ? qCollapse.closeIcon : qCollapse.openIcon;
     });
 
+    const isCustomIcon = computed<boolean>(() => customIcon.value !== 'div');
+
     const icon = computed<'q-icon-minus' | 'q-icon-plus'>(() =>
       isActive.value ? 'q-icon-minus' : 'q-icon-plus'
     );
 
     const collapseIconClass = computed<ClassValue>(() => ({
-      'q-icon-collapse-item__icon': true,
-      [icon.value]: customIcon.value === 'div'
+      'q-collapse-item__icon': !isCustomIcon.value,
+      'q-collapse-item__icon-custom': isCustomIcon.value,
+      [icon.value]: !isCustomIcon.value
     }));
 
     const handleHeaderClick = (): void => {

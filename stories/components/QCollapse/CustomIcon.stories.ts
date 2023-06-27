@@ -1,10 +1,8 @@
 import type { Meta, Story } from '@storybook/vue3';
-import { defineComponent, ref } from 'vue';
+import { defineAsyncComponent, defineComponent, ref } from 'vue';
 
 import { QCollapse, type QCollapseProps } from '@/qComponents/QCollapse';
 import { QCollapseItem } from '@/qComponents/QCollapseItem';
-
-import { IconChevronDown, IconChevronUp } from './icons';
 
 type QCollapseStoryWithExtraControl = QCollapseProps & { customIcon: boolean };
 
@@ -25,11 +23,15 @@ const storyMetadata: Meta = {
 
 const QCollapseStory: Story<QCollapseStoryWithExtraControl> = args =>
   defineComponent({
-    components: { IconChevronUp, IconChevronDown, QCollapse, QCollapseItem },
+    components: { QCollapse, QCollapseItem },
     setup() {
       const activeNames = ref<string[]>(['1']);
-      const iconUp = IconChevronUp;
-      const iconDown = IconChevronDown;
+      const iconUp = defineAsyncComponent(
+        () => import('./icons/ChevronUp.vue')
+      );
+      const iconDown = defineAsyncComponent(
+        () => import('./icons/ChevronDown.vue')
+      );
 
       return { args, activeNames, iconUp, iconDown };
     },

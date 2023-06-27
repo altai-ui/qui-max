@@ -53,6 +53,12 @@
     color: var(--color-primary-blue);
   }
 
+  &__icon-custom {
+    flex: 0 24px;
+    margin: 20px 16px 20px 24px;
+    color: var(--color-primary-blue);
+  }
+
   &__body {
     margin-top: 1px;
     background-color: var(--color-tertiary-gray-light);

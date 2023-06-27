@@ -35,7 +35,7 @@ export default defineComponent({
      *  control your own close icon
      */
     closeIcon: {
-      type: Object as PropType<QCollapseProps['closeIcon']>,
+      type: [Object, String] as PropType<QCollapseProps['closeIcon']>,
       default: null
     },
     /**

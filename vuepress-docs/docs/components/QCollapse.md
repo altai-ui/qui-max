@@ -100,6 +100,64 @@ Using in template:
 
 <iframe height="450" style="width: 100%;" scrolling="no" frameborder="no" src="/QCollapse/accordion.html"></iframe>
 
+### closeIcon
+
+- Type: `String | Component`
+- Default: `null`
+
+Allows you to control what icon will be displayed near opened `QCollapseItem`.
+
+---
+
+**IMPORTANT**
+
+For proper use you need to provide both `openIcon` and `closeIcon`
+
+---
+
+Using in template:
+
+```vue
+<q-collapse close-icon="your-icon-component-name">
+  ...
+</q-collapse>
+<!-- or -->
+<q-collapse :close-icon="YourIconComponent">
+...
+</q-collapse>
+```
+
+<iframe height="450" style="width: 100%;" scrolling="no" frameborder="no" src="/QCollapse/closeIcon.html"></iframe>
+
+### openIcon
+
+- Type: `String | Component`
+- Default: `null`
+
+Allows you to control what icon will be displayed near closed `QCollapseItem`.
+
+---
+
+**IMPORTANT**
+
+For proper use you need to provide both `openIcon` and `closeIcon`
+
+---
+
+Using in template:
+
+```vue
+<q-collapse open-icon="your-icon-component-name">
+  ...
+</q-collapse>
+<!-- or -->
+<q-collapse :open-icon="YourIconComponent">
+...
+</q-collapse>
+```
+
+<iframe height="450" style="width: 100%;" scrolling="no" frameborder="no" src="/QCollapse/openIcon.html"></iframe>
+
 ## Events
 
 ### update:modelValue

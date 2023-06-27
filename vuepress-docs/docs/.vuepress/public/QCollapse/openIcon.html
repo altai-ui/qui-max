@@ -1,0 +1,60 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- import CSS -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/@qvant/qui-max/dist/style.css"
+    />
+  </head>
+
+  <body>
+    <div id="app">
+      <div class="block">
+        <q-collapse v-model="activeNames">
+          <q-collapse-item
+            title="Consistency"
+            name="1"
+            :open-icon="IconChevronUp"
+            :close-icon="IconChevronDown"
+          >
+            <div>
+              Consistent with real life: in line with the process and logic of
+              real life, and comply with languages and habits that the users are
+              used to;
+            </div>
+            <div>
+              Consistent within interface: all elements should be consistent,
+              such as: design style, icons and texts, position of elements, etc.
+            </div>
+          </q-collapse-item>
+        </q-collapse>
+      </div>
+    </div>
+  </body>
+  <!-- import Vue before Qui -->
+  <script src="https://unpkg.com/vue@latest"></script>
+  <!-- import JavaScript -->
+  <script src="https://unpkg.com/@qvant/qui-max@latest"></script>
+  <script>
+    import { IconChevronDown, IconChevronUp } from './icons';
+
+    const App = {
+      setup() {
+        const activeNames = [];
+        return { activeNames };
+      }
+    };
+    const app = Vue.createApp(App);
+    app.use(QuiMax.default);
+    app.component('IconChevronDown', IconChevronDown);
+    app.component('IconChevronUp', IconChevronUp);
+    app.mount('#app');
+  </script>
+  <style>
+    .block {
+      display: block;
+      margin: 20px;
+    }
+  </style>
+</html>

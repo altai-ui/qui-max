@@ -17,8 +17,8 @@ export interface QCollapseProvider {
   uniqueId: (prefix?: string) => string;
   activeNames: Ref<(string | number)[]>;
   updateValue: (name: string | number) => void;
-  openIcon: Nullable<Component>;
-  closeIcon: Nullable<Component>;
+  openIcon: Nullable<Component | string>;
+  closeIcon: Nullable<Component | string>;
 }
 
 export type QCollapseInstance = void;

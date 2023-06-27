@@ -42,7 +42,7 @@ export default defineComponent({
      * control your own open icon
      */
     openIcon: {
-      type: Object as PropType<QCollapseProps['openIcon']>,
+      type: [Object, String] as PropType<QCollapseProps['openIcon']>,
       default: null
     }
   },

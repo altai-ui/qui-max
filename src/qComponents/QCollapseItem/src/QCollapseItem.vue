@@ -13,9 +13,9 @@
       <slot name="title">
         <div class="q-collapse-item__title">{{ title }}</div>
       </slot>
-      <div
-        class="q-collapse-item__icon"
-        :class="icon"
+      <component
+        :is="customIcon"
+        :class="collapseIconClass"
       />
     </button>
 
@@ -33,10 +33,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, computed } from 'vue';
+import { defineComponent, inject, computed, type Component } from 'vue';
 
 import { randId } from '@/qComponents/helpers';
 import type { QCollapseProvider } from '@/qComponents/QCollapse';
+
+import type { ClassValue } from '#/helpers';
 
 import QCollapseTransition from './QCollapseTransition.vue';
 import type { QCollapseItemProps, QCollapseItemInstance } from './types';
@@ -65,14 +67,30 @@ export default defineComponent({
       () =>
         props.name ?? qCollapse?.uniqueId('default-collapse-name-') ?? randId()
     );
+
     const isActive = computed<boolean>(
       () =>
         qCollapse?.activeNames?.value.includes(preparedName.value ?? '') ??
         false
     );
+
+    const customIcon = computed<Component | string>(() => {
+      if (!qCollapse?.openIcon || !qCollapse?.closeIcon) return 'div';
+
+      return isActive.value ? qCollapse.closeIcon : qCollapse.openIcon;
+    });
+
+    const isCustomIcon = computed<boolean>(() => customIcon.value !== 'div');
+
     const icon = computed<'q-icon-minus' | 'q-icon-plus'>(() =>
       isActive.value ? 'q-icon-minus' : 'q-icon-plus'
     );
+
+    const collapseIconClass = computed<ClassValue>(() => ({
+      'q-collapse-item__icon': !isCustomIcon.value,
+      'q-collapse-item__icon-custom': isCustomIcon.value,
+      [icon.value]: !isCustomIcon.value
+    }));
 
     const handleHeaderClick = (): void => {
       if (preparedName.value) qCollapse?.updateValue(preparedName.value);
@@ -80,7 +98,8 @@ export default defineComponent({
 
     return {
       isActive,
-      icon,
+      customIcon,
+      collapseIconClass,
       handleHeaderClick
     };
   }

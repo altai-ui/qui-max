@@ -30,6 +30,20 @@ export default defineComponent({
     accordion: {
       type: Boolean,
       default: false
+    },
+    /**
+     *  control your own close icon
+     */
+    closeIcon: {
+      type: [Object, String] as PropType<QCollapseProps['closeIcon']>,
+      default: null
+    },
+    /**
+     * control your own open icon
+     */
+    openIcon: {
+      type: [Object, String] as PropType<QCollapseProps['openIcon']>,
+      default: null
     }
   },
 
@@ -76,7 +90,9 @@ export default defineComponent({
     provide<QCollapseProvider>('qCollapse', {
       uniqueId,
       activeNames,
-      updateValue
+      updateValue,
+      openIcon: props.openIcon,
+      closeIcon: props.closeIcon
     });
   }
 });

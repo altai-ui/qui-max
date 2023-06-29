@@ -1,0 +1,84 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- import CSS -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/@qvant/qui-max/dist/style.css"
+    />
+  </head>
+
+  <body>
+    <div id="app">
+      <div class="block">
+        <div class="icon-list">
+          <vue-feather
+            type="chevron-down"
+            ref="openIcon"
+          ></vue-feather>
+          <vue-feather
+            type="chevron-up"
+            ref="closeIcon"
+          ></vue-feather>
+        </div>
+        <q-collapse
+          v-model="activeNames"
+          :open-icon="openIcon"
+          :close-icon="closeIcon"
+        >
+          <q-collapse-item
+            title="Consistency"
+            name="1"
+          >
+            <div>
+              Consistent with real life: in line with the process and logic of
+              real life, and comply with languages and habits that the users are
+              used to;
+            </div>
+            <div>
+              Consistent within interface: all elements should be consistent,
+              such as: design style, icons and texts, position of elements, etc.
+            </div>
+          </q-collapse-item>
+        </q-collapse>
+      </div>
+    </div>
+  </body>
+  <!-- import Vue before Qui -->
+  <script src="https://unpkg.com/vue@latest"></script>
+  <!-- import JavaScript -->
+  <script src="https://unpkg.com/@qvant/qui-max@latest"></script>
+  <script src="https://unpkg.com/feather-icons@4"></script>
+  <script src="https://unpkg.com/vue-feather@2"></script>
+  <script>
+    const { createApp, ref } = Vue;
+
+    createApp({
+      setup() {
+        const activeNames = [];
+
+        const closeIcon = ref(null);
+        const openIcon = ref(null);
+
+        return {
+          activeNames,
+          closeIcon,
+          openIcon
+        };
+      }
+    })
+      .use(QuiMax.default)
+      .component(VueFeather.name, VueFeather)
+      .mount('#app');
+  </script>
+  <style>
+    .block {
+      display: block;
+      margin: 20px;
+    }
+
+    .icon-list {
+      display: none;
+    }
+  </style>
+</html>

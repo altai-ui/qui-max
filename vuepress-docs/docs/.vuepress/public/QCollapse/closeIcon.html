@@ -11,12 +11,24 @@
   <body>
     <div id="app">
       <div class="block">
-        <q-collapse v-model="activeNames">
+        <div class="icon-list">
+          <vue-feather
+            type="chevron-down"
+            ref="openIcon"
+          ></vue-feather>
+          <vue-feather
+            type="chevron-up"
+            ref="closeIcon"
+          ></vue-feather>
+        </div>
+        <q-collapse
+          v-model="activeNames"
+          :open-icon="openIcon"
+          :close-icon="closeIcon"
+        >
           <q-collapse-item
             title="Consistency"
             name="1"
-            :open-icon="IconChevronUp"
-            :close-icon="IconChevronDown"
           >
             <div>
               Consistent with real life: in line with the process and logic of
@@ -36,26 +48,37 @@
   <script src="https://unpkg.com/vue@latest"></script>
   <!-- import JavaScript -->
   <script src="https://unpkg.com/@qvant/qui-max@latest"></script>
-  <script type="module">
-    import IconChevronDown from './icons/ChevronDown.vue';
-    import IconChevronUp from './icons/ChevronUp.vue';
+  <script src="https://unpkg.com/feather-icons@4"></script>
+  <script src="https://unpkg.com/vue-feather@2"></script>
+  <script>
+    const { createApp, ref } = Vue;
 
-    const App = {
+    createApp({
       setup() {
         const activeNames = ['1'];
-        return { activeNames };
+
+        const closeIcon = ref(null);
+        const openIcon = ref(null);
+
+        return {
+          activeNames,
+          closeIcon,
+          openIcon
+        };
       }
-    };
-    const app = Vue.createApp(App);
-    app.use(QuiMax.default);
-    app.component('IconChevronDown', IconChevronDown);
-    app.component('IconChevronUp', IconChevronUp);
-    app.mount('#app');
+    })
+      .use(QuiMax.default)
+      .component(VueFeather.name, VueFeather)
+      .mount('#app');
   </script>
   <style>
     .block {
       display: block;
       margin: 20px;
+    }
+
+    .icon-list {
+      display: none;
     }
   </style>
 </html>

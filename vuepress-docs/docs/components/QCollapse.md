@@ -98,7 +98,7 @@ Using in template:
 </q-collapse>
 ```
 
-<iframe height="450" style="width: 100%;" scrolling="no" frameborder="no" src="/QCollapse/accordion.html"></iframe>
+<iframe height="100" style="width: 100%;" scrolling="no" frameborder="no" src="/QCollapse/accordion.html"></iframe>
 
 ### closeIcon
 
@@ -127,7 +127,7 @@ Using in template:
 </q-collapse>
 ```
 
-<iframe height="450" style="width: 100%;" scrolling="no" frameborder="no" src="/QCollapse/closeIcon.html"></iframe>
+<iframe height="100" style="width: 100%;" scrolling="no" frameborder="no" src="/QCollapse/closeIcon.html"></iframe>
 
 ### openIcon
 

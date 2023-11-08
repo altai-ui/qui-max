@@ -160,7 +160,7 @@ Create a file in your plugins folder:
 
 ```ts
 // plugins/qui.ts
-import { defineNuxtPlugin } from '#app';
+import { defineNuxtPlugin } from '#imports';
 import Qui from '@qvant/qui-max';
 
 export default defineNuxtPlugin(nuxtApp => {

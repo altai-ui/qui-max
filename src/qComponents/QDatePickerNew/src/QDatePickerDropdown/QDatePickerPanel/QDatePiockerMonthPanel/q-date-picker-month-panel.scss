@@ -1,0 +1,49 @@
+.q-date-picker-month-panel {
+  &__table {
+    width: 100%;
+    border-spacing: 2px;
+  }
+
+  &__calendar {
+    color: #343a40;
+    text-align: center;
+  }
+
+  &__cell {
+    padding: 0;
+  }
+
+  &__month {
+    width: 100%;
+    padding: 5px 0;
+    margin: 10px 0;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 17px;
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    border-radius: 4px;
+
+    &:focus-visible,
+    .focus-visible & {
+      color: #1c7ed6;
+      background-color: transparent;
+      outline: 1px solid #1c7ed6;
+    }
+
+    &_selected {
+      color: #f8f9fa;
+      background-color: #1c7ed6;
+    }
+
+    &_current {
+      text-decoration: underline;
+    }
+
+    &:hover:not(&_selected) {
+      color: #1c7ed6;
+      background-color: #d0ebff;
+    }
+  }
+}

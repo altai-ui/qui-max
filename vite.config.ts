@@ -13,6 +13,7 @@ import dts from 'vite-plugin-dts';
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: '/qui-max/',
   resolve: {
     alias: [
       // @/xxxx => src/xxxx

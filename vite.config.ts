@@ -64,6 +64,21 @@ export default defineConfig({
       plugins: [
         sassPlugin({
           runtime: sass,
+          options: {
+            importer: [
+              (url, _, done): void => {
+                const aliasRegexp = /^@\//;
+                if (aliasRegexp.test(url)) {
+                  const resolvedPath = `${resolve(
+                    __dirname,
+                    'src'
+                  )}/${url.replace(aliasRegexp, '')}`;
+
+                  done({ file: resolvedPath });
+                }
+              }
+            ]
+          },
           output(_: string, styleNodes: IdAndContentObject[]) {
             styleNodes.forEach(styleNode => {
               const splittedPath = styleNode.id?.split('/') ?? [];

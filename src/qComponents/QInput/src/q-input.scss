@@ -1,29 +1,6 @@
-.q-input {
-  --field-color-base: var(--color-primary-black);
-  --field-color-placeholder: rgb(var(--color-rgb-gray) / 32%);
-  --field-color-disabled: rgb(var(--color-rgb-gray) / 64%);
-  --field-icon-color-base: var(--color-primary-blue);
-  --field-icon-color-hover: var(--color-primary-black);
-  --field-icon-color-inactive: rgb(var(--color-rgb-gray) / 64%);
-  --field-background-color-base: var(--color-tertiary-gray-light);
-  --field-background-color-hover: var(--color-tertiary-gray);
-  --field-background-color-focus: var(--color-tertiary-gray-ultra-light);
-  --field-background-color-disabled: var(--color-tertiary-gray);
-  --field-box-shadow-base: -1px -1px 3px rgb(var(--color-rgb-white) / 25%),
-    1px 1px 3px rgb(var(--color-rgb-blue) / 40%),
-    4px 4px 8px rgb(var(--color-rgb-blue) / 40%),
-    -4px -4px 12px var(--color-tertiary-white);
-  --field-box-shadow-hover: -1px -1px 4px rgb(var(--color-rgb-white) / 25%),
-    1px 1px 4px rgb(var(--color-rgb-blue) / 40%),
-    4px 4px 8px rgb(var(--color-rgb-blue) / 40%),
-    -4px -4px 8px rgb(var(--color-rgb-white) / 80%);
-  --field-box-shadow-focus: -1px -1px 3px rgb(var(--color-rgb-white) / 25%),
-    1px 1px 3px rgb(var(--color-rgb-blue) / 40%),
-    inset -1px -1px 1px rgb(var(--color-rgb-white) / 70%),
-    inset 1px 1px 2px rgb(var(--color-rgb-blue) / 20%);
-  --field-box-shadow-disabled: -1px -1px 3px rgb(var(--color-rgb-white) / 25%),
-    1px 1px 3px rgb(var(--color-rgb-blue) / 40%);
+@import '@/token-variables';
 
+.q-input {
   position: relative;
   display: inline-block;
   width: 100%;
@@ -37,11 +14,12 @@
     font-size: var(--font-size-base);
     font-weight: var(--font-weight-base);
     line-height: var(--line-height-base);
-    color: var(--field-color-base);
-    background-color: var(--field-background-color-base);
+    color: var(--input-filled-text-color);
+    background-color: var(--input-default-background-color);
     border: none;
     border-radius: var(--border-radius-base);
-    box-shadow: var(--field-box-shadow-base);
+    outline: 1px solid var(--input-default-border-color);
+    box-shadow: var(--input-default-background-shadow);
     appearance: textfield;
 
     &::-webkit-outer-spin-button,
@@ -52,7 +30,7 @@
 
     &::placeholder,
     &:placeholder-shown {
-      color: var(--field-color-placeholder);
+      color: var(--input-disabled-text-color);
       text-overflow: ellipsis;
       opacity: 1;
     }
@@ -71,21 +49,26 @@
 
     .q-input_focused &,
     &.focus-visible {
-      background-color: var(--field-background-color-focus);
-      box-shadow: var(--field-box-shadow-focus);
+      color: var(--input-focus-filled-text-color);
+      background-color: var(--input-filled-background-color);
+      outline: 1px solid var(--input-focus-filled-border-color);
+      box-shadow: var(--input-focus-background-shadow);
     }
 
     &:hover {
-      background-color: var(--field-background-color-hover);
-      box-shadow: var(--field-box-shadow-hover);
+      color: var(--input-hover-filled-text-color);
+      background-color: var(--input-hover-background-color);
+      outline: 1px solid var(--input-hover-border-color);
+      box-shadow: var(--input-hover-background-shadow);
     }
 
     .q-input_disabled & {
       padding-right: 40px;
-      color: var(--field-color-disabled);
+      color: var(--input-disabled-text-color);
       cursor: not-allowed;
-      background-color: var(--field-background-color-disabled);
-      box-shadow: var(--field-box-shadow-disabled);
+      background-color: var(--input-disabled-background-color);
+      outline: 1px solid var(--input-disabled-border-color);
+      box-shadow: var(--input-disabled-background-shadow);
     }
 
     .q-input_suffix & {
@@ -96,7 +79,10 @@
       &,
       &.focus-visible {
         padding-left: 15px;
-        border: var(--border-error);
+        color: var(--input-error-text-color);
+        background-color: var(--input-error-background-color);
+        border: 1px solid var(--input-error-border-color);
+        box-shadow: var(--input-error-background-shadow);
       }
     }
   }
@@ -116,23 +102,43 @@
     width: 40px;
     font-size: 24px;
     line-height: 40px;
-    color: var(--field-icon-color-inactive);
+    color: var(--input-default-icon-color);
     text-align: center;
 
     &:not(:last-child) {
       display: none;
     }
 
+    .q-input_disabled & {
+      color: var(--input-disabled-icon-color);
+    }
+
+    .q-form-item_is-error & {
+      color: var(--input-error-icon-color);
+    }
+
+    .q-input_focused .q-input__inner &,
+    .q-input__inner.focus-visible & {
+      color: var(--input-focus-icon-color);
+    }
+
+    .q-input__inner:hover & {
+      color: var(--input-hover-icon-color);
+    }
+
     &.q-icon-close,
     &.q-icon-eye,
     &.q-icon-eye-close {
-      color: var(--field-icon-color-base);
+      color: var(--input-filled-icon-color);
       pointer-events: all;
       cursor: pointer;
 
-      &:hover,
+      &:hover {
+        color: var(--input-hover-filled-icon-color);
+      }
+
       &.focus-visible {
-        color: var(--field-icon-color-hover);
+        color: var(--input-focus-filled-icon-color);
       }
     }
   }

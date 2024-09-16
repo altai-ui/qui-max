@@ -1,0 +1,52 @@
+.q-date-picker-year-panel {
+  &__table {
+    width: 100%;
+    border-spacing: 0;
+  }
+
+  &__calendar {
+    color: #343a40;
+    text-align: center;
+  }
+
+  &__cell {
+    height: 40px;
+    padding: 0;
+  }
+
+  &__year {
+    width: 100%;
+    height: 26px;
+    margin-bottom: 2px;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 17px;
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+
+    &:focus-visible,
+    .focus-visible & {
+      color: #1c7ed6;
+      background-color: transparent;
+      border-radius: 4px;
+      outline: 1px solid #1c7ed6;
+    }
+
+    &_selected {
+      color: #f8f9fa;
+      background-color: #1c7ed6;
+      border-radius: 4px;
+    }
+
+    &_current {
+      text-decoration: underline;
+    }
+
+    &:hover:not(&_selected) {
+      color: #1c7ed6;
+      background-color: #d0ebff;
+      border-radius: 4px;
+    }
+  }
+}
